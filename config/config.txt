@@ -1,2 +1,3 @@
-autoSearch=True
-language=english
+autoSearch=Truelanguage=english
+version=0.01
+soundOn=True
