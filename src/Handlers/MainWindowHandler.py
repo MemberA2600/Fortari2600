@@ -17,6 +17,19 @@ class MainWindowHandler:
         tk.focus()
         tk.mainloop()
         soundplayer.playSound("others/snd/Exit.wav")
+        self.__removeTemp()
+
+    def __removeTemp(self):
+        import os
+
+        toBeDeleted=[]
+
+        for root, dirs, files in os.walk("temp/", False):
+            for file in files:
+                toBeDeleted.append(root+"/"+file)
+
+        for file in toBeDeleted:
+            os.remove(file)
 
     def createMain(self):
         from MainWindow import MainWindow

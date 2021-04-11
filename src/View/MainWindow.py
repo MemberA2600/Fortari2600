@@ -6,6 +6,7 @@ import os
 
 from tkinter.filedialog import *
 from tkinter import messagebox
+from FrameContent import FrameContent
 
 class MainWindow:
 
@@ -29,9 +30,19 @@ class MainWindow:
         self.editor.resizable(True, True)
         self.editor.minsize(600,400)
         self.editor.pack_propagate(False)
+        self.editor.grid_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
+        self.__createFrames()
         self.__soundPlayer.playSound("others/snd/Start.wav")
-
 
     def __closeWindow(self):
         self.editor.destroy()
+
+    def getWindowSize(self):
+        return (self.editor.winfo_width(), self.editor.winfo_height())
+
+    def __createFrames(self):
+         self.__createMenuFrame()
+
+    def __createMenuFrame(self):
+        self.__buttonMenu = FrameContent(self, self.editor, self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5)

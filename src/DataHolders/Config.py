@@ -11,6 +11,18 @@ class Config:
             self.__config = dataReader.readDataFile("config/configDefault.txt")
 
         self.__projects = dataReader.readDataFile("config/projectlist.txt")
+        self.__checkIfProjectExists()
+
+    def __checkIfProjectExists(self):
+        import os
+
+        toBeDeleted=[]
+        for key in self.__projects.keys():
+            if os.path.exists(self.__projects[key]) !=True:
+                toBeDeleted.append(key)
+
+        for key in toBeDeleted:
+            self.__projects.pop(key)
 
     def getValueByKey(self, key):
         return(self.__config[key])
@@ -41,6 +53,7 @@ class Config:
 
     def addProject(self, key, value):
         self.__projects[key] = value
+        self.saveProjects()
 
     def saveProjects(self):
         self.__dataReader.writeDataFile("config/projectlist.txt", self.__projects)
