@@ -1,2 +1,7 @@
-test=test
-test2=test2
+open=Open File
+save=Save File
+emulator=Stella Emulator
+emulatorNotFound=Couldn't find Stella emulator. Would you like to find it yourself?
+openEmulator=Open Stella Emulator
+exe=Executables
+*=All Types

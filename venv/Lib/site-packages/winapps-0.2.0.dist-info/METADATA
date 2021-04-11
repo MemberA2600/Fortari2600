@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: winapps
+Version: 0.2.0
+Summary: Python library for managing installed applications on Windows
+Home-page: https://github.com/rominf/winapps
+License: Apache-2.0
+Keywords: library,windows,apps,applications,programs,management
+Author: Roman Inflianskas
+Author-email: infroma@gmail.com
+Requires-Python: >=3.6,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Win32 (MS Windows)
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: System :: Software Distribution
+Classifier: Topic :: System :: Systems Administration
+Requires-Dist: dataclasses (>=0.6.0,<0.7.0); python_version >= "3.6" and python_version < "3.7"
+Requires-Dist: plumbum (>=1.6,<2.0)
+Project-URL: Repository, https://github.com/rominf/winapps
+Description-Content-Type: text/markdown
+
+# winapps - Python library for managing installed applications on Windows
+[![License](https://img.shields.io/pypi/l/winapps.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/winapps.svg)
+[![PyPI](https://img.shields.io/pypi/v/winapps.svg)](https://pypi.org/project/winapps/)
+
+## Installation
+To install `winapps` from PyPI run:
+```shell
+$ pip install winapps
+```
+Or clone it using git:
+```shell
+$ git clone https://github.com/rominf/winapps.git
+$ cd winapps
+$ python(3) setup.py install
+```
+
+## Usage
+### Printing installed applications
+```python
+import winapps
+
+for app in winapps.list_installed():
+    print(app)
+# InstalledApplication(name='7-Zip 19.00 (x64)', version='19.00', install_date=None, install_location=WindowsPath('C:/Program Files/7-Zip'), install_source=None, modify_path=None, publisher='Igor Pavlov', uninstall_string='C:\\Program Files\\7-Zip\\Uninstall.exe')
+# InstalledApplication(name='Mozilla Firefox 66.0.2 (x64 ru)', version='66.0.2', install_date=None, install_location=WindowsPath('C:/Program Files/Mozilla Firefox'), install_source=None, modify_path=None, publisher='Mozilla', uninstall_string='"C:\\Program Files\\Mozilla Firefox\\uninstall\\helper.exe"')
+# InstalledApplication(name='Mozilla Maintenance Service', version='66.0.2', install_date=None, install_location=None, install_source=None, modify_path=None, publisher='Mozilla', uninstall_string='"C:\\Program Files (x86)\\Mozilla Maintenance Service\\uninstall.exe"')
+# InstalledApplication(name='Oracle VM VirtualBox Guest Additions 6.0.4', version='6.0.4.0', install_date=None, install_location=None, install_source=None, modify_path=None, publisher='Oracle Corporation', uninstall_string='C:\\Program Files\\Oracle\\VirtualBox Guest Additions\\uninst.exe')
+# InstalledApplication(name='Python 3.7.1 (Miniconda3 4.5.12 64-bit)', version='4.5.12', install_date=None, install_location=None, install_source=None, modify_path=None, publisher='Anaconda, Inc.', uninstall_string='"C:\\ProgramData\\Miniconda3\\Uninstall-Miniconda3.exe"')
+# InstalledApplication(name='TortoiseHg 4.9.0 (x64)', version='4.9.0', install_date=datetime.date(2019, 4, 3), install_location=WindowsPath('C:/Program Files/TortoiseHg'), install_source=WindowsPath('C:/Users/Roman Inflianskas/Downloads'), modify_path='MsiExec.exe /I{9DF3A4E8-0C61-49CC-9170-79B0DE20EF25}', publisher='Steve Borho and others', uninstall_string='MsiExec.exe /I{9DF3A4E8-0C61-49CC-9170-79B0DE20EF25}')
+# ...
+```
+
+### Searching applications
+```python
+import winapps
+
+for app in winapps.search_installed('tortoisehg'):
+    print(app)
+```
+
+### Uninstalling applications
+```python
+import winapps
+
+# Assuming you have exactly one installed Notepad++
+[npp] = winapps.search_installed('Notepad++')
+npp.uninstall('/S')
+
+# Simpler universal variant (uninstall all Notepad++ applications)
+winapps.uninstall('Notepad++', args=['/S'])
+```
+
+## Caveats
+The library currently lookups only for software installed for all users. Only Windows Installer 3.0 .exe installers are
+supported in `installer_command`, `install`, and `uninstall` are supported.
+
+## Credits
+This library is heavily inspired by `win_pkg` SaltStack module.
+

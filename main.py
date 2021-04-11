@@ -10,9 +10,8 @@ from threading import Thread
 
 from sys import path as systemPath
 
-
 if __name__ == "__main__":
-    systemPath.insert(1, "src/App/")
+    systemPath.insert(1, "src/Scripts/")
     from Collector import Collector
     Collector(systemPath)
 
@@ -28,19 +27,13 @@ if __name__ == "__main__":
     from Monitor import Monitor
     __screenSize = Monitor().get_screensize()
 
-    from LoadingScreenHandler import LoadingScreenHandler
-    __lSH = LoadingScreenHandler(__screenSize, tk)
+    from Loader import Loader
+    __loader = Loader()
 
-    from Config import Config
-    from DataReader import DataReader
-    from Dictionary import Dictionary
-    from SoundPlayer import SoundPlayer
-
-    __dataReader = DataReader()
-    __config = Config(__dataReader)
-    __dictionaries = Dictionary(__dataReader, __config)
-    __soundPlayer = SoundPlayer(__config)
+    from LoadingScreen import LoadingScreen
+    __loading = LoadingScreen(__screenSize, tk, __loader)
 
     from time import sleep
     from MainWindowHandler import MainWindowHandler
-    MainWindowHandler(__config, __dictionaries, __screenSize, __lSH, tk, __soundPlayer)
+    MainWindowHandler(__loader.config, __loader.dictionaries, __screenSize,
+                      tk, __loader.soundPlayer, __loader.fileDialogs)

@@ -9,16 +9,15 @@ from tkinter import messagebox
 
 class MainWindow:
 
-    def __init__(self, config, dictionaries, screensize, super, LSH, tk, soundplayer):
+    def __init__(self, config, dictionaries, screensize, super, tk, soundplayer, fileDialogs):
         self.__config = config
         self.__dictionaries = dictionaries
         self.__screenSize = screensize
         self.__soundPlayer = soundplayer
+        self.__fileDialogs = fileDialogs
 
         super.mainWindow = self
         self.editor = tk
-
-        self.__lSH = LSH
 
         self.editor.protocol('WM_DELETE_WINDOW', self.__closeWindow)
         self.editor.title("Fortari2600 v"+self.__config.getValueByKey("version"))
@@ -32,13 +31,7 @@ class MainWindow:
         self.editor.pack_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
         self.__soundPlayer.playSound("others/snd/Start.wav")
-        self.editor.after(1000, self.__destroyLoader)
+
 
     def __closeWindow(self):
         self.editor.destroy()
-
-    def __destroyLoader(self):
-        try:
-            self.__lSH.destroyScreen()
-        except:
-            self.editor.after(100, self.__destroyLoader)

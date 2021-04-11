@@ -1,1 +1,7 @@
-test=teszt
+open=Fájl megnyitása
+save=Fájl mentése
+emulator=Stella Emulátor
+emulatorNotFound=Stella emulátor felderítése sikertelen! Akarja maga megtalálni?
+openEmulator=Stella Emulátor Megnyitása
+exe=Futtatható Állományok
+*=Minden fájltípus

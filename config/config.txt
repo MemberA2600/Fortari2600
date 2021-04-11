@@ -1,3 +1,5 @@
-autoSearch=Truelanguage=english
+autoSetter=True
+language=english
 version=0.01
 soundOn=True
+emulator=
