@@ -19,6 +19,7 @@ class MenuLabel:
 
         self.__placer()
         align = Thread(target=self.dinamicallyAlign)
+        align.daemon = True
         align.start()
         self.__setFont()
 
@@ -37,8 +38,15 @@ class MenuLabel:
 
     def __placer(self):
         self.__label.place(x=(self.__XPoz*32) +
-                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 50)
+                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 40)
 
     def __setFont(self):
         self.__font = self.__fontManager.getFont("normal", False, False, False)
         self.__label.config(font=self.__font)
+
+    def setText(self, string):
+        self.__label.config(text=string)
+
+    def changePlace(self, num):
+        self.__XPoz = num
+        self.__placer()

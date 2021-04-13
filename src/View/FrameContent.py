@@ -23,6 +23,7 @@ class FrameContent:
         self.__lastScaleY = self.__boss.getScales()[1]
         align = Thread(target=self.dinamicallyAlign)
         #self.__frame.config(bg="black") #Only for testing!
+        align.daemon = True
         align.start()
 
     def getFrame(self):

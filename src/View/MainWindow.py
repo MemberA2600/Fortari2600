@@ -12,6 +12,7 @@ from threading import Thread
 from FrameContent import FrameContent
 from MenuButton import MenuButton
 from MenuLabel import MenuLabel
+from ButtonMaker import ButtonMaker
 
 class MainWindow:
 
@@ -22,13 +23,13 @@ class MainWindow:
         self.__screenSize = screensize
         self.__soundPlayer = soundplayer
         self.__fileDialogs = fileDialogs
+        self.__openedProject = False
 
         super.mainWindow = self
         self.editor = tk
 
         self.__scaleX=1
         self.__scaleY=1
-
 
         self.editor.protocol('WM_DELETE_WINDOW', self.__closeWindow)
         self.editor.title("Fortari2600 v"+self.__config.getValueByKey("version"))
@@ -53,11 +54,11 @@ class MainWindow:
         self.__fontManager = FontManager(self)
 
         self.__createFrames()
+
         self.__soundPlayer.playSound("others/snd/Start.wav")
         align = Thread(target=self.__scales)
+        align.daemon = True
         align.start()
-
-
 
     def __closeWindow(self):
         self.editor.destroy()
@@ -85,11 +86,48 @@ class MainWindow:
 
     def __createMenuFrame(self):
         self.__buttonMenu = FrameContent(self, self.editor, self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5, 99999, 150)
-        self.__newButton = MenuButton(self, self.editor, self.__buttonMenu, "new", 0, self.__newButtonFunction)
-        self.__openButton = MenuButton(self, self.editor, self.__buttonMenu, "open", 1, self.__openButtonFunction)
-        self.__saveButton = MenuButton(self, self.editor, self.__buttonMenu, "save", 2, self.__saveButtonFunction)
-        self.__saveAllButton = MenuButton(self, self.editor, self.__buttonMenu, "saveAll", 3, self.__saveAllButtonFunction)
-        self.__testLabel = MenuLabel(self, self.editor, self.__buttonMenu, "Ez csak egy teszt.", 0, self.__fontManager)
+        self.__buttonMaker = ButtonMaker(self, self.editor, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
+
+        self.__menuLabel = MenuLabel(self, self.editor, self.__buttonMenu, "", 0, self.__fontManager)
+
+        self.__newButton = self.__buttonMaker.createButton("new", 0,
+                                      self.__newButtonFunction, self.__openedProject,
+                                       True, None)
+        self.__openButton = self.__buttonMaker.createButton("open", 1,
+                                       self.__openButtonFunction, self.__openedProject,
+                                        True, None)
+        self.__saveButton = self.__buttonMaker.createButton("save", 2,
+                                       self.__saveButtonFunction, self.__openedProject,
+                                        False, None)
+        self.__saveAllButton = self.__buttonMaker.createButton("saveAll", 3,
+                                          self.__saveAllButtonFunction, self.__openedProject,
+                                            False, None)
+        self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", 4,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, None)
+        self.__copyButton = self.__buttonMaker.createButton("copy", 5.5,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, None)
+        self.__pasteButton = self.__buttonMaker.createButton("paste", 6.5,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, None)
+        self.__undoButton = self.__buttonMaker.createButton("undo", 7.5,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, self.__undoButtonHandler)
+        self.__redoButton = self.__buttonMaker.createButton("redo", 8.5,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, self.__redoButtonHandler)
+
+    def __createLabel(self, event):
+        name = str(event.widget).split(".")[-1]
+        self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
+        if name in ["new", "open", "save", "saveAll", "closeProject"]:
+            self.__menuLabel.changePlace(0)
+        elif name in ["copy", "paste", "undo", "redo"]:
+            self.__menuLabel.changePlace(5.5)
+
+    def __destroyLabel(self, event):
+        self.__menuLabel.setText("")
 
     def __newButtonFunction(self):
         print("DONE!!!")
@@ -103,3 +141,33 @@ class MainWindow:
     def __saveAllButtonFunction(self):
         print("DONE!!!")
 
+    def __closeProjectButtonFunction(self):
+        print("DONE!!!")
+
+    def __copyButtonFunction(self):
+        print("DONE!!!")
+
+    def __pasteButtonFunction(self):
+        print("DONE!!!")
+
+    def __undoButtonFunction(self):
+        print("DONE!!!")
+
+    def __redoButtonFunction(self):
+        print("DONE!!!")
+
+    def __undoButtonHandler(self, button):
+        from time import sleep
+        while True:
+            #button.preventRun = True
+            #button.getButton().config(state = NORMAL)
+
+            sleep(1)
+
+    def __redoButtonHandler(self, button):
+        from time import sleep
+        while True:
+            #button.preventRun = True
+            #button.getButton().config(state = NORMAL)
+
+            sleep(1)
