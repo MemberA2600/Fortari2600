@@ -1,0 +1,44 @@
+from threading import Thread
+from tkinter import Label
+
+class MenuLabel:
+
+    def __init__(self, boss, master, frame, text, XPoz, fontmanager):
+        self.__boss = boss
+        self.__master = master
+        self.__frame = frame
+        self.__XPoz = XPoz
+        self.__fontManager = fontmanager
+
+        self.__contentHolder = self.__frame.getFrame()
+        self.__label = Label(self.__contentHolder, text = text)
+
+        self.__font = None
+        self.__lastScaleX = self.__boss.getScales()[0]
+        self.__lastScaleY = self.__boss.getScales()[1]
+
+        self.__placer()
+        align = Thread(target=self.dinamicallyAlign)
+        align.start()
+        self.__setFont()
+
+    def dinamicallyAlign(self):
+        from time import sleep
+        while True:
+            if (self.__lastScaleX==self.__boss.getScales()[0] and self.__lastScaleY==self.__boss.getScales()[1]):
+                sleep(0.05)
+                continue
+            self.__lastScaleX = self.__boss.getScales()[0]
+            self.__lastScaleY = self.__boss.getScales()[1]
+
+            self.__placer()
+            self.__setFont()
+            sleep(0.02)
+
+    def __placer(self):
+        self.__label.place(x=(self.__XPoz*32) +
+                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 50)
+
+    def __setFont(self):
+        self.__font = self.__fontManager.getFont("normal", False, False, False)
+        self.__label.config(font=self.__font)

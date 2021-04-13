@@ -33,4 +33,5 @@ class MainWindowHandler:
 
     def createMain(self):
         from MainWindow import MainWindow
-        MainWindow(self.__config, self.__dictionaries, self.__screenSize, self, self.__tk, self.__soundPlayer, self.__fileDialogs)
+        MainWindow(self.__config, self.__dictionaries, self.__screenSize, self, self.__tk,
+                   self.__soundPlayer, self.__fileDialogs)

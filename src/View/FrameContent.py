@@ -3,7 +3,7 @@ from threading import Thread
 
 class FrameContent:
 
-    def __init__(self, boss, master, w, h, x, y):
+    def __init__(self, boss, master, w, h, x, y, maxW, maxH):
         self.__boss = boss
         self.__frame = Frame(master, width=w, height=h)
         self.__frame.pack_propagate()
@@ -13,11 +13,16 @@ class FrameContent:
         self.__baseH = h
         self.__baseX = x
         self.__baseY = y
-        self.__originalW = self.__boss.getWindowSize()[0]
-        self.__originalH = self.__boss.getWindowSize()[1]
-        self.__lastW = self.__boss.getWindowSize()[0]
-        self.__lastH = self.__boss.getWindowSize()[1]
+
+        self.__maxW = maxW
+        self.__maxH = maxH
+
+        self.__changeSize()
+
+        self.__lastScaleX = self.__boss.getScales()[0]
+        self.__lastScaleY = self.__boss.getScales()[1]
         align = Thread(target=self.dinamicallyAlign)
+        #self.__frame.config(bg="black") #Only for testing!
         align.start()
 
     def getFrame(self):
@@ -29,13 +34,25 @@ class FrameContent:
     def dinamicallyAlign(self):
         from time import sleep
         while True:
-            sleep(0.01)
-            if (self.__lastW==self.__boss.getWindowSize()[0] and self.__lastH==self.__boss.getWindowSize()[1]):
+            if (self.__lastScaleX==self.__boss.getScales()[0]
+                    and self.__lastScaleY==self.__boss.getScales()[1]):
+                sleep(0.05)
                 continue
-            self.__lastW = self.__boss.getWindowSize()[0]
-            self.__lastH = self.__boss.getWindowSize()[1]
-            horMulti = self.__lastW / self.__originalW
-            verMulti = self.__lastH / self.__originalH
-            self.__frame.config(width=self.__baseW*horMulti)
-            self.__frame.config(height=self.__baseH*verMulti)
-            self.__frame.place(x=self.__baseX*horMulti, y=self.__baseY*verMulti)
+            self.__changeSize()
+            sleep(0.02)
+
+    def __changeSize(self):
+        self.__lastScaleX = self.__boss.getScales()[0]
+        self.__lastScaleY = self.__boss.getScales()[1]
+
+        self.__tempW = self.__baseW * self.__lastScaleX
+        self.__tempH = self.__baseH * self.__lastScaleY
+        if self.__tempW > self.__maxW:
+            self.__tempW = self.__maxW
+        if self.__tempH > self.__maxH:
+            self.__tempH = self.__maxH
+
+        self.__frame.config(width=self.__tempW)
+        self.__frame.config(height=self.__tempH)
+
+        self.__frame.place(x=self.__baseX * self.__lastScaleX, y=self.__baseY * self.__lastScaleY)

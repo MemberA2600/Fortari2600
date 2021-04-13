@@ -15,9 +15,6 @@ if __name__ == "__main__":
     from Collector import Collector
     Collector(systemPath)
 
-    from pyglet import font as PyFont
-    PyFont.add_file('others/font/HammerFat.ttf')
-
     tk = Tk()
     tk.withdraw()
     tk.overrideredirect(True)
