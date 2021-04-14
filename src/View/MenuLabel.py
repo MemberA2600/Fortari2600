@@ -3,9 +3,9 @@ from tkinter import Label
 
 class MenuLabel:
 
-    def __init__(self, boss, master, frame, text, XPoz, fontmanager):
-        self.__boss = boss
-        self.__master = master
+    def __init__(self, loader, frame, text, XPoz, fontmanager):
+        self.__loader = loader
+
         self.__frame = frame
         self.__XPoz = XPoz
         self.__fontManager = fontmanager
@@ -14,8 +14,8 @@ class MenuLabel:
         self.__label = Label(self.__contentHolder, text = text)
 
         self.__font = None
-        self.__lastScaleX = self.__boss.getScales()[0]
-        self.__lastScaleY = self.__boss.getScales()[1]
+        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
         self.__placer()
         align = Thread(target=self.dinamicallyAlign)
@@ -26,11 +26,12 @@ class MenuLabel:
     def dinamicallyAlign(self):
         from time import sleep
         while True:
-            if (self.__lastScaleX==self.__boss.getScales()[0] and self.__lastScaleY==self.__boss.getScales()[1]):
+            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
+                    and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)
                 continue
-            self.__lastScaleX = self.__boss.getScales()[0]
-            self.__lastScaleY = self.__boss.getScales()[1]
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+            self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
             self.__placer()
             self.__setFont()
@@ -50,3 +51,6 @@ class MenuLabel:
     def changePlace(self, num):
         self.__XPoz = num
         self.__placer()
+
+    def changeColor(self, color):
+        self.__label.config(fg=color)

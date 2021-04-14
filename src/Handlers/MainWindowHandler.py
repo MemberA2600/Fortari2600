@@ -1,22 +1,24 @@
 class MainWindowHandler:
-    def __init__(self, config, dictionaries, screensize, tk, soundplayer, fileDialogs):
-        self.__config = config
-        self.__dictionaries = dictionaries
-        self.__screenSize = screensize
-        self.__soundPlayer = soundplayer
-        self.__fileDialogs = fileDialogs
+    def __init__(self, loader):
+        self.__loader = loader
+        self.__loader.mainWindowHander = self
+        self.__config = self.__loader.config
+        self.__dictionaries = self.__loader.dictionaries
+        self.__screenSize = self.__loader.screenSize
+        self.__soundPlayer = self.__loader.soundPlayer
+        self.__fileDialogs = self.__loader.fileDialogs
 
         from threading import Thread
 
-        self.__tk = tk
+        self.__tk = self.__loader.tk
 
         self.mainWindow = None
         main = Thread(target=self.createMain)
         main.start()
-        tk.focus_force()
-        tk.focus()
-        tk.mainloop()
-        soundplayer.playSound("others/snd/Exit.wav")
+        self.__tk.focus_force()
+        self.__tk.focus()
+        self.__tk.mainloop()
+        self.__loader.soundPlayer.playSound("others/snd/Exit.wav")
         self.__removeTemp()
 
     def __removeTemp(self):
@@ -33,5 +35,4 @@ class MainWindowHandler:
 
     def createMain(self):
         from MainWindow import MainWindow
-        MainWindow(self.__config, self.__dictionaries, self.__screenSize, self, self.__tk,
-                   self.__soundPlayer, self.__fileDialogs)
+        MainWindow(self.__loader)

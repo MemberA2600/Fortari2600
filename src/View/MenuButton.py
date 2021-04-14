@@ -4,11 +4,12 @@ from threading import Thread
 
 class MenuButton:
 
-    def __init__(self, boss, master, frame, image, XPoz,
+    def __init__(self, loader, frame, image, XPoz,
                  function, functionEnter, functionLeave, bindedVar,
                  invertedBinding, bindedOut):
-        self.__boss = boss
-        self.__master = master
+        self.__loader = loader
+        self.__loader.menuButtons[image] = self
+
         self.__frame = frame
         self.__XPoz = XPoz
         self.__bindedVar = bindedVar
@@ -29,7 +30,7 @@ class MenuButton:
 
         self.__button.config(image = self.__img)
 
-        self.__lastScaleX = self.__boss.getScales()[0]
+        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__placer()
 
         align = Thread(target=self.dinamicallyAlign)
@@ -67,10 +68,10 @@ class MenuButton:
     def dinamicallyAlign(self):
         from time import sleep
         while True:
-            if (self.__lastScaleX==self.__boss.getScales()[0]):
+            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]):
                 sleep(0.05)
                 continue
-            self.__lastScaleX = self.__boss.getScales()[0]
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
             self.__placer()
 
             sleep(0.02)

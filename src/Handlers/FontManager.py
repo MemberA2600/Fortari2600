@@ -1,10 +1,10 @@
 class FontManager:
 
-    def __init__(self, boss):
+    def __init__(self, loader):
         from pyglet import font as PyFont
         from threading import Thread
+        self.__loader = loader
 
-        self.__boss = boss
         self.__lastScaleX = 1
         self.__lastScaleY = 1
 
@@ -18,11 +18,11 @@ class FontManager:
     def autoSizes(self):
         from time import sleep
         while True:
-            if (self.__lastScaleX==self.__boss.getScales()[0] and self.__lastScaleX==self.__boss.getScales()[1]):
+            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)
                 continue
-            self.__lastScaleX = self.__boss.getScales()[0]
-            self.__lastScaleX = self.__boss.getScales()[1]
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
             self.__sizing()
             sleep(0.02)
 
@@ -30,8 +30,8 @@ class FontManager:
         baseW = 1600
         baseH = 1200
         baseS = 22
-        self.__normalSize = round((self.__boss.getWindowSize()[0]/baseW) *
-                                  ((self.__boss.getWindowSize()[1]/baseH)) * baseS)
+        self.__normalSize = round((self.__loader.mainWindow.getWindowSize()[0]/baseW) *
+                                  ((self.__loader.mainWindow.getWindowSize()[1]/baseH)) * baseS)
 
         if self.__normalSize<10:
             self.__normalSize = 10

@@ -16,26 +16,29 @@ from ButtonMaker import ButtonMaker
 
 class MainWindow:
 
-    def __init__(self, config, dictionaries, screensize, super, tk,
-                 soundplayer, fileDialogs):
-        self.__config = config
-        self.__dictionaries = dictionaries
-        self.__screenSize = screensize
-        self.__soundPlayer = soundplayer
-        self.__fileDialogs = fileDialogs
+    def __init__(self, loader):
+        self.__loader = loader
+        self.__loader.mainWindow = self
+        self.__config = self.__loader.config
+        self.__dictionaries = self.__loader.dictionaries
+        self.__screenSize = self.__loader.screenSize
+        self.__soundPlayer = self.__loader.soundPlayer
+        self.__fileDialogs = self.__loader.fileDialogs
         self.__openedProject = False
 
-        super.mainWindow = self
-        self.editor = tk
+
+        self.__loader.mainWindowHander.mainWindow = self
+        self.editor = self.__loader.tk
 
         self.__scaleX=1
         self.__scaleY=1
 
         self.editor.protocol('WM_DELETE_WINDOW', self.__closeWindow)
         self.editor.title("Fortari2600 v"+self.__config.getValueByKey("version"))
-        __w = screensize[0]-150
-        __h = screensize[1]-200
-        self.editor.geometry("%dx%d+%d+%d" % (__w, __h, (screensize[0] / 2-__w/2), (screensize[1]/2-__h/2-25)))
+        __w = self.__loader.screenSize[0]-150
+        __h = self.__loader.screenSize[1]-200
+        self.editor.geometry("%dx%d+%d+%d" % (__w, __h, (
+                self.__loader.screenSize[0] / 2-__w/2), (self.__loader.screenSize[1]/2-__h/2-25)))
 
         self.editor.deiconify()
         self.editor.overrideredirect(False)
@@ -51,7 +54,7 @@ class MainWindow:
         self.__lastH = self.getWindowSize()[1]
 
         from FontManager import FontManager
-        self.__fontManager = FontManager(self)
+        self.__fontManager = FontManager(self.__loader)
 
         self.__createFrames()
 
@@ -85,10 +88,11 @@ class MainWindow:
          self.__createMenuFrame()
 
     def __createMenuFrame(self):
-        self.__buttonMenu = FrameContent(self, self.editor, self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5, 99999, 150)
-        self.__buttonMaker = ButtonMaker(self, self.editor, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
+        self.__buttonMenu = FrameContent(self.__loader, "buttonMenu", self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5, 99999, 150)
 
-        self.__menuLabel = MenuLabel(self, self.editor, self.__buttonMenu, "", 0, self.__fontManager)
+        self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
+
+        self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
         self.__newButton = self.__buttonMaker.createButton("new", 0,
                                       self.__newButtonFunction, self.__openedProject,
@@ -120,11 +124,18 @@ class MainWindow:
 
     def __createLabel(self, event):
         name = str(event.widget).split(".")[-1]
+        button = self.__loader.menuButtons[name].getButton()
+        if button.cget("state") == DISABLED:
+            self.__menuLabel.changeColor("gray")
+        else:
+            self.__menuLabel.changeColor("black")
+
         self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
         if name in ["new", "open", "save", "saveAll", "closeProject"]:
             self.__menuLabel.changePlace(0)
         elif name in ["copy", "paste", "undo", "redo"]:
             self.__menuLabel.changePlace(5.5)
+
 
     def __destroyLabel(self, event):
         self.__menuLabel.setText("")

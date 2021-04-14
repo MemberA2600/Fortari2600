@@ -14,23 +14,24 @@ if __name__ == "__main__":
     systemPath.insert(1, "src/Scripts/")
     from Collector import Collector
     Collector(systemPath)
+    from Loader import Loader
+    __loader = Loader()
 
     tk = Tk()
     tk.withdraw()
     tk.overrideredirect(True)
     tk.resizable(False, False)
     tk.geometry("%dx%d+%d+%d" % (1,1,1,1))
+    __loader.tk = tk
 
     from Monitor import Monitor
     __screenSize = Monitor().get_screensize()
-
-    from Loader import Loader
-    __loader = Loader()
+    __loader.screenSize = __screenSize
 
     from LoadingScreen import LoadingScreen
     __loading = LoadingScreen(__screenSize, tk, __loader)
 
+
     from time import sleep
     from MainWindowHandler import MainWindowHandler
-    MainWindowHandler(__loader.config, __loader.dictionaries, __screenSize,
-                      tk, __loader.soundPlayer, __loader.fileDialogs)
+    MainWindowHandler(__loader)
