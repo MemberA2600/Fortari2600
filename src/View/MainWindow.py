@@ -13,6 +13,7 @@ from FrameContent import FrameContent
 from MenuButton import MenuButton
 from MenuLabel import MenuLabel
 from ButtonMaker import ButtonMaker
+from SubMenu import SubMenu
 
 class MainWindow:
 
@@ -43,7 +44,7 @@ class MainWindow:
         self.editor.deiconify()
         self.editor.overrideredirect(False)
         self.editor.resizable(True, True)
-        self.editor.minsize(600,400)
+        self.editor.minsize(750,550)
         self.editor.pack_propagate(False)
         self.editor.grid_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
@@ -88,7 +89,9 @@ class MainWindow:
          self.__createMenuFrame()
 
     def __createMenuFrame(self):
-        self.__buttonMenu = FrameContent(self.__loader, "buttonMenu", self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5, 99999, 150)
+        self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
+                                         self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5,
+                                         99999, 150, 720, 60)
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
@@ -122,6 +125,14 @@ class MainWindow:
                                           self.__closeProjectButtonFunction, self.__openedProject,
                                             False, self.__redoButtonHandler)
 
+        self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 10,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, self.__redoButtonHandler)
+
+        self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
+                                          self.__closeProjectButtonFunction, self.__openedProject,
+                                            False, self.__redoButtonHandler)
+
     def __createLabel(self, event):
         name = str(event.widget).split(".")[-1]
         button = self.__loader.menuButtons[name].getButton()
@@ -135,13 +146,16 @@ class MainWindow:
             self.__menuLabel.changePlace(0)
         elif name in ["copy", "paste", "undo", "redo"]:
             self.__menuLabel.changePlace(5.5)
-
+        elif name in ["spriteEditor", "playfieldEditor"]:
+            self.__menuLabel.changePlace(10)
 
     def __destroyLabel(self, event):
         self.__menuLabel.setText("")
 
     def __newButtonFunction(self):
-        print("DONE!!!")
+        from NewProjectWindow import NewProjectWindow
+        w = NewProjectWindow(self.__loader)
+
 
     def __openButtonFunction(self):
         print("DONE!!!")

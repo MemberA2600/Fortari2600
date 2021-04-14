@@ -21,6 +21,9 @@ class MainWindowHandler:
         self.__loader.soundPlayer.playSound("others/snd/Exit.wav")
         self.__removeTemp()
 
+    #def setWaitWindow(self, widget):
+    #    widget.wait_window()
+
     def __removeTemp(self):
         import os
 

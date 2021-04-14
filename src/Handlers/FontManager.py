@@ -4,6 +4,7 @@ class FontManager:
         from pyglet import font as PyFont
         from threading import Thread
         self.__loader = loader
+        self.__loader.fontManager = self
 
         self.__lastScaleX = 1
         self.__lastScaleY = 1

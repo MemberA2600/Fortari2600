@@ -3,7 +3,7 @@ from threading import Thread
 
 class FrameContent:
 
-    def __init__(self, loader, name, w, h, x, y, maxW, maxH):
+    def __init__(self, loader, name, w, h, x, y, maxW, maxH, minW, minH):
 
         self.__loader = loader
         self.__loader.frames[name] = self
@@ -20,6 +20,9 @@ class FrameContent:
 
         self.__maxW = maxW
         self.__maxH = maxH
+        self.__minW = minW
+        self.__minH = minH
+
 
         self.__changeSize()
 
@@ -56,6 +59,11 @@ class FrameContent:
             self.__tempW = self.__maxW
         if self.__tempH > self.__maxH:
             self.__tempH = self.__maxH
+
+        if self.__tempW < self.__minW:
+            self.__tempW = self.__minW
+        if self.__tempH < self.__minH:
+            self.__tempH = self.__minH
 
         self.__frame.config(width=self.__tempW)
         self.__frame.config(height=self.__tempH)

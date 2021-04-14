@@ -10,6 +10,7 @@ class Loader:
         self.screenSize = None
         self.mainWindowHander = None
         self.mainWindow = None
+        self.fontManager = None
 
         self.frames = {}
         self.menuButtons = {}
