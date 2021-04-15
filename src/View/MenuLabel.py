@@ -25,7 +25,7 @@ class MenuLabel:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while True:
+        while self.__loader.mainWindow.dead==False:
             if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
                     and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)

@@ -48,7 +48,7 @@ class MenuButton:
 
     def checkBinded(self):
         from time import sleep
-        while True:
+        while self.__loader.mainWindow.dead==False:
             if self.preventRun == False:
                 if self.__invertedBinding == False:
                     temp = self.__bindedVar
@@ -67,7 +67,7 @@ class MenuButton:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while True:
+        while self.__loader.mainWindow.dead==False:
             if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]):
                 sleep(0.05)
                 continue

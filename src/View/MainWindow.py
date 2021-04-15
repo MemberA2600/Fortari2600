@@ -18,6 +18,7 @@ from SubMenu import SubMenu
 class MainWindow:
 
     def __init__(self, loader):
+        self.dead = False
         self.__loader = loader
         self.__loader.mainWindow = self
         self.__config = self.__loader.config
@@ -72,7 +73,7 @@ class MainWindow:
 
     def __scales(self):
         from time import sleep
-        while True:
+        while self.dead==False:
             if (self.__lastW==self.getWindowSize()[0] and self.__lastH==self.getWindowSize()[1]):
                 sleep(0.05)
                 continue

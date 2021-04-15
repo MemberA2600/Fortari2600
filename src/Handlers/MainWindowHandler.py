@@ -18,8 +18,11 @@ class MainWindowHandler:
         self.__tk.focus_force()
         self.__tk.focus()
         self.__tk.mainloop()
+        self.__loader.mainWindow.dead = True
         self.__loader.soundPlayer.playSound("others/snd/Exit.wav")
         self.__removeTemp()
+        from time import sleep
+        sleep(2)
 
     #def setWaitWindow(self, widget):
     #    widget.wait_window()
