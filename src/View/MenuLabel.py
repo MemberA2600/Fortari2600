@@ -38,8 +38,9 @@ class MenuLabel:
             sleep(0.02)
 
     def __placer(self):
-        self.__label.place(x=(self.__XPoz*32) +
-                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 40)
+        c = list(self.__loader.menuButtons.values())[0].getConstant()
+        self.__label.place(x=(self.__XPoz*c) +
+                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = c*1.04+12)
 
     def __setFont(self):
         self.__font = self.__fontManager.getFont("normal", False, False, False)

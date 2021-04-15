@@ -96,8 +96,6 @@ class MainWindow:
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
-        self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
-
         self.__newButton = self.__buttonMaker.createButton("new", 0,
                                       self.__newButtonFunction, self.__openedProject,
                                        True, None)
@@ -133,6 +131,9 @@ class MainWindow:
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
                                           self.__closeProjectButtonFunction, self.__openedProject,
                                             False, self.__redoButtonHandler)
+
+        self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+
 
     def __createLabel(self, event):
         name = str(event.widget).split(".")[-1]
