@@ -19,3 +19,4 @@ playfieldEditor=Playfield Szerkesztõ
 projectPath=Project Mappa:
 screenSizeError=Képernyõ-méter hiba!
 screenSizeErrorMessage=Legalább 800x600-as felbontás javallott! Ennek ellenére folytassuk?
+openFolder=Mappaválasztás

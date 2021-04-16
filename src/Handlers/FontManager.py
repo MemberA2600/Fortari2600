@@ -74,3 +74,13 @@ class FontManager:
         __font.config(underline=underline)
 
         return(__font)
+
+    def getCharacterLenghtFromPixels(self, font, len):
+        num = 1
+        while True:
+            temp = font.measure(num*"0")
+            if temp<len:
+                num+=1
+                continue
+            else:
+                return(num-2)

@@ -18,13 +18,16 @@ class MenuButton:
         self.__image=image
 
         self.__contentHolder = self.__frame.getFrame()
-        self.__img = self.__getImg()
+        self.__img = self.__loader.getImg(self.__image, None)
         self.__function = function
         self.__functionEnter = functionEnter
         self.__functionLeave = functionLeave
         self.preventRun = False
 
-        self.__button = Button(self.__contentHolder, name=image, width=self.getConstant(), height=self.getConstant(), command=self.__function)
+        self.__button = Button(self.__contentHolder, name=image,
+                               width=self.__loader.getConstant(),
+                               height=self.__loader.getConstant(),
+                               command=self.__function)
 
         self.__button.bind("<Enter>", self.__functionEnter)
         self.__button.bind("<Leave>", self.__functionLeave)
@@ -46,17 +49,6 @@ class MenuButton:
             bind2.daemon = True
             bind2.start()
 
-    def __getImg(self):
-        return(ImageTk.PhotoImage(Image.open("others/img/"+self.__image+".png")
-                                  .resize((self.getConstant(),self.getConstant()), Image.ANTIALIAS)))
-
-    def getConstant(self):
-        scalerX = self.__loader.mainWindow.getWindowSize()[0]/1300
-        scalerY = self.__loader.mainWindow.getWindowSize()[1]/1150
-        num = round(32*scalerX*scalerY)
-        if num>32:
-            num=32
-        return(num)
 
     def checkBinded(self):
         from time import sleep
@@ -90,11 +82,12 @@ class MenuButton:
             sleep(0.02)
 
     def __resizeMe(self):
-        self.__button.config(width=self.getConstant(), height=self.getConstant())
-        self.__img = self.__getImg()
+        self.__button.config(width=self.__loader.getConstant(),
+                             height=self.__loader.getConstant())
+        self.__img = self.__loader.getImg(self.__image, None)
         self.__button.config(image = self.__img)
 
 
     def __placer(self):
-        self.__button.place(x=(self.getConstant()*self.__XPoz)+
+        self.__button.place(x=(self.__loader.getConstant()*self.__XPoz)+
                               (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 5)

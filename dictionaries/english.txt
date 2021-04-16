@@ -19,3 +19,4 @@ playfieldEditor=Playfield Editor
 projectPath=Project Path:
 screenSizeError=Screen Size Error!
 screenSizeErrorMessage=At least 800x600 resolution recommended! Yet want to continue?
+openFolder=Open Folder

@@ -36,3 +36,10 @@ class FileDialogs:
                                        title=self.__dicts.getWordFromCurrentLanguage(title),
                                        filetypes=types)
         return(openname)
+
+
+    def askForDir(self, init):
+        openname = askdirectory(initialdir=init,
+                                       title=self.__dicts.getWordFromCurrentLanguage("openFolder"),
+                                       )
+        return(openname)

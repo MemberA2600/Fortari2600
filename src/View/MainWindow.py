@@ -92,7 +92,7 @@ class MainWindow:
     def __createMenuFrame(self):
         self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
                                          self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, 5,
-                                         99999, 150, 720, 60)
+                                         99999, 150, 400, 60)
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
@@ -136,23 +136,29 @@ class MainWindow:
 
 
     def __createLabel(self, event):
-        name = str(event.widget).split(".")[-1]
-        button = self.__loader.menuButtons[name].getButton()
-        if button.cget("state") == DISABLED:
-            self.__menuLabel.changeColor("gray")
-        else:
-            self.__menuLabel.changeColor("black")
+        try:
+            name = str(event.widget).split(".")[-1]
+            button = self.__loader.menuButtons[name].getButton()
+            if button.cget("state") == DISABLED:
+                self.__menuLabel.changeColor("gray")
+            else:
+                self.__menuLabel.changeColor("black")
 
-        self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
-        if name in ["new", "open", "save", "saveAll", "closeProject"]:
-            self.__menuLabel.changePlace(0)
-        elif name in ["copy", "paste", "undo", "redo"]:
-            self.__menuLabel.changePlace(5.5)
-        elif name in ["spriteEditor", "playfieldEditor"]:
-            self.__menuLabel.changePlace(10)
+            self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
+            if name in ["new", "open", "save", "saveAll", "closeProject"]:
+                self.__menuLabel.changePlace(0)
+            elif name in ["copy", "paste", "undo", "redo"]:
+                self.__menuLabel.changePlace(5.5)
+            elif name in ["spriteEditor", "playfieldEditor"]:
+                self.__menuLabel.changePlace(10)
+        except:
+            self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
     def __destroyLabel(self, event):
-        self.__menuLabel.setText("")
+        try:
+            self.__menuLabel.setText("")
+        except:
+            self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
     def __newButtonFunction(self):
         from NewProjectWindow import NewProjectWindow

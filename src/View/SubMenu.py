@@ -38,3 +38,6 @@ class SubMenu:
 
     def getTopLevel(self):
         return(self.__topLevel)
+
+    def getTopLevelDimensions(self):
+        return(self.__topLevel.winfo_width(), self.__topLevel.winfo_height())
