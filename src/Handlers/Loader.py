@@ -24,7 +24,7 @@ class Loader:
                                       .resize((self.getConstant(),self.getConstant()), Image.ANTIALIAS)))
         else:
             return(ImageTk.PhotoImage(Image.open("others/img/"+name+".png")
-                                      .resize((size, size))))
+                                      .resize((size, size)), Image.ANTIALIAS))
 
     def getConstant(self):
         scalerX = self.mainWindow.getWindowSize()[0]/1300
@@ -35,3 +35,11 @@ class Loader:
         elif num<18:
             num=18
         return(num)
+
+    def checkIfValidFileName(self, name):
+        from pathvalidate import ValidationError, validate_filename
+        try:
+            validate_filename(name)
+            return(True)
+        except ValidationError as e:
+            return(False)

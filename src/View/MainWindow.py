@@ -165,6 +165,11 @@ class MainWindow:
         w = NewProjectWindow(self.__loader)
 
 
+    def projectOpenedWantToSave(self):
+        #if self.__openedProject == True:
+            #return(self.__fileDialogs.askYesOrNo())
+        pass
+
     def __openButtonFunction(self):
         print("DONE!!!")
 
