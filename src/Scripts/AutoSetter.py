@@ -27,7 +27,7 @@ class AutoSetter:
 
         if result == "":
             if self.__fileDialogs.askYesOrNo("emulator", "emulatorNotFound") == "Yes":
-                self.__config.setKey("emulator", self.__fileDialogs.askForFileName("openEmulator", False, ["exe", "*"]))
+                self.__config.setKey("emulator", self.__fileDialogs.askForFileName("openEmulator", False, ["exe", "*"], "*"))
 
 
         self.__config.setKey("emulator", result)

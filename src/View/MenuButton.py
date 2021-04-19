@@ -18,15 +18,15 @@ class MenuButton:
         self.__image=image
 
         self.__contentHolder = self.__frame.getFrame()
-        self.__img = self.__loader.getImg(self.__image, None)
+        self.__img = self.__loader.io.getImg(self.__image, None)
         self.__function = function
         self.__functionEnter = functionEnter
         self.__functionLeave = functionLeave
         self.preventRun = False
 
         self.__button = Button(self.__contentHolder, name=image,
-                               width=self.__loader.getConstant(),
-                               height=self.__loader.getConstant(),
+                               width=self.__loader.mainWindow.getConstant(),
+                               height=self.__loader.mainWindow.getConstant(),
                                command=self.__function)
 
         self.__button.bind("<Enter>", self.__functionEnter)
@@ -49,16 +49,20 @@ class MenuButton:
             bind2.daemon = True
             bind2.start()
 
+    def __checkIfFalse(self, var):
+        if var == False or var == None or var == "":
+            return False
+        return True
 
     def checkBinded(self):
         from time import sleep
         while self.__loader.mainWindow.dead==False:
             if self.preventRun == False:
-                if self.__invertedBinding == False:
-                    temp = self.__bindedVar
-                else:
-                    temp = not self.__bindedVar
 
+                if self.__invertedBinding == True:
+                    temp = not self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
+                else:
+                    temp = self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
 
                 if temp == True:
                     self.__button.config(state=NORMAL)
@@ -82,12 +86,12 @@ class MenuButton:
             sleep(0.02)
 
     def __resizeMe(self):
-        self.__button.config(width=self.__loader.getConstant(),
-                             height=self.__loader.getConstant())
-        self.__img = self.__loader.getImg(self.__image, None)
+        self.__button.config(width=self.__loader.mainWindow.getConstant(),
+                             height=self.__loader.mainWindow.getConstant())
+        self.__img = self.__loader.io.getImg(self.__image, None)
         self.__button.config(image = self.__img)
 
 
     def __placer(self):
-        self.__button.place(x=(self.__loader.getConstant()*self.__XPoz)+
+        self.__button.place(x=(self.__loader.mainWindow.getConstant()*self.__XPoz)+
                               (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 5)

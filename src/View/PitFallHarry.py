@@ -37,7 +37,8 @@ class PitFallHarry:
         m.start()
 
     def __placer(self):
-        self.__harryLabel.place(x=self.__harryPoz, y=0)
+        if self.__window.dead==False:
+            self.__harryLabel.place(x=self.__harryPoz, y=0)
 
     def __setSprite(self, num):
         if self.__spriteNum != num:
@@ -54,7 +55,11 @@ class PitFallHarry:
 
     def __getDifference(self):
         import mouse
-        self.__difference = mouse.get_position()[0] - (self.__harryPoz+self.__master.getTopLevel().winfo_x())
+        if self.__window.dead==False:
+            try:
+                self.__difference = mouse.get_position()[0] - (self.__w*0.5+self.__harryPoz+self.__master.getTopLevel().winfo_x())
+            except:
+                pass
 
     def __increment(self):
         if self.__spriteCounter>4:

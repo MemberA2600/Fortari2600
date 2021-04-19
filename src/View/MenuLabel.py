@@ -38,7 +38,7 @@ class MenuLabel:
             sleep(0.02)
 
     def __placer(self):
-        c = self.__loader.getConstant()
+        c = self.__loader.mainWindow.getConstant()
         self.__label.place(x=(self.__XPoz*c) +
                               (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = c*1.04+12)
 

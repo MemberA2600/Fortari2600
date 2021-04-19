@@ -38,13 +38,19 @@ class LoadingScreen():
         self.__loader.dictionaries = Dictionary(self.__loader.dataReader, self.__loader.config)
 
         from FileDialogs import FileDialogs
-        self.__loader.fileDialogs = FileDialogs(self.__loader.dictionaries, self.__loader.config)
+        self.__loader.fileDialogs = FileDialogs(self.__loader.dictionaries, self.__loader.config, self.__loader)
 
         from AutoSetter import AutoSetter
         self.__loader.autoSetter = AutoSetter(self.__loader.config, self.__loader.fileDialogs)
 
         from SoundPlayer import SoundPlayer
         self.__loader.soundPlayer = SoundPlayer(self.__loader.config)
+
+        from IO import IO
+        self.__loader.io = IO(self.__loader.dictionaries, self.__loader.config, self.__loader)
+
+        from VirtualMemory import VirtualMemory
+        self.__loader.virtualMemory = VirtualMemory(self.__loader)
 
         self.__Loading_Window.destroy()
 

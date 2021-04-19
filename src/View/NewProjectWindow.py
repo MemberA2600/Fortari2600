@@ -1,5 +1,6 @@
 from SubMenu import SubMenu
 from tkinter import *
+import os
 
 class NewProjectWindow:
 
@@ -44,6 +45,9 @@ class NewProjectWindow:
 
         self.__folderEntryWithButton.addButton("open", self.openFolder)
 
+        import os
+        self.__folderEntryWithButton.setText(str(os.getcwd()+"/projects/").replace("\\", "/"))
+
         self.__projectLabel = SubMenuLabel(self.__topLevelWindow,
                                        self.__loader,
                                        "projectName",
@@ -56,7 +60,7 @@ class NewProjectWindow:
         from SubMenuOkCancelButtons import SubMenuOkCancelButtons
         from PitFallHarry import PitFallHarry
 
-        self.__okCancel = SubMenuOkCancelButtons(self, self.__topLevel, self.__loader, self.__normalFont, self.__newFile, self.getOK)
+        self.__okCancel = SubMenuOkCancelButtons(self, self.__topLevel, self.__loader, self.__normalFont, self.__newProject, self.getOK)
         self.__harry = PitFallHarry(self, self.__topLevel, self.__loader, self.__normalFont)
 
     def getOK(self):
@@ -68,7 +72,7 @@ class NewProjectWindow:
         while self.dead == False:
             try:
                 path = str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText())
-                if os.path.exists(self.__folderEntryWithButton.getText()) == True and os.path.exists(path) == False and self.__loader.checkIfValidFileName(self.__projectEntryWithButton.getText()) == True:
+                if os.path.exists(self.__folderEntryWithButton.getText()) == True and os.path.exists(path) == False and self.__loader.io.checkIfValidFileName(self.__projectEntryWithButton.getText()) == True:
                     self.OK = True
                 else:
                     self.OK = False
@@ -77,13 +81,41 @@ class NewProjectWindow:
                 pass
             sleep(1)
 
-
+    def __getPath(self):
+        return(str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText()+os.sep).replace("\\","/"))
 
     def openFolder(self):
         text = self.__folderEntryWithButton.getText()
         self.__folderEntryWithButton.setText(self.__loader.fileDialogs.askForDir(text))
+        if self.__folderEntryWithButton.getText()=="":
+            self.__folderEntryWithButton.setText(text)
+        self.__focus()
+
+    def __focus(self):
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
-    def __newFile(self, bool):
-        print(bool)
+    def __newProject(self, bool):
+        if bool == True:
+            try:
+                self.__soundPlayer.playSound("OK")
+                self.__loader.io.copyDirWithFiles("templates/new_project/", self.__getPath())
+                for num in range(2,9):
+                    self.__loader.io.copyDirWithFiles("templates/bank2_8/",
+                                                      self.__getPath()+"bank"+str(num)+"/")
+                os.rename(str(self.__getPath()+"project_name.project2600"),
+                          str(self.__getPath()+self.__projectEntryWithButton.getText()+".project2600"))
+                self.__loader.mainWindow.openProject(self.__getPath())
+                self.__topLevel.getTopLevel().destroy()
+
+            except Exception as e:
+                self.__fileDialogs.displayError("projectNewError", "projectNewErrorText",
+                                                {
+                                                    "name": self.__projectEntryWithButton.getText()
+                                                },
+                                                str(e)
+                                                )
+                self.__loader.io.removeDirWithFiles(self.__getPath())
+                self.__focus()
+        else:
+            self.__topLevel.getTopLevel().destroy()

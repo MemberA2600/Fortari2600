@@ -3,9 +3,10 @@ from tkinter import messagebox
 
 class FileDialogs:
 
-    def __init__(self, dict, config):
+    def __init__(self, dict, config, loader):
         self.__dicts = dict
         self.__config = config
+        self.__loader = loader
 
     def askYesOrNo(self, title, text):
         mbox = messagebox.askyesno(self.__dicts.getWordFromCurrentLanguage(title),
@@ -16,7 +17,7 @@ class FileDialogs:
         else:
             return("No")
 
-    def askForFileName(self, title, save, fileTypes):
+    def askForFileName(self, title, save, fileTypes, initdir):
         types = []
 
         for type in fileTypes:
@@ -26,13 +27,15 @@ class FileDialogs:
             types.append(tuple(temp))
         types = tuple(types)
 
+        if os.path.exists(initdir) == False or initdir == None:
+            initdir = "*"
 
         if save == True:
-            openname = asksaveasfilename(initialdir="*",
+            openname = asksaveasfilename(initialdir=initdir,
                                        title=self.__dicts.getWordFromCurrentLanguage(title),
                                        filetypes=types)
         else:
-            openname = askopenfilename(initialdir="*",
+            openname = askopenfilename(initialdir=initdir,
                                        title=self.__dicts.getWordFromCurrentLanguage(title),
                                        filetypes=types)
         return(openname)
@@ -43,3 +46,15 @@ class FileDialogs:
                                        title=self.__dicts.getWordFromCurrentLanguage("openFolder"),
                                        )
         return(openname)
+
+    def displayError(self, title, message, data, systemText):
+        message = self.__dicts.getWordFromCurrentLanguage(message)
+        if data!=None:
+            for item in data.keys():
+                message = message.replace(str("#"+item+"#"), data[item])
+
+        self.__loader.soundPlayer.playSound("Error")
+        if systemText != None:
+            message += str("\n"+self.__dicts.getWordFromCurrentLanguage("errorSystemText")+"\n"+systemText)
+        messagebox.showerror(self.__dicts.getWordFromCurrentLanguage(title),
+                             message)

@@ -35,10 +35,10 @@ class SubMenuEntryWithButton:
         self.__var.set(text)
 
     def addButton(self, name, function):
-        self.__img = self.__loader.getImg(name, self.__font.metrics('linespace')-5)
+        self.__img = self.__loader.io.getImg(name, self.__font.metrics('linespace')-5)
         self.__button = Button(self.__entryFrame, image=self.__img, command = function)
         self.__entry.config(width=self.__loader.fontManager.getCharacterLenghtFromPixels(
             self.__font,
-            self.__master.getTopLevelDimensions()[0]-self.__loader.getConstant()
+            self.__master.getTopLevelDimensions()[0]-self.__loader.mainWindow.getConstant()
         ))
         self.__button.pack(fill=Y, side=RIGHT, anchor=E)

@@ -40,8 +40,11 @@ class SubMenuOkCancelButtons:
     def __changeOK(self):
         while self.__loader.mainWindow.dead==False and self.__window.dead==False:
             from time import sleep
-            if self.__var() == True:
-                self.__OKButton.config(state=NORMAL)
-            else:
-                self.__OKButton.config(state=DISABLED)
+            try:
+                if self.__var() == True:
+                    self.__OKButton.config(state=NORMAL)
+                else:
+                    self.__OKButton.config(state=DISABLED)
+            except:
+                pass
             sleep(1)
