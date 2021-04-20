@@ -100,7 +100,7 @@ class MainWindow:
 
     def __createMenuFrame(self):
         self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
-                                         self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/10, 5, 5,
+                                         self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
                                          99999, 150, 400, 60)
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
@@ -145,8 +145,25 @@ class MainWindow:
 
     def __createSelectorFrame(self):
         self.__selectMenu = FrameContent(self.__loader, "selectMenu",
-                                         self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/5, 5, self.getWindowSize()[1]/10+10,
-                                         99999, 150, 400, 60)
+                                         self.getWindowSize()[0] / 3 * 2, self.getWindowSize()[1] / 5, 5,
+                                         self.__buttonMenu.getFrameSize()[1]+10,
+                                         99999, 550, 400, 100)
+
+        from SelectLabel import SelectLabel
+        from ListBoxInFrame import ListBoxInFrame
+
+
+        self.__bankLabel = SelectLabel(self.__loader, self.__selectMenu,
+                                       self.__dictionaries.getWordFromCurrentLanguage("selectedBank"),
+                                        self.__fontManager
+                                       )
+        listBoxItems = []
+        for num in range(1,9):
+            listBoxItems.append("bank"+str(num))
+
+        self.__bankBox = ListBoxInFrame("bankBox", self.__loader,
+                            self.__selectMenu, self.__fontManager, 0.66, listBoxItems, self.checkIfBankChanged)
+
 
 
     def __createLabel(self, event):
@@ -192,6 +209,22 @@ class MainWindow:
                     return True
         return False
 
+    def checkIfBankChanged(self, listBox):
+        num = 0
+        for bank in self.__loader.virtualMemory.codes.keys():
+            num += 1
+            color1 = "white"
+            color2 = "black"
+
+            for item in self.__loader.virtualMemory.codes[bank].keys():
+                if self.__loader.virtualMemory.codes[bank][item].changed == True:
+                    color1="red"
+                    color2="yellow"
+                    break
+            listBox.itemconfig(num-1, {"bg": color1})
+            listBox.itemconfig(num-1, {"fg": color2})
+
+
     def openProject(self, path):
         try:
             projectPath=path.replace("\\", "/")
@@ -209,7 +242,8 @@ class MainWindow:
                 self.__setVirtualMemoryItem(bank, "leave")
                 self.__setVirtualMemoryItem(bank, "local_variables")
                 self.__setVirtualMemoryItem(bank, "overscan")
-                self.__setVirtualMemoryItem(bank, "screen_elements")
+                self.__setVirtualMemoryItem(bank, "screen_top")
+                self.__setVirtualMemoryItem(bank, "screen_bottom")
                 self.__setVirtualMemoryItem(bank, "special_read_only")
                 self.__setVirtualMemoryItem(bank, "subroutines_and_functions")
                 self.__setVirtualMemoryItem(bank, "vblank")
@@ -264,7 +298,8 @@ class MainWindow:
             self.__saveOnlyOne(bank, "leave")
             self.__saveOnlyOne(bank, "local_variables")
             self.__saveOnlyOne(bank, "overscan")
-            self.__saveOnlyOne(bank, "screen_elements")
+            self.__saveOnlyOne(bank, "screen_top")
+            self.__saveOnlyOne(bank, "screen_bottom")
             self.__saveOnlyOne(bank, "special_read_only")
             self.__saveOnlyOne(bank, "subroutines_and_functions")
             self.__saveOnlyOne(bank, "vblank")

@@ -10,8 +10,8 @@ class FrameContent:
 
 
         self.__frame = Frame(self.__loader.tk, width=w, height=h)
-        self.__frame.pack_propagate()
-        self.__frame.grid_propagate()
+        self.__frame.pack_propagate(False)
+        self.__frame.grid_propagate(False)
         self.__frame.place(x=x, y=y)
         self.__baseW = w
         self.__baseH = h
@@ -29,7 +29,7 @@ class FrameContent:
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
         align = Thread(target=self.dinamicallyAlign)
-        self.__frame.config(bg="black") #Only for testing!
+        #self.__frame.config(bg="blue") #Only for testing!
         align.daemon = True
         align.start()
 
@@ -50,6 +50,7 @@ class FrameContent:
             sleep(0.02)
 
     def __changeSize(self):
+
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 

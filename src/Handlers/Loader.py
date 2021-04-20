@@ -19,6 +19,7 @@ class Loader:
         self.frames = {}
         self.menuButtons = {}
         self.bindedVariables = {}
+        self.listBoxes = {}
 
 
 

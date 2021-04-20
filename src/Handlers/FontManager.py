@@ -68,7 +68,7 @@ class FontManager:
             underline = 0
 
         __font = Font(font='HammerFat_Hun')
-        __font.config(size=size)
+        __font.config(size=round(size))
         __font.config(weight=bold)
         __font.config(slant=italic)
         __font.config(underline=underline)

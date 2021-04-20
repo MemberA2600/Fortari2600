@@ -58,16 +58,18 @@ class MenuButton:
         from time import sleep
         while self.__loader.mainWindow.dead==False:
             if self.preventRun == False:
+                try:
+                    if self.__invertedBinding == True:
+                        temp = not self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
+                    else:
+                        temp = self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
 
-                if self.__invertedBinding == True:
-                    temp = not self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
-                else:
-                    temp = self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
-
-                if temp == True:
-                    self.__button.config(state=NORMAL)
-                else:
-                    self.__button.config(state=DISABLED)
+                    if temp == True:
+                        self.__button.config(state=NORMAL)
+                    else:
+                        self.__button.config(state=DISABLED)
+                except:
+                    pass
             sleep(1)
 
     def getButton(self):
