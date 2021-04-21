@@ -8,14 +8,23 @@ class SubMenuOkCancelButtons:
         self.__loader = loader
         self.__font = font
         self.__master = master
-        self.__buttonFrame = Frame(master.getTopLevel(),
-                                  width=master.getTopLevelDimensions()[0],
-                                  height=self.__font.metrics('linespace'))
+        try:
+            self.__buttonFrame = Frame(master.getTopLevel(),
+                                      width=master.getTopLevelDimensions()[0],
+                                      height=self.__font.metrics('linespace'))
+        except:
+            self.__buttonFrame = Frame(master.getFrame(),
+                                      width=master.getFrameSize()[0],
+                                      height=self.__font.metrics('linespace'))
         self.__buttonFrame.place()
         self.__buttonFrame.pack(side=BOTTOM, anchor=S)
         self.__buttonFrame.pack_propagate(False)
         self.__function = function
-        w = self.__loader.fontManager.getCharacterLenghtFromPixels(self.__font, round(master.getTopLevelDimensions()[0]/2))
+        try:
+            w = self.__loader.fontManager.getCharacterLenghtFromPixels(self.__font, round(master.getTopLevelDimensions()[0]/2))
+        except:
+            w = self.__loader.fontManager.getCharacterLenghtFromPixels(self.__font, round(master.getFrameSize()[0]/2))
+
 
         self.__OKButton=Button(self.__buttonFrame, text=self.__loader.dictionaries.getWordFromCurrentLanguage("ok"),
                                width=w,
@@ -26,6 +35,12 @@ class SubMenuOkCancelButtons:
 
         self.__OKButton.pack(side=LEFT, fill=Y, anchor=SE)
         self.__CancelButton.pack(side=RIGHT, fill=Y,anchor=SW)
+        self.__OKButton.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__OKButton.config(fg=self.__loader.colorPalettes.getColor("font"))
+        self.__CancelButton.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__CancelButton.config(fg=self.__loader.colorPalettes.getColor("font"))
+        self.__buttonFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
+
         if enableDisableVar != None:
             self.__var = enableDisableVar
             disableOK = Thread(target=self.__changeOK)

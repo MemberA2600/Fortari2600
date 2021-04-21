@@ -38,7 +38,7 @@ class AutoSetter:
                 if root!="projects/":
                     continue
                 for dir in dirs:
-                    self.__config.addProject(dir, str(root+"/"+dir))
+                    self.__config.addProject(dir, str(root+dir)+"/")
 
     def __detectOsBits(self):
         import struct

@@ -16,6 +16,7 @@ class Loader:
         self.io = None
         self.virtualMemory = None
         self.colorPalettes = None
+        self.codeBox = None
 
         self.frames = {}
         self.menuButtons = {}

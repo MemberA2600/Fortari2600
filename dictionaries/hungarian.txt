@@ -36,3 +36,4 @@ projectSaveError=Kód Mentés Hiba
 projectSaveError=Hiba keletkezett #bank# #name# kódjának mentésekor!
 selectedBank=Kiválasztott Bank:
 selectedSection=Kiválasztott szekció:
+projectList=Project List:

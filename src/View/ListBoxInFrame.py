@@ -12,12 +12,20 @@ class ListBoxInFrame:
         self.__fontManager = fontmanager
         w = self.__loader.mainWindow.getWindowSize()
         self.__baseWidth=w[0]/10*multi
-        self.__baseHeight=self.__container.getFrameSize()[1]
+        try:
+            self.__baseHeight=self.__container.getFrameSize()[1]
+            self.__frame = Frame(self.__container.getFrame(), width=self.__baseWidth,
+                                 height=self.__container.getFrameSize()[1])
+        except:
+            self.__baseHeight=self.__container.getTopLevelDimensions()[1]
+            self.__frame = Frame(self.__container.getTopLevel(), width=self.__baseWidth,
+                                 height=self.__container.getTopLevelDimensions()[1])
 
-        self.__frame = Frame(self.__container.getFrame(), width=self.__baseWidth,
-                             height=self.__container.getFrameSize()[1])
+
         self.__frame.pack_propagate(False)
         self.__frame.grid_propagate(False)
+        self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
+
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
@@ -30,9 +38,7 @@ class ListBoxInFrame:
                                     selectmode=BROWSE,
                                     exportselection = False
                                     )
-        self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__scrollBar.pack(side=LEFT, anchor=W, fill=Y)
-        self.__scrollBar.config(command=self.__listBox.yview)
+
         self.__listBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
         self.__listBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
@@ -49,13 +55,19 @@ class ListBoxInFrame:
         self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
         self.sizeListBox()
         self.__loader.listBoxes[name] = self
-        self.__listBox.select_set(0)
+        if len(data)>0:
+            self.__listBox.select_set(0)
+
 
         if function != None:
             self.__function = function
             f = Thread(target=self.__callCheckFunction)
             f.daemon = True
             f.start()
+        self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__scrollBar.pack(side=LEFT, anchor=W, fill=Y)
+        self.__scrollBar.config(command=self.__listBox.yview)
+
 
     def getSelectedName(self):
         return(self.__data[self.__listBox.curselection()[0]])
@@ -71,21 +83,28 @@ class ListBoxInFrame:
             self.__font, self.getSize()[0]-13
         ))
 
+
+
     def dinamicallyAlign(self):
         from time import sleep
         while self.__loader.mainWindow.dead == False:
-            if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
-                    and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]):
-                sleep(0.05)
-                continue
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-            self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+            try:
+                if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
+                        and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]) \
+                        and self.__listBox.winfo_width()>self.__frame.winfo_width()/2:
 
-            self.__frame.config(width=round(self.__baseWidth*self.__lastScaleX))
-            self.__frame.config(height=round(self.__baseHeight*self.__lastScaleY))
+                    sleep(0.05)
+                    continue
+                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
-            self.__setFont()
-            self.sizeListBox()
+                self.__frame.config(width=round(self.__baseWidth*self.__lastScaleX))
+                self.__frame.config(height=round(self.__baseHeight*self.__lastScaleY))
+
+                self.__setFont()
+                self.sizeListBox()
+            except:
+                pass
             sleep(0.02)
 
     def __setFont(self):

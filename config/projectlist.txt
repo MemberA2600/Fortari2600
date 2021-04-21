@@ -1,1 +1,7 @@
-protoss=projects//protoss
+eee=projects/eee/
+fff=projects/fff/
+ggg=projects/ggg/
+hhh=projects/hhh/
+iii=projects/iii/
+jjj=projects/jjj/
+projects=projects/hhh

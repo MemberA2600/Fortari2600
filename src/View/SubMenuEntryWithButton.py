@@ -7,9 +7,16 @@ class SubMenuEntryWithButton:
         self.__var = StringVar()
         self.__font = font
         self.__master = master
-        self.__entryFrame = Frame(master.getTopLevel(),
-                                  width=master.getTopLevelDimensions()[0],
-                                  height=self.__font.metrics('linespace'))
+        try:
+            self.__entryFrame = Frame(master.getTopLevel(),
+                                      width=master.getTopLevelDimensions()[0],
+                                      height=self.__font.metrics('linespace'))
+        except:
+            self.__entryFrame = Frame(master.getFrame(),
+                                      width=master.getFrameSize()[0],
+                                      height=self.__font.metrics('linespace'))
+
+
         self.__entryFrame.place()
         self.__entryFrame.pack(side=TOP, anchor=NW)
         self.__entryFrame.pack_propagate(False)
@@ -19,6 +26,9 @@ class SubMenuEntryWithButton:
                              textvariable=self.__var,
                              font=self.__font)
         self.__entry.pack(side=LEFT, anchor=W)
+        self.__entryFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__entry.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
 
     def enabled(self, bool):
@@ -37,8 +47,15 @@ class SubMenuEntryWithButton:
     def addButton(self, name, function):
         self.__img = self.__loader.io.getImg(name, self.__font.metrics('linespace')-5)
         self.__button = Button(self.__entryFrame, image=self.__img, command = function)
-        self.__entry.config(width=self.__loader.fontManager.getCharacterLenghtFromPixels(
-            self.__font,
-            self.__master.getTopLevelDimensions()[0]-self.__loader.mainWindow.getConstant()
-        ))
+        try:
+            self.__entry.config(width=self.__loader.fontManager.getCharacterLenghtFromPixels(
+                self.__font,
+                self.__master.getTopLevelDimensions()[0]-self.__loader.mainWindow.getConstant()
+            ))
+        except:
+            self.__entry.config(width=self.__loader.fontManager.getCharacterLenghtFromPixels(
+                self.__font,
+                self.__master.getFrameSize()[0] - self.__loader.mainWindow.getConstant()
+            ))
         self.__button.pack(fill=Y, side=RIGHT, anchor=E)
+        self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))

@@ -51,6 +51,15 @@ class Config:
     def getProjectPath(self, key):
         return(self.__projects[key])
 
+    def addProjectPath(self, path):
+        import os
+        name = path.split("/")[-2]
+        if path.startswith(os.getcwd().replace("\\", "/")):
+            path = path.replace(os.getcwd().replace("\\", "/"), "")
+            path=path[1:]
+        path.replace("//", "/")
+        self.addProject(name, path)
+
     def addProject(self, key, value):
         self.__projects[key] = value
         self.saveProjects()

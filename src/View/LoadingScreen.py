@@ -43,19 +43,19 @@ class LoadingScreen():
         from AutoSetter import AutoSetter
         self.__loader.autoSetter = AutoSetter(self.__loader.config, self.__loader.fileDialogs)
 
+
         from SoundPlayer import SoundPlayer
         self.__loader.soundPlayer = SoundPlayer(self.__loader.config)
 
         from IO import IO
         self.__loader.io = IO(self.__loader.dictionaries, self.__loader.config, self.__loader)
 
+        self.__loader.sections = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
+
         from VirtualMemory import VirtualMemory
         self.__loader.virtualMemory = VirtualMemory(self.__loader)
 
-        self.__loader.sections = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
-
         from ColorPalettes import ColorPalettes
-
         self.__loader.colorPalettes = ColorPalettes(self.__loader)
 
         self.__Loading_Window.destroy()

@@ -79,7 +79,7 @@ class NewProjectWindow:
             except Exception as e:
                 #print(e)
                 pass
-            sleep(1)
+            sleep(0.05)
 
     def __getPath(self):
         return(str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText()+os.sep).replace("\\","/"))

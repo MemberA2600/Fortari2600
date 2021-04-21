@@ -44,13 +44,18 @@ class MainWindow:
                 self.__loader.screenSize[0] / 2-__w/2), (self.__loader.screenSize[1]/2-__h/2-25)))
 
         self.editor.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.editor.attributes('-toolwindow', True)
+
         self.editor.deiconify()
+        self.editor.focus()
+
         self.editor.overrideredirect(False)
         self.editor.resizable(True, True)
         self.editor.minsize(750,550)
         self.editor.pack_propagate(False)
         self.editor.grid_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
+
 
         self.__originalW = self.getWindowSize()[0]
         self.__originalH = self.getWindowSize()[1]
@@ -184,6 +189,11 @@ class MainWindow:
         self.__sectionBox = ListBoxInFrame("sectionBox", self.__loader,
                             self.__selectMenu2, self.__fontManager, 1.80, self.__tempList, self.checkIfSectionChanged)
 
+        self.__changedSelection = Thread(target=self.__listBoxChanges)
+        self.__changedSelection.daemon = True
+        self.__changedSelection.start()
+
+
     def __createLabel(self, event):
         try:
             name = str(event.widget).split(".")[-1]
@@ -263,6 +273,22 @@ class MainWindow:
                 listBox.itemconfig(num-1, {"bg": color1})
                 listBox.itemconfig(num-1, {"fg": color2})
 
+    def __listBoxChanges(self):
+        bankBox = self.__loader.listBoxes["bankBox"]
+        sectionBox = self.__loader.listBoxes["sectionBox"]
+        self.__bankSelected = bankBox.getSelectedName()
+        self.__sectionSelected = sectionBox.getSelectedName()
+
+        while self.dead == False:
+            from time import sleep
+            if self.__bankSelected != bankBox.getSelectedName() or self.__sectionSelected != sectionBox.getSelectedName():
+                pass
+                self.__bankSelected = bankBox.getSelectedName()
+                self.__sectionSelected = sectionBox.getSelectedName()
+            sleep(0.1)
+
+
+
     def openProject(self, path):
         try:
             projectPath=path.replace("\\", "/")
@@ -272,6 +298,8 @@ class MainWindow:
             #file = open(self.projectPath+os.sep+name+".project2600", "w")
             #file.write(self.projectPath)
             #file.close()
+            self.__loader.config.addProjectPath(projectPath)
+
             self.__setVirtualMemoryItem("bank1", "bank_configurations")
             self.__setVirtualMemoryItem("bank1", "global_variables")
             for num in range(2,9):
@@ -288,14 +316,15 @@ class MainWindow:
                                             },
                                             str(e)
                                             )
-            self.__closeProject()
+            try:
+                self.__closeProject()
+            except:
+                self.projectPath=""
 
     def __setVirtualMemoryItem(self, bank, variable):
+        path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
-        item.code = \
-            self.__loader.io.loadWholeText(
-                str(self.projectPath+bank+os.sep+variable+".a26")
-            )
+        item.code = self.__loader.io.loadWholeText(path)
         item.changed = False
         item.archived = []
         item.cursor = 0
@@ -338,10 +367,10 @@ class MainWindow:
         if self.projectOpenedWantToSave()=="Yes":
             self.saveProject()
 
-        projectPath = "/".join(self.__fileDialogs.askForFileName("openProjectIndex", False,
-                        ["project2600", "*"], "projects/").replace("\\", "/").split("/")[0:-1])+"/"
+        from OpenProjectWindow import OpenProjectWindow
 
-        self.openProject(projectPath)
+        open = OpenProjectWindow(self.__loader, self, self.openProject)
+
 
 
     def __saveButtonFunction(self):

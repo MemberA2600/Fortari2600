@@ -16,6 +16,7 @@ class MainWindowHandler:
         main = Thread(target=self.createMain)
         main.start()
         self.__tk.focus_force()
+        self.__tk.deiconify()
         self.__tk.focus()
         self.__tk.mainloop()
         self.__loader.mainWindow.dead = True

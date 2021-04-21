@@ -36,3 +36,4 @@ projectSaveError=Save Code Error
 projectSaveError=Error while saving #bank#'s #name# code!
 selectedBank=Selected Bank:
 selectedSection=Selected Section:
+projectList=Project List:

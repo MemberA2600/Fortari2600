@@ -3,6 +3,7 @@ from tkinter import Label, TOP, NW, NORMAL, DISABLED
 class SubMenuLabel:
 
     def __init__(self, master, loader, text, font):
+        self.__loader = loader
         self.__label = Label(master,
                              text = loader.dictionaries.getWordFromCurrentLanguage(text),
                              font=font)
