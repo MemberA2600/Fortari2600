@@ -28,6 +28,7 @@ class ListBoxInFrame:
                                     height=1000,
                                     yscrollcommand=self.__scrollBar.set,
                                     selectmode=BROWSE,
+                                    exportselection = False
                                     )
         self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
         self.__scrollBar.pack(side=LEFT, anchor=W, fill=Y)
@@ -46,6 +47,8 @@ class ListBoxInFrame:
         self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
         self.sizeListBox()
         self.__loader.listBoxes[name] = self
+        self.__listBox.select_set(0)
+
         if function != None:
             self.__function = function
             f = Thread(target=self.__callCheckFunction)
@@ -54,6 +57,7 @@ class ListBoxInFrame:
 
     def getSelectedName(self):
         return(self.__data[self.__listBox.curselection()[0]])
+
 
     def getSize(self):
         return(self.__frame.winfo_width(), self.__frame.winfo_height())

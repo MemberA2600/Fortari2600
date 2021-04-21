@@ -35,3 +35,4 @@ project2600=Project2600 Fájlok
 projectSaveError=Kód Mentés Hiba
 projectSaveError=Hiba keletkezett #bank# #name# kódjának mentésekor!
 selectedBank=Kiválasztott Bank:
+selectedSection=Kiválasztott szekció:

@@ -35,3 +35,4 @@ project2600=Project2600 Files
 projectSaveError=Save Code Error
 projectSaveError=Error while saving #bank#'s #name# code!
 selectedBank=Selected Bank:
+selectedSection=Selected Section:

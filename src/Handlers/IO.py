@@ -47,3 +47,12 @@ class IO:
             text = file.read().encode("latin-1")
             file.close()
         return(text)
+
+    def getFileNamesInDir(self, dir):
+        names = []
+
+        for root, dirs, files in os.walk(dir):
+            for file in files:
+                names.append(".".join(file.split(".")[:-1]))
+
+        return(names)

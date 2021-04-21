@@ -21,6 +21,6 @@ class Loader:
         self.bindedVariables = {}
         self.listBoxes = {}
 
-
+        self.sections = []
 
 

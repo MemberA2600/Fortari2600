@@ -52,5 +52,7 @@ class LoadingScreen():
         from VirtualMemory import VirtualMemory
         self.__loader.virtualMemory = VirtualMemory(self.__loader)
 
+        self.__loader.sections = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
+
         self.__Loading_Window.destroy()
 
