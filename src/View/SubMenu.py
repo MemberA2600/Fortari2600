@@ -15,6 +15,9 @@ class SubMenu:
         self.__topLevel.geometry("%dx%d+%d+%d" % (w, h, (self.__screenSize[0]/2-w/2), (self.__screenSize[1]/2-h/2-50)))
         self.__topLevel.resizable(False, False)
 
+        self.__topLevel.config(bg=self.__loader.colorPalettes.getColor("window"))
+
+
         self.__topLevel.iconbitmap("others/img/"+name+".ico")
 
 

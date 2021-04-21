@@ -15,6 +15,8 @@ class SelectLabel:
         self.__font = None
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
 
 
         align = Thread(target=self.dinamicallyAlign)

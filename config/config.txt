@@ -3,3 +3,4 @@ language=english
 version=0.01
 soundOn=True
 emulator=
+colorPalette=default

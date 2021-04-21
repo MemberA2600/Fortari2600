@@ -15,6 +15,7 @@ class Loader:
         self.fontManager = None
         self.io = None
         self.virtualMemory = None
+        self.colorPalettes = None
 
         self.frames = {}
         self.menuButtons = {}

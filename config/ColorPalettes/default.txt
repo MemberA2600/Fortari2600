@@ -1,0 +1,7 @@
+window=lightgray
+font=black
+fontDisabled=gray
+boxBackNormal=white
+boxFontNormal=black
+boxBackUnSaved=red
+boxFontUnSaved=yellow

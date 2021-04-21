@@ -29,6 +29,8 @@ class FrameContent:
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
         align = Thread(target=self.dinamicallyAlign)
+        self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
+
         #self.__frame.config(bg="blue") #Only for testing!
         align.daemon = True
         align.start()

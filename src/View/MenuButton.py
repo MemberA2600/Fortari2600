@@ -31,6 +31,7 @@ class MenuButton:
 
         self.__button.bind("<Enter>", self.__functionEnter)
         self.__button.bind("<Leave>", self.__functionLeave)
+        self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
 
         self.__button.config(image = self.__img)
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]

@@ -54,5 +54,9 @@ class LoadingScreen():
 
         self.__loader.sections = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
 
+        from ColorPalettes import ColorPalettes
+
+        self.__loader.colorPalettes = ColorPalettes(self.__loader)
+
         self.__Loading_Window.destroy()
 

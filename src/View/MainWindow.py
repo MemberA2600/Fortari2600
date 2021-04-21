@@ -43,6 +43,7 @@ class MainWindow:
         self.editor.geometry("%dx%d+%d+%d" % (__w, __h, (
                 self.__loader.screenSize[0] / 2-__w/2), (self.__loader.screenSize[1]/2-__h/2-25)))
 
+        self.editor.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.editor.deiconify()
         self.editor.overrideredirect(False)
         self.editor.resizable(True, True)
@@ -188,9 +189,9 @@ class MainWindow:
             name = str(event.widget).split(".")[-1]
             button = self.__loader.menuButtons[name].getButton()
             if button.cget("state") == DISABLED:
-                self.__menuLabel.changeColor("gray")
+                self.__menuLabel.changeColor(self.__loader.colorPalettes.getColor("fontDisabled"))
             else:
-                self.__menuLabel.changeColor("black")
+                self.__menuLabel.changeColor(self.__loader.colorPalettes.getColor("font"))
 
             self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
             if name in ["new", "open", "save", "saveAll", "closeProject"]:
@@ -230,32 +231,37 @@ class MainWindow:
         num = 0
         for bank in self.__loader.virtualMemory.codes.keys():
             num += 1
-            color1 = "white"
-            color2 = "black"
+            color1 = self.__loader.colorPalettes.getColor("boxBackNormal")
+            color2 = self.__loader.colorPalettes.getColor("boxFontNormal")
 
             for item in self.__loader.virtualMemory.codes[bank].keys():
                 if self.__loader.virtualMemory.codes[bank][item].changed == True:
-                    color1="red"
-                    color2="yellow"
+                    color1=self.__loader.colorPalettes.getColor("boxBackUnSaved")
+                    color2=self.__loader.colorPalettes.getColor("boxFontUnSaved")
                     break
             listBox.itemconfig(num-1, {"bg": color1})
             listBox.itemconfig(num-1, {"fg": color2})
 
     def checkIfSectionChanged(self, listBox):
-        num=0
-        bank =self.__loader.listBoxes["bankBox"].getSelectedName()
-        for item in self.__loader.virtualMemory.codes[bank].keys():
-            num += 1
-            if self.__loader.virtualMemory.codes[bank][item].changed == True:
-                color1="red"
-                color2="yellow"
-            else:
-                color1 = "white"
-                color2 = "black"
-                pass
+        if self.__loader.listBoxes["bankBox"].getSelectedName() == "bank1":
+            self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=DISABLED)
+        else:
+            self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=NORMAL)
 
-            listBox.itemconfig(num-1, {"bg": color1})
-            listBox.itemconfig(num-1, {"fg": color2})
+            num=0
+            bank =self.__loader.listBoxes["bankBox"].getSelectedName()
+            for item in self.__loader.virtualMemory.codes[bank].keys():
+                num += 1
+                if self.__loader.virtualMemory.codes[bank][item].changed == True:
+                    color1 = self.__loader.colorPalettes.getColor("boxBackUnSaved")
+                    color2 = self.__loader.colorPalettes.getColor("boxFontUnSaved")
+                else:
+                    color1 = self.__loader.colorPalettes.getColor("boxBackNormal")
+                    color2 = self.__loader.colorPalettes.getColor("boxFontNormal")
+                    pass
+
+                listBox.itemconfig(num-1, {"bg": color1})
+                listBox.itemconfig(num-1, {"fg": color2})
 
     def openProject(self, path):
         try:

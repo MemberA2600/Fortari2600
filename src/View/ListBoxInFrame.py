@@ -33,6 +33,8 @@ class ListBoxInFrame:
         self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
         self.__scrollBar.pack(side=LEFT, anchor=W, fill=Y)
         self.__scrollBar.config(command=self.__listBox.yview)
+        self.__listBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__listBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
 
         align = Thread(target=self.dinamicallyAlign)
@@ -58,6 +60,8 @@ class ListBoxInFrame:
     def getSelectedName(self):
         return(self.__data[self.__listBox.curselection()[0]])
 
+    def getListBoxAndScrollBar(self):
+        return(self.__listBox, self.__scrollBar)
 
     def getSize(self):
         return(self.__frame.winfo_width(), self.__frame.winfo_height())

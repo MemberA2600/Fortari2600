@@ -7,6 +7,9 @@ class SubMenuLabel:
                              text = loader.dictionaries.getWordFromCurrentLanguage(text),
                              font=font)
         self.__label.pack(side=TOP, anchor = NW)
+        self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
+
 
     def enabled(self, bool):
         if bool == True:
