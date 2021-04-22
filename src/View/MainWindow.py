@@ -44,7 +44,7 @@ class MainWindow:
                 self.__loader.screenSize[0] / 2-__w/2), (self.__loader.screenSize[1]/2-__h/2-25)))
 
         self.editor.config(bg=self.__loader.colorPalettes.getColor("window"))
-        self.editor.attributes('-toolwindow', True)
+        #self.editor.attributes('-toolwindow', True)
 
         self.editor.deiconify()
         self.editor.focus()

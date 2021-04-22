@@ -23,6 +23,8 @@ class Loader:
         self.bindedVariables = {}
         self.listBoxes = {}
 
+        self.subMenus = []
+
         self.sections = []
 
 

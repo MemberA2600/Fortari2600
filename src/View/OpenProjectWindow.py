@@ -77,6 +77,9 @@ class OpenProjectWindow:
         self.__okThread = Thread(target=self.checkIfOK)
         self.__okThread.daemon=True
         self.__okThread.start()
+        from ET import ET
+        self.__et = ET(self, self.__frame2, self.__loader, self.__topLevel)
+
 
 
     def openDialog(self):

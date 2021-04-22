@@ -5,6 +5,12 @@ class SubMenu:
     def __init__(self, loader, name, w, h, checker, addElements):
         self.__loader = loader
         self.__subMenu = self
+        self.__loader.subMenus.append(self)
+        if len(self.__loader.subMenus)>1:
+            from threading import Thread
+            t = Thread(target=self.killOther)
+            t.daemon = True
+            t.start()
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -38,6 +44,14 @@ class SubMenu:
             add.start()
 
         self.__topLevel.wait_window()
+
+    def killOther(self):
+        self.__loader.subMenus[0].dead = True
+        from time import sleep
+        sleep(1)
+
+        self.__loader.subMenus[0].getTopLevel().destroy()
+        self.__loader.subMenus.pop(0)
 
     def getTopLevel(self):
         return(self.__topLevel)

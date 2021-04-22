@@ -38,7 +38,10 @@ class PitFallHarry:
 
     def __placer(self):
         if self.__window.dead==False:
-            self.__harryLabel.place(x=self.__harryPoz, y=0)
+            try:
+                self.__harryLabel.place(x=self.__harryPoz, y=0)
+            except:
+                pass
 
     def __setSprite(self, num):
         if self.__spriteNum != num:
