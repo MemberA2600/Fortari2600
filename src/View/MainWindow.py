@@ -178,7 +178,7 @@ class MainWindow:
 
 
         from LockFrame import LockFrame
-        self.__lockFrame = LockFrame(self.__loader, self, self.__selectMenu1)
+        self.__lockFrame = LockFrame(self.__loader, self, self.__selectMenu1, self.__fontManager)
 
         self.__selectMenu2 = FrameContent(self.__loader, "sectionMenu",
                                          self.getWindowSize()[0] / 6, self.getWindowSize()[1] / 5,

@@ -37,3 +37,6 @@ projectSaveError=Hiba keletkezett #bank# #name# kódjának mentésekor!
 selectedBank=Kiválasztott Bank:
 selectedSection=Kiválasztott szekció:
 projectList=Project List:
+lockButton=Zárolt Bankok
+lockManager=Bankzár Menedzser
+exit=Kilépés

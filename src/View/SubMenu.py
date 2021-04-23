@@ -23,8 +23,11 @@ class SubMenu:
 
         self.__topLevel.config(bg=self.__loader.colorPalettes.getColor("window"))
 
+        try:
+            self.__topLevel.iconbitmap("others/img/"+name+".ico")
+        except:
+            self.__topLevel.iconbitmap("others/img/icon.ico")
 
-        self.__topLevel.iconbitmap("others/img/"+name+".ico")
 
 
         self.__topLevel.deiconify()

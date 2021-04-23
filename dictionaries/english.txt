@@ -37,3 +37,6 @@ projectSaveError=Error while saving #bank#'s #name# code!
 selectedBank=Selected Bank:
 selectedSection=Selected Section:
 projectList=Project List:
+lockButton=Bank Locks
+lockManager=Bank Lock Manager
+exit=Exit

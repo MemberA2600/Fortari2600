@@ -84,7 +84,7 @@ class OpenProjectWindow:
 
     def openDialog(self):
         projectPath = "/".join(self.__fileDialogs.askForFileName("openProjectIndex", False,
-                        ["project2600", "*"], "projects/").replace("\\", "/").split("/")[0:-1])+"/"
+                        ["project2600"], "projects/").replace("\\", "/").split("/")[0:-1])+"/"
 
         if projectPath!="":
             self.__projectPathEntry.setText(projectPath)

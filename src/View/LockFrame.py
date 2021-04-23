@@ -2,10 +2,11 @@ from tkinter import *
 
 class LockFrame:
 
-    def __init__(self, loader, window, masterFrame):
+    def __init__(self, loader, window, masterFrame, fontManager, ):
         self.__loader = loader
         self.__window = window
         self.__masterFrame = masterFrame
+        self.__fontManager = fontManager
 
         self.__frame = Frame(self.__masterFrame.getFrame(), width=99999, height=99999)
 
@@ -16,16 +17,29 @@ class LockFrame:
         self.__frame.grid_propagate(False)
         self.__frame.pack(side=BOTTOM, anchor=SE, fill=BOTH)
 
-
         self.createLabels()
 
         self.__scaleLastX = self.__window.getScales()[0]
         self.__scaleLastY = self.__window.getScales()[1]
 
+        self.__button = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
+                               text=self.__loader.dictionaries.getWordFromCurrentLanguage("lockButton"),
+                               command = self.openWindow)
+        self.setButtonFont()
+
+
+        self.__button.pack(side=BOTTOM, fill=X, anchor=SW)
+
         from threading import Thread
         t = Thread(target=self.resize)
         t.daemon = True
         t.start()
+
+    def setButtonFont(self):
+        self.__fontSize = int(self.__loader.screenSize[0]/1300 * self.__loader.screenSize[1]/1050*11
+                              *self.__scaleLastX*self.__scaleLastY)
+        self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.9), False, False, False)
+        self.__button.config(font=self.__smallFont)
 
     def createLabels(self):
         self.getImgs()
@@ -43,6 +57,9 @@ class LockFrame:
         else:
             label.config(image = self.__lockOn)
 
+    def openWindow(self):
+        from LockManagerWindow import LockManagerWindow
+        w = LockManagerWindow(self.__loader)
 
 
     def createLabel(self, num):
@@ -63,7 +80,8 @@ class LockFrame:
                 self.__scaleLastX = self.__window.getScales()[0]
                 self.__scaleLastY = self.__window.getScales()[1]
                 self.createLabels()
-                sleep(0.002)
+                self.setButtonFont()
+                sleep(0.01)
                 continue
 
             sleep(0.04)
