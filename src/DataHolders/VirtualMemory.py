@@ -13,7 +13,6 @@ class VirtualMemory:
             self.locks[bankNum] = ""
             self.codes[bankNum] = {}
             if (num == 1):
-                self.locks[bankNum] = "System"
                 self.codes[bankNum]["bank_configurations"] = DataItem()
                 self.codes[bankNum]["global_variables"] = DataItem()
             else:

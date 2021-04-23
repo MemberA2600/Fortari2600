@@ -263,7 +263,8 @@ class MainWindow:
             listBox.itemconfig(num-1, {"fg": color2})
 
     def checkIfSectionChanged(self, listBox):
-        if self.__loader.listBoxes["bankBox"].getSelectedName() == "bank1":
+        if (self.__loader.listBoxes["bankBox"].getSelectedName() == "bank1" or
+                self.__loader.virtualMemory.locks[self.__loader.listBoxes["bankBox"].getSelectedName()]!=""):
             self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=DISABLED)
         else:
             self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=NORMAL)
