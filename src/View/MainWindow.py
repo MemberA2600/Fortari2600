@@ -104,6 +104,11 @@ class MainWindow:
          self.__createMenuFrame()
          self.__createSelectorFrame()
 
+         from BFG9000 import BFG9000
+         self.__BFG9000 = BFG9000(self.__loader, self.editor, self,
+                                  self.__buttonMenu.getFrameSize()[1]+self.__selectMenu1.getFrameSize()[1]
+                                  )
+
     def __createMenuFrame(self):
         self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
                                          self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
@@ -149,9 +154,10 @@ class MainWindow:
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
+
     def __createSelectorFrame(self):
         self.__selectMenu1 = FrameContent(self.__loader, "bankMenu",
-                                         self.getWindowSize()[0] / 8, self.getWindowSize()[1] / 5, 5,
+                                         self.getWindowSize()[0] / 7, self.getWindowSize()[1] / 5, 5,
                                          self.__buttonMenu.getFrameSize()[1]+10,
                                          99999, 550, 80, 100)
 
@@ -169,6 +175,10 @@ class MainWindow:
 
         self.__bankBox = ListBoxInFrame("bankBox", self.__loader,
                             self.__selectMenu1, self.__fontManager, 0.66, listBoxItems, self.checkIfBankChanged)
+
+
+        from LockFrame import LockFrame
+        self.__lockFrame = LockFrame(self.__loader, self, self.__selectMenu1)
 
         self.__selectMenu2 = FrameContent(self.__loader, "sectionMenu",
                                          self.getWindowSize()[0] / 6, self.getWindowSize()[1] / 5,
@@ -261,6 +271,8 @@ class MainWindow:
             num=0
             bank =self.__loader.listBoxes["bankBox"].getSelectedName()
             for item in self.__loader.virtualMemory.codes[bank].keys():
+                if item == "special_read_only":
+                    continue
                 num += 1
                 if self.__loader.virtualMemory.codes[bank][item].changed == True:
                     color1 = self.__loader.colorPalettes.getColor("boxBackUnSaved")
@@ -338,8 +350,8 @@ class MainWindow:
             file.close()
             item = self.__loader.virtualMemory.codes[bank][variable]
             item.changed = False
-            item.archived = []
-            item.cursor = 0
+            #item.archived = []
+            #item.cursor = 0
         except Exception as e:
             self.__fileDialogs.displayError("projectOpenError", "projectOpenErrorText",
                                             {
