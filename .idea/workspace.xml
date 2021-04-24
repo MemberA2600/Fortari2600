@@ -2,219 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/View/LockManagerWindow.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/View/Switch.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/projectlist.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/projectlist.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/lockClosed.png" beforeDir="false" afterPath="$PROJECT_DIR$/others/img/lockClosed.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/lockOpened.png" beforeDir="false" afterPath="$PROJECT_DIR$/others/img/lockOpened.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank1/bank_configurations.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank1/global_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank2/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank3/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank4/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank5/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank6/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank7/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/bank8/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/hhh/ggg.project2600" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank1/bank_configurations.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank1/global_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank2/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank3/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank4/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank5/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank6/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank7/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/bank8/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/iii/iii.project2600" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/README.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank1/bank_configurations.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank1/global_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank2/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank3/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank4/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank5/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank6/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank7/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/enter.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/leave.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/local_variables.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/overscan.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/screen_bottom.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/screen_top.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/special_read_only.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/subroutines_and_functions.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/bank8/vblank.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/jjj/jjj.project2600" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/LockFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LockFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/OpenProjectWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/OpenProjectWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SubMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/LockManagerWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LockManagerWindow.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -230,7 +20,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreenHandler.coverage" NAME="LoadingScreenHandler Coverage Results" MODIFIED="1618069748048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$AutoSetter.coverage" NAME="AutoSetter Coverage Results" MODIFIED="1618118363590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/App" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1619206198759" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1619243951300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Config.coverage" NAME="Config Coverage Results" MODIFIED="1618064003932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Boo_T.coverage" NAME="Boo-T Coverage Results" MODIFIED="1618080702573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Boo-T/Boo-T" />
@@ -244,18 +34,18 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="36" />
+          <entry key="project.closed" value="38" />
           <entry key="project.open.time.3" value="17" />
-          <entry key="project.open.time.4" value="19" />
+          <entry key="project.open.time.4" value="20" />
           <entry key="project.open.time.6" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="38" />
+          <entry key="project.opened" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="pstat" value="2" />
-          <entry key="py" value="389" />
+          <entry key="py" value="390" />
           <entry key="txt" value="1" />
         </counts>
       </usages-collector>
@@ -263,17 +53,17 @@
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="389" />
+          <entry key="Python" value="390" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="56084" />
+          <entry key="py" value="56566" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="56084" />
+          <entry key="Python" value="56566" />
         </counts>
       </usages-collector>
     </session>
@@ -283,8 +73,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="128">
-              <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+            <state relative-caret-position="416">
+              <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+              <folding>
+                <element signature="e#47#68#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -292,7 +85,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
+            <state relative-caret-position="3520">
               <caret line="232" column="17" selection-start-line="232" selection-start-column="13" selection-end-line="232" selection-end-column="17" />
               <folding>
                 <element signature="e#47#68#0" expanded="true" />
@@ -306,30 +99,31 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/LockFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="951">
-              <caret line="61" column="29" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
+            <state relative-caret-position="871">
+              <caret line="104" column="13" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
               <folding>
-                <marker date="1619199187284" expanded="true" signature="39:40" ph="..." />
-                <marker date="1619199187284" expanded="true" signature="39:45" ph="..." />
-                <marker date="1619199187284" expanded="true" signature="1278:1606" ph="..." />
-                <marker date="1619199187284" expanded="true" signature="2224:2332" ph="..." />
+                <marker date="1619243972106" expanded="true" signature="39:40" ph="..." />
+                <marker date="1619243972106" expanded="true" signature="39:45" ph="..." />
+                <marker date="1619243972106" expanded="true" signature="1326:1426" ph="..." />
+                <marker date="1619243972106" expanded="true" signature="1450:1778" ph="..." />
+                <marker date="1619243972106" expanded="true" signature="2396:2504" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/LockManagerWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+            <state relative-caret-position="464">
+              <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1619206520564" expanded="true" signature="135:136" ph="..." />
-                <marker date="1619206520564" expanded="true" signature="135:141" ph="..." />
+                <marker date="1619243862349" expanded="true" signature="135:136" ph="..." />
+                <marker date="1619243862349" expanded="true" signature="135:141" ph="..." />
               </folding>
             </state>
           </provider>
@@ -338,8 +132,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/Switch.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="429">
-              <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+            <state relative-caret-position="1312">
+              <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
                 <marker date="1619205926872" expanded="true" signature="76:77" ph="..." />
@@ -469,10 +263,10 @@
         <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
         <option value="$PROJECT_DIR$/src/View/OpenProjectWindow.py" />
         <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
-        <option value="$PROJECT_DIR$/src/View/LockFrame.py" />
         <option value="$PROJECT_DIR$/src/View/SubMenu.py" />
         <option value="$PROJECT_DIR$/src/View/Switch.py" />
         <option value="$PROJECT_DIR$/src/View/LockManagerWindow.py" />
+        <option value="$PROJECT_DIR$/src/View/LockFrame.py" />
       </list>
     </option>
   </component>
@@ -496,6 +290,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -547,7 +342,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -722,12 +516,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49808794" visible="true" weight="0.22593068" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49808794" visible="true" weight="0.22849807" />
       <window_info id="Structure" order="1" sideWeight="0.50191206" side_tool="true" weight="0.22593068" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.18355641" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.18355641" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -993,18 +787,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="624">
           <caret line="42" column="46" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1619074945291" expanded="true" signature="123:124" ph="..." />
-            <marker date="1619074945291" expanded="true" signature="123:129" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
         </state>
       </provider>
     </entry>
@@ -1050,45 +832,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="232" column="17" selection-start-line="232" selection-start-column="13" selection-end-line="232" selection-end-column="17" />
-          <folding>
-            <element signature="e#47#68#0" expanded="true" />
-            <marker date="1619173872227" expanded="true" signature="2360:2366" ph="..." />
-            <marker date="1619173872227" expanded="true" signature="2399:2495" ph="..." />
-            <marker date="1619173872227" expanded="true" signature="2491:2495" ph="..." />
-            <marker date="1619173872227" expanded="true" signature="2549:2555" ph="..." />
-            <marker date="1619173872227" expanded="true" signature="3161:3214" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SubMenu.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="448">
           <caret line="28" column="61" lean-forward="true" selection-start-line="28" selection-start-column="61" selection-end-line="28" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LockFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="951">
-          <caret line="61" column="29" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
-          <folding>
-            <marker date="1619199187284" expanded="true" signature="39:40" ph="..." />
-            <marker date="1619199187284" expanded="true" signature="39:45" ph="..." />
-            <marker date="1619199187284" expanded="true" signature="1278:1606" ph="..." />
-            <marker date="1619199187284" expanded="true" signature="2224:2332" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1110,16 +857,21 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="580">
           <caret line="75" column="121" lean-forward="true" selection-start-line="75" selection-start-column="121" selection-end-line="75" selection-end-column="132" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
+    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="15" column="103" selection-start-line="15" selection-start-column="88" selection-end-line="15" selection-end-column="103" />
+        <state relative-caret-position="3520">
+          <caret line="232" column="17" selection-start-line="232" selection-start-column="13" selection-end-line="232" selection-end-column="17" />
+          <folding>
+            <element signature="e#47#68#0" expanded="true" />
+            <marker date="1619173872227" expanded="true" signature="2360:2366" ph="..." />
+            <marker date="1619173872227" expanded="true" signature="2399:2495" ph="..." />
+            <marker date="1619173872227" expanded="true" signature="2491:2495" ph="..." />
+            <marker date="1619173872227" expanded="true" signature="2549:2555" ph="..." />
+            <marker date="1619173872227" expanded="true" signature="3161:3214" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1130,10 +882,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="15" column="103" selection-start-line="15" selection-start-column="88" selection-end-line="15" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
+          <folding>
+            <element signature="e#47#68#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/Switch.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="52" column="23" selection-start-line="52" selection-start-column="23" selection-end-line="52" selection-end-column="23" />
+        <state relative-caret-position="1312">
+          <caret line="82" column="24" selection-start-line="82" selection-start-column="24" selection-end-line="82" selection-end-column="24" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
             <marker date="1619205926872" expanded="true" signature="76:77" ph="..." />
@@ -1144,12 +920,26 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/LockManagerWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="14" column="9" selection-start-line="14" selection-start-column="9" selection-end-line="14" selection-end-column="9" />
+        <state relative-caret-position="464">
+          <caret line="29" column="44" selection-start-line="29" selection-start-column="44" selection-end-line="29" selection-end-column="44" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1619206520564" expanded="true" signature="135:136" ph="..." />
-            <marker date="1619206520564" expanded="true" signature="135:141" ph="..." />
+            <marker date="1619243862349" expanded="true" signature="135:136" ph="..." />
+            <marker date="1619243862349" expanded="true" signature="135:141" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/LockFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="871">
+          <caret line="104" column="13" selection-start-line="104" selection-start-column="13" selection-end-line="104" selection-end-column="13" />
+          <folding>
+            <marker date="1619243972106" expanded="true" signature="39:40" ph="..." />
+            <marker date="1619243972106" expanded="true" signature="39:45" ph="..." />
+            <marker date="1619243972106" expanded="true" signature="1326:1426" ph="..." />
+            <marker date="1619243972106" expanded="true" signature="1450:1778" ph="..." />
+            <marker date="1619243972106" expanded="true" signature="2396:2504" ph="..." />
           </folding>
         </state>
       </provider>

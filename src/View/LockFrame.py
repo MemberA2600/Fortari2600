@@ -30,10 +30,18 @@ class LockFrame:
 
         self.__button.pack(side=BOTTOM, fill=X, anchor=SW)
 
+        self.__locks = []
+        self.saveLocks()
+
         from threading import Thread
         t = Thread(target=self.resize)
         t.daemon = True
         t.start()
+
+    def saveLocks(self):
+        for item in self.__loader.virtualMemory.locks:
+            self.__locks.append(item)
+
 
     def setButtonFont(self):
         self.__fontSize = int(self.__loader.screenSize[0]/1300 * self.__loader.screenSize[1]/1050*11
@@ -83,5 +91,17 @@ class LockFrame:
                 self.setButtonFont()
                 sleep(0.01)
                 continue
+
+            for num in range(1,9):
+                if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num)]:
+                    self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num)]
+                    if self.__locks[num-1] == "":
+                        self.__labels[num-1].config(image = self.__lockOff)
+                    else:
+                        self.__labels[num-1].config(image=self.__lockOn)
+
+            #import random
+            #num = random.randint(2,8)
+            #self.__loader.virtualMemory.locks["bank" + str(num)] = "meh"
 
             sleep(0.04)
