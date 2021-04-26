@@ -66,7 +66,7 @@ class MainWindow:
         self.__fontManager = FontManager(self.__loader)
 
         self.__createFrames()
-        self.__selectedItem = ["bank1", "global_variables"]
+        #self.selectedItem = ["bank1", "global_variables"]
 
         self.__soundPlayer.playSound("Start")
         align = Thread(target=self.__scales)
@@ -235,7 +235,7 @@ class MainWindow:
 
 
     def projectOpenedWantToSave(self):
-        if self.projectPath!="" and self.__getIfThereIsUnsavedItem() == True:
+        if self.projectPath!=None and self.__getIfThereIsUnsavedItem() == True:
             return(self.__fileDialogs.askYesOrNo("unsaved","unsavedText"))
         else:
             return("No")
@@ -248,6 +248,10 @@ class MainWindow:
         return False
 
     def checkIfBankChanged(self, listBox):
+        if self.projectPath == None:
+            self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].config(state=DISABLED)
+        else:
+            self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].config(state=NORMAL)
         num = 0
         for bank in self.__loader.virtualMemory.codes.keys():
             num += 1
@@ -264,6 +268,7 @@ class MainWindow:
 
     def checkIfSectionChanged(self, listBox):
         if (self.__loader.listBoxes["bankBox"].getSelectedName() == "bank1" or
+            self.projectPath == None or
                 self.__loader.virtualMemory.locks[self.__loader.listBoxes["bankBox"].getSelectedName()]!=""):
             self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=DISABLED)
         else:
@@ -320,6 +325,9 @@ class MainWindow:
                 for section in self.__loader.sections:
                     self.__setVirtualMemoryItem(bank, section)
 
+            self.__loader.virtualMemory.setLocksAfterLoading()
+            self.__loader.virtualMemory.setglobalVariablesFromMemory()
+
             self.__soundPlayer.playSound("Success")
 
         except Exception as e:
@@ -334,6 +342,9 @@ class MainWindow:
             except:
                 self.projectPath=""
 
+
+
+
     def __setVirtualMemoryItem(self, bank, variable):
         path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
@@ -347,10 +358,10 @@ class MainWindow:
         try:
             path = self.projectPath+bank+os.sep+variable+".a26"
             file = open(path, "w", encoding="latin-1")
+            BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
             file.write(self.__loader.virtualMemory.codes[bank][variable].code)
             file.close()
-            item = self.__loader.virtualMemory.codes[bank][variable]
-            item.changed = False
+            self.__loader.virtualMemory.codes[bank][variable].changed = False
             #item.archived = []
             #item.cursor = 0
         except Exception as e:
@@ -375,6 +386,7 @@ class MainWindow:
     def closeProject(self):
         self.__soundPlayer.playSound("Close")
         self.__setProjectPath(None)
+        self.__loader.virtualMemory.resetMemory()
 
     def __openButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":
@@ -387,7 +399,9 @@ class MainWindow:
 
 
     def __saveButtonFunction(self):
-        self.__saveOnlyOne(self.__selectedItem[0], self.__selectedItem[1])
+        #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
+        self.__saveOnlyOne(self.__loader.listBoxes["bankBox"].getSelectedName(),
+                           self.__loader.listBoxes["sectionBox"].getSelectedName())
 
     def __saveAllButtonFunction(self):
         self.__saveProject()

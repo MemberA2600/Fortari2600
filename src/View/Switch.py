@@ -81,4 +81,5 @@ class Switch:
                 self.__banks[num-2].lockLabel.config(text = "")
 
     def killFrame(self):
+        self.__loader.virtualMemory.createTheBankConfigFromMemory()
         self.__window.destroy()

@@ -1,4 +1,1 @@
-eee=projects/eee/
-fff=projects/fff/
-ggg=projects/ggg/
-Protoss=projects/Protoss/
+zerg=projects/zerg/

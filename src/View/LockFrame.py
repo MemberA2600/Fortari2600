@@ -38,6 +38,13 @@ class LockFrame:
         t.daemon = True
         t.start()
 
+        l = Thread(target=self.locker)
+        l.daemon = True
+        l.start()
+
+    def getFrame(self):
+        return(self.__frame)
+
     def saveLocks(self):
         for item in self.__loader.virtualMemory.locks:
             self.__locks.append(item)
@@ -92,6 +99,23 @@ class LockFrame:
                 sleep(0.01)
                 continue
 
+            sleep(0.04)
+
+    def locker(self):
+        from time import sleep
+        while self.__window.dead==False:
+
+            state=NORMAL
+            if self.__window.projectPath == None:
+                state=DISABLED
+
+            self.__button.config(state=state)
+            for item in self.__labels:
+                try:
+                    item.config(state=state)
+                except:
+                    pass
+
             for num in range(1,9):
                 if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num)]:
                     self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num)]
@@ -104,4 +128,4 @@ class LockFrame:
             #num = random.randint(2,8)
             #self.__loader.virtualMemory.locks["bank" + str(num)] = "meh"
 
-            sleep(0.04)
+            sleep(0.5)
