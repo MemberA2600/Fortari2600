@@ -32,9 +32,12 @@ class VirtualMemory:
         self.resetMemory()
         self.addSystemMemory()
 
+        """
         self.addVariable("pacal", "nibble", "global")
         self.addVariable("sajt", "doubleBit", "bank2")
         self.addVariable("marha", "nibble", "global")
+        self.removeVariable("sajt", "bank2")
+        self.addVariable("velő", "nibble", "bank3")
 
 
         for address in self.memory.keys():
@@ -45,9 +48,42 @@ class VirtualMemory:
                     print(self.memory[address].variables[valiable].usedBits)
                 print(self.memory[address].freeBits)
 
-
+        """
     def addSystemMemory(self):
         pass
+
+    def addArray(self, name):
+        self.arrays[name] = []
+
+    def removeArray(self, name):
+        self.array.pop(name)
+
+
+    def checkIfExists(self, name, validity):
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                if name == variable:
+                    if validity == "global":
+                        return(True)
+                    else:
+                        if validity == self.memory[address].variables[variable].validity:
+                            return(True)
+        return(False)
+
+    def removeVariable(self, name, validity):
+        for address in self.memory.keys():
+            if name in self.memory[address].variables.keys():
+                if validity == "global":
+                    self.memory[address].addBitsToGlobalAddress(self.memory[address].variables[name].usedBits)
+                    self.memory[address].variables.pop(name)
+                    return(True)
+                else:
+                    if self.memory[address].variables[name].validity == validity:
+                        self.memory[address].addBitsToBankAddress(self.memory[address].variables[name].usedBits, validity)
+                        self.memory[address].variables.pop(name)
+                        return(True)
+        return(False)
+
 
     def addVariable(self, name, type, validity):
         neededBits = self.types[type]

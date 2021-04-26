@@ -40,3 +40,4 @@ projectList=Project List:
 lockButton=Zárolt Bankok
 lockManager=Bankzár Menedzser
 exit=Kilépés
+memoryManager=Memóriamenedzser

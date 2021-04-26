@@ -11,6 +11,7 @@ class ET:
         self.__master = master
         self.__mainBoss = mainBoss
 
+
         self.__forestFrame = Frame(self.__master.getFrame(), bg = "green", height=10000, width=master.getFrameSize()[0])
         self.__forestFrame.pack_propagate(False)
         self.__forestFrame.grid_propagate(False)
@@ -39,6 +40,7 @@ class ET:
 
         self.__scale = self.__forestCanvas.winfo_width()/400
         self.__mirroring = False
+        self.__setBuffer()
 
         self.__forestImg = ImageTk.PhotoImage(self.__forest)
 
@@ -49,6 +51,18 @@ class ET:
         draw = Thread(target=self.drawET)
         draw.daemon = True
         draw.start()
+
+    def __setBuffer(self):
+        self.__imageBufferLeft=[]
+        self.__imageBufferRight=[]
+
+        for num in range(1,4):
+            self.__imageBufferLeft.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                    round(self.__scale*17)),
+                   IMAGE.ANTIALIAS))
+            self.__imageBufferRight.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                    round(self.__scale*17)),
+                   IMAGE.ANTIALIAS).transpose(IMAGE.FLIP_LEFT_RIGHT))
 
 
     def drawET(self):
@@ -155,11 +169,7 @@ class ET:
 
 
     def getETSprite(self, num, mirror):
-        self.__sprite = IMAGE.open(str("others/img/et" + str(num) + ".png")).\
-            resize((round(self.__scale*17),
-                    round(self.__scale*17)),
-                   IMAGE.ANTIALIAS)
-        if mirror == True:
-            self.__sprite = self.__sprite.transpose(IMAGE.FLIP_LEFT_RIGHT)
-
-        self.__spriteImage = ImageTk.PhotoImage(self.__sprite)
+        if mirror == False:
+            self.__spriteImage = ImageTk.PhotoImage(self.__imageBufferLeft[num-1])
+        else:
+            self.__spriteImage = ImageTk.PhotoImage(self.__imageBufferRight[num - 1])

@@ -9,6 +9,7 @@ class PitFallHarry:
         self.__loader = loader
         self.__master = master
         self.__font = font
+        self.setBuffer()
 
         self.__bg = "gold"
         self.__spriteNum = 0
@@ -36,6 +37,11 @@ class PitFallHarry:
         m = Thread(target=self.__move)
         m.start()
 
+    def setBuffer(self):
+        self.__imageBuffer = []
+        for num in range(1,7):
+            self.__imageBuffer.append(thisIsTheImage.open(str("others/img/harry" + str(num) + ".png")))
+
     def __placer(self):
         if self.__window.dead==False:
             try:
@@ -46,7 +52,7 @@ class PitFallHarry:
     def __setSprite(self, num):
         if self.__spriteNum != num:
             self.__spriteNum = num
-            i = thisIsTheImage.open(str("others/img/harry" + str(num) + ".png")).resize((self.__w, self.__h), thisIsTheImage.ANTIALIAS)
+            i = self.__imageBuffer[num-1].resize((self.__w, self.__h), thisIsTheImage.ANTIALIAS)
             if self.__difference>0:
                 self.__img = ImageTk.PhotoImage(i.transpose(thisIsTheImage.FLIP_LEFT_RIGHT))
             else:

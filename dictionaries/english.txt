@@ -40,3 +40,4 @@ projectList=Project List:
 lockButton=Bank Locks
 lockManager=Bank Lock Manager
 exit=Exit
+memoryManager=Memory Manager
