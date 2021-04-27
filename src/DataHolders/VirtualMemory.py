@@ -1,7 +1,7 @@
 from DataItem import DataItem
 import os
 from MemoryItem import MemoryItem
-
+from threading import Thread
 
 class VirtualMemory:
 
@@ -32,23 +32,28 @@ class VirtualMemory:
         self.resetMemory()
         self.addSystemMemory()
 
-        """
-        self.addVariable("pacal", "nibble", "global")
-        self.addVariable("sajt", "doubleBit", "bank2")
-        self.addVariable("marha", "nibble", "global")
-        self.removeVariable("sajt", "bank2")
-        self.addVariable("velő", "nibble", "bank3")
 
+        t = Thread(target=self.testPrintMemory)
+        t.daemon = True
+        t.start()
 
-        for address in self.memory.keys():
-            if len(self.memory[address].variables.keys())>0:
-                print(address)
-                for valiable in self.memory[address].variables.keys():
-                    print(valiable)
-                    print(self.memory[address].variables[valiable].usedBits)
-                print(self.memory[address].freeBits)
+    def testPrintMemory(self):
+        from time import sleep
 
-        """
+        while self.__loader.mainWindow == None or self.__loader.mainWindow.dead==False:
+            for address in self.memory.keys():
+                if len(self.memory[address].variables.keys())>0:
+                    print(address)
+                    for valiable in self.memory[address].variables.keys():
+                        print(valiable)
+                        print(self.memory[address].variables[valiable].usedBits)
+                        print(self.memory[address].variables[valiable].type)
+                        print(self.memory[address].variables[valiable].validity)
+
+                    print(self.memory[address].freeBits)
+                    print("------------------------------")
+            sleep(10)
+
     def addSystemMemory(self):
         pass
 
@@ -203,6 +208,8 @@ class VirtualMemory:
                     continue
                 data = line.split("=")
                 name=data[0]
+                if self.checkIfExists(name, validity):
+                    continue
                 TYPE = data[1].replace("\n","").replace("\r","")
                 if (TYPE in self.types.keys()):
                     self.addVariable(name, TYPE, validity)
@@ -234,8 +241,11 @@ class VirtualMemory:
 
 
     def setVariablesFromMemory(self, mode):
+        #print("faszom", mode)
+
         if mode=="all":
             for num in range(1,9):
+
                 self.moveMemorytoVariables("bank"+str(num))
         else:
             self.moveMemorytoVariables(mode)
@@ -249,4 +259,4 @@ class VirtualMemory:
             self.moveVariablesToMemory(mode)
 
 
-        self.moveMemorytoVariables("bank1")
+        #self.moveMemorytoVariables("bank1")

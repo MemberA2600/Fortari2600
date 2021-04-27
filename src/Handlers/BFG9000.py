@@ -98,8 +98,9 @@ class BFG9000:
         while self.__editorHandler.dead==False:
             if self.__first == True or (
                     self.__selectedBank != self.__loader.listBoxes["bankBox"].getSelectedName() or
-                    self.__selectedSection != self.__loader.listBoxes["sectionBox"].getSelectedName()
-            ) or self.__lastPath !=self.__loader.mainWindow.projectPath:
+                    (self.__selectedSection != self.__loader.listBoxes["sectionBox"].getSelectedName() and
+                    self.__selectedBank != "bank1"
+                    )) or self.__lastPath !=self.__loader.mainWindow.projectPath:
 
                 self.__lastPath = self.__loader.mainWindow.projectPath
                 self.__first = False
@@ -113,7 +114,10 @@ class BFG9000:
                     self.saveFrameToMemory(self.__selectedBank, self.__selectedSection)
 
                     self.__selectedBank = self.__loader.listBoxes["bankBox"].getSelectedName()
-                    self.__selectedSection = self.__loader.listBoxes["sectionBox"].getSelectedName()
+                    if self.__selectedBank == "bank1":
+                        self.__selectedSection = "global_variables"
+                    else:
+                        self.__selectedSection = self.__loader.listBoxes["sectionBox"].getSelectedName()
                     #print(self.__selectedBank, self.__selectedSection)
 
                     self.loadFromMemoryToFrame(self.__selectedBank, self.__selectedSection)

@@ -17,16 +17,21 @@ class MemoryItem:
 
     def addBitsToGlobalAddress(self, bits):
         self.freeBits["global"].extend(bits)
-        self.freeBits["global"].sort()
+        self.freeBits["global"] = self.sortedSet(self.freeBits["global"])
         for num in range(2,9):
             self.freeBits["bank"+str(num)].extend(bits)
-            self.freeBits["bank" + str(num)].sort()
+            self.freeBits["bank" + str(num)] = self.sortedSet(self.freeBits["bank" + str(num)])
 
     def addBitsToBankAddress(self, bits, bankNum):
         self.freeBits["global"].extend(bits)
-        self.freeBits["global"].sort()
+        self.freeBits["global"] = self.sortedSet(self.freeBits["global"])
         self.freeBits[bankNum].extend(bits)
-        self.freeBits[bankNum].sort()
+        self.freeBits[bankNum] = self.sortedSet(self.freeBits[bankNum])
+
+    def sortedSet(self, L):
+        list = list(set(L))
+        list.sort()
+        return(list)
 
     def removeBitsFromGlobalAddress(self, bits):
         self.freeBits["global"] = self.makeSetRemoveSortGiveBack(self.freeBits["global"], bits)
