@@ -10,10 +10,6 @@ class AtariLogo:
         self.__left = left
         self.__right = right
 
-        self.__main.config(bg="black")
-        self.__left.config(bg="black")
-        self.__right.config(bg="black")
-        self.__loader.BFG9000.frame.config(bg="black")
 
         self.__frames = []
         self.__counter = 0

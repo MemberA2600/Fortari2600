@@ -52,7 +52,7 @@ class BFG9000:
         self.__leftFrame.pack(side=LEFT, anchor=SW, fill=Y)
         self.__mainFrame.pack(side=LEFT, anchor=S, fill=Y)
         self.__rightFrame.pack(side=RIGHT, anchor=SE, fill=Y)
-        self.__lastPath = ""
+        self.__lastPath = None
 
         from threading import Thread
         t = Thread(target=self.checker)
@@ -68,16 +68,24 @@ class BFG9000:
 
 
     def loadFromMemoryToFrame(self, bank, section):
-        self.__mainFrame.pack_slaves().clear()
-        self.__leftFrame.pack_slaves().clear()
-        self.__rightFrame.pack_slaves().clear()
 
         if bank == "bank1":
             main = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, "global")
 
 
+    def clearFrames(self, color):
+        self.destroyAll(self.__mainFrame.pack_slaves())
+        self.destroyAll(self.__leftFrame.pack_slaves())
+        self.destroyAll(self.__rightFrame.pack_slaves())
 
+        self.__mainFrame.config(bg=color)
+        self.__leftFrame.config(bg=color)
+        self.__rightFrame.config(bg=color)
+        self.__loader.BFG9000.frame.config(bg=color)
 
+    def destroyAll(self, list):
+        for item in list:
+            item.destroy()
 
     def getSelected(self):
         return(self.__selectedBank, self.__selectedSection)
@@ -90,16 +98,15 @@ class BFG9000:
                     self.__selectedSection != self.__loader.listBoxes["sectionBox"].getSelectedName()
             ) or self.__lastPath !=self.__loader.mainWindow.projectPath:
 
-                if self.__lastPath =="":
-                    self.__lastPath = self.__loader.mainWindow.projectPath
-                    self.__first = False
-                    from AtariLogo import AtariLogo
+                self.__lastPath = self.__loader.mainWindow.projectPath
+                self.__first = False
 
+                if self.__lastPath ==None:
+                    from AtariLogo import AtariLogo
+                    self.clearFrames("black")
                     atariLogo = AtariLogo(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
                 else:
-                    self.__lastPath = self.__loader.mainWindow.projectPath
-                    self.__first = False
-
+                    self.clearFrames(self.__loader.colorPalettes.getColor("window"))
                     self.saveFrameToMemory(self.__selectedBank, self.__selectedSection)
 
                     self.__selectedBank = self.__loader.listBoxes["bankBox"].getSelectedName()
