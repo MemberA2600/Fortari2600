@@ -300,7 +300,7 @@ class MainWindow:
         while self.dead == False:
             from time import sleep
             if self.__bankSelected != bankBox.getSelectedName() or self.__sectionSelected != sectionBox.getSelectedName():
-                pass
+
                 self.__bankSelected = bankBox.getSelectedName()
                 self.__sectionSelected = sectionBox.getSelectedName()
             sleep(0.1)
@@ -326,7 +326,7 @@ class MainWindow:
                     self.__setVirtualMemoryItem(bank, section)
 
             self.__loader.virtualMemory.setLocksAfterLoading()
-            self.__loader.virtualMemory.setglobalVariablesFromMemory()
+            self.__loader.virtualMemory.setVariablesFromMemory("all")
 
             self.__soundPlayer.playSound("Success")
 
@@ -359,6 +359,8 @@ class MainWindow:
             path = self.projectPath+bank+os.sep+variable+".a26"
             file = open(path, "w", encoding="latin-1")
             BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
+            if bank == "bank1" or variable == "local_variables":
+                self.__loader.virtualMemory.setVariablesFromMemory(bank)
             file.write(self.__loader.virtualMemory.codes[bank][variable].code)
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False

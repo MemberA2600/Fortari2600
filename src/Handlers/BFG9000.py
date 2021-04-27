@@ -64,11 +64,14 @@ class BFG9000:
         r.start()
 
     def saveFrameToMemory(self, bank, section):
-        pass
+        if bank == "bank1" or section == "local_variables":
+            self.__loader.virtualMemory.writeVariablesToMemory(bank)
 
 
     def loadFromMemoryToFrame(self, bank, section):
 
+        if bank == "bank1" or section == "local_variables":
+            self.__loader.virtualMemory.setVariablesFromMemory(bank)
         if bank == "bank1":
             main = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, "global")
 

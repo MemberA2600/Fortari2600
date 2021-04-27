@@ -53,11 +53,29 @@ class VirtualMemory:
         pass
 
     def addArray(self, name):
-        self.arrays[name] = []
+        self.arrays[name] = {}
 
     def removeArray(self, name):
         self.array.pop(name)
 
+    def addItemsToArray(self, name, itemname, var):
+        self.arrays[name][itemname] = var
+
+    def removeItemFromArray(self, name, item):
+        self.arrays[name].pop(item)
+
+    def getVariableByName(self, name, bank):
+        section="local_variables"
+        if bank == "bank1":
+            section = "global_variables"
+
+
+        for address in self.memory.keys():
+            for id in self.memory[address].variables.keys():
+                #print(id, name)
+                if name == id:
+                    return(self.memory[address].variables[id])
+        return(False)
 
     def checkIfExists(self, name, validity):
         for address in self.memory.keys():
@@ -171,5 +189,64 @@ class VirtualMemory:
         self.codes["bank1"]["bank_configurations"].code = os.linesep.join(text)
         #print(self.__loader.virtualMemory.codes["bank1"]["bank_configurations"].code)
 
-    def setglobalVariablesFromMemory(self):
-        lines = self.codes["bank1"]["global_variables"].code.split("\n")
+    def moveMemorytoVariables(self, bank):
+        section="local_variables"
+        validity = bank
+        if bank == "bank1":
+            section = "global_variables"
+            validity = "global"
+
+        lines = self.codes[bank][section].code.split("\n")
+        for line in lines:
+            try:
+                if line.startswith("*"):
+                    continue
+                data = line.split("=")
+                name=data[0]
+                TYPE = data[1].replace("\n","").replace("\r","")
+                if (TYPE in self.types.keys()):
+                    self.addVariable(name, TYPE, validity)
+                else:
+                    self.addArray(name)
+                    data = TYPE[6:-1].split(",")
+                    for item in data:
+                        self.addItemsToArray(name, item, self.getVariableByName(item, bank))
+            except:
+                pass
+
+
+    def moveVariablesToMemory(self, bank):
+        section="local_variables"
+        string="*** Here you can find variables those are only aviable for this screen."+os.linesep
+        if bank == "bank1":
+            section = "global_variables"
+            string="*** This is where you set the variables for the whole project, so the ones shouldn't"+os.linesep+\
+               "*** be overwritten anywhere."+os.linesep
+
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                string += variable + "=" + self.memory[address].variables[variable].type + os.linesep
+        for array in self.arrays.keys():
+            string+=array + "=(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
+
+        self.codes[bank][section].code = string
+
+
+
+    def setVariablesFromMemory(self, mode):
+        if mode=="all":
+            for num in range(1,9):
+                self.moveMemorytoVariables("bank"+str(num))
+        else:
+            self.moveMemorytoVariables(mode)
+
+
+    def writeVariablesToMemory(self, mode):
+        if mode=="all":
+            for num in range(1,9):
+                self.moveVariablesToMemory("bank"+str(num))
+        else:
+            self.moveVariablesToMemory(mode)
+
+
+        self.moveMemorytoVariables("bank1")
