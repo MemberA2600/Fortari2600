@@ -6,3 +6,5 @@ emulator=
 colorPalette=default
 autoSave=2
 maxUndo=50
+debug=True
+keepLogs=0

@@ -69,8 +69,9 @@ class MenuButton:
                         self.__button.config(state=NORMAL)
                     else:
                         self.__button.config(state=DISABLED)
-                except:
-                    pass
+                except Exception as e:
+                    self.__loader.logger.errorLog(e)
+
             sleep(1)
 
     def getButton(self):

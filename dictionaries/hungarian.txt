@@ -41,3 +41,4 @@ lockButton=Zárolt Bankok
 lockManager=Bankzár Menedzser
 exit=Kilépés
 memoryManager=Memóriamenedzser
+változók=Variables:

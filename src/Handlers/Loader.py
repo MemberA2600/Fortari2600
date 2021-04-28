@@ -18,6 +18,7 @@ class Loader:
         self.colorPalettes = None
         self.codeBox = None
         self.BFG9000 = None
+        self.logger = None
 
         self.frames = {}
         self.menuButtons = {}

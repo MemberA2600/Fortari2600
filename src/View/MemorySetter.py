@@ -14,3 +14,8 @@ class MemorySetter:
         self.__memoryLevel = memoryLevel
 
         self.__title = MainMenuLabel(self.__container, self.__loader, "memoryManager", 18)
+
+        from RightFrame import RightFrame
+
+        self.__rightFrame = RightFrame(self.__loader, self.__right)
+

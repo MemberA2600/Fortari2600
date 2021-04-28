@@ -46,8 +46,9 @@ class PitFallHarry:
         if self.__window.dead==False:
             try:
                 self.__harryLabel.place(x=self.__harryPoz, y=0)
-            except:
-                pass
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+
 
     def __setSprite(self, num):
         if self.__spriteNum != num:
@@ -59,16 +60,18 @@ class PitFallHarry:
                 self.__img = ImageTk.PhotoImage(i)
             try:
                 self.__harryLabel.config(image = self.__img)
-            except:
-                pass
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+
 
     def __getDifference(self):
         import mouse
         if self.__window.dead==False:
             try:
                 self.__difference = mouse.get_position()[0] - (self.__w*0.5+self.__harryPoz+self.__master.getTopLevel().winfo_x())
-            except:
-                pass
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+
 
     def __increment(self):
         if self.__spriteCounter>4:

@@ -77,8 +77,7 @@ class NewProjectWindow:
                 else:
                     self.OK = False
             except Exception as e:
-                #print(e)
-                pass
+                self.__loader.logger.errorLog(e)
             sleep(0.05)
 
     def __getPath(self):

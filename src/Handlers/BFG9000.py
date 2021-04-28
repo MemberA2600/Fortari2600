@@ -8,7 +8,7 @@ class BFG9000:
         self.__editor = editor
         self.__editorHandler = editorHandler
         self.__loader.BFG9000 = self
-
+        self.actual = None
         self.__w = self.__editorHandler.getWindowSize()[0]*0.66
         self.__h = self.__editorHandler.getWindowSize()[1]-minus-25
 
@@ -104,11 +104,12 @@ class BFG9000:
 
                 self.__lastPath = self.__loader.mainWindow.projectPath
                 self.__first = False
+                self.actual = None
 
                 if self.__lastPath ==None:
                     from AtariLogo import AtariLogo
                     self.clearFrames("black")
-                    atariLogo = AtariLogo(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
+                    self.actual = AtariLogo(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
                 else:
                     self.clearFrames(self.__loader.colorPalettes.getColor("window"))
                     self.saveFrameToMemory(self.__selectedBank, self.__selectedSection)

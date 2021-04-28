@@ -286,7 +286,6 @@ class MainWindow:
                 else:
                     color1 = self.__loader.colorPalettes.getColor("boxBackNormal")
                     color2 = self.__loader.colorPalettes.getColor("boxFontNormal")
-                    pass
 
                 listBox.itemconfig(num-1, {"bg": color1})
                 listBox.itemconfig(num-1, {"fg": color2})

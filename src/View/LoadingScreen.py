@@ -58,5 +58,8 @@ class LoadingScreen():
         from ColorPalettes import ColorPalettes
         self.__loader.colorPalettes = ColorPalettes(self.__loader)
 
+        from Logger import Logger
+        self.__loader.logger = Logger(self.__loader)
+
         self.__Loading_Window.destroy()
 

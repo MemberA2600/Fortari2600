@@ -90,8 +90,7 @@ class ListBoxInFrame:
         while self.__loader.mainWindow.dead == False:
             try:
                 if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
-                        and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]) \
-                        and self.__listBox.winfo_width()>self.__frame.winfo_width()/2:
+                        and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]):
 
                     sleep(0.05)
                     continue
@@ -103,8 +102,9 @@ class ListBoxInFrame:
 
                 self.__setFont()
                 self.sizeListBox()
-            except:
-                pass
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+
             sleep(0.02)
 
     def __setFont(self):

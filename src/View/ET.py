@@ -83,8 +83,8 @@ class ET:
                     self.draw()
 
             except Exception as e:
-                pass
-                #print(str(e))
+                self.__loader.logger.errorLog(e)
+
 
             sleep(0.05)
     def draw(self):
@@ -136,8 +136,8 @@ class ET:
 
                 return(moving)
             except Exception as e:
-                pass
-                #print(str(e))
+                self.__loader.logger.errorLog(e)
+
 
     def move(self):
         moving = False

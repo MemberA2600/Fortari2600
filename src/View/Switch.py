@@ -45,8 +45,10 @@ class Switch:
                 self.__imgLocked = ImageTk.PhotoImage(IMAGE.open("others/img/switchOn.png").resize((self.__w, self.__h), IMAGE.ANTIALIAS))
                 self.__imgUnLocked = ImageTk.PhotoImage(IMAGE.open("others/img/switchOff.png").resize((self.__w, self.__h), IMAGE.ANTIALIAS))
                 break
-            except:
-                pass
+            except Exception as e:
+
+                self.__loader.logger.errorLog(e)
+
 
         self.createSwitch()
 
@@ -60,8 +62,9 @@ class Switch:
     def createSwitch(self):
         try:
             self.__switch.destroy()
-        except:
-            pass
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
+
         if self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)]!="":
             self.__switch = Button(self.__frame, relief=FLAT, bg="black", image=self.__imgLocked,
                                    activebackground="darkred", command=self.removeLock)

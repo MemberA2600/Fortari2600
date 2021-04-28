@@ -10,7 +10,6 @@ class AtariLogo:
         self.__left = left
         self.__right = right
 
-
         self.__frames = []
         self.__counter = 0
 
@@ -53,9 +52,10 @@ class AtariLogo:
 
     def __setCurrentImage(self, num):
         try:
-            self.__onlyLabel.config(image=self.__imageBuffer[num])
-        except:
-            pass
+            if self.__onlyLabel in self.__main.pack_slaves():
+                self.__onlyLabel.config(image=self.__imageBuffer[num])
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
 
     def nextFrame(self):
         from time import sleep

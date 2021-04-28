@@ -47,6 +47,9 @@ class MainMenuLabel:
                 self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
                 self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*self.__lastScaleX*self.__lastScaleY), False, False, False)
-                self.__label.config(font=self.__font)
+                try:
+                    self.__label.config(font=self.__font)
+                except Exception as e:
+                    self.__loader.logger.errorLog(e)
 
             sleep(0.04)

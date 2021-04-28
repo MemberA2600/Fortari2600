@@ -123,8 +123,8 @@ class OpenProjectWindow:
                 if self.__selected!=self.__listBox.getSelectedName():
                     self.__getAndSelect()
             except Exception as e:
-                #print(e)
-                pass
+                self.__loader.logger.errorLog(e)
+
             sleep(0.05)
 
     def checkIfOK(self):
@@ -137,6 +137,6 @@ class OpenProjectWindow:
                 else:
                     self.OK = False
             except Exception as e:
-                #print(e)
-                pass
+                self.__loader.logger.errorLog(e)
+
             sleep(0.05)

@@ -113,8 +113,8 @@ class LockFrame:
             for item in self.__labels:
                 try:
                     item.config(state=state)
-                except:
-                    pass
+                except Exception as e:
+                    self.__loader.logger.errorLog(e)
 
             for num in range(1,9):
                 if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num)]:

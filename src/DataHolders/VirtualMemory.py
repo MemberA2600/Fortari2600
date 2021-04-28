@@ -43,15 +43,17 @@ class VirtualMemory:
         while self.__loader.mainWindow == None or self.__loader.mainWindow.dead==False:
             for address in self.memory.keys():
                 if len(self.memory[address].variables.keys())>0:
-                    print(address)
+                    string=address+os.linesep
                     for valiable in self.memory[address].variables.keys():
-                        print(valiable)
-                        print(self.memory[address].variables[valiable].usedBits)
-                        print(self.memory[address].variables[valiable].type)
-                        print(self.memory[address].variables[valiable].validity)
+                        string+=valiable+os.linesep
+                        string+=str(self.memory[address].variables[valiable].usedBits)+os.linesep
+                        string+=self.memory[address].variables[valiable].type+os.linesep
+                        string+=self.memory[address].variables[valiable].validity+os.linesep
 
-                    print(self.memory[address].freeBits)
-                    print("------------------------------")
+                        for XXX in self.memory[address].freeBits:
+                            string += XXX + ":" + str(self.memory[address].freeBits[XXX]) +  os.linesep
+                    string ="------------------------------"+os.linesep
+                    self.__loader.logger.addToLog(string)
             sleep(10)
 
     def addSystemMemory(self):
@@ -218,8 +220,8 @@ class VirtualMemory:
                     data = TYPE[6:-1].split(",")
                     for item in data:
                         self.addItemsToArray(name, item, self.getVariableByName(item, bank))
-            except:
-                pass
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
 
 
     def moveVariablesToMemory(self, bank):
