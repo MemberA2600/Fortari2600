@@ -55,6 +55,10 @@ class VirtualMemory:
                         #for XXX in self.memory[address].freeBits:
                         #    string += XXX + ":" + str(self.memory[address].freeBits[XXX]) +  os.linesep
                     string +="------------------------------"+os.linesep
+            for array in self.arrays.keys():
+                string += array + ": " +self.getArrayValidity(array)+", "+ str(list(self.arrays[array].keys()))+os.linesep
+            if len(self.arrays.keys())>0:
+                string += "------------------------------" + os.linesep
 
             self.__loader.logger.addToLog(string)
 
@@ -251,14 +255,17 @@ class VirtualMemory:
         #print(string)
         self.codes[bank][section].code = string
 
-    def getArrayValidity(self,name):
-        name = list(self.arrays[name].keys())[0]
+    def getArrayValidity(self,arrayname):
+        arrayKeyList = list(self.arrays[arrayname].keys())
 
-        for address in self.memory.keys():
-            for variable in self.memory[address].variables.keys():
-                #print(variable, name)
-                if variable == name:
-                    return(self.memory[address].variables[variable].validity)
+        for num in range(0, len(arrayKeyList)):
+            name = list(self.arrays[arrayname].keys())[num]
+            for address in self.memory.keys():
+                for variable in self.memory[address].variables.keys():
+                    #print(variable, name)
+                    if variable == name and self.memory[address].variables[variable].validity!="global":
+                        return(self.memory[address].variables[variable].validity)
+        return("global")
 
     def setVariablesFromMemory(self, mode):
         #print("faszom", mode)

@@ -105,7 +105,7 @@ class SideFrameListBoxWithButtonAndLabel:
 
     def scaler(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False:
+        while self.__loader.mainWindow.dead == False and self.__frame!=None:
             if (self.__lastX != self.__loader.mainWindow.getScales()[0] or
                     self.__lastY != self.__loader.mainWindow.getScales()[1]
             ):
