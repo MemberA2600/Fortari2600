@@ -20,7 +20,7 @@ class Logger:
 
 
     def getDaysAndDelete(self, filedate, today, file):
-        if (self.dateInDays(today) - self.dateInDays(filedate)).days<int(self.__loader.config.getValueByKey("keepLogs"))+1:
+        if (self.dateInDays(today) - self.dateInDays(filedate)).days>=int(self.__loader.config.getValueByKey("keepLogs")):
             os.remove(file)
 
     def dateInDays(self, date):

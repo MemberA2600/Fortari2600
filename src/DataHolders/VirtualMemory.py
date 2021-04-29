@@ -41,20 +41,23 @@ class VirtualMemory:
         from time import sleep
 
         while self.__loader.mainWindow == None or self.__loader.mainWindow.dead==False:
+            sleep(10)
+            string=""
             for address in self.memory.keys():
                 if len(self.memory[address].variables.keys())>0:
-                    string=address+os.linesep
+                    string+=address+os.linesep
                     for valiable in self.memory[address].variables.keys():
                         string+=valiable+os.linesep
-                        string+=str(self.memory[address].variables[valiable].usedBits)+os.linesep
                         string+=self.memory[address].variables[valiable].type+os.linesep
                         string+=self.memory[address].variables[valiable].validity+os.linesep
+                        string+=str(self.memory[address].variables[valiable].usedBits)+os.linesep
 
-                        for XXX in self.memory[address].freeBits:
-                            string += XXX + ":" + str(self.memory[address].freeBits[XXX]) +  os.linesep
-                    string ="------------------------------"+os.linesep
-                    self.__loader.logger.addToLog(string)
-            sleep(10)
+                        #for XXX in self.memory[address].freeBits:
+                        #    string += XXX + ":" + str(self.memory[address].freeBits[XXX]) +  os.linesep
+                    string +="------------------------------"+os.linesep
+
+            self.__loader.logger.addToLog(string)
+
 
     def addSystemMemory(self):
         pass
@@ -210,6 +213,7 @@ class VirtualMemory:
                     continue
                 data = line.split("=")
                 name=data[0]
+
                 if self.checkIfExists(name, validity):
                     continue
                 TYPE = data[1].replace("\n","").replace("\r","")
@@ -231,16 +235,30 @@ class VirtualMemory:
             section = "global_variables"
             string="*** This is where you set the variables for the whole project, so the ones shouldn't"+os.linesep+\
                "*** be overwritten anywhere."+os.linesep
+        validate = "global"
+        if bank != "bank1":
+            validate = bank
 
         for address in self.memory.keys():
             for variable in self.memory[address].variables.keys():
+                if self.memory[address].variables[variable].validity != validate:
+                    continue
                 string += variable + "=" + self.memory[address].variables[variable].type + os.linesep
-        for array in self.arrays.keys():
-            string+=array + "=(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
 
+        for array in self.arrays.keys():
+            if self.getArrayValidity(array) == validate:
+                string+=array + "=array(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
+        #print(string)
         self.codes[bank][section].code = string
 
+    def getArrayValidity(self,name):
+        name = list(self.arrays[name].keys())[0]
 
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                #print(variable, name)
+                if variable == name:
+                    return(self.memory[address].variables[variable].validity)
 
     def setVariablesFromMemory(self, mode):
         #print("faszom", mode)

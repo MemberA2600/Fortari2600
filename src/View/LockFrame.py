@@ -63,8 +63,14 @@ class LockFrame:
             self.createLabel(num)
 
     def getImgs(self):
-        self.__lockOn = self.__loader.io.getImg("lockClosed", round(self.__frame.winfo_width()/4)-5)
-        self.__lockOff = self.__loader.io.getImg("lockOpened", round(self.__frame.winfo_width()/4)-5)
+        while True:
+            try:
+                self.__lockOn = self.__loader.io.getImg("lockClosed", round(self.__frame.winfo_width()/4)-5)
+                self.__lockOff = self.__loader.io.getImg("lockOpened", round(self.__frame.winfo_width()/4)-5)
+                break
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+                continue
 
     def setImg(self, label, labelNum):
         if self.__loader.virtualMemory.locks["bank"+str(labelNum)] == "":

@@ -1,57 +1,43 @@
 from tkinter import *
 from threading import Thread
+from SideFrameListBoxWithButtonAndLabel import SideFrameListBoxWithButtonAndLabel
 
 class RightFrame:
 
-    def __init__(self, loader, frame):
+    def __init__(self, loader, frame, validity):
         self.__loader = loader
         self.__frame = frame
+        self.__selectedValidity = validity
 
-        self.__fontManager = loader.fontManager
-        baseSize=18
 
-        self.__fontNormalSize = ((self.__loader.screenSize[0]/1350) *
-                            (self.__loader.screenSize[1]/1100) * baseSize
-                           )
+        baseSize = 18
 
-        self.__fontSmallSize = ((self.__loader.screenSize[0]/1350) *
-                            (self.__loader.screenSize[1]/1100) * baseSize * 0.75
-                           )
+        self.variables = SideFrameListBoxWithButtonAndLabel(loader, frame,
+                         baseSize, "variables", 0.45,
+                         self.fillListBoxWithVariableNames,
+                         self.loadVariableData)
 
-        self.__lastX = self.__loader.mainWindow.getScales()[0]
-        self.__lastY = self.__loader.mainWindow.getScales()[1]
 
-        self.setFonts()
 
-        self.__labelVariables = Label(self.__frame, font=self.__fontNormal,
-                                      text=self.__loader.dictionaries.getWordFromCurrentLanguage("variables"))
+    def fillListBoxWithVariableNames(self, listBox, dataList):
 
-        self.__labelVariables.pack(side=TOP, anchor=NW)
+        self.variableListBox = listBox
+        self.variableList = []
 
-        t = Thread(target=self.scaler)
-        t.daemon = True
-        t.start()
+        for address in self.__loader.virtualMemory.memory.keys():
+            for var in self.__loader.virtualMemory.memory[address].variables.keys():
+                if self.__loader.virtualMemory.memory[address].variables[var].validity == self.__selectedValidity:
+                    #print(var, self.__loader.virtualMemory.memory[address].variables[var].validity)
+                    self.variableList.append(var+" ("+address+", "+
+                         self.__loader.virtualMemory.memory[address].variables[var].type+")")
 
-    def setFonts(self):
-        self.__fontNormal = self.__loader.fontManager.getFont(
-            round(self.__fontNormalSize * self.__lastX * self.__lastY),
-            False, False, False)
-        self.__fontSmall = self.__loader.fontManager.getFont(round(self.__fontSmallSize * self.__lastX * self.__lastY),
-                                                             False, False, False)
+        self.variableList.sort()
+        self.variableListBox.select_clear(0, END)
+        self.variableListBox.delete(0, END)
+        for item in self.variableList:
+            self.variableListBox.insert(END, item)
 
-    def scaler(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False:
-            if (self.__lastX!=self.__loader.mainWindow.getScales()[0] or
-                self.__lastY != self.__loader.mainWindow.getScales()[1]
-            ):
-                self.__lastX = self.__loader.mainWindow.getScales()[0]
-                self.__lastY = self.__loader.mainWindow.getScales()[1]
-                self.setFonts()
+        dataList = self.variableList
 
-                try:
-                    self.__labelVariables.config(font=self.__fontNormal)
-                except Exception as e:
-                    self.__loader.logger.errorLog(e)
-
-            sleep(0.04)
+    def loadVariableData(self, listBox, data):
+        pass

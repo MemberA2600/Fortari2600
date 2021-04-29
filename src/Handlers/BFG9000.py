@@ -63,6 +63,7 @@ class BFG9000:
         r.daemon = True
         r.start()
 
+
     def saveFrameToMemory(self, bank, section):
         if bank == "bank1" or section == "local_variables":
             self.__loader.virtualMemory.writeVariablesToMemory(bank)
@@ -72,11 +73,13 @@ class BFG9000:
 
         if bank == "bank1" or section == "local_variables":
             self.__loader.virtualMemory.setVariablesFromMemory(bank)
-        if bank == "bank1":
-            main = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, "global")
+            self.actual = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, bank)
 
 
     def clearFrames(self, color):
+        for item in self.__loader.destroyable:
+            item.destroy()
+
         self.destroyAll(self.__mainFrame.pack_slaves())
         self.destroyAll(self.__leftFrame.pack_slaves())
         self.destroyAll(self.__rightFrame.pack_slaves())
@@ -89,6 +92,9 @@ class BFG9000:
     def destroyAll(self, list):
         for item in list:
             item.destroy()
+
+
+
 
     def getSelected(self):
         return(self.__selectedBank, self.__selectedSection)

@@ -25,6 +25,7 @@ class Loader:
         self.bindedVariables = {}
         self.listBoxes = {}
 
+        self.destroyable = []
         self.subMenus = []
 
         self.sections = []
