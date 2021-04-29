@@ -4,7 +4,7 @@ from MainMenuLabel import MainMenuLabel
 
 class MemorySetter:
 
-    def __init__(self, loader, main, left, right, bank):
+    def __init__(self, loader, main, left, right, bank, view):
         self.__loader = loader
         self.__container = main
         self.__left = left
@@ -21,5 +21,5 @@ class MemorySetter:
 
         from RightFrame import RightFrame
 
-        self.rightFrame = RightFrame(self.__loader, self.__right, validity)
+        self.rightFrame = RightFrame(self.__loader, self.__right, validity, view)
 

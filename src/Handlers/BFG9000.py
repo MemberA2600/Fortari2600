@@ -73,7 +73,7 @@ class BFG9000:
 
         if bank == "bank1" or section == "local_variables":
             self.__loader.virtualMemory.setVariablesFromMemory(bank)
-            self.actual = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, bank)
+            self.actual = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, bank, "MemorySetter")
 
 
     def clearFrames(self, color):

@@ -5,12 +5,13 @@ from tkinter.font import Font
 class SideFrameListBoxWithButtonAndLabel:
 
     def __init__(self, loader, frame, baseSize, name, percent,
-                 fillFunction, buttonFunction):
+                 fillFunction, buttonFunction, insertFunction, buttonText):
 
         self.__loader = loader
         self.__frame = frame
         self.__fillFunction = fillFunction
         self.__buttonFunction = buttonFunction
+        self.__insertFunction = insertFunction
 
         self.__w = self.__frame.winfo_width()
         self.__h = round(self.__frame.winfo_height()*percent)
@@ -53,6 +54,19 @@ class SideFrameListBoxWithButtonAndLabel:
 
         self.__scrollBar = Scrollbar(self.__newFrame)
 
+        self.__button = Button(self.__newFrame, text=self.__loader.dictionaries.getWordFromCurrentLanguage(buttonText),
+                               font=self.__fontExtraSmall,
+                               )
+        if buttonText.startswith == "insert":
+            command = self.__insertFunction
+        else:
+            command = self.__buttonFunction
+
+        self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__button.config(fg=self.__loader.colorPalettes.getColor("font"))
+
+        self.__button.pack(side=BOTTOM, anchor=S, fill=X)
+
         self.__listBox = Listbox(self.__newFrame,
                                  yscrollcommand=self.__scrollBar.set,
                                  selectmode=BROWSE,
@@ -77,7 +91,9 @@ class SideFrameListBoxWithButtonAndLabel:
         self.data=[]
         self.refiller()
         self.__loader.destroyable.append(self.__listBox)
-        self.__listBox.select_clear
+        #self.__listBox.select_clear()
+
+
 
     def getSelectedName(self):
         return(self.data[self.__listBox.curselection()[0]])
@@ -86,7 +102,7 @@ class SideFrameListBoxWithButtonAndLabel:
         return(self.__listBox, self.__scrollBar)
 
     def refiller(self):
-        self.__fillFunction(self.__listBox, self.data)
+        self.__fillFunction(self.__listBox, self)
 
     def setSizes(self):
         self.__listBox.config(width=round(self.__w * self.__lastX ),
@@ -122,6 +138,8 @@ class SideFrameListBoxWithButtonAndLabel:
                 try:
                     self.__label.config(font=self.__fontNormal)
                     self.__listBox.config(font=self.__fontExtraSmall)
+                    self.__button.config(font=self.__fontSmall)
+
 
                 except Exception as e:
                     self.__loader.logger.errorLog(e)
