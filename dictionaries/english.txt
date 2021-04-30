@@ -47,3 +47,4 @@ insertVar=Insert Variable
 selectArray=Select Array
 insertArray=Insert Array
 arrays=Arrays:
+fastSwitching=Fast Switching:

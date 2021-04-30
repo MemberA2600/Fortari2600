@@ -70,6 +70,7 @@ class ListBoxInFrame:
 
 
     def getSelectedName(self):
+
         return(self.__data[self.__listBox.curselection()[0]])
 
     def getListBoxAndScrollBar(self):

@@ -1,0 +1,90 @@
+**********************************
+*** 2021-04-30 07:20:54.114405 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000005CFCD68>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-04-30 07:20:55.560488 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000000428BBE0>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'zerg=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(zerg,protoss)
+item = protoss
+
+
+**********************************
+*** 2021-04-30 07:21:02.985912 ***
+**********************************
+
+$80
+zerg
+nibble
+global
+[0, 1, 2, 3]
+Pocok
+doubleBit
+bank3
+[4, 5]
+------------------------------
+$81
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+races: global, ['zerg', 'protoss']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+------------------------------
+
+
+**********************************
+*** 2021-04-30 07:21:03.404936 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000000428BBE0>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.\r', '']
+line = 
+data = ['']
+name = 
+
+

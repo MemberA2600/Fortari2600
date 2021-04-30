@@ -88,6 +88,7 @@ class SideFrameListBoxWithButtonAndLabel:
         t.daemon = True
         t.start()
 
+
         self.data=[]
         self.refiller()
         self.__loader.destroyable.append(self.__listBox)
@@ -105,10 +106,15 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__fillFunction(self.__listBox, self)
 
     def setSizes(self):
-        self.__listBox.config(width=round(self.__w * self.__lastX ),
-                              height=round(self.__newFrame.winfo_height() * self.__lastY - self.__fontNormal.metrics(
-                                  'linespace') - 10)
-                              )
+        if self.__frame!=None and self.__newFrame!=None:
+            try:
+                if self.__listBox!=None:
+                    self.__listBox.config(width=round(self.__w * self.__lastX ),
+                                      height=round(self.__newFrame.winfo_height() * self.__lastY - self.__fontNormal.metrics(
+                                          'linespace') - 10)
+                                      )
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
 
     def setFonts(self):
         self.__fontNormal = self.__loader.fontManager.getFont(
@@ -121,15 +127,19 @@ class SideFrameListBoxWithButtonAndLabel:
 
     def scaler(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False and self.__frame!=None:
+        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.__newFrame!=None:
             if (self.__lastX != self.__loader.mainWindow.getScales()[0] or
                     self.__lastY != self.__loader.mainWindow.getScales()[1]
             ):
                 self.__lastX = self.__loader.mainWindow.getScales()[0]
                 self.__lastY = self.__loader.mainWindow.getScales()[1]
 
-                self.__newFrame.config(height=self.__h*self.__lastY,
+                try:
+                    self.__newFrame.config(height=self.__h*self.__lastY,
                                        width=self.__w*self.__lastX)
+                except Exception as e:
+                    self.__loader.logger.errorLog(e)
+
 
 
                 self.setFonts()

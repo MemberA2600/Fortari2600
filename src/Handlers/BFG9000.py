@@ -12,6 +12,9 @@ class BFG9000:
         self.__w = self.__editorHandler.getWindowSize()[0]*0.66
         self.__h = self.__editorHandler.getWindowSize()[1]-minus-25
 
+        self.__bankBox = self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0]
+        self.__sectionBox = self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0]
+
         self.__lastScaleX = self.__editorHandler.getScales()[0]
         self.__lastScaleY = self.__editorHandler.getScales()[1]
 
@@ -163,3 +166,18 @@ class BFG9000:
                     continue
 
             sleep(0.05)
+
+    def selectOnBoxes(self, num):
+        self.__bankBox.select_clear(0,END)
+        self.__bankBox.select_set(num - 1)
+        if num > 1:
+            from threading import Thread
+            t = Thread(target=self.selectSecond, args=[num])
+            t.daemon
+            t.start()
+
+    def selectSecond(self, num):
+        from time import sleep
+        while self.__sectionBox.curselection()[0]!=2:
+            self.__sectionBox.select_clear(0, END)
+            self.__sectionBox.select_set(2)

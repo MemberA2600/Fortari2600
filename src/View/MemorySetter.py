@@ -20,6 +20,9 @@ class MemorySetter:
         self.__title = MainMenuLabel(self.__container, self.__loader, "memoryManager", 18)
 
         from RightFrame import RightFrame
-
         self.rightFrame = RightFrame(self.__loader, self.__right, validity, view)
+
+        from SwitchFrame import SwitchFrame
+        self.__switchFrame =  SwitchFrame(self.__container, self.__loader)
+
 

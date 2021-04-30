@@ -301,7 +301,10 @@ class MainWindow:
             if self.__bankSelected != bankBox.getSelectedName() or self.__sectionSelected != sectionBox.getSelectedName():
 
                 self.__bankSelected = bankBox.getSelectedName()
-                self.__sectionSelected = sectionBox.getSelectedName()
+                try:
+                    self.__sectionSelected = sectionBox.getSelectedName()
+                except:
+                    continue
             sleep(0.1)
 
 

@@ -47,3 +47,4 @@ insertVar=Változó Beszúrása
 selectArray=Tömb Kiválasztása
 insertArray=Tömb Beszúrása
 arrays=Tömbök:
+fastSwitching=Gyorsváltás:
