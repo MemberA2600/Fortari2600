@@ -31,6 +31,7 @@ class SwitchFrame:
         #for key in self.__loader.listBoxes.keys():
         #    print(key)
 
+
         t = Thread(target=self.resizer)
         t.daemon=True
         t.start()

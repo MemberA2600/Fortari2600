@@ -17,10 +17,16 @@ class ListBoxInFrame:
             self.__frame = Frame(self.__container.getFrame(), width=self.__baseWidth,
                                  height=self.__container.getFrameSize()[1])
         except:
-            self.__baseHeight=self.__container.getTopLevelDimensions()[1]
-            self.__frame = Frame(self.__container.getTopLevel(), width=self.__baseWidth,
-                                 height=self.__container.getTopLevelDimensions()[1])
+            try:
+                self.__baseHeight=self.__container.getTopLevelDimensions()[1]
+                self.__frame = Frame(self.__container.getTopLevel(), width=self.__baseWidth,
+                                     height=self.__container.getTopLevelDimensions()[1])
+            except:
 
+                self.__baseWidth = self.__container.winfo_width()  * multi
+                self.__baseHeight=self.__container.winfo_height()
+                self.__frame = Frame(self.__container, width=self.__baseWidth,
+                                     height=self.__baseHeight)
 
         self.__frame.pack_propagate(False)
         self.__frame.grid_propagate(False)

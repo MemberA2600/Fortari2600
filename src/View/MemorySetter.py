@@ -25,4 +25,5 @@ class MemorySetter:
         from SwitchFrame import SwitchFrame
         self.__switchFrame =  SwitchFrame(self.__container, self.__loader)
 
-
+        from VariableFrame import VariableFrame
+        self.__variableFrame = VariableFrame(self.__container, self.__loader)
