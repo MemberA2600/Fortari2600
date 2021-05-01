@@ -23,7 +23,6 @@ class BankSwitchButton:
 
         self.getFont()
 
-
         self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__button.config(fg=self.__loader.colorPalettes.getColor("font"))
         self.__button.pack(side=LEFT, anchor=SE, fill=Y)

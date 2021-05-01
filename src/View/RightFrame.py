@@ -33,6 +33,7 @@ class RightFrame:
                          self.insertArray,
                          buttonText)
 
+        self.__loader.frames["rightFrame"] = self
 
 
     def fillListBoxWithVariableNames(self, listBox, handler):

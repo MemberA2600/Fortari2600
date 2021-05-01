@@ -29,8 +29,8 @@ class MemoryItem:
         self.freeBits[bankNum] = self.sortedSet(self.freeBits[bankNum])
 
     def sortedSet(self, L):
-        list = list(set(L))
-        list.sort()
+        __list = list(set(L))
+        __list.sort()
         return(list)
 
     def removeBitsFromGlobalAddress(self, bits):

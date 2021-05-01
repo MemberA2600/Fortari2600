@@ -32,8 +32,11 @@ class VariableFrame:
                             self.__loader.fontManager, 0.15, ["bit", "doubleBit", "nibble", "byte"], None)
 
         self.__variableButtons = CreateAndDeleteButtons(self.__loader, self.__thisFrame,
+                                                        "variable",
                                                         self.__checkThings,
-                                                        "variable")
+                                                        self.__createVar,
+                                                        self.__deleteVar
+                                                        )
 
         self.__loader.frames["VariableFrame"] = self
 
@@ -67,7 +70,7 @@ class VariableFrame:
         self.__bitEntry = others[2]
         self.__bitEntryText = others[3]
         self.__variableListBox = self.__varListBox.getListBoxAndScrollBar()[0]
-
+        self.__mod = False
 
         self.__lastText = ""
         self.__lastSelectedType = ""
@@ -98,6 +101,7 @@ class VariableFrame:
                 if self.__loader.virtualMemory.checkIfExists(self.__lastText, self.__selectedValidity):
                     self.__buttonCreate.config(text =
                                         self.__loader.dictionaries.getWordFromCurrentLanguage("modify"))
+                    self.__mod = True
                     self.__buttonDelete.config(state=NORMAL)
                     self.__variableEntryText.set(
                         self.__loader.virtualMemory.getAddressOnVariableIsStored(self.__lastText, self.__selectedValidity))
@@ -121,6 +125,7 @@ class VariableFrame:
                 else:
                     self.__buttonCreate.config(text =
                                         self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
+                    self.__mod = False
                     self.__buttonDelete.config(state=DISABLED)
                     self.__variableEntryText.set("")
                     self.__bitEntryText.set("")
@@ -130,6 +135,46 @@ class VariableFrame:
                 continue
 
             sleep(0.4)
+
+    def __createVar(self):
+        if self.__mod == True:
+            self.__deleteVar()
+        self.__loader.virtualMemory.addVariable(self.__lastText,
+                                                   self.__varListBox.getSelectedName(),
+                                                   self.__selectedValidity
+                                                   )
+        self.__saveThings()
+        self.__modifyFields(True)
+        self.__loader.frames["rightFrame"].variables.refiller()
+
+    def __deleteVar(self):
+        self.__loader.virtualMemory.removeVariable(self.__lastText,
+                                                   self.__selectedValidity
+                                                   )
+        self.__saveThings()
+        self.__modifyFields(False)
+        self.__loader.frames["rightFrame"].variables.refiller()
+
+    def __saveThings(self):
+        bank = self.__selectedValidity
+        section = "local_variables"
+        if bank == "global":
+            bank = "bank1"
+            section = "global_variables"
+
+        self.__loader.virtualMemory.moveVariablesToMemory(bank)
+        self.__loader.virtualMemory.codes[bank][section].changed = True
+
+
+    def __modifyFields(self, bool):
+        if bool == False:
+            self.varName.setEntry("")
+            self.__variableEntryText.set("")
+            self.__bitEntryText.set("")
+            self.__buttonCreate.config(text=
+                                       self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
+        self.__lastText = ""
+
 
     def __checkIfNameIsValid(self, text):
         if len(text)<4:

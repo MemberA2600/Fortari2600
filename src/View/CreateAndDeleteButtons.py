@@ -3,11 +3,13 @@ from threading import *
 
 class CreateAndDeleteButtons:
 
-    def __init__(self, loader, container, function, name):
+    def __init__(self, loader, container, name, function, buttonPressedFunction1, buttonPressedFunction2):
 
         self.__loader = loader
         self.__container = container
         self.__name = name
+        self.__buttonPressedFunction1 = buttonPressedFunction1
+        self.__buttonPressedFunction2 = buttonPressedFunction2
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
@@ -33,6 +35,8 @@ class CreateAndDeleteButtons:
                                     state=DISABLED)
         self.__buttonCreate.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__buttonCreate.config(fg=self.__loader.colorPalettes.getColor("font"))
+        if self.__buttonPressedFunction1 != None:
+            self.__buttonCreate.config(command=self.__buttonPressedFunction1)
 
         self.__buttonDelete= Button(self.__frame, width=round(self.__frame.winfo_width()/2),
                             font=self.__font, text=self.__setText("delete"),
@@ -41,6 +45,8 @@ class CreateAndDeleteButtons:
         self.__buttonDelete.config(fg=self.__loader.colorPalettes.getColor("font"))
         self.__buttonDelete.pack(side=BOTTOM, anchor=S, fill=X)
         self.__buttonCreate.pack(side=BOTTOM, anchor=S, fill=X)
+        if self.__buttonPressedFunction2 != None:
+            self.__buttonDelete.config(command=self.__buttonPressedFunction2)
 
         self.__others = []
 
