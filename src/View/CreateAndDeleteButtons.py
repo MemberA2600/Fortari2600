@@ -3,22 +3,25 @@ from threading import *
 
 class CreateAndDeleteButtons:
 
-    def __init__(self, loader, container, function):
+    def __init__(self, loader, container, function, name):
 
         self.__loader = loader
         self.__container = container
+        self.__name = name
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
         self.__w = self.__container.winfo_width()/4
 
-        baseSize=14
+        baseSize=10
         self.__fontSize = ((self.__loader.screenSize[0]/1350) *
                             (self.__loader.screenSize[1]/1100) * baseSize
                            )
 
-        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
+        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9), False, False, False)
+        self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75), False, False, False)
+
 
         self.__frame = Frame(self.__container, width=self.__w)
         self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
@@ -36,8 +39,44 @@ class CreateAndDeleteButtons:
                                     state=DISABLED)
         self.__buttonDelete.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__buttonDelete.config(fg=self.__loader.colorPalettes.getColor("font"))
-        self.__buttonDelete.pack(side=BOTTOM, anchor=S)
-        self.__buttonCreate.pack(side=BOTTOM, anchor=S)
+        self.__buttonDelete.pack(side=BOTTOM, anchor=S, fill=X)
+        self.__buttonCreate.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__others = []
+
+        if self.__name == "variable":
+            self.__addressLabel = Label(self.__frame, font=self.__smallFont,
+                                        text = self.__loader.dictionaries.getWordFromCurrentLanguage("varAddress"))
+            self.__addressLabel.config(bg = self.__loader.colorPalettes.getColor("window"))
+            self.__addressLabel.config(fg = self.__loader.colorPalettes.getColor("font"))
+            self.__addressLabel.pack(side=TOP, anchor=NW)
+
+            self.__addressVar = StringVar()
+            self.__addressEntry = Entry(self.__frame, font=self.__smallFont,
+                                        textvariable=self.__addressVar, state=DISABLED)
+            self.__addressEntry.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"))
+            self.__addressEntry.config(fg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+            self.__addressEntry.pack(side=TOP, anchor=NW, fill=X)
+
+            self.__others.append(self.__addressEntry)
+            self.__others.append(self.__addressVar)
+
+            self.__bitsLabel = Label(self.__frame, font=self.__smallFont,
+                                        text = self.__loader.dictionaries.getWordFromCurrentLanguage("usedBits"))
+            self.__bitsLabel.config(bg = self.__loader.colorPalettes.getColor("window"))
+            self.__bitsLabel.config(fg = self.__loader.colorPalettes.getColor("font"))
+            self.__bitsLabel.pack(side=TOP, anchor=NW)
+
+            self.__bitsVar = StringVar()
+            self.__bitsEntry = Entry(self.__frame, font=self.__smallFont,
+                                        textvariable=self.__bitsVar, state=DISABLED)
+            self.__bitsEntry.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"))
+            self.__bitsEntry.config(fg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+            self.__bitsEntry.pack(side=TOP, anchor=NW, fill=X)
+
+            self.__others.append(self.__bitsEntry)
+            self.__others.append(self.__bitsVar)
+
 
         t = Thread(target=self.resize)
         t.daemon=True
@@ -45,7 +84,7 @@ class CreateAndDeleteButtons:
 
         if function!=None:
             self.__function = function
-            c = Thread(target=self.__function, args=[self.__buttonCreate, self.__buttonDelete])
+            c = Thread(target=self.__function, args=[self.__buttonCreate, self.__buttonDelete, self.__others])
             c.daemon=True
             c.start()
 
@@ -62,11 +101,14 @@ class CreateAndDeleteButtons:
                 self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
                 self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
-                self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*
+                self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9*
                                                                       self.__lastScaleY*
                                                                       self.__lastScaleX
                                                                       ), False, False, False)
-
+                self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75*
+                                                                      self.__lastScaleY*
+                                                                      self.__lastScaleX
+                                                                      ), False, False, False)
                 if self.__frame != None:
                     try:
                         self.__frame.config(width=self.__w * self.__lastScaleX)
@@ -80,6 +122,12 @@ class CreateAndDeleteButtons:
                                                    self.__lastScaleX*
                                                     self.__lastScaleY)
                                                    )
+
+                        self.__addressLabel.config(font=self.__smallFont)
+                        self.__addressEntry.config(font=self.__smallFont)
+
+                        self.__bitsLabel.config(font=self.__smallFont)
+                        self.__bitsEntry.config(font=self.__smallFont)
                     except Exception as e:
                         self.__loader.logger.errorLog(e)
 

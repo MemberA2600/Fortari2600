@@ -74,10 +74,18 @@ class ListBoxInFrame:
         self.__scrollBar.pack(side=LEFT, anchor=W, fill=Y)
         self.__scrollBar.config(command=self.__listBox.yview)
 
+        if name !="bankBox" and name != "sectionBox":
+            self.__loader.destroyable.append(self.__listBox)
+            self.__loader.destroyable.append(self.__scrollBar)
+
 
     def getSelectedName(self):
-
-        return(self.__data[self.__listBox.curselection()[0]])
+        from time import sleep
+        while True:
+            try:
+                return (self.__data[self.__listBox.curselection()[0]])
+            except:
+                sleep(0.1)
 
     def getListBoxAndScrollBar(self):
         return(self.__listBox, self.__scrollBar)

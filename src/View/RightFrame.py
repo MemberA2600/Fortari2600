@@ -56,7 +56,10 @@ class RightFrame:
         handler.data = self.variableList
 
     def loadVariableData(self, listBox, data):
-        pass
+        variableFrame = self.__loader.frames["VariableFrame"]
+        variableFrame.varName.setEntry(
+            self.variables.getSelectedName().split(" ")[0]
+        )
 
     def insertVariable(self, listBox, data):
         pass

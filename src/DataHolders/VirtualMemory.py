@@ -78,6 +78,19 @@ class VirtualMemory:
     def removeItemFromArray(self, name, item):
         self.arrays[name].pop(item)
 
+    def getAddressOnVariableIsStored(self, name, bank):
+        section="local_variables"
+        if bank == "bank1":
+            section = "global_variables"
+
+        for address in self.memory.keys():
+            for id in self.memory[address].variables.keys():
+                #print(id, name)
+                if name == id:
+                    return(address)
+        return(False)
+
+
     def getVariableByName(self, name, bank):
         section="local_variables"
         if bank == "bank1":

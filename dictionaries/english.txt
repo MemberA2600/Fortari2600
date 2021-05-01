@@ -53,3 +53,5 @@ varName=Name of Variable:
 create=Create
 modify=Modify
 delete=Delete
+varAddress=Variable Address:
+usedBits=Used Bits:

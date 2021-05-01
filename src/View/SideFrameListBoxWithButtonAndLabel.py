@@ -12,6 +12,7 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__fillFunction = fillFunction
         self.__buttonFunction = buttonFunction
         self.__insertFunction = insertFunction
+        self.__buttonText = buttonText
 
         self.__w = self.__frame.winfo_width()
         self.__h = round(self.__frame.winfo_height()*percent)
@@ -55,7 +56,7 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__scrollBar = Scrollbar(self.__newFrame)
 
         self.__button = Button(self.__newFrame, text=self.__loader.dictionaries.getWordFromCurrentLanguage(buttonText),
-                               font=self.__fontExtraSmall,
+                               font=self.__fontExtraSmall, command=self.command
                                )
         if buttonText.startswith == "insert":
             command = self.__insertFunction
@@ -88,13 +89,19 @@ class SideFrameListBoxWithButtonAndLabel:
         t.daemon = True
         t.start()
 
+        self.__loader.destroyable.append(self.__listBox)
+#        self.__loader.destroyable.append(self.__scrollBar)
 
         self.data=[]
         self.refiller()
         self.__loader.destroyable.append(self.__listBox)
         #self.__listBox.select_clear()
 
-
+    def command(self):
+        if self.__buttonText == "selectVar":
+            self.__buttonFunction(self.__listBox, self.data)
+        else:
+            self.__insertFunction(self.__listBox, self.data)
 
     def getSelectedName(self):
         return(self.data[self.__listBox.curselection()[0]])

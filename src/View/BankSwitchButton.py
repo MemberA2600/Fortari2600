@@ -26,7 +26,7 @@ class BankSwitchButton:
 
         self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__button.config(fg=self.__loader.colorPalettes.getColor("font"))
-        self.__button.pack(side=LEFT, anchor=SW, fill=Y)
+        self.__button.pack(side=LEFT, anchor=SE, fill=Y)
 
         self.__loader.destroyable.append(self.__button)
 

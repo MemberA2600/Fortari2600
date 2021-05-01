@@ -53,3 +53,5 @@ varName=Változó Neve:
 create=Create
 modify=Modify
 delete=Delete
+varAddress=Változó Címe:
+usedBits=Felhasznált Bitek:
