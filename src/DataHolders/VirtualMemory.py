@@ -30,8 +30,6 @@ class VirtualMemory:
         }
 
         self.resetMemory()
-        self.addSystemMemory()
-
 
         t = Thread(target=self.testPrintMemory)
         t.daemon = True
@@ -64,19 +62,29 @@ class VirtualMemory:
 
 
     def addSystemMemory(self):
-        pass
+        d = self.__loader.dataReader.readDataFile("templates"+os.sep+"system_variables.a26")
+        for key in d:
+            self.addVariable(key, d[key], "global")
+            self.getVariableByName(key, "bank1").system=True
 
     def addArray(self, name):
         self.arrays[name] = {}
 
     def removeArray(self, name):
-        self.array.pop(name)
+        self.arrays.pop(name)
 
     def addItemsToArray(self, name, itemname, var):
         self.arrays[name][itemname] = var
 
     def removeItemFromArray(self, name, item):
         self.arrays[name].pop(item)
+
+    def checkForDeadReferences(self, name):
+        for array in self.arrays.keys():
+            if name in self.arrays[array]:
+                self.arrays[array].pop(name)
+        if self.__loader.frames["ArrayFrame"].arrName.getEntry()!="":
+            self.__loader.frames["ArrayFrame"].fillListBoxes()
 
     def getAddressOnVariableIsStored(self, name, bank):
         section="local_variables"
@@ -89,7 +97,6 @@ class VirtualMemory:
                 if name == id:
                     return(address)
         return(False)
-
 
     def getVariableByName(self, name, bank):
         section="local_variables"
@@ -121,11 +128,13 @@ class VirtualMemory:
                 if validity == "global":
                     self.memory[address].addBitsToGlobalAddress(self.memory[address].variables[name].usedBits)
                     self.memory[address].variables.pop(name)
+                    self.checkForDeadReferences(name)
                     return(True)
                 else:
                     if self.memory[address].variables[name].validity == validity:
                         self.memory[address].addBitsToBankAddress(self.memory[address].variables[name].usedBits, validity)
                         self.memory[address].variables.pop(name)
+                        self.checkForDeadReferences(name)
                         return(True)
         return(False)
 
@@ -183,6 +192,7 @@ class VirtualMemory:
                 I = "0"+I
 
             self.memory["$10"+I] = MemoryItem()
+        self.addSystemMemory()
 
 
     def getHex(self, i):

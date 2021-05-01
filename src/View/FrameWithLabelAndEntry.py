@@ -66,8 +66,14 @@ class FrameWithLabelAndEntry:
     def setEntry(self, text):
         self.__stringVar.set(text)
 
+    def disable(self):
+        self.__entry.config(state=DISABLED)
+
     def getEntry(self):
-        return(self.__stringVar.get())
+        try:
+            return(self.__stringVar.get())
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
 
     def enabled(self, bool):
         if bool == True:

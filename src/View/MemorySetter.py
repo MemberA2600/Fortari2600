@@ -27,3 +27,7 @@ class MemorySetter:
 
         from VariableFrame import VariableFrame
         self.__variableFrame = VariableFrame(self.__container, self.__loader)
+
+        from ArrayFrame import ArrayFrame
+        self.__arrayFrame = ArrayFrame(self.__container, self.__loader)
+

@@ -1,10 +1,11 @@
-from tkinter import Label, TOP, NW, NORMAL, DISABLED
+from tkinter import *
 from threading import Thread
 
 class MainMenuLabel:
 
     def __init__(self, master, loader, text, baseSize):
         self.__loader = loader
+        self.__master = master
 
         self.__fontSize = ((self.__loader.screenSize[0]/1350) *
                             (self.__loader.screenSize[1]/1100) * baseSize
@@ -19,7 +20,7 @@ class MainMenuLabel:
             self.__label = Label(master,
                                  text = text,
                                  font=self.__font)
-        self.__label.pack(side=TOP, anchor = NW)
+        self.__label.pack(side=TOP, anchor = W)
         self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
 
@@ -30,7 +31,20 @@ class MainMenuLabel:
         t.daemon=True
         t.start()
 
-
+    def changeText(self, text):
+        if text == "":
+            try:
+                self.__label.config(text="",
+                                    font=self.__font)
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
+        else:
+            try:
+                self.__label.config(text = self.__loader.dictionaries.getWordFromCurrentLanguage(text),
+                                     font=self.__font)
+            except:
+                self.__label.config(text = text,
+                                     font=self.__font)
 
     def enabled(self, bool):
         if bool == True:

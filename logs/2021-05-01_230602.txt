@@ -1,0 +1,1630 @@
+**********************************
+*** 2021-05-01 23:06:05.382792 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000005BB3080>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-01 23:06:06.547859 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000000426ECC0>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'zerg=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(zerg,protoss)
+item = protoss
+
+
+**********************************
+*** 2021-05-01 23:06:07.731926 ***
+**********************************
+
+Exception: None
+Error Class: <class 'KeyError'>
+Variables: 
+__name__ = OpenProjectWindow
+__file__ = .\src\View\OpenProjectWindow.py
+self = <OpenProjectWindow.OpenProjectWindow object at 0x0000000006FC3FD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:08.953996 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:09.554031 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:09.599033 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame2.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x0000000006FE8828>
+text = 
+
+
+**********************************
+*** 2021-05-01 23:06:09.599033 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame2.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x0000000006FDCC50>
+buttonCreate = .!frame4.!frame.!frame2.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame2.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame2.!frame3.!entry>, <tkinter.StringVar object at 0x0000000006FF4160>, <tkinter.Entry object .!frame4.!frame.!frame2.!frame3.!entry2>, <tkinter.StringVar object at 0x0000000006FF42B0>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:10.554088 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:11.154122 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:12.154179 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:12.333190 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+zerg
+nibble
+global
+[0, 1, 2, 3]
+Pocok
+doubleBit
+bank3
+[4, 5]
+------------------------------
+$83
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+races: global, ['zerg', 'protoss']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+------------------------------
+
+
+**********************************
+*** 2021-05-01 23:06:12.754214 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:13.754271 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:14.354305 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:15.354362 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:15.954397 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:16.954454 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:17.554488 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:18.554545 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:19.154580 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:20.154637 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:20.754671 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:21.754728 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:22.333762 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+zerg
+nibble
+global
+[0, 1, 2, 3]
+Pocok
+doubleBit
+bank3
+[4, 5]
+------------------------------
+$83
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+races: global, ['zerg', 'protoss']
+Kajalas: global, ['Vacsora']
+------------------------------
+
+
+**********************************
+*** 2021-05-01 23:06:22.354763 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:23.355820 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:23.955854 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:24.940911 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:24.955912 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:25.540945 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:25.555946 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:26.312989 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame5.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x0000000007603C88>
+text = 
+
+
+**********************************
+*** 2021-05-01 23:06:26.312989 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame5.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x00000000076034A8>
+buttonCreate = .!frame4.!frame.!frame5.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame5.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame5.!frame3.!entry>, <tkinter.StringVar object at 0x00000000075FD5C0>, <tkinter.Entry object .!frame4.!frame.!frame5.!frame3.!entry2>, <tkinter.StringVar object at 0x00000000075FD710>]
+sleep = <built-in function sleep>
+selector = {'bit': 0, 'doubleBit': 1, 'nibble': 2, 'byte': 3}
+text = 0, 1, 2, 3, 4, 5, 6, 7, 
+num = 7
+
+
+**********************************
+*** 2021-05-01 23:06:26.541002 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:26.556003 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:27.141037 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:27.156037 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:28.141094 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:28.156095 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:28.696125 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:28.741128 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:28.757129 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:29.296160 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:29.373164 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame8.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x0000000007F6C5C0>
+text = 
+
+
+**********************************
+*** 2021-05-01 23:06:29.373164 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame8.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x0000000007F62DD8>
+buttonCreate = .!frame4.!frame.!frame8.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame8.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame8.!frame3.!entry>, <tkinter.StringVar object at 0x0000000007F6CEB8>, <tkinter.Entry object .!frame4.!frame.!frame8.!frame3.!entry2>, <tkinter.StringVar object at 0x0000000007F6CFD0>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:29.741185 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:29.757186 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:30.297217 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:30.341220 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:30.357220 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:30.897251 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:31.341277 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:31.357278 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:31.897309 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:31.941311 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:31.958312 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:32.334334 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+zerg
+nibble
+global
+[0, 1, 2, 3]
+Pocok
+doubleBit
+bank3
+[4, 5]
+------------------------------
+$83
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+races: global, ['zerg', 'protoss']
+Kajalas: global, ['Vacsora']
+------------------------------
+
+
+**********************************
+*** 2021-05-01 23:06:32.497343 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:32.941368 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:32.958369 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:33.322390 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000000426ECC0>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.\r', 'vacsora=byte\r', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-01 23:06:33.497400 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:33.541403 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:33.558404 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:34.097434 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:34.541460 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:34.558461 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:35.097492 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:35.141494 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:35.158495 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:35.697526 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:36.141551 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:36.158552 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:36.698583 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:36.741586 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:36.758587 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:37.298617 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:37.741643 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:37.758644 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:38.298675 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:38.341677 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:38.358678 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:38.898709 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:39.341734 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:39.358735 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:39.898766 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:39.941769 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:39.958770 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:40.498801 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:40.942826 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:40.958827 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:41.498858 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000007F7C978>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:41.542860 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x000000000760B0F0>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:41.558861 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006FF95F8>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-01 23:06:42.334906 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+zerg
+nibble
+global
+[0, 1, 2, 3]
+Pocok
+doubleBit
+bank3
+[4, 5]
+------------------------------
+$83
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+races: global, ['zerg', 'protoss']
+Kajalas: global, ['Vacsora']
+------------------------------
+
+

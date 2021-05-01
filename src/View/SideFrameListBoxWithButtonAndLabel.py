@@ -58,11 +58,12 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__button = Button(self.__newFrame, text=self.__loader.dictionaries.getWordFromCurrentLanguage(buttonText),
                                font=self.__fontExtraSmall, command=self.command
                                )
+        """ 
         if buttonText.startswith == "insert":
             command = self.__insertFunction
         else:
             command = self.__buttonFunction
-
+        """
         self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__button.config(fg=self.__loader.colorPalettes.getColor("font"))
 
@@ -92,13 +93,14 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__loader.destroyable.append(self.__listBox)
 #        self.__loader.destroyable.append(self.__scrollBar)
 
+        self.__loader.destroyable.append(self.__button)
         self.data=[]
         self.refiller()
         self.__loader.destroyable.append(self.__listBox)
         #self.__listBox.select_clear()
 
     def command(self):
-        if self.__buttonText == "selectVar":
+        if self.__buttonText.startswith("select"):
             self.__buttonFunction(self.__listBox, self.data)
         else:
             self.__insertFunction(self.__listBox, self.data)
@@ -135,6 +137,17 @@ class SideFrameListBoxWithButtonAndLabel:
     def scaler(self):
         from time import sleep
         while self.__loader.mainWindow.dead == False and self.__frame!=None and self.__newFrame!=None:
+            if self.__button != None:
+                try:
+                    self.getSelectedName()
+                    self.__button.config(state=NORMAL)
+                except:
+                    try:
+                        self.__button.config(state=DISABLED)
+                    except Exception as e:
+                        self.__button.destroy()
+                        #self.__loader.logger.errorLog(e)
+
             if (self.__lastX != self.__loader.mainWindow.getScales()[0] or
                     self.__lastY != self.__loader.mainWindow.getScales()[1]
             ):

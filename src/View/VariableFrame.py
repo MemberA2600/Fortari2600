@@ -27,6 +27,7 @@ class VariableFrame:
 
         self.__variableLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageVariable", 16)
         self.varName = FrameWithLabelAndEntry(self.__thisFrame, loader, "varName", 14)
+        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 10)
 
         self.__varListBox = ListBoxInFrame("typeSelector", self.__loader, self.__thisFrame,
                             self.__loader.fontManager, 0.15, ["bit", "doubleBit", "nibble", "byte"], None)
@@ -40,6 +41,8 @@ class VariableFrame:
 
         self.__loader.frames["VariableFrame"] = self
 
+        from StatusFrame import StatusFrame
+        self.__statusFrame = StatusFrame(self.__thisFrame, self.__loader)
 
         t = Thread(target=self.resize)
         t.daemon=True
@@ -65,6 +68,11 @@ class VariableFrame:
     def __checkThings(self, buttonCreate, buttonDelete, others):
         self.__buttonCreate = buttonCreate
         self.__buttonDelete = buttonDelete
+
+        self.__loader.destroyable.append(self.__buttonCreate)
+        self.__loader.destroyable.append(self.__buttonDelete)
+
+
         self.__variableEntry = others[0]
         self.__variableEntryText = others[1]
         self.__bitEntry = others[2]
@@ -85,11 +93,15 @@ class VariableFrame:
                 #print(self.__lastText)
                 #print(self.__lastSelectedType)
                 if self.__checkIfNameIsValid(self.__lastText) == False:
-                    self.__buttonCreate.config(state=DISABLED)
-                    self.__buttonDelete.config(state=DISABLED)
+                    try:
+                        self.__buttonCreate.config(state=DISABLED)
+                        self.__buttonDelete.config(state=DISABLED)
+                    except Exception as e:
+                        self.__loader.logger.errorLog(e)
 
                     sleep(0.1)
                     continue
+
 
                 self.__buttonCreate.config(state=NORMAL)
                 self.__selectedValidity = self.__loader.listBoxes["bankBox"].getSelectedName()
@@ -174,13 +186,30 @@ class VariableFrame:
             self.__buttonCreate.config(text=
                                        self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
         self.__lastText = ""
-
+        self.__loader.frames["statusFrame"].calculateFreeRAM()
 
     def __checkIfNameIsValid(self, text):
-        if len(text)<4:
+        if len(text)==0:
+            self.__errorLabel.changeText("")
+            return(False)
+        elif len(text)<4:
+            self.__errorLabel.changeText("varNameTooShort")
             return(False)
 
         import re
-        if len(re.findall(r'[a-zA-Z][a-zA-Z0-9_-]+', text)[0])==0:
+        if len(re.findall(r'^[a-zA-Z][a-zA-Z0-9_-]+$', text))==0:
+            self.__errorLabel.changeText("varNameNotValid")
             return(False)
+
+        for address in self.__loader.virtualMemory.memory.keys():
+            if self.__lastText in self.__loader.virtualMemory.memory[address].variables.keys():
+                if self.__loader.virtualMemory.memory[address].variables[self.__lastText].system == True:
+                    self.__errorLabel.changeText("systemVar")
+                    return (False)
+
+        if self.__lastText in self.__loader.virtualMemory.arrays.keys():
+            self.__errorLabel.changeText("alreadyArr")
+            return (False)
+
+        self.__errorLabel.changeText("")
         return(True)

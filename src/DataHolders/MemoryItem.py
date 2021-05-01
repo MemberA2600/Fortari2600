@@ -31,7 +31,7 @@ class MemoryItem:
     def sortedSet(self, L):
         __list = list(set(L))
         __list.sort()
-        return(list)
+        return(__list)
 
     def removeBitsFromGlobalAddress(self, bits):
         self.freeBits["global"] = self.makeSetRemoveSortGiveBack(self.freeBits["global"], bits)

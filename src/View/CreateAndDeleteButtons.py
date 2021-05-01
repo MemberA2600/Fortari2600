@@ -15,6 +15,7 @@ class CreateAndDeleteButtons:
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
         self.__w = self.__container.winfo_width()/4
+        self.__h = self.__container.winfo_height()
 
         baseSize=10
         self.__fontSize = ((self.__loader.screenSize[0]/1350) *
@@ -22,6 +23,8 @@ class CreateAndDeleteButtons:
                            )
 
         self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9), False, False, False)
+        self.__bigFont = self.__loader.fontManager.getFont(round(self.__fontSize*1.25), False, False, False)
+
         self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75), False, False, False)
 
 
@@ -82,7 +85,34 @@ class CreateAndDeleteButtons:
 
             self.__others.append(self.__bitsEntry)
             self.__others.append(self.__bitsVar)
+        elif self.__name == "array":
+            self.__anotherFrame = Frame(self.__frame, width=self.__w, height=round(self.__h/5))
+            self.__anotherFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
+            self.__anotherFrame.pack_propagate(False)
 
+            self.__anotherFrame.pack(side=BOTTOM, anchor=CENTER, fill=BOTH)
+
+            self.__buttonAddVar = Button(self.__anotherFrame,
+                                         font=self.__bigFont, text="<<",
+                                         state=DISABLED)
+            self.__buttonAddVar.config(bg=self.__loader.colorPalettes.getColor("window"))
+            self.__buttonAddVar.config(fg=self.__loader.colorPalettes.getColor("font"))
+
+            self.__buttonAddVar.config(command=self.__buttonPressedFunction1)
+
+
+            self.__buttonDelVar = Button(self.__anotherFrame,
+                                         font=self.__bigFont, text=">>",
+                                         state=DISABLED)
+            self.__buttonDelVar.config(bg=self.__loader.colorPalettes.getColor("window"))
+            self.__buttonDelVar.config(fg=self.__loader.colorPalettes.getColor("font"))
+
+            self.__buttonDelVar.config(command=self.__buttonPressedFunction1)
+
+            self.__buttonAddVar.pack(side=LEFT, anchor=NW, fill=X)
+            self.__buttonDelVar.pack(side=LEFT, anchor=NE, fill=X)
+
+            self.__others.extend([self.__buttonAddVar, self.__buttonDelVar])
 
         t = Thread(target=self.resize)
         t.daemon=True
@@ -96,8 +126,6 @@ class CreateAndDeleteButtons:
 
     def __setText(self, txt):
         return(self.__loader.dictionaries.getWordFromCurrentLanguage(txt))
-
-
 
     def resize(self):
         from time import sleep
@@ -115,6 +143,10 @@ class CreateAndDeleteButtons:
                                                                       self.__lastScaleY*
                                                                       self.__lastScaleX
                                                                       ), False, False, False)
+                self.__bigFont = self.__loader.fontManager.getFont(round(self.__fontSize*1.25*
+                                                                      self.__lastScaleY*
+                                                                      self.__lastScaleX
+                                                                      ), False, False, False)
                 if self.__frame != None:
                     try:
                         self.__frame.config(width=self.__w * self.__lastScaleX)
@@ -128,12 +160,18 @@ class CreateAndDeleteButtons:
                                                    self.__lastScaleX*
                                                     self.__lastScaleY)
                                                    )
+                        if self.__name == "variable":
+                            self.__addressLabel.config(font=self.__smallFont)
+                            self.__addressEntry.config(font=self.__smallFont)
 
-                        self.__addressLabel.config(font=self.__smallFont)
-                        self.__addressEntry.config(font=self.__smallFont)
+                            self.__bitsLabel.config(font=self.__smallFont)
+                            self.__bitsEntry.config(font=self.__smallFont)
+                        elif self.__name == "array":
+                            self.__anotherFrame.config(
+                                width=self.__w*self.__lastScaleX,
+                                height=round(self.__h / 5)*self.__lastScaleY)
 
-                        self.__bitsLabel.config(font=self.__smallFont)
-                        self.__bitsEntry.config(font=self.__smallFont)
+
                     except Exception as e:
                         self.__loader.logger.errorLog(e)
 

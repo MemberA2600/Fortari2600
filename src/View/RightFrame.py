@@ -43,7 +43,8 @@ class RightFrame:
 
         for address in self.__loader.virtualMemory.memory.keys():
             for var in self.__loader.virtualMemory.memory[address].variables.keys():
-                if self.__loader.virtualMemory.memory[address].variables[var].validity == self.__selectedValidity:
+                if (self.__loader.virtualMemory.memory[address].variables[var].validity == self.__selectedValidity and
+                        self.__loader.virtualMemory.memory[address].variables[var].system == False):
                     #print(var, self.__loader.virtualMemory.memory[address].variables[var].validity)
                     self.variableList.append(var+" ("+address+", "+
                          self.__loader.virtualMemory.memory[address].variables[var].type+")")
@@ -70,8 +71,9 @@ class RightFrame:
         self.arrayList = []
 
         for name in self.__loader.virtualMemory.arrays.keys():
-            if self.__loader.virtualMemory.getArrayValidity(name) == self.__selectedValidity:
-                self.arrayList.append(name)
+            if self.__loader.virtualMemory.getArrayValidity(name) == self.__selectedValidity\
+                    or self.__loader.virtualMemory.getArrayValidity(name) == "global":
+                self.arrayList.append(name+" (" +self.__loader.virtualMemory.getArrayValidity(name)+ ")")
 
         self.arrayList.sort()
         self.arrayListBox.select_clear(0, END)
@@ -79,10 +81,13 @@ class RightFrame:
         for item in self.arrayList:
             self.arrayListBox.insert(END, item)
 
-        handler.date = self.arrayList
+        handler.data = self.arrayList
 
     def loadArrayData(self, listBox, data):
-        pass
+        arrayFrame = self.__loader.frames["ArrayFrame"]
+        arrayFrame.arrName.setEntry(
+            self.arrays.getSelectedName().split(" ")[0]
+        )
 
     def insertArray(self, listBox, data):
         pass

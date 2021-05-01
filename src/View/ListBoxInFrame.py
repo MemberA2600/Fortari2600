@@ -6,7 +6,6 @@ class ListBoxInFrame:
     def __init__(self, name, loader, container, fontmanager, multi, data, function):
 
         self.__name = name
-        self.__data = data
         self.__loader = loader
         self.__container = container
         self.__fontManager = fontmanager
@@ -55,15 +54,8 @@ class ListBoxInFrame:
         self.__setFont()
         self.__listOfItems = []
 
-        for d in data:
-            self.__listBox.insert(END, d)
-        self.__listBox.select_set(0)
-        self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
-        self.sizeListBox()
+        self.filler(data)
         self.__loader.listBoxes[name] = self
-        if len(data)>0:
-            self.__listBox.select_set(0)
-
 
         if function != None:
             self.__function = function
@@ -78,14 +70,31 @@ class ListBoxInFrame:
             self.__loader.destroyable.append(self.__listBox)
             self.__loader.destroyable.append(self.__scrollBar)
 
+        self.__listBox.after(100, self.tryAgain)
+
+    def tryAgain(self):
+        self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
+
+
+    def filler(self, data):
+        self.data = data
+        self.__listBox.delete(0, END)
+        for d in data:
+            self.__listBox.insert(END, d)
+        self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
+        self.sizeListBox()
+        if len(data)>0:
+            self.__listBox.select_set(0)
 
     def getSelectedName(self):
         from time import sleep
-        while True:
+        trial = 6
+        while trial>0:
             try:
-                return (self.__data[self.__listBox.curselection()[0]])
+                return (self.data[self.__listBox.curselection()[0]])
             except:
                 sleep(0.1)
+                trial-=1
 
     def getListBoxAndScrollBar(self):
         return(self.__listBox, self.__scrollBar)
