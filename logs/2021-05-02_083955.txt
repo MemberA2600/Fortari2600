@@ -1,0 +1,2686 @@
+**********************************
+*** 2021-05-02 08:39:56.437824 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000005CF23C8>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-02 08:39:57.583889 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.584890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.584890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.584890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.585890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.585890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.586890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.586890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.586890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.587890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.587890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.587890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.588890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.588890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-02 08:39:57.589890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-02 08:39:57.589890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-02 08:39:57.590890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(zerg,protoss)
+item = protoss
+
+
+**********************************
+*** 2021-05-02 08:39:57.590890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-02 08:39:57.590890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'zerg=nibble', '', 'protoss=byte', '', 'terran=nibble', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-02 08:39:57.591890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.591890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.591890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.592890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-02 08:39:57.592890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-02 08:39:57.593890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.593890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-02 08:39:57.593890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-02 08:39:57.594890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = bit
+
+
+**********************************
+*** 2021-05-02 08:39:57.594890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,Vacsora)
+item = Vacsora
+
+
+**********************************
+*** 2021-05-02 08:39:57.595890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-02 08:39:57.595890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-02 08:39:57.596890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.596890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.596890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.597890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.597890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.597890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.598890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.598890 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:39:57.602891 ***
+**********************************
+
+Exception: bad window path name ".!toplevel2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000005CF23C8>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-02 08:39:57.607891 ***
+**********************************
+
+Exception: bad window path name ".!toplevel2.!frame2.!frame3.!canvas"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000005CF23C8>
+sleep = <built-in function sleep>
+moving = None
+
+
+**********************************
+*** 2021-05-02 08:39:57.829904 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'temp1=byte\r', 'temp2=byte\r', 'temp3=byte\r', 'temp4=byte\r', 'temp5=byte\r', 'temp6=byte\r', 'temp7=byte\r', 'temp8=byte\r', 'temp9=byte\r', 'zerg=nibble\r', 'terran=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', 'WarCraft=array(protoss,temp4)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-02 08:40:05.214326 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8c
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-02 08:40:09.845591 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:10.445625 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:10.682639 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame2.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x0000000005D78978>
+text = 
+
+
+**********************************
+*** 2021-05-02 08:40:10.682639 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame2.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x0000000005BD05F8>
+buttonCreate = .!frame4.!frame.!frame2.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame2.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame2.!frame3.!entry>, <tkinter.StringVar object at 0x0000000005D1C2B0>, <tkinter.Entry object .!frame4.!frame.!frame2.!frame3.!entry2>, <tkinter.StringVar object at 0x0000000005D1C400>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:10.860649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:40:10.861649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:40:10.861649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:40:10.861649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-02 08:40:10.862649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,Vacsora)
+item = Vacsora
+
+
+**********************************
+*** 2021-05-02 08:40:10.862649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-02 08:40:10.863649 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-02 08:40:11.445682 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:12.045717 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:12.935768 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'temp1=byte\r', 'temp2=byte\r', 'temp3=byte\r', 'temp4=byte\r', 'temp5=byte\r', 'temp6=byte\r', 'temp7=byte\r', 'temp8=byte\r', 'temp9=byte\r', 'zerg=nibble\r', 'terran=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', 'WarCraft=array(protoss,temp4)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-02 08:40:13.045774 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:13.122778 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:13.645808 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:13.722813 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:14.199840 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame5.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x0000000005DCE860>
+text = 
+
+
+**********************************
+*** 2021-05-02 08:40:14.199840 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame5.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x0000000005DCE080>
+buttonCreate = .!frame4.!frame.!frame5.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame5.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame5.!frame3.!entry>, <tkinter.StringVar object at 0x0000000005DD7198>, <tkinter.Entry object .!frame4.!frame.!frame5.!frame3.!entry2>, <tkinter.StringVar object at 0x0000000005DD72E8>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:14.645865 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:14.722870 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:15.215898 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8c
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-02 08:40:15.245900 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:15.322904 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:16.245957 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:16.322961 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:16.845991 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:16.922996 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:17.846048 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:17.923053 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:18.446083 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:18.523087 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:19.446140 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:19.523144 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:20.046174 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:20.123179 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:21.046231 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:21.123236 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:21.646266 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:21.723270 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:22.646323 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:22.723327 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:23.246357 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:23.323362 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:23.808389 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C80D68>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.\r', 'Reggeli=byte\r', 'vacsora=byte\r', 'Csiga=bit\r', 'Kajalas=array(Reggeli,Vacsora)\r', 'Csillag=array(Reggeli,temp9)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-02 08:40:24.015401 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:24.246414 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:24.323419 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:24.615436 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:24.846449 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:24.923453 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:25.073462 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame8.!label2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MainMenuLabel
+__file__ = .\src\View\MainMenuLabel.py
+self = <MainMenuLabel.MainMenuLabel object at 0x000000000601C198>
+text = 
+
+
+**********************************
+*** 2021-05-02 08:40:25.073462 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame8.!frame3.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = VariableFrame
+__file__ = .\src\View\VariableFrame.py
+self = <VariableFrame.VariableFrame object at 0x0000000005DEE400>
+buttonCreate = .!frame4.!frame.!frame8.!frame3.!button
+buttonDelete = .!frame4.!frame.!frame8.!frame3.!button2
+others = [<tkinter.Entry object .!frame4.!frame.!frame8.!frame3.!entry>, <tkinter.StringVar object at 0x000000000601CA90>, <tkinter.Entry object .!frame4.!frame.!frame8.!frame3.!entry2>, <tkinter.StringVar object at 0x000000000601CBA8>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:25.216470 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8c
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-02 08:40:25.615493 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:25.846506 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:25.923510 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:26.215527 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:26.446540 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:26.523545 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:27.215584 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:27.446598 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:27.523602 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:27.815619 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:28.046632 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:28.123636 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:28.815676 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:29.046689 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:29.123693 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:29.415710 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:29.646723 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:29.723728 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:30.415767 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:30.646781 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:30.723785 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:31.015802 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:31.246815 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:31.323819 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.015859 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.246872 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.324877 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.615893 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.846906 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:32.924911 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:33.615950 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame9.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000006024C18>
+buttonCreate = .!frame4.!frame.!frame9.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame9.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame9.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:33.846964 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005D20748>
+buttonCreate = .!frame4.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:33.924968 ***
+**********************************
+
+Exception: invalid command name ".!frame4.!frame.!frame6.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x0000000005DE0C88>
+buttonCreate = .!frame4.!frame.!frame6.!frame4.!button
+buttonDelete = .!frame4.!frame.!frame6.!frame4.!button2
+others = [<tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button>, <tkinter.Button object .!frame4.!frame.!frame6.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-02 08:40:35.217042 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8c
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+

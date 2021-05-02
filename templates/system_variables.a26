@@ -1,2 +1,11 @@
-rand=byte
-counter=byte
+rand=byte,non-iter
+counter=byte,non-iter
+temp1=byte,iterable
+temp2=byte,iterable
+temp3=byte,iterable
+temp4=byte,iterable
+temp5=byte,iterable
+temp6=byte,iterable
+temp7=byte,iterable
+temp8=byte,iterable
+temp9=byte,iterable

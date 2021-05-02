@@ -69,3 +69,5 @@ alreadyArr=A megadott nevet egy tömb már használja.
 freeMemory=Memory Available:
 basicRam=Available Basic RAM:
 saraRam=Available SARA RAM:
+varLocated=Azonos nevû változó található egy másik bank-ban.
+arrLocated=Azonos nevû változó található egy másik bank-ban.

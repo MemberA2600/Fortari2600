@@ -1,4 +1,6 @@
-*** Here you can find variables those are only aviable for this screen.
-Reggeli=byte
-vacsora=byte
-Kajalas=array(Reggeli,Vacsora)
+*** Here you can find variables those are only aviable for this screen.
+Reggeli=byte
+vacsora=byte
+Csiga=bit
+Kajalas=array(Reggeli,Vacsora)
+Csillag=array(Reggeli,temp9)

@@ -167,18 +167,28 @@ class ArrayFrame:
                 #print(self.__selectedValidity)
 
                 if self.__lastText in self.__loader.virtualMemory.arrays.keys():
-                    self.__buttonCreate.config(text =
-                                        self.__loader.dictionaries.getWordFromCurrentLanguage("modify"))
-                    self.__mod = True
+                    if (self.__loader.virtualMemory.getArrayValidity(self.__lastText)!="global" and
+                            self.__selectedValidity != self.__loader.virtualMemory.getArrayValidity(self.__lastText)):
+                        self.__buttonCreate.config(state=DISABLED)
+                        self.__buttonDelete.config(state=DISABLED)
+                        self.__buttonVarDel.config(state=DISABLED)
+                        self.__buttonVarAdd.config(state=DISABLED)
+                        self.__errorLabel.changeText("arrLocated")
 
-                    self.fillListBoxes()
+                    else:
+                        self.__buttonCreate.config(text =
+                                            self.__loader.dictionaries.getWordFromCurrentLanguage("modify"))
+                        self.__mod = True
 
-                    self.__buttonDelete.config(state=NORMAL)
+                        self.fillListBoxes()
+                        self.__buttonDelete.config(state=NORMAL)
 
                 else:
                     self.__buttonCreate.config(text =
                                         self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
                     self.__mod = False
+                    self.fillListBoxes()
+
                     self.__buttonDelete.config(state=DISABLED)
 
                 sleep(0.1)
@@ -188,16 +198,17 @@ class ArrayFrame:
 
     def fillListBoxes(self):
         temp = []
-        for address in self.__loader.virtualMemory.memory.keys():
-            for variable in self.__loader.virtualMemory.memory[address].variables.keys():
-                if (self.__loader.virtualMemory.memory[address].variables[variable].system == False and
-                        variable in list(self.__loader.virtualMemory.arrays[
-                                             self.__lastText
-                                         ].keys())):
-                    temp.append(variable + " (" + self.__loader.virtualMemory.memory[address].variables[
-                        variable].validity + ")")
+        if self.__mod==True:
+            for address in self.__loader.virtualMemory.memory.keys():
+                for variable in self.__loader.virtualMemory.memory[address].variables.keys():
+                    if (self.__loader.virtualMemory.memory[address].variables[variable].iterable == True and
+                            variable in list(self.__loader.virtualMemory.arrays[
+                                                 self.__lastText
+                                             ].keys())):
+                        temp.append(variable + " (" + self.__loader.virtualMemory.memory[address].variables[
+                            variable].validity + ")")
 
-        temp.sort()
+            temp.sort()
         self.__varListBox.filler(temp)
         """
         self.__varListBox.filler(list(self.__loader.virtualMemory.arrays[
@@ -210,7 +221,7 @@ class ArrayFrame:
 
                 if ((variable + " (" + self.__loader.virtualMemory.memory[address].variables[
                     variable].validity + ")" not in temp) and
-                        self.__loader.virtualMemory.memory[address].variables[variable].system == False and
+                        self.__loader.virtualMemory.memory[address].variables[variable].iterable == True and
                         (self.__loader.virtualMemory.memory[address].variables[variable].validity == "global" or
                          self.__loader.virtualMemory.memory[address].variables[
                              variable].validity == self.__selectedValidity)):

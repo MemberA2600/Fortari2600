@@ -11,6 +11,8 @@ class ListBoxInFrame:
         self.__fontManager = fontmanager
         w = self.__loader.mainWindow.getWindowSize()
         self.__baseWidth=w[0]/10*multi
+        self.__baseSize=round(w[0]/1350*w[1]/1100*10)
+
         try:
             self.__baseHeight=self.__container.getFrameSize()[1]
             self.__frame = Frame(self.__container.getFrame(), width=self.__baseWidth,
@@ -132,7 +134,7 @@ class ListBoxInFrame:
             sleep(0.02)
 
     def __setFont(self):
-        self.__font = self.__fontManager.getFont("small", False, False, False)
+        self.__font = self.__fontManager.getFont(self.__baseSize, False, False, False)
         self.__listBox.config(font=self.__font)
 
 

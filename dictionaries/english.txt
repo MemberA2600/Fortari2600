@@ -71,3 +71,5 @@ basicRam=Available Basic RAM globally:
 saraRam=Available SARA RAM globally:
 basicRamLocal=Available Basic RAM for this bank:
 saraRamLocal=Available SARA RAM for this bank:
+varLocated=Variable with the same name found in other bank.
+arrLocated=Array with the same name found in other bank.

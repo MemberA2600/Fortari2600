@@ -64,8 +64,10 @@ class VirtualMemory:
     def addSystemMemory(self):
         d = self.__loader.dataReader.readDataFile("templates"+os.sep+"system_variables.a26")
         for key in d:
-            self.addVariable(key, d[key], "global")
+            self.addVariable(key, d[key].split(",")[0], "global")
             self.getVariableByName(key, "bank1").system=True
+            if d[key].split(",")[1] == "non-iter":
+                self.getVariableByName(key, "bank1").iterable = False
 
     def addArray(self, name):
         self.arrays[name] = {}
@@ -279,15 +281,18 @@ class VirtualMemory:
         self.codes[bank][section].code = string
 
     def getArrayValidity(self,arrayname):
-        arrayKeyList = list(self.arrays[arrayname].keys())
+        try:
+            arrayKeyList = list(self.arrays[arrayname].keys())
 
-        for num in range(0, len(arrayKeyList)):
-            name = list(self.arrays[arrayname].keys())[num]
-            for address in self.memory.keys():
-                for variable in self.memory[address].variables.keys():
-                    #print(variable, name)
-                    if variable == name and self.memory[address].variables[variable].validity!="global":
-                        return(self.memory[address].variables[variable].validity)
+            for num in range(0, len(arrayKeyList)):
+                name = list(self.arrays[arrayname].keys())[num]
+                for address in self.memory.keys():
+                    for variable in self.memory[address].variables.keys():
+                        #print(variable, name)
+                        if variable == name and self.memory[address].variables[variable].validity!="global":
+                            return(self.memory[address].variables[variable].validity)
+        except:
+            pass
         return("global")
 
     def setVariablesFromMemory(self, mode):

@@ -111,27 +111,32 @@ class VariableFrame:
                 #print(self.__selectedValidity)
 
                 if self.__loader.virtualMemory.checkIfExists(self.__lastText, self.__selectedValidity):
-                    self.__buttonCreate.config(text =
-                                        self.__loader.dictionaries.getWordFromCurrentLanguage("modify"))
-                    self.__mod = True
-                    self.__buttonDelete.config(state=NORMAL)
-                    self.__variableEntryText.set(
-                        self.__loader.virtualMemory.getAddressOnVariableIsStored(self.__lastText, self.__selectedValidity))
+                    if self.__checkIfHaveItSomeWhereElse(self.__lastText):
+                        self.__errorLabel.changeText("varLocated")
+                        self.__buttonCreate.config(state=DISABLED)
+                        self.__buttonDelete.config(state=DISABLED)
+                    else:
+                        self.__buttonCreate.config(text =
+                                            self.__loader.dictionaries.getWordFromCurrentLanguage("modify"))
+                        self.__mod = True
+                        self.__buttonDelete.config(state=NORMAL)
+                        self.__variableEntryText.set(
+                            self.__loader.virtualMemory.getAddressOnVariableIsStored(self.__lastText, self.__selectedValidity))
 
-                    self.__variableListBox.select_clear(0, END)
-                    selector = {
-                        "bit": 0, "doubleBit": 1, "nibble": 2, "byte": 3
-                                }
-                    self.__variableListBox.select_set(selector[self.__loader.virtualMemory.
-                                                      getVariableByName(self.__lastText, self.__selectedValidity).type])
+                        self.__variableListBox.select_clear(0, END)
+                        selector = {
+                            "bit": 0, "doubleBit": 1, "nibble": 2, "byte": 3
+                                    }
+                        self.__variableListBox.select_set(selector[self.__loader.virtualMemory.
+                                                          getVariableByName(self.__lastText, self.__selectedValidity).type])
 
 
-                    text = ""
-                    for num in (self.__loader.virtualMemory.
-                                getVariableByName(self.__lastText, self.__selectedValidity).usedBits):
+                        text = ""
+                        for num in (self.__loader.virtualMemory.
+                                    getVariableByName(self.__lastText, self.__selectedValidity).usedBits):
 
-                        text += str(num)+", "
-                    self.__bitEntryText.set(text[:-2])
+                            text += str(num)+", "
+                        self.__bitEntryText.set(text[:-2])
 
 
                 else:
@@ -147,6 +152,19 @@ class VariableFrame:
                 continue
 
             sleep(0.4)
+
+    def __checkIfHaveItSomeWhereElse(self, name):
+        val = ["global", "bank2", "bank3", "bank4","bank5","bank6","bank7","bank8"]
+        val.remove(self.__selectedValidity)
+
+        for validity in val:
+            if self.__loader.virtualMemory.checkIfExists(self.__lastText, validity):
+                return(True)
+
+        return(False)
+
+
+
 
     def __createVar(self):
         if self.__mod == True:

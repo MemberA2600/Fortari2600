@@ -5,5 +5,6 @@ class Variable:
         self.usedBits = bits
         self.validity = validity
         self.system = False
+        self.iterable=True
             #"global", bank{2-8}
 

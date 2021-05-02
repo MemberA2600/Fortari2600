@@ -358,6 +358,8 @@ class MainWindow:
 
     def __saveOnlyOne(self, bank, variable):
         try:
+            if bank == "bank1":
+                variable = "global_variables"
             path = self.projectPath+bank+os.sep+variable+".a26"
             file = open(path, "w", encoding="latin-1")
             BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
