@@ -5,6 +5,6 @@ soundOn=True
 emulator=
 colorPalette=default
 autoSave=2
-maxUndo=50
+maxUndo=20
 debug=True
 keepLogs=0

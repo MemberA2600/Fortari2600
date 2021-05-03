@@ -53,6 +53,9 @@ class CreateAndDeleteButtons:
 
         self.__others = []
 
+        self.__loader.destroyable.append(self.__buttonCreate)
+        self.__loader.destroyable.append(self.__buttonDelete)
+
         if self.__name == "variable":
             self.__addressLabel = Label(self.__frame, font=self.__smallFont,
                                         text = self.__loader.dictionaries.getWordFromCurrentLanguage("varAddress"))
@@ -111,6 +114,9 @@ class CreateAndDeleteButtons:
 
             self.__buttonAddVar.pack(side=LEFT, anchor=NW, fill=X)
             self.__buttonDelVar.pack(side=LEFT, anchor=NE, fill=X)
+
+            self.__loader.destroyable.append(self.__buttonAddVar)
+            self.__loader.destroyable.append(self.__buttonDelVar)
 
             self.__others.extend([self.__buttonAddVar, self.__buttonDelVar])
 

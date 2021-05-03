@@ -10,6 +10,7 @@ class VariableFrame:
     def __init__(self, frame, loader):
         self.__container = frame
         self.__loader = loader
+        #self.__modify = False
 
         self.__w = self.__container.winfo_width()
         self.__h = round(self.__container.winfo_height()/2.5)
@@ -102,8 +103,10 @@ class VariableFrame:
                     sleep(0.1)
                     continue
 
-
-                self.__buttonCreate.config(state=NORMAL)
+                try:
+                    self.__buttonCreate.config(state=NORMAL)
+                except Exception as e:
+                    self.__loader.logger.errorLog(e)
                 self.__selectedValidity = self.__loader.listBoxes["bankBox"].getSelectedName()
                 if self.__selectedValidity == "bank1":
                     self.__selectedValidity = "global"
@@ -140,10 +143,16 @@ class VariableFrame:
 
 
                 else:
-                    self.__buttonCreate.config(text =
-                                        self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
+                    try:
+                        self.__buttonCreate.config(text =
+                                            self.__loader.dictionaries.getWordFromCurrentLanguage("create"))
+                    except Exception as e:
+                        self.__loader.logger.errorLog(e)
                     self.__mod = False
-                    self.__buttonDelete.config(state=DISABLED)
+                    try:
+                        self.__buttonDelete.config(state=DISABLED)
+                    except Exception as e:
+                        self.__loader.logger.errorLog(e)
                     self.__variableEntryText.set("")
                     self.__bitEntryText.set("")
 
@@ -167,7 +176,9 @@ class VariableFrame:
 
 
     def __createVar(self):
+        #self.__loader.virtualMemory.archieve()
         if self.__mod == True:
+            self.__modify = True
             self.__deleteVar()
         self.__loader.virtualMemory.addVariable(self.__lastText,
                                                    self.__varListBox.getSelectedName(),
@@ -178,6 +189,8 @@ class VariableFrame:
         self.__loader.frames["rightFrame"].variables.refiller()
 
     def __deleteVar(self):
+        #if self.__modify == False:
+        #    self.__loader.virtualMemory.archieve()
         self.__loader.virtualMemory.removeVariable(self.__lastText,
                                                    self.__selectedValidity
                                                    )
@@ -192,9 +205,10 @@ class VariableFrame:
             bank = "bank1"
             section = "global_variables"
 
-        self.__loader.virtualMemory.moveVariablesToMemory(bank)
         self.__loader.virtualMemory.codes[bank][section].changed = True
-
+        self.__loader.virtualMemory.moveVariablesToMemory(bank)
+        self.__loader.virtualMemory.archieve()
+        self.__modify = False
 
     def __modifyFields(self, bool):
         if bool == False:

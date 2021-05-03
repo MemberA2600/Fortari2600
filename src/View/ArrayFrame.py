@@ -10,6 +10,7 @@ class ArrayFrame:
     def __init__(self, frame, loader):
         self.__container = frame
         self.__loader = loader
+        #self.__modify = False
 
         self.__w = self.__container.winfo_width()
         self.__h = round(self.__container.winfo_height()/2.5)
@@ -233,8 +234,10 @@ class ArrayFrame:
 
 
     def __createArr(self):
+        #self.__loader.virtualMemory.archieve()
         self.__original = self.__loader.virtualMemory.getArrayValidity(self.__lastText)
         if self.__mod == True:
+            #self.__modify = True
             self.__deleteArr()
         self.__loader.virtualMemory.addArray(self.__lastText)
         for variable in self.__varListBox.data:
@@ -250,6 +253,9 @@ class ArrayFrame:
         self.__finish(True, bank)
 
     def __deleteArr(self):
+        #if self.__modify == False:
+        #    self.__loader.virtualMemory.archieve()
+
         bank = self.__loader.virtualMemory.getArrayValidity(self.__lastText)
         self.__loader.virtualMemory.removeArray(self.__lastText)
         self.__loader.frames["rightFrame"].arrays.refiller()
@@ -261,8 +267,11 @@ class ArrayFrame:
         if bank == "global":
             bank = "bank1"
             section = "global_variables"
-        self.__loader.virtualMemory.moveVariablesToMemory(bank)
         self.__loader.virtualMemory.codes[bank][section].changed = True
+        self.__loader.virtualMemory.moveVariablesToMemory(bank)
+        self.__loader.virtualMemory.archieve()
+        self.__modify = False
+
 
         if create == False:
             self.arrName.setEntry("")
@@ -273,8 +282,8 @@ class ArrayFrame:
             if bank == "global":
                 bank = "bank1"
                 section = "global_variables"
-            self.__loader.virtualMemory.moveVariablesToMemory(bank)
             self.__loader.virtualMemory.codes[bank][section].changed = True
+            self.__loader.virtualMemory.moveVariablesToMemory(bank)
 
             self.__lastText = ""
 

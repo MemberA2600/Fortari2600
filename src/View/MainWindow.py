@@ -138,19 +138,19 @@ class MainWindow:
                                           self.__closeProjectButtonFunction, "projectPath",
                                             False, None)
         self.__undoButton = self.__buttonMaker.createButton("undo", 7.5,
-                                          self.__closeProjectButtonFunction, "projectPath",
+                                          self.__undoButtonFunction, None,
                                             False, self.__undoButtonHandler)
         self.__redoButton = self.__buttonMaker.createButton("redo", 8.5,
-                                          self.__closeProjectButtonFunction, "projectPath",
+                                          self.__redoButtonFunction, None,
                                             False, self.__redoButtonHandler)
 
         self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 10,
                                           self.__closeProjectButtonFunction, "projectPath",
-                                            False, self.__redoButtonHandler)
+                                            False, None)
 
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
                                           self.__closeProjectButtonFunction, "projectPath",
-                                            False, self.__redoButtonHandler)
+                                            False, None)
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
@@ -329,7 +329,7 @@ class MainWindow:
 
             self.__loader.virtualMemory.setLocksAfterLoading()
             self.__loader.virtualMemory.setVariablesFromMemory("all")
-
+            self.__loader.virtualMemory.archieve()
             self.__soundPlayer.playSound("Success")
 
         except Exception as e:
@@ -352,8 +352,6 @@ class MainWindow:
         item = self.__loader.virtualMemory.codes[bank][variable]
         item.code = self.__loader.io.loadWholeText(path)
         item.changed = False
-        item.archived = []
-        item.cursor = 0
 
 
     def __saveOnlyOne(self, bank, variable):
@@ -368,6 +366,7 @@ class MainWindow:
             file.write(self.__loader.virtualMemory.codes[bank][variable].code)
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False
+            self.__loader.virtualMemory.emptyArchieved()
             #item.archived = []
             #item.cursor = 0
         except Exception as e:
@@ -392,6 +391,7 @@ class MainWindow:
     def closeProject(self):
         self.__soundPlayer.playSound("Close")
         self.__setProjectPath(None)
+        self.__loader.virtualMemory.emptyArchieved()
         self.__loader.virtualMemory.resetMemory()
 
     def __openButtonFunction(self):
@@ -424,25 +424,35 @@ class MainWindow:
         print("DONE!!!")
 
     def __undoButtonFunction(self):
-        print("DONE!!!")
+        self.__loader.virtualMemory.getArcPrev()
 
     def __redoButtonFunction(self):
-        print("DONE!!!")
+        self.__loader.virtualMemory.getArcNext()
 
     def __undoButtonHandler(self, button):
         from time import sleep
-        while True:
-            #button.preventRun = True
-            #button.getButton().config(state = NORMAL)
+        while self.dead==False:
+            try:
+                if len(self.__loader.virtualMemory.archieved)>0 and self.__loader.virtualMemory.cursor>0:
+                    self.__undoButton.getButton().config(state=NORMAL)
 
+                else:
+                    self.__undoButton.getButton().config(state=DISABLED)
+            except:
+                pass
             sleep(1)
 
     def __redoButtonHandler(self, button):
         from time import sleep
-        while True:
-            #button.preventRun = True
-            #button.getButton().config(state = NORMAL)
+        while self.dead==False:
+            try:
+                if self.__loader.virtualMemory.cursor<len(self.__loader.virtualMemory.archieved)-1:
+                    self.__redoButton.getButton().config(state=NORMAL)
 
+                else:
+                    self.__redoButton.getButton().config(state=DISABLED)
+            except:
+                pass
             sleep(1)
 
 

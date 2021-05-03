@@ -37,7 +37,7 @@ class BFG9000:
                                  )
 
         self.__mainFrame.pack_propagate(False)
-        self.__first = True
+        self.first = True
 
         self.__w2 = self.__editorHandler.getWindowSize()[0]*0.18
         self.__leftFrame = Frame(self.frame, width=self.__w2, height=self.__h,
@@ -105,14 +105,14 @@ class BFG9000:
     def checker(self):
         from time import sleep
         while self.__editorHandler.dead==False:
-            if self.__first == True or (
+            if self.first == True or (
                     self.__selectedBank != self.__loader.listBoxes["bankBox"].getSelectedName() or
                     (self.__selectedSection != self.__loader.listBoxes["sectionBox"].getSelectedName() and
                     self.__selectedBank != "bank1"
                     )) or self.__lastPath !=self.__loader.mainWindow.projectPath:
 
                 self.__lastPath = self.__loader.mainWindow.projectPath
-                self.__first = False
+                self.first = False
                 self.actual = None
 
                 if self.__lastPath ==None:

@@ -2,6 +2,8 @@ from DataItem import DataItem
 import os
 from MemoryItem import MemoryItem
 from threading import Thread
+from tkinter import END
+from copy import deepcopy
 
 class VirtualMemory:
 
@@ -10,6 +12,7 @@ class VirtualMemory:
         self.__loader = loader
         self.codes = {}
         self.locks = {}
+
 
         for num in range(1,9):
             bankNum = "bank"+str(num)
@@ -30,10 +33,52 @@ class VirtualMemory:
         }
 
         self.resetMemory()
+        self.emptyArchieved()
 
         t = Thread(target=self.testPrintMemory)
         t.daemon = True
         t.start()
+
+    def archieve(self):
+        self.archieved = self.archieved[:self.cursor+1]
+
+        self.archieved.append(
+            {
+             "viewed": [
+                 self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].curselection()[0],
+                 self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].curselection()[0]
+             ],
+             "codes": deepcopy(self.codes),
+             "locks": deepcopy(self.locks),
+             "memory": deepcopy(self.memory)
+            }
+        )
+
+        if len(self.archieved)>int(self.__loader.config.getValueByKey("maxUndo")):
+            self.archieved.pop(0)
+
+        self.cursor = len(self.archieved)-1
+
+    def getArcPrev(self):
+        self.cursor-=1
+        self.__goToState()
+
+    def getArcNext(self):
+        self.cursor+=1
+        self.__goToState()
+
+    def __goToState(self):
+        self.codes = deepcopy(self.archieved[self.cursor]["codes"])
+        self.locks = deepcopy(self.archieved[self.cursor]["locks"])
+        self.memory = deepcopy(self.archieved[self.cursor]["memory"])
+        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
+        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
+
+        self.__loader.BFG9000.first = True
+
+    def emptyArchieved(self):
+        self.cursor = 0
+        self.archieved = []
 
     def testPrintMemory(self):
         from time import sleep

@@ -27,7 +27,8 @@ class MenuButton:
         self.__button = Button(self.__contentHolder, name=image,
                                width=self.__loader.mainWindow.getConstant(),
                                height=self.__loader.mainWindow.getConstant(),
-                               command=self.__function)
+                               command=self.__function,
+                               state=DISABLED)
 
         self.__button.bind("<Enter>", self.__functionEnter)
         self.__button.bind("<Leave>", self.__functionLeave)
