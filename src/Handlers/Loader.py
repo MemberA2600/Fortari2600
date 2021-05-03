@@ -29,5 +29,3 @@ class Loader:
         self.subMenus = []
 
         self.sections = []
-
-

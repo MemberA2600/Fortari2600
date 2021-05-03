@@ -30,6 +30,10 @@ class SubMenuEntryWithButton:
         self.__entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
         self.__entry.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
+        self.__entry.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
+        self.__entry.bind("<FocusOut>", self.__loader.mainWindow.focusOut)
+
+
 
     def enabled(self, bool):
         if bool == True:

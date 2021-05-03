@@ -63,6 +63,10 @@ class FrameWithLabelAndEntry:
         t.daemon=True
         t.start()
 
+        self.__entry.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
+        self.__entry.bind("<FocusOut>", self.__loader.mainWindow.focusOut)
+
+
     def setEntry(self, text):
         self.__stringVar.set(text)
 

@@ -30,6 +30,9 @@ class MainWindow:
 
         self.__setProjectPath(None)
 
+        self.focused = None
+        self.clipBoardText = None
+
         self.__loader.mainWindowHander.mainWindow = self
         self.editor = self.__loader.tk
 
@@ -132,11 +135,11 @@ class MainWindow:
                                           self.__closeProjectButtonFunction, "projectPath",
                                             False, None)
         self.__copyButton = self.__buttonMaker.createButton("copy", 5.5,
-                                          self.__closeProjectButtonFunction, "projectPath",
-                                            False, None)
+                                          self.__copyButtonFunction, None,
+                                            False, self.setCopyButton)
         self.__pasteButton = self.__buttonMaker.createButton("paste", 6.5,
-                                          self.__closeProjectButtonFunction, "projectPath",
-                                            False, None)
+                                          self.__pasteButtonFunction, None,
+                                            False, self.setPasteButton)
         self.__undoButton = self.__buttonMaker.createButton("undo", 7.5,
                                           self.__undoButtonFunction, None,
                                             False, self.__undoButtonHandler)
@@ -366,7 +369,7 @@ class MainWindow:
             file.write(self.__loader.virtualMemory.codes[bank][variable].code)
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False
-            self.__loader.virtualMemory.emptyArchieved()
+            #self.__loader.virtualMemory.emptyArchieved()
             #item.archived = []
             #item.cursor = 0
         except Exception as e:
@@ -418,10 +421,12 @@ class MainWindow:
         self.closeProject()
 
     def __copyButtonFunction(self):
-        print("DONE!!!")
+        import clipboard
+        clipboard.copy(self.focused.selection_get())
+        self.clipBoardText = clipboard.paste()
 
     def __pasteButtonFunction(self):
-        print("DONE!!!")
+        self.focused.insert(INSERT, self.clipBoardText)
 
     def __undoButtonFunction(self):
         self.__loader.virtualMemory.getArcPrev()
@@ -465,3 +470,34 @@ class MainWindow:
         elif num<18:
             num=18
         return(num)
+
+    def focusIn(self, event):
+        self.focused = event.widget
+
+    def focusOut(self, event):
+        self.focused = None
+
+    def setCopyButton(self, button):
+        from time import sleep
+        sleep(2)
+        while self.dead==False:
+            if self.projectPath==None or self.focused == None:
+                self.__copyButton.getButton().config(state=DISABLED)
+            else:
+                self.__copyButton.getButton().config(state=NORMAL)
+
+
+            sleep(0.4)
+
+    def setPasteButton(self, button):
+        from time import sleep
+        sleep(2)
+        while self.dead==False:
+            if self.projectPath==None or self.focused == None:
+                self.__pasteButton.getButton().config(state=DISABLED)
+            else:
+                if self.clipBoardText == None:
+                    self.__pasteButton.getButton().config(state=DISABLED)
+                else:
+                    self.__pasteButton.getButton().config(state=NORMAL)
+            sleep(0.4)
