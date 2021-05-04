@@ -481,7 +481,7 @@ class MainWindow:
         from time import sleep
         sleep(2)
         while self.dead==False:
-            if self.projectPath==None or self.focused == None:
+            if self.focused == None:
                 self.__copyButton.getButton().config(state=DISABLED)
             else:
                 self.__copyButton.getButton().config(state=NORMAL)
@@ -493,7 +493,7 @@ class MainWindow:
         from time import sleep
         sleep(2)
         while self.dead==False:
-            if self.projectPath==None or self.focused == None:
+            if self.focused == None:
                 self.__pasteButton.getButton().config(state=DISABLED)
             else:
                 if self.clipBoardText == None:
