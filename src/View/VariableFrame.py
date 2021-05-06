@@ -243,5 +243,15 @@ class VariableFrame:
             self.__errorLabel.changeText("alreadyArr")
             return (False)
 
+        for command in self.__loader.syntaxList.keys():
+            if command == self.__lastText:
+                self.__errorLabel.changeText("commandName")
+                return (False)
+            else:
+                for alias in self.__loader.syntaxList[command].alias:
+                    if alias == self.__lastText:
+                        self.__errorLabel.changeText("commandName")
+                        return (False)
+
         self.__errorLabel.changeText("")
         return(True)

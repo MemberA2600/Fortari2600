@@ -73,3 +73,4 @@ basicRamLocal=Available Basic RAM for this bank:
 saraRamLocal=Available SARA RAM for this bank:
 varLocated=Variable with the same name found in other bank.
 arrLocated=Array with the same name found in other bank.
+commandName=Can't assign name given already to a command.

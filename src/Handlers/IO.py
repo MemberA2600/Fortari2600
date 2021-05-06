@@ -56,3 +56,10 @@ class IO:
                 names.append(".".join(file.split(".")[:-1]))
 
         return(names)
+
+    def loadSyntax(self):
+        from Command import Command
+        for item in self.loadWholeText("config"+os.sep+"syntax.txt").split("\n"):
+            self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=",2)[1].replace("\n","").replace("\r",""))
+
+

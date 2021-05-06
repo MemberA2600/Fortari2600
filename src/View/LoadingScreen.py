@@ -61,5 +61,7 @@ class LoadingScreen():
         from Logger import Logger
         self.__loader.logger = Logger(self.__loader)
 
+        self.__loader.io.loadSyntax()
+
         self.__Loading_Window.destroy()
 

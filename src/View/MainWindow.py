@@ -353,7 +353,7 @@ class MainWindow:
     def __setVirtualMemoryItem(self, bank, variable):
         path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
-        item.code = self.__loader.io.loadWholeText(path)
+        item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
         item.changed = False
 
 
@@ -366,7 +366,7 @@ class MainWindow:
             BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
             if bank == "bank1" or variable == "local_variables":
                 self.__loader.virtualMemory.setVariablesFromMemory(bank)
-            file.write(self.__loader.virtualMemory.codes[bank][variable].code)
+            file.write(self.__changeLastDeliminator(self.__loader.virtualMemory.codes[bank][variable].code, variable))
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False
             #self.__loader.virtualMemory.emptyArchieved()
@@ -380,6 +380,33 @@ class MainWindow:
                                             },
                                             str(e)
                                             )
+
+    def __changeLastDeliminator(self, text, section):
+        if section not in ["enter", "leave", "overscan", "screen_bottom"]:
+            return (text)
+        newText=[]
+        delimiter = self.__config.getValueByKey("deliminator")
+        for line in text.split("\n"):
+            if line.startswith("*"):
+                newText.append(line)
+            else:
+                valid = 0
+                for position in range(0, len(line)-len(delimiter)):
+                    if line[position] == "(":
+                        valid+=1
+                    elif line[position] == ")":
+                        valid-=1
+                    elif valid == 0:
+                        if line[position:position+len(delimiter)] == delimiter:
+                            line = line[:position] + "%DELIMINATOR%" + line[position+len(delimiter):]
+                            break
+                newText.append(line)
+
+
+
+        return(os.linesep.join(newText))
+
+        return(self.__config.getValueByKey("deliminator"))
 
     def __saveProject(self):
         self.__saveOnlyOne("bank1", "bank_configurations")

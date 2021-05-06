@@ -105,6 +105,16 @@ class ArrayFrame:
                     self.__errorLabel.changeText("alreadyVar")
                 return (False)
 
+        for command in self.__loader.syntaxList.keys():
+            if command == self.__lastText:
+                self.__errorLabel.changeText("commandName")
+                return (False)
+            else:
+                for alias in self.__loader.syntaxList[command].alias:
+                    if alias == self.__lastText:
+                        self.__errorLabel.changeText("commandName")
+                        return (False)
+
         return(True)
 
     def __checkThings(self, buttonCreate, buttonDelete, others):

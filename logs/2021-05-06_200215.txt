@@ -1,0 +1,12 @@
+**********************************
+*** 2021-05-06 20:02:15.576216 ***
+**********************************
+
+Exception: height and width must be > 0
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = LockFrame
+__file__ = .\src\View\LockFrame.py
+self = <LockFrame.LockFrame object at 0x0000000005CDEAC8>
+
+

@@ -19,6 +19,7 @@ class Loader:
         self.codeBox = None
         self.BFG9000 = None
         self.logger = None
+        self.syntaxList = {}
 
         self.frames = {}
         self.menuButtons = {}
