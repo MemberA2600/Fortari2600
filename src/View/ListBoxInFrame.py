@@ -13,6 +13,8 @@ class ListBoxInFrame:
         self.__baseWidth=w[0]/10*multi
         self.__baseSize=round(w[0]/1350*w[1]/1100*10)
 
+        self.__first = True
+
         try:
             self.__baseHeight=self.__container.getFrameSize()[1]
             self.__frame = Frame(self.__container.getFrame(), width=self.__baseWidth,
@@ -113,7 +115,7 @@ class ListBoxInFrame:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False:
+        while self.__loader.mainWindow.dead == False or self.__first == True:
             try:
                 if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
                         and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]):
@@ -128,6 +130,7 @@ class ListBoxInFrame:
 
                 self.__setFont()
                 self.sizeListBox()
+                self.__first = False
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 

@@ -13,6 +13,12 @@ class AtariLogo:
         self.__frames = []
         self.__counter = 0
 
+        from SpaceShip import SpaceShip
+        self.__spaceShip1 = SpaceShip(self.__loader, self.__left)
+        self.__spaceShip2 = SpaceShip(self.__loader, self.__right)
+        self.__spaceShip1.setOther(self.__spaceShip2)
+        self.__spaceShip2.setOther(self.__spaceShip1)
+
         for num in range(1, 20):
             num = str(num)
             if len(num) == 1:

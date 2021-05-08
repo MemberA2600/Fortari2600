@@ -310,6 +310,14 @@ class MainWindow:
                     continue
             sleep(0.1)
 
+    def changeAliasInCodes(self):
+        for bank in self.__loader.virtualMemory.codes.keys():
+            for section in self.__loader.virtualMemory.codes[bank].keys():
+                for command in self.__loader.syntaxList.keys():
+                    self.__loader.virtualMemory.codes[bank][section].code = (
+                    self.__loader.syntaxList[command].changeAliasToName(
+                        command, self.__loader.virtualMemory.codes[bank][section].code
+                    ))
 
 
     def openProject(self, path):
@@ -366,7 +374,7 @@ class MainWindow:
             BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
             if bank == "bank1" or variable == "local_variables":
                 self.__loader.virtualMemory.setVariablesFromMemory(bank)
-            file.write(self.__changeLastDeliminator(self.__loader.virtualMemory.codes[bank][variable].code, variable))
+            file.write(self.__changeFirstValidDeliminator(self.__loader.virtualMemory.codes[bank][variable].code, variable))
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False
             #self.__loader.virtualMemory.emptyArchieved()
@@ -381,13 +389,13 @@ class MainWindow:
                                             str(e)
                                             )
 
-    def __changeLastDeliminator(self, text, section):
+    def __changeFirstValidDeliminator(self, text, section):
         if section not in ["enter", "leave", "overscan", "screen_bottom"]:
             return (text)
         newText=[]
         delimiter = self.__config.getValueByKey("deliminator")
         for line in text.split("\n"):
-            if line.startswith("*"):
+            if line.startswith("*") or line.startswith("#"):
                 newText.append(line)
             else:
                 valid = 0

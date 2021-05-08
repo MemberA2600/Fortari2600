@@ -1,4 +1,3 @@
-from tkinter import *
 from PIL import ImageTk, Image as IMAGE
 from threading import Thread
 from tkinter import *
@@ -89,13 +88,14 @@ class ET:
             sleep(0.05)
     def draw(self):
         self.__first = False
-        self.__forestCanvas.clipboard_clear()
-        self.__forestCanvas.create_image(
+        #self.__forestCanvas.clipboard_clear()
+        #self.__forestCanvas.delete("all")
+        self.__forestOfSteel = self.__forestCanvas.create_image(
             0, 0, image=self.__forestImg, anchor=NW
         )
         self.getETSprite(self.__spriteCounter + 1, self.__mirroring)
 
-        self.__forestCanvas.create_image(
+        self.__et = self.__forestCanvas.create_image(
             self.__etX,
             self.__etY,
             image=self.__spriteImage,

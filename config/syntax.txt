@@ -1,2 +1,3 @@
 do=[for perform], 
 end-do=[end-perform end-for], 
+write=[print display],

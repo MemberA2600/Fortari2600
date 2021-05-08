@@ -31,3 +31,6 @@ class MemorySetter:
         from ArrayFrame import ArrayFrame
         self.__arrayFrame = ArrayFrame(self.__container, self.__loader)
 
+        from SpaceShip import SpaceShip
+        self.__spacesShip = SpaceShip(self.__loader, self.__left)
+
