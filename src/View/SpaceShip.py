@@ -17,24 +17,41 @@ class SpaceShip:
 
         self.__extraDelay = 0
 
+        self.__frames = []
+        self.__imgBuffer = []
+
+
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
-        self.__spaceCanvas = Canvas(self.__frame, bg = "black", height=self.__frame.winfo_height(), width=self.__frame.winfo_width(), borderwidth = 0, highlightthickness=0)
-        self.__spaceCanvas.pack_propagate(False)
-        self.__spaceCanvas.grid_propagate(False)
-        self.__spaceCanvas.pack(side=BOTTOM, fill=BOTH, anchor=CENTER)
+        self.__spaceLabel = Label(self.__frame, bg = "black",
+                                  height=self.__frame.winfo_height(), width=self.__frame.winfo_width(), borderwidth = 0, highlightthickness=0)
+        self.__loadFrames()
+        self.__setBuffer()
 
-        self.__getSpaceShip()
+
+        self.__spaceLabel.pack_propagate(False)
+        self.__spaceLabel.pack(fill=BOTH)
 
         t = Thread(target=self.__drawCanvas)
         t.daemon = True
         t.start()
 
-    def __getSpaceShip(self):
-        self.__spaceShip = ImageTk.PhotoImage(IMAGE.open(str("others/img/spaceship.png"))
-                                              .resize(( round(self.__frame.winfo_width()*0.75) , round(self.__frame.winfo_width()*0.75*3.11)))
-                                                )
+    def __loadFrames(self):
+        for num in range(1, 67):
+            num = str(num)
+            if len(num) == 1:
+                num = "0" + num
+            self.__frames.append(
+                IMAGE.open(str("others/img/rocket/r" + num + ".png"))
+            )
+    def __setBuffer(self):
+        self.__imgBuffer.clear()
+        for num in range(0,66):
+            self.__imgBuffer.append(
+                ImageTk.PhotoImage(self.__frames[num].resize(
+                    (self.__frame.winfo_width(), self.__frame.winfo_height()), IMAGE.ANTIALIAS)
+                ))
 
 
     def setOther(self, other):
@@ -49,54 +66,21 @@ class SpaceShip:
         self.__item1 = None
         while self.__loader.mainWindow.dead == False and self.__frame!=None:
             try:
-                if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                        self.__lastScaleY != self.__loader.mainWindow.getScales()[1]
-                ):
-                    self.__item1 = None
-                    self.__item2 = None
-                    self.__item3 = None
-                    self.__spaceCanvas.clipboard_clear()
-                    self.__spaceCanvas.delete("all")
-
 
                 if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
                     self.__lastScaleY != self.__loader.mainWindow.getScales()[1]
-                    ) or self.hasRocket == True:
+                    ):
 
                     self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
                     self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
-                    self.__spaceCanvas.config(width=self.__frame.winfo_width(),
+                    self.__spaceLabel.config(width=self.__frame.winfo_width(),
                                               height=self.__frame.winfo_height())
-                    self.__getSpaceShip()
-                    self.__spaceCanvas.clipboard_clear()
-                    #self.__spaceCanvas.delete("all")
-
-                    if self.__rocketY !=False:
-
-                        self.__item1 = self.__spaceCanvas.create_image(
-                            self.__spaceCanvas.winfo_width() * 0.15,
-                            self.__rocketY,
-                            image=self.__spaceShip,
-                            anchor=NW
-                        )
-
-                        try:
-                            self.__spaceCanvas.tag_lower(self.__item1)
-                            self.__spaceCanvas.tag_lower(self.__item1)
-                        except:
-                            pass
-
-                    self.__item2 =self.__spaceCanvas.create_rectangle(self.__spaceCanvas.winfo_width()*0.1, (round(self.__spaceCanvas.winfo_height()*0.92)),
-                                                        self.__spaceCanvas.winfo_width() * 0.9, self.__spaceCanvas.winfo_height()*0.95,
-                                                        fill="gray", outline="")
-                    self.__item3 =self.__spaceCanvas.create_rectangle(0, (round(self.__spaceCanvas.winfo_height()*0.95)),
-                                                        999999, self.__spaceCanvas.winfo_height(),
-                                                        fill="sandy brown", outline="")
+                    self.__setBuffer()
 
                 if self.__dontDoIt == True:
-                    self.__rocketY = self.__rocketY - round(self.__spaceCanvas.winfo_height() * 0.02)
-                    if self.__rocketY < self.__spaceShip.height() * (-1.1):
+                    self.__rocketY += 1
+                    if self.__rocketY > 65:
                         self.__rocketY = False
                         self.__dontDoIt = False
                         if self.__other != None:
@@ -125,7 +109,7 @@ class SpaceShip:
                             self.hasRocket = True
                             self.fuckYou = True
                             self.__dontDoIt = True
-                            self.__rocketY = self.__spaceCanvas.winfo_height()
+                            self.__rocketY = 1
 
                         else:
                             self.__delay = self.__getRandom(self.__extraDelay)
@@ -133,9 +117,13 @@ class SpaceShip:
                     if self.hasRocket == False and self.__delay == 0:
                             self.hasRocket = True
                             self.__dontDoIt = True
-                            self.__rocketY = self.__spaceCanvas.winfo_height()
+                            self.__rocketY = 1
 
-                #print(self.__delay, self.hasRocket)
+
+                self.__spaceLabel.config(
+                    image=self.__imgBuffer[self.__rocketY]
+                )
+
                 sleep(0.04)
             except Exception as e:
                 self.__loader.logger.errorLog(e)
