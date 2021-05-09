@@ -7,6 +7,7 @@ class SideFrameListBoxWithButtonAndLabel:
     def __init__(self, loader, frame, baseSize, name, percent,
                  fillFunction, buttonFunction, insertFunction, buttonText):
 
+        self.__baseSize = baseSize
         self.__loader = loader
         self.__frame = frame
         self.__fillFunction = fillFunction
@@ -31,21 +32,8 @@ class SideFrameListBoxWithButtonAndLabel:
 
         self.__fontManager = loader.fontManager
 
-        self.__fontNormalSize = ((self.__loader.screenSize[0] / 1350) *
-                                 (self.__loader.screenSize[1] / 1100) * baseSize
-                                 )
-
-        self.__fontSmallSize = ((self.__loader.screenSize[0] / 1350) *
-                                (self.__loader.screenSize[1] / 1100) * baseSize * 0.75
-                                )
-
-        self.__fontExtraSmallSize = ((self.__loader.screenSize[0] / 1350) *
-                                (self.__loader.screenSize[1] / 1100) * baseSize * 0.65
-                                )
-
-
-        self.__lastX = self.__loader.mainWindow.getScales()[0]
-        self.__lastY = self.__loader.mainWindow.getScales()[1]
+        self.__lastX = self.__loader.frames["rightFrame"].getScales()[0]
+        self.__lastY = self.__loader.frames["rightFrame"].getScales()[1]
 
         self.setFonts()
 
@@ -129,12 +117,25 @@ class SideFrameListBoxWithButtonAndLabel:
                 self.__loader.logger.errorLog(e)
 
     def setFonts(self):
+        self.__fontNormalSize = ((self.__frame.winfo_width() / 200) *
+                                 (self.__frame.winfo_height()  / 600) * self.__baseSize
+                                 )
+
+        self.__fontSmallSize = ((self.__frame.winfo_width()  / 200) *
+                                (self.__frame.winfo_height()/ 600) * self.__baseSize * 0.75
+                                )
+
+        self.__fontExtraSmallSize = ((self.__frame.winfo_width()  / 200) *
+                                     (self.__frame.winfo_height() / 600) * self.__baseSize * 0.65
+                                     )
+
+
         self.__fontNormal = self.__loader.fontManager.getFont(
-            round(self.__fontNormalSize * self.__lastX * self.__lastY),
+            round(self.__fontNormalSize),
             False, False, False)
-        self.__fontSmall = self.__loader.fontManager.getFont(round(self.__fontSmallSize * self.__lastX * self.__lastY),
+        self.__fontSmall = self.__loader.fontManager.getFont(round(self.__fontSmallSize),
                                                              False, False, False)
-        self.__fontExtraSmall = self.__loader.fontManager.getFont(round(self.__fontExtraSmallSize * self.__lastX * self.__lastY),
+        self.__fontExtraSmall = self.__loader.fontManager.getFont(round(self.__fontExtraSmallSize),
                                                              False, False, False)
 
     def scaler(self):
@@ -151,11 +152,11 @@ class SideFrameListBoxWithButtonAndLabel:
                         self.__button.destroy()
                         #self.__loader.logger.errorLog(e)
 
-            if (self.__lastX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastY != self.__loader.mainWindow.getScales()[1]
+            if (self.__lastX != self.__loader.frames["rightFrame"].getScales()[0] or
+                    self.__lastY != self.__loader.frames["rightFrame"].getScales()[1]
             ):
-                self.__lastX = self.__loader.mainWindow.getScales()[0]
-                self.__lastY = self.__loader.mainWindow.getScales()[1]
+                self.__lastX = self.__loader.frames["rightFrame"].getScales()[0]
+                self.__lastY = self.__loader.frames["rightFrame"].getScales()[1]
 
                 try:
                     self.__newFrame.config(height=self.__h*self.__lastY,

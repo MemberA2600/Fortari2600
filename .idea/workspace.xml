@@ -2,46 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/View/NewListBoxInFrame.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-05-09_072738.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/BFG9000.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/BFG9000.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/Loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ArrayFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ArrayFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/AtariLogo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AtariLogo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/BankSwitchButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/BankSwitchButton.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/CreateAndDeleteButtons.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/CreateAndDeleteButtons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ET.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ET.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/FrameContent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/FrameContent.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/FrameWithLabelAndEntry.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/FrameWithLabelAndEntry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-05-09_154047.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/LeftFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LeftFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ListBoxInFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ListBoxInFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/LoadingScreen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LoadingScreen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/LockFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LockFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/LockManagerWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LockManagerWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainMenuLabel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainMenuLabel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MemorySetter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MemorySetter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MenuButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MenuButton.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MenuLabel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MenuLabel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/NewProjectWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/NewProjectWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/OpenProjectWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/OpenProjectWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/PitFallHarry.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/PitFallHarry.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ListBoxInFrame.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/RightFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/RightFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SelectLabel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SelectLabel.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SpaceShip.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SpaceShip.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/StatusFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/StatusFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SubMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SubMenuEntryWithButton.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenuEntryWithButton.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SubMenuFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenuFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SubMenuOkCancelButtons.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenuOkCancelButtons.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/Switch.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Switch.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SwitchFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SwitchFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/VariableFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/VariableFrame.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +26,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreenHandler.coverage" NAME="LoadingScreenHandler Coverage Results" MODIFIED="1618069748048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$AutoSetter.coverage" NAME="AutoSetter Coverage Results" MODIFIED="1618118363590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/App" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1620567646474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1620571168479" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrame.coverage" NAME="RightFrame Coverage Results" MODIFIED="1619675289357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Config.coverage" NAME="Config Coverage Results" MODIFIED="1618064003932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -75,21 +41,21 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="84" />
+          <entry key="project.closed" value="86" />
           <entry key="project.open.time.0" value="3" />
-          <entry key="project.open.time.3" value="34" />
-          <entry key="project.open.time.4" value="49" />
+          <entry key="project.open.time.3" value="35" />
+          <entry key="project.open.time.4" value="50" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="90" />
+          <entry key="project.opened" value="92" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="973" />
+          <entry key="py" value="977" />
           <entry key="txt" value="5" />
         </counts>
       </usages-collector>
@@ -97,20 +63,20 @@
         <counts>
           <entry key="PLAIN_TEXT" value="6" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="973" />
+          <entry key="Python" value="977" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="110606" />
+          <entry key="py" value="110901" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="110606" />
+          <entry key="Python" value="110901" />
         </counts>
       </usages-collector>
     </session>
@@ -131,33 +97,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/OpenProjectWindow.py">
+        <entry file="file://$PROJECT_DIR$/src/View/RightFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-              <folding>
-                <element signature="e#0#27#0" expanded="true" />
-                <marker date="1620564181458" expanded="true" signature="4277:4337" ph="..." />
-                <marker date="1620564181458" expanded="true" signature="4357:4383" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/MemorySetter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="432">
-              <caret line="46" selection-start-line="46" selection-end-line="46" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/VariableFrame.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-16">
-              <caret line="47" column="1" selection-start-line="47" selection-start-column="1" selection-end-line="47" selection-end-column="1" />
+            <state relative-caret-position="208">
+              <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -166,10 +109,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/View/StatusFrame.py">
+        <entry file="file://$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="767">
-              <caret line="54" column="84" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+            <state relative-caret-position="384">
+              <caret line="137" column="97" selection-start-line="137" selection-start-column="97" selection-end-line="137" selection-end-column="97" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/main.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="80">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -185,7 +137,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>father</find>
       <find>listb</find>
       <find>minsze</find>
       <find>Mainmen</find>
@@ -205,7 +156,6 @@
       <find>fat</find>
       <find>__font</find>
       <find>setfont</find>
-      <find>__loader.mainWindow.getScales()</find>
       <find>fontsize</find>
       <find>font</find>
       <find>entry</find>
@@ -215,6 +165,8 @@
       <find>setFon</find>
       <find>ListBoxInFrame</find>
       <find>__this</find>
+      <find>__loader.mainWindow.getScales()</find>
+      <find>fonts</find>
     </findStrings>
     <replaceStrings>
       <replace>self.__loader.mainWindow</replace>
@@ -233,6 +185,7 @@
       <replace>SwitchFrame</replace>
       <replace>self.father</replace>
       <replace>__loader.frames[&quot;MemorySetter&quot;].getScales()</replace>
+      <replace>__loader.frames[&quot;rightFrame&quot;].getScales()</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -257,15 +210,12 @@
         <option value="$PROJECT_DIR$/src/Handlers/IO.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/Command.py" />
         <option value="$PROJECT_DIR$/src/View/LoadingScreen.py" />
-        <option value="$PROJECT_DIR$/src/View/RightFrame.py" />
         <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
-        <option value="$PROJECT_DIR$/src/View/LeftFrame.py" />
         <option value="$PROJECT_DIR$/src/View/LockManagerWindow.py" />
         <option value="$PROJECT_DIR$/src/View/MenuLabel.py" />
         <option value="$PROJECT_DIR$/src/View/NewProjectWindow.py" />
         <option value="$PROJECT_DIR$/src/View/PitFallHarry.py" />
         <option value="$PROJECT_DIR$/src/View/SelectLabel.py" />
-        <option value="$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py" />
         <option value="$PROJECT_DIR$/src/View/SpaceShip.py" />
         <option value="$PROJECT_DIR$/src/View/SubMenu.py" />
         <option value="$PROJECT_DIR$/src/View/SubMenuEntryWithButton.py" />
@@ -292,6 +242,9 @@
         <option value="$PROJECT_DIR$/src/View/CreateAndDeleteButtons.py" />
         <option value="$PROJECT_DIR$/src/View/VariableFrame.py" />
         <option value="$PROJECT_DIR$/src/View/StatusFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/LeftFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/RightFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py" />
       </list>
     </option>
   </component>
@@ -315,7 +268,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -361,6 +313,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -538,12 +491,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.24197689" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.24839538" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.27724665" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.27246654" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -677,9 +630,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="19" column="52" selection-start-line="19" selection-start-column="52" selection-end-line="19" selection-end-column="52" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -704,13 +654,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LeftFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="96">
-          <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MenuLabel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="222">
@@ -732,20 +675,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/RightFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" column="28" selection-start-line="1" selection-start-column="22" selection-end-line="1" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SelectLabel.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="293">
           <caret line="33" column="79" selection-start-line="33" selection-start-column="79" selection-end-line="33" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#28#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -756,9 +689,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -766,9 +696,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="23" column="30" selection-start-line="23" selection-start-column="30" selection-end-line="23" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -811,13 +738,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="528">
           <caret line="33" column="30" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1620544374672" expanded="true" signature="108:113" ph="..." />
-            <marker date="1620544374672" expanded="true" signature="1146:1147" ph="..." />
-            <marker date="1620544374672" expanded="true" signature="1146:1151" ph="..." />
-            <marker date="1620544374672" expanded="true" signature="1206:1215" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -825,13 +745,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
           <caret line="18" selection-start-line="18" selection-end-line="19" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="117" column="19" selection-start-line="117" selection-start-column="15" selection-end-line="117" selection-end-column="19" />
         </state>
       </provider>
     </entry>
@@ -854,26 +767,7 @@
         <state relative-caret-position="-459" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
-          <folding>
-            <element signature="e#47#68#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ListBoxInFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="804">
-          <caret line="73" selection-start-line="73" selection-end-line="73" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ListBoxInFrame.py" />
     <entry file="file://$PROJECT_DIR$/src/View/LockFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="448">
@@ -892,10 +786,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="70" column="13" selection-start-line="70" selection-start-column="13" selection-end-line="70" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1620564263789" expanded="true" signature="78:742" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -910,10 +800,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="384">
           <caret line="24" column="45" lean-forward="true" selection-start-line="24" selection-start-column="45" selection-end-line="24" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1620557763472" expanded="true" signature="1556:1610" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -928,9 +814,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="228">
           <caret line="33" column="95" selection-start-line="33" selection-start-column="95" selection-end-line="33" selection-end-column="95" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -938,21 +821,48 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
           <caret line="15" column="23" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="23" />
-          <folding>
-            <marker date="1620557869651" expanded="true" signature="1379:1429" ph="..." />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CreateAndDeleteButtons.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1440">
+          <caret line="91" column="26" lean-forward="true" selection-start-line="91" selection-start-column="26" selection-end-line="91" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/FrameWithLabelAndEntry.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/StatusFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="767">
+          <caret line="54" column="84" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/VariableFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="47" column="1" selection-start-line="47" selection-start-column="1" selection-end-line="47" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MemorySetter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="46" selection-start-line="46" selection-end-line="46" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/OpenProjectWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
-          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="17" />
-          <folding>
-            <element signature="e#0#27#0" expanded="true" />
-            <marker date="1620564181458" expanded="true" signature="4277:4337" ph="..." />
-            <marker date="1620564181458" expanded="true" signature="4357:4383" ph="..." />
-          </folding>
+          <caret line="17" selection-start-line="17" selection-end-line="17" />
         </state>
       </provider>
     </entry>
@@ -967,44 +877,34 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MemorySetter.py">
+    <entry file="file://$PROJECT_DIR$/src/View/LeftFrame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="432">
-          <caret line="46" selection-start-line="46" selection-end-line="46" />
+        <state relative-caret-position="208">
+          <caret line="13" column="9" selection-start-line="13" selection-start-column="9" selection-end-line="13" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CreateAndDeleteButtons.py">
+    <entry file="file://$PROJECT_DIR$/src/View/RightFrame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1440">
-          <caret line="91" column="26" lean-forward="true" selection-start-line="91" selection-start-column="26" selection-end-line="91" selection-end-column="26" />
-          <folding>
-            <marker date="1620567391628" expanded="true" signature="6837:6843" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FrameWithLabelAndEntry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/VariableFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16">
-          <caret line="47" column="1" selection-start-line="47" selection-start-column="1" selection-end-line="47" selection-end-column="1" />
+        <state relative-caret-position="208">
+          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/StatusFrame.py">
+    <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="767">
-          <caret line="54" column="84" selection-start-line="54" selection-start-column="84" selection-end-line="54" selection-end-column="84" />
+        <state relative-caret-position="80">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="137" column="97" selection-start-line="137" selection-start-column="97" selection-end-line="137" selection-end-column="97" />
         </state>
       </provider>
     </entry>

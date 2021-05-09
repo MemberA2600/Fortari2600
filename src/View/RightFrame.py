@@ -8,8 +8,11 @@ class RightFrame:
         self.__frame = frame
         self.__selectedValidity = validity
 
-        baseSize = 18
+        self.__originalW = self.__frame.winfo_width()
+        self.__originalH = self.__frame.winfo_height()
+        self.__loader.frames["rightFrame"] = self
 
+        baseSize = 18
 
         buttonText="insertVar"
         if view == "MemorySetter":
@@ -33,7 +36,6 @@ class RightFrame:
                          self.insertArray,
                          buttonText)
 
-        self.__loader.frames["rightFrame"] = self
 
     def destroy(self):
         del self
@@ -93,3 +95,10 @@ class RightFrame:
 
     def insertArray(self, listBox, data):
         pass
+
+
+    def getScales(self):
+        return(
+            self.__frame.winfo_width()/self.__originalW,
+            self.__frame.winfo_height() / self.__originalH,
+        )

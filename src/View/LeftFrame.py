@@ -7,5 +7,8 @@ class LeftFrame:
         self.__loader.stopThreads.append(self)
 
 
-    def destroy(self):
-        del self
+    def getScales(self):
+        return(
+            self.__frame.winfo_width()/self.__originalW,
+            self.__frame.winfo_height() / self.__originalH,
+        )
