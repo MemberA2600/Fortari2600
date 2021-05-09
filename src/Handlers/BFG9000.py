@@ -53,7 +53,7 @@ class BFG9000:
         self.__rightFrame.pack_propagate(False)
 
         self.__leftFrame.pack(side=LEFT, anchor=SW, fill=Y)
-        self.__mainFrame.pack(side=LEFT, anchor=S, fill=Y)
+        self.__mainFrame.pack(side=LEFT, anchor=S, fill=BOTH)
         self.__rightFrame.pack(side=RIGHT, anchor=SE, fill=Y)
         self.__lastPath = None
 
@@ -83,9 +83,16 @@ class BFG9000:
         for item in self.__loader.destroyable:
             item.destroy()
 
+        self.__loader.mainWindow.stopThreads()
+        del self.actual
+
+        self.destroyAll(self.__mainFrame.place_slaves())
         self.destroyAll(self.__mainFrame.pack_slaves())
         self.destroyAll(self.__leftFrame.pack_slaves())
+        self.destroyAll(self.__leftFrame.place_slaves())
         self.destroyAll(self.__rightFrame.pack_slaves())
+        self.destroyAll(self.__rightFrame.place_slaves())
+
 
         self.__mainFrame.config(bg=color)
         self.__leftFrame.config(bg=color)
@@ -94,8 +101,10 @@ class BFG9000:
 
     def destroyAll(self, list):
         for item in list:
-            item.destroy()
-
+            try:
+                item.destroy()
+            except:
+                pass
 
 
 

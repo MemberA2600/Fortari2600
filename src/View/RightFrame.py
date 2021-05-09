@@ -35,6 +35,8 @@ class RightFrame:
 
         self.__loader.frames["rightFrame"] = self
 
+    def destroy(self):
+        del self
 
     def fillListBoxWithVariableNames(self, listBox, handler):
 

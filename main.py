@@ -32,7 +32,7 @@ if __name__ == "__main__":
     from LoadingScreen import LoadingScreen
     __loading = LoadingScreen(__screenSize, tk, __loader)
 
-    if __loader.screenSize[0]<800 or __loader.screenSize[1]<600:
+    if __loader.screenSize[0]<1024 or __loader.screenSize[1]<768:
         answer = __loader.fileDialogs.askYesOrNo("screenSizeError", "screenSizeErrorMessage")
         if answer == "No":
             nope = True

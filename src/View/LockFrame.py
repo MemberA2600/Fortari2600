@@ -8,6 +8,9 @@ class LockFrame:
         self.__masterFrame = masterFrame
         self.__fontManager = fontManager
 
+        self.stopThread = False
+        #self.__loader.stopThreads.append(self)
+
         self.__frame = Frame(self.__masterFrame.getFrame(), width=99999, height=99999)
 
         self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
@@ -89,12 +92,12 @@ class LockFrame:
         self.setImg(self.__labels[num-1], num)
         self.__labels[num - 1].place(
             x= ((num-1)%4) * self.__frame.winfo_width()/4,
-            y= ((num-1)//4) * self.__frame.winfo_width()/4
+            y= ((num-1)//4) * self.__frame.winfo_width()/4+round(self.__frame.winfo_width()/4)-5
         )
 
     def resize(self):
         from time import sleep
-        while self.__window.dead==False:
+        while self.__window.dead==False and self.stopThread==False:
             if (self.__scaleLastX != self.__window.getScales()[0] or
                     self.__scaleLastY != self.__window.getScales()[1]
                 ):
@@ -109,7 +112,7 @@ class LockFrame:
 
     def locker(self):
         from time import sleep
-        while self.__window.dead==False:
+        while self.__window.dead==False and self.stopThread==False:
 
             state=NORMAL
             if self.__window.projectPath == None:

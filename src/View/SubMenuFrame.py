@@ -19,3 +19,8 @@ class SubMenuFrame:
     def getFrameSize(self):
         return(self.__frame.winfo_width(), self.__frame.winfo_height())
 
+    def getWindowSize(self):
+        return(self.getFrameSize())
+
+    def getScales(self):
+        return(1,1)

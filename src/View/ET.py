@@ -10,6 +10,8 @@ class ET:
         self.__master = master
         self.__mainBoss = mainBoss
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__forestFrame = Frame(self.__master.getFrame(), bg = "green", height=10000, width=master.getFrameSize()[0])
         self.__forestFrame.pack_propagate(False)
@@ -55,19 +57,22 @@ class ET:
         self.__imageBufferLeft=[]
         self.__imageBufferRight=[]
 
-        for num in range(1,4):
-            self.__imageBufferLeft.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
-                    round(self.__scale*17)),
-                   IMAGE.ANTIALIAS))
-            self.__imageBufferRight.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
-                    round(self.__scale*17)),
-                   IMAGE.ANTIALIAS).transpose(IMAGE.FLIP_LEFT_RIGHT))
+        try:
+            for num in range(1,4):
+                self.__imageBufferLeft.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                        round(self.__scale*17)),
+                       IMAGE.ANTIALIAS))
+                self.__imageBufferRight.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                        round(self.__scale*17)),
+                       IMAGE.ANTIALIAS).transpose(IMAGE.FLIP_LEFT_RIGHT))
+        except:
+            pass
 
 
     def drawET(self):
         from time import sleep
 
-        while self.__window.dead == False:
+        while self.__window.dead == False and self.stopThread==False:
             try:
                 moving = self.getDifference()
                 if moving == False and self.__first == False:
@@ -104,7 +109,7 @@ class ET:
 
     def getDifference(self):
         import mouse
-        if self.__window.dead==False:
+        if self.__window.dead==False and self.stopThread==False:
             try:
                 posX =(self.__etX+self.__mainBoss.getTopLevel().winfo_x()+
                                       self.__master.getFrame().winfo_x()+

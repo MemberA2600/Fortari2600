@@ -12,6 +12,9 @@ class SubMenu:
             t.daemon = True
             t.start()
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
         self.__screenSize = self.__loader.screenSize
@@ -27,8 +30,6 @@ class SubMenu:
             self.__topLevel.iconbitmap("others/img/"+name+".ico")
         except:
             self.__topLevel.iconbitmap("others/img/icon.ico")
-
-
 
         self.__topLevel.deiconify()
         self.__topLevel.focus()

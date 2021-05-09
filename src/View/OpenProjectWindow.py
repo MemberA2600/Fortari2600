@@ -1,9 +1,10 @@
 from SubMenu import SubMenu
 from SubMenuLabel import SubMenuLabel
-from ListBoxInFrame import ListBoxInFrame
+from NewListBoxInFrame import NewListBoxInFrame
 from SubMenuFrame import SubMenuFrame
 from SubMenuEntryWithButton import SubMenuEntryWithButton
 from SubMenuOkCancelButtons import SubMenuOkCancelButtons
+from tkinter import *
 
 class OpenProjectWindow:
 
@@ -15,6 +16,8 @@ class OpenProjectWindow:
         self.dead = False
         self.OK = False
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -48,8 +51,8 @@ class OpenProjectWindow:
                                        self.__smallFont)
 
 
-        self.__listBox = ListBoxInFrame("openListBox", self.__loader, self.__frame1, self.__fontManager, 1.5,
-                                        list(self.__loader.config.getProjects()), None)
+        self.__listBox = NewListBoxInFrame("openListBox", self.__loader, self.__frame1,
+                                        list(self.__loader.config.getProjects()), None, LEFT)
 
 
         self.__frame2 = SubMenuFrame(self.__loader, self.__topLevel, self.__topLevelWindow,
@@ -109,6 +112,11 @@ class OpenProjectWindow:
             )
         )
 
+    def getWindowSize(self):
+        return(self.__window.getTopLevelDimensions())
+
+    def getScales(self):
+        return(1,1)
 
     def getFrameSize(self):
         return(self.__topLevel.getTopLevelDimensions())
@@ -118,7 +126,7 @@ class OpenProjectWindow:
 
     def checkIfListBoxSelectChanged(self):
         from time import sleep
-        while self.dead == False:
+        while self.dead == False and self.stopThread==False:
             try:
                 if self.__selected!=self.__listBox.getSelectedName():
                     self.__getAndSelect()
@@ -129,7 +137,7 @@ class OpenProjectWindow:
 
     def checkIfOK(self):
         from time import sleep
-        while self.dead == False:
+        while self.dead == False and self.stopThread == False:
             try:
                 import os
                 if os.path.exists(self.__projectPathEntry.getText()):

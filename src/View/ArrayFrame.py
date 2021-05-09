@@ -2,7 +2,7 @@ from tkinter import *
 from threading import Thread
 from MainMenuLabel import MainMenuLabel
 from FrameWithLabelAndEntry import FrameWithLabelAndEntry
-from ListBoxInFrame import ListBoxInFrame
+from NewListBoxInFrame import NewListBoxInFrame
 from CreateAndDeleteButtons import CreateAndDeleteButtons
 
 class ArrayFrame:
@@ -12,22 +12,26 @@ class ArrayFrame:
         self.__loader = loader
         #self.__modify = False
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__w = self.__container.winfo_width()
         self.__h = round(self.__container.winfo_height()/2.5)
-
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.__first = True
+        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         self.__thisFrame = Frame(self.__container, width=self.__w, height=self.__h)
         self.__thisFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__thisFrame.pack_propagate(False)
-        self.__thisFrame.pack(side=TOP, anchor=E)
+        #self.__thisFrame.place(x=5, y=self.__loader.frames["VariableFrame"].getH() + 15+self.__loader.frames["SwitchFrame"].getH()+ self.__loader.frames["MemorySetter"].title.getH())
+        self.__thisFrame.pack(side=BOTTOM, fill=X, anchor=NE)
 
         #self.__thisFrame.config(bg="red")
         self.__loader.destroyable.append(self.__thisFrame)
 
-        self.__arrayLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageArray", 16)
-        self.arrName = FrameWithLabelAndEntry(self.__thisFrame, loader, "arrName", 14)
+        self.__arrayLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageArray", 22)
+        self.arrName = FrameWithLabelAndEntry(self.__thisFrame, loader, "arrName", 14, 40, LEFT)
         self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 10)
 
         self.__frameVariables = Frame(self.__thisFrame, width=round(self.__thisFrame.winfo_width() / 5),
@@ -42,13 +46,13 @@ class ArrayFrame:
         self.__frameAvailable.pack_propagate(False)
         self.__frameAvailable.pack(side=LEFT, anchor=W, fill=Y)
 
-        self.__containedLabel = MainMenuLabel(self.__frameVariables, self.__loader, "arrVariables", 9)
-        self.__varListBox = ListBoxInFrame("includedVariables", self.__loader, self.__frameVariables,
-                            self.__loader.fontManager, 1, [], None)
+        self.__containedLabel = MainMenuLabel(self.__frameVariables, self.__loader, "arrVariables", 14)
+        self.__varListBox = NewListBoxInFrame("includedVariables", self.__loader, self.__frameVariables,
+                            [], None, LEFT)
 
-        self.__availableLabel = MainMenuLabel(self.__frameAvailable, self.__loader, "arrAvailable", 9)
-        self.__avListBox = ListBoxInFrame("availableVariables", self.__loader, self.__frameAvailable,
-                            self.__loader.fontManager, 1, [], None)
+        self.__availableLabel = MainMenuLabel(self.__frameAvailable, self.__loader, "arrAvailable", 14)
+        self.__avListBox = NewListBoxInFrame("availableVariables", self.__loader, self.__frameAvailable,
+                            [], None, LEFT)
 
         self.__arrayButtons = CreateAndDeleteButtons(self.__loader, self.__thisFrame,
                                                         "array",
@@ -63,14 +67,17 @@ class ArrayFrame:
         t.daemon=True
         t.start()
 
+
     def resize(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False and self.__container!=None:
-            if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        while self.__loader.mainWindow.dead==False and self.__container!=None and self.stopThread == False:
+            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1])\
+                    or self.__first==True:
 
+                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
+                self.__first = False
                 if self.__thisFrame!=None:
                     try:
                         self.__thisFrame.config(width=self.__w * self.__lastScaleX,
@@ -79,9 +86,11 @@ class ArrayFrame:
                                       height=self.__thisFrame.winfo_height())
                         self.__frameAvailable.config(width=round(self.__thisFrame.winfo_width()/5),
                                       height=self.__thisFrame.winfo_height())
+
+
                     except Exception as e:
                         self.__loader.logger.errorLog(e)
-
+                #self.__thisFrame.place(x=5, y=self.__loader.frames["VariableFrame"].getH() + 15+self.__loader.frames["SwitchFrame"].getH()+ self.__loader.frames["MemorySetter"].title.getH())
             sleep(0.04)
 
     def __checkIfNameIsValid(self, text):
@@ -138,7 +147,7 @@ class ArrayFrame:
         self.__lastSelectedType = ""
 
         from time import sleep
-        while self.__loader.mainWindow.dead == False and self.__container != None:
+        while self.__loader.mainWindow.dead == False and self.__container != None and self.stopThread == False:
             try:
                 self.__varListBox.getSelectedName()
                 self.__buttonVarDel.config(state=NORMAL)

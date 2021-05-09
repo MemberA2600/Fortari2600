@@ -15,6 +15,8 @@ class Switch:
         self.__normalFont = self.__loader.fontManager.getFont("normal", False, False, False)
         self.__smallFont = self.__loader.fontManager.getFont("small", False, False, False)
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__frame = Frame(self.__window, width=self.__window.winfo_width()/7)
         self.__frame.config(bg="black")

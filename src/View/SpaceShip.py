@@ -14,10 +14,12 @@ class SpaceShip:
         self.__dontDoIt = False
 
         self.fuckYou = False
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__extraDelay = 0
 
-        self.__frames = []
+        self.__frames = self.__loader.rocketFrames
         self.__imgBuffer = []
 
 
@@ -26,9 +28,7 @@ class SpaceShip:
 
         self.__spaceLabel = Label(self.__frame, bg = "black",
                                   height=self.__frame.winfo_height(), width=self.__frame.winfo_width(), borderwidth = 0, highlightthickness=0)
-        self.__loadFrames()
         self.__setBuffer()
-
 
         self.__spaceLabel.pack_propagate(False)
         self.__spaceLabel.pack(fill=BOTH)
@@ -37,14 +37,7 @@ class SpaceShip:
         t.daemon = True
         t.start()
 
-    def __loadFrames(self):
-        for num in range(1, 67):
-            num = str(num)
-            if len(num) == 1:
-                num = "0" + num
-            self.__frames.append(
-                IMAGE.open(str("others/img/rocket/r" + num + ".png"))
-            )
+
     def __setBuffer(self):
         self.__imgBuffer.clear()
         for num in range(0,66):
@@ -64,7 +57,7 @@ class SpaceShip:
     def __drawCanvas(self):
         from time import sleep
         self.__item1 = None
-        while self.__loader.mainWindow.dead == False and self.__frame!=None:
+        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.stopThread==False:
             try:
 
                 if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or

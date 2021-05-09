@@ -8,6 +8,8 @@ class FrameContent:
         self.__loader = loader
         self.__loader.frames[name] = self
 
+        self.stopThread = False
+        #self.__loader.stopThreads.append(self)
 
         self.__frame = Frame(self.__loader.tk, width=w, height=h)
         self.__frame.pack_propagate(False)
@@ -43,7 +45,7 @@ class FrameContent:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
+        while self.__loader.mainWindow.dead==False and self.stopThread==False:
             if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
                     and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)

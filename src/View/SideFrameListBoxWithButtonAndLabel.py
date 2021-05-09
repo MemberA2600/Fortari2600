@@ -14,6 +14,9 @@ class SideFrameListBoxWithButtonAndLabel:
         self.__insertFunction = insertFunction
         self.__buttonText = buttonText
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__w = self.__frame.winfo_width()
         self.__h = round(self.__frame.winfo_height()*percent)
 
@@ -136,7 +139,7 @@ class SideFrameListBoxWithButtonAndLabel:
 
     def scaler(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.__newFrame!=None:
+        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.__newFrame!=None and self.stopThread==False:
             if self.__button != None:
                 try:
                     self.getSelectedName()

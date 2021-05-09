@@ -11,6 +11,9 @@ class PitFallHarry:
         self.__font = font
         self.setBuffer()
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__bg = "gold"
         self.__spriteNum = 0
         self.__harryFrame = Frame(master.getTopLevel(),
@@ -43,7 +46,7 @@ class PitFallHarry:
             self.__imageBuffer.append(thisIsTheImage.open(str("others/img/harry" + str(num) + ".png")))
 
     def __placer(self):
-        if self.__window.dead==False:
+        if self.__window.dead==False and self.stopThread==False:
             try:
                 self.__harryLabel.place(x=self.__harryPoz, y=0)
             except Exception as e:
@@ -66,7 +69,7 @@ class PitFallHarry:
 
     def __getDifference(self):
         import mouse
-        if self.__window.dead==False:
+        if self.__window.dead==False and self.stopThread==False:
             try:
                 self.__difference = mouse.get_position()[0] - (self.__w*0.5+self.__harryPoz+self.__master.getTopLevel().winfo_x())
             except Exception as e:
@@ -90,7 +93,7 @@ class PitFallHarry:
         self.__placer()
 
     def __move(self):
-        while self.__window.dead == False:
+        while self.__window.dead == False and self.stopThread==False:
             from time import sleep
             self.__getDifference()
             if abs(self.__difference)<15:

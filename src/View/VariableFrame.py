@@ -2,7 +2,7 @@ from tkinter import *
 from threading import Thread
 from MainMenuLabel import MainMenuLabel
 from FrameWithLabelAndEntry import FrameWithLabelAndEntry
-from ListBoxInFrame import ListBoxInFrame
+from NewListBoxInFrame import NewListBoxInFrame
 from CreateAndDeleteButtons import CreateAndDeleteButtons
 
 class VariableFrame:
@@ -12,26 +12,38 @@ class VariableFrame:
         self.__loader = loader
         #self.__modify = False
 
+
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__w = self.__container.winfo_width()
         self.__h = round(self.__container.winfo_height()/2.5)
+        self.__first = True
 
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         self.__thisFrame = Frame(self.__container, width=self.__w, height=self.__h)
         self.__thisFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__thisFrame.pack_propagate(False)
-        self.__thisFrame.pack(side=TOP, anchor=E)
-
+        #self.__thisFrame.place(x=5, y=10+self.__loader.frames["SwitchFrame"].getH()+ self.__loader.frames["MemorySetter"].title.getH())
+        self.__thisFrame.pack(side=TOP, fill=X, anchor=NE)
         #self.__thisFrame.config(bg="red")
         self.__loader.destroyable.append(self.__thisFrame)
 
-        self.__variableLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageVariable", 16)
-        self.varName = FrameWithLabelAndEntry(self.__thisFrame, loader, "varName", 14)
-        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 10)
+        self.__fatFrame = Frame(self.__thisFrame, width=round(self.__thisFrame.winfo_width()/8) , height=round(self.__thisFrame.winfo_height()/2))
+        self.__fatFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__fatFrame.pack_propagate(False)
 
-        self.__varListBox = ListBoxInFrame("typeSelector", self.__loader, self.__thisFrame,
-                            self.__loader.fontManager, 0.15, ["bit", "doubleBit", "nibble", "byte"], None)
+        self.__variableLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageVariable", 22)
+        self.varName = FrameWithLabelAndEntry(self.__thisFrame, loader, "varName", 14, 40, LEFT)
+        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 14)
+        self.__fatFrame.pack(side=LEFT, anchor=SW)
+
+        self.__varListBox = NewListBoxInFrame("typeSelector", self.__loader, self.__fatFrame,
+                            ["bit", "doubleBit", "nibble", "byte"], None, TOP)
+
+
 
         self.__variableButtons = CreateAndDeleteButtons(self.__loader, self.__thisFrame,
                                                         "variable",
@@ -39,31 +51,37 @@ class VariableFrame:
                                                         self.__createVar,
                                                         self.__deleteVar
                                                         )
-
         self.__loader.frames["VariableFrame"] = self
-
         from StatusFrame import StatusFrame
         self.__statusFrame = StatusFrame(self.__thisFrame, self.__loader)
+
 
         t = Thread(target=self.resize)
         t.daemon=True
         t.start()
 
+
+    def getH(self):
+        return(self.__thisFrame.winfo_height())
+
     def resize(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False and self.__container!=None:
-            if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+
+        while self.__loader.mainWindow.dead==False and self.__container!=None and self.stopThread==False:
+
+            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
+                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
+
 
                 if self.__thisFrame!=None:
                     try:
-                        self.__thisFrame.config(width=self.__w * self.__lastScaleX,
-                                     height=self.__h * self.__lastScaleY)
+                        self.__thisFrame.config(width=self.__w * (self.__lastScaleX),
+                                     height=self.__h * (self.__lastScaleY))
                     except Exception as e:
                         self.__loader.logger.errorLog(e)
-
+            #self.__thisFrame.place(x=5, y=10 + self.__loader.frames["SwitchFrame"].getH()+ self.__loader.frames["MemorySetter"].title.getH())
             sleep(0.04)
 
     def __checkThings(self, buttonCreate, buttonDelete, others):
@@ -85,12 +103,13 @@ class VariableFrame:
         self.__lastSelectedType = ""
 
         from time import sleep
-        while self.__loader.mainWindow.dead == False and self.__container != None:
+        while self.__loader.mainWindow.dead == False and self.__container != None and self.stopThread==False:
             if (self.__lastText!=self.varName.getEntry() or
-                self.__lastSelectedType!=self.__varListBox.getSelectedName()):
+                self.__lastSelectedType!=self.__varListBox.getSelectedName())\
+                    or self.__first == True:
                 self.__lastText = self.varName.getEntry()
                 self.__lastSelectedType = self.__varListBox.getSelectedName()
-
+                self.__first = False
                 #print(self.__lastText)
                 #print(self.__lastSelectedType)
                 if self.__checkIfNameIsValid(self.__lastText) == False:

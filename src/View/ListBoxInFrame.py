@@ -9,11 +9,22 @@ class ListBoxInFrame:
         self.__loader = loader
         self.__container = container
         self.__fontManager = fontmanager
+
+        if name == "bankBox" or name == "sectionBox":
+            self.father = self.__loader.mainWindow
+        elif name == "openListBox":
+            self.__loader.stopThreads.append(self)
+            self.father = self.__container
+        else:
+            self.__loader.stopThreads.append(self)
+            self.father = self.__loader.frames["MemorySetter"]
+
         w = self.__loader.mainWindow.getWindowSize()
         self.__baseWidth=w[0]/10*multi
         self.__baseSize=round(w[0]/1350*w[1]/1100*10)
 
         self.__first = True
+        self.stopThread = False
 
         try:
             self.__baseHeight=self.__container.getFrameSize()[1]
@@ -36,12 +47,12 @@ class ListBoxInFrame:
         self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
 
 
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.__lastScaleX = self.father.getScales()[0]
+        self.__lastScaleY = self.father.getScales()[1]
 
         #self.__frame.config(bg="red")
         self.__scrollBar = Scrollbar(self.__frame)
-        self.__listBox = Listbox(   self.__frame, width=10,
+        self.__listBox = Listbox(   self.__frame, width=100000,
                                     height=1000,
                                     yscrollcommand=self.__scrollBar.set,
                                     selectmode=BROWSE,
@@ -50,7 +61,7 @@ class ListBoxInFrame:
 
         self.__listBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
         self.__listBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-
+        self.__listBox.pack_propagate(False)
 
         align = Thread(target=self.dinamicallyAlign)
         align.daemon = True
@@ -58,6 +69,7 @@ class ListBoxInFrame:
         self.__setFont()
         self.__listOfItems = []
 
+        self.__loader.destroyable.append(self)
         self.filler(data)
         self.__loader.listBoxes[name] = self
 
@@ -74,7 +86,22 @@ class ListBoxInFrame:
             self.__loader.destroyable.append(self.__listBox)
             self.__loader.destroyable.append(self.__scrollBar)
 
-        self.__listBox.after(100, self.tryAgain)
+        self.__listBox.after(50, self.tryAgain)
+
+        self.__listBox.after(100, self.resizeCheat)
+
+    def destroy(self):
+        del self
+
+    def resizeCheat(self):
+        self.__loader.tk.geometry(
+            "%dx%d+%d+%d" % (self.__loader.tk.winfo_width()+1, self.__loader.tk.winfo_height(), self.__loader.tk.winfo_x(), self.__loader.tk.winfo_y())
+        )
+        from time import sleep
+        sleep(0.00001)
+        self.__loader.tk.geometry(
+            "%dx%d+%d+%d" % (self.__loader.tk.winfo_width()-1, self.__loader.tk.winfo_height(), self.__loader.tk.winfo_x(), self.__loader.tk.winfo_y())
+        )
 
     def tryAgain(self):
         self.__listBox.pack(side=LEFT, anchor=E, fill=BOTH)
@@ -115,15 +142,15 @@ class ListBoxInFrame:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False or self.__first == True:
+        while self.__loader.mainWindow.dead == False or self.__first == True and self.stopThread==False:
             try:
-                if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
-                        and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]):
+                if (self.__lastScaleX == self.father.getScales()[0]
+                        and self.__lastScaleY == self.father.getScales()[1]):
 
                     sleep(0.05)
                     continue
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+                self.__lastScaleX = self.father.getScales()[0]
+                self.__lastScaleY = self.father.getScales()[1]
 
                 self.__frame.config(width=round(self.__baseWidth*self.__lastScaleX))
                 self.__frame.config(height=round(self.__baseHeight*self.__lastScaleY))
@@ -143,7 +170,7 @@ class ListBoxInFrame:
 
     def __callCheckFunction(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False:
+        while self.father.dead == False and self.stopThread==False:
             self.__function(self.__listBox)
             sleep(0.1)
 

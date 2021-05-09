@@ -10,7 +10,8 @@ class BankSwitchButton:
         self.__num = num
         self.__button = Button(self.__frame, command=self.selectOnBoxes)
 
-
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         if num == 1:
             self.__button.config(text="Global")
@@ -38,10 +39,8 @@ class BankSwitchButton:
 
     def getFont(self):
         if (self.__loader.mainWindow.dead==False and
-            self.__frame != None):
-            self.__fontSize = (self.__loader.screenSize[0] / 1350*
-                               self.__loader.screenSize[1] / 1100 *
-                                self.__scaleLastX*self.__scaleLastY*14
+            self.__frame != None and self.stopThread==False):
+            self.__fontSize = ((self.__frame.winfo_height()/100)*20
                                )
             self.__font = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
             if self.__button!=None:
@@ -53,7 +52,7 @@ class BankSwitchButton:
     def resizer(self):
         from time import sleep
         while (self.__loader.mainWindow.dead==False and
-            self.__frame != None and self.__button!=None):
+            self.__frame != None and self.__button!=None and self.stopThread==False):
 
             if (self.__scaleLastX!=self.__loader.mainWindow.getScales()[0] or
                 self.__scaleLastY != self.__loader.mainWindow.getScales()[1]):

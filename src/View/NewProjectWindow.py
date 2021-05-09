@@ -10,6 +10,8 @@ class NewProjectWindow:
         self.__loader=loader
         self.OK = False
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -69,7 +71,7 @@ class NewProjectWindow:
     def __checker(self):
         from time import sleep
         import os
-        while self.dead == False:
+        while self.dead == False and self.stopThread==False:
             try:
                 path = str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText())
                 if os.path.exists(self.__folderEntryWithButton.getText()) == True and os.path.exists(path) == False and self.__loader.io.checkIfValidFileName(self.__projectEntryWithButton.getText()) == True:

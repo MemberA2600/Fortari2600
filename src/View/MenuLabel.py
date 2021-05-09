@@ -10,6 +10,9 @@ class MenuLabel:
         self.__XPoz = XPoz
         self.__fontManager = fontmanager
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__contentHolder = self.__frame.getFrame()
         self.__label = Label(self.__contentHolder, text = text)
 
@@ -28,7 +31,7 @@ class MenuLabel:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
+        while self.__loader.mainWindow.dead==False and self.stopThread==False:
             if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
                     and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)

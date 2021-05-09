@@ -16,6 +16,10 @@ class SubMenuOkCancelButtons:
             self.__buttonFrame = Frame(master.getFrame(),
                                       width=master.getFrameSize()[0],
                                       height=self.__font.metrics('linespace'))
+
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
         self.__buttonFrame.place()
         self.__buttonFrame.pack(side=BOTTOM, anchor=S)
         self.__buttonFrame.pack_propagate(False)
@@ -53,7 +57,7 @@ class SubMenuOkCancelButtons:
         self.__function(False)
 
     def __changeOK(self):
-        while self.__loader.mainWindow.dead==False and self.__window.dead==False:
+        while self.__loader.mainWindow.dead==False and self.__window.dead==False and self.stopThread==False:
             from time import sleep
             try:
                 if self.__var() == True:

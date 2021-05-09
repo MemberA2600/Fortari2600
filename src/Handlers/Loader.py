@@ -20,6 +20,8 @@ class Loader:
         self.BFG9000 = None
         self.logger = None
         self.syntaxList = {}
+        self.atariFrames = []
+        self.rocketFrames = []
 
         self.frames = {}
         self.menuButtons = {}
@@ -28,5 +30,6 @@ class Loader:
 
         self.destroyable = []
         self.subMenus = []
+        self.stopThreads = []
 
         self.sections = []

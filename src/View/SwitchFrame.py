@@ -11,16 +11,20 @@ class SwitchFrame:
         self.__w = self.__container.winfo_width()
         self.__h = round(self.__container.winfo_height()/10)
 
-        self.__scaleLastX = self.__loader.mainWindow.getScales()[0]
-        self.__scaleLastY = self.__loader.mainWindow.getScales()[1]
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
+
+        self.__scaleLastX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__scaleLastY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         self.__thisFrame = Frame(self.__container, width=self.__w, height=self.__h)
         self.__thisFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__thisFrame.pack_propagate(False)
-        self.__thisFrame.pack(side=TOP, anchor=E)
+        #self.__thisFrame.place(x=5, y=5+self.__loader.frames["MemorySetter"].title.getH())
+        self.__thisFrame.pack(side=TOP, fill=X, anchor=NE)
 
-
-        self.__fastSwitch = MainMenuLabel(self.__thisFrame, self.__loader, "fastSwitching", 14)
+        self.__fastSwitch = MainMenuLabel(self.__thisFrame, self.__loader, "fastSwitching", 20)
 
         from BankSwitchButton import BankSwitchButton
         self.__bankSwitchButtons = []
@@ -31,21 +35,27 @@ class SwitchFrame:
         #for key in self.__loader.listBoxes.keys():
         #    print(key)
 
+        self.__loader.frames["SwitchFrame"] = self
 
         t = Thread(target=self.resizer)
         t.daemon=True
         t.start()
 
+    def getH(self):
+        return(self.__thisFrame.winfo_height())
+
     def resizer(self):
         from time import sleep
         while (self.__loader.mainWindow.dead==False and
-            self.__container != None and self.__thisFrame!=None):
+            self.__container != None and self.__thisFrame!=None
+            and self.stopThread==False
+        ):
 
-            if (self.__scaleLastX!=self.__loader.mainWindow.getScales()[0] or
-                self.__scaleLastY != self.__loader.mainWindow.getScales()[1]):
+            if (self.__scaleLastX!=self.__loader.frames["MemorySetter"].getScales()[0] or
+                self.__scaleLastY != self.__loader.frames["MemorySetter"].getScales()[1]):
 
-                self.__scaleLastX = self.__loader.mainWindow.getScales()[0]
-                self.__scaleLastY = self.__loader.mainWindow.getScales()[1]
+                self.__scaleLastX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__scaleLastY = self.__loader.frames["MemorySetter"].getScales()[1]
 
                 try:
                     self.__thisFrame.config(
@@ -54,5 +64,5 @@ class SwitchFrame:
                     )
                 except Exception as e:
                     self.__loader.logger.errorLog(e)
-
+            #self.__thisFrame.place(x=5, y=5 + self.__loader.frames["MemorySetter"].title.getH())
             sleep(0.04)

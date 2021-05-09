@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image as IMAGE
 
 class LoadingScreen():
     """This class only opens a loading screen image and swaits for 3 seccnds,
@@ -62,6 +63,21 @@ class LoadingScreen():
         self.__loader.logger = Logger(self.__loader)
 
         self.__loader.io.loadSyntax()
+
+        for num in range(1, 20):
+            num = str(num)
+            if len(num) == 1:
+                num = "0" + str(num)
+            self.__loader.atariFrames.append(IMAGE.open("others/img/logo/"+num+".gif"))
+
+
+        for num in range(1, 67):
+            num = str(num)
+            if len(num) == 1:
+                num = "0" + num
+            self.__loader.rocketFrames.append(
+                IMAGE.open(str("others/img/rocket/r" + num + ".png"))
+            )
 
         self.__Loading_Window.destroy()
 

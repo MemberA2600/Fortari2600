@@ -10,8 +10,11 @@ class AtariLogo:
         self.__left = left
         self.__right = right
 
-        self.__frames = []
+        self.__frames = self.__loader.atariFrames
         self.__counter = 0
+
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         from SpaceShip import SpaceShip
         self.__spaceShip1 = SpaceShip(self.__loader, self.__left)
@@ -19,17 +22,11 @@ class AtariLogo:
         self.__spaceShip1.setOther(self.__spaceShip2)
         self.__spaceShip2.setOther(self.__spaceShip1)
 
-        for num in range(1, 20):
-            num = str(num)
-            if len(num) == 1:
-                num = "0" + str(num)
-            self.__frames.append(IMAGE.open("others/img/logo/"+num+".gif"))
-
         self.__imageBuffer = []
         self.__createLotsOfImages()
 
         self.__onlyLabel = Label(self.__main, bd=0, bg="black")
-        self.__onlyLabel.pack(padx=0, pady=0)
+        self.__onlyLabel.pack(padx=0, pady=0, fill=BOTH)
 
         self.__lastX = self.__loader.mainWindow.getScales()[0]
         self.__lastY = self.__loader.mainWindow.getScales()[1]
@@ -65,7 +62,7 @@ class AtariLogo:
 
     def nextFrame(self):
         from time import sleep
-        while(self.__loader.mainWindow.dead==False):
+        while(self.__loader.mainWindow.dead==False and self.stopThread == False):
             if self.__counter<18:
                 self.__counter+=1
             else:
@@ -76,7 +73,7 @@ class AtariLogo:
 
     def resize(self):
         from time import sleep
-        while(self.__loader.mainWindow.dead==False):
+        while(self.__loader.mainWindow.dead==False and self.stopThread == False):
             if (self.__lastX != self.__loader.mainWindow.getScales()[0] and
                 self.__lastY != self.__loader.mainWindow.getScales()[1]):
                 self.__lastX = self.__loader.mainWindow.getScales()[0]

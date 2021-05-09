@@ -54,7 +54,7 @@ class MainWindow:
 
         self.editor.overrideredirect(False)
         self.editor.resizable(True, True)
-        self.editor.minsize(750,550)
+        self.editor.minsize(1000,720)
         self.editor.pack_propagate(False)
         self.editor.grid_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
@@ -165,7 +165,7 @@ class MainWindow:
                                          99999, 550, 80, 100)
 
         from SelectLabel import SelectLabel
-        from ListBoxInFrame import ListBoxInFrame
+        from NewListBoxInFrame import NewListBoxInFrame
 
 
         self.__bankLabel = SelectLabel(self.__loader, self.__selectMenu1,
@@ -176,16 +176,13 @@ class MainWindow:
         for num in range(1,9):
             listBoxItems.append("bank"+str(num))
 
-        self.__bankBox = ListBoxInFrame("bankBox", self.__loader,
-                            self.__selectMenu1, self.__fontManager, 0.66, listBoxItems, self.checkIfBankChanged)
+        self.__bankBox = NewListBoxInFrame("bankBox", self.__loader,
+                            self.__selectMenu1, listBoxItems, self.checkIfBankChanged, LEFT)
 
-
-        from LockFrame import LockFrame
-        self.__lockFrame = LockFrame(self.__loader, self, self.__selectMenu1, self.__fontManager)
 
         self.__selectMenu2 = FrameContent(self.__loader, "sectionMenu",
                                          self.getWindowSize()[0] / 6, self.getWindowSize()[1] / 5,
-                                         self.__selectMenu1.getFrameSize()[0]+5 ,
+                                         self.__selectMenu1.getFrameSize()[0]+10 ,
                                          self.__buttonMenu.getFrameSize()[1]+10,
                                          99999, 550, 80, 100)
 
@@ -199,8 +196,20 @@ class MainWindow:
             if item != "special_read_only":
                 self.__tempList.append(item)
 
-        self.__sectionBox = ListBoxInFrame("sectionBox", self.__loader,
-                            self.__selectMenu2, self.__fontManager, 1.80, self.__tempList, self.checkIfSectionChanged)
+        self.__sectionBox = NewListBoxInFrame("sectionBox", self.__loader,
+                            self.__selectMenu2, self.__tempList, self.checkIfSectionChanged, LEFT)
+
+
+        self.__lockMenu = FrameContent(self.__loader, "lockMenu",
+                                         self.getWindowSize()[0] / 8, self.getWindowSize()[1] / 5,
+                                       (self.__selectMenu1.getFrameSize()[0]+10)*2.25 ,
+                                         self.__buttonMenu.getFrameSize()[1]+10,
+                                         99999, 550, 80, 100)
+
+        from LockFrame import LockFrame
+        self.__lockFrame = LockFrame(self.__loader, self, self.__lockMenu, self.__fontManager)
+
+
 
         self.__changedSelection = Thread(target=self.__listBoxChanges)
         self.__changedSelection.daemon = True
@@ -356,8 +365,6 @@ class MainWindow:
                 self.projectPath=""
 
 
-
-
     def __setVirtualMemoryItem(self, bank, variable):
         path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
@@ -414,7 +421,7 @@ class MainWindow:
 
         return(os.linesep.join(newText))
 
-        return(self.__config.getValueByKey("deliminator"))
+        #return(self.__config.getValueByKey("deliminator"))
 
     def __saveProject(self):
         self.__saveOnlyOne("bank1", "bank_configurations")
@@ -431,6 +438,12 @@ class MainWindow:
         self.__setProjectPath(None)
         self.__loader.virtualMemory.emptyArchieved()
         self.__loader.virtualMemory.resetMemory()
+        self.stopThreads()
+
+    def stopThreads(self):
+        for item in self.__loader.stopThreads:
+            item.stopThread=True
+        self.__loader.stopThreads = []
 
     def __openButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":

@@ -16,6 +16,8 @@ class SubMenuEntryWithButton:
                                       width=master.getFrameSize()[0],
                                       height=self.__font.metrics('linespace'))
 
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
 
         self.__entryFrame.place()
         self.__entryFrame.pack(side=TOP, anchor=NW)

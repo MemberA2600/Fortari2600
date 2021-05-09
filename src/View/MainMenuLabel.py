@@ -7,9 +7,13 @@ class MainMenuLabel:
         self.__loader = loader
         self.__master = master
 
-        self.__fontSize = ((self.__loader.screenSize[0]/1350) *
-                            (self.__loader.screenSize[1]/1100) * baseSize
-                           )
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
+        w = self.__loader.frames["MemorySetter"].getWindowSize()[0]/955
+        h = self.__loader.frames["MemorySetter"].getWindowSize()[1]/686
+
+        self.__fontSize = (baseSize*w*h)
 
         self.__font = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
         try:
@@ -24,12 +28,15 @@ class MainMenuLabel:
         self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
 
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         t = Thread(target=self.resize)
         t.daemon=True
         t.start()
+
+    def getH(self):
+        return(self.__label.winfo_height())
 
     def changeText(self, text):
         if text == "":
@@ -54,11 +61,11 @@ class MainMenuLabel:
 
     def resize(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
-            if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        while self.__loader.mainWindow.dead==False and self.stopThread==False:
+            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
+                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
                 self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*self.__lastScaleX*self.__lastScaleY), False, False, False)
                 try:

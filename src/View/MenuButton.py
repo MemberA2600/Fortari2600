@@ -17,6 +17,9 @@ class MenuButton:
         self.__bindedOut = bindedOut
         self.__image=image
 
+        self.stopThread = False
+        #self.__loader.stopThreads.append(self)
+
         self.__contentHolder = self.__frame.getFrame()
         self.__img = self.__loader.io.getImg(self.__image, None)
         self.__function = function
@@ -58,7 +61,7 @@ class MenuButton:
 
     def checkBinded(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
+        while self.__loader.mainWindow.dead==False and self.stopThread==False:
             if self.preventRun == False:
                 try:
                     if self.__invertedBinding == True:
@@ -80,7 +83,7 @@ class MenuButton:
 
     def dinamicallyAlign(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
+        while self.__loader.mainWindow.dead==False and self.stopThread==False:
             if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]):
                 sleep(0.05)
                 continue

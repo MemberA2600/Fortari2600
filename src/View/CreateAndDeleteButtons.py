@@ -11,22 +11,16 @@ class CreateAndDeleteButtons:
         self.__buttonPressedFunction1 = buttonPressedFunction1
         self.__buttonPressedFunction2 = buttonPressedFunction2
 
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
+        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         self.__w = self.__container.winfo_width()/4
         self.__h = self.__container.winfo_height()
 
-        baseSize=10
-        self.__fontSize = ((self.__loader.screenSize[0]/1350) *
-                            (self.__loader.screenSize[1]/1100) * baseSize
-                           )
-
-        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9), False, False, False)
-        self.__bigFont = self.__loader.fontManager.getFont(round(self.__fontSize*1.25), False, False, False)
-
-        self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75), False, False, False)
-
+        self.__setFont()
 
         self.__frame = Frame(self.__container, width=self.__w)
         self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
@@ -130,29 +124,29 @@ class CreateAndDeleteButtons:
             c.daemon=True
             c.start()
 
+    def __setFont(self):
+        baseSize=12
+        w = self.__loader.frames["MemorySetter"].getWindowSize()[0]/955
+        h = self.__loader.frames["MemorySetter"].getWindowSize()[1]/686
+
+        self.__fontSize = (baseSize*w*h)
+        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9), False, False, False)
+        self.__bigFont = self.__loader.fontManager.getFont(round(self.__fontSize*1.25), False, False, False)
+
+        self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75), False, False, False)
+
     def __setText(self, txt):
         return(self.__loader.dictionaries.getWordFromCurrentLanguage(txt))
 
     def resize(self):
         from time import sleep
-        while self.__loader.mainWindow.dead == False and self.__container != None:
-            if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        while self.__loader.mainWindow.dead == False and self.__container != None and self.stopThread==False:
+            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
+                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
-                self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*0.9*
-                                                                      self.__lastScaleY*
-                                                                      self.__lastScaleX
-                                                                      ), False, False, False)
-                self.__smallFont = self.__loader.fontManager.getFont(round(self.__fontSize*0.75*
-                                                                      self.__lastScaleY*
-                                                                      self.__lastScaleX
-                                                                      ), False, False, False)
-                self.__bigFont = self.__loader.fontManager.getFont(round(self.__fontSize*1.25*
-                                                                      self.__lastScaleY*
-                                                                      self.__lastScaleX
-                                                                      ), False, False, False)
+                self.__setFont()
                 if self.__frame != None:
                     try:
                         self.__frame.config(width=self.__w * self.__lastScaleX)

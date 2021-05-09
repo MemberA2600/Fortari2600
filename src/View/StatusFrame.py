@@ -12,8 +12,11 @@ class StatusFrame:
         self.__w = round(self.__container.winfo_width()/2)
         self.__h = self.__container.winfo_height()
 
-        self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-        self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        self.stopThread = False
+        self.__loader.stopThreads.append(self)
+
+        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
         self.__thisFrame = Frame(self.__container, width=self.__w, height=self.__h)
         self.__thisFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
@@ -22,16 +25,16 @@ class StatusFrame:
 
         self.__loader.frames["StatusFrame"] = self
         self.__statusLabel = MainMenuLabel(self.__thisFrame, self.__loader, "freeMemory", 14)
-        self.statusBasicRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "basicRam", 10)
-        self.statusSaraRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "saraRam", 10)
+        self.statusBasicRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "basicRam", 10, 15, RIGHT)
+        self.statusSaraRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "saraRam", 10, 15, RIGHT)
         self.statusBasicRam.disable()
         self.statusSaraRam.disable()
 
         self.__selectedValidity = self.__loader.listBoxes["bankBox"].getSelectedName()
 
         if self.__selectedValidity != "bank1":
-            self.statusBasicRamLocal = FrameWithLabelAndEntry(self.__thisFrame, loader, "basicRamLocal", 10)
-            self.statusSaraRamLocal = FrameWithLabelAndEntry(self.__thisFrame, loader, "saraRamLocal", 10)
+            self.statusBasicRamLocal = FrameWithLabelAndEntry(self.__thisFrame, loader, "basicRamLocal", 10, 15, RIGHT)
+            self.statusSaraRamLocal = FrameWithLabelAndEntry(self.__thisFrame, loader, "saraRamLocal", 10, 15, RIGHT)
             self.statusBasicRamLocal.disable()
             self.statusSaraRamLocal.disable()
 
@@ -45,11 +48,11 @@ class StatusFrame:
 
     def resize(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False and self.__container!=None:
-            if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
+        while self.__loader.mainWindow.dead==False and self.__container!=None and self.stopThread==False:
+            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
+                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
+                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
                 if self.__thisFrame!=None:
                     try:
