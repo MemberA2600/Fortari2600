@@ -16,7 +16,7 @@ class VirtualMemory:
 
         for num in range(1,9):
             bankNum = "bank"+str(num)
-            self.locks[bankNum] = ""
+            self.locks[bankNum] = None
             self.codes[bankNum] = {}
             if (num == 1):
                 self.codes[bankNum]["bank_configurations"] = DataItem()
@@ -261,14 +261,15 @@ class VirtualMemory:
             if line.startswith("*"):
                 continue
             else:
-                self.locks[line.split("=")[0]] = line.split("=")[1].replace("\n","").replace("\r","")
+                from Lock import Lock
+                self.locks[line.split("=")[0]] = Lock(line.split("=")[1].replace("\n","").replace("\r",""))
 
     def createTheBankConfigFromMemory(self):
         text = []
         text.append("*** This is where you set the details of banks such as name, role, and so on.")
         for bank in self.locks.keys():
-            if self.locks[bank]!="":
-                text.append(bank+"="+self.locks[bank])
+            if self.locks[bank]!=None:
+                text.append(bank+f"={self.locks[bank].name},{self.locks[bank].type},{str(self.locks[bank].number)}")
 
         self.codes["bank1"]["bank_configurations"].code = os.linesep.join(text)
         #print(self.__loader.virtualMemory.codes["bank1"]["bank_configurations"].code)

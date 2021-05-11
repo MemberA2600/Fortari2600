@@ -281,7 +281,7 @@ class MainWindow:
     def checkIfSectionChanged(self, listBox):
         if (self.__loader.listBoxes["bankBox"].getSelectedName() == "bank1" or
             self.projectPath == None or
-                self.__loader.virtualMemory.locks[self.__loader.listBoxes["bankBox"].getSelectedName()]!=""):
+                self.__loader.virtualMemory.locks[self.__loader.listBoxes["bankBox"].getSelectedName()]!=None):
             self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=DISABLED)
         else:
             self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].config(state=NORMAL)

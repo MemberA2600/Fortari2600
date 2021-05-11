@@ -30,13 +30,18 @@ class Switch:
                                  text = "Bank"+str(self.__bankNum)
                                  )
         self.__bankLabel.pack(side=TOP, anchor=N)
-
         self.lockLabel = Label(self.__frame,
                                  bg = "black",
                                  fg = "orangered",
                                  font = self.__smallFont,
-                                 text = self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)]
                                  )
+
+
+        if self.__loader.virtualMemory.locks["bank"+str(bankNum)] == None:
+            self.lockLabel.config(text="")
+        else:
+            self.lockLabel.config(text = self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)].name)
+
         self.lockLabel.pack(side=TOP, anchor=N)
 
         self.__w = round(self.__frame.winfo_width()/2)
@@ -67,7 +72,7 @@ class Switch:
         except Exception as e:
             self.__loader.logger.errorLog(e)
 
-        if self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)]!="":
+        if self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)]!=None:
             self.__switch = Button(self.__frame, relief=FLAT, bg="black", image=self.__imgLocked,
                                    activebackground="darkred", command=self.removeLock)
             self.__switch.pack(side=TOP, anchor=N)
@@ -76,14 +81,15 @@ class Switch:
             self.__switch.pack(side=TOP, anchor=N)
 
     def removeLock(self):
-        text = self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)]
+        text = self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)].name
         self.__loader.soundPlayer.playSound("switchOff")
         for num in range(2,9):
             bank = "bank"+str(num)
-            if self.__loader.virtualMemory.locks[bank] == text:
-                self.__loader.virtualMemory.locks[bank] = ""
-                self.__banks[num-2].createSwitch()
-                self.__banks[num-2].lockLabel.config(text = "")
+            if self.__loader.virtualMemory.locks[bank] != None:
+                if self.__loader.virtualMemory.locks[bank].name == text:
+                    self.__loader.virtualMemory.locks[bank] = None
+                    self.__banks[num-2].createSwitch()
+                    self.__banks[num-2].lockLabel.config(text = "")
 
     def killFrame(self):
         self.__loader.virtualMemory.createTheBankConfigFromMemory()

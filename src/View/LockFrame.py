@@ -128,7 +128,7 @@ class LockFrame:
             for num in range(1,9):
                 if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num)]:
                     self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num)]
-                    if self.__locks[num-1] == "":
+                    if self.__locks[num-1] == None:
                         self.__labels[num-1].config(image = self.__lockOff)
                     else:
                         self.__labels[num-1].config(image=self.__lockOn)
