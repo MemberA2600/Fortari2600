@@ -1,0 +1,1107 @@
+**********************************
+*** 2021-05-15 20:45:14.986473 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000007066208>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-15 20:45:16.293548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.293548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.293548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.293548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.293548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.294548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.294548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.294548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.294548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.295548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.295548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.295548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.295548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.295548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.296548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-15 20:45:16.296548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-15 20:45:16.296548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-15 20:45:16.296548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(zerg,protoss)
+item = protoss
+
+
+**********************************
+*** 2021-05-15 20:45:16.297548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-15 20:45:16.297548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-15 20:45:16.297548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.297548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.297548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.298548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-15 20:45:16.298548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-15 20:45:16.298548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.298548 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-15 20:45:16.299549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-15 20:45:16.299549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = bit
+
+
+**********************************
+*** 2021-05-15 20:45:16.299549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,Vacsora)
+item = Vacsora
+
+
+**********************************
+*** 2021-05-15 20:45:16.299549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-15 20:45:16.300549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-15 20:45:16.300549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.300549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.300549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.300549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.301549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.301549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.301549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.301549 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-15 20:45:16.321550 ***
+**********************************
+
+Exception: bad window path name ".!toplevel2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000007066208>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-15 20:45:16.327550 ***
+**********************************
+
+Exception: invalid command name ".!toplevel2.!frame2.!frame3.!canvas"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x0000000007066208>
+sleep = <built-in function sleep>
+moving = None
+
+
+**********************************
+*** 2021-05-15 20:45:16.452557 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x00000000042B0C18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'temp1=byte\r', 'temp2=byte\r', 'temp3=byte\r', 'temp4=byte\r', 'temp5=byte\r', 'temp6=byte\r', 'temp7=byte\r', 'temp8=byte\r', 'temp9=byte\r', 'item=byte\r', 'system1=byte\r', 'system2=byte\r', 'zerg=nibble\r', 'terran=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', 'WarCraft=array(protoss,temp4)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-15 20:45:23.769976 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-15 20:45:33.771548 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
