@@ -12,7 +12,8 @@ class VirtualMemory:
         self.__loader = loader
         self.codes = {}
         self.locks = {}
-
+        self.subs = {}
+        self.bankLinks = {}
 
         for num in range(1,9):
             bankNum = "bank"+str(num)
@@ -50,7 +51,9 @@ class VirtualMemory:
              ],
              "codes": deepcopy(self.codes),
              "locks": deepcopy(self.locks),
-             "memory": deepcopy(self.memory)
+             "memory": deepcopy(self.memory),
+             "subs": deepcopy(self.subs),
+             "bankLinks": deepcopy(self.bankLinks)
             }
         )
 
@@ -71,8 +74,14 @@ class VirtualMemory:
         self.codes = deepcopy(self.archieved[self.cursor]["codes"])
         self.locks = deepcopy(self.archieved[self.cursor]["locks"])
         self.memory = deepcopy(self.archieved[self.cursor]["memory"])
+        self.subs = deepcopy(self.archieved[self.cursor]["subs"])
+        self.bankLinks = deepcopy(self.archieved[self.cursor]["bankLinks"])
+
+        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
+        self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
+
         self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
-        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
+        self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
 
         self.__loader.BFG9000.first = True
 
@@ -231,7 +240,7 @@ class VirtualMemory:
         self.memory={}
         self.arrays={}
 
-        for i in range(128, 256):
+        for i in range(128, 248):
             self.memory["$"+self.getHex(i)] = MemoryItem()
         for i in range(0,128):
             I = self.getHex(i)

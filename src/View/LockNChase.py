@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image as IMAGE, ImageTk
 from threading import Thread
 
-class AtariLogo:
+class LockNChase:
 
     def __init__(self, loader, main, left, right):
         self.__loader = loader
@@ -10,7 +10,11 @@ class AtariLogo:
         self.__left = left
         self.__right = right
 
-        self.__frames = self.__loader.atariFrames
+        self.__frames = []
+        for num in range(1, 4):
+            num = "0"+str(num)
+            self.__frames.append(IMAGE.open("others/img/lock/"+num+".png"))
+
         self.__counter = 0
 
         self.stopThread = False
@@ -47,10 +51,11 @@ class AtariLogo:
         self.__imageBuffer=[]
         self.__sizing = True
         self.__lastSizeX = self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
-        for num in range(0,19):
+
+        for num in range(0,3):
             self.__imageBuffer.append(ImageTk.PhotoImage(self.__frames[num].resize((
             self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
-            , self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[1])
+            , self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[1]*0.75)
         ), IMAGE.ANTIALIAS)))
         self.__sizing = False
 
@@ -67,13 +72,14 @@ class AtariLogo:
     def nextFrame(self):
         from time import sleep
         while(self.__loader.mainWindow.dead==False and self.stopThread == False):
-            if self.__counter<18:
+            if self.__counter<2:
                 self.__counter+=1
             else:
                 self.__counter=0
+
             if self.__sizing == False:
                 self.__setCurrentImage(self.__counter)
-            sleep(0.02)
+            sleep(0.15)
 
     def resize(self):
         from time import sleep

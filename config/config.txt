@@ -9,3 +9,4 @@ maxUndo=20
 debug=True
 keepLogs=0
 deliminator=!
+codeBoxFont=14

@@ -33,3 +33,4 @@ class Loader:
         self.stopThreads = []
 
         self.sections = []
+        self.currentEditor = None

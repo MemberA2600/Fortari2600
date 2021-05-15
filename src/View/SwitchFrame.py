@@ -24,7 +24,7 @@ class SwitchFrame:
         #self.__thisFrame.place(x=5, y=5+self.__loader.frames["MemorySetter"].title.getH())
         self.__thisFrame.pack(side=TOP, fill=X, anchor=NE)
 
-        self.__fastSwitch = MainMenuLabel(self.__thisFrame, self.__loader, "fastSwitching", 20)
+        self.__fastSwitch = MainMenuLabel(self.__thisFrame, self.__loader, "fastSwitching", 20, "MemorySetter")
 
         from BankSwitchButton import BankSwitchButton
         self.__bankSwitchButtons = []

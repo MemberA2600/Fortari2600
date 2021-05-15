@@ -29,7 +29,7 @@ class MemorySetter:
         self.originalSizeX=self.__inside.winfo_width()
         self.originalSizeY=self.__inside.winfo_height()
 
-        self.title = MainMenuLabel(self.__inside, self.__loader, "memoryManager", 24)
+        self.title = MainMenuLabel(self.__inside, self.__loader, "memoryManager", 24, "MemorySetter")
 
         from SpaceShip import SpaceShip
         self.__spacesShip = SpaceShip(self.__loader, self.__left)
@@ -55,10 +55,13 @@ class MemorySetter:
         )
 
     def getWindowSize(self):
-        return(
-            self.__inside.winfo_width(),
-            self.__inside.winfo_height()
-        )
+        try:
+            return(
+                self.__inside.winfo_width(),
+                self.__inside.winfo_height()
+            )
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
 
 
 

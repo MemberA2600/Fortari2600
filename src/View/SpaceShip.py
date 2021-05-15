@@ -40,6 +40,8 @@ class SpaceShip:
 
     def __setBuffer(self):
         self.__imgBuffer.clear()
+        self.__lastSizeX = self.__frame.winfo_width()
+
         for num in range(0,66):
             self.__imgBuffer.append(
                 ImageTk.PhotoImage(self.__frames[num].resize(
@@ -112,7 +114,8 @@ class SpaceShip:
                             self.__dontDoIt = True
                             self.__rocketY = 1
 
-
+                if self.__lastSizeX != self.__frame.winfo_width():
+                    self.__setBuffer()
                 self.__spaceLabel.config(
                     image=self.__imgBuffer[self.__rocketY]
                 )

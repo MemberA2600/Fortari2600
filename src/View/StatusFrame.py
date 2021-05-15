@@ -24,7 +24,7 @@ class StatusFrame:
         self.__thisFrame.pack(side=LEFT, anchor=NW)
 
         self.__loader.frames["StatusFrame"] = self
-        self.__statusLabel = MainMenuLabel(self.__thisFrame, self.__loader, "freeMemory", 14)
+        self.__statusLabel = MainMenuLabel(self.__thisFrame, self.__loader, "freeMemory", 14, "MemorySetter")
         self.statusBasicRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "basicRam", 10, 15, RIGHT)
         self.statusSaraRam = FrameWithLabelAndEntry(self.__thisFrame, loader, "saraRam", 10, 15, RIGHT)
         self.statusBasicRam.disable()

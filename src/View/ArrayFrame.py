@@ -30,9 +30,9 @@ class ArrayFrame:
         #self.__thisFrame.config(bg="red")
         self.__loader.destroyable.append(self.__thisFrame)
 
-        self.__arrayLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageArray", 22)
+        self.__arrayLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageArray", 22, "MemorySetter")
         self.arrName = FrameWithLabelAndEntry(self.__thisFrame, loader, "arrName", 14, 40, LEFT)
-        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 10)
+        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 10, "MemorySetter")
 
         self.__frameVariables = Frame(self.__thisFrame, width=round(self.__thisFrame.winfo_width() / 5),
                                       height=self.__thisFrame.winfo_height())
@@ -46,11 +46,11 @@ class ArrayFrame:
         self.__frameAvailable.pack_propagate(False)
         self.__frameAvailable.pack(side=LEFT, anchor=W, fill=Y)
 
-        self.__containedLabel = MainMenuLabel(self.__frameVariables, self.__loader, "arrVariables", 14)
+        self.__containedLabel = MainMenuLabel(self.__frameVariables, self.__loader, "arrVariables", 14, "MemorySetter")
         self.__varListBox = NewListBoxInFrame("includedVariables", self.__loader, self.__frameVariables,
                             [], None, LEFT)
 
-        self.__availableLabel = MainMenuLabel(self.__frameAvailable, self.__loader, "arrAvailable", 14)
+        self.__availableLabel = MainMenuLabel(self.__frameAvailable, self.__loader, "arrAvailable", 14, "MemorySetter")
         self.__avListBox = NewListBoxInFrame("availableVariables", self.__loader, self.__frameAvailable,
                             [], None, LEFT)
 

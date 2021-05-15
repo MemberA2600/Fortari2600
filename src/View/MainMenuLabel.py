@@ -3,15 +3,18 @@ from threading import Thread
 
 class MainMenuLabel:
 
-    def __init__(self, master, loader, text, baseSize):
+    def __init__(self, master, loader, text, baseSize, bossname):
         self.__loader = loader
         self.__master = master
 
         self.stopThread = False
         self.__loader.stopThreads.append(self)
 
-        w = self.__loader.frames["MemorySetter"].getWindowSize()[0]/955
-        h = self.__loader.frames["MemorySetter"].getWindowSize()[1]/686
+
+        self.__bossName =  bossname
+
+        w = self.__loader.frames[bossname].getWindowSize()[0]/955
+        h = self.__loader.frames[bossname].getWindowSize()[1]/686
 
         self.__fontSize = (baseSize*w*h)
 
@@ -28,8 +31,8 @@ class MainMenuLabel:
         self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
 
-        self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
-        self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
+        self.__lastScaleX = self.__loader.frames[bossname].getScales()[0]
+        self.__lastScaleY = self.__loader.frames[bossname].getScales()[1]
 
         t = Thread(target=self.resize)
         t.daemon=True
@@ -62,10 +65,10 @@ class MainMenuLabel:
     def resize(self):
         from time import sleep
         while self.__loader.mainWindow.dead==False and self.stopThread==False:
-            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
-                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
-                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
-                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
+            if (self.__lastScaleX != self.__loader.frames[self.__bossName].getScales()[0] or
+                    self.__lastScaleY != self.__loader.frames[self.__bossName].getScales()[1]):
+                self.__lastScaleX = self.__loader.frames[self.__bossName].getScales()[0]
+                self.__lastScaleY = self.__loader.frames[self.__bossName].getScales()[1]
 
                 self.__font = self.__loader.fontManager.getFont(round(self.__fontSize*self.__lastScaleX*self.__lastScaleY), False, False, False)
                 try:

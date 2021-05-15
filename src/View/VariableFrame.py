@@ -35,9 +35,9 @@ class VariableFrame:
         self.__fatFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__fatFrame.pack_propagate(False)
 
-        self.__variableLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageVariable", 22)
+        self.__variableLabel = MainMenuLabel(self.__thisFrame, self.__loader, "manageVariable", 22, "MemorySetter")
         self.varName = FrameWithLabelAndEntry(self.__thisFrame, loader, "varName", 14, 40, LEFT)
-        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 14)
+        self.__errorLabel = MainMenuLabel(self.__thisFrame, self.__loader, "", 14, "MemorySetter")
         self.__fatFrame.pack(side=LEFT, anchor=SW)
 
         self.__varListBox = NewListBoxInFrame("typeSelector", self.__loader, self.__fatFrame,

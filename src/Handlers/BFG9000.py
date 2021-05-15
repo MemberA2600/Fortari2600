@@ -1,5 +1,6 @@
 from tkinter import *
 from MemorySetter import MemorySetter
+from CodeEditor import CodeEditor
 
 class BFG9000:
 
@@ -27,6 +28,7 @@ class BFG9000:
 
         self.frame.pack_propagate(False)
         self.frame.pack(side=BOTTOM, anchor=S, fill=BOTH)
+        self.__classicEditorTypes = ["enter", "leave", "overscan", "vblank"]
 
         self.__selectedBank = self.__loader.listBoxes["bankBox"].getSelectedName()
         self.__selectedSection = self.__loader.listBoxes["sectionBox"].getSelectedName()
@@ -77,14 +79,26 @@ class BFG9000:
         if bank == "bank1" or section == "local_variables":
             self.__loader.virtualMemory.setVariablesFromMemory(bank)
             self.actual = MemorySetter(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, bank, "MemorySetter")
+        elif section in self.__classicEditorTypes:
+            self.actual = CodeEditor(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame, bank, "CodeEditor")
 
+
+    def saveAllCode(self):
+        if self.__selectedBank!="bank1" and self.__loader.frames["CodeEditor"].changed == True:
+            self.__loader.virtualMemory.codes[self.__selectedBank][self.__selectedSection].code = self.__loader.currentEditor.get(0.0, END)
+            self.__loader.virtualMemory.codes[self.__selectedBank][self.__selectedSection].changed = True
+            self.__loader.virtualMemory.archieve()
 
     def clearFrames(self, color):
+        #if self.__selectedSection in self.__classicEditorTypes:
+        #    self.saveAllCode()
+
         for item in self.__loader.destroyable:
             item.destroy()
 
         self.__loader.mainWindow.stopThreads()
-        del self.actual
+        #del self.actual
+        self.__loader.currentEditor = None
 
         self.destroyAll(self.__mainFrame.place_slaves())
         self.destroyAll(self.__mainFrame.pack_slaves())
@@ -124,22 +138,33 @@ class BFG9000:
                 self.first = False
                 self.actual = None
 
+
                 if self.__lastPath ==None:
                     from AtariLogo import AtariLogo
                     self.clearFrames("black")
                     self.actual = AtariLogo(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
+
                 else:
                     self.clearFrames(self.__loader.colorPalettes.getColor("window"))
                     self.saveFrameToMemory(self.__selectedBank, self.__selectedSection)
 
                     self.__selectedBank = self.__loader.listBoxes["bankBox"].getSelectedName()
-                    if self.__selectedBank == "bank1":
-                        self.__selectedSection = "global_variables"
-                    else:
+                    if self.__loader.virtualMemory.locks[self.__selectedBank] != None:
                         self.__selectedSection = self.__loader.listBoxes["sectionBox"].getSelectedName()
-                    #print(self.__selectedBank, self.__selectedSection)
 
-                    self.loadFromMemoryToFrame(self.__selectedBank, self.__selectedSection)
+                        from LockNChase import LockNChase
+                        self.clearFrames("black")
+                        self.actual = LockNChase(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
+
+                    else:
+                        if self.__selectedBank == "bank1":
+                            self.__selectedSection = "global_variables"
+
+                        else:
+                            self.__selectedSection = self.__loader.listBoxes["sectionBox"].getSelectedName()
+                        #print(self.__selectedBank, self.__selectedSection)
+
+                        self.loadFromMemoryToFrame(self.__selectedBank, self.__selectedSection)
                 sleep(0.4)
             sleep(0.4)
 

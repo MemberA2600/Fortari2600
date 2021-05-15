@@ -1,7 +1,9 @@
 from tkinter import *
 from threading import Thread
 from SideFrameListBoxWithButtonAndLabel import SideFrameListBoxWithButtonAndLabel
-class RightFrame:
+from threading import Thread
+
+class RightFrameEditor:
 
     def __init__(self, loader, frame, validity, view):
         self.__loader = loader
@@ -12,17 +14,17 @@ class RightFrame:
         self.__originalH = self.__frame.winfo_height()
         self.__loader.frames["rightFrame"] = self
 
-        baseSize = 18
+        baseSize = 13
 
         buttonText="insertVar"
         if view == "MemorySetter":
             buttonText = "selectVar"
 
         self.variables = SideFrameListBoxWithButtonAndLabel(loader, frame,
-                         baseSize, "variables", 0.65,
+                         baseSize, "variables", 0.30,
                          self.fillListBoxWithVariableNames,
                          self.loadVariableData,
-                         None,
+                         self.insertStuff,
                          buttonText)
 
         buttonText="insertArray"
@@ -30,15 +32,48 @@ class RightFrame:
             buttonText = "selectArray"
 
         self.arrays = SideFrameListBoxWithButtonAndLabel(loader, frame,
-                         baseSize, "arrays", 0.33,
+                         baseSize, "arrays", 0.25,
                          self.fillListBoxWithArrays,
                          self.loadArrayData,
-                         None,
+                         self.insertStuff,
                          buttonText)
 
+        buttonText="insertSub"
+        if view == "SubroutineEditor":
+            buttonText = "selectSub"
+
+        self.subs = SideFrameListBoxWithButtonAndLabel(loader, frame,
+                         baseSize, "subs", 0.25,
+                         self.fillListBoxWithSubs,
+                         self.loadSubRoutineData,
+                         self.insertStuff,
+                         buttonText)
+
+        self.banklinks = SideFrameListBoxWithButtonAndLabel(loader, frame,
+                         baseSize, "bankLinks", 0.20,
+                         self.fillListBoxWithBankLinks,
+                         self.loadBankLinkData,
+                         self.insertStuff,
+                         "insertBankLinks")
 
     def destroy(self):
         del self
+
+    def insertStuff(self, listBox, data):
+        self.__loader.currentEditor.insert(INSERT, data[listBox.curselection()[0]].split(" ")[0])
+
+
+    def fillListBoxWithSubs(self, listBox, handler):
+        pass
+
+    def fillListBoxWithBankLinks(self, listBox, handler):
+        pass
+
+    def loadSubRoutineData(self, listBox, data):
+        pass
+
+    def loadBankLinkData(self, listBox, data):
+        pass
 
     def fillListBoxWithVariableNames(self, listBox, handler):
 
@@ -47,8 +82,11 @@ class RightFrame:
 
         for address in self.__loader.virtualMemory.memory.keys():
             for var in self.__loader.virtualMemory.memory[address].variables.keys():
-                if (self.__loader.virtualMemory.memory[address].variables[var].validity == self.__selectedValidity and
-                        self.__loader.virtualMemory.memory[address].variables[var].system == False):
+                if ((self.__loader.virtualMemory.memory[address].variables[var].validity == self.__selectedValidity or
+                     self.__loader.virtualMemory.memory[address].variables[var].validity == "global"
+                )
+                     and
+                        self.__loader.virtualMemory.memory[address].variables[var].iterable == True):
                     #print(var, self.__loader.virtualMemory.memory[address].variables[var].validity)
                     self.variableList.append(var+" ("+address+", "+
                          self.__loader.virtualMemory.memory[address].variables[var].type+")")
@@ -66,6 +104,7 @@ class RightFrame:
         variableFrame.varName.setEntry(
             self.variables.getSelectedName().split(" ")[0]
         )
+
 
     def fillListBoxWithArrays(self, listBox, handler):
         self.arrayListBox = listBox
@@ -90,9 +129,11 @@ class RightFrame:
             self.arrays.getSelectedName().split(" ")[0]
         )
 
-
     def getScales(self):
         return(
             self.__frame.winfo_width()/self.__originalW,
             self.__frame.winfo_height() / self.__originalH,
         )
+
+    def checker(self):
+        pass
