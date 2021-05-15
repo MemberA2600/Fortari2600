@@ -5,3 +5,4 @@ boxBackNormal=white
 boxFontNormal=black
 boxBackUnSaved=red
 boxFontUnSaved=yellow
+comment=green
