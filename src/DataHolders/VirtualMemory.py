@@ -53,7 +53,7 @@ class VirtualMemory:
              "locks": deepcopy(self.locks),
              "memory": deepcopy(self.memory),
              "subs": deepcopy(self.subs),
-             "bankLinks": deepcopy(self.bankLinks)
+             "bankLinks": deepcopy(self.bankLinks),
             }
         )
 

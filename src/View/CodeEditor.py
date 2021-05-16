@@ -10,6 +10,8 @@ class CodeEditor:
         self.__left = left
         self.__right = right
 
+        self.forceCheck = False
+
         self.__loader.frames["CodeEditor"] = self
         self.changed = False
 

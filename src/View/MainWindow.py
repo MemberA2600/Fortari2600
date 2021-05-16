@@ -397,7 +397,7 @@ class MainWindow:
                                             )
 
     def __changeFirstValidDeliminator(self, text, section):
-        if section not in ["enter", "leave", "overscan", "screen_bottom"]:
+        if section not in ["subroutines","vblank", "enter", "leave", "overscan", "screen_bottom"]:
             return (text)
         newText=[]
         delimiter = self.__config.getValueByKey("deliminator")
@@ -406,7 +406,7 @@ class MainWindow:
                 newText.append(line)
             else:
                 valid = 0
-                for position in range(0, len(line)-len(delimiter)):
+                for position in range(0, len(line)-len(delimiter)+1):
                     if line[position] == "(":
                         valid+=1
                     elif line[position] == ")":

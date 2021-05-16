@@ -80,3 +80,4 @@ bankLinks=Bankhivatkozások:
 insertBankLinks=Hivatkozás Beillesztése
 lockNChase=#bank# zárolva #lockname# által.
 deliminatorSetter=Sorelválasztó Beállítása:
+applyChanges=Módosítások Mentése

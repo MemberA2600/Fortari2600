@@ -61,7 +61,7 @@ class CodeBox:
         from time import sleep
         while (self.__loader.mainWindow.dead == False and self.stopThread==False):
             if (self.keyPress==True):
-                sleep(0.35)
+                sleep(0.75)
                 if (self.keyPress == False):
                     self.__loader.BFG9000.saveAllCode()
                     self.addTinting()
@@ -69,6 +69,17 @@ class CodeBox:
             for t in self.tintingThreads:
                 if t.is_alive() == False:
                     self.tintingThreads.remove(t)
+
+            if self.__loader.frames["CodeEditor"].forceCheck==True:
+                self.__loader.frames["CodeEditor"].forceCheck=False
+                self.loadCode()
+                self.addTinting()
+                for bank in self.__loader.virtualMemory.codes.keys():
+                    for section in self.__loader.virtualMemory.codes[bank].keys():
+                        if section not in ["subroutines", "vblank", "enter", "leave", "overscan", "screen_bottom"]:
+                            continue
+                        self.__loader.virtualMemory.codes[bank][section].changed = True
+                self.__loader.virtualMemory.archieve()
 
             sleep(0.05)
 
@@ -128,7 +139,7 @@ class CodeBox:
     def getPositionOfFirstDeliminator(self, line):
         deliminator = self.__config.getValueByKey("deliminator")
         valid = 0
-        for position in range(0, len(line) - len(deliminator)):
+        for position in range(0, len(line) - len(deliminator)+1):
             if line[position] == "(":
                 valid += 1
             elif line[position] == ")":
