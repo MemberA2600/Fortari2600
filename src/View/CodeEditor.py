@@ -25,8 +25,11 @@ class CodeEditor:
 
         self.title = MainMenuLabel(self.__inside, self.__loader, "codeEditor", 24, "CodeEditor")
 
-        from SpaceShip import SpaceShip
-        self.__spacesShip = SpaceShip(self.__loader, self.__left)
+        #from SpaceShip import SpaceShip
+        #self.__spacesShip = SpaceShip(self.__loader, self.__left)
+
+        from LeftFrameEditor import LeftFrameEditor
+        self.rightFrame = LeftFrameEditor(self.__loader, self.__left, bank, view)
 
         from RightFrameEditor import RightFrameEditor
         self.rightFrame = RightFrameEditor(self.__loader, self.__right, bank, view)

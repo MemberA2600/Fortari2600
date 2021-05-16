@@ -78,3 +78,5 @@ insertSub=Alrutin Beillesztése
 selectSub=Alrutin Kiválasztása
 bankLinks=Bankhivatkozások:
 insertBankLinks=Hivatkozás Beillesztése
+lockNChase=#bank# zárolva #lockname# által.
+deliminatorSetter=Sorelválasztó Beállítása:

@@ -1,0 +1,2807 @@
+**********************************
+*** 2021-05-16 08:21:21.119184 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x000000000720CCC0>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-16 08:21:22.317253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.317253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.317253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.317253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.318253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.318253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.318253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.318253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.318253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.319253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.319253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.319253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.319253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.319253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.320253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-16 08:21:22.320253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = nibble
+
+
+**********************************
+*** 2021-05-16 08:21:22.320253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-16 08:21:22.321253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(zerg,protoss)
+item = protoss
+
+
+**********************************
+*** 2021-05-16 08:21:22.321253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-16 08:21:22.321253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-16 08:21:22.321253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.321253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.322253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.322253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-16 08:21:22.322253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2021-05-16 08:21:22.322253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.322253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-16 08:21:22.323253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-05-16 08:21:22.323253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = bit
+
+
+**********************************
+*** 2021-05-16 08:21:22.323253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,Vacsora)
+item = Vacsora
+
+
+**********************************
+*** 2021-05-16 08:21:22.324253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-16 08:21:22.324253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2021-05-16 08:21:22.324253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.324253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.324253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.325253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.325253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.325253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.325253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.325253 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2021-05-16 08:21:22.345255 ***
+**********************************
+
+Exception: bad window path name ".!toplevel2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x000000000720CCC0>
+mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2021-05-16 08:21:22.350255 ***
+**********************************
+
+Exception: invalid command name ".!toplevel2.!frame2.!frame3.!canvas"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = .\src\View\ET.py
+self = <ET.ET object at 0x000000000720CCC0>
+sleep = <built-in function sleep>
+moving = None
+
+
+**********************************
+*** 2021-05-16 08:21:22.352255 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'temp1=byte\r', 'temp2=byte\r', 'temp3=byte\r', 'temp4=byte\r', 'temp5=byte\r', 'temp6=byte\r', 'temp7=byte\r', 'temp8=byte\r', 'temp9=byte\r', 'item=byte\r', 'system1=byte\r', 'system2=byte\r', 'zerg=nibble\r', 'terran=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', 'WarCraft=array(protoss,temp4)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-16 08:21:23.545323 ***
+**********************************
+
+Exception: None
+Error Class: <class 'KeyError'>
+Variables: 
+__name__ = OpenProjectWindow
+__file__ = .\src\View\OpenProjectWindow.py
+self = <OpenProjectWindow.OpenProjectWindow object at 0x0000000002BA8208>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:28.360599 ***
+**********************************
+
+Exception: invalid command name ".!frame5.!frame.!frame.!frame3.!frame4.!frame.!button2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x00000000053345C0>
+buttonCreate = .!frame5.!frame.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame5.!frame.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame5.!frame.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame5.!frame.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:28.960633 ***
+**********************************
+
+Exception: invalid command name ".!frame5.!frame.!frame.!frame3.!frame4.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ArrayFrame
+__file__ = .\src\View\ArrayFrame.py
+self = <ArrayFrame.ArrayFrame object at 0x00000000053345C0>
+buttonCreate = .!frame5.!frame.!frame.!frame3.!frame4.!button
+buttonDelete = .!frame5.!frame.!frame.!frame3.!frame4.!button2
+others = [<tkinter.Button object .!frame5.!frame.!frame.!frame3.!frame4.!frame.!button>, <tkinter.Button object .!frame5.!frame.!frame.!frame3.!frame4.!frame.!button2>]
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:29.317653 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-16 08:21:30.820739 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.840740 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.843741 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.851741 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.855741 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.911745 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.914745 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.921745 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.929746 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.931746 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:30.934746 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.000750 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.001750 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.005750 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.041752 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.070754 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.071754 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.075754 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.111756 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.140758 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.142758 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.145758 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.182760 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.210762 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.212762 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.216762 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.230763 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.233763 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.236763 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.252764 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.301767 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.303767 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.306767 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.322768 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.323768 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.326768 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.371771 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.396772 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.441775 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.442775 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.443775 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.511779 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.513779 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.513779 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.516779 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.581783 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.583783 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.583783 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.592783 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.651787 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.653787 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.655787 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.664788 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.674788 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.734792 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.745792 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.773794 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:31.775794 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.254821 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.268822 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.275823 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.289823 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.293824 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.295824 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.345827 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.361827 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.363828 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.368828 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.383829 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.383829 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.420831 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.440832 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.453833 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.453833 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.488835 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.524837 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.524837 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.559839 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.561839 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.747850 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.748850 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.779851 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.781852 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.850855 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.852856 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.868856 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.868856 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.923860 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.923860 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.938860 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.938860 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.993864 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame2.!frame"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x0000000005321898>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:32.993864 ***
+**********************************
+
+Exception: 'SubMenuFrame' object has no attribute 'winfo_width'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x00000000071FAFD0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:33.008864 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A4E0>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:33.008864 ***
+**********************************
+
+Exception: bad window path name ".!frame5.!frame.!frame.!frame3.!frame3"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = NewListBoxInFrame
+__file__ = .\src\View\NewListBoxInFrame.py
+self = <NewListBoxInFrame.NewListBoxInFrame object at 0x000000000533A9E8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2021-05-16 08:21:39.319225 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-16 08:21:43.115443 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004C8FC18>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't\r", '*** be overwritten anywhere.\r', 'rand=byte\r', 'counter=byte\r', 'temp1=byte\r', 'temp2=byte\r', 'temp3=byte\r', 'temp4=byte\r', 'temp5=byte\r', 'temp6=byte\r', 'temp7=byte\r', 'temp8=byte\r', 'temp9=byte\r', 'item=byte\r', 'system1=byte\r', 'system2=byte\r', 'zerg=nibble\r', 'terran=nibble\r', 'protoss=byte\r', 'races=array(zerg,protoss)\r', 'WarCraft=array(protoss,temp4)\r', '']
+line = 
+data = ['']
+name = 
+TYPE = array(protoss,temp4)
+item = temp4
+
+
+**********************************
+*** 2021-05-16 08:21:49.320797 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-16 08:21:59.322370 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-05-16 08:22:09.323942 ***
+**********************************
+
+$80
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+system1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+system2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$8f
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+

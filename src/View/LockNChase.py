@@ -1,6 +1,7 @@
 from tkinter import *
 from PIL import Image as IMAGE, ImageTk
 from threading import Thread
+from MainMenuLabel import MainMenuLabel
 
 class LockNChase:
 
@@ -10,6 +11,11 @@ class LockNChase:
         self.__left = left
         self.__right = right
 
+
+        self.originalSizeX=self.__main.winfo_width()
+        self.originalSizeY=self.__main.winfo_height()
+
+        self.__loader.frames["LockFrame"] = self
         self.__frames = []
         for num in range(1, 4):
             num = "0"+str(num)
@@ -19,6 +25,14 @@ class LockNChase:
 
         self.stopThread = False
         self.__loader.stopThreads.append(self)
+
+        txt = self.__loader.dictionaries.getWordFromCurrentLanguage("lockNChase")\
+            .replace("#bank#", self.__loader.BFG9000.getSelected()[0])\
+            .replace("#lockname#", self.__loader.virtualMemory.locks[self.__loader.BFG9000.getSelected()[0]].name)
+
+        self.title = MainMenuLabel(self.__main, self.__loader, txt, 24, "LockFrame")
+        self.title.changeColor("orangered", "black")
+        self.title.changePack(TOP, N)
 
         from SpaceShip import SpaceShip
         self.__spaceShip1 = SpaceShip(self.__loader, self.__left)
@@ -92,3 +106,18 @@ class LockNChase:
                 self.__createLotsOfImages()
 
             sleep(0.04)
+
+    def getWindowSize(self):
+        try:
+            return(
+                self.__main.winfo_width(),
+                self.__main.winfo_height()
+            )
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
+
+    def getScales(self):
+        return(
+            self.__main.winfo_width() / self.originalSizeX,
+            self.__main.winfo_height() / self.originalSizeY,
+        )

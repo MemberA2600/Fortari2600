@@ -38,6 +38,12 @@ class MainMenuLabel:
         t.daemon=True
         t.start()
 
+    def changeColor(self, color, bgcolor):
+        self.__label.config(fg=color, bg=bgcolor)
+
+    def changePack(self, side, anchor):
+        self.__label.pack(side=side, anchor=anchor)
+
     def getH(self):
         return(self.__label.winfo_height())
 

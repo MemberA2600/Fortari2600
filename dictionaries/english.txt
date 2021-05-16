@@ -80,3 +80,5 @@ insertSub=Insert Subroutine
 selectSub=Select Subroutine
 bankLinks=Bank Links:
 insertBankLinks=Insert Bank Link
+lockNChase=#bank# is locked by #lockname#.
+deliminatorSetter=Set Deliminator:

@@ -10,9 +10,6 @@ class LockManagerWindow:
         self.__loader=loader
         self.OK = False
 
-        #self.__loader.virtualMemory.locks["bank3"] = "music1"
-        #self.__loader.virtualMemory.locks["bank5"] = "waveform1"
-        #self.__loader.virtualMemory.locks["bank6"] = "waveform1"
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
