@@ -4,7 +4,7 @@ from threading import Thread
 class LeftFrameSetterFrame:
 
     def __init__(self, loader, name, frame, title, father, height, baseSize, val, view,
-                 addItems, applyFunction, delimiterChangerValid):
+                 addItems, applyFunction, valider, buttontText):
         self.__loader = loader
         self.__frame = frame
         self.__father = father
@@ -12,8 +12,12 @@ class LeftFrameSetterFrame:
         self.__height=height
         self.__bank=val
         self.__section=view
+        self.__name = name
 
-        self.delimiterChangerValid = delimiterChangerValid
+        if name == "deliminatorFrame":
+            self.delimiterChangerValid = valider
+        elif name == "replacerFrame":
+            self.replaceChangerValid = valider
 
         self.stopThread = False
         self.__loader.stopThreads.append(self)
@@ -40,7 +44,12 @@ class LeftFrameSetterFrame:
 
         self.__loader.frames[name] = self
 
-        self.applyButton = Button(self.__thisFrame, text = self.__loader.dictionaries.getWordFromCurrentLanguage("applyChanges"))
+        if buttontText == None:
+            buttontText = self.__loader.dictionaries.getWordFromCurrentLanguage("applyChanges")
+        else:
+            buttontText = self.__loader.dictionaries.getWordFromCurrentLanguage(buttontText)
+
+        self.applyButton = Button(self.__thisFrame, text = buttontText)
         self.applyButton.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.applyButton.config(fg=self.__loader.colorPalettes.getColor("font"))
 
@@ -91,5 +100,9 @@ class LeftFrameSetterFrame:
                 self.setFont()
                 self.__title.config(font=self.__font)
                 self.applyButton.config(font=self.__smallFont)
-            self.delimiterChangerValid(self, self.entryVar)
+            if self.__name == "deliminatorFrame":
+                self.delimiterChangerValid(self, self.entryVar)
+            elif self.__name == "replacerFrame":
+                self.replaceChangerValid(self, self.originalText)
+
             sleep(0.04)

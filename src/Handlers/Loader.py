@@ -22,6 +22,7 @@ class Loader:
         self.syntaxList = {}
         self.atariFrames = []
         self.rocketFrames = []
+        self.colorDict = None
 
         self.frames = {}
         self.menuButtons = {}

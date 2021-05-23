@@ -79,5 +79,8 @@ class LoadingScreen():
                 IMAGE.open(str("others/img/rocket/r" + num + ".png"))
             )
 
+        from ColorDict import ColorDict
+        self.__loader.colorDict = ColorDict(self.__loader)
+
         self.__Loading_Window.destroy()
 

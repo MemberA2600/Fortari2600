@@ -6,3 +6,4 @@ boxFontNormal=black
 boxBackUnSaved=red
 boxFontUnSaved=yellow
 comment=green
+highLight=yellow

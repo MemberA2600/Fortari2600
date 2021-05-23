@@ -155,6 +155,10 @@ class MainWindow:
                                           self.__closeProjectButtonFunction, "projectPath",
                                             False, None)
 
+        self.__colorButton = self.__buttonMaker.createButton("colorPalette", 12,
+                                          self.__openTIAPaletteMaker, "projectPath",
+                                            False, None)
+
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
 
@@ -230,7 +234,7 @@ class MainWindow:
                 self.__menuLabel.changePlace(0)
             elif name in ["copy", "paste", "undo", "redo"]:
                 self.__menuLabel.changePlace(5.5)
-            elif name in ["spriteEditor", "playfieldEditor"]:
+            elif name in ["spriteEditor", "playfieldEditor", "colorPalette"]:
                 self.__menuLabel.changePlace(10)
         except:
             self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
@@ -453,6 +457,10 @@ class MainWindow:
 
         open = OpenProjectWindow(self.__loader, self, self.openProject)
 
+    def __openTIAPaletteMaker(self):
+        from TIAPaletteMaker import TIAPaletteMaker
+
+        TIA = TIAPaletteMaker(self.__loader, self)
 
 
     def __saveButtonFunction(self):

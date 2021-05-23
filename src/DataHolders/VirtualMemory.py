@@ -247,7 +247,7 @@ class VirtualMemory:
             if len(I)==1:
                 I = "0"+I
 
-            self.memory["$10"+I] = MemoryItem()
+            self.memory["$FA"+I] = MemoryItem()
         self.addSystemMemory()
 
 
@@ -255,12 +255,12 @@ class VirtualMemory:
         return(hex(i)[2:])
 
     def getSARAReadAddressFromWriteAddress(self, num):
-        num = "$10"+hex(int(num[3:], 16)+128)[2:]
+        num = "$FA"+hex(int(num[3:], 16)+128)[2:]
 
         return(num)
 
     def getSARAWriteAddressFromReadAddress(self, num):
-        num = "$10"+hex(int(num[3:], 16)+128)[2:]
+        num = "$FA"+hex(int(num[3:], 16)+128)[2:]
 
         return(num)
 

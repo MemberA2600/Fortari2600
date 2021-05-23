@@ -23,8 +23,10 @@ class CodeBox:
         self.box.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
                           fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
+        self.also = False
         self.getFont()
         self.tintingThreads=[]
+        self.highOriginal = ""
 
         self.box.pack(side=BOTTOM, anchor=S, fill=BOTH)
         self.loadCode()
@@ -41,7 +43,8 @@ class CodeBox:
         self.box.bind("<Key>", self.keyPressed)
         self.box.bind("<KeyRelease>", self.keyReleased)
         self.box.bind("<MouseWheel>", self.mouseWheel)
-
+        self.box.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
+        self.box.bind("<FocusOut>", self.__loader.mainWindow.focusOut)
 
     def getFont(self):
         baseSize = int(self.__config.getValueByKey("codeBoxFont"))
@@ -66,9 +69,13 @@ class CodeBox:
                     self.__loader.BFG9000.saveAllCode()
                     self.addTinting()
 
-            for t in self.tintingThreads:
-                if t.is_alive() == False:
-                    self.tintingThreads.remove(t)
+            if "replacerFrame" in self.__loader.frames.keys():
+                if (self.__loader.frames["replacerFrame"].originalText.get() != self.highOriginal or
+                    self.__loader.frames["replacerFrame"].alsoComments.get() != self.also):
+                        self.highOriginal = self.__loader.frames["replacerFrame"].originalText.get()
+                        self.also = self.__loader.frames["replacerFrame"].alsoComments.get()
+                        self.addTinting()
+
 
             if self.__loader.frames["CodeEditor"].forceCheck==True:
                 self.__loader.frames["CodeEditor"].forceCheck=False
@@ -78,7 +85,11 @@ class CodeBox:
                     for section in self.__loader.virtualMemory.codes[bank].keys():
                         if section not in ["subroutines", "vblank", "enter", "leave", "overscan", "screen_bottom"]:
                             continue
-                        self.__loader.virtualMemory.codes[bank][section].changed = True
+                        if self.__loader.frames["CodeEditor"].forceValue == None:
+                            self.__loader.virtualMemory.codes[bank][section].changed = True
+                        else:
+                            if self.__loader.frames["CodeEditor"].forceValue in self.__loader.virtualMemory.codes[bank][section].code:
+                                self.__loader.virtualMemory.codes[bank][section].changed = True
                 self.__loader.virtualMemory.archieve()
 
             sleep(0.05)
@@ -116,6 +127,18 @@ class CodeBox:
         for tag in self.box.tag_names():
             self.box.tag_remove(tag, "0.0", END)
         self.addCommentTinting(text)
+        self.waitForEndAll()
+        if "replacerFrame" in self.__loader.frames.keys():
+            if len(self.__loader.frames["replacerFrame"].originalText.get()) > 0:
+                self.addHighLight(text, self.__loader.frames["replacerFrame"].originalText.get())
+        self.waitForEndAll()
+
+    def waitForEndAll(self):
+        while len(self.tintingThreads)>0:
+            for t in self.tintingThreads:
+                if t.is_alive() == False:
+                    self.tintingThreads.remove(t)
+
 
     def addCommentTinting(self, text):
         self.box.tag_config("comment", foreground=self.__loader.colorPalettes.getColor("comment"),
@@ -136,6 +159,35 @@ class CodeBox:
             if poz != None:
                 self.box.tag_add("comment", f"{str(lineNum)}.{str(poz)}", f"{str(lineNum)}.{str(len(line))}")
 
+    def addHighLight(self, text, word):
+        self.box.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
+        lineNum = 0
+        for line in text:
+            lineNum+=1
+            q = Thread(target=self.highLightTintingThread, args=[line, lineNum, word])
+            q.daemon = True
+            self.tintingThreads.append(q)
+            q.start()
+
+    def highLightTintingThread(self, line, lineNum, word):
+        if self.__loader.frames["replacerFrame"].alsoComments.get() == 0:
+            if line.startswith("#") or line.startswith("*"):
+                return
+            elif word in line:
+                theLen = len(line)
+                if self.getPositionOfFirstDeliminator(line) != None:
+                    theLen = self.getPositionOfFirstDeliminator(line)
+
+                for poz in range(0, theLen):
+                    if line[poz:poz+len(word)] == word:
+                        self.box.tag_add("highLight", f"{str(lineNum)}.{str(poz)}", f"{str(lineNum)}.{str(poz+len(word))}")
+
+        else:
+            for poz in range(0, len(line)):
+                if line[poz:poz + len(word)] == word:
+                    self.box.tag_add("highLight", f"{str(lineNum)}.{str(poz)}", f"{str(lineNum)}.{str(poz+len(word))}")
+
+
     def getPositionOfFirstDeliminator(self, line):
         deliminator = self.__config.getValueByKey("deliminator")
         valid = 0
@@ -148,3 +200,26 @@ class CodeBox:
                 if line[position:position + len(deliminator)] == deliminator:
                     return(position)
         return(None)
+
+    def replaceTextInThisSection(self, bank, section, original, new):
+        if self.__loader.frames["replacerFrame"].alsoComments.get() == 1:
+            self.__loader.virtualMemory.codes[bank][section].code = self.__loader.virtualMemory.codes[bank][section].code.replace(original, new)
+        else:
+            text = self.__loader.virtualMemory.codes[bank][section].code.split("\n")
+            newText = []
+            for line in text:
+                if line.startswith("#") or line.startswith("*"):
+                    newText.append(line)
+                elif self.getPositionOfFirstDeliminator(line) == None:
+                    newText.append(line.replace(original, new))
+                else:
+                    poz = self.getPositionOfFirstDeliminator(line)
+                    newText.append(
+                            line[:poz].replace(original, new) + line[poz:]
+                    )
+            self.__loader.virtualMemory.codes[bank][section].code = "\n".join(newText)
+        if new in (self.__loader.virtualMemory.codes[bank][section].code):
+            self.__loader.virtualMemory.codes[bank][section].changed = True
+
+        if bank==self.__bank and section==self.__section:
+            self.loadCode()
