@@ -155,10 +155,11 @@ class MainWindow:
                                           self.__closeProjectButtonFunction, "projectPath",
                                             False, None)
 
+        """
         self.__colorButton = self.__buttonMaker.createButton("colorPalette", 12,
                                           self.__openTIAPaletteMaker, "projectPath",
                                             False, None)
-
+        """
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
 
@@ -373,6 +374,13 @@ class MainWindow:
         path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
         item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
+        if bank=="bank1" and variable =="bank_configurations":
+            old = self.virtualMemory.kernel
+            for line in item.code.split(os.linesep):
+                if line.startswith("bank1"):
+                    new = line.split("=")[1].replace("\n", "").replace("\r", "")
+                    if old != new:
+                        self.virtualMemory.changeKernelMemory(old, new)
         item.changed = False
 
 
@@ -457,11 +465,12 @@ class MainWindow:
 
         open = OpenProjectWindow(self.__loader, self, self.openProject)
 
-    def __openTIAPaletteMaker(self):
+    """
+    def __openTIAPaletteMake(self):
         from TIAPaletteMaker import TIAPaletteMaker
 
         TIA = TIAPaletteMaker(self.__loader, self)
-
+    """
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])

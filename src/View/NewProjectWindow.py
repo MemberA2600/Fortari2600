@@ -23,9 +23,12 @@ class NewProjectWindow:
 
         self.__screenSize = self.__loader.screenSize
 
-        self.__window = SubMenu(self.__loader, "new", self.__screenSize[0] / 3, self.__screenSize[1] / 4 - 25,
+        self.__window = SubMenu(self.__loader, "new", self.__screenSize[0] / 3, self.__screenSize[1] / 3.25 - 25,
                            self.__checker, self.__addElements)
         self.dead = True
+
+    def getDimensions(self):
+        return(self.__window.getTopLevelDimensions())
 
     def __addElements(self, top):
         from SubMenuLabel import SubMenuLabel
@@ -61,8 +64,11 @@ class NewProjectWindow:
 
         from SubMenuOkCancelButtons import SubMenuOkCancelButtons
         from PitFallHarry import PitFallHarry
+        from SetKernelLabel import SetKernelLabel
 
         self.__okCancel = SubMenuOkCancelButtons(self, self.__topLevel, self.__loader, self.__normalFont, self.__newProject, self.getOK)
+        self.__setKernelLabel = SetKernelLabel(self.__loader, self, self.__topLevel, self.__topLevel.getTopLevelDimensions()[1]/9, self.__smallFont)
+
         self.__harry = PitFallHarry(self, self.__topLevel, self.__loader, self.__normalFont)
 
     def getOK(self):
@@ -100,12 +106,31 @@ class NewProjectWindow:
         if bool == True:
             try:
                 self.__soundPlayer.playSound("OK")
+                #temp = self.virtualMemory.kernel
+                #self.virtualMemory.kernel = self.__setKernelLabel.optionValue.get()
+                #self.virtualMemory.changeKernelMemory(temp)
+
                 self.__loader.io.copyDirWithFiles("templates/new_project/", self.__getPath())
                 for num in range(2,9):
                     self.__loader.io.copyDirWithFiles("templates/bank2_8/",
                                                       self.__getPath()+"bank"+str(num)+"/")
                 os.rename(str(self.__getPath()+"project_name.project2600"),
                           str(self.__getPath()+self.__projectEntryWithButton.getText()+".project2600"))
+
+                bank1_config = open(self.__getPath()+"/bank1/bank_configurations.a26", "r")
+                lines = bank1_config.readlines()
+                bank1_config.close()
+                num = -1
+                for line in lines:
+                    num+=1
+                    if line.startswith("bank1="):
+                        k = line.split("=")[1]
+                        lines[num] = line.replace(k, self.__setKernelLabel.optionValue.get())
+                        break
+                bank1_config = open(self.__getPath()+"/bank1/bank_configurations.a26", "w")
+                bank1_config.writelines(lines)
+                bank1_config.close()
+
                 self.__loader.mainWindow.openProject(self.__getPath())
                 self.__topLevel.getTopLevel().destroy()
 

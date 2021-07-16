@@ -14,6 +14,14 @@ class VirtualMemory:
         self.locks = {}
         self.subs = {}
         self.bankLinks = {}
+        self.kernel_types = []
+        self.kernel = "common"
+
+        for root, dirs, files in os.walk("templates/skeletons/"):
+            for file in files:
+                if "main_kernel" in file:
+                    self.kernel_types.append(file.replace("_main_kernel.asm", ""))
+
 
         for num in range(1,9):
             bankNum = "bank"+str(num)
@@ -61,6 +69,58 @@ class VirtualMemory:
             self.archieved.pop(0)
 
         self.cursor = len(self.archieved)-1
+
+    def changeKernelMemory(self, old, new):
+        from copy import deepcopy
+        oldVirtualMemory = deepcopy(self.memory)
+
+        newVirtualMemory = {}
+        tempItems = []
+
+        #self.memory[address].variables[name]
+        self.kernel = new
+
+        for address in self.memory.keys():
+            for name in self.memory[address]:
+                if self.memory[address].variables[name].system == False:
+                    tempItems.append(deepcopy(self.memory[address].variables[name]))
+
+        self.resetMemory()
+        self.addSystemMemory()
+
+        self.success = False
+        for memoryItem in tempItems:
+            for name in memoryItem.variables.keys():
+                item = memoryItem.variables[item]
+                self.success = self.addVariable(self, name, item.type, item.validity)
+                if self.success == False:
+                    break
+
+        if self.success == True:
+            self.emptyArchieved()
+            for array in self.arrays:
+                for var in self.arrays[array]:
+                    exists = False
+                    for num in range(1,9):
+                        bank = "bank" + str(num)
+                        exists = self.getVariableByName(var, bank)
+                        if exists != False:
+                            break
+                    if exists == False:
+                        self.removeItemFromArray(array,var)
+
+
+        else:
+            self.kernel = old
+            self.memory = deepcopy(oldVirtualMemory)
+            data = {}
+            data["#kernel#"] = new
+
+            self.__loader.filedialogs.displayError(self.__loader.dictionaries.getWordFromCurrentLanguage("notEnoughMemory"),
+                                                   self.__loader.dictionaries.getWordFromCurrentLanguage(
+                                                       "kernelChangeFail"),
+                                                   data, None
+                                                   )
 
     def getArcPrev(self):
         self.cursor-=1
@@ -116,7 +176,7 @@ class VirtualMemory:
 
 
     def addSystemMemory(self):
-        d = self.__loader.dataReader.readDataFile("templates"+os.sep+"system_variables.a26")
+        d = self.__loader.dataReader.readDataFile("templates"+os.sep+self.kernel+"_system_variables.a26")
         for key in d:
             self.addVariable(key, d[key].split(",")[0], "global")
             self.getVariableByName(key, "bank1").system=True
@@ -158,7 +218,6 @@ class VirtualMemory:
         section="local_variables"
         if bank == "bank1":
             section = "global_variables"
-
 
         for address in self.memory.keys():
             for id in self.memory[address].variables.keys():
@@ -247,7 +306,7 @@ class VirtualMemory:
             if len(I)==1:
                 I = "0"+I
 
-            self.memory["$FA"+I] = MemoryItem()
+            self.memory["$F0"+I] = MemoryItem()
         self.addSystemMemory()
 
 
@@ -255,12 +314,12 @@ class VirtualMemory:
         return(hex(i)[2:])
 
     def getSARAReadAddressFromWriteAddress(self, num):
-        num = "$FA"+hex(int(num[3:], 16)+128)[2:]
+        num = "$F0"+hex(int(num[3:], 16)+128)[2:]
 
         return(num)
 
     def getSARAWriteAddressFromReadAddress(self, num):
-        num = "$FA"+hex(int(num[3:], 16)+128)[2:]
+        num = "$F0"+hex(int(num[3:], 16)+128)[2:]
 
         return(num)
 
@@ -270,12 +329,16 @@ class VirtualMemory:
             if line.startswith("*"):
                 continue
             else:
-                from Lock import Lock
-                self.locks[line.split("=")[0]] = Lock(line.split("=")[1].replace("\n","").replace("\r",""))
+                if line.split("=")[0] == "bank1":
+                    self.kernel = line.split("=")[1].replace("\n","").replace("\r","")
+                else:
+                    from Lock import Lock
+                    self.locks[line.split("=")[0]] = Lock(line.split("=")[1].replace("\n","").replace("\r",""))
 
     def createTheBankConfigFromMemory(self):
         text = []
         text.append("*** This is where you set the details of banks such as name, role, and so on.")
+        text.append(str("bank1="+self.kernel))
         for bank in self.locks.keys():
             if self.locks[bank]!=None:
                 text.append(bank+f"={self.locks[bank].name},{self.locks[bank].type},{str(self.locks[bank].number)}")

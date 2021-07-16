@@ -93,3 +93,6 @@ screenItems=Képernyõelemek:
 insertItem=Elem Beillesztése
 preview=Elõnézet
 colorPicker=Színválasztó:
+kernelType=Kernel Típusa:
+notEnoughMemory=Nem áll rendelkezésre elegendõ memória!
+kernelChangeFail=A #kernel# kernelre átállás sikertelen! Beállítások helyreállítása megtörtént!

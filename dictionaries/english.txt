@@ -95,3 +95,6 @@ screenItems=Screen Items:
 insertItem=Insert Item
 preview=Preview:
 colorPicker=Color Picker:
+kernelType=Kernel Type:
+notEnoughMemory=Not enough memory!
+kernelChangeFail=Changing to #kernel# kernel has failed! Changes are reverted!
