@@ -21,7 +21,7 @@ class RightFrameEditor:
             buttonText = "selectVar"
 
         self.variables = SideFrameListBoxWithButtonAndLabel(loader, frame,
-                         baseSize, "variables", 0.30,
+                         baseSize, "variables", 0.50,
                          self.fillListBoxWithVariableNames,
                          self.loadVariableData,
                          self.insertStuff,
@@ -49,13 +49,14 @@ class RightFrameEditor:
                          self.insertStuff,
                          buttonText)
 
+        """
         self.banklinks = SideFrameListBoxWithButtonAndLabel(loader, frame,
                          baseSize, "bankLinks", 0.20,
                          self.fillListBoxWithBankLinks,
                          self.loadBankLinkData,
                          self.insertStuff,
                          "insertBankLinks")
-
+        """
     def destroy(self):
         del self
 
@@ -66,8 +67,10 @@ class RightFrameEditor:
     def fillListBoxWithSubs(self, listBox, handler):
         pass
 
+    """
     def fillListBoxWithBankLinks(self, listBox, handler):
         pass
+    """
 
     def loadSubRoutineData(self, listBox, data):
         pass

@@ -375,12 +375,12 @@ class MainWindow:
         item = self.__loader.virtualMemory.codes[bank][variable]
         item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
         if bank=="bank1" and variable =="bank_configurations":
-            old = self.virtualMemory.kernel
+            old = self.__loader.virtualMemory.kernel
             for line in item.code.split(os.linesep):
                 if line.startswith("bank1"):
                     new = line.split("=")[1].replace("\n", "").replace("\r", "")
                     if old != new:
-                        self.virtualMemory.changeKernelMemory(old, new)
+                        self.__loader.virtualMemory.changeKernelMemory(old, new)
         item.changed = False
 
 

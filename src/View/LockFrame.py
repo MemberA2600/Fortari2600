@@ -28,10 +28,15 @@ class LockFrame:
         self.__button = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
                                text=self.__loader.dictionaries.getWordFromCurrentLanguage("lockButton"),
                                command = self.openWindow)
+        self.__button2 = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
+                               text=self.__loader.dictionaries.getWordFromCurrentLanguage("changeKernel"),
+                               command = self.openWindow2)
+
         self.setButtonFont()
 
-
+        self.__button2.pack(side=BOTTOM, fill=X, anchor=SW)
         self.__button.pack(side=BOTTOM, fill=X, anchor=SW)
+
 
         self.__locks = []
         self.saveLocks()
@@ -54,10 +59,12 @@ class LockFrame:
 
 
     def setButtonFont(self):
-        self.__fontSize = int(self.__loader.screenSize[0]/1300 * self.__loader.screenSize[1]/1050*11
+        self.__fontSize = int(self.__loader.screenSize[0]/1300 * self.__loader.screenSize[1]/1050*10
                               *self.__scaleLastX*self.__scaleLastY)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.9), False, False, False)
         self.__button.config(font=self.__smallFont)
+        self.__button2.config(font=self.__smallFont)
+
 
     def createLabels(self):
         self.getImgs()
@@ -84,6 +91,10 @@ class LockFrame:
     def openWindow(self):
         from LockManagerWindow import LockManagerWindow
         w = LockManagerWindow(self.__loader)
+
+    def openWindow2(self):
+        from KernelChanger import KernelChanger
+        w = KernelChanger(self.__loader)
 
 
     def createLabel(self, num):
@@ -118,6 +129,7 @@ class LockFrame:
             if self.__window.projectPath == None:
                 state=DISABLED
 
+            self.__button2.config(state=state)
             self.__button.config(state=state)
             for item in self.__labels:
                 try:

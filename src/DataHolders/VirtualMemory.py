@@ -76,25 +76,37 @@ class VirtualMemory:
 
         newVirtualMemory = {}
         tempItems = []
+        names = []
 
         #self.memory[address].variables[name]
         self.kernel = new
 
         for address in self.memory.keys():
-            for name in self.memory[address]:
+            for name in self.memory[address].variables:
                 if self.memory[address].variables[name].system == False:
+                    names.append(name)
                     tempItems.append(deepcopy(self.memory[address].variables[name]))
 
         self.resetMemory()
         self.addSystemMemory()
 
         self.success = False
-        for memoryItem in tempItems:
+        """
+        for item in tempItems:
             for name in memoryItem.variables.keys():
                 item = memoryItem.variables[item]
                 self.success = self.addVariable(self, name, item.type, item.validity)
                 if self.success == False:
                     break
+        """
+
+        for num in range(0, len(tempItems)):
+            name = names[num]
+            item = tempItems[num]
+
+            self.success = self.addVariable(name, item.type, item.validity)
+            if self.success == False:
+                break
 
         if self.success == True:
             self.emptyArchieved()
@@ -108,7 +120,7 @@ class VirtualMemory:
                             break
                     if exists == False:
                         self.removeItemFromArray(array,var)
-
+            self.__loader.soundPlayer.playSound("Success")
 
         else:
             self.kernel = old
@@ -180,7 +192,7 @@ class VirtualMemory:
         for key in d:
             self.addVariable(key, d[key].split(",")[0], "global")
             self.getVariableByName(key, "bank1").system=True
-            if d[key].split(",")[1] == "non-iter":
+            if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
                 self.getVariableByName(key, "bank1").iterable = False
 
     def addArray(self, name):
