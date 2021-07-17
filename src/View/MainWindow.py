@@ -152,8 +152,8 @@ class MainWindow:
                                             False, None)
 
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
-                                          self.__closeProjectButtonFunction, "projectPath",
-                                            False, None)
+                                          self.__openPFEditor, "projectPath",
+                                            False, self.__pfButtonHander)
 
         """
         self.__colorButton = self.__buttonMaker.createButton("colorPalette", 12,
@@ -472,6 +472,13 @@ class MainWindow:
         TIA = TIAPaletteMaker(self.__loader, self)
     """
 
+
+    def __openPFEditor(self):
+        from PlayfieldEditor import PlayfieldEditor
+
+        PF = PlayfieldEditor(self.__loader, self)
+
+
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
         self.__saveOnlyOne(self.__loader.listBoxes["bankBox"].getSelectedName(),
@@ -506,6 +513,19 @@ class MainWindow:
                 if len(self.__loader.virtualMemory.archieved)>0 and self.__loader.virtualMemory.cursor>0:
                     self.__undoButton.getButton().config(state=NORMAL)
 
+                else:
+                    self.__undoButton.getButton().config(state=DISABLED)
+            except:
+                pass
+            sleep(1)
+
+    def __pfButtonHander(self, button):
+        from time import sleep
+        while self.dead==False:
+            try:
+                # TO DO: write here the pfless kernels!
+                if self.__loader.virtualMemory.kernel not in []:
+                    self.__undoButton.getButton().config(state=NORMAL)
                 else:
                     self.__undoButton.getButton().config(state=DISABLED)
             except:
