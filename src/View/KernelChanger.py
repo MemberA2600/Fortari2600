@@ -24,6 +24,7 @@ class KernelChanger:
         self.__smallFont = self.__loader.fontManager.getFont(round(self.__smallFontSize), False, False, False)
 
 
+        self.__colors = self.__loader.colorPalettes
         self.__screenSize = self.__loader.screenSize
 
         self.__window = SubMenu(self.__loader, "changeKernel", self.__screenSize[0] / 5, self.__screenSize[1] / 3 - 15,
@@ -60,17 +61,22 @@ class KernelChanger:
         self.__title2.pack(side=TOP, anchor=N, fill=X)
 
         self.__listBoxFrame = Frame(self.__frameChooser)
-        self.__listBoxFrame.config(bg=self.__loader.colorPalettes.getColor("window"), height=round(self.__topLevel.getTopLevelDimensions()[1]*0.6))
+        self.__listBoxFrame.config(bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.6)
+                                   )
         self.__listBoxFrame.pack_propagate(False)
         self.__listBoxFrame.pack(fill=X)
 
+        self.__scrollBar = Scrollbar(self.__listBoxFrame)
 
         self.__listBox = Listbox(self.__listBoxFrame, selectmode=SINGLE,
                                  bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                  fg=self.__loader.colorPalettes.getColor(
                                                                              "boxFontNormal"),
-                                 height=999999
+                                 height=999999,
+                                 yscrollcommand=self.__scrollBar.set
                                  )
+        self.__scrollBar.pack(side=RIGHT, anchor=SW, fill=Y)
         self.__listBox.config(font=self.__smallFont)
         self.__listBox.pack(fill=BOTH)
 
@@ -105,7 +111,7 @@ class KernelChanger:
                                width=round(self.__buttonsFrame.winfo_width()/2),
                                command=self.doThings,
                                state=DISABLED,
-                               font=self.__normalFont, fg=self.__colors.getColor("font"),
+                               font=self.__font, fg=self.__colors.getColor("font"),
                                bg=self.__colors.getColor("window"))
 
         self.__buttonOK.config(bg=self.__loader.colorPalettes.getColor("window"))
@@ -116,7 +122,7 @@ class KernelChanger:
         self.__buttonCancel = Button(self.__buttonsFrame2,
                                width=round(self.__buttonsFrame.winfo_width()/2),
                                command=self.killMe,
-                               font=self.__normalFont, fg=self.__colors.getColor("font"),
+                               font=self.__font, fg=self.__colors.getColor("font"),
                                bg=self.__colors.getColor("window"))
 
         self.__buttonCancel.config(bg=self.__loader.colorPalettes.getColor("window"))

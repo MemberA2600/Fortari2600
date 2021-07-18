@@ -92,6 +92,7 @@ class PlayfieldEditor:
         self.__colorFrames = {}
         self.__colorEntries = {}
         self.__colorEntryVar = {}
+        self.__buttons = {}
 
         self.__fieldOnTheRight = Frame(self.__playfieldFrame, width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2,
                                        bg=self.__loader.colorPalettes.getColor("window")
@@ -114,6 +115,60 @@ class PlayfieldEditor:
         self.__canvas.pack_propagate(False)
         self.__canvas.pack(side=TOP, anchor=N, fill=X)
 
+
+        self.__theController = Frame(self.__fieldOnTheRight, bg=self.__loader.colorPalettes.getColor("window"), height=round(self.__topLevel.getTopLevelDimensions()[1]/5*4))
+        self.__theController.config(width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)
+        self.__theController.pack_propagate(False)
+        self.__theController.pack(side=TOP, anchor=N, fill=X)
+
+        self.__height=StringVar()
+        self.__height.set("42")
+        ten = round(self.__topLevel.getTopLevelDimensions()[1]/25)
+
+        self.__heightSetter = Frame(self.__theController, height = ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__heightSetter.pack_propagate(False)
+
+        self.__heightSetter.pack(side=TOP, anchor=N, fill=X)
+        self.__heightLabel = Label(self.__heightSetter, text=self.__dictionaries.getWordFromCurrentLanguage("height"),
+                                   font=self.__smallFont,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__heightLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__heightEntry = Entry(self.__heightSetter, textvariable=self.__height, name="heightEntry")
+        self.__heightEntry.config(width=99999, bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                  fg = self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                  font=self.__smallFont
+                                  )
+
+        self.__heightEntry.bind("<KeyRelease>", self.checkHeightEntry)
+        self.__heightEntry.bind("<FocusOut>", self.checkHeightEntry2)
+        self.__heightEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__indexVal = StringVar()
+        self.__indexVal.set("0")
+
+        self.__indexSetter = Frame(self.__theController, height = ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__indexSetter.pack_propagate(False)
+
+        self.__indexSetter.pack(side=TOP, anchor=N, fill=X)
+        self.__indexLabel = Label(self.__indexSetter, text=self.__dictionaries.getWordFromCurrentLanguage("index"),
+                                   font=self.__smallFont,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__indexLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__indexEntry = Entry(self.__indexSetter, textvariable=self.__indexVal, name="indexEntry")
+        self.__indexEntry.config(width=99999, bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                  fg = self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                  font=self.__smallFont
+                                  )
+
+        self.__indexEntry.bind("<KeyRelease>", self.checkIndexEntry)
+        self.__indexEntry.bind("<FocusOut>", self.checkIndexEntry2)
+        self.__indexEntry.pack(side=LEFT, anchor=E, fill=BOTH)
 
 
         #This is were the fun begins.
@@ -145,6 +200,68 @@ class PlayfieldEditor:
         e.daemon=True
         e.start()
 
+    def checkHeightEntry(self, event):
+        num = 0
+
+        try:
+            num = int(self.__height.get())
+        except:
+            self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      font=self.__smallFont
+                                      )
+            return
+
+        self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                              )
+
+    def checkHeightEntry2(self, event):
+        try:
+            num = int(self.__height.get())
+            if num<42:
+                self.__height.set("42")
+
+
+            if num>256:
+                self.__height.set("256")
+
+        except:
+            return
+        self.checkIndexEntry2(event)
+
+    def checkIndexEntry(self, event):
+        num = 0
+
+        try:
+            num = int(self.__indexVal.get())
+        except:
+            self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      font=self.__smallFont
+                                      )
+            return
+
+        self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                              )
+
+    def checkIndexEntry2(self, event):
+        try:
+            num = int(self.__indexVal.get())
+            if num<0:
+                self.__indexVal.set("0")
+
+
+            if num>256-int(self.__height.get()):
+                self.__indexVal.set(str(256-int(self.__height.get())))
+
+        except Exception as e:
+            return
+
+        self.__index = int(self.__indexVal.get())
+        self.generateTableCommon()
+
     def shiftON(self, event):
         self.__ctrl = True
 
@@ -164,12 +281,14 @@ class PlayfieldEditor:
 
         w2 = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*7.5
 
-        self.__buttons = {}
+
         for Y in range(self.__index ,self.__Y+self.__index):
             f1 = None
             f2 = None
             e1 = None
             e2 = None
+
+            self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             if self.alreadyDone == False:
                 f1 = Frame(self.__intTheMiddle, width=w2, height=h, bg=self.__colors.getColor("boxBackNormal"))
@@ -189,7 +308,6 @@ class PlayfieldEditor:
                 e2.pack(fill=BOTH)
                 self.__colorEntries[str(Y-self.__index)] = [e1, e2]
                 self.__colorEntryVar[str(Y-self.__index)] = [eV1, eV2]
-                self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             else:
                 f1 = self.__colorFrames[str(Y-self.__index)][0]
@@ -206,6 +324,7 @@ class PlayfieldEditor:
 
             for X in range(0,40):
                 f = None
+                b = None
 
                 if self.alreadyDone == False:
                     f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("boxBackNormal"))
@@ -214,30 +333,35 @@ class PlayfieldEditor:
                     self.__motion = False
                     self.__frames[str(X) + "," + str(Y-self.__index)] = f
 
+                    b = Button(f, name=(str(X) + "," + str(Y)),
+                               relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
+
+                    b.bind("<Button-1>", self.clickedCommon)
+                    b.bind("<Button-3>", self.clickedCommon)
+
+                    b.bind("<Enter>", self.enterCommon)
+                    b.pack_propagate(False)
+                    b.pack(fill=BOTH)
+                    self.__buttons[str(X) + "," + str(Y-self.__index)] = b
                 else:
                     f = self.__frames[str(X) + "," + str(Y-self.__index)]
-                    f.winfo.winfo_children()[0].destroy()
+                    b = self.__buttons[str(X) + "," + str(Y-self.__index)]
+                    #b.config(name=(str(X) + "," + str(Y)))
 
-                b = Button(f, name=(str(X) +","+str(Y)),
-                           relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
                 if self.__table[Y][X] == 1:
                     b.config(bg=self.__colors.getColor("boxFontNormal"))
                 else:
                     b.config(bg=self.__colors.getColor("boxBackNormal"))
 
-                b.bind("<Button-1>", self.clickedCommon)
-                b.bind("<Button-3>", self.clickedCommon)
 
-                b.bind("<Enter>", self.enterCommon)
-                b.pack_propagate(False)
-                b.pack(fill=BOTH)
-
-                self.__buttons[str(X)+","+str(Y)] = b
         self.alreadyDone = True
         self.redrawCanvas()
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
+        if name in ["heightEntry", "indexEntry"]:
+            return
+
         Y = int(name.split(",")[0])
         X = int(name.split(",")[1])
         realY=Y+self.__index
@@ -266,7 +390,7 @@ class PlayfieldEditor:
         self.colorEntry(event.widget, self.__colorEntryVar[str(Y)][X].get())
         self.__colorTable[realY][X] = self.__colorEntryVar[str(Y)][X].get()
 
-        self.redrawCanvas()
+        self.generateTableCommon()
 
 
     def colorEntry(self, entry, value):
@@ -286,7 +410,6 @@ class PlayfieldEditor:
             self.clickedCommon(event)
 
     def redrawCanvas(self):
-        print("X")
         if self.alreadyDone == True:
             w = round(self.__canvas.winfo_width()/40)
             h = round(self.__canvas.winfo_height()/42)
@@ -321,7 +444,7 @@ class PlayfieldEditor:
 
         name = str(event.widget).split(".")[-1]
         X = int(name.split(",")[0])
-        Y = int(name.split(",")[1])
+        Y = int(name.split(",")[1])+self.__index
 
         self.changeColor(X,Y, button)
 
@@ -336,22 +459,31 @@ class PlayfieldEditor:
     def changeColor(self, X, Y, button):
         color = ""
 
-        if self.__ctrl:
-            if button == 1:
-                self.__table[Y][X] = 1
-                color = self.__colors.getColor("boxFontNormal")
-            else:
-                self.__table[Y][X] = 0
-                color = self.__colors.getColor("boxBackNormal")
-        else:
-            if (self.__table[Y][X] == 0):
+        if self.__draw == True:
+            if self.__ctrl == False:
                 self.__table[Y][X] = 1
                 color = self.__colors.getColor("boxFontNormal")
             else:
                 self.__table[Y][X] = 0
                 color = self.__colors.getColor("boxBackNormal")
 
-        self.__buttons[str(X)+","+str(Y)].config(bg=color)
+        else:
+            if self.__ctrl:
+                if button == 1:
+                    self.__table[Y][X] = 1
+                    color = self.__colors.getColor("boxFontNormal")
+                else:
+                    self.__table[Y][X] = 0
+                    color = self.__colors.getColor("boxBackNormal")
+            else:
+                if (self.__table[Y][X] == 0):
+                    self.__table[Y][X] = 1
+                    color = self.__colors.getColor("boxFontNormal")
+                else:
+                    self.__table[Y][X] = 0
+                    color = self.__colors.getColor("boxBackNormal")
+
+        self.__buttons[str(X)+","+str(Y-self.__index)].config(bg=color)
         self.redrawCanvas()
 
     def focusIn(self, event):
