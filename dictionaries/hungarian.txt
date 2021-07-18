@@ -101,3 +101,4 @@ currentKernel=Jelenlegi Kernel:
 availableKernels=Elérhetõ Kernelek:
 warning=Vigyázat!
 kernelChangeWarning=Kernelt váltani elõrehaladott fejlesztés esetén kockázatos. Ennek tudatában folytatod?
+preview=Elõnézet:

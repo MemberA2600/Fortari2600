@@ -54,5 +54,5 @@ class ColorDict:
         return("#"+red+blue+green)
 
     def getHEXValueFromTIA(self, tia):
-        that = self.TIAColors[tia]
+        that = self.TIAColors[tia.lower()]
         return self.getHEXValue(that.red, that.blue, that.green)

@@ -104,7 +104,9 @@ class KernelChanger:
         self.__buttonOK = Button(self.__buttonsFrame1,
                                width=round(self.__buttonsFrame.winfo_width()/2),
                                command=self.doThings,
-                               state=DISABLED)
+                               state=DISABLED,
+                               font=self.__normalFont, fg=self.__colors.getColor("font"),
+                               bg=self.__colors.getColor("window"))
 
         self.__buttonOK.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__buttonOK.config(text="OK", font=self.__smallFont)
@@ -114,7 +116,8 @@ class KernelChanger:
         self.__buttonCancel = Button(self.__buttonsFrame2,
                                width=round(self.__buttonsFrame.winfo_width()/2),
                                command=self.killMe,
-                               )
+                               font=self.__normalFont, fg=self.__colors.getColor("font"),
+                               bg=self.__colors.getColor("window"))
 
         self.__buttonCancel.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__buttonCancel.config(text=self.__dictionaries.getWordFromCurrentLanguage("cancel"), font=self.__smallFont)

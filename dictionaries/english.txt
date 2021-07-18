@@ -103,3 +103,4 @@ currentKernel=Current Kernel:
 availableKernels=Available Kernels:
 warning=Warning!
 kernelChangeWarning=Changing to a new kernel at the middle of development can be risky. Continue anyway?
+preview=Preview:

@@ -23,6 +23,7 @@ class PlayfieldEditor:
         self.__fontManager = self.__loader.fontManager
         self.__fontSize = int(self.__screenSize[0]/1300 * self.__screenSize[1]/1050*14)
         self.__colors = self.__loader.colorPalettes
+        self.__colorDict = self.__loader.colorDict
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -40,7 +41,7 @@ class PlayfieldEditor:
         self.__draw = 0
 
 
-        self.__window = SubMenu(self.__loader, "playfieldEditor", self.__screenSize[0] / 1.65,
+        self.__window = SubMenu(self.__loader, "playfieldEditor", self.__screenSize[0] / 1.20,
                                 self.__screenSize[1]/1.10  - 45,
                                 None, self.__func)
 
@@ -53,9 +54,11 @@ class PlayfieldEditor:
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
 
-        self.__piff = 0.85
-        self.__puff = 0.65
+        self.__piff = 1
+        self.__puff = 0.55
         self.__Y = 42
+        self.__index = 0
+
 
         self.__playfieldFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"))
         self.__playfieldFrame.config(height=round(self.__topLevel.getTopLevelDimensions()[1]/self.__Y*self.__piff)*self.__Y)
@@ -64,7 +67,8 @@ class PlayfieldEditor:
 
         self.__theField = Frame(self.__playfieldFrame, bg=self.__loader.colorPalettes.getColor("window"))
 
-        self.__theField.config(width=round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*40)
+        calc = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*40
+        self.__theField.config(width=calc)
         self.__theField.pack_propagate(False)
         self.__theField.pack(side=LEFT, anchor=W, fill=Y)
 
@@ -74,7 +78,49 @@ class PlayfieldEditor:
         self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
         self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
+        calc2 = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*15
 
+        self.__intTheMiddle = Frame(self.__playfieldFrame, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__intTheMiddle.config(width=calc2)
+        self.__intTheMiddle.pack_propagate(False)
+        self.__intTheMiddle.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__colorTable = []
+        for num in range(0,255):
+            self.__colorTable.append(["$0E", "$00"])
+
+        self.__colorFrames = {}
+        self.__colorEntries = {}
+        self.__colorEntryVar = {}
+
+        self.__fieldOnTheRight = Frame(self.__playfieldFrame, width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2,
+                                       bg=self.__loader.colorPalettes.getColor("window")
+                                       )
+        self.__fieldOnTheRight.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__previewLabel=Label(self.__fieldOnTheRight, text=self.__dictionaries.getWordFromCurrentLanguage("preview"),
+                                  font=self.__normalFont, fg=self.__colors.getColor("font"),
+                                  bg=self.__colors.getColor("window")
+                                  )
+
+        self.__previewLabel.pack_propagate(False)
+        self.__previewLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__canvas = Canvas(self.__fieldOnTheRight, bg="black", bd=0,
+                               width=self.__topLevel.getTopLevelDimensions()[0]-calc,
+                               height=round(self.__topLevel.getTopLevelDimensions()[1]/5)
+                               )
+
+        self.__canvas.pack_propagate(False)
+        self.__canvas.pack(side=TOP, anchor=N, fill=X)
+
+
+
+        #This is were the fun begins.
+        ############################
+
+        self.alreadyDone = False
+        self.__frames = {}
         self.__table = []
         row = []
         self.__logicalX=[
@@ -115,38 +161,153 @@ class PlayfieldEditor:
     def generateTableCommon(self):
         w = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)
         h = round(self.__topLevel.getTopLevelDimensions()[1]/self.__Y*self.__piff)
-        self.__frames = {}
+
+        w2 = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*7.5
+
         self.__buttons = {}
+        for Y in range(self.__index ,self.__Y+self.__index):
+            f1 = None
+            f2 = None
+            e1 = None
+            e2 = None
 
-        for Y in range(0,self.__Y):
+            if self.alreadyDone == False:
+                f1 = Frame(self.__intTheMiddle, width=w2, height=h, bg=self.__colors.getColor("boxBackNormal"))
+                f1.pack_propagate(False)
+                f1.place(x=0, y=h * (Y - self.__index))
+
+                f2 = Frame(self.__intTheMiddle, width=w2, height=h, bg=self.__colors.getColor("boxBackNormal"))
+                f2.pack_propagate(False)
+                f2.place(x=w2, y=h * (Y - self.__index))
+
+                self.__colorFrames[str(Y-self.__index)] = [f1, f2]
+                eV1 = StringVar()
+                eV2 = StringVar()
+                e1 = Entry(f1, name=(str(Y-self.__index)+",0"), textvariable = eV1, font=self.__smallFont, justify = "center")
+                e1.pack(fill=BOTH)
+                e2 = Entry(f2, name=(str(Y-self.__index)+",1"), textvariable = eV2, font=self.__smallFont, justify = "center")
+                e2.pack(fill=BOTH)
+                self.__colorEntries[str(Y-self.__index)] = [e1, e2]
+                self.__colorEntryVar[str(Y-self.__index)] = [eV1, eV2]
+                self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
+
+            else:
+                f1 = self.__colorFrames[str(Y-self.__index)][0]
+                f2 = self.__colorFrames[str(Y-self.__index)][1]
+                eV1 = self.__colorEntryVar[str(Y-self.__index)][0]
+                eV2 = self.__colorEntryVar[str(Y-self.__index)][1]
+                e1 = self.__colorEntries[str(Y-self.__index)][0]
+                e2 = self.__colorEntries[str(Y-self.__index)][1]
+
+            eV1.set(self.__colorTable[Y][0])
+            eV2.set(self.__colorTable[Y][1])
+            self.colorEntry(e1, eV1.get())
+            self.colorEntry(e2, eV2.get())
+
             for X in range(0,40):
-                f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("boxBackNormal"))
-                f.pack_propagate(False)
-                f.place(x=w*X, y=h*Y)
-                self.__motion = False
+                f = None
 
-                b = Button(f, name=(str(X) +","+str(Y)), bg=self.__colors.getColor("boxBackNormal"),
+                if self.alreadyDone == False:
+                    f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("boxBackNormal"))
+                    f.pack_propagate(False)
+                    f.place(x=w*X, y=h*(Y-self.__index))
+                    self.__motion = False
+                    self.__frames[str(X) + "," + str(Y-self.__index)] = f
+
+                else:
+                    f = self.__frames[str(X) + "," + str(Y-self.__index)]
+                    f.winfo.winfo_children()[0].destroy()
+
+                b = Button(f, name=(str(X) +","+str(Y)),
                            relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
+                if self.__table[Y][X] == 1:
+                    b.config(bg=self.__colors.getColor("boxFontNormal"))
+                else:
+                    b.config(bg=self.__colors.getColor("boxBackNormal"))
+
                 b.bind("<Button-1>", self.clickedCommon)
                 b.bind("<Button-3>", self.clickedCommon)
 
                 b.bind("<Enter>", self.enterCommon)
-
-
                 b.pack_propagate(False)
                 b.pack(fill=BOTH)
 
-                self.__frames[str(X)+","+str(Y)] = f
                 self.__buttons[str(X)+","+str(Y)] = b
+        self.alreadyDone = True
+        self.redrawCanvas()
 
+    def checkEntry(self, event):
+        name = str(event.widget).split(".")[-1]
+        Y = int(name.split(",")[0])
+        X = int(name.split(",")[1])
+        realY=Y+self.__index
+
+        self.__colorEntryVar[str(Y)][X].set(self.__colorEntryVar[str(Y)][X].get().upper())
+
+        if (len(self.__colorEntryVar[str(Y)][X].get())>3):
+            self.__colorEntryVar[str(Y)][X].set(self.__colorEntryVar[str(Y)][X].get()[:3])
+            return
+
+        entry = event.widget
+        if (len(self.__colorEntryVar[str(Y)][X].get())<3):
+            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            return
+
+        try:
+            num = int(self.__colorEntryVar[str(Y)][X].get().replace("$", "0x"), 16)
+        except:
+            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            return
+
+        num = int("0x"+self.__colorEntryVar[str(Y)][X].get()[2], 16)
+        if (num%2 == 1):
+            self.__colorEntryVar[str(Y)][X].set(self.__colorEntryVar[str(Y)][X].get()[:2]+hex(num-1).replace("0x","").upper())
+
+        self.colorEntry(event.widget, self.__colorEntryVar[str(Y)][X].get())
+        self.__colorTable[realY][X] = self.__colorEntryVar[str(Y)][X].get()
+
+        self.redrawCanvas()
+
+
+    def colorEntry(self, entry, value):
+        color1 = self.__colorDict.getHEXValueFromTIA(value)
+
+        num = int("0x"+value[2], 16)
+        if num>8:
+            num =value[:2]+hex(num-6).replace("0x","")
+        else:
+            num =value[:2]+hex(num+6).replace("0x","")
+
+        color2 = self.__colorDict.getHEXValueFromTIA(num)
+        entry.config(bg=color1, fg=color2)
 
     def enterCommon(self, event):
         if self.__draw:
             self.clickedCommon(event)
 
+    def redrawCanvas(self):
+        print("X")
+        if self.alreadyDone == True:
+            w = round(self.__canvas.winfo_width()/40)
+            h = round(self.__canvas.winfo_height()/42)
+
+            self.__canvas.clipboard_clear()
+            for Y in range(0,42):
+                colorPF = self.__colorTable[Y+self.__index][0]
+                colorBK = self.__colorTable[Y+self.__index][1]
+                #canvas.create_rectangle(x1, y1, x2, y2, **kwargs)
+                self.__canvas.create_rectangle(0, Y*h, self.__canvas.winfo_width(), (Y+1)*h, outline = "",
+                                               fill=self.__colorDict.getHEXValueFromTIA(colorBK))
+
+                for X in range(0,40):
+                    if self.__table[Y+self.__index][X] == 1:
+                        self.__canvas.create_rectangle(X*w, Y * h, (X+1)*w, (Y + 1) * h, outline="",
+                                                       fill=self.__colorDict.getHEXValueFromTIA(colorPF))
+
+
+
     def clickedCommon(self, event):
         button = 0
-
         try:
             button = int(str(event).split(" ")[3].split("=")[1])
         except:
@@ -191,6 +352,7 @@ class PlayfieldEditor:
                 color = self.__colors.getColor("boxBackNormal")
 
         self.__buttons[str(X)+","+str(Y)].config(bg=color)
+        self.redrawCanvas()
 
     def focusIn(self, event):
         self.focused = event.widget
