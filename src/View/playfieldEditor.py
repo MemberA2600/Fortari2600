@@ -12,7 +12,9 @@ class PlayfieldEditor:
         self.__loader = loader
         self.__mainWindow = mainWindow
 
+        self.firstLoad = True
         self.dead = False
+        self.changed = False
         self.__loader.stopThreads.append(self)
 
         self.__config = self.__loader.config
@@ -170,6 +172,63 @@ class PlayfieldEditor:
         self.__indexEntry.bind("<FocusOut>", self.checkIndexEntry2)
         self.__indexEntry.pack(side=LEFT, anchor=E, fill=BOTH)
 
+        self.__playfieldFrame = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldFrame.pack_propagate(False)
+
+        self.__playfieldFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__playfieldLabel = Label(self.__playfieldFrame, text=self.__dictionaries.getWordFromCurrentLanguage("playfield"),
+                                   font=self.__normalFont,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__playfieldLabel.pack(side=TOP, anchor=W, fill=X)
+
+        self.__playfieldSetter = Frame(self.__playfieldFrame, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldSetter.pack_propagate(False)
+        self.__playfieldSetter.pack(side=TOP, anchor=N, fill=X)
+
+        self.__playfieldNameFrame = Frame(self.__playfieldSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldNameFrame.pack_propagate(False)
+        self.__playfieldNameFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__playfieldNameLabel = Label(self.__playfieldNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+                                  font=self.__smallFont,
+                                  bg=self.__loader.colorPalettes.getColor("window"),
+                                  fg=self.__loader.colorPalettes.getColor("font")
+                                  )
+        self.__playfieldNameLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__pfName = StringVar()
+        self.__pfName.set("Awesome_Playfield")
+
+        self.__playfieldNameEntry = Entry(self.__playfieldNameFrame, textvariable=self.__pfName, name="pfName")
+        self.__playfieldNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                 font=self.__smallFont
+                                 )
+
+        self.__playfieldNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__playfieldNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
+
+        self.__playfieldButtonsFrame = Frame(self.__playfieldSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldButtonsFrame.pack_propagate(False)
+        self.__playfieldButtonsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__openPic = self.__loader.io.getImg("open", None)
+        self.__savePic = self.__loader.io.getImg("save", None)
+
+        self.__openButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__openPic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   command = self.__openPlayfield)
+
+        self.__openButton.pack(side = LEFT, anchor = W, fill=Y)
+
+        self.__saveButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__savePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   state=DISABLED)
+
+        self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
 
         #This is were the fun begins.
         ############################
@@ -199,6 +258,29 @@ class PlayfieldEditor:
         e = Thread(target=self.generateTableCommon)
         e.daemon=True
         e.start()
+
+    def openPlayfield(self):
+        pass
+
+    def checkIfValidFileName(self, event):
+
+        name = str(event.widget).split(".")[-1]
+
+        if name == "pfName":
+            widget = self.__playfieldNameEntry
+            value = self.__pfName
+
+        if self.__loader.io.checkIfValidFileName(value.get()):
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                      )
+
+        else:
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      font=self.__smallFont
+                                      )
+
 
     def checkHeightEntry(self, event):
         num = 0
@@ -252,12 +334,17 @@ class PlayfieldEditor:
             if num<0:
                 self.__indexVal.set("0")
 
-
+            """
             if num>256-int(self.__height.get()):
                 self.__indexVal.set(str(256-int(self.__height.get())))
 
+            """
+
+            if num>int(self.__height.get())-self.__Y:
+                self.__indexVal.set(str(int(self.__height.get())-self.__Y))
+
         except Exception as e:
-            return
+            pass
 
         self.__index = int(self.__indexVal.get())
         self.generateTableCommon()
@@ -359,7 +446,7 @@ class PlayfieldEditor:
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
-        if name in ["heightEntry", "indexEntry"]:
+        if name in ["heightEntry", "indexEntry", "pfName"]:
             return
 
         Y = int(name.split(",")[0])
@@ -410,6 +497,11 @@ class PlayfieldEditor:
             self.clickedCommon(event)
 
     def redrawCanvas(self):
+        if self.firstLoad == True:
+            self.firstLoad = False
+        else:
+            self.changed = True
+
         if self.alreadyDone == True:
             w = round(self.__canvas.winfo_width()/40)
             h = round(self.__canvas.winfo_height()/42)
