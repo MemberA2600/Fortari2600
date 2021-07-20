@@ -42,9 +42,13 @@ class PlayfieldEditor:
         self.__middle = False
         self.__draw = 0
 
-        self.__window = SubMenu(self.__loader, "playfieldEditor", self.__screenSize[0] / 1.20,
-                                self.__screenSize[1]/1.10  - 45,
-                                None, self.__func)
+        self.__sizes = {
+            "common": [self.__screenSize[0] / 1.20, self.__screenSize[1]/1.10  - 45]
+        }
+
+
+        self.__window = SubMenu(self.__loader, "playfieldEditor", self.__sizes["common"][0],
+                                self.__sizes["common"][1], None, self.__func)
 
         self.dead = True
 
@@ -55,8 +59,11 @@ class PlayfieldEditor:
             try:
                 if self.changed == False:
                     self.__saveButton.config(state=DISABLED)
+                    self.__saveButtonBG.config(state=DISABLED)
                 else:
                     self.__saveButton.config(state=NORMAL)
+                    self.__saveButtonBG.config(state=NORMAL)
+
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
@@ -241,6 +248,63 @@ class PlayfieldEditor:
 
         self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
 
+
+        self.__backgroundFrame = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__backgroundFrame.pack_propagate(False)
+
+        self.__backgroundFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__backgroundLabel = Label(self.__backgroundFrame, text=self.__dictionaries.getWordFromCurrentLanguage("background"),
+                                   font=self.__normalFont,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__backgroundLabel.pack(side=TOP, anchor=W, fill=X)
+
+        self.__backgroundSetter = Frame(self.__backgroundFrame, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__backgroundSetter.pack_propagate(False)
+        self.__backgroundSetter.pack(side=TOP, anchor=N, fill=X)
+
+        self.__backgroundNameFrame = Frame(self.__backgroundSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__backgroundNameFrame.pack_propagate(False)
+        self.__backgroundNameFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__backgroundNameLabel = Label(self.__backgroundNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+                                  font=self.__smallFont,
+                                  bg=self.__loader.colorPalettes.getColor("window"),
+                                  fg=self.__loader.colorPalettes.getColor("font")
+                                  )
+        self.__backgroundNameLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__bgName = StringVar()
+        self.__bgName.set("Wonderful_Background")
+
+        self.__backgroundNameEntry = Entry(self.__backgroundNameFrame, textvariable=self.__bgName, name="bgName")
+        self.__backgroundNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                 font=self.__smallFont
+                                 )
+
+        self.__backgroundNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__backgroundNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
+
+        self.__backgroundButtonsFrame = Frame(self.__backgroundSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__backgroundButtonsFrame.pack_propagate(False)
+        self.__backgroundButtonsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__openButtonBG = Button(self.__backgroundButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__openPic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   command = self.__openBackground)
+
+        self.__openButtonBG.pack(side = LEFT, anchor = W, fill=Y)
+
+        self.__saveButtonBG = Button(self.__backgroundButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__savePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   state=DISABLED, command=self.__saveBackground)
+
+        self.__saveButtonBG.pack(side = LEFT, anchor = W, fill=Y)
+
+
         #This is were the fun begins.
         ############################
 
@@ -350,6 +414,80 @@ class PlayfieldEditor:
         self.__soundPlayer.playSound("Success")
         self.changed=False
 
+    def __openBackground(self):
+        import os
+
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__saveBackground()
+            elif answer == "Cancel":
+                return
+
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "backgrounds/")
+
+        if fpath == "":
+            return
+
+        try:
+            file = open(fpath, "r")
+            data = file.readlines()
+            file.close()
+
+            if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    return
+
+            self.__bgName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+
+            self.__height.set(data[1].replace("\n", "").replace("\r", ""))
+            maxY = int(self.__height.get())
+
+            line = data[-1].replace("\n", "").replace("\r", "").split(" ")
+
+            for Y in range(0, maxY):
+                self.__colorTable[Y][1] = line[Y]
+
+            self.__soundPlayer.playSound("Success")
+            self.changed = False
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            self.alreadyDone = True
+            self.firstLoad = True
+
+            self.generateTableCommon()
+
+        except Exception as e:
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+    def __saveBackground(self):
+        import os
+
+        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__bgName.get() + ".a26"
+        if os.path.exists(fileName):
+            answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            if answer == "No":
+                return
+        fileLines = []
+        fileLines.append(self.__loader.virtualMemory.kernel)
+        fileLines.append(self.__height.get())
+
+        lastLine = ""
+
+        for Y in range(0, int(self.__height.get())):
+            lastLine += " " + self.__colorTable[Y][1]
+        fileLines.append(lastLine[1:])
+
+        file = open(fileName, "w")
+        file.write("\n".join(fileLines))
+        file.close()
+        self.__soundPlayer.playSound("Success")
+        self.changed = False
+
     def checkIfValidFileName(self, event):
 
         name = str(event.widget).split(".")[-1]
@@ -357,6 +495,9 @@ class PlayfieldEditor:
         if name == "pfName":
             widget = self.__playfieldNameEntry
             value = self.__pfName
+        elif name == "bgName":
+            widget = self.__backgroundNameEntry
+            value = self.__bgName
 
         if self.__loader.io.checkIfValidFileName(value.get()):
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
@@ -463,9 +604,11 @@ class PlayfieldEditor:
             e1 = None
             e2 = None
 
+
             self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             if self.alreadyDone == False:
+                self.__soundPlayer.playSound("Pong")
                 f1 = Frame(self.__intTheMiddle, width=w2, height=h, bg=self.__colors.getColor("boxBackNormal"))
                 f1.pack_propagate(False)
                 f1.place(x=0, y=h * (Y - self.__index))
@@ -502,7 +645,10 @@ class PlayfieldEditor:
                 b = None
 
                 if self.alreadyDone == False:
-                    f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("boxBackNormal"))
+                    if (X<4 or X>35):
+                        f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("fontDisabled"))
+                    else:
+                        f = Frame(self.__theField, width=w, height=h, bg=self.__colors.getColor("boxBackNormal"))
                     f.pack_propagate(False)
                     f.place(x=w*X, y=h*(Y-self.__index))
                     self.__motion = False
@@ -517,6 +663,7 @@ class PlayfieldEditor:
                     b.bind("<Enter>", self.enterCommon)
                     b.pack_propagate(False)
                     b.pack(fill=BOTH)
+
                     self.__buttons[str(X) + "," + str(Y-self.__index)] = b
                 else:
                     f = self.__frames[str(X) + "," + str(Y-self.__index)]
@@ -526,7 +673,11 @@ class PlayfieldEditor:
                 if self.__table[Y][X] == "1":
                     b.config(bg=self.__colors.getColor("boxFontNormal"))
                 else:
-                    b.config(bg=self.__colors.getColor("boxBackNormal"))
+                    if (X<4 or X>35):
+                        b.config(bg=self.__colors.getColor("fontDisabled"))
+                    else:
+                        b.config(bg=self.__colors.getColor("boxBackNormal"))
+
 
 
         self.alreadyDone = True
@@ -645,7 +796,11 @@ class PlayfieldEditor:
                 color = self.__colors.getColor("boxFontNormal")
             else:
                 self.__table[Y][X] = "0"
-                color = self.__colors.getColor("boxBackNormal")
+                if (X < 4 or X > 35):
+                    color = self.__colors.getColor("fontDisabled")
+                else:
+                    color = self.__colors.getColor("boxBackNormal")
+
 
         else:
             if self.__ctrl:
@@ -654,14 +809,20 @@ class PlayfieldEditor:
                     color = self.__colors.getColor("boxFontNormal")
                 else:
                     self.__table[Y][X] = "0"
-                    color = self.__colors.getColor("boxBackNormal")
+                    if (X < 4 or X > 35):
+                        color = self.__colors.getColor("fontDisabled")
+                    else:
+                        color = self.__colors.getColor("boxBackNormal")
             else:
                 if (self.__table[Y][X] == "0"):
                     self.__table[Y][X] = "1"
                     color = self.__colors.getColor("boxFontNormal")
                 else:
                     self.__table[Y][X] = "0"
-                    color = self.__colors.getColor("boxBackNormal")
+                    if (X < 4 or X > 35):
+                        color = self.__colors.getColor("fontDisabled")
+                    else:
+                        color = self.__colors.getColor("boxBackNormal")
 
         self.__buttons[str(X)+","+str(Y-self.__index)].config(bg=color)
         self.redrawCanvas()
