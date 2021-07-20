@@ -42,7 +42,6 @@ class PlayfieldEditor:
         self.__middle = False
         self.__draw = 0
 
-
         self.__window = SubMenu(self.__loader, "playfieldEditor", self.__screenSize[0] / 1.20,
                                 self.__screenSize[1]/1.10  - 45,
                                 None, self.__func)
@@ -50,7 +49,19 @@ class PlayfieldEditor:
         self.dead = True
 
 
+    def checker(self):
+        from time import sleep
+        while(self.dead==False and self.__loader.mainWindow.dead == False):
+            try:
+                if self.changed == False:
+                    self.__saveButton.config(state=DISABLED)
+                else:
+                    self.__saveButton.config(state=NORMAL)
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
 
+
+            sleep(0.4)
 
     def __addElementsCommon(self, top):
         self.__topLevel = top
@@ -226,7 +237,7 @@ class PlayfieldEditor:
 
         self.__saveButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    image = self.__savePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
-                                   state=DISABLED)
+                                   state=DISABLED, command=self.__savePlayfield)
 
         self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
 
@@ -250,7 +261,7 @@ class PlayfieldEditor:
         from copy import deepcopy
 
         for num in range(0,40):
-            row.append(0)
+            row.append("0")
 
         for num in range(0,256):
             self.__table.append(deepcopy(row))
@@ -259,8 +270,85 @@ class PlayfieldEditor:
         e.daemon=True
         e.start()
 
-    def openPlayfield(self):
-        pass
+        t = Thread(target=self.checker)
+        t.daemon = True
+        t.start()
+
+
+    def __openPlayfield(self):
+        import os
+
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__savePlayfield()
+            elif answer == "Cancel":
+                return
+
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "playfields/")
+
+        if fpath == "":
+            return
+
+        try:
+            file = open(fpath, "r")
+            data = file.readlines()
+            file.close()
+
+            if self.__loader.virtualMemory.kernel != data[0].replace("\n","").replace("\r",""):
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    return
+
+            self.__pfName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+
+            self.__height.set(data[1].replace("\n","").replace("\r",""))
+            maxY = int(self.__height.get())
+            data.pop(0)
+            data.pop(0)
+
+            for Y in range(0, maxY):
+                line = data[Y].replace("\n","").replace("\r","").split(" ")
+                self.__colorTable[Y][0] = line[-1]
+                for X in range(0,40):
+                    self.__table[Y][X] = line[X]
+
+            self.__soundPlayer.playSound("Success")
+            self.changed=False
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            self.alreadyDone = True
+            self.firstLoad = True
+
+            self.generateTableCommon()
+
+        except Exception as e:
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage",None, str(e))
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+
+
+    def __savePlayfield(self):
+        import os
+
+        fileName = self.__loader.mainWindow.projectPath + "playfields/"+self.__pfName.get()+".a26"
+        if os.path.exists(fileName):
+            answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            if answer == "No":
+                return
+        fileLines = []
+        fileLines.append(self.__loader.virtualMemory.kernel)
+        fileLines.append(self.__height.get())
+        for Y in range(0, int(self.__height.get())):
+            fileLines.append(" ".join(self.__table[Y])+" "+self.__colorTable[Y][0])
+
+        file = open(fileName, "w")
+        file.write("\n".join(fileLines))
+        file.close()
+        self.__soundPlayer.playSound("Success")
+        self.changed=False
 
     def checkIfValidFileName(self, event):
 
@@ -435,7 +523,7 @@ class PlayfieldEditor:
                     b = self.__buttons[str(X) + "," + str(Y-self.__index)]
                     #b.config(name=(str(X) + "," + str(Y)))
 
-                if self.__table[Y][X] == 1:
+                if self.__table[Y][X] == "1":
                     b.config(bg=self.__colors.getColor("boxFontNormal"))
                 else:
                     b.config(bg=self.__colors.getColor("boxBackNormal"))
@@ -515,7 +603,7 @@ class PlayfieldEditor:
                                                fill=self.__colorDict.getHEXValueFromTIA(colorBK))
 
                 for X in range(0,40):
-                    if self.__table[Y+self.__index][X] == 1:
+                    if self.__table[Y+self.__index][X] == "1":
                         self.__canvas.create_rectangle(X*w, Y * h, (X+1)*w, (Y + 1) * h, outline="",
                                                        fill=self.__colorDict.getHEXValueFromTIA(colorPF))
 
@@ -553,26 +641,26 @@ class PlayfieldEditor:
 
         if self.__draw == True:
             if self.__ctrl == False:
-                self.__table[Y][X] = 1
+                self.__table[Y][X] = "1"
                 color = self.__colors.getColor("boxFontNormal")
             else:
-                self.__table[Y][X] = 0
+                self.__table[Y][X] = "0"
                 color = self.__colors.getColor("boxBackNormal")
 
         else:
             if self.__ctrl:
                 if button == 1:
-                    self.__table[Y][X] = 1
+                    self.__table[Y][X] = "1"
                     color = self.__colors.getColor("boxFontNormal")
                 else:
-                    self.__table[Y][X] = 0
+                    self.__table[Y][X] = "0"
                     color = self.__colors.getColor("boxBackNormal")
             else:
-                if (self.__table[Y][X] == 0):
-                    self.__table[Y][X] = 1
+                if (self.__table[Y][X] == "0"):
+                    self.__table[Y][X] = "1"
                     color = self.__colors.getColor("boxFontNormal")
                 else:
-                    self.__table[Y][X] = 0
+                    self.__table[Y][X] = "0"
                     color = self.__colors.getColor("boxBackNormal")
 
         self.__buttons[str(X)+","+str(Y-self.__index)].config(bg=color)

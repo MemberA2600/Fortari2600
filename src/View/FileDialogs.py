@@ -17,12 +17,23 @@ class FileDialogs:
         else:
             return("No")
 
+    def askYesNoCancel(self, title, text):
+        mbox = messagebox.askyesnocancel(self.__dicts.getWordFromCurrentLanguage(title),
+                                   self.__dicts.getWordFromCurrentLanguage(text))
+
+        if mbox==True:
+            return("Yes")
+        elif mbox == False:
+            return("No")
+        else:
+            return("Cancel")
+
     def askForFileName(self, title, save, fileTypes, initdir):
         types = []
 
         for type in fileTypes:
             temp = []
-            temp.append(self.__dicts.getWordFromCurrentLanguage(type))
+            temp.append(self.__dicts.getWordFromCurrentLanguage(type) + " (*."+type+")")
             temp.append("*."+type)
             types.append(tuple(temp))
         types = tuple(types)
