@@ -31,11 +31,26 @@ class FileDialogs:
     def askForFileName(self, title, save, fileTypes, initdir):
         types = []
 
-        for type in fileTypes:
-            temp = []
-            temp.append(self.__dicts.getWordFromCurrentLanguage(type) + " (*."+type+")")
-            temp.append("*."+type)
-            types.append(tuple(temp))
+        for t in fileTypes:
+
+
+            if isinstance(t, list):
+                rrr = []
+                for item in t:
+                    rrr.append("*."+item)
+                typesString=", ".join(rrr)
+
+                for item in t:
+                    temp = []
+                    temp.append(self.__dicts.getWordFromCurrentLanguage("multiple") + " (*." + typesString + ")")
+                    temp.append("*." + item)
+                    types.append(tuple(temp))
+
+            else:
+                temp = []
+                temp.append(self.__dicts.getWordFromCurrentLanguage(t) + " (*."+t+")")
+                temp.append("*."+t)
+                types.append(tuple(temp))
         types = tuple(types)
 
         if os.path.exists(initdir) == False or initdir == None:

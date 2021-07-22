@@ -22,7 +22,7 @@ class LockManagerWindow:
         self.__screenSize = self.__loader.screenSize
 
         self.__window = SubMenu(self.__loader, "lockManager", self.__screenSize[0] / 2, self.__screenSize[1] / 5 - 15,
-                           None, self.__addElements)
+                           None, self.__addElements, 1)
         self.__soundPlayer.playSound("Bounce")
         self.dead = True
 

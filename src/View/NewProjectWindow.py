@@ -24,7 +24,7 @@ class NewProjectWindow:
         self.__screenSize = self.__loader.screenSize
 
         self.__window = SubMenu(self.__loader, "new", self.__screenSize[0] / 3, self.__screenSize[1] / 3.25 - 25,
-                           self.__checker, self.__addElements)
+                           self.__checker, self.__addElements, 1)
         self.dead = True
 
     def getDimensions(self):

@@ -2,11 +2,11 @@ from tkinter import Toplevel
 
 class SubMenu:
 
-    def __init__(self, loader, name, w, h, checker, addElements):
+    def __init__(self, loader, name, w, h, checker, addElements, maxNum):
         self.__loader = loader
         self.__subMenu = self
         self.__loader.subMenus.append(self)
-        if len(self.__loader.subMenus)>1:
+        if len(self.__loader.subMenus)>maxNum:
             from threading import Thread
             t = Thread(target=self.killOther)
             t.daemon = True
@@ -50,12 +50,12 @@ class SubMenu:
         self.__topLevel.wait_window()
 
     def killOther(self):
-        self.__loader.subMenus[0].dead = True
+        self.__loader.subMenus[-2].dead = True
         from time import sleep
         sleep(1)
 
-        self.__loader.subMenus[0].getTopLevel().destroy()
-        self.__loader.subMenus.pop(0)
+        self.__loader.subMenus[-2].getTopLevel().destroy()
+        self.__loader.subMenus.pop(-2)
 
     def getTopLevel(self):
         return(self.__topLevel)

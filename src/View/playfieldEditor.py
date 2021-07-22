@@ -48,7 +48,7 @@ class PlayfieldEditor:
 
 
         self.__window = SubMenu(self.__loader, "playfieldEditor", self.__sizes["common"][0],
-                                self.__sizes["common"][1], None, self.__func)
+                                self.__sizes["common"][1], None, self.__func, 1)
 
         self.dead = True
 
@@ -304,6 +304,24 @@ class PlayfieldEditor:
 
         self.__saveButtonBG.pack(side = LEFT, anchor = W, fill=Y)
 
+        self.__importImageFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__importImageFrame.pack_propagate(False)
+
+        self.__importImageFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__importImageLabel = Label(self.__importImageFrame, text=self.__dictionaries.getWordFromCurrentLanguage("importImage"),
+                                   font=self.__normalFont,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__importImageLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__openImagePic = self.__loader.io.getImg("image", None)
+        self.__openImagePicture = Button(self.__importImageFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__openImagePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   command=self.__importImage)
+
+        self.__openImagePicture.pack(side = RIGHT, anchor = W, fill=Y)
 
         #This is were the fun begins.
         ############################
@@ -338,6 +356,22 @@ class PlayfieldEditor:
         t.daemon = True
         t.start()
 
+    def __importImage(self):
+
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__savePlayfield()
+            elif answer == "Cancel":
+                return
+
+        from PictureToCode import PictureToCode
+
+        pictureToCode = PictureToCode(self.__loader, self.__loader.virtualMemory.kernel,
+                                      "playfield", 40, self.changed)
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def __openPlayfield(self):
         import os

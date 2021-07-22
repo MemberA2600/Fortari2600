@@ -28,7 +28,7 @@ class KernelChanger:
         self.__screenSize = self.__loader.screenSize
 
         self.__window = SubMenu(self.__loader, "changeKernel", self.__screenSize[0] / 5, self.__screenSize[1] / 3 - 15,
-                           None, self.__addElements)
+                           None, self.__addElements, 1)
         self.dead = True
 
     def __addElements(self, top):
