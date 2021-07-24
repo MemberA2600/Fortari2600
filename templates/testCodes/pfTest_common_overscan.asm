@@ -1,30 +1,38 @@
 	LDA	#$20
 	BIT	SWCHA
-	BEQ	NoScrollDown
+	BNE	NoScrollDown
 	DEC	pfIndex
 	JMP	DebugIndex
 NoScrollDown
 	LDA	#$10
 	BIT	SWCHA
-	BEQ	ChangeColor
+	BNE	ChangeColor
 	INC	pfIndex
 DebugIndex
-	LDA	!!!Max!!!
+	LDA	#!!!Max!!!
 	CMP	#255
 	BEQ	ChangeColor
 
 	CMP	pfIndex
+	BCS	SmallerThan
+	LDA	#!!!Max!!!
+	STA	pfIndex
+SmallerThan
+	LDA	pfIndex
+	CMP	#!!!Min!!!
 	BCS	ChangeColor
-	DEC	pfIndex
+	LDA	#!!!Min!!!
+	STA	pfIndex
+
 ChangeColor
 	LDA	#$01
-	BIT	SWCHA
-	BEQ	NoOneUp
+	BIT	SWCHB
+	BNE	NoOneUp
 	INC	pfBaseColor
 NoOneUp
 	LDA	#$02
-	BIT	SWCHA
-	BEQ	AllDone
+	BIT	SWCHB
+	BNE 	AllDone
 	INC	bkBaseColor
 AllDone
 

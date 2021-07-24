@@ -12,6 +12,7 @@ class Compiler:
         self.__openEmulator = False
         self.__io = self.__loader.io
 
+
         if self.__mode == "pfTest":
             self.__openEmulator = True
 
@@ -23,23 +24,46 @@ class Compiler:
             self.__colorData = data[1]
             self.__max = int(data[2])
 
+
             if self.__kernel == "common":
                 self.__mirrored = [0,1,1]
+
+                min = 26
+                max = 26 + (self.__max-42)
+
+
+                self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
+                self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
+                self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
+
 
             self.__convertedPlayfield = self.convertPixelsToPlayfield("TestPlayfield")
             if self.__kernel in ["common"]:
                 self.__convertedPlayfield += self.addColors("TestPlayfield")
 
-            self.__overScanCode.replace("!!!Max!!!", str(self.__max))
             self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
             self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
             self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
             self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!","", self.__mainCode)
 
             self.doSave("temp/")
+            assembler = Assembler(self.__loader, "temp/", True)
+
 
     def doSave(self, projectPath):
-        pass
+        import os
+
+        if projectPath == "temp/":
+            try:
+                os.mkdir(projectPath+"bin/")
+                os.mkdir(projectPath+"asm_log/")
+            except:
+                pass
+        file = open(projectPath+"/source.asm", "w")
+        file.write(self.__mainCode)
+        file.close()
+
+
 
     def addColors(self, name):
 
@@ -53,7 +77,7 @@ class Compiler:
 
             counter += 1
 
-        return(name + "__FG\n"+"".join(temp1)+"\n"+name + "__BG\n"+"".join(temp2)+"\n")
+        return(name + "_FG\n"+"".join(temp1)+"\n"+name + "_BG\n"+"".join(temp2)+"\n")
 
 
 
@@ -72,9 +96,9 @@ class Compiler:
 
             line = self.__pixelData[counter]
 
-            pf0.insert(0, "\tbyte\t#%"+"".join(line[0:4])+"0000\n")
-            pf1.insert(0, "\tbyte\t#%"+("".join(line[4:12]))[::-1]+"\n")
-            pf2.insert(0, "\tbyte\t#%"+"".join(line[12:20])+"\n")
+            pf0.insert(0, "\tbyte\t#%"+("".join(line[0:4]))[::-1]+"0000\n")
+            pf1.insert(0, "\tbyte\t#%"+("".join(line[4:12]))+"\n")
+            pf2.insert(0, "\tbyte\t#%"+("".join(line[12:20]))[::-1]+"\n")
 
             if self.__mirrored[2] == 0:
                 pf3.insert(0, "\tbyte\t#%" + ("".join(line[20:28]))[::-1] + "\n")
@@ -83,7 +107,7 @@ class Compiler:
                 pf4.insert(0, "\tbyte\t#%" + "".join(line[28:36]) + "\n")
 
             if self.__mirrored[0] == 0:
-                pf0[0] = pf0[0][:-5] + "".join(line[36:40]) + "\n"
+                pf0[0] = pf0[0][:-5] + ("".join(line[36:40])) + "\n"
 
             counter+=1
 

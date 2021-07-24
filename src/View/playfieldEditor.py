@@ -774,7 +774,7 @@ class PlayfieldEditor:
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
-        if name in ["heightEntry", "indexEntry", "pfName"]:
+        if name in ["heightEntry", "indexEntry", "pfName", "bgName"]:
             return
 
         Y = int(name.split(",")[0])

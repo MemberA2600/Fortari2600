@@ -123,3 +123,7 @@ thresholdSetter=Küszöbérték Beállító:
 invert=Invertálás
 preferRight=Jobboldal Preferálása
 testWithEmulator=Emulátorral Tesztelés:
+compileErrorWindow=Fordítási Hiba!
+compileError=Hiba a játék fordítása közben!
+sourceAssembly=Assembly Forráskód
+syntaxError=Fordítási Hiba:

@@ -125,3 +125,7 @@ thresholdSetter=Threshold Setter:
 invert=Invert
 preferRight=Prefer Right Side
 testWithEmulator=Test with Emulator:
+compileErrorWindow=Compile Error!
+compileError=Error while building your game!
+sourceAssembly=Source Assembly
+syntaxError=Syntax Error: 

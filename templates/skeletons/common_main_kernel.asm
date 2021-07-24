@@ -60,9 +60,9 @@ P1Mirrored = $a8			; Must be in order!
 pfSettings = $a9	; Since CTRLPF 0-1 bits are fixed in the screen loop
 pfEdges	= $a9		; 0-1: free
 			; 2: Players move behind the pf
-Has to be here because	; 3: Free
-of the edge check	; 4-5: Ball Settings
-routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
+#Has to be here because	; 3: Free
+#of the edge check	; 4-5: Ball Settings
+#routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
 ************************
 
 P0Height = $aa
@@ -249,32 +249,31 @@ FinishPreparation
 	TSX			;2
 	STX	item		; Save the stack pointer 3 (5)
 
-	LDA	#42	; 2 (7)
-	TAX		; 2 (9)
-	tay		;2 (11)
-	DEY
+	LDX	#42
+	LDA	#14		; 2(7)
+	CLC			; 2(9)
+	ADC	pfIndex		; 3(12)
+	STA	temp01		; Save pfIndex 3(15)	
+	TAY			; 2(17)
 
-	LDA	(pfColorPointer),y	; 5 (16)
-	CLC				; 2 (18)
-	ADC	pfBaseColor 		; 3 (21)
-	STA	temp02		; savePFColor 3 (24)
+	LDA	(pfColorPointer),y	; 5 (22)
+	CLC				; 2 (24)
+	ADC	pfBaseColor 		; 3 (27)
+	STA	temp02		; savePFColor 3 (30)
 
-	LDA	(bkColorPointer),y 	; 5 (29)
-	CLC				; 2 (31)
-	ADC	bkBaseColor 		; 3 (34)
-	STA	temp04		; saveBKColor 3 (37)
+	LDA	(bkColorPointer),y 	; 5 (35)
+	CLC				; 2 (37)
+	ADC	bkBaseColor 		; 3 (40)
+	STA	temp04		; saveBKColor 3 (43)
 
-	LDY 	P1Height		; 3 (40)  		
-	LDA	(P1ColorPointer),y	; 5 (45)
-	STA	COLUP1		; Load first color 3 (48)
+	LDY 	P1Height		; 3 (46)  		
+	LDA	(P1ColorPointer),y	; 5 (51)
+	STA	COLUP1		; Load first color 3 (54)
 
 	STA	WSYNC
 	
-	LDX  	#42		; 2
-	LDA	#14		; 2(4)
-	CLC			; 2(6)
-	ADC	pfIndex		; 3(9)
-	STA	temp01		; Save pfIndex 3(12)	
+	sleep	9
+	LDA	temp01		; pfIndex 3 (12)	
 	TAY			; 2(14)
 
 	LDA	(pf0Pointer),y	; 5(19)
@@ -406,7 +405,7 @@ LastLine
 	CLC	 		; 2 (13)
 	ADC	bkBaseColor	; 3 (16)	
 	STA	temp04		; 3 (19)
-
+	
 
 	LDA 	P1Height 	; 3 (21)
 	DCP	temp12 		;  temp12 contains P0Y!  ; 5 (26)
@@ -422,33 +421,40 @@ saveP1Sprite
 	LDA	temp06		; 3 (53)
 	STA	PF0		; 3 (56)
 
-	DEX			; 2 (58)
-	LDA	temp02		; 3 (61)
 
-	CPX	#0		; 2 (63)
-	BEQ	ResetAll  	; 2 (65)
+	CPX	#0		; 2 (58)
+	BEQ	ResetAll  	; 2 (60)
+
+	DEX			; 2 (62)
+	LDA	temp02		; 3 (65)
+
 	DEC	temp01		; 5 (70)
 	JMP	FirstLine	; 3 (73)
 
 ResetAll
-	LDA	frameColor	; 3 (70)
-	STA 	COLUBK		; 3 (73)
-	STX	WSYNC		; 3 (76)
-	STA 	COLUPF
+	LDX	#0		; 2 (62)
+	STX	HMCLR		; 3 (65)
+	LDA	frameColor	; 3 (68)
+	STX	PF2		; 3 (71)
 
-	LDX	#0
+	STX	WSYNC		
+
+	STA 	COLUBK		 
+	STA 	COLUPF		
+
 	STX	PF0
 	STX	PF1
-	STX	PF2
-	STX 	COLUBK
+
 	STX	ENAM0
 	STX	ENAM1
+	STX	ENABL
+	STX	GRP0
+	STX	GRP1
 
 	STX	VDELP0
 	STX	VDELP1
 	STX	VDELBL
-	STX	GRP0
-	STX	GRP1
+
 	LDX	item		; Retrieve the stack pointer
 	TXS
 
@@ -907,6 +913,7 @@ start_bank1
 ***************************
 	Bank 2
 	fill	256
+###Start-Bank2
 	
 *Enter Bank
 *-----------------------------
@@ -1163,6 +1170,8 @@ ScreenBottomBank2
 
 !!!USER_DATA_BANK2!!!
 
+
+###End-Bank2
 	saveFreeBytes
 	rewind 	2fd4
 	
@@ -1201,6 +1210,7 @@ start_bank2
 ***************************
 	Bank 3
 	fill	256
+###Start-Bank3
 	
 *Enter Bank
 *-----------------------------
@@ -1457,6 +1467,8 @@ ScreenBottomBank3
 
 !!!USER_DATA_BANK3!!!
 
+
+###End-Bank3
 	saveFreeBytes
 	rewind 	3fd4
 
@@ -1495,6 +1507,7 @@ start_bank3
 ***************************
 	Bank 4
 	fill	256
+###Start-Bank4
 	
 *Enter Bank
 *-----------------------------
@@ -1751,6 +1764,7 @@ ScreenBottomBank4
 
 !!!USER_DATA_BANK4!!!
 
+###End-Bank4
 	saveFreeBytes
 	rewind 	4fd4
 	
@@ -1790,6 +1804,7 @@ start_bank4
 ***************************
 	Bank 5
 	fill	256
+###Start-Bank5
 	
 *Enter Bank
 *-----------------------------
@@ -2045,7 +2060,7 @@ ScreenBottomBank5
 
 !!!USER_DATA_BANK5!!!
 
-
+###End-Bank5
 	saveFreeBytes
 	rewind 	5fd4
 	
@@ -2084,6 +2099,7 @@ start_bank5
 ***************************
 	Bank 6
 	fill	256
+###Start-Bank6
 	
 *Enter Bank
 *-----------------------------
@@ -2339,7 +2355,7 @@ ScreenBottomBank6
 *
 
 !!!USER_DATA_BANK6!!!
-
+###End-Bank6
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -2379,6 +2395,7 @@ start_bank6
 ***************************
 	Bank 7
 	fill	256
+###Start-Bank7
 	
 *Enter Bank
 *-----------------------------
@@ -2633,7 +2650,7 @@ ScreenBottomBank7
 
 !!!USER_DATA_BANK7!!!
 
-
+###End-Bank7
 	saveFreeBytes
 	rewind 	7fd4
 	
@@ -2672,6 +2689,7 @@ start_bank7
 ***************************
 	Bank 8
 	fill	256
+###Start-Bank8
 	
 *Enter Bank
 *-----------------------------
@@ -2926,7 +2944,7 @@ ScreenBottomBank8
 
 !!!USER_DATA_BANK8!!!
 
-	
+###End-Bank8	
 	align 256
 	
 Start

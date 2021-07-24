@@ -8,6 +8,12 @@ class MainWindowHandler:
         self.__soundPlayer = self.__loader.soundPlayer
         self.__fileDialogs = self.__loader.fileDialogs
 
+        try:
+            from os import mkdir
+            mkdir("temp/")
+        except:
+            pass
+
         from threading import Thread
 
         self.__tk = self.__loader.tk
@@ -29,6 +35,15 @@ class MainWindowHandler:
     #    widget.wait_window()
 
     def __removeTemp(self):
+        try:
+            from shutil import rmtree
+            rmtree('temp/')
+
+        except:
+            pass
+
+
+        """
         import os
 
         toBeDeleted=[]
@@ -39,6 +54,7 @@ class MainWindowHandler:
 
         for file in toBeDeleted:
             os.remove(file)
+        """
 
     def createMain(self):
         from MainWindow import MainWindow

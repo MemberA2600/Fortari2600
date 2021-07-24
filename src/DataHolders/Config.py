@@ -66,3 +66,7 @@ class Config:
 
     def saveProjects(self):
         self.__dataReader.writeDataFile("config/projectlist.txt", self.__projects)
+
+    def getOSbits(self):
+        import platform
+        return platform.architecture()[0]

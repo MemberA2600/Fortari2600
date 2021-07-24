@@ -1,12 +1,84 @@
-from DataLine import Dataline
+from DataLine import DataLine
+from tkinter import *
+from SubMenu import SubMenu
+from tkinter import scrolledtext
+
 
 class Assembler():
+    """
+    def errorWindow(self):
+        self.dead = False
 
-    def __init__(self, projectPath):
+        self.__virtualMemory = self.__loader.virtualMemory
+        self.__config = self.__loader.config
+        self.__dictionaries = self.__loader.dictionaries
+        self.__screenSize = self.__loader.screenSize
+        self.__soundPlayer = self.__loader.soundPlayer
+        self.__fileDialogs = self.__loader.fileDialogs
+        self.__fontManager = self.__loader.fontManager
+        self.__fontSize = int(self.__screenSize[0] / 1300 * self.__screenSize[1] / 1050 * 14)
+        self.__smallFontSize = int(self.__screenSize[0] / 1300 * self.__screenSize[1] / 1050 * 11)
+
+        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
+        self.__smallFont = self.__loader.fontManager.getFont(round(self.__smallFontSize), False, False, False)
+
+        self.__colors = self.__loader.colorPalettes
+        self.__screenSize = self.__loader.screenSize
+
+        self.__window = SubMenu(self.__loader, "compileErrorWindow", self.__screenSize[0] / 6, self.__screenSize[1] / 2 - 15,
+                                None, self.__addElements, 2)
+        self.dead = True
+
+    def __addElements(self, top):
+        self.__topLevel = top
+        self.__topLevelWindow = top.getTopLevel()
+
+        self.__allFrame = Frame(self.__topLevelWindow)
+        self.__allFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__allFrame.pack(fill=BOTH)
+
+        self.__title = Label(self.__allFrame, text=self.__dictionaries.getWordFromCurrentLanguage("compileError"))
+        self.__title.config(font =self.__font, bg=self.__loader.colorPalettes.getColor("window"),
+                            fg=self.__loader.colorPalettes.getColor("font"))
+
+        self.__labelFrameCode = LabelFrame(self.__allFrame, text=self.__dictionaries.getWordFromCurrentLanguage("sourceAssembly"),
+                                           height=round(self.__topLevel.getTopLevelDimensions()[1]/5),
+                                           font=self.__smallFont, bg=self.__loader.colorPalettes.getColor("window"),
+                                           fg=self.__loader.colorPalettes.getColor("font")
+                                           )
+        self.__labelFrameCode.pack(side=TOP, anchor=N, fill=X)
+
+        self.box = scrolledtext.ScrolledText(self.__labelFrameCode, width=999999, height=9999999, wrap=WORD)
+        self.box.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                          fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                        font=self.__smallFont)
+
+        self.box.insert(1.0, open(self.projectPath+"source.asm", "r").read())
+    """
+    #Here is starts.
+    def __init__(self, __loader, projectPath, testIt):
         self.projectPath = projectPath
 
-        self.compile(projectPath+"/source.asm")
+        self.compile(projectPath+"source.asm")
 
+        import os
+        os.remove(self.projectPath + "source.asm")
+
+        if testIt == True:
+            path = "emulator/32-bit/Stella.exe"
+            if __loader.config.getOSbits() == "64bit":
+                path.replace("32", "64")
+
+            from threading import Thread
+            s = Thread(target=self.runStella, args=[path])
+            s.daemon = True
+            s.start()
+
+    def runStella(self, path):
+        import os
+        import subprocess
+
+        subprocess.run([path, os.getcwd() + os.sep + self.executeName])
 
     def loadRegisters(self, path):
         temp = {}
@@ -151,6 +223,8 @@ class Assembler():
         for v in variables:
             if len(variables[v])>3:
                 threeByters.append(v)
+
+
 
         code = self.checkForTooDistant(code, branchers)
 
@@ -420,7 +494,7 @@ class Assembler():
     def starToAddress(self, address, second):
         return(second.replace("*", hex(address).replace("0x", "$")))
 
-    def checkIfSectionName(name, sections):
+    def checkIfSectionName(self, name, sections):
         word = name.replace("#","").replace("<","").replace(">","").replace(" ", "")
         if word in sections:
             return(name.replace(word, sections[word]))
@@ -553,19 +627,20 @@ class Assembler():
 
     def getNextName(self):
         import os
-        base = self.projectPath.split("/")[-1]
+        base = self.projectPath.split("/")[-2]
         counter = 1
-        for root, dirs, files in os.walk(self.projectPath+"/bin/"):
+        for root, dirs, files in os.walk(self.projectPath+"bin/"):
             for file in files:
                 num = ""
                 if (len(str(counter)))<4:
-                    num = (4-len(str(counter))*"0")+str(counter)
+                    num = (4-len(str(counter)))*"0"+str(counter)
                 else:
                     num = str(counter)
-                if os.path.exists(self.projectPath+"/bin/"+base+"_"+num):
+                if os.path.exists(self.projectPath+"bin/"+base+"_"+num):
                     counter+=1
                 else:
                     return(base+"_"+num)
+            return(base+"_0001")
 
     def compile(self, path):
         import re
@@ -585,8 +660,10 @@ class Assembler():
 
         name = self.getNextName()
 
-        file = open(self.projectPath+"/asm_log/"+name+".txt", "w")
-        fileBin = open(self.projectPath+"/bin/"+name+".bin", "wb")
+        file = open(self.projectPath+"asm_log/"+name+".txt", "w")
+        fileBin = open(self.projectPath+"bin/"+name+".bin", "wb")
+
+        self.executeName = self.projectPath+"bin/"+name+".bin"
 
         toWrite = []
         lenOfNum = len(str(code[-1].address))
@@ -603,12 +680,17 @@ class Assembler():
 
             fos = str(num).ljust(lenOfNum+2) + str(codeline.getAddressInHex()).ljust(5)+" ".join(bytes_).ljust(40) + str(codeline.byteNum).ljust(2) + str(codeline.raw).ljust(35)
             if codeline.bytes == []:
-                print(codeline.raw)
+                """
+                self.errors.append(
+                    self.__dictionaries.getWordFromCurrentLanguage("syntaxError")+
+                    " ".join(codeline.raw)+" ("+str(codeline.getAddressInHex())
+                )"""
+                print(" ".join(codeline.raw))
 
             for section in sections:
                 if sections[section][1:] == codeline.getAddressInHex():
                     toWrite.append(str(num).ljust(lenOfNum+2) + str(codeline.getAddressInHex()).ljust(5)+ ">>" + section)
-                    break
+
 
             toWrite.append(fos)
         import os
@@ -616,7 +698,6 @@ class Assembler():
         file.write(os.linesep.join(toWrite))
         file.close()
         fileBin.close()
-        os.remove(self.projectPath + "/source.asm")
 
 
 
