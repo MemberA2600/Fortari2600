@@ -323,6 +323,25 @@ class PlayfieldEditor:
 
         self.__openImagePicture.pack(side = RIGHT, anchor = W, fill=Y)
 
+        self.__testWithEmulatorFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__testWithEmulatorFrame.pack_propagate(False)
+
+        self.__testWithEmulatorFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__emulatorTestLabel = Label(self.__testWithEmulatorFrame, text=self.__dictionaries.getWordFromCurrentLanguage("testWithEmulator")+" ",
+                                   font=self.__normalFont,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font")
+                                   )
+        self.__emulatorTestLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__emuImagePic = self.__loader.io.getImg("stella", None)
+        self.__emuImagePicture = Button(self.__testWithEmulatorFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__emuImagePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   command=self.__loadTest)
+
+        self.__emuImagePicture.pack(side = RIGHT, anchor = W, fill=Y)
+
         #This is were the fun begins.
         ############################
 
@@ -356,6 +375,11 @@ class PlayfieldEditor:
         t.daemon = True
         t.start()
 
+    def __loadTest(self):
+        from Compiler import Compiler
+
+        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__height.get()])
+
     def __importImage(self):
 
         if self.changed == True:
@@ -370,8 +394,37 @@ class PlayfieldEditor:
         pictureToCode = PictureToCode(self.__loader, self.__loader.virtualMemory.kernel,
                                       "playfield", 40, self.changed)
 
-        self.__topLevelWindow.deiconify()
-        self.__topLevelWindow.focus()
+        if pictureToCode.doThings == True:
+            maxY = pictureToCode.Y
+            if maxY<42:
+                maxY = 42
+
+            self.__height.set(str(maxY))
+            self.__indexVal.set("0")
+
+            for Y in range(0, maxY):
+                #print(Y, maxY, len(self.__colorTable), len(pictureToCode.pfColors), len(pictureToCode.pixels))
+
+                try:
+                    self.__colorTable[Y][0] = pictureToCode.pfColors[Y]
+                    self.__colorTable[Y][1] = pictureToCode.bgColors[Y]
+                    for X in range(0,40):
+                        self.__table[Y][X] = str(1-pictureToCode.pixels[Y][X])
+                except:
+                    self.__colorTable[Y][0] = "$0e"
+                    self.__colorTable[Y][1] = "$00"
+                    for X in range(0,40):
+                        self.__table[Y][X] = "0"
+
+            self.__soundPlayer.playSound("Success")
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            self.alreadyDone = True
+            self.firstLoad = True
+
+            self.generateTableCommon()
+            self.changed = True
 
     def __openPlayfield(self):
         import os
@@ -401,6 +454,8 @@ class PlayfieldEditor:
             self.__pfName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
 
             self.__height.set(data[1].replace("\n","").replace("\r",""))
+            self.__indexVal.set("0")
+
             maxY = int(self.__height.get())
             data.pop(0)
             data.pop(0)

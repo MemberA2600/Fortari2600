@@ -62,4 +62,11 @@ class IO:
         for item in self.loadWholeText("config"+os.sep+"syntax.txt").split("\n"):
             self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=",2)[1].replace("\n","").replace("\r",""))
 
+    def loadSubModule(self, name):
+        return(open("templates/skeletons/"+name+".asm", "r").read())
 
+    def loadKernelElement(self, name, element):
+        return(open("templates/skeletons/"+name+"_"+element+".asm", "r").read())
+
+    def loadTestElement(self, mode, name, element):
+        return(open("templates/testCodes/"+mode+"_"+name+"_"+element+".asm", "r").read())

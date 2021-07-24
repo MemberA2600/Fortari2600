@@ -121,3 +121,5 @@ multiple=Többféle Formátum
 importImage=Kép Betöltése
 thresholdSetter=Küszöbérték Beállító:
 invert=Invertálás
+preferRight=Jobboldal Preferálása
+testWithEmulator=Emulátorral Tesztelés:

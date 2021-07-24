@@ -49,6 +49,11 @@ class SubMenu:
 
         self.__topLevel.wait_window()
 
+        try:
+            self.__loader.subMenus.pop(-1)
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
+
     def killOther(self):
         self.__loader.subMenus[-2].dead = True
         from time import sleep

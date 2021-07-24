@@ -56,3 +56,21 @@ class ColorDict:
     def getHEXValueFromTIA(self, tia):
         that = self.TIAColors[tia.lower()]
         return self.getHEXValue(that.red, that.blue, that.green)
+
+
+    def getClosestTIAColor(self, r, g, b):
+        from math import sqrt
+
+        difference = 1
+
+        while difference<256:
+            for colorNum in self.TIAColors:
+
+                d = abs(sqrt((self.TIAColors[colorNum].red - r) ** 2 +
+                                  (self.TIAColors[colorNum].green - g) ** 2 +
+                                  (self.TIAColors[colorNum].blue - b) ** 2))
+
+                if  d < difference:
+
+                    return(colorNum)
+            difference+=1

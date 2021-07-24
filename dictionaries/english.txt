@@ -123,3 +123,5 @@ multiple=Multiple Formats
 importImage=Import Image:
 thresholdSetter=Threshold Setter:
 invert=Invert
+preferRight=Prefer Right Side
+testWithEmulator=Test with Emulator:

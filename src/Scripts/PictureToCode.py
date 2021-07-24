@@ -8,6 +8,7 @@ class PictureToCode:
     def __init__(self, loader, kernel, mode, w, changed):
         if mode == "playfield":
             self.__w = 40
+            self.__h = 42
             if kernel=="common":
                 self.__mirroring = [0,1,1]
 
@@ -15,7 +16,6 @@ class PictureToCode:
         self.__mainWindow = self.__loader.mainWindow
         self.dead = False
         self.doThings = False
-
 
         self.__loader.stopThreads.append(self)
 
@@ -61,15 +61,25 @@ class PictureToCode:
                 multi = self.__w/width
                 h = round(image.height*multi)
 
+                self.Y = h
+                self.__multiH = 1
+                if self.Y > 255:
+                    self.Y = 255
+                elif self.Y<42:
+                    self.__multiH = round(self.__h / h)
+
                 w = self.__w
                 imageSized = image.resize((w, h), IMG.ANTIALIAS)
                 imgColorData = imageSized.load()
 
                 imageClone = deepcopy(imageSized)
 
+                from PIL import ImageOps
                 if self.__invert.get():
-                    from PIL import ImageOps
                     imageClone = ImageOps.invert(imageClone)
+
+                if self.__right.get():
+                    imageClone = ImageOps.mirror(imageClone)
 
                 fn = lambda x: 255 if x > int(self.__tres.get()) else 0
                 altImage = deepcopy(imageClone).convert('L').point(fn, mode='1')
@@ -78,13 +88,178 @@ class PictureToCode:
                 imgPixelData = altImage.load()
 
 
-                self.__picture = []
-                for Y in range(0, h):
-                    row = []
-                    for X in range(0, w):
-                        row.append(imgColorData[X,Y])
+                self.pixels = []
+                self.pfColors = []
+                self.bgColors = []
 
-                    self.__picture.append(self.calculateRow(row))
+                self.getColorData(w, h, imgColorData, imgPixelData)
+                if mode == "playfield":
+                    self.getPFData(w, h, imgPixelData)
+
+    def getPFData(self, w, h, pixelData):
+        for Y in range(0, h):
+            row = []
+            for X in range(0,40):
+                if X < 20:
+                    row.append(pixelData[X,Y]//255)
+                elif X < 28:
+                    if self.__mirroring[2] == 1:
+                        row.append(pixelData[20-(X-19), Y] // 255)
+
+                    else:
+                        row.append(pixelData[X, Y] // 255)
+                elif X < 36:
+                    if self.__mirroring[1] == 1:
+                        row.append(pixelData[20-(X-19), Y] // 255)
+
+                    else:
+                        row.append(pixelData[X, Y] // 255)
+                else:
+                    if self.__mirroring[0] == 1:
+                        row.append(pixelData[20-(X-19), Y] // 255)
+
+                    else:
+                        row.append(pixelData[X, Y] // 255)
+
+            for m in range(0, self.__multiH):
+                self.pixels.append(deepcopy(row))
+
+
+    def getColorData(self, w, h, colorData, pixelData):
+
+
+        for Y in range(0, h):
+            #sumPF = [0,0,0]
+            #sumBG = [0,0,0]
+            PF = [0,0,0]
+            BG = [0,0,0]
+
+            pfList = []
+            bgList = []
+
+            for X in range(0, w):
+                if (pixelData[X,Y] == 255):
+                    #for num in range(0,3):
+                        #sumPF[num]+=colorData[X,Y][num]
+                    pfList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+                else:
+                    #for num in range(0,3):
+                        #sumBG[num]+=colorData[X,Y][num]
+                    bgList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+
+            """
+            for num in range(0, 3):
+                PF[num] = round(sumPF[num]/w)
+                BG[num] = round(sumBG[num]/w)
+
+            """
+            PF = self.getDominantColor(pfList, w)
+            BG = self.getDominantColor(bgList, w)
+
+
+
+            for m in range(0, self.__multiH):
+                if PF != None:
+                    pfC = self.__colorDict.getClosestTIAColor(PF[0], PF[1], PF[2])
+                else:
+                    try:
+                        pfC = self.bgColors[-1]
+                    except:
+                        pfC="$00"
+
+                pfNum = int(pfC.replace("$", "0x"), 16)
+
+
+                if BG != None:
+                    bgC = self.__colorDict.getClosestTIAColor(BG[0], BG[1], BG[2])
+                else:
+                    try:
+                        bgC = self.pfColors[-1]
+                    except:
+                        bgC="$00"
+
+                bgNum = int(bgC.replace("$", "0x"), 16)
+
+
+                if abs( pfNum - bgNum ) < 4:
+                    if (int("0x"+bgC[2], 16))>8:
+                        bgC = bgC[:2] + str(hex(int("0x"+bgC[2], 16)-4)).replace("0x", "")
+                    else:
+                        bgC = bgC[:2] + str(hex(int("0x"+bgC[2], 16)+4)).replace("0x", "")
+
+
+                self.pfColors.append( bgC )
+                self.bgColors.append( pfC )
+
+    def getDominantColor(self, biglist, w):
+
+
+        """
+        import numpy as np
+        img = IMG.fromarray(np.array( biglist, dtype=np.uint8))
+
+        print(biglist)
+
+        img = img.convert("RGB")
+        img = img.resize((1, 1), resample=0)
+
+        dominant_color = img.load()[0,0]
+        print(dominant_color)
+        return (dominant_color)
+        """
+        """
+        red = []
+        blue = []
+        green = []
+
+        for array in biglist:
+            red.append(array[0])
+            blue.append(array[1])
+            green.append(array[2])
+        """
+
+        """
+        from numpy import array, uint8
+        from colorthief import ColorThief
+
+        try:
+            colorT = ColorThief("others/img/Loading.png") #dummy
+            colorT.image = IMG.fromarray(array( biglist, dtype=uint8))
+
+            color = colorT.get_color()
+
+            return(color)
+        except:
+            return(None)
+        """
+
+        occurences = {}
+
+        for array in biglist:
+            if array in occurences.keys():
+                occurences[array]+=1
+            else:
+                occurences[array]=1
+
+        s = dict(sorted(occurences.items(), key=lambda item: item[1]))
+
+        largestName = ""
+        largestNum = 0
+
+        for key in s.keys():
+            if s[key] > largestNum:
+                largestNum = s[key]
+                largestName = key
+
+        if biglist == []:
+            return(None)
+        elif largestNum < 3:
+            biglist.sort()
+
+            return(biglist[round(len(biglist)/2)])
+
+        else:
+            return(largestName)
 
     def __addElements(self, top):
         self.__topLevel = top
@@ -125,16 +300,36 @@ class PictureToCode:
         self.__minus = self.__loader.io.getImg("negative", None)
         self.__plus = self.__loader.io.getImg("positive", None)
 
+        self.__cBoxFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__cBoxFrame.config(
+            width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+            height=round(self.__topLevel.getTopLevelDimensions()[1] / 6))
+        self.__cBoxFrame.pack_propagate(False)
+        self.__cBoxFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+
         self.__invert = IntVar()
         self.__invert.set(0)
 
-        self.__check = Checkbutton(self.__controllerFrame, text=self.__dictionaries.getWordFromCurrentLanguage("invert"),
+        self.__check = Checkbutton(self.__cBoxFrame, text=self.__dictionaries.getWordFromCurrentLanguage("invert"),
                                   bg = self.__loader.colorPalettes.getColor("window"),
                                   fg = self.__loader.colorPalettes.getColor("font"),
                                   font=self.__smallFont,
                                    variable = self.__invert, command = self.updateBlackAndWhite
                                   )
+        self.__check.pack(side=LEFT, anchor=W, fill=X)
 
+        self.__right = IntVar()
+        self.__right.set(0)
+
+        self.__rightB = Checkbutton(self.__cBoxFrame,
+                                   text=self.__dictionaries.getWordFromCurrentLanguage("preferRight"),
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font"),
+                                   font=self.__smallFont,
+                                   variable=self.__right, command=self.updateBlackAndWhite
+                                   )
+        self.__rightB.pack(side=RIGHT, anchor=E, fill=X)
 
 
         self.__buttonFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
@@ -156,7 +351,6 @@ class PictureToCode:
         self.__positiveButton.pack_propagate(False)
         self.__positiveButton.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__check.pack(side=TOP, anchor=N, fill=X)
 
         self.__buttonFrame2 = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
         self.__buttonFrame2.config(
@@ -237,9 +431,6 @@ class PictureToCode:
 
         self.updateBlackAndWhite()
 
-    def calculateRow(self, row):
-        pass
-
     def blackAndWhite(self):
 
         from copy import deepcopy
@@ -256,6 +447,7 @@ class PictureToCode:
 
         imageSized = image.resize((w, h), IMG.ANTIALIAS)
 
+
         self.img1 = ImageTk.PhotoImage(imageSized)
 
         self.label1 = Label(self.__imageFrame,
@@ -271,10 +463,20 @@ class PictureToCode:
 
     def updateBlackAndWhite(self):
         image = IMG.open(self.answer, "r")
+        from PIL import ImageOps
+
+        try:
+            image = ImageOps.invert(image)
+            image = ImageOps.invert(image)
+        except:
+            self.__check.config(state=DISABLED)
 
         if self.__invert.get():
-            from PIL import ImageOps
             image = ImageOps.invert(image)
+
+        if self.__right.get():
+            from PIL import ImageOps
+            image = ImageOps.mirror(image)
 
         width, height = image.size
         h = round(self.__topLevel.getTopLevelDimensions()[1])
@@ -286,7 +488,6 @@ class PictureToCode:
 
         fn = lambda x: 255 if x > int(self.__tres.get()) else 0
         altImage = deepcopy(imageSized).convert('L').point(fn, mode='1')
-
 
         self.img2 = ImageTk.PhotoImage(altImage)
 
