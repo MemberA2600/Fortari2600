@@ -57,6 +57,9 @@ class ColorDict:
         that = self.TIAColors[tia.lower()]
         return self.getHEXValue(that.red, that.blue, that.green)
 
+    def getRGBValueFromTIA(self, tia):
+        that = self.TIAColors[tia.lower()]
+        return (that.red, that.blue, that.green)
 
     def getClosestTIAColor(self, r, g, b):
         from math import sqrt
@@ -74,3 +77,33 @@ class ColorDict:
 
                     return(colorNum)
             difference+=1
+
+    def getDominantColor(self, biglist):
+
+        occurences = {}
+
+        for array in biglist:
+            if array in occurences.keys():
+                occurences[array]+=1
+            else:
+                occurences[array]=1
+
+        s = dict(sorted(occurences.items(), key=lambda item: item[1]))
+
+        largestName = ""
+        largestNum = 0
+
+        for key in s.keys():
+            if s[key] > largestNum:
+                largestNum = s[key]
+                largestName = key
+
+        if biglist == []:
+            return(None)
+        elif largestNum < 3:
+            biglist.sort()
+
+            return(biglist[round(len(biglist)/2)])
+
+        else:
+            return(largestName)

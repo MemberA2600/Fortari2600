@@ -994,7 +994,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1038,7 +1038,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -1291,7 +1291,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1335,7 +1335,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -1588,7 +1588,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1632,7 +1632,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -1885,7 +1885,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1929,7 +1929,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2180,7 +2180,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2224,7 +2224,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2475,7 +2475,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2519,7 +2519,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2769,7 +2769,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2813,7 +2813,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK

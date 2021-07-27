@@ -12,7 +12,6 @@ class Compiler:
         self.__openEmulator = False
         self.__io = self.__loader.io
 
-
         if self.__mode == "pfTest":
             self.__openEmulator = True
 
@@ -23,6 +22,7 @@ class Compiler:
             self.__pixelData = data[0]
             self.__colorData = data[1]
             self.__max = int(data[2])
+            self.__tv = data[3]
 
 
             if self.__kernel == "common":
@@ -30,7 +30,6 @@ class Compiler:
 
                 min = 26
                 max = 26 + (self.__max-42)
-
 
                 self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
                 self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
@@ -41,13 +40,14 @@ class Compiler:
             if self.__kernel in ["common"]:
                 self.__convertedPlayfield += self.addColors("TestPlayfield")
 
+            self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
             self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
             self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
             self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
             self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!","", self.__mainCode)
 
             self.doSave("temp/")
-            assembler = Assembler(self.__loader, "temp/", True)
+            assembler = Assembler(self.__loader, "temp/", True, self.__tv)
 
 
     def doSave(self, projectPath):

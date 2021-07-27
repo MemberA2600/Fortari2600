@@ -5,59 +5,10 @@ from tkinter import scrolledtext
 
 
 class Assembler():
-    """
-    def errorWindow(self):
-        self.dead = False
 
-        self.__virtualMemory = self.__loader.virtualMemory
-        self.__config = self.__loader.config
-        self.__dictionaries = self.__loader.dictionaries
-        self.__screenSize = self.__loader.screenSize
-        self.__soundPlayer = self.__loader.soundPlayer
-        self.__fileDialogs = self.__loader.fileDialogs
-        self.__fontManager = self.__loader.fontManager
-        self.__fontSize = int(self.__screenSize[0] / 1300 * self.__screenSize[1] / 1050 * 14)
-        self.__smallFontSize = int(self.__screenSize[0] / 1300 * self.__screenSize[1] / 1050 * 11)
-
-        self.__font = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
-        self.__smallFont = self.__loader.fontManager.getFont(round(self.__smallFontSize), False, False, False)
-
-        self.__colors = self.__loader.colorPalettes
-        self.__screenSize = self.__loader.screenSize
-
-        self.__window = SubMenu(self.__loader, "compileErrorWindow", self.__screenSize[0] / 6, self.__screenSize[1] / 2 - 15,
-                                None, self.__addElements, 2)
-        self.dead = True
-
-    def __addElements(self, top):
-        self.__topLevel = top
-        self.__topLevelWindow = top.getTopLevel()
-
-        self.__allFrame = Frame(self.__topLevelWindow)
-        self.__allFrame.config(bg=self.__loader.colorPalettes.getColor("window"))
-        self.__allFrame.pack(fill=BOTH)
-
-        self.__title = Label(self.__allFrame, text=self.__dictionaries.getWordFromCurrentLanguage("compileError"))
-        self.__title.config(font =self.__font, bg=self.__loader.colorPalettes.getColor("window"),
-                            fg=self.__loader.colorPalettes.getColor("font"))
-
-        self.__labelFrameCode = LabelFrame(self.__allFrame, text=self.__dictionaries.getWordFromCurrentLanguage("sourceAssembly"),
-                                           height=round(self.__topLevel.getTopLevelDimensions()[1]/5),
-                                           font=self.__smallFont, bg=self.__loader.colorPalettes.getColor("window"),
-                                           fg=self.__loader.colorPalettes.getColor("font")
-                                           )
-        self.__labelFrameCode.pack(side=TOP, anchor=N, fill=X)
-
-        self.box = scrolledtext.ScrolledText(self.__labelFrameCode, width=999999, height=9999999, wrap=WORD)
-        self.box.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                          fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                        font=self.__smallFont)
-
-        self.box.insert(1.0, open(self.projectPath+"source.asm", "r").read())
-    """
-    #Here is starts.
-    def __init__(self, __loader, projectPath, testIt):
+    def __init__(self, __loader, projectPath, testIt, tv):
         self.projectPath = projectPath
+        self.__tv = tv
 
         self.compile(projectPath+"source.asm")
 
@@ -526,6 +477,7 @@ class Assembler():
             self.appendBytes(line, second)
 
     def appendBytes(self, line, second):
+
         if second.startswith("0b"):
             line.bytes.append(bytes([int(second, 2)]))
         elif second.startswith("0x"):
@@ -636,11 +588,11 @@ class Assembler():
                     num = (4-len(str(counter)))*"0"+str(counter)
                 else:
                     num = str(counter)
-                if os.path.exists(self.projectPath+"bin/"+base+"_"+num):
+                if os.path.exists(self.projectPath+"bin/"+base+"_"+self.__tv+"_"+num):
                     counter+=1
                 else:
-                    return(base+"_"+num)
-            return(base+"_0001")
+                    return(base+"_"+self.__tv+"_"+num)
+            return(base+"_"+self.__tv+"_0001")
 
     def compile(self, path):
         import re

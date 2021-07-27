@@ -148,7 +148,7 @@ class MainWindow:
                                             False, self.__redoButtonHandler)
 
         self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 10,
-                                          self.__closeProjectButtonFunction, "projectPath",
+                                          self.__openSpriteEditor, "projectPath",
                                             False, None)
 
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
@@ -478,6 +478,10 @@ class MainWindow:
 
         PF = PlayfieldEditor(self.__loader, self)
 
+    def __openSpriteEditor(self):
+        from SpriteEditor import SpriteEditor
+
+        _7up = SpriteEditor(self.__loader, self)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])

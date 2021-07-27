@@ -8,9 +8,10 @@ class PictureToCode:
     def __init__(self, loader, kernel, mode, w, changed):
         if mode == "playfield":
             self.__w = 40
-            self.__h = 42
+
             if kernel=="common":
                 self.__mirroring = [0,1,1]
+                self.__h = 42
 
         self.__loader = loader
         self.__mainWindow = self.__loader.mainWindow
@@ -65,7 +66,7 @@ class PictureToCode:
                 self.__multiH = 1
                 if self.Y > 255:
                     self.Y = 255
-                elif self.Y<42:
+                elif self.Y<self.__h:
                     self.__multiH = round(self.__h / h)
 
                 w = self.__w
@@ -153,8 +154,8 @@ class PictureToCode:
                 BG[num] = round(sumBG[num]/w)
 
             """
-            PF = self.getDominantColor(pfList, w)
-            BG = self.getDominantColor(bgList, w)
+            PF = self.__colorDict.getDominantColor(pfList)
+            BG = self.__colorDict.getDominantColor(bgList)
 
 
 
@@ -191,75 +192,7 @@ class PictureToCode:
                 self.pfColors.append( bgC )
                 self.bgColors.append( pfC )
 
-    def getDominantColor(self, biglist, w):
 
-
-        """
-        import numpy as np
-        img = IMG.fromarray(np.array( biglist, dtype=np.uint8))
-
-        print(biglist)
-
-        img = img.convert("RGB")
-        img = img.resize((1, 1), resample=0)
-
-        dominant_color = img.load()[0,0]
-        print(dominant_color)
-        return (dominant_color)
-        """
-        """
-        red = []
-        blue = []
-        green = []
-
-        for array in biglist:
-            red.append(array[0])
-            blue.append(array[1])
-            green.append(array[2])
-        """
-
-        """
-        from numpy import array, uint8
-        from colorthief import ColorThief
-
-        try:
-            colorT = ColorThief("others/img/Loading.png") #dummy
-            colorT.image = IMG.fromarray(array( biglist, dtype=uint8))
-
-            color = colorT.get_color()
-
-            return(color)
-        except:
-            return(None)
-        """
-
-        occurences = {}
-
-        for array in biglist:
-            if array in occurences.keys():
-                occurences[array]+=1
-            else:
-                occurences[array]=1
-
-        s = dict(sorted(occurences.items(), key=lambda item: item[1]))
-
-        largestName = ""
-        largestNum = 0
-
-        for key in s.keys():
-            if s[key] > largestNum:
-                largestNum = s[key]
-                largestName = key
-
-        if biglist == []:
-            return(None)
-        elif largestNum < 3:
-            biglist.sort()
-
-            return(biglist[round(len(biglist)/2)])
-
-        else:
-            return(largestName)
 
     def __addElements(self, top):
         self.__topLevel = top

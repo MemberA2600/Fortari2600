@@ -43,7 +43,7 @@ class PlayfieldEditor:
         self.__draw = 0
 
         self.__sizes = {
-            "common": [self.__screenSize[0] / 1.20, self.__screenSize[1]/1.10  - 45]
+            "common": [self.__screenSize[0] / 1.20, self.__screenSize[1]/1.10  - 35]
         }
 
 
@@ -83,7 +83,7 @@ class PlayfieldEditor:
         self.__playfieldFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"))
         self.__playfieldFrame.config(height=round(self.__topLevel.getTopLevelDimensions()[1]/self.__Y*self.__piff)*self.__Y)
         self.__playfieldFrame.pack_propagate(False)
-        self.__playfieldFrame.pack(side=TOP, anchor=N, fill=X)
+        self.__playfieldFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__theField = Frame(self.__playfieldFrame, bg=self.__loader.colorPalettes.getColor("window"))
 
@@ -190,19 +190,19 @@ class PlayfieldEditor:
         self.__indexEntry.bind("<FocusOut>", self.checkIndexEntry2)
         self.__indexEntry.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__playfieldFrame = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__playfieldFrame.pack_propagate(False)
+        self.__playfieldFrame0 = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldFrame0.pack_propagate(False)
 
-        self.__playfieldFrame.pack(side=TOP, anchor=N, fill=X)
+        self.__playfieldFrame0.pack(side=TOP, anchor=N, fill=X)
 
-        self.__playfieldLabel = Label(self.__playfieldFrame, text=self.__dictionaries.getWordFromCurrentLanguage("playfield"),
+        self.__playfieldLabel = Label(self.__playfieldFrame0, text=self.__dictionaries.getWordFromCurrentLanguage("playfield"),
                                    font=self.__normalFont,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    fg=self.__loader.colorPalettes.getColor("font")
                                    )
         self.__playfieldLabel.pack(side=TOP, anchor=W, fill=X)
 
-        self.__playfieldSetter = Frame(self.__playfieldFrame, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__playfieldSetter = Frame(self.__playfieldFrame0, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
         self.__playfieldSetter.pack_propagate(False)
         self.__playfieldSetter.pack(side=TOP, anchor=N, fill=X)
 
@@ -237,13 +237,13 @@ class PlayfieldEditor:
         self.__savePic = self.__loader.io.getImg("save", None)
 
         self.__openButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__openPic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   image = self.__openPic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
                                    command = self.__openPlayfield)
 
         self.__openButton.pack(side = LEFT, anchor = W, fill=Y)
 
         self.__saveButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__savePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
+                                   image = self.__savePic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
                                    state=DISABLED, command=self.__savePlayfield)
 
         self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
@@ -378,7 +378,7 @@ class PlayfieldEditor:
     def __loadTest(self):
         from Compiler import Compiler
 
-        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__height.get()])
+        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__height.get(), "NTSC"])
 
     def __importImage(self):
 

@@ -103,13 +103,16 @@ class NewListBoxInFrame():
         return(self.__frame.winfo_width(), self.__frame.winfo_height())
 
     def filler(self, data):
-        self.data = data
-        self.__listBox.delete(0, END)
-        for d in data:
-            self.__listBox.insert(END, d)
-        self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
-        if len(data)>0:
-            self.__listBox.select_set(0)
+        try:
+            self.data = data
+            self.__listBox.delete(0, END)
+            for d in data:
+                self.__listBox.insert(END, d)
+            self.__frame.pack(side=LEFT, anchor=SE, fill=Y)
+            if len(data)>0:
+                self.__listBox.select_set(0)
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
 
     def __setFont(self):
         self.__fontSize = 18*(self.__originalW*self.getScales()[0]/320)*(self.__originalH*self.getScales()[1]/210)
