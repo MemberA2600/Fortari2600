@@ -313,8 +313,6 @@ class SpriteEditor:
         self.__testColorEntry.pack(side=LEFT, anchor=E, fill=BOTH)
         self.__testSpeedEntry.pack(side=LEFT, anchor=E, fill=BOTH)
 
-
-
         self.__testSpeedEntry.bind("<KeyRelease>", self.checkSpeedEntry)
 
         self.__indexEntry.bind("<KeyRelease>", self.checkIndexEntry)
@@ -326,6 +324,54 @@ class SpriteEditor:
         self.__heightEntry.bind("<KeyRelease>", self.checkHeightEntry)
         self.__heightEntry.bind("<FocusOut>", self.checkHeightEntry2)
         self.__heightEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+
+
+        self.__spriteSetter = Frame(self.__theController, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__spriteSetter.pack_propagate(False)
+        self.__spriteSetter.pack(side=TOP, anchor=N, fill=X)
+
+        self.__spriteNameFrame = Frame(self.__spriteSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__spriteNameFrame.pack_propagate(False)
+        self.__spriteNameFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__spriteNameLabel = Label(self.__spriteNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+                                  font=self.__smallFont,
+                                  bg=self.__loader.colorPalettes.getColor("window"),
+                                  fg=self.__loader.colorPalettes.getColor("font")
+                                  )
+        self.__spriteNameLabel.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__spriteName = StringVar()
+        self.__spriteName.set("MasterPiece_Sprite")
+
+        self.__spriteNameEntry = Entry(self.__spriteNameFrame, textvariable=self.__spriteName, name="spriteName")
+        self.__spriteNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                 font=self.__smallFont
+                                 )
+
+        self.__spriteNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__spriteNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
+
+        self.__spriteButtonsFrame = Frame(self.__spriteSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__spriteButtonsFrame.pack_propagate(False)
+        self.__spriteButtonsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__openPic = self.__loader.io.getImg("open", None)
+        self.__savePic = self.__loader.io.getImg("save", None)
+
+        self.__openButton = Button(self.__spriteButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__openPic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
+                                   command = self.__openSprite)
+
+        self.__openButton.pack(side = LEFT, anchor = W, fill=Y)
+
+        self.__saveButton = Button(self.__spriteButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image = self.__savePic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
+                                   state=DISABLED, command=self.__saveSprite)
+
+        self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
+
 
         #This is were the fun begins.
         ############################
@@ -594,22 +640,24 @@ class SpriteEditor:
 
                 elif self.__table[self.__index][Y][X] == "1":
                     b.config(bg=self.__colors.getColor("boxFontNormal"))
+                    """
                     if self.__numOfFrames > 1:
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames-1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
                         else:
                             if self.__table[self.__index-1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
+                    """
                 else:
                     b.config(bg=self.__colors.getColor("boxBackNormal"))
                     if self.__numOfFrames > 1:
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
 
 
         self.alreadyDone = True
@@ -617,14 +665,13 @@ class SpriteEditor:
 
     def redrawCanvas(self):
 
-
         if self.firstLoad == True:
             self.firstLoad = False
         else:
             self.changed = True
 
         if self.alreadyDone == True:
-            w = round(self.__canvas.winfo_width() / 40)
+            w = round(self.__canvas.winfo_width() / 80)
             h = round(self.__canvas.winfo_height() / self.__heightMax)
             dom = None
 
@@ -647,19 +694,24 @@ class SpriteEditor:
             if self.__isPlaying == False:
                 self.__moveDirection = [False, False]
 
-                self.__Hor = 16
-                self.__Ver = round(24-(self.__height/2))
+                self.__Hor = 38
+                self.__Ver = round(24-(self.__height))
+                self.__mirrored = False
 
 
             self.__canvas.clipboard_clear()
+            self.__canvas.delete("all")
+
             for Y in range(0, self.__height):
                 # canvas.create_rectangle(x1, y1, x2, y2, **kwargs)
                 #self.__canvas.create_rectangle(0, Y * h, self.__canvas.winfo_width(), (Y + 1) * h, outline="",
                 #                               fill=self.__colorDict.getHEXValueFromTIA(self.__colorTable[Y]))
-                pass
-
-
-
+                if self.__mirrored == False:
+                    for X in range(0, 8):
+                        if self.__table[self.__index][Y][X] == "1":
+                            self.__canvas.create_rectangle((X + self.__Hor) * w, (Y + self.__Ver) * h,
+                                                           (X + self.__Hor + 1) * w, (Y + 1 + self.__Ver) * h, outline="",
+                                                           fill=self.__colorDict.getHEXValueFromTIA(self.__colorTable[Y]))
 
     def clickedCommon(self, event):
         button = 0
@@ -694,28 +746,39 @@ class SpriteEditor:
         if Y>self.__height-1:
             return
 
+        b = self.__buttons[str(X) + "," + str(Y)]
+
         if self.__draw == True:
             if self.__ctrl == False:
                 self.__table[self.__index][Y][X] = "1"
                 color = self.__colors.getColor("boxFontNormal")
+                """
                 if self.__numOfFrames > 1:
                     if self.__index == 0:
                         if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                            b.config(bg=self.__colors.getColor("fontDisabled"))
+                            b.config(bg=self.__colors.getColor("comment"))
+                            color = self.__colors.getColor("comment")
+
                     else:
                         if self.__table[self.__index - 1][Y][X] == "0":
-                            b.config(bg=self.__colors.getColor("fontDisabled"))
+                            b.config(bg=self.__colors.getColor("comment"))
+                            color = self.__colors.getColor("comment")
+                """
 
             else:
-                self.__table[Y][X] = "0"
+                self.__table[self.__index][Y][X] = "0"
                 color = self.__colors.getColor("boxBackNormal")
                 if self.__numOfFrames > 1:
                     if self.__index == 0:
                         if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                            b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                            b.config(bg=self.__colors.getColor("fontDisabled"))
+                            color = self.__colors.getColor("fontDisabled")
+
                     else:
                         if self.__table[self.__index - 1][Y][X] == "1":
-                            b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                            b.config(bg=self.__colors.getColor("fontDisabled"))
+                            color = self.__colors.getColor("fontDisabled")
+
 
 
         else:
@@ -723,51 +786,70 @@ class SpriteEditor:
                 if button == 1:
                     self.__table[self.__index][Y][X] = "1"
                     color = self.__colors.getColor("boxFontNormal")
+                    """
                     if self.__numOfFrames > 1:
+                        #print("1")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
+                                color = self.__colors.getColor("comment")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
+                                color = self.__colors.getColor("comment")
+                    """
                 else:
                     self.__table[self.__index][Y][X] = "0"
                     color = self.__colors.getColor("boxBackNormal")
                     if self.__numOfFrames > 1:
+                        #print("2")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                color = self.__colors.getColor("fontDisabled")
+
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                color = self.__colors.getColor("fontDisabled")
+
             else:
                 if (self.__table[self.__index][Y][X] == "0"):
                     self.__table[self.__index][Y][X] = "1"
                     color = self.__colors.getColor("boxFontNormal")
+                    """
                     if self.__numOfFrames > 1:
+                        #print("3")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
+                                color = self.__colors.getColor("comment")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("comment"))
+                                color = self.__colors.getColor("comment")
+                    """
                 else:
                     self.__table[self.__index][Y][X] = "0"
                     color = self.__colors.getColor("boxBackNormal")
                     if self.__numOfFrames > 1:
+                        #print("4")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                color = self.__colors.getColor("fontDisabled")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("boxBackUnSaved"))
+                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                color = self.__colors.getColor("fontDisabled")
+
 
         self.__buttons[str(X) + "," + str(Y)].config(bg=color)
         self.redrawCanvas()
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
-        if name in ["heightEntry", "indexEntry", "pfName", "frameNumEntry", "testColor", "testSpeed"]:
+        if name in ["heightEntry", "indexEntry", "spriteName", "frameNumEntry", "testColor", "testSpeed"]:
             return
 
         Y = int(name)
@@ -816,3 +898,110 @@ class SpriteEditor:
         self.focused = event.widget
     def focusOut(self, event):
         self.focused = None
+
+    def checkIfValidFileName(self, event):
+
+        name = str(event.widget).split(".")[-1]
+
+        if name == "spriteName":
+            widget = self.__playfieldNameEntry
+            value = self.__pfName
+
+
+        if self.__loader.io.checkIfValidFileName(value.get()):
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                      )
+
+        else:
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      font=self.__smallFont
+                                      )
+
+    def __openSprite(self):
+        import os
+
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__saveSprite()
+            elif answer == "Cancel":
+                return
+
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "sprites/")
+
+        if fpath == "":
+            return
+
+        try:
+            file = open(fpath, "r")
+            data = file.readlines()
+            file.close()
+
+            if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    return
+
+            self.__spriteName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+
+            self.__heightVal.set(data[1].replace("\n", "").replace("\r", ""))
+            self.__height = int(self.__heightVal.get())
+            self.__indexVal.set("0")
+            self.__index = 0
+
+            self.__frameNumVal.set(data[2].replace("\n", "").replace("\r", ""))
+            self.__numOfFrames = int(self.__frameNumVal.get())
+
+            data.pop(0)
+            data.pop(0)
+            data.pop(0)
+
+            for index in range(0, self.__numOfFrames):
+                for Y in range(index*self.__height, self.__height+(index*self.__height)):
+                    line = data[Y].replace("\n", "").replace("\r", "").split(" ")
+
+                    relY= Y - (index*self.__height)
+
+                    self.__colorTable[relY] = line[-1]
+                    for X in range(0, 8):
+                        self.__table[index][relY][X] = line[X]
+
+            self.__soundPlayer.playSound("Success")
+            self.changed = False
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            self.alreadyDone = True
+            self.firstLoad = True
+
+            self.generateTableCommon()
+
+        except Exception as e:
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+    def __saveSprite(self):
+        import os
+
+        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteName.get()+".a26"
+        if os.path.exists(fileName):
+            answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            if answer == "No":
+                return
+        fileLines = []
+        fileLines.append(self.__loader.virtualMemory.kernel)
+        fileLines.append(str(self.__height))
+        fileLines.append(str(self.__numOfFrames))
+
+        for index in range(0, self.__numOfFrames):
+            for Y in range(0, int(self.__height)):
+                fileLines.append(" ".join(self.__table[index][Y])+" "+self.__colorTable[Y])
+
+        file = open(fileName, "w")
+        file.write("\n".join(fileLines))
+        file.close()
+        self.__soundPlayer.playSound("Success")
+        self.changed=False

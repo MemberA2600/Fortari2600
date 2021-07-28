@@ -835,6 +835,8 @@ class PlayfieldEditor:
             h = round(self.__canvas.winfo_height()/42)
 
             self.__canvas.clipboard_clear()
+            self.__canvas.delete("all")
+
             for Y in range(0,42):
                 colorPF = self.__colorTable[Y+self.__index][0]
                 colorBK = self.__colorTable[Y+self.__index][1]
