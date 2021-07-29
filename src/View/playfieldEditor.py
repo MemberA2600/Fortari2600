@@ -447,7 +447,12 @@ class PlayfieldEditor:
             data = file.readlines()
             file.close()
 
-            if self.__loader.virtualMemory.kernel != data[0].replace("\n","").replace("\r",""):
+            compatibles = {
+                "common": ["common"]
+
+            }
+
+            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 

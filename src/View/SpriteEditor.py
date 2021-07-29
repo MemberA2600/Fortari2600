@@ -12,6 +12,9 @@ class SpriteEditor:
         self.__loader = loader
         self.__mainWindow = mainWindow
 
+        self.__counter = 0
+        self.__tempIndex = 0
+
         self.firstLoad = True
         self.dead = False
         self.changed = False
@@ -69,6 +72,7 @@ class SpriteEditor:
 
                 if self.__isPlaying:
                     self.__playButton.config(image=self.__stopImage)
+                    self.redrawCanvas()
                 else:
                     self.__playButton.config(image=self.__playImage)
 
@@ -84,7 +88,7 @@ class SpriteEditor:
                 self.__loader.logger.errorLog(e)
 
 
-            sleep(0.4)
+            sleep(0.04)
 
     def shiftON(self, event):
         self.__ctrl = True
@@ -178,7 +182,7 @@ class SpriteEditor:
         self.__backImage = self.__loader.io.getImg("backwards", None)
         self.__forImage = self.__loader.io.getImg("forwards", None)
         self.__playImage = self.__loader.io.getImg("play", None)
-        self.__stopImage = self.__loader.io.getImg("play", None)
+        self.__stopImage = self.__loader.io.getImg("stop", None)
 
 
         self.__backButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
@@ -206,7 +210,7 @@ class SpriteEditor:
         self.__playButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
                                    image=self.__playImage,
                                    width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 4),
-                                   command=None)
+                                   command=self.__playing)
 
 
         self.__backButton.pack_propagate(False)
@@ -325,6 +329,15 @@ class SpriteEditor:
         self.__heightEntry.bind("<FocusOut>", self.checkHeightEntry2)
         self.__heightEntry.pack(side=LEFT, anchor=E, fill=BOTH)
 
+        self.__nusizVar = StringVar()
+        self.__nusizVar.set("1")
+        self.__moveHor = BooleanVar()
+        self.__moveHor.set(1)
+        self.__moveVer = BooleanVar()
+        self.__moveVer.set(1)
+
+
+
 
         self.__spriteSetter = Frame(self.__theController, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
         self.__spriteSetter.pack_propagate(False)
@@ -399,6 +412,13 @@ class SpriteEditor:
         t.daemon = True
         t.start()
 
+    def __playing(self):
+        if self.__isPlaying == False:
+            self.__isPlaying = True
+        else:
+            self.__isPlaying = False
+        self.redrawCanvas()
+
     def checkColorEntry(self, event):
         if self.__testColorVar.get() == "":
             self.__testColorEntry.config(
@@ -446,11 +466,17 @@ class SpriteEditor:
                 self.__testSpeedEntry.config(
                     bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                     fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+
+                if test > 15:
+                    self.__testSpeedVar.set("15")
+                elif test<1:
+                    self.__testSpeedVar.set("1")
+
+
             except:
                 self.__testSpeedEntry.config(
                     bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                     fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
-
 
 
 
@@ -665,6 +691,12 @@ class SpriteEditor:
 
     def redrawCanvas(self):
 
+        nusiz = 0
+        try:
+            nusiz = int(self.__nusizVar.get())
+        except:
+            nusiz = 1
+
         if self.firstLoad == True:
             self.firstLoad = False
         else:
@@ -694,13 +726,70 @@ class SpriteEditor:
             if self.__isPlaying == False:
                 self.__moveDirection = [False, False]
 
+                self.__counter = 0
                 self.__Hor = 38
                 self.__Ver = round(24-(self.__height))
                 self.__mirrored = False
+                self.__tempIndex = self.__index
+            else:
+                speed = 0
+                if self.__testSpeedVar.get() != "":
+                    try:
+                        speed = int(self.__testSpeedVar.get())
+                    except:
+                        speed = 0
+
+                if speed == 0:
+                    self.__delay = round(7/self.__numOfFrames)
+                else:
+                    self.__delay = round(7/speed)
+
+                if self.__counter < self.__delay:
+                    self.__counter+=1
+                else:
+                    self.__counter = 0
+                    if self.__tempIndex<self.__numOfFrames-1:
+                        self.__tempIndex+=1
+                    else:
+                        self.__tempIndex = 0
+
+                    if self.__moveHor.get()==1:
+                        if self.__moveDirection[0] == False:
+                            if self.__Hor < 83 - (8*nusiz):
+                                self.__Hor+=1
+                            else:
+                                self.__mirrored = True
+                                self.__moveDirection[0] = True
+                        else:
+                            if self.__Hor > 0:
+                                self.__Hor-=1
+                            else:
+                                self.__mirrored = False
+                                self.__moveDirection[0] = False
+                    else:
+                        self.__Hor = 38
+
+                    if self.__moveVer.get()==1:
+                        if self.__moveDirection[1] == False:
+                            if self.__Ver < 42 - self.__height:
+                                self.__Ver+=1
+                            else:
+                                self.__moveDirection[1] = True
+                        else:
+                            if self.__Ver > 0:
+                                self.__Ver-=1
+                            else:
+                                self.__moveDirection[1] = False
+                    else:
+                        self.__Ver = round(24 - (self.__height))
+
 
 
             self.__canvas.clipboard_clear()
             self.__canvas.delete("all")
+
+
+
 
             for Y in range(0, self.__height):
                 # canvas.create_rectangle(x1, y1, x2, y2, **kwargs)
@@ -708,9 +797,19 @@ class SpriteEditor:
                 #                               fill=self.__colorDict.getHEXValueFromTIA(self.__colorTable[Y]))
                 if self.__mirrored == False:
                     for X in range(0, 8):
-                        if self.__table[self.__index][Y][X] == "1":
-                            self.__canvas.create_rectangle((X + self.__Hor) * w, (Y + self.__Ver) * h,
-                                                           (X + self.__Hor + 1) * w, (Y + 1 + self.__Ver) * h, outline="",
+                        nusizNum = (nusiz - 1)*X
+
+                        if self.__table[self.__tempIndex][Y][X] == "1":
+                            self.__canvas.create_rectangle((X + self.__Hor + nusizNum) * w, (Y + self.__Ver) * h,
+                                                           (X + self.__Hor + nusiz + nusizNum) * w, (Y + 1 + self.__Ver) * h, outline="",
+                                                           fill=self.__colorDict.getHEXValueFromTIA(self.__colorTable[Y]))
+                else:
+                    for X in range(0, 8):
+                        nusizNum = (nusiz - 1)*(X)
+
+                        if self.__table[self.__tempIndex][Y][7-X] == "1":
+                            self.__canvas.create_rectangle((X + self.__Hor + nusizNum) * w, (Y + self.__Ver) * h,
+                                                           (X + self.__Hor + +nusiz + nusizNum) * w, (Y + 1 + self.__Ver) * h, outline="",
                                                            fill=self.__colorDict.getHEXValueFromTIA(self.__colorTable[Y]))
 
     def clickedCommon(self, event):
@@ -940,7 +1039,12 @@ class SpriteEditor:
             data = file.readlines()
             file.close()
 
-            if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
+            compatibles = {
+                "common": ["common"]
+
+            }
+
+            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
