@@ -136,192 +136,36 @@ class PlayfieldEditor:
         self.__canvas.pack(side=TOP, anchor=N, fill=X)
 
 
-        self.__theController = Frame(self.__fieldOnTheRight, bg=self.__loader.colorPalettes.getColor("window"), height=round(self.__topLevel.getTopLevelDimensions()[1]/5*4))
+        self.__theController = Frame(self.__fieldOnTheRight, bg=self.__loader.colorPalettes.getColor("window"),
+                                     height=round(self.__topLevel.getTopLevelDimensions()[1]/5*4))
         self.__theController.config(width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)
         self.__theController.pack_propagate(False)
         self.__theController.pack(side=TOP, anchor=N, fill=X)
 
-        self.__height=StringVar()
-        self.__height.set("42")
         ten = round(self.__topLevel.getTopLevelDimensions()[1]/25)
 
-        self.__heightSetter = Frame(self.__theController, height = ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__heightSetter.pack_propagate(False)
+        from VisualEditorFrameWithLabelAndEntry import VisualEditorFrameWithLabelAndEntry
 
-        self.__heightSetter.pack(side=TOP, anchor=N, fill=X)
-        self.__heightLabel = Label(self.__heightSetter, text=self.__dictionaries.getWordFromCurrentLanguage("height"),
-                                   font=self.__smallFont,
-                                   bg = self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__heightLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__heightEntry = Entry(self.__heightSetter, textvariable=self.__height, name="heightEntry")
-        self.__heightEntry.config(width=99999, bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg = self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__heightEntry.bind("<KeyRelease>", self.checkHeightEntry)
-        self.__heightEntry.bind("<FocusOut>", self.checkHeightEntry2)
-        self.__heightEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__indexVal = StringVar()
-        self.__indexVal.set("0")
-
-        self.__indexSetter = Frame(self.__theController, height = ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__indexSetter.pack_propagate(False)
-
-        self.__indexSetter.pack(side=TOP, anchor=N, fill=X)
-        self.__indexLabel = Label(self.__indexSetter, text=self.__dictionaries.getWordFromCurrentLanguage("index"),
-                                   font=self.__smallFont,
-                                   bg = self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__indexLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__indexEntry = Entry(self.__indexSetter, textvariable=self.__indexVal, name="indexEntry")
-        self.__indexEntry.config(width=99999, bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg = self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__indexEntry.bind("<KeyRelease>", self.checkIndexEntry)
-        self.__indexEntry.bind("<FocusOut>", self.checkIndexEntry2)
-        self.__indexEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__playfieldFrame0 = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__playfieldFrame0.pack_propagate(False)
-
-        self.__playfieldFrame0.pack(side=TOP, anchor=N, fill=X)
-
-        self.__playfieldLabel = Label(self.__playfieldFrame0, text=self.__dictionaries.getWordFromCurrentLanguage("playfield"),
-                                   font=self.__normalFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__playfieldLabel.pack(side=TOP, anchor=W, fill=X)
-
-        self.__playfieldSetter = Frame(self.__playfieldFrame0, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__playfieldSetter.pack_propagate(False)
-        self.__playfieldSetter.pack(side=TOP, anchor=N, fill=X)
-
-        self.__playfieldNameFrame = Frame(self.__playfieldSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__playfieldNameFrame.pack_propagate(False)
-        self.__playfieldNameFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__playfieldNameLabel = Label(self.__playfieldNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
-                                  font=self.__smallFont,
-                                  bg=self.__loader.colorPalettes.getColor("window"),
-                                  fg=self.__loader.colorPalettes.getColor("font")
-                                  )
-        self.__playfieldNameLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__pfName = StringVar()
-        self.__pfName.set("Awesome_Playfield")
-
-        self.__playfieldNameEntry = Entry(self.__playfieldNameFrame, textvariable=self.__pfName, name="pfName")
-        self.__playfieldNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                 font=self.__smallFont
-                                 )
-
-        self.__playfieldNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__playfieldNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
-
-        self.__playfieldButtonsFrame = Frame(self.__playfieldSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__playfieldButtonsFrame.pack_propagate(False)
-        self.__playfieldButtonsFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__openPic = self.__loader.io.getImg("open", None)
-        self.__savePic = self.__loader.io.getImg("save", None)
-
-        self.__openButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__openPic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
-                                   command = self.__openPlayfield)
-
-        self.__openButton.pack(side = LEFT, anchor = W, fill=Y)
-
-        self.__saveButton = Button(self.__playfieldButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__savePic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
-                                   state=DISABLED, command=self.__savePlayfield)
-
-        self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
+        self.__heightSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "42", self.__theController, ten, "height", self.__smallFont,
+            self.checkHeightEntry, self.checkHeightEntry2)
 
 
-        self.__backgroundFrame = Frame(self.__theController, height=ten*3, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__backgroundFrame.pack_propagate(False)
+        self.__indexSetter = VisualEditorFrameWithLabelAndEntry(self.__loader, "0", self.__theController, ten,
+                "index", self.__smallFont, self.checkIndexEntry, self.checkIndexEntry2)
 
-        self.__backgroundFrame.pack(side=TOP, anchor=N, fill=X)
+        from VisualLoaderFrame import VisualLoaderFrame
 
-        self.__backgroundLabel = Label(self.__backgroundFrame, text=self.__dictionaries.getWordFromCurrentLanguage("background"),
-                                   font=self.__normalFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__backgroundLabel.pack(side=TOP, anchor=W, fill=X)
+        self.__playFieldLoader = VisualLoaderFrame(self.__loader, self.__theController, ten, self.__normalFont, self.__smallFont,
+                                                   "playfield", "Awesome_Playfield", "pfName", self.checkIfValidFileName,
+                                                   round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
+                                                   self.__openPlayfield, self.__savePlayfield)
 
-        self.__backgroundSetter = Frame(self.__backgroundFrame, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__backgroundSetter.pack_propagate(False)
-        self.__backgroundSetter.pack(side=TOP, anchor=N, fill=X)
+        self.__backGroundLoader = VisualLoaderFrame(self.__loader, self.__theController, ten, self.__normalFont, self.__smallFont,
+                                                   "background", "Wonderful_Playfield", "bgName", self.checkIfValidFileName,
+                                                   round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
+                                                   self.__openBackground, self.__saveBackground)
 
-        self.__backgroundNameFrame = Frame(self.__backgroundSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__backgroundNameFrame.pack_propagate(False)
-        self.__backgroundNameFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__backgroundNameLabel = Label(self.__backgroundNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
-                                  font=self.__smallFont,
-                                  bg=self.__loader.colorPalettes.getColor("window"),
-                                  fg=self.__loader.colorPalettes.getColor("font")
-                                  )
-        self.__backgroundNameLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__bgName = StringVar()
-        self.__bgName.set("Wonderful_Background")
-
-        self.__backgroundNameEntry = Entry(self.__backgroundNameFrame, textvariable=self.__bgName, name="bgName")
-        self.__backgroundNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                 font=self.__smallFont
-                                 )
-
-        self.__backgroundNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__backgroundNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
-
-        self.__backgroundButtonsFrame = Frame(self.__backgroundSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__backgroundButtonsFrame.pack_propagate(False)
-        self.__backgroundButtonsFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__openButtonBG = Button(self.__backgroundButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__openPic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
-                                   command = self.__openBackground)
-
-        self.__openButtonBG.pack(side = LEFT, anchor = W, fill=Y)
-
-        self.__saveButtonBG = Button(self.__backgroundButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__savePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
-                                   state=DISABLED, command=self.__saveBackground)
-
-        self.__saveButtonBG.pack(side = LEFT, anchor = W, fill=Y)
-
-        self.__importImageFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__importImageFrame.pack_propagate(False)
-
-        self.__importImageFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__importImageLabel = Label(self.__importImageFrame, text=self.__dictionaries.getWordFromCurrentLanguage("importImage"),
-                                   font=self.__normalFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__importImageLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__openImagePic = self.__loader.io.getImg("image", None)
-        self.__openImagePicture = Button(self.__importImageFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__openImagePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
-                                   command=self.__importImage)
-
-        self.__openImagePicture.pack(side = RIGHT, anchor = W, fill=Y)
 
         self.__testWithEmulatorFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
         self.__testWithEmulatorFrame.pack_propagate(False)
@@ -378,7 +222,7 @@ class PlayfieldEditor:
     def __loadTest(self):
         from Compiler import Compiler
 
-        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__height.get(), "NTSC"])
+        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__heightSetter.getValue(), "NTSC"])
 
     def __importImage(self):
 
@@ -399,8 +243,8 @@ class PlayfieldEditor:
             if maxY<42:
                 maxY = 42
 
-            self.__height.set(str(maxY))
-            self.__indexVal.set("0")
+            self.__heightSetter.setValue(str(maxY))
+            self.__indexSetter.setValue("0")
 
             for Y in range(0, maxY):
                 #print(Y, maxY, len(self.__colorTable), len(pictureToCode.pfColors), len(pictureToCode.pixels))
@@ -456,12 +300,12 @@ class PlayfieldEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__pfName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__playFieldLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
 
-            self.__height.set(data[1].replace("\n","").replace("\r",""))
-            self.__indexVal.set("0")
+            self.__heightSetter.setValue(data[1].replace("\n","").replace("\r",""))
+            self.__indexSetter.setValue("0")
 
-            maxY = int(self.__height.get())
+            maxY = int(self.__heightSetter.getValue())
             data.pop(0)
             data.pop(0)
 
@@ -491,15 +335,15 @@ class PlayfieldEditor:
     def __savePlayfield(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "playfields/"+self.__pfName.get()+".a26"
+        fileName = self.__loader.mainWindow.projectPath + "playfields/"+self.__playFieldLoader.getValue()+".a26"
         if os.path.exists(fileName):
             answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
             if answer == "No":
                 return
         fileLines = []
         fileLines.append(self.__loader.virtualMemory.kernel)
-        fileLines.append(self.__height.get())
-        for Y in range(0, int(self.__height.get())):
+        fileLines.append(self.__heightSetter.getValue())
+        for Y in range(0, int(self.__heightSetter.getValue())):
             fileLines.append(" ".join(self.__table[Y])+" "+self.__colorTable[Y][0])
 
         file = open(fileName, "w")
@@ -533,10 +377,10 @@ class PlayfieldEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__bgName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__backGroundLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
 
-            self.__height.set(data[1].replace("\n", "").replace("\r", ""))
-            maxY = int(self.__height.get())
+            self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
+            maxY = int(self.__heightValue.get())
 
             line = data[-1].replace("\n", "").replace("\r", "").split(" ")
 
@@ -561,18 +405,18 @@ class PlayfieldEditor:
     def __saveBackground(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__bgName.get() + ".a26"
+        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".a26"
         if os.path.exists(fileName):
             answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
             if answer == "No":
                 return
         fileLines = []
         fileLines.append(self.__loader.virtualMemory.kernel)
-        fileLines.append(self.__height.get())
+        fileLines.append(self.__heightSetter.getValue())
 
         lastLine = ""
 
-        for Y in range(0, int(self.__height.get())):
+        for Y in range(0, int(self.__heightSetter.getValue())):
             lastLine += " " + self.__colorTable[Y][1]
         fileLines.append(lastLine[1:])
 
@@ -587,49 +431,49 @@ class PlayfieldEditor:
         name = str(event.widget).split(".")[-1]
 
         if name == "pfName":
-            widget = self.__playfieldNameEntry
+            widget = self.__playFieldLoader.getEntry()
             value = self.__pfName
         elif name == "bgName":
-            widget = self.__backgroundNameEntry
+            widget = self.__backGroundLoader.getEntry()
             value = self.__bgName
 
         if self.__loader.io.checkIfValidFileName(value.get()):
-            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                      )
+            self.setValid(widget)
 
         else:
-            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(widget)
 
+    def setValid(self, widget):
+        widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                      )
+
+    def setInValid(self, widget):
+        widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                      font=self.__smallFont
+                      )
 
     def checkHeightEntry(self, event):
         num = 0
 
         try:
-            num = int(self.__height.get())
+            num = int(self.__heightSetter.getValue())
         except:
-            self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(self.__heightSetter.getEntry())
             return
 
-        self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              )
+            self.setValid(self.__heightSetter.getEntry())
 
     def checkHeightEntry2(self, event):
         try:
-            num = int(self.__height.get())
+            num = int(self.__heightSetter.getValue().get())
             if num<42:
-                self.__height.set("42")
+                self.__heightSetter.setValue("42")
 
 
             if num>256:
-                self.__height.set("256")
+                self.__heightSetter.setValue("256")
 
         except:
             return
@@ -639,37 +483,32 @@ class PlayfieldEditor:
         num = 0
 
         try:
-            num = int(self.__indexVal.get())
+            num = int(self.__indexSetter.getValue())
         except:
-            self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(self.__indexSetter.getEntry())
             return
 
-        self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              )
+        self.setValid(self.__indexSetter.getEntry())
 
     def checkIndexEntry2(self, event):
         try:
-            num = int(self.__indexVal.get())
+            num = int(self.__indexSetter.getValue())
             if num<0:
-                self.__indexVal.set("0")
+                self.__indexSetter.setValue("0")
 
             """
             if num>256-int(self.__height.get()):
-                self.__indexVal.set(str(256-int(self.__height.get())))
+                self.__indexSetter.setValue(str(256-int(self.__height.get())))
 
             """
 
-            if num>int(self.__height.get())-self.__Y:
-                self.__indexVal.set(str(int(self.__height.get())-self.__Y))
+            if num>int(self.__heightSetter.getValue())-self.__Y:
+                self.__indexSetter.setValue(str(int(self.__heightSetter.getValue())-self.__Y))
 
         except Exception as e:
             pass
 
-        self.__index = int(self.__indexVal.get())
+        self.__index = int(self.__indexSetter.getValue())
         self.generateTableCommon()
 
     def shiftON(self, event):
@@ -779,7 +618,7 @@ class PlayfieldEditor:
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
-        if name in ["heightEntry", "indexEntry", "pfName", "bgName"]:
+        if name in ["nope", "pfName", "bgName"]:
             return
 
         Y = int(name.split(",")[0])
@@ -794,13 +633,13 @@ class PlayfieldEditor:
 
         entry = event.widget
         if (len(self.__colorEntryVar[str(Y)][X].get())<3):
-            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            self.setInValid(entry)
             return
 
         try:
             num = int(self.__colorEntryVar[str(Y)][X].get().replace("$", "0x"), 16)
         except:
-            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            self.setInValid(entry)
             return
 
         num = int("0x"+self.__colorEntryVar[str(Y)][X].get()[2], 16)
@@ -883,6 +722,10 @@ class PlayfieldEditor:
                     pairCopy.remove(X)
                     self.changeColor(pairCopy[0], Y, button)
 
+
+
+
+
     def changeColor(self, X, Y, button):
         color = ""
 
@@ -896,7 +739,6 @@ class PlayfieldEditor:
                     color = self.__colors.getColor("fontDisabled")
                 else:
                     color = self.__colors.getColor("boxBackNormal")
-
 
         else:
             if self.__ctrl:

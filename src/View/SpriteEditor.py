@@ -72,7 +72,9 @@ class SpriteEditor:
 
                 if self.__isPlaying:
                     self.__playButton.config(image=self.__stopImage)
-                    self.redrawCanvas()
+                    play = Thread(target=self.redrawCanvas)
+                    play.daemon=True
+                    play.start()
                 else:
                     self.__playButton.config(image=self.__playImage)
 
@@ -224,6 +226,7 @@ class SpriteEditor:
         self.__playButton.pack_propagate(False)
         self.__playButton.pack(side=LEFT, anchor=W, fill=Y)
 
+
         self.__theController = Frame(self.__fieldOnTheRight, bg=self.__loader.colorPalettes.getColor("window"), height=round(self.__topLevel.getTopLevelDimensions()[1]/5*4))
         self.__theController.config(width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)
         self.__theController.pack_propagate(False)
@@ -231,159 +234,62 @@ class SpriteEditor:
 
         ten = round(self.__topLevel.getTopLevelDimensions()[1] / 25)
 
+        from VisualEditorFrameWithLabelAndEntry import VisualEditorFrameWithLabelAndEntry
 
-        self.__frameNumVal = StringVar()
-        self.__frameNumVal.set("1")
+        self.__widthSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "1", self.__theController, ten, "testWidth", self.__smallFont,
+            self.checkWidthEntry, None)
 
-        self.__frameNumSetter = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__frameNumSetter.pack_propagate(False)
-
-        self.__frameNumSetter.pack(side=TOP, anchor=N, fill=X)
-        self.__frameNumLabel = Label(self.__frameNumSetter, text=self.__dictionaries.getWordFromCurrentLanguage("frameNum")+" ",
-                                   font=self.__smallFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__frameNumLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__frameNumEntry = Entry(self.__frameNumSetter, textvariable=self.__frameNumVal, name="frameNumEntry")
-        self.__frameNumEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__frameNumEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__heightVal = StringVar()
-        self.__heightVal.set("8")
-
-        self.__heightSetter = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__heightSetter.pack_propagate(False)
-
-        self.__heightSetter.pack(side=TOP, anchor=N, fill=X)
-        self.__heightLabel = Label(self.__heightSetter, text=self.__dictionaries.getWordFromCurrentLanguage("height")+" ",
-                                   font=self.__smallFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__heightLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__heightEntry = Entry(self.__heightSetter, textvariable=self.__heightVal, name="heightEntry")
-        self.__heightEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__testColorVar = StringVar()
-
-        self.__testColorSetter = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__testColorSetter.pack_propagate(False)
-        self.__testColorSetter.pack(side=TOP, anchor=N, fill=X)
-
-        self.__testColorLabel = Label(self.__testColorSetter, text=self.__dictionaries.getWordFromCurrentLanguage("testColor")+" ",
-                                   font=self.__smallFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__testColorLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__testColorEntry = Entry(self.__testColorSetter, textvariable=self.__testColorVar, name="testColor")
-        self.__testColorEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__testColorEntry.bind("<KeyRelease>", self.checkColorEntry)
-
-        self.__testSpeedVar = StringVar()
-
-        self.__testSpeedSetter = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__testSpeedSetter.pack_propagate(False)
-        self.__testSpeedSetter.pack(side=TOP, anchor=N, fill=X)
-
-        self.__testSpeedLabel = Label(self.__testSpeedSetter, text=self.__dictionaries.getWordFromCurrentLanguage("testSpeed")+" ",
-                                   font=self.__smallFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__testSpeedLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__testSpeedEntry = Entry(self.__testSpeedSetter, textvariable=self.__testSpeedVar, name="testSpeed")
-        self.__testSpeedEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                  fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                  font=self.__smallFont
-                                  )
-
-        self.__testColorEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__testSpeedEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__testSpeedEntry.bind("<KeyRelease>", self.checkSpeedEntry)
-
-        self.__indexEntry.bind("<KeyRelease>", self.checkIndexEntry)
-        self.__indexEntry.bind("<FocusOut>", self.checkIndexEntry2)
-
-        self.__frameNumEntry.bind("<KeyRelease>", self.checkFrameNumEntry)
-        self.__frameNumEntry.bind("<FocusOut>", self.checkFrameNumEntry2)
-
-        self.__heightEntry.bind("<KeyRelease>", self.checkHeightEntry)
-        self.__heightEntry.bind("<FocusOut>", self.checkHeightEntry2)
-        self.__heightEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__nusizVar = StringVar()
-        self.__nusizVar.set("1")
         self.__moveHor = BooleanVar()
         self.__moveHor.set(1)
         self.__moveVer = BooleanVar()
         self.__moveVer.set(1)
 
+        self.__testerBoxesFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__testerBoxesFrame.pack_propagate(False)
+        self.__testerBoxesFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__horBox = Checkbutton(self.__testerBoxesFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                    font=self.__smallFont, text=self.__dictionaries.getWordFromCurrentLanguage("horMove"),
+                                    variable=self.__moveHor
+                                    )
+        self.__horBox.pack(side=LEFT, anchor=N, fill=X)
+
+        self.__verBox = Checkbutton(self.__testerBoxesFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                    font=self.__smallFont, text=self.__dictionaries.getWordFromCurrentLanguage("verMove"),
+                                    variable=self.__moveVer
+                                    )
+        self.__verBox.pack(side=LEFT, anchor=N, fill=X)
+
+        self.__testColorSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "", self.__theController, ten, "testColor", self.__smallFont,
+            self.checkColorEntry, None)
+
+        self.__testSpeedSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "", self.__theController, ten, "testSpeed", self.__smallFont,
+            self.checkSpeedEntry, None)
+
+        self.__frameNumSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "1", self.__theController, ten, "frameNum", self.__smallFont,
+            self.checkFrameNumEntry, self.checkFrameNumEntry2)
+
+        self.__heightSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "8", self.__theController, ten, "height", self.__smallFont,
+            self.checkHeightEntry, self.checkHeightEntry2)
+
+        from VisualLoaderFrame import VisualLoaderFrame
+
+        self.__spriteLoader = VisualLoaderFrame(self.__loader, self.__theController, ten, self.__normalFont, self.__smallFont,
+                                                   None, "MasterPiece_Sprite", "spriteName", self.checkIfValidFileName,
+                                                   round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
+                                                   self.__openSprite, self.__saveSprite)
 
 
-
-        self.__spriteSetter = Frame(self.__theController, height=ten*2, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__spriteSetter.pack_propagate(False)
-        self.__spriteSetter.pack(side=TOP, anchor=N, fill=X)
-
-        self.__spriteNameFrame = Frame(self.__spriteSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__spriteNameFrame.pack_propagate(False)
-        self.__spriteNameFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__spriteNameLabel = Label(self.__spriteNameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
-                                  font=self.__smallFont,
-                                  bg=self.__loader.colorPalettes.getColor("window"),
-                                  fg=self.__loader.colorPalettes.getColor("font")
-                                  )
-        self.__spriteNameLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__spriteName = StringVar()
-        self.__spriteName.set("MasterPiece_Sprite")
-
-        self.__spriteNameEntry = Entry(self.__spriteNameFrame, textvariable=self.__spriteName, name="spriteName")
-        self.__spriteNameEntry.config(width=99999, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                 font=self.__smallFont
-                                 )
-
-        self.__spriteNameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__spriteNameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
-
-        self.__spriteButtonsFrame = Frame(self.__spriteSetter, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__spriteButtonsFrame.pack_propagate(False)
-        self.__spriteButtonsFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__openPic = self.__loader.io.getImg("open", None)
-        self.__savePic = self.__loader.io.getImg("save", None)
-
-        self.__openButton = Button(self.__spriteButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__openPic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
-                                   command = self.__openSprite)
-
-        self.__openButton.pack(side = LEFT, anchor = W, fill=Y)
-
-        self.__saveButton = Button(self.__spriteButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__savePic, width=round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
-                                   state=DISABLED, command=self.__saveSprite)
-
-        self.__saveButton.pack(side = LEFT, anchor = W, fill=Y)
+        self.__bigFatFrame = Frame(self.__theController, height=99999999, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__bigFatFrame.pack_propagate(False)
+        self.__bigFatFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
 
         #This is were the fun begins.
@@ -419,66 +325,94 @@ class SpriteEditor:
             self.__isPlaying = False
         self.redrawCanvas()
 
-    def checkColorEntry(self, event):
-        if self.__testColorVar.get() == "":
-            self.__testColorEntry.config(
-                bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                fg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+    def checkWidthEntry(self, event):
+        if self.__widthSetter.getValue() == "":
+            self.setValid(self.__widthSetter.getEntry())
         else:
 
-            self.__testColorVar.set(self.__testColorVar.get().upper())
+            self.__widthSetter.setValue(self.__widthSetter.getValue().upper())
 
-            if len(self.__testColorVar.get()) > 3:
-                self.__testColorVar.set(self.__testColorVar.get()[:3])
+            if len(self.__widthSetter.getValue()) > 1:
+                self.__widthSetter.setValue(self.__widthSetter.getValue()[:1])
 
             try:
-                self.__colorDict.getHEXValueFromTIA(self.__testColorVar.get().lower())
-                self.__testColorEntry.config(
-                    bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                num = int(self.__widthSetter.getValue().lower())
+                self.setValid(self.__widthSetter.getEntry())
+
+                self.redrawCanvas()
+                if num<1:
+                    self.__widthSetter.setValue("1")
+                elif num == 3 or num>4:
+                    self.__widthSetter.setValue("4")
+
+
+            except:
+                self.setInValid(self.__widthSetter.getEntry())
+
+                self.redrawCanvas()
+
+    def setValid(self, widget):
+        widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                      )
+
+    def setInValid(self, widget):
+        widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                      font=self.__smallFont
+                      )
+
+
+    def checkColorEntry(self, event):
+        if self.__testColorSetter.getValue() == "":
+            self.setValid(self.__testColorSetter.getEntry())
+
+        else:
+
+            self.__testColorSetter.setValue(self.__testColorSetter.getValue().upper())
+
+            if len(self.__testColorSetter.getValue()) > 3:
+                self.__testColorSetter.setValue(self.__testColorSetter.getValue()[:3])
+
+            try:
+                self.__colorDict.getHEXValueFromTIA(self.__testColorSetter.getValue().lower())
+                self.setValid(self.__testColorSetter.getEntry())
+
                 self.redrawCanvas()
 
             except:
-                self.__testColorEntry.config(
-                    bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                    fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
+                self.setInValid(self.__testColorSetter.getEntry())
+
                 self.redrawCanvas()
 
 
     def checkSpeedEntry(self, event):
-        if self.__testSpeedVar.get() == "":
-            self.__testSpeedEntry.config(
-                bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                fg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+        if self.__testSpeedSetter.getValue() == "":
+            self.setValid(self.__testSpeedSetter.getEntry())
+
         else:
 
             while True:
                 try:
-                    if self.__testSpeedVar.get() == "":
+                    if self.__testSpeedSetter.getValue() == "":
                         break
-                    test = int(self.__testSpeedVar.get())
+                    test = int(self.__testSpeedSetter.getValue())
                     break
                 except:
-                    self.__testSpeedVar.set(self.__testSpeedVar.get()[:-1])
+                    self.__testSpeedSetter.setValue(self.__testSpeedSetter.getValue()[:-1])
 
             try:
-                test = int(self.__testSpeedVar.get())
-                self.__testSpeedEntry.config(
-                    bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                test = int(self.__testSpeedSetter.getValue())
+                self.setValid(self.__testSpeedSetter.getEntry())
 
                 if test > 15:
-                    self.__testSpeedVar.set("15")
+                    self.__testSpeedSetter.setValue("15")
                 elif test<1:
-                    self.__testSpeedVar.set("1")
+                    self.__testSpeedSetter.setValue("1")
 
 
             except:
-                self.__testSpeedEntry.config(
-                    bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                    fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
-
-
+                self.setInValid(self.__testSpeedSetter.getEntry())
 
     def decIndex(self):
         if self.__index == 0:
@@ -502,29 +436,25 @@ class SpriteEditor:
         num = 0
 
         try:
-            num = int(self.__heightVal.get())
+            num = int(self.__heightSetter.getValue())
         except:
-            self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(self.__heightSetter.getEntry())
+
             return
 
-        self.__heightEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              )
+        self.setValid(self.__heightSetter.getEntry())
 
     def checkHeightEntry2(self, event):
         try:
-            num = int(self.__heightVal.get())
+            num = int(self.__heightSetter.getValue())
             if num<1:
-                self.__heightVal.set("1")
+                self.__heightSetter.setValue("1")
 
 
             if num>self.__heightMax:
-                self.__heightVal.set(str(self.__heightMax))
+                self.__heightSetter.setValue(str(self.__heightMax))
 
-            self.__height = int(self.__heightVal.get())
+            self.__height = int(self.__heightSetter.getValue())
 
         except:
             return
@@ -538,15 +468,11 @@ class SpriteEditor:
         try:
             num = int(self.__indexVal.get())
         except:
-            self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(self.__indexEntry.getEntry())
+
             return
 
-        self.__indexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              )
+        self.setValid(self.__indexEntry.getEntry())
 
     def checkIndexEntry2(self, event):
         try:
@@ -569,15 +495,11 @@ class SpriteEditor:
         try:
             num = int(self.__indexVal.get())
         except:
-            self.__frameNumEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
-                                      )
+            self.setInValid(self.__frameNumSetter.getEntry())
+
             return
 
-        self.__frameNumEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              )
+        self.setValid(self.__frameNumSetter.getEntry())
 
     def checkFrameNumEntry2(self, event):
         max = 256 // self.__height
@@ -585,17 +507,17 @@ class SpriteEditor:
             max = 15
 
         try:
-            num = int(self.__frameNumVal.get())
+            num = int(self.__frameNumSetter.getValue())
             if num<1:
-                self.__frameNumVal.set("1")
+                self.__frameNumSetter.setValue("1")
 
             if num>max:
-                self.__frameNumVal.set(str(max))
+                self.__frameNumSetter.setValue(str(max))
 
         except Exception as e:
             pass
 
-        self.__numOfFrames = int(self.__frameNumVal.get())
+        self.__numOfFrames = int(self.__frameNumSetter.getValue())
         self.checkIndexEntry2(event)
 
     def generateTableCommon(self):
@@ -693,7 +615,7 @@ class SpriteEditor:
 
         nusiz = 0
         try:
-            nusiz = int(self.__nusizVar.get())
+            nusiz = int(self.__widthSetter.getValue())
         except:
             nusiz = 1
 
@@ -708,7 +630,7 @@ class SpriteEditor:
             dom = None
 
             try:
-                dom = self.__colorDict.getRGBValueFromTIA(self.__testColorVar.get().lower())
+                dom = self.__colorDict.getRGBValueFromTIA(self.__testColorSetter.getValue().lower())
 
             except:
                 temp = []
@@ -733,16 +655,16 @@ class SpriteEditor:
                 self.__tempIndex = self.__index
             else:
                 speed = 0
-                if self.__testSpeedVar.get() != "":
+                if self.__testSpeedSetter.getValue() != "":
                     try:
-                        speed = int(self.__testSpeedVar.get())
+                        speed = int(self.__testSpeedSetter.getValue())
                     except:
                         speed = 0
 
                 if speed == 0:
-                    self.__delay = round(7/self.__numOfFrames)
+                    self.__delay = round(15/(self.__numOfFrames*3))
                 else:
-                    self.__delay = round(7/speed)
+                    self.__delay = round(15/speed)
 
                 if self.__counter < self.__delay:
                     self.__counter+=1
@@ -948,7 +870,7 @@ class SpriteEditor:
 
     def checkEntry(self, event):
         name = str(event.widget).split(".")[-1]
-        if name in ["heightEntry", "indexEntry", "spriteName", "frameNumEntry", "testColor", "testSpeed"]:
+        if name == "nope":
             return
 
         Y = int(name)
@@ -1048,15 +970,15 @@ class SpriteEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__spriteName.set(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__spriteLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
 
-            self.__heightVal.set(data[1].replace("\n", "").replace("\r", ""))
-            self.__height = int(self.__heightVal.get())
+            self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
+            self.__height = int(self.__heightSetter.getValue())
             self.__indexVal.set("0")
             self.__index = 0
 
-            self.__frameNumVal.set(data[2].replace("\n", "").replace("\r", ""))
-            self.__numOfFrames = int(self.__frameNumVal.get())
+            self.__frameNumSetter.setValue(data[2].replace("\n", "").replace("\r", ""))
+            self.__numOfFrames = int(self.__frameNumSetter.getValue())
 
             data.pop(0)
             data.pop(0)
@@ -1090,7 +1012,7 @@ class SpriteEditor:
     def __saveSprite(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteName.get()+".a26"
+        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".a26"
         if os.path.exists(fileName):
             answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
             if answer == "No":
