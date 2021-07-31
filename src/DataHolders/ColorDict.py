@@ -107,3 +107,8 @@ class ColorDict:
 
         else:
             return(largestName)
+
+    def getTIAfromRGB(self, rgb):
+        return self.getClosestTIAColor(rgb[0], rgb[1], rgb[2])
+
+

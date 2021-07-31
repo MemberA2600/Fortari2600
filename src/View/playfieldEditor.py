@@ -166,25 +166,12 @@ class PlayfieldEditor:
                                                    round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
                                                    self.__openBackground, self.__saveBackground)
 
+        from EmuTestFrame import EmuTestFrame
 
-        self.__testWithEmulatorFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__testWithEmulatorFrame.pack_propagate(False)
+        self.__testWithEmulatorFrame = EmuTestFrame(self.__loader, self.__theController, ten, self.__normalFont,
+                                                    round((self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2), self.__loadTest,
+                                                    TOP, N)
 
-        self.__testWithEmulatorFrame.pack(side=TOP, anchor=N, fill=X)
-
-        self.__emulatorTestLabel = Label(self.__testWithEmulatorFrame, text=self.__dictionaries.getWordFromCurrentLanguage("testWithEmulator")+" ",
-                                   font=self.__normalFont,
-                                   bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg=self.__loader.colorPalettes.getColor("font")
-                                   )
-        self.__emulatorTestLabel.pack(side=LEFT, anchor=W, fill=Y)
-
-        self.__emuImagePic = self.__loader.io.getImg("stella", None)
-        self.__emuImagePicture = Button(self.__testWithEmulatorFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image = self.__emuImagePic, width=(self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2,
-                                   command=self.__loadTest)
-
-        self.__emuImagePicture.pack(side = RIGHT, anchor = W, fill=Y)
 
         #This is were the fun begins.
         ############################

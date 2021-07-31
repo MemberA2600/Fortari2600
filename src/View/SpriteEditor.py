@@ -36,6 +36,8 @@ class SpriteEditor:
         self.__func = None
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
+        self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
+
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
 
         self.__moveDirection = [False,False]
@@ -291,6 +293,44 @@ class SpriteEditor:
         self.__bigFatFrame.pack_propagate(False)
         self.__bigFatFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
+        self.__fatTitle = Label(self.__bigFatFrame,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("testPlayfield"),
+                                    font=self.__normalFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window")
+                                    )
+
+        self.__fatTitle.pack_propagate(False)
+        self.__fatTitle.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__refresher = Button(self.__bigFatFrame, font=self.__smallFont, width=99,
+                                  text=self.__dictionaries.getWordFromCurrentLanguage("refreshList"),
+                                  bg = self.__colors.getColor("window"), fg = self.__colors.getColor("font"),
+                                  command = self.fillBoth)
+        self.__refresher.pack_propagate(False)
+
+        from EmuTestFrame import EmuTestFrame
+
+        self.__testWithEmulatorFrame = EmuTestFrame(self.__loader, self.__bigFatFrame, ten, self.__normalFont,
+                                                    round((self.__topLevel.getTopLevelDimensions()[
+                                                               0] - calc - calc2) / 2), self.__loadTest, BOTTOM, S)
+
+        self.__refresher.pack(side=BOTTOM, anchor = S, fill=X)
+
+        self.__listBoxFrame = Frame(self.__bigFatFrame, height=99999999, bg=self.__loader.colorPalettes.getColor("window"),
+                                    )
+        self.__listBoxFrame.pack_propagate(False)
+        self.__listBoxFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        from SpriteEditorListBox import SpriteEditorListBox
+
+        self.__pfBox = SpriteEditorListBox(self.__loader, self.__listBoxFrame, self.__miniFont)
+        self.__bgBox = SpriteEditorListBox(self.__loader, self.__listBoxFrame, self.__miniFont)
+
+        self.__pfBox.getListBox().bind("<Double-Button-1>", self.checkIfOther1)
+        self.__bgBox.getListBox().bind("<Double-Button-1>", self.checkIfOther2)
+
+        self.fillBoth()
 
         #This is were the fun begins.
         ############################
@@ -317,6 +357,57 @@ class SpriteEditor:
         t = Thread(target=self.checker)
         t.daemon = True
         t.start()
+
+    def checkIfOther1(self, event):
+        self.checkIfOther(self.__pfBox.getSelected(), self.__listItems2, self.__bgBox.getListBox())
+
+    def checkIfOther2(self, event):
+        self.checkIfOther(self.__bgBox.getSelected(), self.__listItems1, self.__pfBox.getListBox())
+
+    def checkIfOther(self, toFind, listItems, listBox):
+        for num in range(0, len(listItems)):
+            if listItems[num] == toFind:
+                listBox.selection_clear(0,END)
+                listBox.selection_set(num)
+                return
+
+
+    def __loadTest(self):
+        from Compiler import Compiler
+
+        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "spriteTest",
+                     [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
+                      self.__pfBox.getSelected(),
+                      self.__bgBox.getSelected(),
+                      self.__colorDict.getTIAfromRGB([self.getDom()[0], self.getDom()[2], self.getDom()[1]])
+                      ])
+
+    def fillBoth(self):
+        self.fillListBox1()
+        self.fillListBox2()
+
+
+    def fillListBox1(self):
+        self.__listItems1 = [self.__dictionaries.getWordFromCurrentLanguage("blank")]
+        self.fillListBox(self.__pfBox.getListBox(), "playfields/", self.__listItems1)
+
+    def fillListBox2(self):
+        self.__listItems2 = [self.__dictionaries.getWordFromCurrentLanguage("blank")]
+        self.fillListBox(self.__bgBox.getListBox(), "backgrounds/", self.__listItems2)
+
+    def fillListBox(self, listbox, folder, listitems):
+        import os
+        listbox.selection_clear(0, END)
+        listbox.delete(0, END)
+        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + folder):
+            for file in files:
+                listitems.append(
+                    ".".join(file.split(".")[:-1]).split("/")[-1]
+                )
+        for item in listitems:
+            listbox.insert(END, item)
+        listbox.selection_set(0)
+
 
     def __playing(self):
         if self.__isPlaying == False:
@@ -551,6 +642,7 @@ class SpriteEditor:
                 eV1 = self.__colorEntryVar[str(Y)]
                 e1 = self.__colorEntries[str(Y)]
 
+            e1.bind("<FocusOut>", self.forceReDraw)
             eV1.set(self.__colorTable[Y])
             self.colorEntry(e1, eV1.get())
 
@@ -611,6 +703,24 @@ class SpriteEditor:
         self.alreadyDone = True
         self.redrawCanvas()
 
+    def forceReDraw(self, event):
+        self.redrawCanvas()
+
+    def getDom(self):
+        dom = None
+        try:
+            dom = self.__colorDict.getRGBValueFromTIA(self.__testColorSetter.getValue().lower())
+
+        except:
+            temp = []
+            for num in range(0, self.__height):
+                temp.append(self.__colorDict.getRGBValueFromTIA(self.__colorTable[num]))
+
+            dom = list(self.__colorDict.getDominantColor(temp))
+            for num in range(0, 3):
+                dom[num] = 255 - dom[num]
+        return(dom)
+
     def redrawCanvas(self):
 
         nusiz = 0
@@ -627,19 +737,8 @@ class SpriteEditor:
         if self.alreadyDone == True:
             w = round(self.__canvas.winfo_width() / 80)
             h = round(self.__canvas.winfo_height() / self.__heightMax)
-            dom = None
 
-            try:
-                dom = self.__colorDict.getRGBValueFromTIA(self.__testColorSetter.getValue().lower())
-
-            except:
-                temp = []
-                for num in range(0, self.__height):
-                    temp.append(self.__colorDict.getRGBValueFromTIA(self.__colorTable[num]))
-
-                dom = list(self.__colorDict.getDominantColor(temp))
-                for num in range(0,3):
-                    dom[num] = 255-dom[num]
+            dom = self.getDom()
 
             self.__canvas.config(
                 bg = self.__colorDict.getHEXValue(dom[0], dom[1], dom[2])

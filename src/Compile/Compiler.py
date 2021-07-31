@@ -13,41 +13,135 @@ class Compiler:
         self.__io = self.__loader.io
 
         if self.__mode == "pfTest":
-            self.__openEmulator = True
-
-            self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
-            self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enter")
-            self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscan")
-
-            self.__pixelData = data[0]
-            self.__colorData = data[1]
-            self.__max = int(data[2])
-            self.__tv = data[3]
+            self.pfTest()
+        elif self.__mode == "spriteTest":
+            self.spriteTest()
 
 
-            if self.__kernel == "common":
-                self.__mirrored = [0,1,1]
+    def pfTest(self):
+        self.__openEmulator = True
 
-                min = 26
-                max = 26 + (self.__max-42)
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enter")
+        self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscan")
 
-                self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
-                self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
-                self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
+        self.__pixelData = self.__data[0]
+        self.__colorData = self.__data[1]
+        self.__max = int(self.__data[2])
+        self.__tv = self.__data[3]
+
+        if self.__kernel == "common":
+            self.__mirrored = [0, 1, 1]
+
+            min = 26
+            max = 26 + (self.__max - 42)
+
+            self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
+            self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
+            self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
+
+        self.__convertedPlayfield = self.convertPixelsToPlayfield("TestPlayfield")
+        if self.__kernel in ["common"]:
+            self.__convertedPlayfield += self.addColors("TestPlayfield")
+
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+        self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, self.__tv)
+
+    def spriteTest(self):
+        self.__openEmulator = True
+
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enter")
+        self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscan")
+
+        self.__spritePixels = self.__data[0]
+        self.__spriteColors = self.__data[1]
+        self.__height = int(self.__data[2])
+        self.__frameNum = int(self.__data[3])
+        self.__tv = self.__data[4]
+
+        pfName = self.__data[5]
+        bgName = self.__data[6]
+        bgColor = self.__data[7]
+
+        self.setPFandBGfromFiles(pfName, bgName, bgColor)
+
+        if self.__kernel == "common":
+            self.__mirrored = [0, 1, 1]
+
+            min = 26
+            max = 26 + (self.__max - 42)
+
+            self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
+            self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
+            self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
+
+        self.__convertedPlayfield = self.convertPixelsToPlayfield("TestPlayfield")
+        if self.__kernel in ["common"]:
+            self.__convertedPlayfield += self.addColors("TestPlayfield")
 
 
-            self.__convertedPlayfield = self.convertPixelsToPlayfield("TestPlayfield")
-            if self.__kernel in ["common"]:
-                self.__convertedPlayfield += self.addColors("TestPlayfield")
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+        self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
-            self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
-            self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
-            self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
-            self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
-            self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!","", self.__mainCode)
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, self.__tv)
 
-            self.doSave("temp/")
-            assembler = Assembler(self.__loader, "temp/", True, self.__tv)
+
+    def setPFandBGfromFiles(self, pfName, bgName, bgColor):
+        from copy import deepcopy
+
+        self.__pixelData = []
+        self.__colorData = []
+
+        self.__max = 42
+        self.__pfData = None
+        self.__bgData = None
+        blank = self.__loader.dictionaries.getWordFromCurrentLanguage("blank")
+
+        if pfName != blank:
+            self.__pfData = open(self.__loader.mainWindow.projectPath+"playfields/"+pfName+".a26").read().replace("\r","").split("\n")[2:]
+            self.__max = int(open(self.__loader.mainWindow.projectPath+"playfields/"+pfName+".a26").read().replace("\r","").split("\n")[1])
+            if self.__max<42:
+                self.__max = 42
+
+        if bgName != blank:
+            self.__bgData = open(self.__loader.mainWindow.projectPath+"backgrounds/"+bgName+".a26").read().replace("\r","").split("\n")[2].split(" ")
+            thisMax = int(open(self.__loader.mainWindow.projectPath+"backgrounds/"+bgName+".a26").read().replace("\r","").split("\n")[1])
+            if thisMax<self.__max:
+                self.__max = thisMax
+
+       # print(self.__max, len(self.__pfData), len(self.__bgData))
+       # print(self.__pfData)
+       # print(self.__bgData)
+
+        emptyRow = []
+        for num in range(0,40):
+            emptyRow.append("0")
+
+        for num in range(0, self.__max):
+            if pfName != blank:
+                row = self.__pfData[num].split(" ")
+                self.__pixelData.append(deepcopy(row[:-1]))
+                self.__colorData.append([row[-1]])
+            else:
+                self.__pixelData.append(deepcopy(emptyRow))
+                self.__colorData.append([bgColor])
+
+            if bgName == blank:
+                self.__colorData[num].append(bgColor)
+            else:
+                self.__colorData[num].append(self.__bgData[num])
+
 
 
     def doSave(self, projectPath):
@@ -63,6 +157,9 @@ class Compiler:
         file.write(self.__mainCode)
         file.close()
 
+
+    def convertPixelsToSprite(self, name):
+        pass
 
 
     def addColors(self, name):
@@ -93,7 +190,6 @@ class Compiler:
         counter = 0
         while counter<self.__max:
             # pf1 and pf3 is reversed I guess.
-
             line = self.__pixelData[counter]
 
             pf0.insert(0, "\tbyte\t#%"+("".join(line[0:4]))[::-1]+"0000\n")

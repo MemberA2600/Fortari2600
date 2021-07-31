@@ -130,3 +130,6 @@ testSpeed=Teszt Sebesség:
 testWidth=Tesztszélesség:
 horMove=Vízszintes Mozgás
 verMove=Függõleges Mozgás
+testPlayfield=Playfield és Háttér Teszteléshez:
+blank=*Üres*
+refreshList=Lista Újratöltése
