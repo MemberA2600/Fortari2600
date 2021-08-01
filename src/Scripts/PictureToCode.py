@@ -142,11 +142,18 @@ class PictureToCode:
                 if (pixelData[X,Y] == 255):
                     #for num in range(0,3):
                         #sumPF[num]+=colorData[X,Y][num]
-                    pfList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+                    try:
+                        pfList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+                    except:
+                        pfList.append((colorData[X,Y]))
                 else:
                     #for num in range(0,3):
                         #sumBG[num]+=colorData[X,Y][num]
-                    bgList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+                    try:
+                        bgList.append((colorData[X,Y][0], colorData[X,Y][2], colorData[X,Y][1]))
+                    except:
+                        bgList.append((colorData[X,Y]))
+
 
             """
             for num in range(0, 3):

@@ -82,19 +82,70 @@ class Compiler:
             self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
             self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
 
+            StartY = 26 - round(self.__height/2)
+            self.__enterCode = self.__enterCode.replace("!!!StartY!!!", str(StartY))
+            self.__enterCode = self.__enterCode.replace("!!!Height!!!", str(self.__height-1))
+            self.__enterCode = self.__enterCode.replace("!!!MaxFrames!!!", str(self.__frameNum-1))
+
+
         self.__convertedPlayfield = self.convertPixelsToPlayfield("TestPlayfield")
         if self.__kernel in ["common"]:
             self.__convertedPlayfield += self.addColors("TestPlayfield")
 
+        if self.__kernel == "common":
+            self.__convertedSpite = self.convertPixelsToSpriteFrameLine("TestSprite")
 
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
         self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
-        self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__convertedPlayfield)
+        self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", (self.__convertedPlayfield+"\n\n"+self.__convertedSpite))
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, self.__tv)
+
+
+    def convertPixelsToSpriteFrameLine(self, name):
+        max = self.__height * self.__frameNum
+        spriteNum = 0
+        counter = 0
+
+        spriteLines = []
+        spriteColorLines = []
+        tempLines = []
+
+        for num in range(0, max):
+
+            text = "\tbyte\t#%"+("".join(self.__spritePixels[spriteNum][num-(self.__height*spriteNum)]))
+
+            tempLines.insert(0, text)
+
+            if counter == self.__height-1:
+                from copy import deepcopy
+
+                tempLines[0]+="\t; ("+str(spriteNum)+")"
+                spriteNum += 1
+
+                #tempLines.insert(0, "\tbyte\t#%00000000"+"\t; ("+str(spriteNum)+")")
+
+
+                counter = 0
+                spriteLines.extend(deepcopy(tempLines))
+                tempLines = []
+            else:
+                counter+=1
+
+        for num in range(0, self.__height):
+            spriteColorLines.insert(0, "\tbyte\t#"+self.__spriteColors[num])
+
+        spriteData = name+"_Sprite"+'\n'+("\n".join(spriteLines))+"\n"
+
+        if len(spriteLines) + len(spriteColorLines)>256:
+            spriteData+="\talign\t256"
+
+        spriteData += "\n"+name+"_SpriteColor"+'\n'+("\n".join(spriteColorLines))+"\n"
+
+        return spriteData
 
 
     def setPFandBGfromFiles(self, pfName, bgName, bgColor):
@@ -158,8 +209,6 @@ class Compiler:
         file.close()
 
 
-    def convertPixelsToSprite(self, name):
-        pass
 
 
     def addColors(self, name):

@@ -9,13 +9,21 @@
 	STA	M1X
 	STA	BLX
 
-	LDA	#50
-	STA	P0Y
-	STA	P1Y	
-	STA	M0Y
-	STA	M1Y
-	STA	BLY
+	LDA	P0TurnOff
+	AND	#%00111111
+	ORA	#%11000000
+	STA	P0TurnOff	; Turn Off P0 and M0
 
+	LDA	P1TurnOff
+	AND	#%00111111
+	ORA	#%11000000
+	STA	P1TurnOff	; Turn Off P1 and M1
+
+	LDA	BallTurnOff
+	ORA	#%00001000
+	STA	BallTurnOff	; Turn off Ball
+
+	
 	LDA	#!!!Min!!!
 	STA	pfIndex
 

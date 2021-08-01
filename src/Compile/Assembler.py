@@ -517,6 +517,7 @@ class Assembler():
 
         #print("-------------\n"+raw)
 
+
         try:
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
         except:

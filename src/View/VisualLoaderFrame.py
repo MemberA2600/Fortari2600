@@ -79,3 +79,9 @@ class VisualLoaderFrame:
 
     def setValue(self, value):
         self.__Value.set(value)
+
+    def enableSave(self):
+        self.__saveButton.config(state=NORMAL)
+
+    def disableSave(self):
+        self.__saveButton.config(state=DISABLED)

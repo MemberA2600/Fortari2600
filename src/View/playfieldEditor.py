@@ -17,6 +17,8 @@ class PlayfieldEditor:
         self.changed = False
         self.__loader.stopThreads.append(self)
 
+        self.__caller = 0
+
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
         self.__screenSize = self.__loader.screenSize
@@ -58,11 +60,14 @@ class PlayfieldEditor:
         while(self.dead==False and self.__loader.mainWindow.dead == False):
             try:
                 if self.changed == False:
-                    self.__saveButton.config(state=DISABLED)
-                    self.__saveButtonBG.config(state=DISABLED)
+                    if self.__caller in [0,1]:
+                        self.__playFieldLoader.disableSave()
+                    if self.__caller in [0,2]:
+                        self.__backGroundLoader.disableSave()
+
                 else:
-                    self.__saveButton.config(state=NORMAL)
-                    self.__saveButtonBG.config(state=NORMAL)
+                    self.__playFieldLoader.enableSave()
+                    self.__backGroundLoader.enableSave()
 
             except Exception as e:
                 self.__loader.logger.errorLog(e)
@@ -165,6 +170,12 @@ class PlayfieldEditor:
                                                    "background", "Wonderful_Playfield", "bgName", self.checkIfValidFileName,
                                                    round((self.__topLevel.getTopLevelDimensions()[0] - calc - calc2) / 2),
                                                    self.__openBackground, self.__saveBackground)
+
+        from ConvertFromImageFrame import ConvertFromImageFrame
+
+        self.__convertFromImage = ConvertFromImageFrame(self.__loader, self.__theController, ten, self.__normalFont,
+                                                    round((self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2), self.__importImage,
+                                                    TOP, N)
 
         from EmuTestFrame import EmuTestFrame
 
@@ -287,7 +298,7 @@ class PlayfieldEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__playFieldLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__playFieldLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
             self.__heightSetter.setValue(data[1].replace("\n","").replace("\r",""))
             self.__indexSetter.setValue("0")
@@ -303,6 +314,7 @@ class PlayfieldEditor:
                     self.__table[Y][X] = line[X]
 
             self.__soundPlayer.playSound("Success")
+            self.__caller = 1
             self.changed=False
 
             self.__topLevelWindow.deiconify()
@@ -337,7 +349,11 @@ class PlayfieldEditor:
         file.write("\n".join(fileLines))
         file.close()
         self.__soundPlayer.playSound("Success")
+        self.__caller = 1
         self.changed=False
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def __openBackground(self):
         import os
@@ -364,10 +380,10 @@ class PlayfieldEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__backGroundLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__backGroundLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
             self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
-            maxY = int(self.__heightValue.get())
+            maxY = int(self.__heightSetter.getValue())
 
             line = data[-1].replace("\n", "").replace("\r", "").split(" ")
 
@@ -375,6 +391,7 @@ class PlayfieldEditor:
                 self.__colorTable[Y][1] = line[Y]
 
             self.__soundPlayer.playSound("Success")
+            self.__caller = 1
             self.changed = False
 
             self.__topLevelWindow.deiconify()
@@ -411,7 +428,11 @@ class PlayfieldEditor:
         file.write("\n".join(fileLines))
         file.close()
         self.__soundPlayer.playSound("Success")
+        self.__caller = 2
         self.changed = False
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def checkIfValidFileName(self, event):
 
@@ -419,12 +440,12 @@ class PlayfieldEditor:
 
         if name == "pfName":
             widget = self.__playFieldLoader.getEntry()
-            value = self.__pfName
+            value = self.__playFieldLoader.getValue()
         elif name == "bgName":
             widget = self.__backGroundLoader.getEntry()
-            value = self.__bgName
+            value = self.__backGroundLoader.getValue()
 
-        if self.__loader.io.checkIfValidFileName(value.get()):
+        if self.__loader.io.checkIfValidFileName(value):
             self.setValid(widget)
 
         else:
@@ -608,8 +629,14 @@ class PlayfieldEditor:
         if name in ["nope", "pfName", "bgName"]:
             return
 
-        Y = int(name.split(",")[0])
-        X = int(name.split(",")[1])
+        X = 0
+        Y = 0
+
+        try:
+            Y = int(name.split(",")[0])
+            X = int(name.split(",")[1])
+        except:
+            return
         realY=Y+self.__index
 
         self.__colorEntryVar[str(Y)][X].set(self.__colorEntryVar[str(Y)][X].get().upper())
@@ -662,7 +689,7 @@ class PlayfieldEditor:
             self.changed = True
 
         if self.alreadyDone == True:
-            w = round(self.__canvas.winfo_width()/40)
+            w = round(self.__canvas.winfo_width()/41)
             h = round(self.__canvas.winfo_height()/42)
 
             self.__canvas.clipboard_clear()
@@ -677,7 +704,7 @@ class PlayfieldEditor:
 
                 for X in range(0,40):
                     if self.__table[Y+self.__index][X] == "1":
-                        self.__canvas.create_rectangle(X*w, Y * h, (X+1)*w, (Y + 1) * h, outline="",
+                        self.__canvas.create_rectangle((X+1)*w, Y * h, (X+2)*w, (Y + 1) * h, outline="",
                                                        fill=self.__colorDict.getHEXValueFromTIA(colorPF))
 
 

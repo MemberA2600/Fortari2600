@@ -54,13 +54,15 @@ P1ColorPointer = $a5		; 16bit
 ****************************************	
 P0Settings = $a7			; Bits 0-2 are sprite settings, 
 P0Mirrored = $a7			; 3 is reflection, bits 4-5 are missile settings. 
-P1Settings = $a8			
+P0TurnOff  = $a7			; 6: Turn Off Sprite
+P1Settings = $a8			; 7: Turn off Missile
 P1Mirrored = $a8			; Must be in order!
+P1TurnOff  = $a8
 ****************************************
 pfSettings = $a9	; Since CTRLPF 0-1 bits are fixed in the screen loop
 pfEdges	= $a9		; 0-1: free
-			; 2: Players move behind the pf
-#Has to be here because	; 3: Free
+BallTurnOff = $a9	; 2: Players move behind the pf
+#Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
 #routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
 ************************
@@ -190,85 +192,111 @@ DivideLoop
    	sta	HMP0,X	
 
    	sta	WSYNC
-   	sta	HMOVE
+   	sta	HMOVE		; 3
 
-	LDA	frameColor	; 3 
-	STA 	COLUPF		; 3 
+	LDA	frameColor	; 3 (6)
+	STA 	COLUPF		; 3 (9)
 
-	LDA	#0	;2 
-	STA 	ENAM0	;3 
-	STA 	ENAM1	;3
-	STA 	ENABL	; Disables missiles and ball 3 
-	STA	GRP0	;3 
-	STA	GRP1	; Sets player sprites to blank 3
- 	STA	VDELP0	;3 
-	STA	VDELP1  ;3 
+	LDA	#0	;2 (11)
+	STA 	ENAM0	;3 (14)
+	STA 	ENAM1	;3 (17)
+	STA 	ENABL	;3 (20) Disables missiles and ball  
+	STA	GRP0	;3 (23)
+	STA	GRP1	;2 (25) Sets player sprites to blank 
+ 	STA	VDELP0	;3 (28)
+	STA	VDELP1  ;3 (31)
+	STA	VDELBL	;3 (34)
 	
-	STA	PF1	;3 
-	STA	PF2	;3 
-	STA	PF0	;3 
-	STA	temp03 	;3 Erase P1 sprite data
+	STA	PF1	;3 (37)
+	STA	PF2	;3 (40)
+	STA	PF0	;3 (43)
+	STA	temp03 	;3 (46) Erase P1 sprite data
 	
 
 
-	LDA	pfSettings	;3 
-	ORA	#%00000001	; Reflected playfield 2 
-	AND	#%11111101	; Always get the original colors. 2 
-	STA	CTRLPF		; 3 (54)
+	LDA	pfSettings	; 3 (49)
+	ORA	#%00000001	; 2 (51) Reflected playfield
+	AND	#%11111101	; 2 (53) Always get the original colors.
+	STA	CTRLPF		; 3 (56)
 
 SettingUpP0SpriteAndMissile0
 
-	LDA	P0Settings	;3 
-	STA	REFP0		;3 
-	AND	#%00110111	;2
-	STA	NUSIZ0	; Sets P0 and M0 registers 3
+	LDA	P0Settings	;3 (59)
+	STA	REFP0		;3 (62)
+	AND	#%00110111	;2 (64)
+	STA	NUSIZ0	; Sets P0 and M0 registers 3 (67)
 
-	LDA	P0SpritePointer+1	; temp08 will store the sprite pointers high byte ; 3 (6)
-	STA	temp07+1		; 2 (9)
+	LDA	P0SpritePointer+1	; temp08 will store the sprite pointers high byte ; 3 (70)
+	STA	temp07+1		; 2 (72)
 
-	LDA	P0Y
-	STA	temp09 	; temp09 stores P0 Y position.
+	LDA	P0Y ; 3 (75)
+	STA	temp09 	; temp09 stores P0 Y position. 3 (2) One line wasted.
 	
 SettingUpP1SpriteAndMissile1
 
-	LDA	P1Settings
-	STA	REFP1
-	AND	#%00110111
-	STA	NUSIZ1	; Sets P1 and M1 registers
+	LDA	P1Settings 	; 3 (5)
+	STA	REFP1		; 3 (8)
+	AND	#%00110111	; 2 (10)
+	STA	NUSIZ1		; 3 (13) Sets P1 and M1 registers
 
-	LDA	P1SpritePointer+1	; temp11 will store the sprite pointers high byte
-	STA	temp10+1
+	LDA	P1SpritePointer+1	; 3 (16) temp11 will store the sprite pointers high byte
+	STA	temp10+1		; 3 (19)
 
-	LDA	P1Y
-	SEC		; Substract 1 because of the latency
-	SBC	#1      ;
-	STA	temp12 	; temp12 stores P1 Y position.
+	LDA	P1Y	; 3 (22)
+	SEC		; 2 (24) Substract 1 because of the latency
+	SBC	#1      ; 2 (26)
+	STA	temp12 	; 3 (29) temp12 stores P1 Y position.
 
 
 FinishPreparation
-	TSX			;2
-	STX	item		; Save the stack pointer 3 (5)
+	TSX			; 2 (31)
+	STX	item		; Save the stack pointer 3 (34)
 
 	LDX	#42
-	LDA	#14		; 2(7)
-	CLC			; 2(9)
-	ADC	pfIndex		; 3(12)
-	STA	temp01		; Save pfIndex 3(15)	
-	TAY			; 2(17)
+	LDA	#14		; 2 (36)
+	CLC			; 2 (38)
+	ADC	pfIndex		; 3 (41)
+	STA	temp01		; Save pfIndex 3 (44)	
+	TAY			; 2 (46)
 
-	LDA	(pfColorPointer),y	; 5 (22)
-	CLC				; 2 (24)
-	ADC	pfBaseColor 		; 3 (27)
-	STA	temp02		; savePFColor 3 (30)
+	LDA	(pfColorPointer),y	; 5 (51)
+	CLC				; 2 (53)
+	ADC	pfBaseColor 		; 3 (56)
+	STA	temp02		; savePFColor 3 (59)
 
-	LDA	(bkColorPointer),y 	; 5 (35)
-	CLC				; 2 (37)
-	ADC	bkBaseColor 		; 3 (40)
-	STA	temp04		; saveBKColor 3 (43)
+	LDA	(bkColorPointer),y 	; 5 (64)
+	CLC				; 2 (66)
+	ADC	bkBaseColor 		; 3 (69)
+	STA	temp04		; saveBKColor 3 (72)
 
-	LDY 	P1Height		; 3 (46)  		
-	LDA	(P1ColorPointer),y	; 5 (51)
-	STA	COLUP1		; Load first color 3 (54)
+	LDY 	P1Height		; 3 (75) - Wow, another line done!  		
+	LDA	(P1ColorPointer),y	; 5 (4)
+	STA	COLUP1		; Load first color 3 (7)
+
+	LDY	#200		; 2 (9)
+	LDA	P0TurnOff	; 3 (12)
+	BVC	NoP0TurnOff	; 2 (14)
+	STY	P0Y		; 3 (17)
+NoP0TurnOff
+	BPL	NoM0TurnOff	; 2 (19)
+	STY	M0Y		; 3 (22)
+NoM0TurnOff
+	
+	LDA	P1TurnOff	; 3 (25)
+	BVC	NoP1TurnOff	; 2 (27)
+	STY	P1Y		; 3 (30)
+NoP1TurnOff
+	BPL	NoM1TurnOff	; 2 (32)
+	STY	M1Y		; 3 (35)
+NoM1TurnOff
+
+	LDA	BallTurnOff	; 3 (38)
+	AND	#%00001000	; 2 (40)
+	CMP	#%00001000	; 2 (42)
+	BNE	NoBallTurnOff	; 2 (44)
+	STY	BLY		; 3 (47)
+
+NoBallTurnOff
 
 	STA	WSYNC
 	
@@ -300,20 +328,39 @@ FinishPreparation
 	JMP	StartWithoutWSYNC	; 3(76)
 
 NoP0DrawNow
+	CPX	M0Y		; 3
+	BNE	NoColorOverWriteM0
+
 	LDA	M0Color		; 3
 	STA	COLUP0		; 3
 	LDA	#0	  	; 2
-	sleep	5		; 5
 
-	JMP	saveP0Sprite	; 3 	 
+	JMP	saveP0Sprite	; 3 
+
+
+NoColorOverWriteM0
+	sleep 	5
+	LDA	#0
+	JMP	saveP0Sprite	; 3 
+
 
 NoP1DrawNow
+	CPX	M1Y		; 3
+	BNE	NoColorOverWriteM1
+
 	LDA	M1Color		; 3
 	STA	COLUP1		; 3
 	LDA	#0	  	; 2
-	sleep	5		; 5
 
 	JMP	saveP1Sprite	; 3 
+
+
+NoColorOverWriteM1
+	sleep 	5
+	LDA	#0
+	JMP	saveP1Sprite	; 3 
+
+
 
 DrawingTheScreen
 	; temp01 = pfIndex
@@ -612,7 +659,7 @@ ItsAMissile2
 	LDA	#1
 NotAMissile2
 	STA	temp05
-	LDA	#43
+	LDA	#40
 	SEC
 	SBC	temp05
 	STA	temp02

@@ -83,11 +83,11 @@ class SpriteEditor:
 
 
                 if self.changed == False:
-                    self.__saveButton.config(state=DISABLED)
-                    self.__saveButtonBG.config(state=DISABLED)
+                    self.__spriteLoader.disableSave()
+
                 else:
-                    self.__saveButton.config(state=NORMAL)
-                    self.__saveButtonBG.config(state=NORMAL)
+                    self.__spriteLoader.enableSave()
+
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
@@ -673,6 +673,9 @@ class SpriteEditor:
                     b = self.__buttons[str(X) + "," + str(Y)]
                     #b.config(name=(str(X) + "," + str(Y)))
 
+                e1.config(state=NORMAL)
+                b.config(state=NORMAL)
+
                 if Y>self.__height-1:
                     b.config(state=DISABLED, bg = self.__colors.getColor("fontDisabled"))
                     e1.config(state=DISABLED, bg = self.__colors.getColor("fontDisabled"), fg = self.__colors.getColor("fontDisabled"))
@@ -684,20 +687,20 @@ class SpriteEditor:
                     if self.__numOfFrames > 1:
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames-1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
+                                b.config(bg=self.__colors.getColor("highLight"))
                         else:
                             if self.__table[self.__index-1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
+                                b.config(bg=self.__colors.getColor("highLight"))
                     """
                 else:
                     b.config(bg=self.__colors.getColor("boxBackNormal"))
                     if self.__numOfFrames > 1:
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("highLight"))
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
+                                b.config(bg=self.__colors.getColor("highLight"))
 
 
         self.alreadyDone = True
@@ -876,13 +879,13 @@ class SpriteEditor:
                 if self.__numOfFrames > 1:
                     if self.__index == 0:
                         if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                            b.config(bg=self.__colors.getColor("comment"))
-                            color = self.__colors.getColor("comment")
+                            b.config(bg=self.__colors.getColor("highLight"))
+                            color = self.__colors.getColor("highLight")
 
                     else:
                         if self.__table[self.__index - 1][Y][X] == "0":
-                            b.config(bg=self.__colors.getColor("comment"))
-                            color = self.__colors.getColor("comment")
+                            b.config(bg=self.__colors.getColor("highLight"))
+                            color = self.__colors.getColor("highLight")
                 """
 
             else:
@@ -891,13 +894,13 @@ class SpriteEditor:
                 if self.__numOfFrames > 1:
                     if self.__index == 0:
                         if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                            b.config(bg=self.__colors.getColor("fontDisabled"))
-                            color = self.__colors.getColor("fontDisabled")
+                            b.config(bg=self.__colors.getColor("highLight"))
+                            color = self.__colors.getColor("highLight")
 
                     else:
                         if self.__table[self.__index - 1][Y][X] == "1":
-                            b.config(bg=self.__colors.getColor("fontDisabled"))
-                            color = self.__colors.getColor("fontDisabled")
+                            b.config(bg=self.__colors.getColor("highLight"))
+                            color = self.__colors.getColor("highLight")
 
 
 
@@ -911,12 +914,12 @@ class SpriteEditor:
                         #print("1")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
-                                color = self.__colors.getColor("comment")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
-                                color = self.__colors.getColor("comment")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
                     """
                 else:
                     self.__table[self.__index][Y][X] = "0"
@@ -925,13 +928,13 @@ class SpriteEditor:
                         #print("2")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
-                                color = self.__colors.getColor("fontDisabled")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
 
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
-                                color = self.__colors.getColor("fontDisabled")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
 
             else:
                 if (self.__table[self.__index][Y][X] == "0"):
@@ -942,12 +945,12 @@ class SpriteEditor:
                         #print("3")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
-                                color = self.__colors.getColor("comment")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "0":
-                                b.config(bg=self.__colors.getColor("comment"))
-                                color = self.__colors.getColor("comment")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
                     """
                 else:
                     self.__table[self.__index][Y][X] = "0"
@@ -956,12 +959,12 @@ class SpriteEditor:
                         #print("4")
                         if self.__index == 0:
                             if self.__table[self.__numOfFrames - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
-                                color = self.__colors.getColor("fontDisabled")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
                         else:
                             if self.__table[self.__index - 1][Y][X] == "1":
-                                b.config(bg=self.__colors.getColor("fontDisabled"))
-                                color = self.__colors.getColor("fontDisabled")
+                                b.config(bg=self.__colors.getColor("highLight"))
+                                color = self.__colors.getColor("highLight")
 
 
         self.__buttons[str(X) + "," + str(Y)].config(bg=color)
@@ -972,7 +975,12 @@ class SpriteEditor:
         if name == "nope":
             return
 
-        Y = int(name)
+        Y = 0
+
+        try:
+            Y = int(name)
+        except:
+            return
         self.__colorEntryVar[str(Y)].set(self.__colorEntryVar[str(Y)].get().upper())
 
         if (len(self.__colorEntryVar[str(Y)].get())>3):
@@ -1024,11 +1032,11 @@ class SpriteEditor:
         name = str(event.widget).split(".")[-1]
 
         if name == "spriteName":
-            widget = self.__playfieldNameEntry
-            value = self.__pfName
+            widget = self.__spriteLoader.getEntry()
+            value = self.__spriteLoader.getValue()
 
 
-        if self.__loader.io.checkIfValidFileName(value.get()):
+        if self.__loader.io.checkIfValidFileName(value):
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                       fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
                                       )
@@ -1069,7 +1077,7 @@ class SpriteEditor:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                     return
 
-            self.__spriteLoader.setValue(".".join(fpath.split(os.sep)[-1].split(".")[:-1]))
+            self.__spriteLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
             self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
             self.__height = int(self.__heightSetter.getValue())
@@ -1130,3 +1138,6 @@ class SpriteEditor:
         file.close()
         self.__soundPlayer.playSound("Success")
         self.changed=False
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
