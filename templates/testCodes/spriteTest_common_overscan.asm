@@ -128,22 +128,22 @@ NoINC
 	BEQ 	ItsMirrored
 	LDA	P0X
 	CLC
-	ADC	#5
-	LDY	NUSIZ
-	CPY	#5
-	BNE	Not5
-	ADC	#8
-	JMP	Calculated
-Not5	
-	CPY	#7
-	BNE	Calculated
-	ADC	#16
-Calculated
+	ADC	#3
 	JMP	M0XDone
 ItsMirrored
 	LDA	P0X
 	CLC
-	ADC	#3
+	ADC	#5
+	LDY	NUSIZ
+	CPY	#5
+	BNE	Not5
+	ADC	#9
+	JMP	M0XDone
+Not5	
+	CPY	#7
+	BNE	M0XDone
+	ADC	#24
+
 M0XDone
 	STA	M0X
 
@@ -193,4 +193,23 @@ MoveBehind
 MoveBefore	
 	STA	pfSettings	; Changes behaiour on P0 diff switch.	
 
+	
+	LDA	counter
+	AND	#%011111111
+	CMP	#%011111111
+	BNE	NoNUSIZChange
+	BIT	SWCHB
+	BPL	NoNUSIZChange
+	INC 	NUSIZ
+	LDA	#7
+	CMP	NUSIZ
+	BCS	NoZeroNusiz
+	LDA	#0
+	STA	NUSIZ
+NoZeroNusiz
+	LDA	P0Settings
+	AND	#%11111000
+	ORA	NUSIZ
+	STA	P0Settings
 
+NoNUSIZChange

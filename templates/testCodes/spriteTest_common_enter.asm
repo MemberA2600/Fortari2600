@@ -97,10 +97,12 @@ MissileDir = $b9
 NUSIZ = $ba
 Sound = $bb
 
+
 	LDA	#0
 	STA	NUSIZ
 	STA	Sound
 	STA	MissileDir
+
 
 maxFrames=!!!MaxFrames!!!
 
