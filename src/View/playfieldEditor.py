@@ -217,7 +217,13 @@ class PlayfieldEditor:
         t.daemon = True
         t.start()
 
+
     def __loadTest(self):
+        t = Thread(target=self.__testThread)
+        t.daemon = True
+        t.start()
+
+    def __testThread(self):
         from Compiler import Compiler
 
         c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__heightSetter.getValue(), "NTSC"])

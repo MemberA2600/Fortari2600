@@ -135,3 +135,6 @@ verMove=Vertical Movement
 testPlayfield=Tester Playfield and Background:
 blank=*Blank*
 refreshList=Refresh List
+kernelTester=Kernel Tester
+foundOut=Seems like you just found out the key combination.
+kernelFile=Kernel File:

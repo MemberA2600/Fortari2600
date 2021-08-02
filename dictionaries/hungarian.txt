@@ -133,3 +133,6 @@ verMove=Függõleges Mozgás
 testPlayfield=Playfield és Háttér Teszteléshez:
 blank=*Üres*
 refreshList=Lista Újratöltése
+kernelTester=Kernel Tesztelõ
+foundOut=Úgy fest, rájöttél a billentyû kombóra.
+kernelFile=Kernel Fájl:

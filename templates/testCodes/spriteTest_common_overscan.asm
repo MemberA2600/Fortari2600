@@ -147,13 +147,17 @@ Not5
 M0XDone
 	STA	M0X
 
+	LDA	P0Height
+	LSR
+	STA	temp02
+
 	LDA	#42
 	SEC
 	SBC	P0Y
 	CLC
 	ADC	P0Height
 	SEC
-	SBC	#3
+	SBC	temp02
 	STA	M0Y
 
 PlaySoundMoveMis
@@ -182,6 +186,8 @@ RemoveMissile
 	LDA	P0TurnOff
 	ORA	#%10000000	
 	STA	P0TurnOff
+	LDA	#0
+	STA	AUDV0
 MissileDone
 	LDA	pfSettings
 	BIT	SWCHB
@@ -208,8 +214,23 @@ MoveBefore
 	STA	NUSIZ
 NoZeroNusiz
 	LDA	P0Settings
-	AND	#%11111000
+	AND	#%11001000
 	ORA	NUSIZ
 	STA	P0Settings
 
+	LDA	NUSIZ
+	CMP	#5
+	BNE	Not5Again
+	LDA	P0Settings
+	AND	#%11001111
+	ORA	#%00010000	
+	JMP	SSSSAVE
+Not5Again
+	CMP	#7
+	BNE	NoNUSIZChange
+	LDA	P0Settings
+	AND	#%11001111
+	ORA	#%00110000
+SSSSAVE	
+	STA	P0Settings
 NoNUSIZChange

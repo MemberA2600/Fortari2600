@@ -373,6 +373,12 @@ class SpriteEditor:
 
 
     def __loadTest(self):
+        t = Thread(target=self.__testThread)
+        t.daemon = True
+        t.start()
+
+    def __testThread(self):
+
         from Compiler import Compiler
 
         c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "spriteTest",
@@ -1044,7 +1050,6 @@ class SpriteEditor:
         else:
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                       fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      font=self.__smallFont
                                       )
 
     def __openSprite(self):

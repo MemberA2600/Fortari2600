@@ -70,13 +70,22 @@ class MainWindow:
 
         self.__createFrames()
         #self.selectedItem = ["bank1", "global_variables"]
+        self.bindThings()
 
         self.__soundPlayer.playSound("Start")
         align = Thread(target=self.__scales)
         align.daemon = True
         align.start()
 
+    def bindThings(self):
+        self.__pressedHome = False
+        self.__pressedF12 = False
 
+        self.editor.bind("<Key>", self.pressed)
+        self.editor.bind("<KeyRelease>", self.released)
+        t  = Thread(target=self.__checkBinded)
+        t.daemon = True
+        t.start()
 
     def __setProjectPath(self, path):
         self.projectPath=path
@@ -590,3 +599,40 @@ class MainWindow:
                 else:
                     self.__pasteButton.getButton().config(state=NORMAL)
             sleep(0.4)
+
+    def pressed(self, event):
+        key = event.keysym
+
+        if key == "Home":
+            self.__pressedHome = True
+        elif key == "F12":
+            self.__pressedF12 = True
+
+    def released(self, event):
+        key = event.keysym
+        if key == "Home":
+            self.__pressedHome = False
+        elif key == "F12":
+            self.__pressedF12 = False
+
+    def __checkBinded(self):
+        from time import sleep
+
+        while self.dead == False:
+            if self.__pressedF12 and self.__pressedHome:
+                try:
+                    if kernelTesterWindow.dead == True:
+                        from KernelTester import KernelTester
+                        self.__pressedHome = False
+                        self.__pressedF12 = False
+
+                        kernelTesterWindow = KernelTester(self.__loader)
+
+
+                except:
+                    from KernelTester import KernelTester
+                    self.__pressedHome = False
+                    self.__pressedF12 = False
+
+                    kernelTesterWindow = KernelTester(self.__loader)
+            sleep(0.05)

@@ -25,6 +25,8 @@ class SubMenu:
         self.__topLevel.resizable(False, False)
 
         self.__topLevel.config(bg=self.__loader.colorPalettes.getColor("window"))
+        #self.__topLevel.protocol('WM_DELETE_WINDOW', self.__closeWindow)
+
 
         try:
             self.__topLevel.iconbitmap("others/img/"+name+".ico")
@@ -67,3 +69,7 @@ class SubMenu:
 
     def getTopLevelDimensions(self):
         return(self.__topLevel.winfo_width(), self.__topLevel.winfo_height())
+
+    #def __closeWindow(self):
+
+    #    self.__topLevel.destroy()
