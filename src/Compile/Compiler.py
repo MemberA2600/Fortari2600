@@ -16,7 +16,25 @@ class Compiler:
             self.pfTest()
         elif self.__mode == "spriteTest":
             self.spriteTest()
+        elif self.__mode == "kernelTest":
+            self.kernelTest()
 
+    def kernelTest(self):
+        self.__openEmulator = True
+
+        self.__mainCode = self.__data[0]
+        self.__enterCode = self.__data[1]
+        self.__overScanCode = self.__data[2]
+        self.__kernelData = self.__data[3]
+
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", "NTSC")
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+        self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__kernelData)
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC")
 
     def pfTest(self):
         self.__openEmulator = True

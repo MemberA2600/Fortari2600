@@ -136,3 +136,7 @@ refreshList=Lista Újratöltése
 kernelTester=Kernel Tesztelõ
 foundOut=Úgy fest, rájöttél a billentyû kombóra.
 kernelFile=Kernel Fájl:
+enterBank2=Belépés:
+overscanBank2=Overscan:
+kernelData=Kernel Adatok:
+asm=6502 Assembly Kód

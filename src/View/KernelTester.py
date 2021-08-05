@@ -30,7 +30,7 @@ class KernelTester:
         self.__smallerFont = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
 
 
-        self.__window = SubMenu(self.__loader, "kernelTester", round(self.__screenSize[0] / 3), round(self.__screenSize[1]/4  - 40), None, self.__addElements, 1)
+        self.__window = SubMenu(self.__loader, "kernelTester", round(self.__screenSize[0] / 3), round(self.__screenSize[1]/3  - 40), None, self.__addElements, 1)
 
         self.dead = True
 
@@ -53,5 +53,67 @@ class KernelTester:
         from KernelTesterLoaderFrame import KernelTesterLoaderFrame
 
         self.__openKernelFrame = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
-                                                         round(self.__topLevel.getTopLevelDimensions()[1]/4.5), self.__smallFont,
+                                                         round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelFile")
+
+        self.__openEnter = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
+                                                         round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
+                                                         "enterBank2")
+
+        self.__openOverscan = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
+                                                         round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
+                                                         "overscanBank2")
+
+        self.__openKernelData = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
+                                                         round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
+                                                         "kernelData")
+
+        self.__testButton = Button(self.__topLevelWindow,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font"),
+                                   text=self.__dictionaries.getWordFromCurrentLanguage("testWithEmulator")[:-1],
+                                   font=self.__normalFont, width=9999, command=self.__startTesting)
+
+        self.__testButton.pack_propagate(False)
+        self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
+
+        from threading import Thread
+        e = Thread(target=self.checkIfAllValid)
+        e.daemon = True
+        e.start()
+
+    def checkIfAllValid(self):
+        from time import sleep
+
+        while self.__loader.mainWindow.dead == False:
+
+            try:
+                if (self.__openKernelFrame.valid == True
+                        and self.__openEnter.valid == True
+                        and self.__openOverscan.valid == True
+                        and self.__openKernelData.valid == True
+                        ) :
+                    self.__testButton.config(state=NORMAL)
+                else:
+                    self.__testButton.config(state=DISABLED)
+
+                sleep(0.1)
+            except:
+                pass
+
+    def __startTesting(self):
+        from threading import Thread
+
+        t = Thread(target=self.__testing)
+        t.daemon = True
+        t.start()
+
+    def __testing(self):
+        from Compiler import Compiler
+
+        c = Compiler(self.__loader, None, "kernelTester", [
+            self.__loader.io.loadWholeText(self.__openKernelFrame.getValue()),
+            self.__loader.io.loadWholeText(self.__openEnter.getValue()),
+            self.__loader.io.loadWholeText(self.__openOverscan.getValue()),
+            self.__loader.io.loadWholeText(self.__openKernelData.getValue())
+            ])

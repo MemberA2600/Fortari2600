@@ -138,3 +138,7 @@ refreshList=Refresh List
 kernelTester=Kernel Tester
 foundOut=Seems like you just found out the key combination.
 kernelFile=Kernel File:
+enterBank2=Enter:
+overscanBank2=Overscan:
+kernelData=Kernel Data:
+asm=6502 Assembly Code

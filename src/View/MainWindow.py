@@ -77,9 +77,13 @@ class MainWindow:
         align.daemon = True
         align.start()
 
+        self.editor.deiconify()
+        self.editor.focus()
+
+
     def bindThings(self):
         self.__pressedHome = False
-        self.__pressedF12 = False
+        self.__pressedShiftL = False
 
         self.editor.bind("<Key>", self.pressed)
         self.editor.bind("<KeyRelease>", self.released)
@@ -605,26 +609,28 @@ class MainWindow:
 
         if key == "Home":
             self.__pressedHome = True
-        elif key == "F12":
-            self.__pressedF12 = True
+        elif key == "Shift_L" or key == "Shift_R":
+            self.__pressedShiftL = True
+ 
 
     def released(self, event):
         key = event.keysym
         if key == "Home":
             self.__pressedHome = False
-        elif key == "F12":
-            self.__pressedF12 = False
+        elif key == "Shift_L" or key == "Shift_R":
+            self.__pressedShiftL = False
+
 
     def __checkBinded(self):
         from time import sleep
 
         while self.dead == False:
-            if self.__pressedF12 and self.__pressedHome:
+            if self.__pressedShiftL and self.__pressedHome:
                 try:
                     if kernelTesterWindow.dead == True:
                         from KernelTester import KernelTester
                         self.__pressedHome = False
-                        self.__pressedF12 = False
+                        self.__pressedShiftL = False
 
                         kernelTesterWindow = KernelTester(self.__loader)
 
@@ -632,7 +638,7 @@ class MainWindow:
                 except:
                     from KernelTester import KernelTester
                     self.__pressedHome = False
-                    self.__pressedF12 = False
+                    self.__pressedShiftL = False
 
                     kernelTesterWindow = KernelTester(self.__loader)
             sleep(0.05)

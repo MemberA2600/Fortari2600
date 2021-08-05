@@ -5,6 +5,8 @@ class KernelTesterLoaderFrame:
     def __init__(self, loader, parent, h, font, title):
         self.__loader = loader
         self.__dictionaries = self.__loader.dictionaries
+        self.__fileDialogs = self.__loader.fileDialogs
+        self.__topLevelW = parent
 
         self.__frame = Frame(parent, height=h,
                              bg=self.__loader.colorPalettes.getColor("window")
@@ -51,7 +53,7 @@ class KernelTesterLoaderFrame:
         self.__entry.pack(side=TOP, anchor=N, fill=BOTH)
         self.__entry.bind("<KeyRelease>", self.checkIfValidFileName)
 
-        self.__openPic = self.__loader.io.getImg("open", None)
+        self.__openPic = self.__loader.io.getImg("open", round(self.__entryFrame.winfo_height()*0.66))
 
         self.__button = Button(self.__FFF, image = self.__openPic, width=round(self.__FFF.winfo_width()/4),
                                height = self.__FFF.winfo_height(),
@@ -61,6 +63,26 @@ class KernelTesterLoaderFrame:
 
         self.__button.pack_propagate(False)
         self.__button.pack(side=RIGHT, anchor=E, fill=BOTH)
+
+        self.valid = False
+
+        from threading import Thread
+        e = Thread(target=self.checkIfExists)
+        e.daemon = True
+        e.start()
+
+    def checkIfExists(self):
+        from time import sleep
+        import os
+
+        while self.__loader.mainWindow.dead == False:
+            if os.path.exists(self.__entryVal.get()):
+                self.valid = True
+
+            else:
+                self.valid = False
+
+            sleep(0.1)
 
     def getValue(self):
         return self.__entryVal.get()
@@ -80,4 +102,9 @@ class KernelTesterLoaderFrame:
                           )
 
     def openFileName(self):
-        pass
+
+        self.__entryVal.set(self.__fileDialogs.askForFileName("openFile", False, ["asm", "*"],
+                                                  "templates/"))
+
+        self.__topLevelW.deiconify()
+        self.__topLevelW.focus()
