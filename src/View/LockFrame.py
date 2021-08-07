@@ -28,13 +28,15 @@ class LockFrame:
         self.__button = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
                                text=self.__loader.dictionaries.getWordFromCurrentLanguage("lockButton"),
                                command = self.openWindow)
-        self.__button2 = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
+
+        if len(self.__loader.virtualMemory.kernel_types)>1:
+            self.__button2 = Button(self.__frame, width=99999, bg=self.__loader.colorPalettes.getColor("window"),
                                text=self.__loader.dictionaries.getWordFromCurrentLanguage("changeKernel"),
                                command = self.openWindow2)
+            self.__button2.pack(side=BOTTOM, fill=X, anchor=SW)
 
         self.setButtonFont()
 
-        self.__button2.pack(side=BOTTOM, fill=X, anchor=SW)
         self.__button.pack(side=BOTTOM, fill=X, anchor=SW)
 
 
@@ -63,7 +65,8 @@ class LockFrame:
                               *self.__scaleLastX*self.__scaleLastY)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.9), False, False, False)
         self.__button.config(font=self.__smallFont)
-        self.__button2.config(font=self.__smallFont)
+        if len(self.__loader.virtualMemory.kernel_types)>1:
+            self.__button2.config(font=self.__smallFont)
 
 
     def createLabels(self):
@@ -128,8 +131,8 @@ class LockFrame:
             state=NORMAL
             if self.__window.projectPath == None:
                 state=DISABLED
-
-            self.__button2.config(state=state)
+            if len(self.__loader.virtualMemory.kernel_types) > 1:
+                self.__button2.config(state=state)
             self.__button.config(state=state)
             for item in self.__labels:
                 try:

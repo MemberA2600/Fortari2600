@@ -23,7 +23,7 @@ class NewProjectWindow:
 
         self.__screenSize = self.__loader.screenSize
 
-        self.__window = SubMenu(self.__loader, "new", self.__screenSize[0] / 3, self.__screenSize[1] / 3.25 - 25,
+        self.__window = SubMenu(self.__loader, "new", self.__screenSize[0] / 3, self.__screenSize[1] / 4 - 25,
                            self.__checker, self.__addElements, 1)
         self.dead = True
 
@@ -67,7 +67,8 @@ class NewProjectWindow:
         from SetKernelLabel import SetKernelLabel
 
         self.__okCancel = SubMenuOkCancelButtons(self, self.__topLevel, self.__loader, self.__normalFont, self.__newProject, self.getOK)
-        self.__setKernelLabel = SetKernelLabel(self.__loader, self, self.__topLevel, self.__topLevel.getTopLevelDimensions()[1]/9, self.__smallFont)
+        if len(self.__loader.virtualMemory.kernel_types)>1:
+            self.__setKernelLabel = SetKernelLabel(self.__loader, self, self.__topLevel, self.__topLevel.getTopLevelDimensions()[1]/9, self.__smallFont)
 
         self.__harry = PitFallHarry(self, self.__topLevel, self.__loader, self.__normalFont)
 

@@ -32,148 +32,65 @@ pf1Pointer = $93		; 16 bits
 pf2Pointer = $95		; 16 bits	
 pfColorPointer = $97		; 16 bits 
 bkColorPointer = $99		; 16 bits
-
-pfIndex = $9b
+bkBaseColor = $9b
+pfBaseColor = $9c
+pfIndex = $9d
 
 ************************
-pfLines = $9c		; use only the low two bits  of $98 ???
-NoGameMode = $9c	; if 7th bit set, don't draw the game section
-bankToJump = $9c	;	; use only bites 2-4 of $98
+pfLines = $9e		; use only the low two bits  of $98 ???
+NoGameMode = $9e	; if 7th bit set, don't draw the game section
+bankToJump = $9e	;	; use only bites 2-4 of $98
 			; 5-6 : FREE
 ************************
 
 *** Player Settings
-P1SpritePointer = $9d		; 16bit
-P1ColorPointer = $9f		; 16bit
+P0SpritePointer = $9f		; 16bit
+P0ColorPointer = $a1		; 16bit
+P1SpritePointer = $a3		; 16bit
+P1ColorPointer = $a5		; 16bit
 
 ************
 * Settings *
 ****************************************	
-M0Settings = $a0			; Bits 0-2 are sprite settings, 
-M0TurnOff  = $a0			; 3 is reflection, bits 4-5 are missile settings. 
-					; 6: Turn Off Sprite
-P1Settings = $a1			; 7: Turn off Missile
-P1Mirrored = $a1			; Must be in order!
-P1TurnOff  = $a1
+P0Settings = $a7			; Bits 0-2 are sprite settings, 
+P0Mirrored = $a7			; 3 is reflection, bits 4-5 are missile settings. 
+P0TurnOff  = $a7			; 6: Turn Off Sprite
+P1Settings = $a8			; 7: Turn off Missile
+P1Mirrored = $a8			; Must be in order!
+P1TurnOff  = $a8
 ****************************************
-
-P1SpriteIndex = $a0			; Part of M0Settings, using the LO nibble.
-
-************************
-pfSettings = $a2	; Since CTRLPF 0-1 bits are fixed in the screen loop
-pfEdges	= $a2		; 0-1: free
-BallTurnOff = $a2	; 2: Players move behind the pf
+pfSettings = $a9	; Since CTRLPF 0-1 bits are fixed in the screen loop
+pfEdges	= $a9		; 0-1: free
+BallTurnOff = $a9	; 2: Players move behind the pf
 #Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
 #routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
 ************************
 
-P1Height = $a3
+P0Height = $aa
+P1Height = $ab
 
-*** Positions (Must be aligned!!)	
-P1Y = $a4	
-M0Y = $a5
-M1Y = $a6
-BLY = $a7
+****************************************
+P0SpriteIndex = $ac			; low nibble is P0 sprite index
+P1SpriteIndex = $ac			; high nibble is P1 sprite index
+****************************************
 
-P1X = $a8
-M0X = $a9
-M1X = $aa
-BLX = $ab
+*** Positions (Must be aligned!!)
+P0Y = $ad	
+P1Y = $ae	
+M0Y = $af
+M1Y = $b0
+BLY = $b1
+
+P0X = $b2
+P1X = $b3
+M0X = $b4
+M1X = $b5
+BLX = $b6
 
 *** Fake Missile Colors
-M0Color = $ac
-M1Color = $ad
-
-*** MultiSprite Kernel Related Stuff
-P0_1SpritePointerLO = $ae	 
-P0_2SpritePointerLO = $af	
-P0_3SpritePointerLO = $b0	
-P0_4SpritePointerLO = $b1	
-
-P0_1SpritePointerHI = $b2	 
-P0_2SpritePointerHI = $b3	
-P0_3SpritePointerHI = $b4	
-P0_4SpritePointerHI = $b5	
-
-******************
-P0_1Settings = $b6	; 0-3: Sprite settings
-P0_2Settings = $b7 	; 4: Reflection
-P0_3Settings = $b8 	; 5-6: Free
-P0_4Settings = $b9 	; 7: Disabled?
-******************
-P0_1X = $ba		
-P0_2X = $bb		
-P0_3X = $bc		
-P0_4X = $bd
-************
-P0_1Y = $be	
-P0_2Y = $bf		
-P0_3Y = $c0		
-P0_4Y = $c1		
-****************
-P0_1Color = $c2		
-P0_2Color = $c3		
-P0_3Color = $c4		
-P0_4Color = $c5		
-****************
-P0_1Height = $c6		
-P0_2Height = $c7
-P0_3Height = $c8
-P0_4Height = $c9
-****************
-P0_1Index = $ca
-P0_2Index = $ca		
-P0_3Index = $cb		
-P0_4Index = $cb
-
-*
-* P0 Data Array
-*---------------
-*
-
-P0_Data01 = $cc
-P0_Data02 = $cd
-P0_Data03 = $ce
-P0_Data04 = $cf
-P0_Data05 = $d0
-P0_Data06 = $d1
-P0_Data07 = $d2
-P0_Data08 = $d3
-P0_Data09 = $d4
-P0_Data10 = $d5
-P0_Data11 = $d6
-P0_Data12 = $d7
-P0_Data13 = $d8
-P0_Data14 = $d9
-P0_Data15 = $da
-P0_Data16 = $db
-P0_Data17 = $dc
-P0_Data18 = $dd
-P0_Data19 = $de
-P0_Data20 = $df
-P0_Data21 = $e0
-P0_Data22 = $e1
-P0_Data23 = $e2
-P0_Data24 = $e3
-P0_Data25 = $e4
-P0_Data26 = $e5
-P0_Data27 = $e6
-P0_Data28 = $e7
-P0_Data29 = $e8
-P0_Data30 = $e9
-P0_Data31 = $ea
-P0_Data32 = $eb
-P0_Data33 = $ec
-P0_Data34 = $ed
-P0_Data35 = $ee
-P0_Data36 = $ef
-P0_Data37 = $f0
-P0_Data38 = $f1
-P0_Data39 = $f2
-P0_Data40 = $f3
-P0_Data41 = $f4
-P0_Data42 = $f5
+M0Color = $b7
+M1Color = $b8
 
 
 	; Constants
@@ -239,7 +156,7 @@ EnterKernel
   	ldx	#4 		; From bl -> p0
 
 HorPosLoop		
-   	lda	P1X,X	
+   	lda	P0X,X	
 DivideLoop
 	sbc	#15
    	bcs	DivideLoop
@@ -247,28 +164,32 @@ DivideLoop
    	sta	RESP0,X	
    	sta	WSYNC
    	dex
-	CPX	#1
-   	BNE	HorPosLoop	
+   	bpl	HorPosLoop	
 
 	ldx	#4		; bl
    	ldy	temp05
    	lda	FineAdjustTable256,Y
-   	sta	HMP1,X		
+   	sta	HMP0,X		
 
 	dex			; m1
    	ldy	temp04
    	lda	FineAdjustTable256,Y
-   	sta	HMP1,X	
+   	sta	HMP0,X	
    
 	dex			; m0
    	ldy	temp03
    	lda	FineAdjustTable256,Y
-   	sta	HMP1,X	
+   	sta	HMP0,X	
    
 	dex			; p1
    	ldy	temp02
    	lda	FineAdjustTable256,Y
-   	sta	HMP1,X
+   	sta	HMP0,X	
+
+	dex			; p0
+   	ldy	temp01
+   	lda	FineAdjustTable256,Y
+   	sta	HMP0,X	
 
    	sta	WSYNC
    	sta	HMOVE		; 3
@@ -286,99 +207,141 @@ DivideLoop
 	STA	VDELP1  ;3 (31)
 	STA	VDELBL	;3 (34)
 	
-
 	STA	PF1	;3 (37)
 	STA	PF2	;3 (40)
 	STA	PF0	;3 (43)
 	STA	temp03 	;3 (46) Erase P1 sprite data
 	
 
+
 	LDA	pfSettings	; 3 (49)
 	ORA	#%00000001	; 2 (51) Reflected playfield
 	AND	#%11111101	; 2 (53) Always get the original colors.
 	STA	CTRLPF		; 3 (56)
 
-SettingUpMissile0
+SettingUpP0SpriteAndMissile0
 
-	LDA	M0Settings	;3 (59)
-	AND	#%00110000	;2 (61)
-	STA	NUSIZ0	; Sets M0 registers 3 (64)
+	LDA	P0Settings	;3 (59)
+	STA	REFP0		;3 (62)
+	AND	#%00110111	;2 (64)
+	STA	NUSIZ0	; Sets P0 and M0 registers 3 (67)
+
+	LDA	P0SpritePointer+1	; temp08 will store the sprite pointers high byte ; 3 (70)
+	STA	temp07+1		; 2 (72)
+
+	LDA	P0Y ; 3 (75)
+	STA	temp09 	; temp09 stores P0 Y position. 3 (2) One line wasted.
 	
 SettingUpP1SpriteAndMissile1
 
-	LDA	P1Settings 	; 3 (67)
-	STA	REFP1		; 3 (70)
-	AND	#%00110111	; 2 (72)
-	STA	NUSIZ1		; 3 (75) Sets P1 and M1 registers
+	LDA	P1Settings 	; 3 (5)
+	STA	REFP1		; 3 (8)
+	AND	#%00110111	; 2 (10)
+	STA	NUSIZ1		; 3 (13) Sets P1 and M1 registers
 
-	LDA	P1SpritePointer+1	; 3 (78) temp07 will store the sprite pointers high byte
-	STA	temp06+1		; 3 (2) - One line wasted.
+	LDA	P1SpritePointer+1	; 3 (16) temp11 will store the sprite pointers high byte
+	STA	temp10+1		; 3 (19)
 
-	LDA	P1Y	; 3 (5)
-	SEC		; 2 (7) Substract 1 because of the latency
-	SBC	#1      ; 2 (9)
-	STA	temp08 	; 3 (12) temp08 stores P1 Y position.
+	LDA	P1Y	; 3 (22)
+	SEC		; 2 (24) Substract 1 because of the latency
+	SBC	#1      ; 2 (26)
+	STA	temp12 	; 3 (29) temp12 stores P1 Y position.
 
 
 FinishPreparation
-	TSX			; 2 (14)
-	STX	item		; Save the stack pointer 3 (17)
+	TSX			; 2 (31)
+	STX	item		; Save the stack pointer 3 (34)
 
-	LDX	#42		; 2 (19)
-	LDA	#14		; 2 (21)
-	CLC			; 2 (23)
-	ADC	pfIndex		; 3 (26)
-	STA	temp01		; Save pfIndex 3 (29)	
-	TAY			; 2 (31)
+	LDX	#42
+	LDA	#14		; 2 (36)
+	CLC			; 2 (38)
+	ADC	pfIndex		; 3 (41)
+	STA	temp01		; Save pfIndex 3 (44)	
+	TAY			; 2 (46)
 
-	LDA	(bkColorPointer),y 	; 5 (36)
-	STA	temp02			; saveBKColor 3 (39)
+	LDA	(pfColorPointer),y	; 5 (51)
+	CLC				; 2 (53)
+	ADC	pfBaseColor 		; 3 (56)
+	STA	temp02		; savePFColor 3 (59)
 
-	LDY 	P1Height		; 3 (42)		
-	LDA	(P1ColorPointer),y	; 5 (47)
-	STA	COLUP1		; Load first color 3 (50)
+	LDA	(bkColorPointer),y 	; 5 (64)
+	CLC				; 2 (66)
+	ADC	bkBaseColor 		; 3 (69)
+	STA	temp04		; saveBKColor 3 (72)
 
-	LDY	#200		; 2 (52)
-	LDA	M0TurnOff	; 3 (55)
-	BPL	NoM0TurnOff	; 2 (57)
-	STY	M0Y		; 3 (60)
+	LDY 	P1Height		; 3 (75) - Wow, another line done!  		
+	LDA	(P1ColorPointer),y	; 5 (4)
+	STA	COLUP1		; Load first color 3 (7)
+
+	LDY	#200		; 2 (9)
+	LDA	P0TurnOff	; 3 (12)
+	BVC	NoP0TurnOff	; 2 (14)
+	STY	P0Y		; 3 (17)
+NoP0TurnOff
+	BPL	NoM0TurnOff	; 2 (19)
+	STY	M0Y		; 3 (22)
 NoM0TurnOff
 	
-	LDA	P1TurnOff	; 3 (63)
-	BVC	NoP1TurnOff	; 2 (65)
-	STY	P1Y		; 3 (70)
+	LDA	P1TurnOff	; 3 (25)
+	BVC	NoP1TurnOff	; 2 (27)
+	STY	P1Y		; 3 (30)
 NoP1TurnOff
-	STA	WSYNC		; 76 - Has to waste.
-
-	BPL	NoM1TurnOff	; 2 
-	STY	M1Y		; 3 (5)
-	JMP	GoForBall	; 3 (8)
+	BPL	NoM1TurnOff	; 2 (32)
+	STY	M1Y		; 3 (35)
 NoM1TurnOff
-	sleep 	6
-GoForBall
-	LDA	BallTurnOff	; 3 (11)
-	AND	#%00001000	; 2 (13)
-	CMP	#%00001000	; 2 (15)
-	BNE	NoBallTurnOff	; 2 (17)
-	STY	BLY		; 3 (20)
-	JMP	WoWAllDone	; 3 (23)
+
+	LDA	BallTurnOff	; 3 (38)
+	AND	#%00001000	; 2 (40)
+	CMP	#%00001000	; 2 (42)
+	BNE	NoBallTurnOff	; 2 (44)
+	STY	BLY		; 3 (47)
+
 NoBallTurnOff
-	sleep	6
-WoWAllDone
 
-	LDA	temp01		; pfIndex 3 (26)	
-	TAY			; 2 (28)
-	LDA	#0		; 2 (30)
-	STA	temp04		; 3 (33) - Set the first sprite's number
-	STX	temp05		; 3 (36) - Shoud calculate on first line!
+	STA	WSYNC
+	
+	sleep	9
+	LDA	temp01		; pfIndex 3 (12)	
+	TAY			; 2(14)
 
-	LDX	#42		; 2 (38)
-	STX	temp09		; 3 (41)
+	LDA	(pf0Pointer),y	; 5(19)
+	STA	PF0		; 3(22)	
+	STA	temp05		; 3(25)
+	asl			; 2(27)
+	asl			; 2(29)
+	asl			; 2(31)
+	asl			; 2(33)
+	STA	temp06		; 3(36)
 
 
-	sleep	29
-	LDA	temp02			; 3 (73)	
-	JMP	StartWithoutWSYNC	; 3 (76)
+	sleep	9
+
+	LDA	(pf2Pointer),y	; 5(45)
+	STA	PF2		; 3(50)
+
+	LDA	(pf1Pointer),y	; 5(55)
+	STA	PF1		; 3(58)
+
+	sleep	12
+	
+	LDA	temp02			; 3(73)	
+	JMP	StartWithoutWSYNC	; 3(76)
+
+NoP0DrawNow
+	CPX	M0Y		; 3
+	BNE	NoColorOverWriteM0
+
+	LDA	M0Color		; 3
+	STA	COLUP0		; 3
+	LDA	#0	  	; 2
+
+	JMP	saveP0Sprite	; 3 
+
+
+NoColorOverWriteM0
+	sleep 	5
+	LDA	#0
+	JMP	saveP0Sprite	; 3 
 
 
 NoP1DrawNow
@@ -398,172 +361,121 @@ NoColorOverWriteM1
 	JMP	saveP1Sprite	; 3 
 
 
-AskFOrNewP0 
-	LDY	#0		; 2 
-	INC	temp04		; 5
-	LDX	temp04		; 3
-	JMP	JumpHereAsking	; 3 
 
 DrawingTheScreen
 	; temp01 = pfIndex
-	; temp02 = bgColor
+	; temp02 = pfColor
 	; temp03 = P1 Sprite data
-	; temp04 = P0 SpriteNum
-	; temp05 = NextCalcY
-	; temp06, temp07 = P1 sprite pointers
-	; temp08 = p1height
-	; temp09 = lineNum
-	; temp10, temp11, temp12, temp13 = CalcH
+	; temp04 = bkColor
+	; temp05 = P0 / 1
+	; temp06 = P0 / 2
+	; temp07, temp08 = P0 sprite pointers
+	; temp09 = p0 Y
+	; temp10, temp11 = P1 sprite pointers
+	; temp12 = p1height
+	; temp13 = lineNum
 
 FirstLine
 	STA	WSYNC		; 3 (76)
 StartWithoutWSYNC
-	STA	COLUBK		; 3 We have coluBK in temp02
+	STA	COLUPF		; 3 (3)
+	LDA	temp04		; 3 (6)
+	STA	COLUBK		; 3 (9)
 
-	LDA	(pfColorPointer),y	; 5 (8)
-	STA	COLUPF		; 3 (11)
 
-	LDA	(pf0Pointer),y	; 5 (16)
-	STA	PF0		; 3 (19)
+	LDA	temp05		; 3 (12)
+	STA	PF0		; 3 (15)
 
-	LDA	(pf1Pointer),y	; 5 (24)
-	STA 	PF1		; 3 (27)
 
-	LDA	(pf2Pointer),y	; 5 (32)
-	STA 	PF2		; 3 (35)
+	LDA 	P0Height 	; 3 (18)
+	DCP	temp09 		;  temp09 contains P0Y!  ; 5 (23)
+	BCC	NoP0DrawNow	; 2 (25)
+	LDY	temp09		; 3 (28)
+	LDA	(P0ColorPointer),y 	; 5 (33)
+	STA	COLUP0		; 3 (36)
+	LDA	(temp07),y 	; 5 (41)
+saveP0Sprite
+	TAY			;2 (43)
+	; 28
 
-****Job with P0 starts here.	
-	LDX	temp09		; 3 (38)
-	CPX	temp05		; 3 (41)
-	BEQ	AskFOrNewP0	; 2 (43)
+	LDA	temp06		; 3 (46)	
+	STA	PF0		; 3 (49)
 
-	LDX	temp04		; 3 (46)
+
+	STX	temp13		; 3 (52) Saves the lineNum
+	ldx 	#$1f		; Address of ENABL 2 (51) 
+	txs			; 2 (53) 
+	LDX	temp13		; 3 (55) Retrive the lineNum
+	sleep	2
 	
-	LDA	P0_Data01,x	; 4 (50)	
-	TAY			; 2 (52)
-	CMP	#0		; 2 (54)
-	BNE	HasOwnColor	; 2 (56)
-	LDA	M0Color		; 3 (59)
-	JMP	SetToMissileColor ; 3 (62)
-HasOwnColor	
-	LDA	P0_1Color,x     ; 4  
-	sleep	2;
-SetToMissileColor
-	STA	COLUP0		; 3 (65)
-	LDA	temp03		; 3 (68)
-	STA	GRP1		; 3 (71)
-	STY	GRP0		; 3 (74)
 
-SecondLine_NONewP0
+	LDA	temp03		; 3 (67)
+	STY	GRP0		; 2 (70)
+	STA	GRP1		; 3 (73)
+MiddleLine
 
-*** Set NUSIZ0
-	LDA	P0_1Settings,x	; 4 (2)
-	TAY			; 2 (4)
-	AND	#%00001111	; 2 (6)
-	STA	temp06		; 3 (9)
-	LDA	M0Settings	; 3 (12)
-	AND	#%11110000	; 3 (15)
-	STA	NUSIZ0		; 3 (18)	
-	STA	REFP0		; 3 (21)
+	LDY	temp01		; 3 (76)
 
-*** Calculate NextHor Borders
+	LDA	(pf0Pointer),y	; 5 (5)
+	STA	PF0		; 3 (8)
+	STA	temp05		; 3 (11)
 
-	TYA			; 2 (23)
-	AND	#%00000111	; 2 (25)
-	TAX			; 2 (27)
-	LDA	XHorBorderAddSprite,x ; 4 (31)
-	STA	temp06		; 3 (34) - maxX
+	LDA	(pf1Pointer),y	; 5 (16)
+	STA 	PF1		; 3 (19)
 
-	LDA	P0_1X,x		; 4 (38)
-	CMP	#16		; 2 (40)
-	BCS	NotSmallerThan16 ; 2 (42)
-	LDA	#16		; 2 (44)
-	sleep	3		; 3 (47)
-	JMP	SaveHorX	; 3 (50)
-NotSmallerThan16
-	CMP	temp06		; 3 
-	BCC	NoChangeHorX	; 2 
-	LDA	temp06		; 3 
-SaveHorX
-	STA	P0_1X,x		; 4 (54)
-ISaidNoChange
+	LDA	(pf2Pointer),y	; 5 (24)
+	STA 	PF2		; 3 (27)
+	LDA	temp05		; 3 (30)
+	asl			; 2 (32)
+	asl			; 2 (34)
+	asl			; 2 (36)
+	asl			; 2 (38)
+	STA	PF0		; 3 (41)
+	STA	temp06		; 3 (44)
 
-	LDY	temp01		; 3 (57)
-	DEX			; 2 (59)
-	DEY			; 2 (61)
-	cpx	BLY		; 3 (64)
-	php			; 3 (67)
-	cpx	M1Y		; 3 (70)
-	php			; 3 (73)
-	cpx	M0Y		; 3 (76) 
-	php			; 3 
+	DEY			; 2
+	cpx	BLY		; 3
+	php			; 3
+	cpx	M1Y		; 3
+	php			; 3
+	cpx	M0Y		; 3
+	php			; 3 (12)
 
-	sleep	6		; 6 (9)	
-	JMP	JoinKernel	; 3 (12)
-**************************************************
-NoChangeHorX
-	sleep	4		; 4 (51)
-	JMP	ISaidNoChange	3 (54)
-
-JumpHereAsking
-
-	LDA	temp10,x	; 4 (60)
-	STA	temp05		; 3 (63)
-
-	LDA	M0Color		; 3 (66)
-	sta	COLUP0		; 3 (69)
-	sty	GRP0		; 3 (72)
-	STA	WSYNC		; 76
-		
-
-SecondLine_WithNewP0
-
-	LDA	temp03		; 3 
-	sta	GRP1		; 3 (6)
-	LDA	P0_1X,x		; 4 (10)
-DivideLoop_MultiP0
-	sbc	#15
-   	bcs	DivideLoop_MultiP0
-   	sta	RESP0
-	TAX
-
-   	lda	FineAdjustTable256,X
-   	sta	HMP0
-	
-	STA	WSYNC
-
+	LDA	(pfColorPointer),y	; 6 (73)
+	ADC	pfBaseColor
 LastLine
-	STA	HMOVE		; 3	
-	INC	temp04		; 5 (8)
-	sleep	4
-				
-JoinKernel
-	LDX	temp09		; 3 (15)
+	STA	temp02		; 3 (-3)
+	LDA	temp05		; 3 (3)
+	STA	PF0		; 3 (6)
 
-	LDA 	P1Height 	; 3 (18)
-	DCP	temp08 		;  temp08 contains P0Y!  ; 5 (23)
-	BCC	NoP1DrawNow	; 2 (25)
-	LDY	temp08		; 3 (28)
-	LDA	(P1ColorPointer),y 	; 5 (33)
-	STA	COLUP1	; 3 (36)
-	LDA	(temp06),y 	; 5 (38)
-saveP1Sprite
-	STA	temp03		; 3 (41) 
-
-	DEC	temp01		; 5 (46)
-	LDY	temp01		; 3 (49)
-
-	LDA	(bkColorPointer),y	; 5 (54)
-	STA	temp02		; 3 (57)
+	LDA	(bkColorPointer),y ;5 (11)
+	CLC	 		; 2 (13)
+	ADC	bkBaseColor	; 3 (16)	
+	STA	temp04		; 3 (19)
 	
-	CPX	#0		; 2 (59)
-	BEQ	ResetAll  	; 2 (61)
 
-	DEX			; 2 (63)
-	STX	temp09		; 3 (66)  Saves the lineNum
-	ldx 	#$1f		; 2 (68)  Address of ENABL 
-	txs			; 2 (70)
+	LDA 	P1Height 	; 3 (21)
+	DCP	temp12 		;  temp12 contains P0Y!  ; 5 (26)
+	BCC	NoP1DrawNow	; 2 (28)
+	LDY	temp12		; 3 (31)
+	LDA	(P1ColorPointer),y 	; 5 (36)
+	STA	COLUP1	; 3 (39)
+	LDA	(temp10),y 	; 5 (44)
+saveP1Sprite
+	STA	temp03		; 3 (47) ;
+	; 29
 
+	LDA	temp06		; 3 (53)
+	STA	PF0		; 3 (56)
+
+
+	CPX	#0		; 2 (58)
+	BEQ	ResetAll  	; 2 (60)
+
+	DEX			; 2 (62)
+	LDA	temp02		; 3 (65)
+
+	DEC	temp01		; 5 (70)
 	JMP	FirstLine	; 3 (73)
 
 ResetAll
@@ -669,124 +581,222 @@ CalculateDuringVBLANK
 * BCC 	else
 *
 
-Init_P0Data
+*CheckIfOutOfBorders
+*--------------------------------------------
+* This section will decide what should happen
+* to the objects as they are touching the borders
+* of the screen.
 
-*	temp01 - StartPoz	
-*	temp02 - Counter
-*	temp03, temp04 - SpritePointer
-*	temp05 - LoPointerIndexed
-*	temp06 - TempHeight
-*	temp07 - stack
+CheckIfOutOfBorders
+	
+	LDA	pfEdges
+	AND	#%11000000
+	STA	temp07
+	CMP	#%00000000
+	BEQ	CalculateIndexes	
 
 	TSX
-	STX	temp07
+	STX	temp03	
+	LDX	#4	; p0, p1, m0, m1, bl
 
-	LDX	#41
-	LDA	#0
-	STA	temp02
-DoItAgainPlease
-	STA	P0_Data01,x
-	DEX
-	BPL	DoItAgainPlease
 
-	LDX	#0
-NextSprite
-	TXA
+NextItemThings
+*	
+* temp01 - Largest X allowed
+* temp02 - Largest Y allowed	
+* temp03 - Stack pointer saved
+* temp04 - Even Or Odd or Ball
+* temp05, temp08 - Temporal Storage
+* temp06 - Smallest Y allowed
+* temp07 - Mode
+*
+	TXA	
+	TXS	
+ 	LDA	XTable,x
 
-	LDA 	P0_1Height,x
+	TAX
+	STA	temp04
+	LDA	P0Settings,x
+	AND	#%00000111
+	TAX	
+	LDA	XHorBorderAddSprite,x
+	TSX
+	CPX	#2
+	BCC	NotAMissile
+ItsAMissile	
+	SEC
+	SBC	#7
+	sta	temp05
+	LDX	temp04
+	TAX
+	LDA	P0Settings,x
+	AND	#%00110000		
+	lsr
+	lsr
+	lsr
+	lsr
+	TAX
+	LDA	XHorBorderAddMissile,x
 	CLC
-	ADC	#1
+	ADC	temp05
+
+NotAMissile
+	STA	temp05
+	LDA	#165	
+	SEC	
+	SBC	temp05
+	STA	temp01
+
+VerticalFun
+	LDX	temp04
+	LDA	P0Height,x
+	TSX
+	CPX	#2
+	BCS	ItsAMissile2
+	LDA	temp04
+	JMP 	NotAMissile2
+ItsAMissile2
+	LDA	#1
+NotAMissile2
+	STA	temp05
+	LDA	#40
+	SEC
+	SBC	temp05
+	STA	temp02
+
+VerticalFun2
+	LDX	temp04
+	LDA	P0Height,x
+	TSX
+	CPX	#2
+	BCS	ItsAMissile3
+	CLC	
+	ADC	#2
+	ADC	temp04
+
+	JMP	NotAMissile3
+ItsAMissile3
+	LDA	#2
+NotAMissile3
 	STA	temp06
 
-	TXA
-	TAY
-	AND	#%00000001
-	CMP	#0
-	BNE	HasToLSR	; Only nibbles are used.
-
-	TYA
-	LSR
-	TAX
-	
-	LDA	P0_1Index,x
-	AND	#%00001111	
-	
-	JMP	ContinueWithThings
-HasToLSR
-	TYA
-	LSR
-	TAX
-
-	LDA	P0_1Index,x
-	AND	#%11110000
-	LSR
-	LSR
-	LSR
-	LSR
-
-
-
-ContinueWithThings
-
-	TAX
-	TXS
-	TYA
-	TAX
-	LDA	P0_1SpritePointerLO,x
 	TSX
+	LDA	temp07
+	CMP	#%11000000
+	BEQ	AppearOpposite
 
-	CPX	#0
-	BEQ	CalculatePointerDone
-	CLC	
-	ADC	temp06
-	DEX
-	JMP	ContinueWithThings
+	LDA	temp07
+	BMI	NoBLAHBLAH
+	CPX	#2
+	BCS	AppearOpposite
 
-CalculatePointerDone
-	STA	temp03		; temp06 will store the sprite pointers low byte
+NoBLAHBLAH
+	LDA	P0X,x
+	CMP	#16
+	BCS	NotSmallerThan
+	LDA	#16
+	STA	P0X,x	
+	JMP	doYForNow
+NotSmallerThan
+	LDA	temp01
+	CMP 	P0X,x
+	BCS	doYForNow
+	STA	P0X,x
+doYForNow
+	LDA	P0Y,x
+	CMP	temp06
+	BCS	NotLowerThan
+	LDA	temp06
+	STA	P0Y,x
+NotLowerThan
+	LDA	temp02
+	CMP	P0Y,x
+	BCS	PrepareForNext
+	LDA	temp02
+	STA	P0Y,x
+PrepareForNext
+	DEX	
+	CPX	#255
+	BNE	NextItemThings
+	JMP	StackBackUp
 
-	TYA
-	TAX
-
-	LDA	P0_1SpritePointerHI,x
-	STA	temp04	
-
-	LDA	P0_1Y,x
-	STA	temp01
-	CLC
-	ADC	P0_1Height,x
-	CMP	#42
-	BCC	NotGoingOver
-	LDA	#42
-NotGoingOver
-	STA	temp10,x
-
-	TAX			; Got the highest point
+AppearOpposite
+	LDA	P0X,x
+	CMP	#16
+	BCS	NotSmallerThan2
+	LDA	temp01
 	SEC
-	SBC	temp01		
-	TAY			; Got the sprite line-number			 
+	SBC	#1
+	STA	P0X,x	
+	JMP	doYForNow2
+NotSmallerThan2
+	LDA	temp01
+	CMP 	P0X,x
+	BCS	doYForNow2
+	LDA	#17
+	STA	P0X,x
+doYForNow2
+	LDA	P0Y,x
+	CMP	temp06
+	BCS	NotLowerThan2
+	LDA	temp02
+	SEC
+	SBC	#1
+	STA	P0Y,x
+NotLowerThan2
+	LDA	temp02
+	CMP	P0Y,x
+	BCS	PrepareForNext2
+	LDA	temp06
+	CLC
+	ADC	#1
+	STA	P0Y,x
+PrepareForNext2
+	DEX	
+	CPX	#255
+	BNE	NextItemThings
+
+StackBackUp
+	LDX	temp03
+	TXS
+
+CalculateIndexes
+	LDA 	P0Height
+	CLC
+	ADC	#1
+	STA	temp01	
+
+	LDA	P0SpriteIndex	
+	AND	#%00001111	; Get low nibble for P0 index
+	TAY			; Move it to Y for calculations
+	LDA	P0SpritePointer
 	
-				; Set temporal pointers
-CopyBytes
-	LDA 	(temp03),y
-	STA	P0_Data01,x	
-	DEX
+CalculateP0PointerIndex
+	; You can only have the maximum number of sprites 256/height that is always smaller than 16
+	; (over 16 px height, you cannot use all 16 indexes because of the paging overflow that would break timing.
+
+	CPY	#0
+	BEQ	CalculateP0PointerIndexDone
+	CLC	
+	ADC	temp01
 	DEY
-	BPL	CopyBytes
-	INC	temp02
-	LDX	temp02
-	CPX	#4
-	BNE	NextSprite
+	JMP	CalculateP0PointerIndex
 
-CalculateP1Index
 
+CalculateP0PointerIndexDone
+	STA	temp07		; temp10 will store the sprite pointers low byte
+ 
 	LDA 	P1Height
 	CLC
 	ADC	#1
 	STA	temp01	
 
 	LDA	P1SpriteIndex	
-	AND	#%00001111	; Get low nibble for P1 index
+	AND	#%11110000	; Get high nibble for P1 index
+	lsr
+	lsr
+	lsr
+	lsr
 	TAY			; Move it to Y for calculations
 	LDA	P1SpritePointer
 	
@@ -803,10 +813,7 @@ CalculateP1PointerIndex
 
 
 CalculateP1PointerIndexDone
-	STA	temp06		; temp06 will store the sprite pointers low byte
-
-	LDX	temp07
-	TXS
+	STA	temp10		; temp10 will store the sprite pointers low byte
 
 JumpBackToBankScreenTop
 
@@ -907,6 +914,7 @@ Zero
 Null
 None
 	.BYTE	#0	; This is an empty byte for constant code usage.
+
 
 
 	align 256
@@ -1132,6 +1140,72 @@ TestPlayfield_BG
 	byte	#$02
 	byte	#$00
 
+
+
+TestSprite_Sprite
+	byte	#%01100000	; (0)
+	byte	#%00010000
+	byte	#%00011000
+	byte	#%00011000
+	byte	#%00011000
+	byte	#%00111100
+	byte	#%01111110
+	byte	#%11011011
+	byte	#%11010101
+	byte	#%10111110
+	byte	#%00101010
+	byte	#%00011100
+	byte	#%00110000	; (1)
+	byte	#%01100000
+	byte	#%00110000
+	byte	#%00011000
+	byte	#%00011000
+	byte	#%00001100
+	byte	#%00011100
+	byte	#%00110110
+	byte	#%01110110
+	byte	#%11101011
+	byte	#%11011101
+	byte	#%10000001
+	byte	#%00000000	; (2)
+	byte	#%00111100
+	byte	#%01110010
+	byte	#%01110000
+	byte	#%00111000
+	byte	#%00110100
+	byte	#%00110110
+	byte	#%11110111
+	byte	#%11111111
+	byte	#%11101011
+	byte	#%10101011
+	byte	#%00011100
+	byte	#%01111000	; (3)
+	byte	#%00111010
+	byte	#%01011011
+	byte	#%11011101
+	byte	#%11011101
+	byte	#%10011101
+	byte	#%11111111
+	byte	#%11100011
+	byte	#%01111111
+	byte	#%00101010
+	byte	#%00111110
+	byte	#%00011100
+
+TestSprite_SpriteColor
+	byte	#$0A
+	byte	#$0C
+	byte	#$0E
+	byte	#$0E
+	byte	#$0E
+	byte	#$0C
+	byte	#$0A
+	byte	#$0C
+	byte	#$0E
+	byte	#$0E
+	byte	#$0C
+	byte	#$0A
+
 	saveFreeBytes
 	rewind 1fd4
 
@@ -1183,9 +1257,11 @@ start_bank1
 
 EnterScreenBank2
 
-
-	LDA	#$00
+	LDA	#0
 	sta 	frameColor
+	STA	P0SpriteIndex ; 	Sets both indexes to 0;
+	STA	pfBaseColor
+	STA	bkBaseColor
 
 	LDA	#26
 	STA	pfIndex
@@ -1214,6 +1290,81 @@ EnterScreenBank2
 	STA	bkColorPointer 
 	LDA	#>TestPlayfield_BG
 	STA	bkColorPointer+1
+
+	LDA	#<TestSprite_Sprite
+	STA	P0SpritePointer
+	LDA	#>TestSprite_Sprite
+	STA	P0SpritePointer+1
+
+	LDA	#<TestSprite_SpriteColor
+	STA	P0ColorPointer
+	LDA	#>TestSprite_SpriteColor
+	STA	P0ColorPointer+1
+
+	LDA	#<Zero
+	STA	P1SpritePointer
+	LDA	#>Zero
+	STA	P1SpritePointer+1
+
+	LDA	#1
+	STA	P1Height
+
+	LDA	#200
+	STA	P1Y	
+	STA	M0Y
+	STA	M1Y
+	STA	BLY
+
+	LDA	#82
+	STA	P0X
+	STA	P1X
+	STA	M0X
+	STA	M1X
+	STA	BLX
+
+	LDA	#20
+	STA	P0Y
+
+	LDA	#11
+	STA	P0Height
+
+	LDA	#0
+	STA	P0SpriteIndex ; 	Sets both indexes to 0;
+
+	LDA	pfEdges		; Sprites stop, bullets go through
+	AND	#%00111111
+	STA	temp01
+	LDA	#%01000000
+	ORA	temp01
+	STA	pfEdges
+
+	LDA	P0TurnOff
+	AND	#%00111111
+	ORA	#%10000000
+	STA	P0TurnOff	; Turn M0
+
+	LDA	P1TurnOff
+	AND	#%00111111
+	ORA	#%11000000
+	STA	P1TurnOff	; Turn Off P1 and M1
+
+	LDA	BallTurnOff
+	ORA	#%00001000
+	STA	BallTurnOff	; Turn off Ball
+
+MissileDir = $b9
+NUSIZ = $ba
+Sound = $bb
+
+
+	LDA	#0
+	STA	NUSIZ
+	STA	Sound
+	STA	MissileDir
+
+
+maxFrames=3
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1292,7 +1443,242 @@ OverScanBank2
 * begins.
 *
 
+	LDA	#$08
+	BIT 	SWCHB
+	BNE	ChangeColor
 
+	LDA	#$20
+	BIT	SWCHA
+	BNE	NoScrollDown
+	DEC	pfIndex
+	JMP	DebugIndex
+NoScrollDown
+	LDA	#$10
+	BIT	SWCHA
+	BNE	ChangeColor
+	INC	pfIndex
+DebugIndex
+	LDA	#26
+	CMP	#255
+	BEQ	ChangeColor
+	CMP	pfIndex
+	BCS	SmallerThan
+	LDA	#26
+	STA	pfIndex
+SmallerThan
+	LDA	pfIndex
+	CMP	#26
+	BCS	ChangeColor
+	LDA	#26
+	STA	pfIndex
+
+ChangeColor
+	LDA	#$01
+	BIT	SWCHB
+	BNE	NoOneUp
+	INC	pfBaseColor
+NoOneUp
+	LDA	#$02
+	BIT	SWCHB
+	BNE 	AllDone
+	INC	bkBaseColor
+AllDone
+	LDA	#$08
+	BIT 	SWCHB
+	BEQ 	MissileDone
+GoWithSprite
+
+	bit 	SWCHA
+	BVS	NoLeftMove
+	DEC	P0X
+	LDA	P0Mirrored 
+	ORA	#%00001000
+	STA	P0Mirrored
+
+	JMP	VerticalMovementCheck
+NoLeftMove
+	BMI 	VerticalMovementCheck
+	INC	P0X
+	LDA	P0Mirrored 
+	AND	#%11110111
+	STA	P0Mirrored	
+
+VerticalMovementCheck	
+	LDA	#$10
+	bit 	SWCHA
+	BNE	NoDownMove
+	DEC	P0Y
+	JMP	SpriteEnded
+NoDownMove
+	LDA	#$20
+	bit 	SWCHA
+	BNE	SpriteEnded
+	INC	P0Y
+SpriteEnded
+
+	LDA	counter
+	STA	M0Color
+	AND	#%00000111
+	CMP	#%00000111
+	BNE	NoINC
+
+	LDA	P0SpriteIndex
+	AND	#%00001111
+	TAY
+	STA	temp01
+	CMP	#maxFrames
+	BCC	NoSetZero
+SetZero
+	LDA	P0SpriteIndex
+	AND	#%11110000
+	JMP	SaveSpriteIndex
+NoSetZero
+	LDA	Sound
+	CMP	#0
+	BNE 	GoForSure
+
+	LDA	SWCHA
+	AND	#%11110000
+	CMP	#%11110000
+	BEQ	SetZero
+GoForSure
+	LDA	temp01
+	CLC
+	ADC	#1
+	STA	temp01
+	LDA	P0SpriteIndex	
+	AND	#%11110000
+	ORA	temp01
+SaveSpriteIndex
+	STA	P0SpriteIndex
+NoINC	
+	
+	LDA	Sound
+	CMP	#0
+	BNE	PlaySoundMoveMis
+
+	bit	INPT4	
+	BMI	RemoveMissile
+
+	LDA	P0TurnOff
+	AND	#%01111111	
+	STA	P0TurnOff
+
+	LDA	#12
+	STA	Sound
+	LDA	P0Mirrored
+	AND	#%00001000
+	STA	MissileDir
+	CMP	#0
+	BEQ 	ItsMirrored
+	LDA	P0X
+	CLC
+	ADC	#3
+	JMP	M0XDone
+ItsMirrored
+	LDA	P0X
+	CLC
+	ADC	#5
+	LDY	NUSIZ
+	CPY	#5
+	BNE	Not5
+	ADC	#9
+	JMP	M0XDone
+Not5	
+	CPY	#7
+	BNE	M0XDone
+	ADC	#24
+
+M0XDone
+	STA	M0X
+
+	LDA	P0Height
+	LSR
+	STA	temp02
+
+	LDA	#42
+	SEC
+	SBC	P0Y
+	CLC
+	ADC	P0Height
+	SEC
+	SBC	temp02
+	STA	M0Y
+
+PlaySoundMoveMis
+	LDA	MissileDir
+	AND	#%00001000
+	CMP	#0
+	BNE 	MissileLeft
+	INC	M0X
+	INC	M0X
+	JMP 	ToSound
+MissileLeft	
+	DEC	M0X
+	DEC	M0X
+
+ToSound
+	LDA	Sound
+	STA	AUDV0
+	LDA	#8
+	STA	AUDC0	
+	SEC
+	SBC	Sound
+	STA	AUDF0
+	DEC	Sound
+	JMP	MissileDone
+RemoveMissile
+	LDA	P0TurnOff
+	ORA	#%10000000	
+	STA	P0TurnOff
+	LDA	#0
+	STA	AUDV0
+MissileDone
+	LDA	pfSettings
+	BIT	SWCHB
+	BVC	MoveBehind
+	ORA	#%00000100
+	JMP	MoveBefore
+MoveBehind
+	AND	#%11111011	
+MoveBefore	
+	STA	pfSettings	; Changes behaiour on P0 diff switch.	
+
+	
+	LDA	counter
+	AND	#%011111111
+	CMP	#%011111111
+	BNE	NoNUSIZChange
+	BIT	SWCHB
+	BPL	NoNUSIZChange
+	INC 	NUSIZ
+	LDA	#7
+	CMP	NUSIZ
+	BCS	NoZeroNusiz
+	LDA	#0
+	STA	NUSIZ
+NoZeroNusiz
+	LDA	P0Settings
+	AND	#%11001000
+	ORA	NUSIZ
+	STA	P0Settings
+
+	LDA	NUSIZ
+	CMP	#5
+	BNE	Not5Again
+	LDA	P0Settings
+	AND	#%11001111
+	ORA	#%00010000	
+	JMP	SSSSAVE
+Not5Again
+	CMP	#7
+	BNE	NoNUSIZChange
+	LDA	P0Settings
+	AND	#%11001111
+	ORA	#%00110000
+SSSSAVE	
+	STA	P0Settings
+NoNUSIZChange
 
 
 *VSYNC
@@ -1438,7 +1824,7 @@ ScreenBottomBank2
 
 	JMP	OverScanBank2
 
-
+###End-Bank2
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -1457,8 +1843,6 @@ ScreenBottomBank2
 
 
 
-
-###End-Bank2
 	saveFreeBytes
 	rewind 	2fd4
 	
@@ -1735,7 +2119,7 @@ ScreenBottomBank3
 
 	JMP	OverScanBank3
 
-
+###End-Bank3
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -1754,8 +2138,6 @@ ScreenBottomBank3
 
 
 
-
-###End-Bank3
 	saveFreeBytes
 	rewind 	3fd4
 
@@ -2032,7 +2414,7 @@ ScreenBottomBank4
 
 	JMP	OverScanBank4
 
-
+###End-Bank4
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2051,7 +2433,6 @@ ScreenBottomBank4
 
 
 
-###End-Bank4
 	saveFreeBytes
 	rewind 	4fd4
 	
@@ -2329,7 +2710,7 @@ ScreenBottomBank5
 
 	JMP	OverScanBank5
 
-
+###End-Bank5
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2347,7 +2728,6 @@ ScreenBottomBank5
 
 
 
-###End-Bank5
 	saveFreeBytes
 	rewind 	5fd4
 	
@@ -2624,7 +3004,7 @@ ScreenBottomBank6
 
 	JMP	OverScanBank6
 
-
+###End-Bank6
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2642,7 +3022,6 @@ ScreenBottomBank6
 *
 
 
-###End-Bank6
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -2919,7 +3298,7 @@ ScreenBottomBank7
 
 	JMP	OverScanBank7
 
-
+###End-Bank7
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2937,7 +3316,6 @@ ScreenBottomBank7
 
 
 
-###End-Bank7
 	saveFreeBytes
 	rewind 	7fd4
 	
@@ -3213,7 +3591,7 @@ ScreenBottomBank8
 
 	JMP	OverScanBank8
 
-
+###End-Bank8
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -3230,8 +3608,7 @@ ScreenBottomBank8
 *
 
 
-
-###End-Bank8	
+	
 	align 256
 	
 Start

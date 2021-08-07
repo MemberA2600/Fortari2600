@@ -647,7 +647,17 @@ class Assembler():
                     toWrite.append(str(num).ljust(lenOfNum+2) + str(codeline.getAddressInHex()).ljust(5)+ ">>" + section)
 
 
+
             toWrite.append(fos)
+
+            free = open("temp/free.txt", "w")
+            txt  = ""
+            for data in freeBytes:
+                txt += str(freeBytes[data])+"\n"
+            free.write(txt)
+            free.close()
+
+
         import os
 
         file.write(os.linesep.join(toWrite))
