@@ -3,21 +3,29 @@ from SubMenu import SubMenu
 
 class KernelTester:
 
-    def __init__(self, loader):
+    def __init__(self, loader, clicked):
+
+        self.dead = False
+
+        import os
+
+
         self.__loader = loader
         self.__dictionaries = self.__loader.dictionaries
 
-        self.dead = False
-        self.__mainWindow = self.__loader.mainWindow
+        if clicked > 4:
+            self.__loader.soundPlayer.playSound("ClickW2")
 
-        self.__loader.stopThreads.append(self)
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
         self.__screenSize = self.__loader.screenSize
         self.__soundPlayer = self.__loader.soundPlayer
         self.__fileDialogs = self.__loader.fileDialogs
-        self.__fontManager = self.__loader.fontManager
+
+        from FontManager import FontManager
+        self.__fontManager = FontManager(self.__loader)
+
         self.__fontSize = int(self.__screenSize[0]/1300 * self.__screenSize[1]/1050*14)
         self.__colors = self.__loader.colorPalettes
         self.__colorDict = self.__loader.colorDict
@@ -29,14 +37,46 @@ class KernelTester:
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize * 0.80), False, False, False)
         self.__smallerFont = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
 
+        w = round(self.__screenSize[0] / 3)
+        h = round(self.__screenSize[1]/3  - 40)
 
-        self.__window = SubMenu(self.__loader, "kernelTester", round(self.__screenSize[0] / 3), round(self.__screenSize[1]/3  - 40), None, self.__addElements, 1)
+        self.__topLevelWindow  = Toplevel()
+        self.__topLevelWindow.title(self.__dictionaries.getWordFromCurrentLanguage("kernelTester"))
+        self.__topLevelWindow.geometry("%dx%d+%d+%d" % (w, h, (self.__screenSize[0]/2-w/2), (self.__screenSize[1]/2-h/2-50)))
+        self.__topLevelWindow.resizable(False, False)
 
+        self.__topLevelWindow.config(bg=self.__loader.colorPalettes.getColor("window"))
+        try:
+            self.__topLevelWindow.iconbitmap("others/img/"+name+".ico")
+        except:
+            self.__topLevelWindow.iconbitmap("others/img/icon.ico")
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
+        self.__addElements(self)
+
+        try:
+            from os import mkdir
+            mkdir("temp/")
+        except:
+            pass
+
+        self.__topLevelWindow.mainloop()
         self.dead = True
+
+        try:
+            from shutil import rmtree
+            rmtree('temp/')
+        except:
+            pass
+
+    def getTopLevelDimensions(self):
+        return(round(self.__screenSize[0] / 3),
+               round(self.__screenSize[1]/3  - 40))
 
     def __addElements(self, top):
         self.__topLevel = top
-        self.__topLevelWindow = top.getTopLevel()
 
         self.__title = Label(self.__topLevelWindow, text = self.__dictionaries.getWordFromCurrentLanguage("kernelTester"),
                              bg = self.__loader.colorPalettes.getColor("window"),
@@ -54,21 +94,21 @@ class KernelTester:
 
         self.__openKernelFrame = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
-                                                         "kernelFile")
+                                                         "kernelFile", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
         self.__openEnter = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
-                                                         "enterBank2")
+                                                         "enterBank2", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
         self.__openOverscan = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
-                                                         "overscanBank2")
+                                                         "overscanBank2", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
         self.__openKernelData = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
-                                                         "kernelData")
+                                                         "kernelData", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
-        self.__testButton = Button(self.__topLevelWindow,
+        self.__testButton = Button(self.__topLevelWindow, stat=DISABLED,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    fg=self.__loader.colorPalettes.getColor("font"),
                                    text=self.__dictionaries.getWordFromCurrentLanguage("testWithEmulator")[:-1],
@@ -85,7 +125,7 @@ class KernelTester:
     def checkIfAllValid(self):
         from time import sleep
 
-        while self.__loader.mainWindow.dead == False:
+        while self.dead == False:
 
             try:
                 if (self.__openKernelFrame.valid == True
@@ -111,7 +151,7 @@ class KernelTester:
     def __testing(self):
         from Compiler import Compiler
 
-        c = Compiler(self.__loader, None, "kernelTester", [
+        c = Compiler(self.__loader, None, "kernelTest", [
             self.__loader.io.loadWholeText(self.__openKernelFrame.getValue()),
             self.__loader.io.loadWholeText(self.__openEnter.getValue()),
             self.__loader.io.loadWholeText(self.__openOverscan.getValue()),

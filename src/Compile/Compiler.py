@@ -33,8 +33,9 @@ class Compiler:
         self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__kernelData)
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
+
         self.doSave("temp/")
-        assembler = Assembler(self.__loader, "temp/", True, "NTSC")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def pfTest(self):
         self.__openEmulator = True
@@ -69,7 +70,7 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        assembler = Assembler(self.__loader, "temp/", True, self.__tv)
+        assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
     def spriteTest(self):
         self.__openEmulator = True
@@ -120,7 +121,7 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        assembler = Assembler(self.__loader, "temp/", True, self.__tv)
+        assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
 
     def convertPixelsToSpriteFrameLine(self, name):
@@ -222,6 +223,7 @@ class Compiler:
                 os.mkdir(projectPath+"asm_log/")
             except:
                 pass
+
         file = open(projectPath+"/source.asm", "w")
         file.write(self.__mainCode)
         file.close()

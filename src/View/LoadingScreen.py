@@ -13,6 +13,7 @@ class LoadingScreen():
         self.__w_Size=round(800*(size[0]/1600))
         self.__h_Size=round(self.__w_Size*0.56)
         self.__Loading_Window=Toplevel()
+        self.bindThings()
         self.__Loading_Window.geometry("%dx%d+%d+%d" % (self.__w_Size, self.__h_Size,
                                                         (size[0]/2)-self.__w_Size/2,
                                                         (size[1]/2)-self.__h_Size/2-50))
@@ -25,9 +26,13 @@ class LoadingScreen():
         self.__ImgLabel = Label(self.__Loading_Window, image=self.__Img)
         self.__ImgLabel.pack()
 
+
         #self.__Loading_Window.after(3000, self.destroySelf)
-        self.__Loading_Window.after(500, self.loadAndDestroy)
+        self.__Loading_Window.after(1, self.loadAndDestroy)
         self.__Loading_Window.wait_window()
+
+
+
 
     def loadAndDestroy(self):
         from Config import Config
@@ -82,5 +87,24 @@ class LoadingScreen():
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)
 
-        self.__Loading_Window.destroy()
 
+        self.__Loading_Window.after(1000, self.__Loading_Window.destroy)
+
+
+    def bindThings(self):
+        from threading import Thread
+
+        self.__clicked = 0
+        self.__Loading_Window.bind("<Button-1>", self.pressed)
+
+
+    def pressed(self, event):
+        self.__clicked +=1
+        self.__loader.soundPlayer.playSound("Click")
+
+
+    def getPresses(self):
+        if (self.__clicked>1):
+            return(True, self.__clicked)
+        else:
+            return(False, self.__clicked)

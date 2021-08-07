@@ -623,22 +623,6 @@ class MainWindow:
 
     def __checkBinded(self):
         from time import sleep
-
-        while self.dead == False:
-            if self.__pressedShiftL and self.__pressedHome:
-                try:
-                    if kernelTesterWindow.dead == True:
-                        from KernelTester import KernelTester
-                        self.__pressedHome = False
-                        self.__pressedShiftL = False
-
-                        kernelTesterWindow = KernelTester(self.__loader)
+        from threading import Thread
 
 
-                except:
-                    from KernelTester import KernelTester
-                    self.__pressedHome = False
-                    self.__pressedShiftL = False
-
-                    kernelTesterWindow = KernelTester(self.__loader)
-            sleep(0.05)

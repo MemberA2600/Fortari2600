@@ -6,14 +6,11 @@ from tkinter import scrolledtext
 
 class Assembler():
 
-    def __init__(self, __loader, projectPath, testIt, tv):
+    def __init__(self, __loader, projectPath, testIt, tv, deleteSrc):
         self.projectPath = projectPath
         self.__tv = tv
 
         self.compile(projectPath+"source.asm")
-
-        import os
-        os.remove(self.projectPath + "source.asm")
 
         if testIt == True:
             path = "emulator/32-bit/Stella.exe"
@@ -24,6 +21,10 @@ class Assembler():
             s = Thread(target=self.runStella, args=[path])
             s.daemon = True
             s.start()
+
+        if deleteSrc == True:
+            import os
+            os.remove(self.projectPath + "source.asm")
 
     def runStella(self, path):
         import os
@@ -114,6 +115,7 @@ class Assembler():
             if "sleep" not in line:
                 new.append(line)
                 continue
+
             number = int(line.split("sleep", 1)[1].replace(" ", ""))
             if (number%2==0):
                 new.append(" NOP\n"*int(number/2))

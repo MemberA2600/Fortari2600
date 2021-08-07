@@ -18,21 +18,28 @@ class FontManager:
 
     def autoSizes(self):
         from time import sleep
-        while self.__loader.mainWindow.dead==False:
-            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
-                sleep(0.05)
-                continue
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
-            self.__sizing()
-            sleep(0.02)
+        try:
+            while self.__loader.mainWindow.dead==False:
+                if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
+                    sleep(0.05)
+                    continue
+                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+                self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
+                self.__sizing()
+                sleep(0.02)
+        except:
+            pass
 
     def __sizing(self):
         baseW = 1600
         baseH = 1200
         baseS = 22
-        self.__normalSize = round((self.__loader.mainWindow.getWindowSize()[0]/baseW) *
-                                  ((self.__loader.mainWindow.getWindowSize()[1]/baseH)) * baseS)
+
+        try:
+            self.__normalSize = round((self.__loader.mainWindow.getWindowSize()[0]/baseW) *
+                                      ((self.__loader.mainWindow.getWindowSize()[1]/baseH)) * baseS)
+        except:
+            self.__normalSize = 22
 
         if self.__normalSize<10:
             self.__normalSize = 10

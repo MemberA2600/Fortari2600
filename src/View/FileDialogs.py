@@ -54,7 +54,12 @@ class FileDialogs:
         types = tuple(types)
 
         if os.path.exists(initdir) == False or initdir == None:
-            initdir = "*"
+            test = os.getcwd()+os.sep+initdir
+            print(test)
+            if os.path.exists(test) == False:
+                initdir = "*"
+            else:
+                initdir = test
 
         if save == True:
             openname = asksaveasfilename(initialdir=initdir,

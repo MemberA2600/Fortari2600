@@ -23,6 +23,8 @@ if __name__ == "__main__":
     tk.overrideredirect(True)
     tk.resizable(False, False)
     tk.geometry("%dx%d+%d+%d" % (1,1,1,1))
+
+
     __loader.tk = tk
 
     from Monitor import Monitor
@@ -39,5 +41,12 @@ if __name__ == "__main__":
 
     from time import sleep
     if nope == False:
-        from MainWindowHandler import MainWindowHandler
-        MainWindowHandler(__loader)
+
+        if __loading.getPresses()[0] == False:
+            from MainWindowHandler import MainWindowHandler
+            MainWindowHandler(__loader)
+
+        else:
+            from KernelTester import KernelTester
+            kernelTesterWindow = KernelTester(__loader, __loading.getPresses()[1])
+            tk.destroy()

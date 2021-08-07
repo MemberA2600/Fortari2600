@@ -53,8 +53,10 @@ class SubMenu:
 
         try:
             self.__loader.subMenus.pop(-1)
+            self.__loader.subMenus.remove(self)
         except Exception as e:
             self.__loader.logger.errorLog(e)
+
 
     def killOther(self):
         self.__loader.subMenus[-2].dead = True

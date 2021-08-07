@@ -1198,7 +1198,7 @@ ScreenBottomBank2
 
 	JMP	OverScanBank2
 
-
+###End-Bank2
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -1217,8 +1217,6 @@ ScreenBottomBank2
 
 !!!USER_DATA_BANK2!!!
 
-
-###End-Bank2
 	saveFreeBytes
 	rewind 	2fd4
 	
@@ -1495,7 +1493,7 @@ ScreenBottomBank3
 
 	JMP	OverScanBank3
 
-
+###End-Bank3
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -1514,8 +1512,6 @@ ScreenBottomBank3
 
 !!!USER_DATA_BANK3!!!
 
-
-###End-Bank3
 	saveFreeBytes
 	rewind 	3fd4
 
@@ -1792,7 +1788,7 @@ ScreenBottomBank4
 
 	JMP	OverScanBank4
 
-
+###End-Bank4
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -1811,7 +1807,6 @@ ScreenBottomBank4
 
 !!!USER_DATA_BANK4!!!
 
-###End-Bank4
 	saveFreeBytes
 	rewind 	4fd4
 	
@@ -2089,7 +2084,7 @@ ScreenBottomBank5
 
 	JMP	OverScanBank5
 
-
+###End-Bank5
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2107,7 +2102,6 @@ ScreenBottomBank5
 
 !!!USER_DATA_BANK5!!!
 
-###End-Bank5
 	saveFreeBytes
 	rewind 	5fd4
 	
@@ -2384,7 +2378,7 @@ ScreenBottomBank6
 
 	JMP	OverScanBank6
 
-
+###End-Bank6
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2402,7 +2396,6 @@ ScreenBottomBank6
 *
 
 !!!USER_DATA_BANK6!!!
-###End-Bank6
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -2679,7 +2672,7 @@ ScreenBottomBank7
 
 	JMP	OverScanBank7
 
-
+###End-Bank7
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2697,7 +2690,6 @@ ScreenBottomBank7
 
 !!!USER_DATA_BANK7!!!
 
-###End-Bank7
 	saveFreeBytes
 	rewind 	7fd4
 	
@@ -2973,7 +2965,7 @@ ScreenBottomBank8
 
 	JMP	OverScanBank8
 
-
+###End-Bank8
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -2990,8 +2982,7 @@ ScreenBottomBank8
 *
 
 !!!USER_DATA_BANK8!!!
-
-###End-Bank8	
+	
 	align 256
 	
 Start

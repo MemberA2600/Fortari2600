@@ -35,13 +35,17 @@ class Logger:
 
     def addToLog(self, text):
         if self.__loader.config.getValueByKey("debug") == "True":
-            string= "**********************************"+os.linesep
-            string+="*** "+ str(datetime.now()) + " ***"+os.linesep
-            string+= "**********************************"+os.linesep+os.linesep
-            string+=text+os.linesep
-            file = open(self.logFileName, "a", encoding="latin-1")
-            file.write(string+os.linesep)
-            file.close()
+            try:
+                string= "**********************************"+os.linesep
+                string+="*** "+ str(datetime.now()) + " ***"+os.linesep
+                string+= "**********************************"+os.linesep+os.linesep
+                string+=text+os.linesep
+                file = open(self.logFileName, "a", encoding="latin-1")
+                file.write(string+os.linesep)
+                file.close()
+            except:
+                pass
+
 
     def errorLog(self, e):
         text = ""
