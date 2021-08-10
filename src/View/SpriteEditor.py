@@ -502,8 +502,8 @@ class SpriteEditor:
                 test = int(self.__testSpeedSetter.getValue())
                 self.setValid(self.__testSpeedSetter.getEntry())
 
-                if test > 15:
-                    self.__testSpeedSetter.setValue("15")
+                if test > 16:
+                    self.__testSpeedSetter.setValue("16")
                 elif test<1:
                     self.__testSpeedSetter.setValue("1")
 
@@ -600,8 +600,8 @@ class SpriteEditor:
 
     def checkFrameNumEntry2(self, event):
         max = 256 // self.__height
-        if max>15:
-            max = 15
+        if max>16:
+            max = 16
 
         try:
             num = int(self.__frameNumSetter.getValue())
@@ -770,9 +770,9 @@ class SpriteEditor:
                         speed = 0
 
                 if speed == 0:
-                    self.__delay = round(15/(self.__numOfFrames*3))
+                    self.__delay = round(16/(self.__numOfFrames*3))
                 else:
-                    self.__delay = round(15/speed)
+                    self.__delay = round(16/speed)
 
                 if self.__counter < self.__delay:
                     self.__counter+=1

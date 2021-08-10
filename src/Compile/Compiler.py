@@ -157,7 +157,7 @@ class Compiler:
         for num in range(0, self.__height):
             spriteColorLines.insert(0, "\tbyte\t#"+self.__spriteColors[num])
 
-        spriteData = name+"_Sprite"+'\n'+("\n".join(spriteLines))+"\n"
+        spriteData = "\talign\t256\n"+name+"_Sprite"+'\n'+("\n".join(spriteLines))+"\n"
 
         if len(spriteLines) + len(spriteColorLines)>256:
             spriteData+="\talign\t256"

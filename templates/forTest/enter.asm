@@ -47,7 +47,7 @@
 	LDA	#>Zero
 	STA	P1SpritePointer+1
 
-	LDA	#1
+	LDA	#0
 	STA	P1Height
 
 	LDA	#200
@@ -93,9 +93,9 @@
 	ORA	#%00001000
 	STA	BallTurnOff	; Turn off Ball
 
-MissileDir = $b9
-NUSIZ = $ba
-Sound = $bb
+MissileDir = $f0
+NUSIZ = $f1
+Sound = $f2
 
 
 	LDA	#0
@@ -105,3 +105,91 @@ Sound = $bb
 
 
 maxFrames=3
+
+	LDA	SubMenuLines
+	AND	#%11111100
+	ORA	#%00000011
+	STA	SubMenuLines	; Set to 5 lines.
+
+	LDA	#<Symbols
+	STA 	TileSetPointer 
+	LDA	#>Symbols
+	STA 	TileSetPointer+1
+
+	LDA	#<SubMenuGradient
+	STA 	TileColorPointer 
+	LDA	#>SubMenuGradient
+	STA 	TileColorPointer+1
+
+
+	LDA	#$14
+	STA	TileScreenMainColor
+
+*	LDA	#%11111110
+*
+*	LDX	#0
+FillTiles
+*	CLC
+*	ADC	#%0010010
+*	STA	Tile1_1,x
+*	INX
+*	CPX	#12
+*	BNE	FillTiles	
+*
+
+	LDX	#0
+	LDA	#%00000001
+	STA	Tile1_1,x	; 0, 1
+
+	LDX	#1
+	LDA	#%00100011
+	STA	Tile1_1,x	; 2, 3
+
+	LDX	#2
+	LDA	#%01000101
+	STA	Tile1_1,x	; 4, 5
+
+	LDX	#3
+	LDA	#%01100111
+	STA	Tile1_1,x	; 6, 7
+
+	LDX	#4
+	LDA	#%10001001
+	STA	Tile1_1,x	; 8, 9
+
+	LDX	#5
+	LDA	#%10101011
+	STA	Tile1_1,x	; 10, 11
+
+	LDX	#6
+	LDA	#%11001101
+	STA	Tile1_1,x	; 12, 13
+
+	LDX	#7
+	LDA	#%11101111
+	STA	Tile1_1,x	; 14, 15
+
+	LDX	#8
+	LDA	#%00000001
+	STA	Tile1_1,x	; 0, 1
+
+	LDX	#9
+	LDA	#%00100011
+	STA	Tile1_1,x	; 2, 3
+
+	LDX	#10
+	LDA	#%01000101
+	STA	Tile1_1,x	; 4, 5
+
+	LDX	#11
+	LDA	#%01100111
+	STA	Tile1_1,x	; 6, 7
+
+
+	LDA	SubMenu
+	ORA	#%01000000
+	STA	SubMenu		; Switch to SubMenu Mode	
+	
+
+	LDA	#0
+	STA	Selected

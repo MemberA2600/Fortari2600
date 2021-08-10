@@ -22,76 +22,116 @@ temp10 = $8b
 temp11 = $8c
 temp12 = $8d
 temp13 = $8e
+temp14 = $8f
 
-item = $8f
-frameColor = $90
+item = $90
+frameColor = $91
 			
 *** Playfield Elements
-pf0Pointer = $91		; 16 bits
-pf1Pointer = $93		; 16 bits
-pf2Pointer = $95		; 16 bits	
-pfColorPointer = $97		; 16 bits 
-bkColorPointer = $99		; 16 bits
-bkBaseColor = $9b
-pfBaseColor = $9c
-pfIndex = $9d
+pf0Pointer = $92		; 16 bits
+pf1Pointer = $94		; 16 bits
+pf2Pointer = $96		; 16 bits	
+pfColorPointer = $98		; 16 bits 
+bkColorPointer = $9a		; 16 bits
+bkBaseColor = $9c
+pfBaseColor = $9d
+pfIndex = $9e
 
 ************************
-pfLines = $9e		; use only the low two bits  of $98 ???
-NoGameMode = $9e	; if 7th bit set, don't draw the game section
-bankToJump = $9e	;	; use only bites 2-4 of $98
-			; 5-6 : FREE
-************************
+SubMenu = $9f		; 0-1 : SubMenuLines
+NoGameMode = $9f	; 2-4 : BankToJump
+bankToJump = $9f	; 5 : FREE
+SubMenuLines = $9f	; 6 : Go to SubMenu
+************************  7 : No Game Mode
 
 *** Player Settings
-P0SpritePointer = $9f		; 16bit
-P0ColorPointer = $a1		; 16bit
-P1SpritePointer = $a3		; 16bit
-P1ColorPointer = $a5		; 16bit
+P0SpritePointer = $a0		; 16bit
+P0ColorPointer = $a2		; 16bit
+P1SpritePointer = $a4		; 16bit
+P1ColorPointer = $a6		; 16bit
 
 ************
 * Settings *
 ****************************************	
-P0Settings = $a7			; Bits 0-2 are sprite settings, 
-P0Mirrored = $a7			; 3 is reflection, bits 4-5 are missile settings. 
-P0TurnOff  = $a7			; 6: Turn Off Sprite
-P1Settings = $a8			; 7: Turn off Missile
-P1Mirrored = $a8			; Must be in order!
-P1TurnOff  = $a8
+P0Settings = $a8			; Bits 0-2 are sprite settings, 
+P0Mirrored = $a8			; 3 is reflection, bits 4-5 are missile settings. 
+P0TurnOff  = $a8			; 6: Turn Off Sprite
+P1Settings = $a9			; 7: Turn off Missile
+P1Mirrored = $a9			; Must be in order!
+P1TurnOff  = $a9
 ****************************************
-pfSettings = $a9	; Since CTRLPF 0-1 bits are fixed in the screen loop
-pfEdges	= $a9		; 0-1: free
-BallTurnOff = $a9	; 2: Players move behind the pf
+pfSettings = $aa	; Since CTRLPF 0-1 bits are fixed in the screen loop
+pfEdges	= $aa		; 0-1: free
+BallTurnOff = $aa	; 2: Players move behind the pf
 #Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
 #routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
 ************************
 
-P0Height = $aa
-P1Height = $ab
+P0Height = $ab
+P1Height = $ac
 
 ****************************************
-P0SpriteIndex = $ac			; low nibble is P0 sprite index
-P1SpriteIndex = $ac			; high nibble is P1 sprite index
+P0SpriteIndex = $ad			; low nibble is P0 sprite index
+P1SpriteIndex = $ad			; high nibble is P1 sprite index
 ****************************************
 
 *** Positions (Must be aligned!!)
-P0Y = $ad	
-P1Y = $ae	
-M0Y = $af
-M1Y = $b0
-BLY = $b1
+P0Y = $ae	
+P1Y = $af	
+M0Y = $b0
+M1Y = $b1
+BLY = $b2
 
-P0X = $b2
-P1X = $b3
-M0X = $b4
-M1X = $b5
-BLX = $b6
+P0X = $b3
+P1X = $b4
+M0X = $b5
+M1X = $b6
+BLX = $b7
 
 *** Fake Missile Colors
-M0Color = $b7
-M1Color = $b8
+M0Color = $b8
+M1Color = $b9
 
+*** TileScreen
+TileSetPointer = $ba	; 16 bit
+TileScreenMainColor = $bc
+
+*** Matrix 6x4
+Tile1_1 = $bd
+Tile1_2 = $bd
+Tile1_3 = $be
+Tile1_4 = $be
+Tile1_5 = $bf
+Tile1_6 = $bf
+
+Tile2_1 = $c0
+Tile2_2 = $c0
+Tile2_3 = $c1
+Tile2_4 = $c1
+Tile2_5 = $c2
+Tile2_6 = $c2
+
+Tile3_1 = $c3
+Tile3_2 = $c3
+Tile3_3 = $c4
+Tile3_4 = $c4
+Tile3_5 = $c5
+Tile3_6 = $c5
+
+Tile4_1 = $c6
+Tile4_2 = $c6
+Tile4_3 = $c7
+Tile4_4 = $c7
+Tile4_5 = $c8
+Tile4_6 = $c8
+
+TileColorPointer = $c9 	; 16 bits
+
+Selected = $cb
+
+temp15 = $cc 
+temp16 = $cd
 
 	; Constants
  
@@ -150,6 +190,11 @@ PAL_Overscan =	206
 	fill 256	; We have to prevent writing on addresses taken by the SuperChip RAM.
 
 EnterKernel
+	BIT	SubMenu
+	BVC	StayHere	; Go to the SubMenu Kernel
+	JMP 	DoSubMenuKernel	; instead.
+
+StayHere
 	LDA	frameColor	
 	sta	WSYNC
 	STA	COLUBK
@@ -273,9 +318,17 @@ FinishPreparation
 	LDA	(P1ColorPointer),y	; 5 (4)
 	STA	COLUP1		; Load first color 3 (7)
 
-	LDY	#200		; 2 (9)
+	LDY	#225		; 2 (9)
 	LDA	P0TurnOff	; 3 (12)
 	BVC	NoP0TurnOff	; 2 (14)
+
+	LDA	#<Zero		  ; 2
+	STA	P0SpritePointer   ; 3
+	LDA	#>Zero		  ; 2
+	STA	P0SpritePointer+1 ; 3
+	LDA	#1		; 2
+	STA	P0Height	; 3
+
 	STY	P0Y		; 3 (17)
 NoP0TurnOff
 	BPL	NoM0TurnOff	; 2 (19)
@@ -284,6 +337,14 @@ NoM0TurnOff
 	
 	LDA	P1TurnOff	; 3 (25)
 	BVC	NoP1TurnOff	; 2 (27)
+
+	LDA	#<Zero		  ; 2
+	STA	P1SpritePointer   ; 3
+	LDA	#>Zero		  ; 2
+	STA	P1SpritePointer+1 ; 3
+	LDA	#1		; 2
+	STA	P1Height	; 3	
+
 	STY	P1Y		; 3 (30)
 NoP1TurnOff
 	BPL	NoM1TurnOff	; 2 (32)
@@ -530,6 +591,395 @@ JumpBackToBankScreenBottom
    	pha
    	jmp	bankSwitchJump
 
+LoadNextData
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp03		; 3
+
+
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp05		; 3
+
+	INX			; 2
+
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp07		; 3
+
+
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp09		; 3
+
+	INX			; 2
+
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp11		; 3
+
+
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp13		; 3
+
+	INX			; 2
+
+	STX	temp02		; 3
+	JMP	LoadedShit	; 3
+
+DoSubMenuKernel
+*	temp01: Rows left
+*	temp02: LineNum
+*	temp03 - temp14: GRP0 pointers
+*	temp15 - temp16: Selector Sprite Pointer
+
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK		; 3
+	
+	LDA	pfSettings	; 3 (6)
+	ORA	#%00000001	; 2 (8) Reflected playfield
+	AND	#%11111101	; 2 (10) Always get the original colors.
+	STA	CTRLPF		; 3 (13)
+
+	LDA	#%11111110	; 2 (15)			
+	STA	PF2		; 3 (18)	
+
+	LDA	#$03		; 2 (20)
+	STA	NUSIZ0		; 3 (23) Fixed 3 with large gaps.
+	LDA	#0		; 2 (25)
+	STA	PF0		; 3 (28)
+	STA	PF1		; 3 (31)
+	STA	GRP0		; 3 (34)
+	STA	GRP1		; 3 (37)  
+	STA	VDELP0		; 3 (40)
+	STA	VDELP1		; 3 (43)
+	STA	ENAM0		; 3 (46)
+	STA	ENAM1		; 3 (49)
+	STA	ENABL		; 3 (52)
+
+	LDY	#7
+	LDA	(TileColorPointer),y	; 5 (57)
+	CLC			; 3 (60)
+	ADC	TileScreenMainColor	; 3 (63)
+	STA	COLUPF		; 3 (66)
+	STA	COLUP0		; 3 (69)
+
+	LDA	SubMenuLines	; 3 (72)
+	AND	#%00000011	; 2 (74)
+	CLC			; 2 (76)
+	ADC	#1		; 2 
+	STA	temp01		; 3 (5) Saving the lineNum	
+
+	LDA	counter		; 3 (8)
+	STA	COLUP1		; 3 (11)
+	AND	#%00000011	; 2 (13) 
+	ASL			; 2 (15)
+	ASL			; 2 (17)
+	ASL			; 2 (19)
+	CLC			; 2 (21)
+	ADC	TileSetPointer	; 3 (24)
+	STA	temp15		; 3 (27)
+	LDA	TileSetPointer+1 ; 3 (30)
+	STA	temp16		; 3 (33)
+
+	LDA	Selected
+SmallerThan7
+	CMP	#7
+	BCs	GetP1Poz
+	SEC
+	SBC	#7
+	JMP	SmallerThan7
+
+GetP1Poz
+	STA	WSYNC
+	TAX
+
+
+	sleep	32
+StopCalc
+	DEX
+ 	BMI	SaveP1X
+ 	sleep	6
+	JMP	StopCalc
+
+SaveP1X
+	STA	RESP1
+
+
+********One line lost.
+
+	
+	STA	WSYNC	
+	sleep	38		
+	STA	RESP0		; (41) X pos
+	
+	TSX			; 2 
+	STX	item		; 3
+
+	LDA	counter		; 3 
+	AND	#%00000001	; 2 
+	CMP	#%00000001	; 2 	
+	BEQ	OddStart
+	LDA	#$C0
+	JMP	EvenStart
+OddStart
+	LDA	#$C0
+EvenStart	
+	STA	HMP0
+
+	LDA	#0		
+	STA	temp02
+
+	STA	WSYNC		; 73
+	STA	HMOVE		
+	
+	LDA	#%00000010	; 2
+	STA	PF2		; 3
+			
+CalculatorLine
+	LDX	temp02		; 3
+	LDA	#0		; 2
+	STA	GRP0		; 3
+	LDA	TileSetPointer+1  ; 3
+	STA	temp04		; 3	High nibble of pointer
+	STA	temp06		; 3	High nibble of pointer
+	STA	temp08		; 3	High nibble of pointer
+	STA	temp10		; 3	High nibble of pointer
+	STA	temp12		; 3	High nibble of pointer
+	STA	temp14		; 3	High nibble of pointer
+
+
+	JMP	LoadNextData	; 3
+LoadedShit
+	LDA	(TileColorPointer),y	; 5 
+	CLC			; 3 
+	ADC	TileScreenMainColor	; 3 
+	STA	COLUPF		; 3 
+	STA	COLUP0		; 3 
+
+	STA	WSYNC
+
+	LDY	#7		; 2
+	LDA	counter		; 3 (5)
+	AND	#%00000001	; 2 (7)
+	CMP	#%00000001	; 2 (9)
+	BEQ	JumpOddFrame	; 2 (11)
+
+	JMP	EvenFrame	; 3 (14)
+JumpOddFrame
+	JMP	OddFrame
+
+	align	256
+
+OddFrame
+
+	STA	WSYNC
+Loop_Odd_Line1
+	STA	HMOVE		; 3
+	LDA	#$00		; 2 (5)
+	STA	HMP0		; 3 (8)
+
+	LDA	(TileColorPointer),y	; 5 (13)
+	CLC			; 3 (16)
+	ADC	TileScreenMainColor	; 3 (19)
+	STA	COLUPF		; 3 (22)
+	STA	COLUP0		; 3 (25)
+
+	LDA	(temp03),y 	; 5 (30)
+	STA	GRP0		; 3 (33)
+
+	LDA	(temp11),y 	; 5 (38)
+	TAX			; 2 (40)
+
+	LDA	(temp07),y 	; 5 (45)
+	STA	GRP0		; 3 (48)
+	sleep	2
+	STX	GRP0		; 3 (53)
+
+
+	sleep	21		; (74)
+
+Loop_Odd_Line2
+	STA	HMOVE		; 3
+	LDA	#$80		; 2 (5)
+	STA 	HMP0		; 3 (8)
+
+	sleep	17		; (25)
+
+	LDA	(temp05),y 	; 5 (30)
+	STA	GRP0		; 3 (33)
+
+	LDA	(temp13),y 	; 5 (38)
+	TAX			; 2 (40)
+
+	LDA	(temp09),y 	; 5 (45)
+	STA	GRP0		; 3 (48)
+	sleep 	2
+	STX	GRP0		; 3 (53)
+
+	sleep	19		;(72)
+
+	DEY			; 2 (74)
+	BPL	Loop_Odd_Line1	; 2 (76)
+	LDA	#0
+	STA	GRP0
+
+	DEC	temp01		; 5	
+	LDA	temp01		; 3
+	CMP	#0		; 2
+	BEQ	EndOfAll	; 2
+	JMP	CalculatorLine	; 3 	
+
+EvenFrame
+	sleep	60		; (74)
+	
+Loop_Even_Line1
+	STA	HMOVE		; 3
+	LDA	#$80		; 2 (5)
+	STA	HMP0		; 3 (8)
+
+	LDA	(TileColorPointer),y	; 5 (13)
+	CLC			; 3 (16)
+	ADC	TileScreenMainColor	; 3 (19)
+	STA	COLUPF		; 3 (22)
+	STA	COLUP0		; 3 (25)
+
+	LDA	(temp05),y 	; 5 (30)
+	STA	GRP0		; 3 (33)
+
+
+
+	LDA	(temp13),y 	; 5 (38)
+	TAX			; 2 (40)
+
+	LDA	(temp09),y 	; 5 (45)
+	STA	GRP0		; 3 (48)
+	sleep	2
+	STX	GRP0		; 3 (53)
+
+
+	sleep	23		; (76)
+
+
+Loop_Even_Line2
+	STA	HMOVE		; 3
+	LDA	#$00		; 2 (5)
+	STA 	HMP0		; 3 (8)
+
+	sleep	17		; (25)
+
+	LDA	(temp03),y 	; 5 (30)
+	STA	GRP0		; 3 (33)
+
+	sleep	2
+	LDA	(temp11),y 	; 5 (38)
+	TAX			; 2 (40)
+
+	LDA	(temp07),y 	; 5 (45)
+	STA	GRP0		; 3 (48)
+	sleep 	2
+	STX	GRP0		; 3 (53)
+
+	sleep	15		;(70)
+
+	DEY			; 2 (72)
+	BPL	Loop_Even_Line1	; 2 (74)
+	LDA	#0
+	STA	GRP0
+
+	DEC	temp01		; 5	
+	LDA	temp01		; 3
+	CMP	#0		; 2
+	BEQ	EndOfAll	; 2
+	JMP	CalculatorLine	; 3 	
+
+EndOfAll
+	
+	STA	WSYNC
+	LDA	#0
+	STA	GRP0
+
+	STA	WSYNC
+	LDA	#%11111110
+	STA	PF2
+
+	STA	WSYNC
+	STA	WSYNC
+
+	JMP	ResetAll
+
+
+
+FineAdjustTable256
+	fill 	191
+
+Zero
+Null
+None
+	.BYTE	#0	; This is an empty byte for constant code usage.
+	.BYTE	#0
+	.BYTE	#0
+
+Selector
+	byte	#%01100110	; (0)
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10011001
+	byte	#%11001100	; (1)
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%11001100
+	byte	#%10011001	; (2)
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%01100110
+	byte	#%00110011	; (3)
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00110011
+
 ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
 	.byte	#<ScreenBottomBank2-1
@@ -547,11 +997,2092 @@ ScreenJumpTable
 	.byte	#<ScreenBottomBank8-1
 
 
+FineAdjustTable
+	byte	#$80
+	byte	#$70
+	byte	#$60
+	byte	#$50
+	byte	#$40
+	byte	#$30
+	byte	#$20
+	byte	#$10
+	byte	#$00
+	byte	#$f0
+	byte	#$e0
+	byte	#$d0
+	byte	#$c0
+	byte	#$b0
+	byte	#$a0
+	byte	#$90
+
+UnderTheTable
+
+
+*Data Section
+*-------------------------------
+* Contains graphics data for the
+* main kernel.
+
+
+
+	align 256
+
+Data_Section
+!!!KERNEL_DATA!!!
+
+	saveFreeBytes
+	rewind 1fd4
+
+start_bank1 
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address   
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 1ffc
+   	.byte 	#<start_bank1
+   	.byte 	#>start_bank1
+   	.byte 	#<start_bank1
+   	.byte 	#>start_bank1
+
+***************************
+********* Start of 2nd bank
+***************************
+	Bank 2
+	fill	256
+###Start-Bank2
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank2
+
+!!!ENTER_BANK2!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank2
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank2
+
+!!!LEAVE_BANK2!!!
+
+JumpToNewScreenBank2
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank2,y
+   	pha
+   	lda	LeaveJumpTableBank2+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank2
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank2
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank2
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK2!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank2
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank2
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank2
+
+!!!VBLANK_BANK2!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank2		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#2
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank2
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank2
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK2!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank2	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank2
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank2
+
+	LDA	#2
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank2
+
+!!!SCREENBOTTOM_BANK2!!!
+
+	JMP	OverScanBank2
+
+###End-Bank2
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK2!!!
+	
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK2!!!
+
+	saveFreeBytes
+	rewind 	2fd4
+	
+start_bank2
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address  
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 2ffc
+   	.byte 	#<start_bank2
+   	.byte 	#>start_bank2
+   	.byte 	#<start_bank2
+   	.byte 	#>start_bank2
+
+***************************
+********* Start of 3rd bank
+***************************
+	Bank 3
+	fill	256
+###Start-Bank3
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank3
+
+!!!ENTER_BANK3!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank3
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank3
+
+!!!LEAVE_BANK3!!!
+
+JumpToNewScreenBank3
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank3,y
+   	pha
+   	lda	LeaveJumpTableBank3+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank3
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank3
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank3
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK3!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank3
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank3
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank3
+
+!!!VBLANK_BANK3!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank3		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#3
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank3
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank3
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK3!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank3	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank3
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank3
+
+	LDA	#3
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank3
+
+!!!SCREENBOTTOM_BANK3!!!
+
+	JMP	OverScanBank3
+
+###End-Bank3
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK3!!!
+
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK3!!!
+
+	saveFreeBytes
+	rewind 	3fd4
+
+start_bank3
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address 
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 3ffc
+   	.byte 	#<start_bank3
+   	.byte 	#>start_bank3
+   	.byte 	#<start_bank3
+   	.byte 	#>start_bank3
+
+***************************
+********* Start of 4th bank
+***************************
+	Bank 4
+	fill	256
+###Start-Bank4
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank4
+
+!!!ENTER_BANK4!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank4
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank4
+
+!!!LEAVE_BANK4!!!
+
+JumpToNewScreenBank4
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank4,y
+   	pha
+   	lda	LeaveJumpTableBank4+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank4
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank4
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank4
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK4!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank4
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank4
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank4
+
+!!!VBLANK_BANK4!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank4		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#4
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank4
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank4
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK4!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank4	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank4
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank4
+
+	LDA	#4
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank4
+
+!!!SCREENBOTTOM_BANK4!!!
+
+	JMP	OverScanBank4
+
+###End-Bank4
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK4!!!
+	
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK4!!!
+
+	saveFreeBytes
+	rewind 	4fd4
+	
+start_bank4
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address  
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 4ffc
+   	.byte 	#<start_bank4
+   	.byte 	#>start_bank4
+   	.byte 	#<start_bank4
+   	.byte 	#>start_bank4
+
+
+***************************
+********* Start of 5th bank
+***************************
+	Bank 5
+	fill	256
+###Start-Bank5
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank5
+
+!!!ENTER_BANK5!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank5
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank5
+
+!!!LEAVE_BANK5!!!
+
+JumpToNewScreenBank5
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank5,y
+   	pha
+   	lda	LeaveJumpTableBank5+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank5
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank5
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank5
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK5!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank5
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank5
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank5
+
+!!!VBLANK_BANK5!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank5		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#5
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank5
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank5
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK5!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank5	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank5
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank5
+
+	LDA	#5
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank5
+
+!!!SCREENBOTTOM_BANK5!!!
+
+	JMP	OverScanBank5
+
+###End-Bank5
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK5!!!
+	
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK5!!!
+
+	saveFreeBytes
+	rewind 	5fd4
+	
+start_bank5
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address   
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 5ffc
+   	.byte 	#<start_bank5
+   	.byte 	#>start_bank5
+   	.byte 	#<start_bank5
+   	.byte 	#>start_bank5
+
+***************************
+********* Start of 6th bank
+***************************
+	Bank 6
+	fill	256
+###Start-Bank6
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank6
+
+!!!ENTER_BANK6!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank6
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank6
+
+!!!LEAVE_BANK6!!!
+
+JumpToNewScreenBank6
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank6,y
+   	pha
+   	lda	LeaveJumpTableBank6+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank6
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank6
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank6
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK6!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank6
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank6
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank6
+
+!!!VBLANK_BANK6!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank6		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#6
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank6
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank6
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK6!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank6	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank6
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank6
+
+	LDA	#6
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank6
+
+!!!SCREENBOTTOM_BANK6!!!
+
+	JMP	OverScanBank6
+
+###End-Bank6
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK6!!!
+	
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK6!!!
+
+	saveFreeBytes
+	rewind 	6fd4
+	
+start_bank6
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address   	
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 6ffc
+   	.byte 	#<start_bank6
+   	.byte 	#>start_bank6
+   	.byte 	#<start_bank6
+   	.byte 	#>start_bank6
+
+***************************
+********* Start of 7th bank
+***************************
+	Bank 7
+	fill	256
+###Start-Bank7
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank7
+
+!!!ENTER_BANK7!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank7
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank7
+
+!!!LEAVE_BANK7!!!
+
+JumpToNewScreenBank7
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank7,y
+   	pha
+   	lda	LeaveJumpTableBank7+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank7
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank7
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank7
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK7!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank7
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank7
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank7
+
+!!!VBLANK_BANK7!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank7		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#7
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank7
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank7
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK7!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank7	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank7
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank7
+
+	LDA	#7
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank7
+
+!!!SCREENBOTTOM_BANK7!!!
+
+	JMP	OverScanBank7
+
+###End-Bank7
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK7!!!
+	
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK7!!!
+
+	saveFreeBytes
+	rewind 	7fd4
+	
+start_bank7
+	ldx	#$ff
+   	txs
+   	lda	#>(Start-1)
+   	pha
+   	lda	#<(Start-1)
+   	pha
+   	pha
+   	txa
+   	pha
+   	tsx
+   	lda	4,x	; get high byte of return address   	
+   	rol
+   	rol
+   	rol
+	rol
+   	and	#7	 
+	tax
+   	inx
+   	lda	$1FF4-1,x
+   	pla
+   	tax
+   	pla
+   	rts
+	rewind 7ffc
+   	.byte 	#<start_bank7
+   	.byte 	#>start_bank7
+   	.byte 	#<start_bank7
+   	.byte 	#>start_bank7
+
+***************************
+********* Start of 8th bank
+***************************
+	Bank 8
+	fill	256
+###Start-Bank8
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank8
+
+!!!ENTER_BANK8!!!
+		
+	JMP	WaitUntilOverScanTimerEndsBank8
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank8
+
+!!!LEAVE_BANK8!!!
+
+JumpToNewScreenBank8
+	LAX	temp02		; Contains the bank to jump
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank8,y
+   	pha
+   	lda	LeaveJumpTableBank8+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank8
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank8
+
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank8
+
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#!!!TV!!!_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+!!!OVERSCAN_BANK8!!!
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank8
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank8
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#!!!TV!!!_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank8
+
+!!!VBLANK_BANK8!!!
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank8		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	#%00011100	; Save the bankNumber
+	STA	bankToJump
+
+   	jmp	CalculateDuringVBLANK
+
+VBlankEndBank8
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank8
+
+    	LDA	#230
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+!!!SCREENTOP_BANK8!!!
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank8	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank8
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank8
+
+	LDA	#8
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(EnterKernel-1)
+   	pha
+   	lda	#<(EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank8
+
+!!!SCREENBOTTOM_BANK8!!!
+
+	JMP	OverScanBank8
+
+###End-Bank8
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK8!!!
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK8!!!
+	align 256
+
 *Calculations during VBLANK
 *----------------------------
 *
-
-
 
 CalculateDuringVBLANK
 
@@ -841,7 +3372,6 @@ JumpBackToBankScreenTop
 
 
 
-FineAdjustTable256
 VBlankJumpTable
 	byte	#>VBlankEndBank2-1
 	byte	#<VBlankEndBank2-1
@@ -882,2106 +3412,6 @@ XHorBorderAddMissile
 	byte	#4
 	byte	#8
 
-	fill 	209
-
-FineAdjustTable
-	byte	#$80
-	byte	#$70
-	byte	#$60
-	byte	#$50
-	byte	#$40
-	byte	#$30
-	byte	#$20
-	byte	#$10
-	byte	#$00
-	byte	#$f0
-	byte	#$e0
-	byte	#$d0
-	byte	#$c0
-	byte	#$b0
-	byte	#$a0
-	byte	#$90
-
-UnderTheTable
-
-
-*Data Section
-*-------------------------------
-* Contains graphics data for the
-* main kernel.
-
-Zero
-Null
-None
-	.BYTE	#0	; This is an empty byte for constant code usage.
-
-
-
-	align 256
-
-Data_Section
-!!!KERNEL_DATA!!!
-
-	saveFreeBytes
-	rewind 1fd4
-
-start_bank1 
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address   
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 1ffc
-   	.byte 	#<start_bank1
-   	.byte 	#>start_bank1
-   	.byte 	#<start_bank1
-   	.byte 	#>start_bank1
-
-***************************
-********* Start of 2nd bank
-***************************
-	Bank 2
-	fill	256
-###Start-Bank2
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank2
-
-!!!ENTER_BANK2!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank2
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank2
-
-!!!LEAVE_BANK2!!!
-
-JumpToNewScreenBank2
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank2,y
-   	pha
-   	lda	LeaveJumpTableBank2+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank2
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank2
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank2
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK2!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank2
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank2
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank2
-
-!!!VBLANK_BANK2!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank2		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#2
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank2
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank2
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK2!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank2	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank2
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank2
-
-	LDA	#2
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank2
-
-!!!SCREENBOTTOM_BANK2!!!
-
-	JMP	OverScanBank2
-
-###End-Bank2
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK2!!!
-	
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK2!!!
-
-	saveFreeBytes
-	rewind 	2fd4
-	
-start_bank2
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address  
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 2ffc
-   	.byte 	#<start_bank2
-   	.byte 	#>start_bank2
-   	.byte 	#<start_bank2
-   	.byte 	#>start_bank2
-
-***************************
-********* Start of 3rd bank
-***************************
-	Bank 3
-	fill	256
-###Start-Bank3
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank3
-
-!!!ENTER_BANK3!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank3
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank3
-
-!!!LEAVE_BANK3!!!
-
-JumpToNewScreenBank3
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank3,y
-   	pha
-   	lda	LeaveJumpTableBank3+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank3
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank3
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank3
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK3!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank3
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank3
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank3
-
-!!!VBLANK_BANK3!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank3		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#3
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank3
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank3
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK3!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank3	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank3
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank3
-
-	LDA	#3
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank3
-
-!!!SCREENBOTTOM_BANK3!!!
-
-	JMP	OverScanBank3
-
-###End-Bank3
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK3!!!
-
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK3!!!
-
-	saveFreeBytes
-	rewind 	3fd4
-
-start_bank3
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address 
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 3ffc
-   	.byte 	#<start_bank3
-   	.byte 	#>start_bank3
-   	.byte 	#<start_bank3
-   	.byte 	#>start_bank3
-
-***************************
-********* Start of 4th bank
-***************************
-	Bank 4
-	fill	256
-###Start-Bank4
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank4
-
-!!!ENTER_BANK4!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank4
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank4
-
-!!!LEAVE_BANK4!!!
-
-JumpToNewScreenBank4
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank4,y
-   	pha
-   	lda	LeaveJumpTableBank4+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank4
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank4
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank4
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK4!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank4
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank4
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank4
-
-!!!VBLANK_BANK4!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank4		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#4
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank4
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank4
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK4!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank4	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank4
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank4
-
-	LDA	#4
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank4
-
-!!!SCREENBOTTOM_BANK4!!!
-
-	JMP	OverScanBank4
-
-###End-Bank4
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK4!!!
-	
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK4!!!
-
-	saveFreeBytes
-	rewind 	4fd4
-	
-start_bank4
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address  
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 4ffc
-   	.byte 	#<start_bank4
-   	.byte 	#>start_bank4
-   	.byte 	#<start_bank4
-   	.byte 	#>start_bank4
-
-
-***************************
-********* Start of 5th bank
-***************************
-	Bank 5
-	fill	256
-###Start-Bank5
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank5
-
-!!!ENTER_BANK5!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank5
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank5
-
-!!!LEAVE_BANK5!!!
-
-JumpToNewScreenBank5
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank5,y
-   	pha
-   	lda	LeaveJumpTableBank5+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank5
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank5
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank5
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK5!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank5
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank5
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank5
-
-!!!VBLANK_BANK5!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank5		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#5
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank5
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank5
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK5!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank5	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank5
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank5
-
-	LDA	#5
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank5
-
-!!!SCREENBOTTOM_BANK5!!!
-
-	JMP	OverScanBank5
-
-###End-Bank5
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK5!!!
-	
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK5!!!
-
-	saveFreeBytes
-	rewind 	5fd4
-	
-start_bank5
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address   
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 5ffc
-   	.byte 	#<start_bank5
-   	.byte 	#>start_bank5
-   	.byte 	#<start_bank5
-   	.byte 	#>start_bank5
-
-***************************
-********* Start of 6th bank
-***************************
-	Bank 6
-	fill	256
-###Start-Bank6
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank6
-
-!!!ENTER_BANK6!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank6
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank6
-
-!!!LEAVE_BANK6!!!
-
-JumpToNewScreenBank6
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank6,y
-   	pha
-   	lda	LeaveJumpTableBank6+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank6
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank6
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank6
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK6!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank6
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank6
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank6
-
-!!!VBLANK_BANK6!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank6		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#6
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank6
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank6
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK6!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank6	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank6
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank6
-
-	LDA	#6
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank6
-
-!!!SCREENBOTTOM_BANK6!!!
-
-	JMP	OverScanBank6
-
-###End-Bank6
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK6!!!
-	
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK6!!!
-
-	saveFreeBytes
-	rewind 	6fd4
-	
-start_bank6
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address   	
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 6ffc
-   	.byte 	#<start_bank6
-   	.byte 	#>start_bank6
-   	.byte 	#<start_bank6
-   	.byte 	#>start_bank6
-
-***************************
-********* Start of 7th bank
-***************************
-	Bank 7
-	fill	256
-###Start-Bank7
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank7
-
-!!!ENTER_BANK7!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank7
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank7
-
-!!!LEAVE_BANK7!!!
-
-JumpToNewScreenBank7
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank7,y
-   	pha
-   	lda	LeaveJumpTableBank7+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank7
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank7
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank7
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK7!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank7
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank7
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank7
-
-!!!VBLANK_BANK7!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank7		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#7
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank7
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank7
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK7!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank7	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank7
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank7
-
-	LDA	#7
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank7
-
-!!!SCREENBOTTOM_BANK7!!!
-
-	JMP	OverScanBank7
-
-###End-Bank7
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK7!!!
-	
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK7!!!
-
-	saveFreeBytes
-	rewind 	7fd4
-	
-start_bank7
-	ldx	#$ff
-   	txs
-   	lda	#>(Start-1)
-   	pha
-   	lda	#<(Start-1)
-   	pha
-   	pha
-   	txa
-   	pha
-   	tsx
-   	lda	4,x	; get high byte of return address   	
-   	rol
-   	rol
-   	rol
-	rol
-   	and	#7	 
-	tax
-   	inx
-   	lda	$1FF4-1,x
-   	pla
-   	tax
-   	pla
-   	rts
-	rewind 7ffc
-   	.byte 	#<start_bank7
-   	.byte 	#>start_bank7
-   	.byte 	#<start_bank7
-   	.byte 	#>start_bank7
-
-***************************
-********* Start of 8th bank
-***************************
-	Bank 8
-	fill	256
-###Start-Bank8
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
-
-EnterScreenBank8
-
-!!!ENTER_BANK8!!!
-		
-	JMP	WaitUntilOverScanTimerEndsBank8
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank8
-
-!!!LEAVE_BANK8!!!
-
-JumpToNewScreenBank8
-	LAX	temp02		; Contains the bank to jump
-	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank8,y
-   	pha
-   	lda	LeaveJumpTableBank8+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank8
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank8
-
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank8
-
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#!!!TV!!!_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-!!!OVERSCAN_BANK8!!!
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank8
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank8
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#!!!TV!!!_Vblank
-	STA	TIM64T
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank8
-
-!!!VBLANK_BANK8!!!
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BMI	VBlankEndBank8		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#8
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-VBlankEndBank8
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank8
-
-    	LDA	#230
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-!!!SCREENTOP_BANK8!!!
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	pfLines 		; NoGameMode
-	BPL	JumpToMainKernelBank8	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank8
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank8
-
-	LDA	#8
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank8
-
-!!!SCREENBOTTOM_BANK8!!!
-
-	JMP	OverScanBank8
-
-###End-Bank8
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK8!!!
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK8!!!
 	
 	align 256
 	

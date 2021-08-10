@@ -130,9 +130,6 @@ TileColorPointer = $c9 	; 16 bits
 
 Selected = $cb
 
-temp15 = $cc 
-temp16 = $cd
-
 	; Constants
  
 NTSC_Vblank =	169
@@ -146,35 +143,35 @@ PAL_Overscan =	206
 
 *Global
 *---------
-
+!!!GLOBAL_VARIABLES!!!
 
 *Bank2
 *---------
-
+!!!BANK2_VARIABLES!!!
 
 *Bank3
 *---------
-
+!!!BANK3_VARIABLES!!!
 
 *Bank4
 *---------
-
+!!!BANK4_VARIABLES!!!
 
 *Bank5
 *---------
-
+!!!BANK5_VARIABLES!!!
 
 *Bank6
 *---------
-
+!!!BANK6_VARIABLES!!!
 
 *Bank7
 *---------
-
+!!!BANK7_VARIABLES!!!
 
 *Bank8
 *---------
-
+!!!BANK8_VARIABLES!!!
 
 ***************************
 ********* Start of 1st bank
@@ -597,16 +594,12 @@ LoadNextData
 	ASL			; 2 and multiply
 	ASL			; 2 by 8
 	ASL			; 2
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp03		; 3
 
 
 	LDA	Tile1_1,x	; 4 Get high nibble
 	AND	#%11110000	; 2 and divide by 2
 	LSR			; 2 
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp05		; 3
 
 	INX			; 2
@@ -616,16 +609,12 @@ LoadNextData
 	ASL			; 2 and multiply
 	ASL			; 2 by 8
 	ASL			; 2 
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp07		; 3
 
 
 	LDA	Tile1_1,x	; 4 Get high nibble
 	AND	#%11110000	; 2 and divide by 2
 	LSR			; 2 
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp09		; 3
 
 	INX			; 2
@@ -635,16 +624,12 @@ LoadNextData
 	ASL			; 2 and multiply
 	ASL			; 2 by 8
 	ASL			; 2 
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp11		; 3
 
 
 	LDA	Tile1_1,x	; 4 Get high nibble
 	AND	#%11110000	; 2 and divide by 2
 	LSR			; 2 
-	CLC			; 2
-	ADC	TileSetPointer	; 3
 	STA	temp13		; 3
 
 	INX			; 2
@@ -656,7 +641,6 @@ DoSubMenuKernel
 *	temp01: Rows left
 *	temp02: LineNum
 *	temp03 - temp14: GRP0 pointers
-*	temp15 - temp16: Selector Sprite Pointer
 
 	LDA	frameColor
 	STA	WSYNC
@@ -696,18 +680,6 @@ DoSubMenuKernel
 	ADC	#1		; 2 
 	STA	temp01		; 3 (5) Saving the lineNum	
 
-	LDA	counter		; 3 (8)
-	STA	COLUP1		; 3 (11)
-	AND	#%00000011	; 2 (13) 
-	ASL			; 2 (15)
-	ASL			; 2 (17)
-	ASL			; 2 (19)
-	CLC			; 2 (21)
-	ADC	TileSetPointer	; 3 (24)
-	STA	temp15		; 3 (27)
-	LDA	TileSetPointer+1 ; 3 (30)
-	STA	temp16		; 3 (33)
-
 	LDA	Selected
 SmallerThan7
 	CMP	#7
@@ -719,9 +691,10 @@ SmallerThan7
 GetP1Poz
 	STA	WSYNC
 	TAX
+	LDA	counter
+	STA	COLUP1
 
-
-	sleep	32
+	sleep	26
 StopCalc
 	DEX
  	BMI	SaveP1X
@@ -783,6 +756,7 @@ LoadedShit
 	STA	COLUPF		; 3 
 	STA	COLUP0		; 3 
 
+
 	STA	WSYNC
 
 	LDY	#7		; 2
@@ -794,6 +768,11 @@ LoadedShit
 	JMP	EvenFrame	; 3 (14)
 JumpOddFrame
 	JMP	OddFrame
+
+Selector
+
+
+
 
 	align	256
 
@@ -1028,435 +1007,7 @@ UnderTheTable
 	align 256
 
 Data_Section
-TestPlayfield_00
-	byte	#%01010000
-	byte	#%10100100
-	byte	#%01000010
-	byte	#%00001100
-	byte	#%00000011
-	byte	#%11111111
-	byte	#%00000011
-	byte	#%00001100
-	byte	#%00000000
-	byte	#%10000011
-	byte	#%01111100
-	byte	#%00000000
-	byte	#%11000000
-	byte	#%00110000
-	byte	#%00000000
-	byte	#%10011001
-	byte	#%10011001
-	byte	#%10011001
-	byte	#%11011101
-	byte	#%11111111
-	byte	#%11110111
-	byte	#%10010011
-	byte	#%11110011
-	byte	#%10010111
-	byte	#%11111110
-	byte	#%11111110
-	byte	#%11111010
-	byte	#%01100010
-	byte	#%01100010
-	byte	#%01100010
-	byte	#%01100010
-	byte	#%11110010
-	byte	#%11110111
-	byte	#%01100010
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-
-TestPlayfield_01
-	byte	#%00001000
-	byte	#%01010001
-	byte	#%10100001
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11110000
-	byte	#%00001000
-	byte	#%00000100
-	byte	#%11111110
-	byte	#%00000001
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11010110
-	byte	#%11010110
-	byte	#%11010111
-	byte	#%11010110
-	byte	#%11010110
-	byte	#%11111111
-	byte	#%11010110
-	byte	#%11010110
-	byte	#%11101111
-	byte	#%11111111
-	byte	#%11111101
-	byte	#%11111011
-	byte	#%11001111
-	byte	#%11001110
-	byte	#%11111100
-	byte	#%11111000
-	byte	#%11111000
-	byte	#%11111000
-	byte	#%01110000
-	byte	#%01010000
-	byte	#%01110000
-	byte	#%01010000
-	byte	#%11111000
-	byte	#%11111000
-	byte	#%10101000
-	byte	#%00000000
-
-TestPlayfield_02
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%00111101
-	byte	#%10111101
-	byte	#%00111110
-	byte	#%10011100
-	byte	#%01101100
-	byte	#%00101100
-	byte	#%00001100
-	byte	#%00111100
-	byte	#%11111001
-	byte	#%11100011
-	byte	#%00000100
-	byte	#%11111110
-	byte	#%10101010
-	byte	#%10101011
-	byte	#%10101011
-	byte	#%11111011
-	byte	#%10101011
-	byte	#%10101011
-	byte	#%11111011
-	byte	#%10101011
-	byte	#%10110111
-	byte	#%10101111
-	byte	#%11011111
-	byte	#%10111101
-	byte	#%11111011
-	byte	#%11101111
-	byte	#%10011111
-	byte	#%10111100
-	byte	#%11111000
-	byte	#%11110000
-	byte	#%00010000
-	byte	#%11110000
-	byte	#%00010000
-	byte	#%11111000
-	byte	#%01111100
-	byte	#%01001100
-	byte	#%11011000
-	byte	#%01110000
-	byte	#%11111000
-	byte	#%10101000
-
-TestPlayfield_FG
-	byte	#$1E
-	byte	#$1C
-	byte	#$18
-	byte	#$1A
-	byte	#$1C
-	byte	#$1E
-	byte	#$1C
-	byte	#$1A
-	byte	#$18
-	byte	#$1A
-	byte	#$18
-	byte	#$14
-	byte	#$08
-	byte	#$06
-	byte	#$04
-	byte	#$06
-	byte	#$04
-	byte	#$06
-	byte	#$08
-	byte	#$0A
-	byte	#$0C
-	byte	#$0C
-	byte	#$0A
-	byte	#$08
-	byte	#$06
-	byte	#$04
-	byte	#$06
-	byte	#$08
-	byte	#$06
-	byte	#$08
-	byte	#$08
-	byte	#$06
-	byte	#$04
-	byte	#$06
-	byte	#$08
-	byte	#$06
-	byte	#$04
-	byte	#$02
-	byte	#$06
-	byte	#$08
-	byte	#$06
-	byte	#$04
-
-TestPlayfield_BG
-	byte	#$C4
-	byte	#$C2
-	byte	#$C4
-	byte	#$C2
-	byte	#$C0
-	byte	#$C2
-	byte	#$C4
-	byte	#$C6
-	byte	#$C4
-	byte	#$C6
-	byte	#$C4
-	byte	#$C2
-	byte	#$B2
-	byte	#$B2
-	byte	#$B0
-	byte	#$06
-	byte	#$04
-	byte	#$02
-	byte	#$04
-	byte	#$62
-	byte	#$64
-	byte	#$66
-	byte	#$64
-	byte	#$62
-	byte	#$04
-	byte	#$02
-	byte	#$04
-	byte	#$06
-	byte	#$04
-	byte	#$06
-	byte	#$64
-	byte	#$62
-	byte	#$60
-	byte	#$62
-	byte	#$64
-	byte	#$62
-	byte	#$60
-	byte	#$04
-	byte	#$02
-	byte	#$04
-	byte	#$02
-	byte	#$00
-
-	align	256
-
-TestSprite_Sprite
-	byte	#%01100000	; (0)
-	byte	#%00010000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00111100
-	byte	#%01111110
-	byte	#%11011011
-	byte	#%11010101
-	byte	#%10111110
-	byte	#%00101010
-	byte	#%00011100
-	byte	#%00110000	; (1)
-	byte	#%01100000
-	byte	#%00110000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00001100
-	byte	#%00011100
-	byte	#%00110110
-	byte	#%01110110
-	byte	#%11101011
-	byte	#%11011101
-	byte	#%10000001
-	byte	#%00000000	; (2)
-	byte	#%00111100
-	byte	#%01110010
-	byte	#%01110000
-	byte	#%00111000
-	byte	#%00110100
-	byte	#%00110110
-	byte	#%11110111
-	byte	#%11111111
-	byte	#%11101011
-	byte	#%10101011
-	byte	#%00011100
-	byte	#%01111000	; (3)
-	byte	#%00111010
-	byte	#%01011011
-	byte	#%11011101
-	byte	#%11011101
-	byte	#%10011101
-	byte	#%11111111
-	byte	#%11100011
-	byte	#%01111111
-	byte	#%00101010
-	byte	#%00111110
-	byte	#%00011100
-
-TestSprite_SpriteColor
-	byte	#$0A
-	byte	#$0C
-	byte	#$0E
-	byte	#$0E
-	byte	#$0E
-	byte	#$0C
-	byte	#$0A
-	byte	#$0C
-	byte	#$0E
-	byte	#$0E
-	byte	#$0C
-	byte	#$0A
-
-	align	256
-
-Symbols
-	byte	#%11011011	; (0)
-	byte	#%10111101
-	byte	#%11111111
-	byte	#%11011011
-	byte	#%11011011
-	byte	#%11111111
-	byte	#%01111110
-	byte	#%00111100
-	byte	#%00100100	; (1)
-	byte	#%11000011
-	byte	#%11111111
-	byte	#%11111111
-	byte	#%01011010
-	byte	#%01111110
-	byte	#%00100100
-	byte	#%11000011
-	byte	#%10011001	; (2)
-	byte	#%10011001
-	byte	#%11011011
-	byte	#%11011011
-	byte	#%01011010
-	byte	#%01011010
-	byte	#%01011010
-	byte	#%00011000
-	byte	#%00111100	; (3)
-	byte	#%11111110
-	byte	#%01111111
-	byte	#%00011111
-	byte	#%00001111
-	byte	#%01111111
-	byte	#%11101110
-	byte	#%00111100
-	byte	#%00000000	; (4)
-	byte	#%00111100
-	byte	#%11100111
-	byte	#%00100100
-	byte	#%11100111
-	byte	#%00100100
-	byte	#%11100111
-	byte	#%00111100
-	byte	#%00011000	; (5)
-	byte	#%00111100
-	byte	#%01000010
-	byte	#%11100111
-	byte	#%11011011
-	byte	#%11011011
-	byte	#%01011010
-	byte	#%01111110
-	byte	#%00011000	; (6)
-	byte	#%00011000
-	byte	#%01111110
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00111100
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00011000	; (7)
-	byte	#%00100100
-	byte	#%11111111
-	byte	#%10100101
-	byte	#%01011010
-	byte	#%01011010
-	byte	#%01100110
-	byte	#%01000010
-	byte	#%10001110	; (8)
-	byte	#%11111110
-	byte	#%01111010
-	byte	#%00001010
-	byte	#%00111111
-	byte	#%00001110
-	byte	#%00001110
-	byte	#%00001110
-	byte	#%00111100	; (9)
-	byte	#%01111110
-	byte	#%01000010
-	byte	#%00100100
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00111100
-	byte	#%00011000
-	byte	#%00111000	; (10)
-	byte	#%11111111
-	byte	#%01001100
-	byte	#%00101100
-	byte	#%00010000
-	byte	#%11111110
-	byte	#%00010000
-	byte	#%00000000
-	byte	#%11000011	; (11)
-	byte	#%10000001
-	byte	#%00010000
-	byte	#%00000100
-	byte	#%00100000
-	byte	#%00001000
-	byte	#%10000001
-	byte	#%11000011
-	byte	#%00001000	; (12)
-	byte	#%00010000
-	byte	#%01110000
-	byte	#%01111100
-	byte	#%00001100
-	byte	#%00011100
-	byte	#%00111000
-	byte	#%00111000
-	byte	#%01111100	; (13)
-	byte	#%11111100
-	byte	#%11111100
-	byte	#%11101100
-	byte	#%01110100
-	byte	#%00001111
-	byte	#%00000111
-	byte	#%00000110
-	byte	#%00000100	; (14)
-	byte	#%00001100
-	byte	#%01111100
-	byte	#%10110011
-	byte	#%01111100
-	byte	#%00001100
-	byte	#%00000100
-	byte	#%00000000
-	byte	#%00010000	; (15)
-	byte	#%10001001
-	byte	#%01011010
-	byte	#%00100100
-	byte	#%00100100
-	byte	#%01011010
-	byte	#%10010001
-	byte	#%00001000
-
-
-SubMenuGradient
-	byte	#$00
-	byte	#$02
-	byte	#$04
-	byte	#$06
-	byte	#$06
-	byte	#$04
-	byte	#$02
-	byte	#$00
-
+!!!KERNEL_DATA!!!
 
 	saveFreeBytes
 	rewind 1fd4
@@ -1509,202 +1060,7 @@ start_bank1
 
 EnterScreenBank2
 
-	LDA	#0
-	sta 	frameColor
-	STA	P0SpriteIndex ; 	Sets both indexes to 0;
-	STA	pfBaseColor
-	STA	bkBaseColor
-
-	LDA	#26
-	STA	pfIndex
-
-	LDA	#<TestPlayfield_00
-	STA 	pf0Pointer 
-	LDA	#>TestPlayfield_00
-	STA 	pf0Pointer+1
-
-	LDA	#<TestPlayfield_01
-	STA 	pf1Pointer 
-	LDA	#>TestPlayfield_01
-	STA 	pf1Pointer+1
-
-	LDA	#<TestPlayfield_02
-	STA 	pf2Pointer 
-	LDA	#>TestPlayfield_02
-	STA 	pf2Pointer+1
-
-	LDA	#<TestPlayfield_FG
-	STA 	pfColorPointer 
-	LDA	#>TestPlayfield_FG
-	STA 	pfColorPointer+1
-
-	LDA	#<TestPlayfield_BG
-	STA	bkColorPointer 
-	LDA	#>TestPlayfield_BG
-	STA	bkColorPointer+1
-
-	LDA	#<TestSprite_Sprite
-	STA	P0SpritePointer
-	LDA	#>TestSprite_Sprite
-	STA	P0SpritePointer+1
-
-	LDA	#<TestSprite_SpriteColor
-	STA	P0ColorPointer
-	LDA	#>TestSprite_SpriteColor
-	STA	P0ColorPointer+1
-
-	LDA	#<Zero
-	STA	P1SpritePointer
-	LDA	#>Zero
-	STA	P1SpritePointer+1
-
-	LDA	#0
-	STA	P1Height
-
-	LDA	#200
-	STA	P1Y	
-	STA	M0Y
-	STA	M1Y
-	STA	BLY
-
-	LDA	#82
-	STA	P0X
-	STA	P1X
-	STA	M0X
-	STA	M1X
-	STA	BLX
-
-	LDA	#20
-	STA	P0Y
-
-	LDA	#11
-	STA	P0Height
-
-	LDA	#0
-	STA	P0SpriteIndex ; 	Sets both indexes to 0;
-
-	LDA	pfEdges		; Sprites stop, bullets go through
-	AND	#%00111111
-	STA	temp01
-	LDA	#%01000000
-	ORA	temp01
-	STA	pfEdges
-
-	LDA	P0TurnOff
-	AND	#%00111111
-	ORA	#%10000000
-	STA	P0TurnOff	; Turn M0
-
-	LDA	P1TurnOff
-	AND	#%00111111
-	ORA	#%11000000
-	STA	P1TurnOff	; Turn Off P1 and M1
-
-	LDA	BallTurnOff
-	ORA	#%00001000
-	STA	BallTurnOff	; Turn off Ball
-
-MissileDir = $f0
-NUSIZ = $f1
-Sound = $f2
-
-
-	LDA	#0
-	STA	NUSIZ
-	STA	Sound
-	STA	MissileDir
-
-
-maxFrames=3
-
-	LDA	SubMenuLines
-	AND	#%11111100
-	ORA	#%00000011
-	STA	SubMenuLines	; Set to 5 lines.
-
-	LDA	#<Symbols
-	STA 	TileSetPointer 
-	LDA	#>Symbols
-	STA 	TileSetPointer+1
-
-	LDA	#<SubMenuGradient
-	STA 	TileColorPointer 
-	LDA	#>SubMenuGradient
-	STA 	TileColorPointer+1
-
-
-	LDA	#$14
-	STA	TileScreenMainColor
-
-*	LDA	#%11111110
-*
-*	LDX	#0
-FillTiles
-*	CLC
-*	ADC	#%0010010
-*	STA	Tile1_1,x
-*	INX
-*	CPX	#12
-*	BNE	FillTiles	
-*
-
-	LDX	#0
-	LDA	#%00000001
-	STA	Tile1_1,x	; 0, 1
-
-	LDX	#1
-	LDA	#%00100011
-	STA	Tile1_1,x	; 2, 3
-
-	LDX	#2
-	LDA	#%01000101
-	STA	Tile1_1,x	; 4, 5
-
-	LDX	#3
-	LDA	#%01100111
-	STA	Tile1_1,x	; 6, 7
-
-	LDX	#4
-	LDA	#%10001001
-	STA	Tile1_1,x	; 8, 9
-
-	LDX	#5
-	LDA	#%10101011
-	STA	Tile1_1,x	; 10, 11
-
-	LDX	#6
-	LDA	#%11001101
-	STA	Tile1_1,x	; 12, 13
-
-	LDX	#7
-	LDA	#%11101111
-	STA	Tile1_1,x	; 14, 15
-
-	LDX	#8
-	LDA	#%00000001
-	STA	Tile1_1,x	; 0, 1
-
-	LDX	#9
-	LDA	#%00100011
-	STA	Tile1_1,x	; 2, 3
-
-	LDX	#10
-	LDA	#%01000101
-	STA	Tile1_1,x	; 4, 5
-
-	LDX	#11
-	LDA	#%01100111
-	STA	Tile1_1,x	; 6, 7
-
-
-	LDA	SubMenu
-	ORA	#%01000000
-	STA	SubMenu		; Switch to SubMenu Mode	
-	
-
-	LDA	#0
-	STA	Selected
-
+!!!ENTER_BANK2!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1718,7 +1074,7 @@ FillTiles
 
 LeaveScreenBank2
 
-
+!!!LEAVE_BANK2!!!
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
@@ -1772,7 +1128,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1783,242 +1139,7 @@ OverScanBank2
 * begins.
 *
 
-	LDA	#$08
-	BIT 	SWCHB
-	BNE	ChangeColor
-
-	LDA	#$20
-	BIT	SWCHA
-	BNE	NoScrollDown
-	DEC	pfIndex
-	JMP	DebugIndex
-NoScrollDown
-	LDA	#$10
-	BIT	SWCHA
-	BNE	ChangeColor
-	INC	pfIndex
-DebugIndex
-	LDA	#26
-	CMP	#255
-	BEQ	ChangeColor
-	CMP	pfIndex
-	BCS	SmallerThan
-	LDA	#26
-	STA	pfIndex
-SmallerThan
-	LDA	pfIndex
-	CMP	#26
-	BCS	ChangeColor
-	LDA	#26
-	STA	pfIndex
-
-ChangeColor
-	LDA	#$01
-	BIT	SWCHB
-	BNE	NoOneUp
-	INC	pfBaseColor
-NoOneUp
-	LDA	#$02
-	BIT	SWCHB
-	BNE 	AllDone
-	INC	bkBaseColor
-AllDone
-	LDA	#$08
-	BIT 	SWCHB
-	BEQ 	MissileDone
-GoWithSprite
-
-	bit 	SWCHA
-	BVS	NoLeftMove
-	DEC	P0X
-	LDA	P0Mirrored 
-	ORA	#%00001000
-	STA	P0Mirrored
-
-	JMP	VerticalMovementCheck
-NoLeftMove
-	BMI 	VerticalMovementCheck
-	INC	P0X
-	LDA	P0Mirrored 
-	AND	#%11110111
-	STA	P0Mirrored	
-
-VerticalMovementCheck	
-	LDA	#$10
-	bit 	SWCHA
-	BNE	NoDownMove
-	DEC	P0Y
-	JMP	SpriteEnded
-NoDownMove
-	LDA	#$20
-	bit 	SWCHA
-	BNE	SpriteEnded
-	INC	P0Y
-SpriteEnded
-
-	LDA	counter
-	STA	M0Color
-	AND	#%00000111
-	CMP	#%00000111
-	BNE	NoINC
-
-	LDA	P0SpriteIndex
-	AND	#%00001111
-	TAY
-	STA	temp01
-	CMP	#maxFrames
-	BCC	NoSetZero
-SetZero
-	LDA	P0SpriteIndex
-	AND	#%11110000
-	JMP	SaveSpriteIndex
-NoSetZero
-	LDA	Sound
-	CMP	#0
-	BNE 	GoForSure
-
-	LDA	SWCHA
-	AND	#%11110000
-	CMP	#%11110000
-	BEQ	SetZero
-GoForSure
-	LDA	temp01
-	CLC
-	ADC	#1
-	STA	temp01
-	LDA	P0SpriteIndex	
-	AND	#%11110000
-	ORA	temp01
-SaveSpriteIndex
-	STA	P0SpriteIndex
-NoINC	
-	
-	LDA	Sound
-	CMP	#0
-	BNE	PlaySoundMoveMis
-
-	bit	INPT4	
-	BMI	RemoveMissile
-
-	LDA	P0TurnOff
-	AND	#%01111111	
-	STA	P0TurnOff
-
-	LDA	#12
-	STA	Sound
-	LDA	P0Mirrored
-	AND	#%00001000
-	STA	MissileDir
-	CMP	#0
-	BEQ 	ItsMirrored
-	LDA	P0X
-	CLC
-	ADC	#3
-	JMP	M0XDone
-ItsMirrored
-	LDA	P0X
-	CLC
-	ADC	#5
-	LDY	NUSIZ
-	CPY	#5
-	BNE	Not5
-	ADC	#9
-	JMP	M0XDone
-Not5	
-	CPY	#7
-	BNE	M0XDone
-	ADC	#24
-
-M0XDone
-	STA	M0X
-
-	LDA	P0Height
-	LSR
-	STA	temp02
-
-	LDA	#42
-	SEC
-	SBC	P0Y
-	CLC
-	ADC	P0Height
-	SEC
-	SBC	temp02
-	STA	M0Y
-
-PlaySoundMoveMis
-	LDA	MissileDir
-	AND	#%00001000
-	CMP	#0
-	BNE 	MissileLeft
-	INC	M0X
-	INC	M0X
-	JMP 	ToSound
-MissileLeft	
-	DEC	M0X
-	DEC	M0X
-
-ToSound
-	LDA	Sound
-	STA	AUDV0
-	LDA	#8
-	STA	AUDC0	
-	SEC
-	SBC	Sound
-	STA	AUDF0
-	DEC	Sound
-	JMP	MissileDone
-RemoveMissile
-	LDA	P0TurnOff
-	ORA	#%10000000	
-	STA	P0TurnOff
-	LDA	#0
-	STA	AUDV0
-MissileDone
-	LDA	pfSettings
-	BIT	SWCHB
-	BVC	MoveBehind
-	ORA	#%00000100
-	JMP	MoveBefore
-MoveBehind
-	AND	#%11111011	
-MoveBefore	
-	STA	pfSettings	; Changes behaiour on P0 diff switch.	
-
-	
-	LDA	counter
-	AND	#%011111111
-	CMP	#%011111111
-	BNE	NoNUSIZChange
-	BIT	SWCHB
-	BPL	NoNUSIZChange
-	INC 	NUSIZ
-	LDA	#7
-	CMP	NUSIZ
-	BCS	NoZeroNusiz
-	LDA	#0
-	STA	NUSIZ
-NoZeroNusiz
-	LDA	P0Settings
-	AND	#%11001000
-	ORA	NUSIZ
-	STA	P0Settings
-
-	LDA	NUSIZ
-	CMP	#5
-	BNE	Not5Again
-	LDA	P0Settings
-	AND	#%11001111
-	ORA	#%00010000	
-	JMP	SSSSAVE
-Not5Again
-	CMP	#7
-	BNE	NoNUSIZChange
-	LDA	P0Settings
-	AND	#%11001111
-	ORA	#%00110000
-SSSSAVE	
-	STA	P0Settings
-NoNUSIZChange
+!!!OVERSCAN_BANK2!!!
 
 
 *VSYNC
@@ -2051,7 +1172,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2062,7 +1183,7 @@ WaitUntilOverScanTimerEndsBank2
 *
 VBLANKBank2
 
-
+!!!VBLANK_BANK2!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2113,7 +1234,7 @@ VBlankEndBank2
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK2!!!
 
 
 *SkipIfNoGameSet
@@ -2160,7 +1281,7 @@ JumpToMainKernelBank2
 
 ScreenBottomBank2
 
-
+!!!SCREENBOTTOM_BANK2!!!
 
 	JMP	OverScanBank2
 
@@ -2171,7 +1292,7 @@ ScreenBottomBank2
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK2!!!
 	
 
 *Data Section 
@@ -2181,7 +1302,7 @@ ScreenBottomBank2
 * elments.
 *
 
-
+!!!USER_DATA_BANK2!!!
 
 	saveFreeBytes
 	rewind 	2fd4
@@ -2234,7 +1355,7 @@ start_bank2
 
 EnterScreenBank3
 
-
+!!!ENTER_BANK3!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank3
 
@@ -2248,7 +1369,7 @@ EnterScreenBank3
 
 LeaveScreenBank3
 
-
+!!!LEAVE_BANK3!!!
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
@@ -2302,7 +1423,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2313,7 +1434,7 @@ OverScanBank3
 * begins.
 *
 
-
+!!!OVERSCAN_BANK3!!!
 
 
 *VSYNC
@@ -2346,7 +1467,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2357,7 +1478,7 @@ WaitUntilOverScanTimerEndsBank3
 *
 VBLANKBank3
 
-
+!!!VBLANK_BANK3!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2408,7 +1529,7 @@ VBlankEndBank3
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK3!!!
 
 
 *SkipIfNoGameSet
@@ -2455,7 +1576,7 @@ JumpToMainKernelBank3
 
 ScreenBottomBank3
 
-
+!!!SCREENBOTTOM_BANK3!!!
 
 	JMP	OverScanBank3
 
@@ -2466,7 +1587,7 @@ ScreenBottomBank3
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK3!!!
 
 
 *Data Section 
@@ -2476,7 +1597,7 @@ ScreenBottomBank3
 * elments.
 *
 
-
+!!!USER_DATA_BANK3!!!
 
 	saveFreeBytes
 	rewind 	3fd4
@@ -2529,7 +1650,7 @@ start_bank3
 
 EnterScreenBank4
 
-
+!!!ENTER_BANK4!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank4
 
@@ -2543,7 +1664,7 @@ EnterScreenBank4
 
 LeaveScreenBank4
 
-
+!!!LEAVE_BANK4!!!
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
@@ -2597,7 +1718,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2608,7 +1729,7 @@ OverScanBank4
 * begins.
 *
 
-
+!!!OVERSCAN_BANK4!!!
 
 
 *VSYNC
@@ -2641,7 +1762,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2652,7 +1773,7 @@ WaitUntilOverScanTimerEndsBank4
 *
 VBLANKBank4
 
-
+!!!VBLANK_BANK4!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2703,7 +1824,7 @@ VBlankEndBank4
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK4!!!
 
 
 *SkipIfNoGameSet
@@ -2750,7 +1871,7 @@ JumpToMainKernelBank4
 
 ScreenBottomBank4
 
-
+!!!SCREENBOTTOM_BANK4!!!
 
 	JMP	OverScanBank4
 
@@ -2761,7 +1882,7 @@ ScreenBottomBank4
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK4!!!
 	
 
 *Data Section 
@@ -2771,7 +1892,7 @@ ScreenBottomBank4
 * elments.
 *
 
-
+!!!USER_DATA_BANK4!!!
 
 	saveFreeBytes
 	rewind 	4fd4
@@ -2825,7 +1946,7 @@ start_bank4
 
 EnterScreenBank5
 
-
+!!!ENTER_BANK5!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank5
 
@@ -2839,7 +1960,7 @@ EnterScreenBank5
 
 LeaveScreenBank5
 
-
+!!!LEAVE_BANK5!!!
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
@@ -2893,7 +2014,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2904,7 +2025,7 @@ OverScanBank5
 * begins.
 *
 
-
+!!!OVERSCAN_BANK5!!!
 
 
 *VSYNC
@@ -2937,7 +2058,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2948,7 +2069,7 @@ WaitUntilOverScanTimerEndsBank5
 *
 VBLANKBank5
 
-
+!!!VBLANK_BANK5!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2999,7 +2120,7 @@ VBlankEndBank5
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK5!!!
 
 
 *SkipIfNoGameSet
@@ -3046,7 +2167,7 @@ JumpToMainKernelBank5
 
 ScreenBottomBank5
 
-
+!!!SCREENBOTTOM_BANK5!!!
 
 	JMP	OverScanBank5
 
@@ -3057,7 +2178,7 @@ ScreenBottomBank5
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK5!!!
 	
 *Data Section 
 *----------------------------------
@@ -3066,7 +2187,7 @@ ScreenBottomBank5
 * elments.
 *
 
-
+!!!USER_DATA_BANK5!!!
 
 	saveFreeBytes
 	rewind 	5fd4
@@ -3119,7 +2240,7 @@ start_bank5
 
 EnterScreenBank6
 
-
+!!!ENTER_BANK6!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank6
 
@@ -3133,7 +2254,7 @@ EnterScreenBank6
 
 LeaveScreenBank6
 
-
+!!!LEAVE_BANK6!!!
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
@@ -3187,7 +2308,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3198,7 +2319,7 @@ OverScanBank6
 * begins.
 *
 
-
+!!!OVERSCAN_BANK6!!!
 
 
 *VSYNC
@@ -3231,7 +2352,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3242,7 +2363,7 @@ WaitUntilOverScanTimerEndsBank6
 *
 VBLANKBank6
 
-
+!!!VBLANK_BANK6!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3293,7 +2414,7 @@ VBlankEndBank6
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK6!!!
 
 
 *SkipIfNoGameSet
@@ -3340,7 +2461,7 @@ JumpToMainKernelBank6
 
 ScreenBottomBank6
 
-
+!!!SCREENBOTTOM_BANK6!!!
 
 	JMP	OverScanBank6
 
@@ -3351,7 +2472,7 @@ ScreenBottomBank6
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK6!!!
 	
 
 *Data Section 
@@ -3361,7 +2482,7 @@ ScreenBottomBank6
 * elments.
 *
 
-
+!!!USER_DATA_BANK6!!!
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -3414,7 +2535,7 @@ start_bank6
 
 EnterScreenBank7
 
-
+!!!ENTER_BANK7!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank7
 
@@ -3428,7 +2549,7 @@ EnterScreenBank7
 
 LeaveScreenBank7
 
-
+!!!LEAVE_BANK7!!!
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
@@ -3481,7 +2602,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3492,7 +2613,7 @@ OverScanBank7
 * begins.
 *
 
-
+!!!OVERSCAN_BANK7!!!
 
 
 *VSYNC
@@ -3525,7 +2646,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3536,7 +2657,7 @@ WaitUntilOverScanTimerEndsBank7
 *
 VBLANKBank7
 
-
+!!!VBLANK_BANK7!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3587,7 +2708,7 @@ VBlankEndBank7
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK7!!!
 
 
 *SkipIfNoGameSet
@@ -3634,7 +2755,7 @@ JumpToMainKernelBank7
 
 ScreenBottomBank7
 
-
+!!!SCREENBOTTOM_BANK7!!!
 
 	JMP	OverScanBank7
 
@@ -3645,7 +2766,7 @@ ScreenBottomBank7
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK7!!!
 	
 *Data Section 
 *----------------------------------
@@ -3654,7 +2775,7 @@ ScreenBottomBank7
 * elments.
 *
 
-
+!!!USER_DATA_BANK7!!!
 
 	saveFreeBytes
 	rewind 	7fd4
@@ -3707,7 +2828,7 @@ start_bank7
 
 EnterScreenBank8
 
-
+!!!ENTER_BANK8!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank8
 
@@ -3721,7 +2842,7 @@ EnterScreenBank8
 
 LeaveScreenBank8
 
-
+!!!LEAVE_BANK8!!!
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
@@ -3774,7 +2895,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3785,7 +2906,7 @@ OverScanBank8
 * begins.
 *
 
-
+!!!OVERSCAN_BANK8!!!
 
 
 *VSYNC
@@ -3818,7 +2939,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3829,7 +2950,7 @@ WaitUntilOverScanTimerEndsBank8
 *
 VBLANKBank8
 
-
+!!!VBLANK_BANK8!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3868,7 +2989,7 @@ VBlankEndBank8
 * top part of the screen.
 *
 
-
+!!!SCREENTOP_BANK8!!!
 
 
 *SkipIfNoGameSet
@@ -3915,7 +3036,7 @@ JumpToMainKernelBank8
 
 ScreenBottomBank8
 
-
+!!!SCREENBOTTOM_BANK8!!!
 
 	JMP	OverScanBank8
 
@@ -3926,7 +3047,7 @@ ScreenBottomBank8
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK8!!!
 
 *Data Section 
 *----------------------------------
@@ -3935,7 +3056,7 @@ ScreenBottomBank8
 * elments.
 *
 
-
+!!!USER_DATA_BANK8!!!
 	align 256
 
 *Calculations during VBLANK
