@@ -125,6 +125,39 @@ class Assembler():
 
         return("\n".join(new))
 
+
+    def compactSleep(self, text):
+        counter = 0
+
+        template = (" LDA #XXX\n"+
+                    "LoopFuck666\n"+
+                    " SBC #1\n"+
+                    " BCS LoopFuck666\n")
+
+        new = []
+        text = text.split("\n")
+
+        for line in text:
+            if "_sleep" not in line:
+                new.append(line)
+                continue
+
+
+
+            number = int(line.split("_sleep", 1)[1].replace(" ", ""))
+
+            if (number<7) or (number-3)%4 != 0:
+                new.append("\tsleep\t"+str(number))
+                continue
+
+
+            xxx = (number - 3)//4-1
+            new.append(template.replace("666", str(counter)).replace("XXX", str(xxx)))
+            #print(template.replace("666", str(counter)).replace("XXX", str(xxx)))
+            counter+=1
+
+        return ("\n".join(new))
+
     def setup(self, line, upper):
 
         if upper == True:
@@ -334,7 +367,6 @@ class Assembler():
                     elif line.raw[0].upper() in branchers:
                         c = bytes([int(c.replace("$", "0x"), 16)])
                         line.bytes.append(c)
-
 
                         second = self.checkIfSectionName(line.raw[1], sections)
                         second = self.starToAddress(line.address, second)
@@ -608,6 +640,7 @@ class Assembler():
         source = self.normalize(source)
         variables = self.collectVariables(source)
 
+        source = self.compactSleep(source)
         source = self.sleepToCode(source)
 
         freeBytes, code, sections = self.createSquence(source, opcodes, variables, registers)
@@ -645,16 +678,7 @@ class Assembler():
                 if sections[section][1:] == codeline.getAddressInHex():
                     toWrite.append(str(num).ljust(lenOfNum+2) + str(codeline.getAddressInHex()).ljust(5)+ ">>" + section)
 
-
-
             toWrite.append(fos)
-
-            free = open("temp/free.txt", "w")
-            txt  = ""
-            for data in freeBytes:
-                txt += str(freeBytes[data])+"\n"
-            free.write(txt)
-            free.close()
 
 
         import os
@@ -663,5 +687,10 @@ class Assembler():
         file.close()
         fileBin.close()
 
-
+        free = open("temp/free.txt", "w")
+        txt = ""
+        for data in freeBytes:
+            txt += str(freeBytes[data]) + "\n"
+        free.write(txt)
+        free.close()
 

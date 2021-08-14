@@ -86,7 +86,7 @@
 
 	LDA	P1TurnOff
 	AND	#%00111111
-	ORA	#%11000000
+	ORA	#%01000000
 	STA	P1TurnOff	; Turn Off P1 and M1
 
 	LDA	BallTurnOff

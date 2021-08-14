@@ -253,9 +253,13 @@ Not5Again
 SSSSAVE	
 	STA	P0Settings
 NoNUSIZChange
-	JMP	SubMenuEnded
+	JMP	ReallyEnded
 
 OtherWay
+	LDA	TileSelected
+	AND	#%11100000
+	STA	temp10
+
 	LDA	counter
 	AND	#%00000111
 	CMP	#%00000111
@@ -266,7 +270,7 @@ OtherWay
 	CLC
 	ADc	#1
 	TAY
-	LDA	#0
+	LDA	#255
 	STA	temp02
 Add6ToThat2
 	CPY	#0
@@ -286,9 +290,7 @@ NoMore62
 	CMP	#0
 	BEQ	ItsZeroLOL
 
-
 	AND	#%11100000
-	STA	temp01
 	LDA	TileSelected
 	AND	#%00011111
 	SEC
@@ -306,30 +308,91 @@ NoLeftMoveSub
 
 	LDA	TileSelected
 	AND	#%11100000
-	STA	temp01
 	LDA	TileSelected
 	ORA	#%11100000
 	CLC
 	ADC	#1
 SaveTileSelect
 	AND	#%00011111
-	ORA	temp01
 	STA	TileSelected
 
 SubVertical
-	LDA	#$10
-	bit 	SWCHA
-	BNE	NoDownMovesub
+
+	LDY	#0
+	LDA	TileSelected
+	AND	#%00011111
+
+SmallerThan62
+	CMP	#6
+	BCC	GetRowNum
+	SEC
+	SBC	#6
+	INY
+	JMP	SmallerThan62
+GetRowNum
+	STY	temp02
+
+	LDA	SubMenuLines
+	AND	#%00000011
+	CMP	temp02	
+	BEQ	NoUpSub
 
 
-	JMP	NoVerMoveSub
-
-NoDownMovesub
 	LDA	#$20
+	bit 	SWCHA
+	BNE	NoUpSub
+
+	LDA	TileSelected
+	AND	#%11100000
+	LDA	TileSelected
+	ORA	#%11100000
+	CLC
+	ADC	#6
+
+	JMP	SaveTileSelect2
+
+NoUpSub
+	LDA	#0
+	CMP	temp02
+	BEQ	NoVerMoveSub
+
+
+	LDA	#$10
 	bit 	SWCHA
 	BNE	NoVerMoveSub
 
+	LDA	TileSelected
+	AND	#%11100000
+	LDA	TileSelected
+	AND	#%00011111
+	SEC
+	SBC	#6
+
+SaveTileSelect2
+	AND	#%00011111
+	STA	TileSelected
 NoVerMoveSub
 
-
 SubMenuEnded
+	LDA	TileSelected
+	AND	#%00011111
+	ORA	temp10
+	STA	TileSelected
+
+
+	LDA	SWCHB
+	AND	#%11000000
+	LSR	
+	STA	temp01
+	LDA	OverlapScreen
+	AND	#%10011111
+	ORA	temp01
+	STA	OverlapScreen
+
+
+
+
+ReallyEnded
+	DEC	M1Y
+	LDA	#$0e
+	STA	M1Color
