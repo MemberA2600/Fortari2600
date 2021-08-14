@@ -23,115 +23,120 @@ temp11 = $8c
 temp12 = $8d
 temp13 = $8e
 temp14 = $8f
+temp15 = $91
+temp16 = $92
+temp17 = $93
+temp18 = $94
+temp19 = $95
 
-item = $90
-frameColor = $91
+
+item = $96
+frameColor = $97
 			
 *** Playfield Elements
-pf0Pointer = $92		; 16 bits
-pf1Pointer = $94		; 16 bits
-pf2Pointer = $96		; 16 bits	
-pfColorPointer = $98		; 16 bits 
-bkColorPointer = $9a		; 16 bits
-bkBaseColor = $9c
-pfBaseColor = $9d
-pfIndex = $9e
+pf0Pointer = $98		; 16 bits
+pf1Pointer = $9a		; 16 bits
+pf2Pointer = $9c		; 16 bits	
+pfColorPointer = $9e		; 16 bits 
+bkColorPointer = $a0		; 16 bits
+bkBaseColor = $a2
+pfBaseColor = $a3
+pfIndex = $a4
 
 ************************
-SubMenu = $9f		; 0-1 : SubMenuLines
-NoGameMode = $9f	; 2-4 : BankToJump
-bankToJump = $9f	; 5 : FREE
-SubMenuLines = $9f	; 6 : Go to SubMenu
+SubMenu = $a5		; 0-1 : SubMenuLines
+NoGameMode = $a5	; 2-4 : BankToJump
+bankToJump = $a5	; 5 : FREE
+SubMenuLines = $a5	; 6 : Go to SubMenu
 ************************  7 : No Game Mode
 
 *** Player Settings
-P0SpritePointer = $a0		; 16bit
-P0ColorPointer = $a2		; 16bit
-P1SpritePointer = $a4		; 16bit
-P1ColorPointer = $a6		; 16bit
+P0SpritePointer = $a6		; 16bit
+P0ColorPointer = $a8		; 16bit
+P1SpritePointer = $aa		; 16bit
+P1ColorPointer = $ac		; 16bit
 
 ************
 * Settings *
 ****************************************	
-P0Settings = $a8			; Bits 0-2 are sprite settings, 
-P0Mirrored = $a8			; 3 is reflection, bits 4-5 are missile settings. 
-P0TurnOff  = $a8			; 6: Turn Off Sprite
-P1Settings = $a9			; 7: Turn off Missile
-P1Mirrored = $a9			; Must be in order!
-P1TurnOff  = $a9
+P0Settings = $ae			; Bits 0-2 are sprite settings, 
+P0Mirrored = $ae			; 3 is reflection, bits 4-5 are missile settings. 
+P0TurnOff  = $ae			; 6: Turn Off Sprite
+P1Settings = $af			; 7: Turn off Missile
+P1Mirrored = $af			; Must be in order!
+P1TurnOff  = $af
 ****************************************
-pfSettings = $aa	; Since CTRLPF 0-1 bits are fixed in the screen loop
-pfEdges	= $aa		; 0-1: free
-BallTurnOff = $aa	; 2: Players move behind the pf
+pfSettings = $b0	; Since CTRLPF 0-1 bits are fixed in the screen loop
+pfEdges	= $b0		; 0-1: free
+BallTurnOff = $b0	; 2: Players move behind the pf
 #Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
 #routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
 ************************
 
-P0Height = $ab
-P1Height = $ac
+P0Height = $b1
+P1Height = $b2
 
 ****************************************
-P0SpriteIndex = $ad			; low nibble is P0 sprite index
-P1SpriteIndex = $ad			; high nibble is P1 sprite index
+P0SpriteIndex = $b3			; low nibble is P0 sprite index
+P1SpriteIndex = $b3			; high nibble is P1 sprite index
 ****************************************
 
 *** Positions (Must be aligned!!)
-P0Y = $ae	
-P1Y = $af	
-M0Y = $b0
-M1Y = $b1
-BLY = $b2
+P0Y = $b4	
+P1Y = $b5	
+M0Y = $b6
+M1Y = $b7
+BLY = $b8
 
-P0X = $b3
-P1X = $b4
-M0X = $b5
-M1X = $b6
-BLX = $b7
+P0X = $b9
+P1X = $ba
+M0X = $bb
+M1X = $bc
+BLX = $bd
 
 *** Fake Missile Colors
-M0Color = $b8
-M1Color = $b9
+M0Color = $be
+M1Color = $bf
 
 *** TileScreen
-TileSetPointer = $ba	; 16 bit
-TileScreenMainColor = $bc
+TileSetPointer = $c0	; 16 bit
+TileScreenMainColor = $c2
 
 *** Matrix 6x4
-Tile1_1 = $bd
-Tile1_2 = $bd
-Tile1_3 = $be
-Tile1_4 = $be
-Tile1_5 = $bf
-Tile1_6 = $bf
+Tile1_1 = $c3
+Tile1_2 = $c3
+Tile1_3 = $c4
+Tile1_4 = $c4
+Tile1_5 = $c5
+Tile1_6 = $c5
 
-Tile2_1 = $c0
-Tile2_2 = $c0
-Tile2_3 = $c1
-Tile2_4 = $c1
-Tile2_5 = $c2
-Tile2_6 = $c2
+Tile2_1 = $c6
+Tile2_2 = $c6
+Tile2_3 = $c7
+Tile2_4 = $c7
+Tile2_5 = $c8
+Tile2_6 = $c8
 
-Tile3_1 = $c3
-Tile3_2 = $c3
-Tile3_3 = $c4
-Tile3_4 = $c4
-Tile3_5 = $c5
-Tile3_6 = $c5
+Tile3_1 = $c9
+Tile3_2 = $c9
+Tile3_3 = $ca
+Tile3_4 = $ca
+Tile3_5 = $cb
+Tile3_6 = $cb
 
-Tile4_1 = $c6
-Tile4_2 = $c6
-Tile4_3 = $c7
-Tile4_4 = $c7
-Tile4_5 = $c8
-Tile4_6 = $c8
+Tile4_1 = $cc
+Tile4_2 = $cc
+Tile4_3 = $cd
+Tile4_4 = $cd
+Tile4_5 = $ce
+Tile4_6 = $ce
 
-TileColorPointer = $c9 	; 16 bits
+TileColorPointer = $cf 	; 16 bits
 
-Selected = $cb
-
-temp15 = $cc 
-temp16 = $cd
+*******************
+TileSelected = $d1  ; 0-4th bit: Selected Tile (5 bits)
+*******************
 
 	; Constants
  
@@ -657,13 +662,21 @@ DoSubMenuKernel
 *	temp02: LineNum
 *	temp03 - temp14: GRP0 pointers
 *	temp15 - temp16: Selector Sprite Pointer
+*	temp17: ColorData
+*	temp18: TileY
+*	temp19: SelectorData
+
+
+	TSX			; 2 
+	STX	item		; 3
 
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK		; 3
 	
 	LDA	pfSettings	; 3 (6)
-	ORA	#%00000001	; 2 (8) Reflected playfield
+	ORA	#%00000101	; 2 (8) Reflected playfield and
+				;       players go behind.
 	AND	#%11111101	; 2 (10) Always get the original colors.
 	STA	CTRLPF		; 3 (13)
 
@@ -671,7 +684,7 @@ DoSubMenuKernel
 	STA	PF2		; 3 (18)	
 
 	LDA	#$03		; 2 (20)
-	STA	NUSIZ0		; 3 (23) Fixed 3 with large gaps.
+	STA	NUSIZ1		; 3 (23) Fixed 3 with large gaps.
 	LDA	#0		; 2 (25)
 	STA	PF0		; 3 (28)
 	STA	PF1		; 3 (31)
@@ -682,13 +695,13 @@ DoSubMenuKernel
 	STA	ENAM0		; 3 (46)
 	STA	ENAM1		; 3 (49)
 	STA	ENABL		; 3 (52)
-
+	
 	LDY	#7
 	LDA	(TileColorPointer),y	; 5 (57)
 	CLC			; 3 (60)
 	ADC	TileScreenMainColor	; 3 (63)
 	STA	COLUPF		; 3 (66)
-	STA	COLUP0		; 3 (69)
+	STA	COLUP1		; 3 (69)
 
 	LDA	SubMenuLines	; 3 (72)
 	AND	#%00000011	; 2 (74)
@@ -697,50 +710,63 @@ DoSubMenuKernel
 	STA	temp01		; 3 (5) Saving the lineNum	
 
 	LDA	counter		; 3 (8)
-	STA	COLUP1		; 3 (11)
-	AND	#%00000011	; 2 (13) 
-	ASL			; 2 (15)
-	ASL			; 2 (17)
-	ASL			; 2 (19)
-	CLC			; 2 (21)
-	ADC	TileSetPointer	; 3 (24)
-	STA	temp15		; 3 (27)
-	LDA	TileSetPointer+1 ; 3 (30)
-	STA	temp16		; 3 (33)
+	STA	COLUP0		; 3 (11)
+	AND	#%00001100	; 2 (13) 
+	ASL
 
-	LDA	Selected
-SmallerThan7
-	CMP	#7
-	BCs	GetP1Poz
+	CLC			; 2 
+	ADC	#<Selector-1	; 3 
+	STA	temp15		; 3 
+	LDA	#>Selector	; 3 
+	STA	temp16		; 3 
+
+	LDA	TileSetPointer+1  ; 3
+	STA	temp04		; 3	High nibble of pointer
+	STA	temp06		; 3	High nibble of pointer
+	STA	temp08		; 3	High nibble of pointer
+	STA	temp10		; 3	High nibble of pointer
+	STA	temp12		; 3	High nibble of pointer
+	STA	temp14		; 3	High nibble of pointer
+
+	LDY	#0
+
+	sleep	6
+	LDA	TileSelected
+	AND	#%00011111
+
+SmallerThan6
+	CMP	#6
+	BCC	GetP0Poz
 	SEC
-	SBC	#7
-	JMP	SmallerThan7
+	SBC	#6
+	INY
+	JMP	SmallerThan6
+GetP0Poz
+	STY	temp18	; Get the Tile row number reversed
+	LDY	#0
+	STY	temp03
 
-GetP1Poz
 	STA	WSYNC
 	TAX
+	LDA	CursorXPosition,x
+	LDX	temp03
+CursorPozLoop
+	sbc	#15
+   	bcs	CursorPozLoop
+   	sleep	2
+	tay
+   	sta	RESP0	
+   	LDA	FineAdjustTable256,Y
+	STA	HMP0
+	INC	temp18
 
+SetP0TilePositions
+	STA	WSYNC
+	STA	HMOVE
 
-	sleep	32
-StopCalc
-	DEX
- 	BMI	SaveP1X
- 	sleep	6
-	JMP	StopCalc
-
-SaveP1X
-	STA	RESP1
-
-
-********One line lost.
-
+	sleep	35		
+	STA	RESP1		; (41) X pos
 	
-	STA	WSYNC	
-	sleep	38		
-	STA	RESP0		; (41) X pos
-	
-	TSX			; 2 
-	STX	item		; 3
 
 	LDA	counter		; 3 
 	AND	#%00000001	; 2 
@@ -751,8 +777,8 @@ SaveP1X
 OddStart
 	LDA	#$C0
 EvenStart	
-	STA	HMP0
-
+	STA	HMP1
+	
 	LDA	#0		
 	STA	temp02
 
@@ -761,31 +787,32 @@ EvenStart
 	
 	LDA	#%00000010	; 2
 	STA	PF2		; 3
-			
+
+		
 CalculatorLine
 	LDX	temp02		; 3
 	LDA	#0		; 2
 	STA	GRP0		; 3
-	LDA	TileSetPointer+1  ; 3
-	STA	temp04		; 3	High nibble of pointer
-	STA	temp06		; 3	High nibble of pointer
-	STA	temp08		; 3	High nibble of pointer
-	STA	temp10		; 3	High nibble of pointer
-	STA	temp12		; 3	High nibble of pointer
-	STA	temp14		; 3	High nibble of pointer
+	STA	GRP1		; 3
 
+	DEC 	temp18
 
 	JMP	LoadNextData	; 3
 LoadedShit
+	LDY	#7
 	LDA	(TileColorPointer),y	; 5 
 	CLC			; 3 
 	ADC	TileScreenMainColor	; 3 
 	STA	COLUPF		; 3 
-	STA	COLUP0		; 3 
+	STA	COLUP1		; 3 
+
+	INY
+	LDA	(temp15),y	; 5
+	STA	temp19
+	DEY
 
 	STA	WSYNC
-
-	LDY	#7		; 2
+	; 2
 	LDA	counter		; 3 (5)
 	AND	#%00000001	; 2 (7)
 	CMP	#%00000001	; 2 (9)
@@ -798,57 +825,81 @@ JumpOddFrame
 	align	256
 
 OddFrame
+	LDA	#$00
+	STA	HMP0
+	
+	sta	WSYNC
 
-	STA	WSYNC
 Loop_Odd_Line1
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
-	STA	HMP0		; 3 (8)
+	STA	HMP1		; 3 (8)
 
-	LDA	(TileColorPointer),y	; 5 (13)
-	CLC			; 3 (16)
-	ADC	TileScreenMainColor	; 3 (19)
-	STA	COLUPF		; 3 (22)
-	STA	COLUP0		; 3 (25)
+	LDA	temp18		; 3
+	CMP	#0		; 2
+	BEQ	SelectorDraw	; 2
+	LDA	#0		; 2
+	sleep	2
+	JMP	NoSelectorDraw	; 3
+SelectorDraw
+	sleep	3
+	LDA	temp19		; 3
+NoSelectorDraw
+	STA	GRP0		; 3
+
 
 	LDA	(temp03),y 	; 5 (30)
-	STA	GRP0		; 3 (33)
+	STA	GRP1		; 3 (33)
 
 	LDA	(temp11),y 	; 5 (38)
 	TAX			; 2 (40)
 
 	LDA	(temp07),y 	; 5 (45)
-	STA	GRP0		; 3 (48)
+	STA	GRP1		; 3 (48)
 	sleep	2
-	STX	GRP0		; 3 (53)
+	STX	GRP1		; 3 (53)
+	
 
+	sleep	8		
+	LDA	(temp15),y	
+	STA	temp19
 
-	sleep	21		; (74)
+	LDA	#$00
+	STA	HMP0
 
 Loop_Odd_Line2
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
-	STA 	HMP0		; 3 (8)
+	STA 	HMP1		; 3 (8)
 
-	sleep	17		; (25)
+	LDA	(TileColorPointer),y	; 5 
+	CLC			; 3 
+	ADC	TileScreenMainColor	; 3 
+	STA	temp17		; 3 
+	sleep	3
 
 	LDA	(temp05),y 	; 5 (30)
-	STA	GRP0		; 3 (33)
+	STA	GRP1		; 3 (33)
 
 	LDA	(temp13),y 	; 5 (38)
 	TAX			; 2 (40)
 
 	LDA	(temp09),y 	; 5 (45)
-	STA	GRP0		; 3 (48)
+	STA	GRP1		; 3 (48)
 	sleep 	2
-	STX	GRP0		; 3 (53)
+	STX	GRP1		; 3 (53)
 
-	sleep	19		;(72)
+	sleep	10		
+
+	LDA	temp17		; 3
+	STA	COLUPF		; 3
+	STA	COLUP1		; 3 
 
 	DEY			; 2 (74)
 	BPL	Loop_Odd_Line1	; 2 (76)
 	LDA	#0
 	STA	GRP0
+	STA	GRP1
 
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
@@ -857,61 +908,84 @@ Loop_Odd_Line2
 	JMP	CalculatorLine	; 3 	
 
 EvenFrame
-	sleep	60		; (74)
+	sleep	57		; (74)
 	
+	LDA	#$00
+	STA	HMP0
+
+
 Loop_Even_Line1
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
-	STA	HMP0		; 3 (8)
-
-	LDA	(TileColorPointer),y	; 5 (13)
-	CLC			; 3 (16)
-	ADC	TileScreenMainColor	; 3 (19)
-	STA	COLUPF		; 3 (22)
-	STA	COLUP0		; 3 (25)
+	STA	HMP1		; 3 (8)
+	
+	LDA	temp18		; 3
+	CMP	#0		; 2
+	BEQ	SelectorDraw2	; 2
+	LDA	#0		; 2
+	sleep	2
+	JMP	NoSelectorDraw2	; 3
+SelectorDraw2
+	sleep	3
+	LDA	temp19		; 3
+NoSelectorDraw2
+	STA	GRP0		; 3
+	
 
 	LDA	(temp05),y 	; 5 (30)
-	STA	GRP0		; 3 (33)
-
-
+	STA	GRP1		; 3 (33)
 
 	LDA	(temp13),y 	; 5 (38)
 	TAX			; 2 (40)
 
 	LDA	(temp09),y 	; 5 (45)
-	STA	GRP0		; 3 (48)
+	STA	GRP1		; 3 (48)
 	sleep	2
-	STX	GRP0		; 3 (53)
+	STX	GRP1		; 3 (53)
 
 
-	sleep	23		; (76)
+	sleep	10
+	LDA	(temp15),y	; 5
+	STA	temp19
 
+	LDA	#$00
+	STA	HMP0
 
 Loop_Even_Line2
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
-	STA 	HMP0		; 3 (8)
+	STA 	HMP1		; 3 (8)
 
-	sleep	17		; (25)
+	LDA	(TileColorPointer),y	; 5 
+	CLC			; 3 
+	ADC	TileScreenMainColor	; 3 
+	STA	temp17		; 3 
+	sleep	3
 
 	LDA	(temp03),y 	; 5 (30)
-	STA	GRP0		; 3 (33)
+	STA	GRP1		; 3 (33)
 
 	sleep	2
 	LDA	(temp11),y 	; 5 (38)
 	TAX			; 2 (40)
 
 	LDA	(temp07),y 	; 5 (45)
-	STA	GRP0		; 3 (48)
-	sleep 	2
-	STX	GRP0		; 3 (53)
+	STA	GRP1		; 3 (48)
+	sleep 	3
+	STX	GRP1		; 3 (53)
 
-	sleep	15		;(70)
+	LDA	#$00
+	STA	HMP0
+
+	LDA	temp17		; 3
+	STA	COLUPF		; 3
+	STA	COLUP1		; 3 
 
 	DEY			; 2 (72)
 	BPL	Loop_Even_Line1	; 2 (74)
 	LDA	#0
 	STA	GRP0
+	STA	GRP1
 
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
@@ -924,6 +998,7 @@ EndOfAll
 	STA	WSYNC
 	LDA	#0
 	STA	GRP0
+	STA	GRP1
 
 	STA	WSYNC
 	LDA	#%11111110
@@ -935,9 +1010,9 @@ EndOfAll
 	JMP	ResetAll
 
 
-
+	align	256
 FineAdjustTable256
-	fill 	191
+	fill 	185
 
 Zero
 Null
@@ -995,6 +1070,14 @@ ScreenJumpTable
 	.byte	#<ScreenBottomBank7-1
 	.byte	#>ScreenBottomBank8-1
 	.byte	#<ScreenBottomBank8-1
+
+CursorXPosition
+	byte	#60	
+	byte	#79	
+	byte	#83	
+	byte	#87
+	byte	#106	
+	byte	#110	
 
 
 FineAdjustTable
@@ -1619,8 +1702,8 @@ maxFrames=3
 
 	LDA	SubMenuLines
 	AND	#%11111100
-	ORA	#%00000011
-	STA	SubMenuLines	; Set to 5 lines.
+	ORA	#%00000000
+	STA	SubMenuLines	; Set to 4 lines.
 
 	LDA	#<Symbols
 	STA 	TileSetPointer 
@@ -1702,8 +1785,8 @@ FillTiles
 	STA	SubMenu		; Switch to SubMenu Mode	
 	
 
-	LDA	#0
-	STA	Selected
+	LDA	#%00000000
+	STA	TileSelected
 
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
@@ -1783,9 +1866,28 @@ OverScanBank2
 * begins.
 *
 
+	LDA	SWCHB
+	AND	#%00001000
+	ASL
+	ASL
+	ASL
+	STA	temp01
+	LDA	SubMenu
+	AND	#%10111111
+	ORA	temp01
+	STA	SubMenu
+
+
+	LDA	SubMenu
+	AND	#%01000000
+	CMP	#%01000000
+	BNE	ChangeColor
+	JMP	OtherWay
+NoSubMenuHere 
 	LDA	#$08
 	BIT 	SWCHB
 	BNE	ChangeColor
+	
 
 	LDA	#$20
 	BIT	SWCHA
@@ -1823,9 +1925,9 @@ NoOneUp
 	BNE 	AllDone
 	INC	bkBaseColor
 AllDone
-	LDA	#$08
-	BIT 	SWCHB
-	BEQ 	MissileDone
+*	LDA	#$08
+*	BIT 	SWCHB
+*	BEQ 	MissileDone
 GoWithSprite
 
 	bit 	SWCHA
@@ -2019,6 +2121,73 @@ Not5Again
 SSSSAVE	
 	STA	P0Settings
 NoNUSIZChange
+	JMP	SubMenuEnded
+
+OtherWay
+	LDA	counter
+	AND	#%00000111
+	CMP	#%00000111
+	BNE	SubMenuEnded
+
+	LDA	SubMenuLines
+	AND	#%00000011
+	CLC
+	ADc	#1
+	TAY
+	LDA	#0
+	STA	temp02
+Add6ToThat2
+	CPY	#0
+	BEQ	NoMore62
+	CLC
+	ADC	#6
+	DEY
+	JMP 	Add6ToThat2
+NoMore62
+	STA	temp02
+
+	bit 	SWCHA
+	BVS	NoLeftMoveSub
+
+
+	LDA	TileSelected
+	CMP	#0
+	BEQ	ItsZeroLOL
+
+
+	AND	#%11100000
+	STA	temp01
+	LDA	TileSelected
+	AND	#%00011111
+	SEC
+	SBC	#1
+	JMP	SaveTileSelect
+
+ItsZeroLOL
+	LDA	temp02
+	JMP	SaveTileSelect
+
+
+NoLeftMoveSub
+	bit 	SWCHA
+	BMI	SubVertical
+
+	LDA	TileSelected
+	AND	#%11100000
+	STA	temp01
+	LDA	TileSelected
+	ORA	#%11100000
+	CLC
+	ADC	#1
+SaveTileSelect
+	AND	#%00011111
+	ORA	temp01
+	STA	TileSelected
+
+SubVertical
+	
+
+SubMenuEnded
 
 
 *VSYNC
@@ -3969,6 +4138,10 @@ CalculateDuringVBLANK
 * CMP	Y
 * BCC 	else
 *
+	BIT	SubMenu
+	BVC	CheckIfOutOfBorders	; Go to the SubMenu Kernel
+	JMP	SubMenuVBLANK	
+
 
 *CheckIfOutOfBorders
 *--------------------------------------------
@@ -4270,6 +4443,37 @@ XHorBorderAddMissile
 	byte	#4
 	byte	#8
 
+
+SubMenuVBLANK	
+	LDA	SubMenuLines
+	AND	#%00000011
+	CLC
+	ADc	#1
+	TAY
+	LDA	#1
+	STA	temp02
+Add6ToThat
+	CPY	#0
+	BEQ	NoMore6
+	CLC
+	ADC	#6
+	DEY
+	JMP 	Add6ToThat
+NoMore6
+	STA	temp02
+	
+	LDA	TileSelected
+	AND	#%00011111
+	CMP	temp02
+	BCC	NoLargerThan24
+	AND	#%11100000
+NoLargerThan24
+	STA	TileSelected
+
+
+
+SubMenuVBLANKEnd
+	JMP	JumpBackToBankScreenTop
 	
 	align 256
 	

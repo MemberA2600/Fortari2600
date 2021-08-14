@@ -1,6 +1,25 @@
+	LDA	SWCHB
+	AND	#%00001000
+	ASL
+	ASL
+	ASL
+	STA	temp01
+	LDA	SubMenu
+	AND	#%10111111
+	ORA	temp01
+	STA	SubMenu
+
+
+	LDA	SubMenu
+	AND	#%01000000
+	CMP	#%01000000
+	BNE	ChangeColor
+	JMP	OtherWay
+NoSubMenuHere 
 	LDA	#$08
 	BIT 	SWCHB
 	BNE	ChangeColor
+	
 
 	LDA	#$20
 	BIT	SWCHA
@@ -38,9 +57,9 @@ NoOneUp
 	BNE 	AllDone
 	INC	bkBaseColor
 AllDone
-	LDA	#$08
-	BIT 	SWCHB
-	BEQ 	MissileDone
+*	LDA	#$08
+*	BIT 	SWCHB
+*	BEQ 	MissileDone
 GoWithSprite
 
 	bit 	SWCHA
@@ -234,3 +253,83 @@ Not5Again
 SSSSAVE	
 	STA	P0Settings
 NoNUSIZChange
+	JMP	SubMenuEnded
+
+OtherWay
+	LDA	counter
+	AND	#%00000111
+	CMP	#%00000111
+	BNE	SubMenuEnded
+
+	LDA	SubMenuLines
+	AND	#%00000011
+	CLC
+	ADc	#1
+	TAY
+	LDA	#0
+	STA	temp02
+Add6ToThat2
+	CPY	#0
+	BEQ	NoMore62
+	CLC
+	ADC	#6
+	DEY
+	JMP 	Add6ToThat2
+NoMore62
+	STA	temp02
+
+	bit 	SWCHA
+	BVS	NoLeftMoveSub
+
+
+	LDA	TileSelected
+	CMP	#0
+	BEQ	ItsZeroLOL
+
+
+	AND	#%11100000
+	STA	temp01
+	LDA	TileSelected
+	AND	#%00011111
+	SEC
+	SBC	#1
+	JMP	SaveTileSelect
+
+ItsZeroLOL
+	LDA	temp02
+	JMP	SaveTileSelect
+
+
+NoLeftMoveSub
+	bit 	SWCHA
+	BMI	SubVertical
+
+	LDA	TileSelected
+	AND	#%11100000
+	STA	temp01
+	LDA	TileSelected
+	ORA	#%11100000
+	CLC
+	ADC	#1
+SaveTileSelect
+	AND	#%00011111
+	ORA	temp01
+	STA	TileSelected
+
+SubVertical
+	LDA	#$10
+	bit 	SWCHA
+	BNE	NoDownMovesub
+
+
+	JMP	NoVerMoveSub
+
+NoDownMovesub
+	LDA	#$20
+	bit 	SWCHA
+	BNE	NoVerMoveSub
+
+NoVerMoveSub
+
+
+SubMenuEnded
