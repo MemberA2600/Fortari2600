@@ -305,7 +305,7 @@ FinishPreparation
 	STX	item		; Save the stack pointer 3 (34)
 
 	LDX	#42
-	LDA	#14		; 2 (36)
+	LDA	#15		; 2 (36)
 	CLC			; 2 (38)
 	ADC	pfIndex		; 3 (41)
 	STA	temp01		; Save pfIndex 3 (44)	
@@ -365,7 +365,7 @@ NoM1TurnOff
 	STY	BLY		; 3 (47)
 
 NoBallTurnOff
-* _sleep numbers:	6, 10, 14, 18, 22, 26,
+* _sleep numbers:	14, 18, 22, 26,
 *  		 	30, 34, 38, 42, etc. 
 *			(n-2) % 4 = 0
 
@@ -711,7 +711,7 @@ SaveToppp
 	STA	temp11
 	
 
-	LDA	#14		
+	LDA	#15		
 	CLC			
 	ADC	pfIndex		 
 	STA	temp01		; Save pfIndex 
@@ -774,9 +774,6 @@ NoINY
 	BPL	NoDEY
 	DEY
 NoDEY
-
-
-
 
 NewLineWithTemp04
 	LDA	temp04
@@ -861,20 +858,23 @@ NoOverLap
 *	temp19: SelectorData
 
 
+
+NoResetNow
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK		; 3
-	
-	LDA	OverLapIndicator
-	BPL	NoResetNow	
-
-	JMP	ResetAll
-
-NoResetNow
 	LDA	#0		
 	STA	PF0		
 	STA	PF1	
-	STA	NUSIZ0
+	STA	PF2
+
+
+	LDA	OverLapIndicator
+	BPL	FFFF	
+
+	JMP	ResetAll
+FFFF
+
 
 	LDA	#%11111110	; 2 (15)			
 	STA	PF2		; 3 (18)	
@@ -904,7 +904,7 @@ NoResetNow
 	STA	temp16		; 3 
 
 	LDY	#0
-
+	STY	NUSIZ0
 	LDA	TileSelected
 	AND	#%00011111
 

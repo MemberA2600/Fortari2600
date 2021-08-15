@@ -146,7 +146,7 @@ class Assembler():
 
             number = int(line.split("_sleep", 1)[1].replace(" ", ""))
 
-            if (number<6) or (number-2)%4 != 0:
+            if (number<14) or (number-2)%4 != 0:
                 new.append("\tsleep\t"+str(number))
                 continue
 

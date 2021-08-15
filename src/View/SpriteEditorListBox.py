@@ -11,6 +11,10 @@ class SpriteEditorListBox:
         self.__LBFrame1.pack_propagate(False)
         self.__LBFrame1.pack(side=LEFT, anchor=W, fill=Y)
 
+        while(self.__LBFrame1.winfo_width()==1):
+            self.__LBFrame1.config(width=round(motherFrame.winfo_width() / 2))
+            self.__LBFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
         self.__scrollBar = Scrollbar(self.__LBFrame1)
 
         self.__listBox = Listbox(self.__LBFrame1, width=9999,
@@ -20,8 +24,9 @@ class SpriteEditorListBox:
                                  )
         self.__scrollBar.pack(side=RIGHT, anchor=SW, fill=Y)
         self.__listBox.pack_propagate(False)
-
         self.__listBox.pack(side=LEFT, anchor=SW, fill=BOTH)
+
+
 
     def getListBox(self):
         return self.__listBox

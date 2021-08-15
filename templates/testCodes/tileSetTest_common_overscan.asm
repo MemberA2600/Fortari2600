@@ -122,11 +122,10 @@ NoMore62
 
 
 	LDA	TileSelected
+	AND	#%00011111
 	CMP	#0
 	BEQ	ItsZeroLOL
 
-	AND	#%11100000
-	LDA	TileSelected
 	AND	#%00011111
 	SEC
 	SBC	#1
@@ -168,7 +167,7 @@ GetRowNum
 
 	LDA	SubMenuLines
 	AND	#%00000011
-	CMP	temp02	
+	CMP	temp02
 	BEQ	NoUpSub
 
 
