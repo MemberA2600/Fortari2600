@@ -146,12 +146,12 @@ class Assembler():
 
             number = int(line.split("_sleep", 1)[1].replace(" ", ""))
 
-            if (number<7) or (number-3)%4 != 0:
+            if (number<6) or (number-2)%4 != 0:
                 new.append("\tsleep\t"+str(number))
                 continue
 
 
-            xxx = (number - 3)//4-1
+            xxx = (number - 2)//4-1
             new.append(template.replace("666", str(counter)).replace("XXX", str(xxx)))
             #print(template.replace("666", str(counter)).replace("XXX", str(xxx)))
             counter+=1
@@ -180,7 +180,6 @@ class Assembler():
 
             if line.startswith(" ") == False:
                 sections[line.replace(" ", "")] = None
-                continue
 
         return (sections)
 

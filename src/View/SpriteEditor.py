@@ -71,6 +71,30 @@ class SpriteEditor:
                     self.__backButton.config(state=DISABLED)
                     self.__forButton.config(state=DISABLED)
                     self.__indexEntry.config(state=DISABLED)
+                    self.__isPlaying = False
+
+
+
+
+                if self.__tileSetMode.get() == 1:
+                    self.__playButton.config(state = DISABLED)
+                    self.__horBox.config(state = DISABLED)
+                    self.__verBox.config(state = DISABLED)
+                    self.__p1Box.config(state = DISABLED)
+                    self.__p1Mode.set(0)
+
+                    self.__isPlaying = False
+
+                    if self.__heightSetter.getValue() != "8":
+                        self.__heightSetter.setValue("8")
+                        self.__height = 8
+                        self.generateTableCommon()
+                else:
+                    self.__playButton.config(state=NORMAL)
+                    self.__horBox.config(state = NORMAL)
+                    self.__verBox.config(state = NORMAL)
+                    self.__p1Box.config(state = NORMAL)
+
 
                 if self.__isPlaying:
                     self.__playButton.config(image=self.__stopImage)
@@ -79,8 +103,6 @@ class SpriteEditor:
                     play.start()
                 else:
                     self.__playButton.config(image=self.__playImage)
-
-
 
                 if self.changed == False:
                     self.__spriteLoader.disableSave()
@@ -265,6 +287,30 @@ class SpriteEditor:
                                     )
         self.__verBox.pack(side=LEFT, anchor=N, fill=X)
 
+        self.__tileSetMode = BooleanVar()
+        self.__tileSetMode.set(0)
+
+        self.__tileSetBoxFrame = Frame(self.__theController, height=ten, bg=self.__loader.colorPalettes.getColor("window"))
+        self.__tileSetBoxFrame.pack_propagate(False)
+        self.__tileSetBoxFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__tileBox = Checkbutton(self.__tileSetBoxFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                    font=self.__smallFont, text=self.__dictionaries.getWordFromCurrentLanguage("tileSetMode"),
+                                    variable=self.__tileSetMode, command = self.generateTableCommon
+                                    )
+        self.__tileBox.pack(side=LEFT, anchor=N, fill=X)
+
+        self.__p1Mode = BooleanVar()
+        self.__p1Mode.set(0)
+
+        self.__p1Box = Checkbutton(self.__tileSetBoxFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                    font=self.__smallFont, text=self.__dictionaries.getWordFromCurrentLanguage("testAsP1"),
+                                    variable=self.__p1Mode, command = self.generateTableCommon
+                                    )
+        self.__p1Box.pack(side=LEFT, anchor=N, fill=X)
+
         self.__testColorSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "", self.__theController, ten, "testColor", self.__smallFont,
             self.checkColorEntry, None)
@@ -381,12 +427,23 @@ class SpriteEditor:
 
         from Compiler import Compiler
 
-        c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "spriteTest",
-                     [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
-                      self.__pfBox.getSelected(),
-                      self.__bgBox.getSelected(),
-                      self.__colorDict.getTIAfromRGB([self.getDom()[0], self.getDom()[2], self.getDom()[1]])
-                      ])
+        if self.__tileSetMode.get() == 1 :
+            c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "tileSetTest",
+                         [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
+                          self.__pfBox.getSelected(),
+                          self.__bgBox.getSelected(),
+                          self.__colorDict.getTIAfromRGB([self.getDom()[0], self.getDom()[2], self.getDom()[1]]),
+                          0
+                          ])
+
+        else:
+            c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "spriteTest",
+                         [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
+                          self.__pfBox.getSelected(),
+                          self.__bgBox.getSelected(),
+                          self.__colorDict.getTIAfromRGB([self.getDom()[0], self.getDom()[2], self.getDom()[1]]),
+                          self.__p1Mode.get()
+                          ])
 
     def fillBoth(self):
         self.fillListBox1()
@@ -702,10 +759,10 @@ class SpriteEditor:
                     b.config(bg=self.__colors.getColor("boxBackNormal"))
                     if self.__numOfFrames > 1:
                         if self.__index == 0:
-                            if self.__table[self.__numOfFrames - 1][Y][X] == "1":
+                            if self.__table[self.__numOfFrames - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
                         else:
-                            if self.__table[self.__index - 1][Y][X] == "1":
+                            if self.__table[self.__index - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
 
 
@@ -899,12 +956,12 @@ class SpriteEditor:
                 color = self.__colors.getColor("boxBackNormal")
                 if self.__numOfFrames > 1:
                     if self.__index == 0:
-                        if self.__table[self.__numOfFrames - 1][Y][X] == "1":
+                        if self.__table[self.__numOfFrames - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                             b.config(bg=self.__colors.getColor("highLight"))
                             color = self.__colors.getColor("highLight")
 
                     else:
-                        if self.__table[self.__index - 1][Y][X] == "1":
+                        if self.__table[self.__index - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                             b.config(bg=self.__colors.getColor("highLight"))
                             color = self.__colors.getColor("highLight")
 
@@ -933,12 +990,12 @@ class SpriteEditor:
                     if self.__numOfFrames > 1:
                         #print("2")
                         if self.__index == 0:
-                            if self.__table[self.__numOfFrames - 1][Y][X] == "1":
+                            if self.__table[self.__numOfFrames - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
                                 color = self.__colors.getColor("highLight")
 
                         else:
-                            if self.__table[self.__index - 1][Y][X] == "1":
+                            if self.__table[self.__index - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
                                 color = self.__colors.getColor("highLight")
 
@@ -964,11 +1021,11 @@ class SpriteEditor:
                     if self.__numOfFrames > 1:
                         #print("4")
                         if self.__index == 0:
-                            if self.__table[self.__numOfFrames - 1][Y][X] == "1":
+                            if self.__table[self.__numOfFrames - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
                                 color = self.__colors.getColor("highLight")
                         else:
-                            if self.__table[self.__index - 1][Y][X] == "1":
+                            if self.__table[self.__index - 1][Y][X] == "1" and self.__tileSetMode.get() == 0:
                                 b.config(bg=self.__colors.getColor("highLight"))
                                 color = self.__colors.getColor("highLight")
 

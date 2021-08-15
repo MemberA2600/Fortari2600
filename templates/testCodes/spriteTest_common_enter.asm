@@ -87,9 +87,9 @@
 	ORA	#%00001000
 	STA	BallTurnOff	; Turn off Ball
 
-MissileDir = $b9
-NUSIZ = $ba
-Sound = $bb
+MissileDir = $f0
+NUSIZ = $f1
+Sound = $f2
 
 
 	LDA	#0

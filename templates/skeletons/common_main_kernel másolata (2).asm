@@ -71,7 +71,7 @@ pfEdges	= $b0		; 0-1: free
 BallTurnOff = $b0	; 2: Players move behind the pf
 #Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
-#routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 
+#routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 		;
 ************************
 
 P0Height = $b1
@@ -137,6 +137,8 @@ TileColorPointer = $cf 	; 16 bits
 *******************
 TileSelected = $d1  ; 0-4th bit: Selected Tile (5 bits)
 OverlapScreen = $d1 ; 5th bit: Have some part of the other screen
+GrayScale     = $d1 ; 6th bit: GrayScale overlap
+OverLapIndicator = $d1
 *******************
 
 	; Constants
@@ -196,6 +198,18 @@ PAL_Overscan =	206
 	fill 256	; We have to prevent writing on addresses taken by the SuperChip RAM.
 
 EnterKernel
+	LDA	#0		
+	STA	PF0		 
+	STA	PF1		
+	STA	PF2		 
+	STA	GRP0		 
+	STA	GRP1		  
+	STA	VDELP0		 
+	STA	VDELP1		
+	STA	ENAM0		
+	STA	ENAM1		 
+	STA	ENABL
+
 	BIT	SubMenu
 	BVC	StayHere	; Go to the SubMenu Kernel
 	JMP 	DoSubMenuKernel	; instead.
@@ -249,21 +263,8 @@ DivideLoop
 	STA 	COLUPF		; 3 (9)
 
 	LDA	#0	;2 (11)
-	STA 	ENAM0	;3 (14)
-	STA 	ENAM1	;3 (17)
-	STA 	ENABL	;3 (20) Disables missiles and ball  
-	STA	GRP0	;3 (23)
-	STA	GRP1	;2 (25) Sets player sprites to blank 
- 	STA	VDELP0	;3 (28)
-	STA	VDELP1  ;3 (31)
-	STA	VDELBL	;3 (34)
-	
-	STA	PF1	;3 (37)
-	STA	PF2	;3 (40)
-	STA	PF0	;3 (43)
 	STA	temp03 	;3 (46) Erase P1 sprite data
-	
-
+	STA	temp14	;3
 
 	LDA	pfSettings	; 3 (49)
 	ORA	#%00000001	; 2 (51) Reflected playfield
@@ -364,16 +365,23 @@ NoM1TurnOff
 	STY	BLY		; 3 (47)
 
 NoBallTurnOff
+* _sleep numbers:	7, 11, 15, 19, 23, 27,
+*  		 	31, 35, 39, 43, etc. 
+*			(n-3) % 4 = 0
 
 	STA	WSYNC
 	
-	sleep	9
+	_sleep 23
+	sleep	5
+
+
 	LDA	temp01		; pfIndex 3 (12)	
 	TAY			; 2(14)
 
 	LDA	(pf0Pointer),y	; 5(19)
 	STA	PF0		; 3(22)	
 	STA	temp05		; 3(25)
+	TAY
 	asl			; 2(27)
 	asl			; 2(29)
 	asl			; 2(31)
@@ -381,22 +389,18 @@ NoBallTurnOff
 	STA	temp06		; 3(36)
 
 
-	sleep	9
-
 	LDA	(pf2Pointer),y	; 5(45)
 	STA	PF2		; 3(50)
 
 	LDA	(pf1Pointer),y	; 5(55)
 	STA	PF1		; 3(58)
-
-	sleep	12
 	
 	LDA	temp02			; 3(73)	
 	JMP	StartWithoutWSYNC	; 3(76)
 
 NoP0DrawNow
 	CPX	M0Y		; 3
-	BNE	NoColorOverWriteM0
+	BNE	NoColorOverWriteM0 ; 2
 
 	LDA	M0Color		; 3
 	STA	COLUP0		; 3
@@ -406,8 +410,8 @@ NoP0DrawNow
 
 
 NoColorOverWriteM0
-	sleep 	5
-	LDA	#0
+	sleep 	6
+	LDA	#0		; 2
 	JMP	saveP0Sprite	; 3 
 
 
@@ -423,10 +427,9 @@ NoP1DrawNow
 
 
 NoColorOverWriteM1
-	sleep 	5
-	LDA	#0
+	sleep 	6
+	LDA	#0		; 2
 	JMP	saveP1Sprite	; 3 
-
 
 
 DrawingTheScreen
@@ -441,6 +444,9 @@ DrawingTheScreen
 	; temp10, temp11 = P1 sprite pointers
 	; temp12 = p1height
 	; temp13 = lineNum
+	; temp14 = P1 spriteData
+
+
 
 FirstLine
 	STA	WSYNC		; 3 (76)
@@ -448,96 +454,92 @@ StartWithoutWSYNC
 	STA	COLUPF		; 3 (3)
 	LDA	temp04		; 3 (6)
 	STA	COLUBK		; 3 (9)
+	LDA	temp03		; 3 (12)
+	STA	GRP1		; 3 (15)
+	LDA	temp14		; 3 (18)
+	STY	PF0		; 3 (21)
+	STA	GRP0		; 3 (24)
 
 
-	LDA	temp05		; 3 (12)
-	STA	PF0		; 3 (15)
-
-
-	LDA 	P0Height 	; 3 (18)
-	DCP	temp09 		;  temp09 contains P0Y!  ; 5 (23)
-	BCC	NoP0DrawNow	; 2 (25)
-	LDY	temp09		; 3 (28)
-	LDA	(P0ColorPointer),y 	; 5 (33)
-	STA	COLUP0		; 3 (36)
-	LDA	(temp07),y 	; 5 (41)
+	LDA 	P0Height 	; 3 
+	DCP	temp09 		;  temp09 contains P0Y!  ; 5
+	BCC	NoP0DrawNow	; 2 
+	LDY	temp09		; 3 
+	LDA	(P0ColorPointer),y 	; 5 
+	STA	COLUP0		; 3 
+	LDA	(temp07),y 	; 5 
 saveP0Sprite
-	TAY			;2 (43)
-	; 28
+	STA	temp14		; 3 
+	; 29 (43) 
 
 	LDA	temp06		; 3 (46)	
 	STA	PF0		; 3 (49)
 
 
 	STX	temp13		; 3 (52) Saves the lineNum
-	ldx 	#$1f		; Address of ENABL 2 (51) 
-	txs			; 2 (53) 
-	LDX	temp13		; 3 (55) Retrive the lineNum
-	sleep	2
-	
+	ldx 	#$1f		; Address of ENABL 2 (54) 
+	txs			; 2 (56) 
+	LDX	temp13		; 3 (59) Retrive the lineNum
 
-	LDA	temp03		; 3 (67)
-	STY	GRP0		; 2 (70)
-	STA	GRP1		; 3 (73)
+	LDY	temp01		; 3 (62)
+	LDA	(pf0Pointer),y	; 5 (67)
+	STA	temp05		; 3 (70)
+	STA	PF0		; 3 (73)
+
 MiddleLine
+	LDA	(pf1Pointer),y	; 5 (2)
+	STA 	PF1		; 3 (5)
 
-	LDY	temp01		; 3 (76)
+	LDA	(pf2Pointer),y	; 5 (7)
+	STA 	PF2		; 3 (10)
 
-	LDA	(pf0Pointer),y	; 5 (5)
-	STA	PF0		; 3 (8)
-	STA	temp05		; 3 (11)
+	LDA	temp05		; 3 (13)
+	asl			; 2 (15)
+	asl			; 2 (17)
+	asl			; 2 (19)
+	asl			; 2 (21)
+	STA	PF0		; 3 (24)
+	STA	temp06		; 3 (27)
 
-	LDA	(pf1Pointer),y	; 5 (16)
-	STA 	PF1		; 3 (19)
+	DEY			; 2 (29)
 
-	LDA	(pf2Pointer),y	; 5 (24)
-	STA 	PF2		; 3 (27)
-	LDA	temp05		; 3 (30)
-	asl			; 2 (32)
-	asl			; 2 (34)
-	asl			; 2 (36)
-	asl			; 2 (38)
-	STA	PF0		; 3 (41)
-	STA	temp06		; 3 (44)
+	LDA	(pfColorPointer),y	; 6 (35)
+	ADC	pfBaseColor		; 3 (38)
+	STA	temp02		; 3 (41)
 
-	DEY			; 2
+	LDA	(bkColorPointer),y ;5 (46)
+	ADC	bkBaseColor	; 3 (49)	
+	STA	temp04		; 3 (52)
+
 	cpx	BLY		; 3
 	php			; 3
 	cpx	M1Y		; 3
 	php			; 3
 	cpx	M0Y		; 3
-	php			; 3 (12)
+	php			; 3 - 18 (70)
 
-	LDA	(pfColorPointer),y	; 6 (73)
-	ADC	pfBaseColor
+	LDA	temp05		; 3 (73)
+	STA	PF0		; 3 (76)
 LastLine
-	STA	temp02		; 3 (-3)
-	LDA	temp05		; 3 (3)
-	STA	PF0		; 3 (6)
-
-	LDA	(bkColorPointer),y ;5 (11)
-	CLC	 		; 2 (13)
-	ADC	bkBaseColor	; 3 (16)	
-	STA	temp04		; 3 (19)
-	
-
-	LDA 	P1Height 	; 3 (21)
-	DCP	temp12 		;  temp12 contains P0Y!  ; 5 (26)
-	BCC	NoP1DrawNow	; 2 (28)
-	LDY	temp12		; 3 (31)
-	LDA	(P1ColorPointer),y 	; 5 (36)
-	STA	COLUP1	; 3 (39)
-	LDA	(temp10),y 	; 5 (44)
+	LDA 	P1Height 	; 3 
+	DCP	temp12 		;  temp12 contains P0Y!  ; 5
+	BCC	NoP1DrawNow	; 2 
+	LDY	temp12		; 3 
+	LDA	(P1ColorPointer),y 	; 5 
+	STA	COLUP1	; 3 
+	LDA	(temp10),y 	; 5 
 saveP1Sprite
-	STA	temp03		; 3 (47) ;
+	STA	temp03		; 3 
 	; 29
 
-	LDA	temp06		; 3 (53)
-	STA	PF0		; 3 (56)
+	LDY	temp05		; 3 (31)
+	LDA	temp06		; 3 (34)
+	STA	PF0		; 3 (37)
+	
+	sleep	20
 
-
-	CPX	#0		; 2 (58)
-	BEQ	ResetAll  	; 2 (60)
+	CPX	#0		; 2 (57)
+	BEQ	ResetAll  	; 2 (59)
 
 	DEX			; 2 (62)
 	LDA	temp02		; 3 (65)
@@ -552,7 +554,6 @@ ResetAll
 	STX	PF2		; 3 (71)
 
 	STX	WSYNC		
-
 	STA 	COLUBK		 
 	STA 	COLUPF		
 
@@ -674,18 +675,11 @@ DoSubMenuKernel
 	STA	CTRLPF		; 
 
 	LDA	#$03		;
-	STA	NUSIZ1		; Fixed 3 with large gaps.
-	LDA	#0		;
-	STA	PF0		 
-	STA	PF1		
-	STA	PF2		 
-	STA	GRP0		 
-	STA	GRP1		  
-	STA	VDELP0		 
-	STA	VDELP1		
-	STA	ENAM0		
-	STA	ENAM1		 
-	STA	ENABL		 
+	STA	NUSIZ1		; Fixed 3 with large gaps.	 
+
+	LDA	OverLapIndicator
+	AND	#%01111111
+	STA	OverLapIndicator
 
 	LDA	OverlapScreen
 	AND	#%00100000
@@ -694,14 +688,48 @@ DoSubMenuKernel
 	JMP	NoOverLap
 
 DoThisCrap
-
+	LDX	#3
+AddLines
 	STA	WSYNC
-	LDX	#22
+	DEX	
+	CPX	#255
+	BNE	AddLines
+	
+DoItAgainPlease
+	STA	WSYNC
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAX
+
+	LDA	OverLapIndicator
+	BMI	ItsTheBottom
+	LDA	ScreenOverlapTop,x
+	JMP	SaveToppp
+ItsTheBottom
+	LDA	ScreenOverlapBottom,x
+SaveToppp
+	STA	temp11
+	
+
 	LDA	#14		
 	CLC			
 	ADC	pfIndex		 
 	STA	temp01		; Save pfIndex 
-	TAY			
+	STA	WSYNC
+	LDA	OverLapIndicator
+	BPL	NoTemp01Dec
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAX
+
+	LDA	temp01
+	SEC
+	SBC	DecrementTemp1,x
+	STA	temp01
+NoTemp01Dec
+	LDX	temp11
+	
+	LDY	temp01			
 
 	STA	WSYNC
 	
@@ -713,41 +741,74 @@ DoThisCrap
 	LDA	(bkColorPointer),y 	
 	CLC				
 	ADC	bkBaseColor 	
-	STA	temp04		; saveBKColor 
+	STA	temp04		; saveBKColor 	
 
+	STA	WSYNC
+	LDA	GrayScale
+	AND	#%01000000
+	CMP	#%01000000
+	BNE	NotGray
+	LDA	temp02
+	AND	#%00001111
+	STA	temp02
+	LDA	temp04
+	AND	#%00001111
+	STA	temp04
+NotGray
+	STA	WSYNC
+
+	LDA	OverLapIndicator
+	BPL	NoINY
+	INY
+NoINY
+	LDA	(pf2Pointer),y		
+	STA	PF2	
+	
+	LDA	(pf1Pointer),y	
+	STA	PF1
+
+	LDA	(pf0Pointer),y		
+	STA	PF0	
+	STA	temp03
+	LDA	OverLapIndicator
+	BPL	NoDEY
+	DEY
+NoDEY
+
+	LDA	OverLapIndicator
+	BMI	NewLineWithTemp04
+
+	LDA	temp04
+	JMP	Line0
+
+Line0
+	STA	WSYNC
+	STA	COLUBK		; 3
+	LDA	temp02		; 3 (6)
+	STA	COLUPF		; 3 (9)
+	_sleep	23
+	sleep	2
+
+NewLineWithTemp04
+	LDA	temp04
 NewLine
 	STA	WSYNC
 	STA	COLUBK		; 3
 	LDA	temp02		; 3 (6)
 	STA	COLUPF		; 3 (9)
-	LDA	(pf0Pointer),y	; 5 (14)
-	STA	PF0		; 3 (17)	
-	STA	temp03		; 3 (20)
-	LDA	(pf1Pointer),y	; 5 (25)	
-	STA	PF1		; 3 (28)
-	LDA	(pf2Pointer),y	; 5 (32)	
-	STA	PF2		; 3 (35)
-	LDA	temp03		; 3 (38)
-	ASL			; 2 (40)
-	ASL			; 2 (42)
-	ASL			; 2 (44)
-	ASL			; 2 (46)
-	STA	PF0		; 3 (49)
-	DEY			; 2 (51)	
 
-	STA	WSYNC		
-	LDA	temp03		; 3
-	STA	PF0		; 3 (6)
+	LDA	temp03		
+	STA	PF0
 
-	LDA	(pfColorPointer),y	; 5 (11)
-	CLC			; 2 (13)	
-	ADC	pfBaseColor 	; 3 (16)
-	STA	temp02		; savePFColor 3 (19)
+	DEY
+	LDA	(bkColorPointer),y ; 3	
+	CLC			; 2 	
+	ADC	bkBaseColor 	; 3 
+	STA	temp04		; 3 
+	INY
+	sleep	4
 
-	sleep	10
-	
-	LDA	temp03		; 3 (32)
-	
+	LDA	temp03
 	ASL			; 2 (34)
 	ASL			; 2 (36)
 	ASL			; 2 (38)
@@ -755,31 +816,51 @@ NewLine
 	STA	PF0		; 3 (43)
 
 	STA	WSYNC	
+	LDA	(pf0Pointer),y	; 5
+	STA	PF0		; 3 (8)	
+	STA	temp03		; 3 (12)
+	LDA	(pf1Pointer),y	; 5 (15)	
+	STA	PF1		; 3 (18)
+	LDA	(pf2Pointer),y	; 5 (23)	
+	STA	PF2		; 3 (28)
+	
+
+	JSR	GetSecondPF0	
+
+	DEY			; 2 (44)	
+
+	LDA	(pfColorPointer),y	; 5 (55)
+	CLC			; 2 (57)	
+	ADC	pfBaseColor 	; 3 (60)
+	STA	temp02		; 3 (63)
+
+	STA	WSYNC	
 	LDA	temp03		; 3
 	STA	PF0		; 3 (6)
-	
-	LDA	(bkColorPointer),y ; 3 (11)	
-	CLC			; 2 (13)	
-	ADC	bkBaseColor 	; 3 (16)
-	STA	temp04		; saveBKColor 3 (19)
+	sleep	2
+	JSR	GetSecondPF0	; 6 (12) + 20
 
-	sleep	10
-
-	LDA	temp03		; 3 (32)
-	ASL			; 2 (34)
-	ASL			; 2 (36)
-	ASL			; 2 (38)
-	ASL			; 2 (40)
-	STA	PF0		; 3 (43)
+	LDA	GrayScale	; 3 
+	AND	#%01000000	; 2 
+	CMP	#%01000000	; 2 
+	BNE	NotGray2	; 2 
+	LDA	temp02		; 3 
+	AND	#%00001111	; 2 
+	STA	temp02		; 3 
+	LDA	temp04		; 3 
+	AND	#%00001111	; 2 
+	STA	temp04		; 3 
+NotGray2
 
 	DEX
 	CPX	#255		
-	BNE	ResetToOther
+	BEQ	ResetToOther
+
+
+	LDA	temp04
 	JMP	NewLine
 ResetToOther
-	LDA	#0		
-	STA	PF0		
-	STA	PF1		
+
 	
 NoOverLap
 *	temp01: Rows left
@@ -795,6 +876,16 @@ NoOverLap
 	STA	WSYNC
 	STA	COLUBK		; 3
 	
+	LDA	OverLapIndicator
+	BPL	NoResetNow	
+	JMP	ResetAll
+
+NoResetNow
+	LDA	#0		
+	STA	PF0		
+	STA	PF1	
+	STA	NUSIZ0
+
 	LDA	#%11111110	; 2 (15)			
 	STA	PF2		; 3 (18)	
 
@@ -821,14 +912,6 @@ NoOverLap
 	STA	temp15		; 3 
 	LDA	#>Selector	; 3 
 	STA	temp16		; 3 
-
-	LDA	TileSetPointer+1  ; 3
-	STA	temp04		; 3	High nibble of pointer
-	STA	temp06		; 3	High nibble of pointer
-	STA	temp08		; 3	High nibble of pointer
-	STA	temp10		; 3	High nibble of pointer
-	STA	temp12		; 3	High nibble of pointer
-	STA	temp14		; 3	High nibble of pointer
 
 	LDY	#0
 
@@ -864,8 +947,17 @@ CursorPozLoop
 SetP0TilePositions
 	STA	WSYNC
 	STA	HMOVE
+	LDA	TileSetPointer+1  ; 5
+	STA	temp04		; 3	High nibble of pointer
+	STA	temp06		; 3	High nibble of pointer
+	STA	temp08		; 3	High nibble of pointer
+	STA	temp10		; 3	High nibble of pointer
+	STA	temp12		; 3	High nibble of pointer
+	STA	temp14		; 3	High nibble of pointer
 
-	sleep	35		
+
+	_sleep	7
+	sleep	8		
 	STA	RESP1		; (41) X pos
 	
 
@@ -928,6 +1020,7 @@ JumpOddFrame
 OddFrame
 	LDA	#$00
 	STA	HMP0
+
 	
 	sta	WSYNC
 
@@ -935,7 +1028,7 @@ Loop_Odd_Line1
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
 	STA	HMP1		; 3 (8)
-
+	
 	LDA	temp18		; 3
 	CMP	#0		; 2
 	BEQ	SelectorDraw	; 2
@@ -948,7 +1041,7 @@ SelectorDraw
 NoSelectorDraw
 	STA	GRP0		; 3
 
-
+	
 	LDA	(temp03),y 	; 5 (30)
 	STA	GRP1		; 3 (33)
 
@@ -961,9 +1054,10 @@ NoSelectorDraw
 	STX	GRP1		; 3 (53)
 	
 
-	sleep	8		
+	sleep	8	
 	LDA	(temp15),y	
 	STA	temp19
+
 
 	LDA	#$00
 	STA	HMP0
@@ -990,7 +1084,10 @@ Loop_Odd_Line2
 	sleep 	2
 	STX	GRP1		; 3 (53)
 
-	sleep	10		
+	
+	sleep	10
+		
+
 
 	LDA	temp17		; 3
 	STA	COLUPF		; 3
@@ -1009,7 +1106,9 @@ Loop_Odd_Line2
 	JMP	CalculatorLine	; 3 	
 
 EvenFrame
-	sleep	57		; (74)
+
+	_sleep	49		; (74)
+	sleep	8
 	
 	LDA	#$00
 	STA	HMP0
@@ -1108,13 +1207,45 @@ EndOfAll
 	STA	WSYNC
 	STA	WSYNC
 	STA	WSYNC
+
+
+IsThereOverLap
+	LDA	OverlapScreen
+	AND	#%00100000
+	CMP	#%00100000
+	BEQ	ThereItIs
 	STA	WSYNC
 	JMP	ResetAll
 
+ThereItIs
+	LDA	OverLapIndicator
+	ORA	#%10000000
+	STA	OverLapIndicator
+	LDA	#0
+	STA	WSYNC
+	STA	PF2
+	LDA	frameColor
+	STA	COLUPF
+	STA	COLUBK
+
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAY
+	LAX	ExtraWSYNC,y
+DoExtraWSYNC
+	CPX	#0
+	BEQ	NoMoreLiiiiines
+	STA	WSYNC
+	DEX
+	JMP	DoExtraWSYNC
+	
+NoMoreLiiiiines
+	JMP	DoItAgainPlease
+	
 
 	align	256
 FineAdjustTable256
-	fill 	185
+	fill 	160
 
 Zero
 Null
@@ -1156,6 +1287,39 @@ Selector
 	byte	#%10000000
 	byte	#%10000000
 	byte	#%00110011
+
+GetSecondPF0
+	LDA	temp03		
+	ASL			
+	ASL			
+	ASL			
+	ASL			
+	STA	PF0	
+	RTS
+
+ScreenOverlapTop
+	byte	#16
+	byte	#12
+	byte	#7
+	byte	#4
+
+ScreenOverlapBottom
+	byte	#16
+	byte	#15
+	byte	#11
+	byte	#6
+
+DecrementTemp1
+	byte	#29
+	byte	#32
+	byte	#34
+	byte	#37
+
+ExtraWSYNC
+	byte	#0
+	byte	#1
+	byte	#2
+	byte	#0
 
 ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
@@ -1491,6 +1655,16 @@ ScreenBottomBank2
 
 	JMP	OverScanBank2
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK2!!!
+
+
 ###End-Bank2
 *Routine Section
 *---------------------------------
@@ -1500,15 +1674,6 @@ ScreenBottomBank2
 
 !!!ROUTINES_BANK2!!!
 	
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK2!!!
 
 	saveFreeBytes
 	rewind 	2fd4
@@ -1786,6 +1951,15 @@ ScreenBottomBank3
 
 	JMP	OverScanBank3
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK3!!!
+
 ###End-Bank3
 *Routine Section
 *---------------------------------
@@ -1795,15 +1969,6 @@ ScreenBottomBank3
 
 !!!ROUTINES_BANK3!!!
 
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK3!!!
 
 	saveFreeBytes
 	rewind 	3fd4
@@ -2081,6 +2246,15 @@ ScreenBottomBank4
 
 	JMP	OverScanBank4
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK4!!!
+
 ###End-Bank4
 *Routine Section
 *---------------------------------
@@ -2090,15 +2264,6 @@ ScreenBottomBank4
 
 !!!ROUTINES_BANK4!!!
 	
-
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK4!!!
 
 	saveFreeBytes
 	rewind 	4fd4
@@ -2377,6 +2542,15 @@ ScreenBottomBank5
 
 	JMP	OverScanBank5
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK5!!!
+
 ###End-Bank5
 *Routine Section
 *---------------------------------
@@ -2386,14 +2560,6 @@ ScreenBottomBank5
 
 !!!ROUTINES_BANK5!!!
 	
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK5!!!
 
 	saveFreeBytes
 	rewind 	5fd4
@@ -2671,15 +2837,6 @@ ScreenBottomBank6
 
 	JMP	OverScanBank6
 
-###End-Bank6
-*Routine Section
-*---------------------------------
-* This is were the routines are
-* used by the developer.
-*
-
-!!!ROUTINES_BANK6!!!
-	
 
 *Data Section 
 *----------------------------------
@@ -2689,6 +2846,16 @@ ScreenBottomBank6
 *
 
 !!!USER_DATA_BANK6!!!
+
+###End-Bank6
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK6!!!
+	
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -2965,6 +3132,16 @@ ScreenBottomBank7
 
 	JMP	OverScanBank7
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK7!!!
+
+
 ###End-Bank7
 *Routine Section
 *---------------------------------
@@ -2974,14 +3151,6 @@ ScreenBottomBank7
 
 !!!ROUTINES_BANK7!!!
 	
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-!!!USER_DATA_BANK7!!!
 
 	saveFreeBytes
 	rewind 	7fd4
@@ -3246,6 +3415,16 @@ ScreenBottomBank8
 
 	JMP	OverScanBank8
 
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+!!!USER_DATA_BANK8!!!
+
+
 ###End-Bank8
 *Routine Section
 *---------------------------------
@@ -3255,14 +3434,7 @@ ScreenBottomBank8
 
 !!!ROUTINES_BANK8!!!
 
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
 
-!!!USER_DATA_BANK8!!!
 	align 256
 
 *Calculations during VBLANK
@@ -3376,7 +3548,7 @@ VerticalFun
 	LDA	temp04
 	JMP 	NotAMissile2
 ItsAMissile2
-	LDA	#1
+	LDA	#0
 NotAMissile2
 	STA	temp05
 	LDA	#40

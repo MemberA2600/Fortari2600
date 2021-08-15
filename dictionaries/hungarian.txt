@@ -140,3 +140,5 @@ enterBank2=Belépés:
 overscanBank2=Overscan:
 kernelData=Kernel Adatok:
 asm=6502 Assembly Kód
+tileSetMode=Csempés Mód
+testAsP1=Teszt P1-ként

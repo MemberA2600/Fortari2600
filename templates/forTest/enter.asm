@@ -106,11 +106,6 @@ Sound = $f2
 
 maxFrames=3
 
-	LDA	SubMenuLines
-	AND	#%11111100
-	ORA	#%00000011
-	STA	SubMenuLines	; Set to 4 lines.
-
 	LDA	#<Symbols
 	STA 	TileSetPointer 
 	LDA	#>Symbols
@@ -193,3 +188,8 @@ FillTiles
 
 	LDA	#%00000000
 	STA	TileSelected
+
+	LDA	SubMenuLines
+	AND	#%11111100
+	ORA	#%00000000
+	STA	SubMenuLines	; Set to 4 lines.

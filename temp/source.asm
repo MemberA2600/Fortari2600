@@ -264,7 +264,8 @@ DivideLoop
 
 	LDA	#0	;2 (11)
 	STA	temp03 	;3 (46) Erase P1 sprite data
-	
+	STA	temp14	;3
+
 	LDA	pfSettings	; 3 (49)
 	ORA	#%00000001	; 2 (51) Reflected playfield
 	AND	#%11111101	; 2 (53) Always get the original colors.
@@ -364,15 +365,12 @@ NoM1TurnOff
 	STY	BLY		; 3 (47)
 
 NoBallTurnOff
-* _sleep numbers:	7, 11, 15, 19, 23, 27,
-*  		 	31, 35, 39, 43, etc. 
-*			(n-3) % 4 = 0
+* _sleep numbers:	6, 10, 14, 18, 22, 26,
+*  		 	30, 34, 38, 42, etc. 
+*			(n-2) % 4 = 0
 
 	STA	WSYNC
 	
-	_sleep 27
-	sleep	3
-
 
 	LDA	temp01		; pfIndex 3 (12)	
 	TAY			; 2(14)
@@ -394,7 +392,8 @@ NoBallTurnOff
 	STA	PF1		; 3(58)
 	
 	LDA	temp02			; 3(73)	
-	JMP	StartWithoutWSYNC	; 3(76)
+	LDY	#0
+	JMP	FirstLine	; 3(76)
 
 NoP0DrawNow
 	CPX	M0Y		; 3
@@ -443,6 +442,7 @@ DrawingTheScreen
 	; temp10, temp11 = P1 sprite pointers
 	; temp12 = p1height
 	; temp13 = lineNum
+	; temp14 = P0 Sprite Data
 
 FirstLine
 	STA	WSYNC		; 3 (76)
@@ -451,94 +451,93 @@ StartWithoutWSYNC
 	LDA	temp04		; 3 (6)
 	STA	COLUBK		; 3 (9)
 
-
 	LDA	temp05		; 3 (12)
 	STA	PF0		; 3 (15)
 
-
-	LDA 	P0Height 	; 3 (18)
-	DCP	temp09 		;  temp09 contains P0Y!  ; 5 (23)
-	BCC	NoP0DrawNow	; 2 (25)
-	LDY	temp09		; 3 (28)
-	LDA	(P0ColorPointer),y 	; 5 (33)
-	STA	COLUP0		; 3 (36)
-	LDA	(temp07),y 	; 5 (41)
-saveP0Sprite
-	TAY			;2 (43)
-	; 28
-
-	LDA	temp06		; 3 (46)	
-	STA	PF0		; 3 (49)
+	LDA	temp03		; 3 (18)
+	STY	GRP0		; 3 (21)
+	STA	GRP1		; 3 (24)
 
 
-	STX	temp13		; 3 (52) Saves the lineNum
-	ldx 	#$1f		; Address of ENABL 2 (51) 
-	txs			; 2 (53) 
-	LDX	temp13		; 3 (55) Retrive the lineNum
-	CLC			; 2
-	
+	STX	temp13		; 3 (27) Saves the lineNum
+	ldx 	#$1f		; Address of ENABL 2 (29) 
+	txs			; 2 (31) 
+	LDX	temp13		; 3 (34) Retrive the lineNum
 
-	LDA	temp03		; 3 (67)
-	STY	GRP0		; 2 (70)
-	STA	GRP1		; 3 (73)
-MiddleLine
+	LDA	temp06		; 3 (36)	
+	STA	PF0		; 3 (39)
 
-	LDY	temp01		; 3 (76)
+	LDY	temp01		; 3 (42)
 
-	LDA	(pf0Pointer),y	; 5 (5)
-	STA	PF0		; 3 (8)
-	STA	temp05		; 3 (11)
+	LDA	(pfColorPointer),y	; 5 (47)
+	ADC	pfBaseColor		; 3 (50)
+	STA	temp02		; 3 (53)
 
-	LDA	(pf1Pointer),y	; 5 (16)
-	STA 	PF1		; 3 (19)
+	LDA	(bkColorPointer),y ;5 (58)
+	ADC	bkBaseColor	; 3 (61)	
+	STA	temp04		; 3 (64)
 
-	LDA	(pf2Pointer),y	; 5 (24)
-	STA 	PF2		; 3 (27)
-	LDA	temp05		; 3 (30)
-	asl			; 2 (32)
-	asl			; 2 (34)
-	asl			; 2 (36)
-	asl			; 2 (38)
-	STA	PF0		; 3 (41)
-	STA	temp06		; 3 (44)
-
-	DEY
 	cpx	BLY		; 3
 	php			; 3
 	cpx	M1Y		; 3
 	php			; 3
 	cpx	M0Y		; 3
-	php			; 3 (12)
+	php			; 18 (6)
 
-	LDA	(pfColorPointer),y	; 6 (73)
-	ADC	pfBaseColor
+MiddleLine
+
+	LDA	(pf0Pointer),y	; 5 (11)
+	STA	PF0		; 3 (14)
+	STA	temp05		; 3 (17)
+
+	LDA	(pf1Pointer),y	; 5 (22)
+	STA 	PF1		; 3 (25)
+
+	LDA	(pf2Pointer),y	; 5 (30)
+	STA 	PF2		; 3 (33)
+	LDA	temp05		; 3 (36)
+	asl			; 2 
+	asl			; 2 
+	asl			; 2 
+	asl			; 8 (44)
+	STA	PF0		; 3 (47)
+	STA	temp06		; 3 (50)
+
+
+	LDA 	P0Height 	; 3 
+	DCP	temp09 		;  temp09 contains P0Y!  ; 5 
+	BCC	NoP0DrawNow	; 2 
+	LDY	temp09		; 3 
+	LDA	(P0ColorPointer),y 	; 5 
+	STA	COLUP0		; 3 
+	LDA	(temp07),y 	; 5 
+saveP0Sprite
+	STA	temp14		; 3 
+	; 29 (3)
+
 LastLine
-	STA	temp02		; 3 (-3)
-	LDA	temp05		; 3 (3)
-	STA	PF0		; 3 (6)
 
-	LDA	(bkColorPointer),y ;5 (11)
-	CLC	 		; 2 (13)
-	ADC	bkBaseColor	; 3 (16)	
-	STA	temp04		; 3 (19)
-	
+	LDA	temp05		; 3 (9)
+	STA	PF0		; 3 (12)
 
-	LDA 	P1Height 	; 3 (21)
-	DCP	temp12 		;  temp12 contains P0Y!  ; 5 (26)
-	BCC	NoP1DrawNow	; 2 (28)
-	LDY	temp12		; 3 (31)
-	LDA	(P1ColorPointer),y 	; 5 (36)
-	STA	COLUP1	; 3 (39)
-	LDA	(temp10),y 	; 5 (44)
+	LDA 	P1Height 	; 3 
+	DCP	temp12 		;  temp12 contains P0Y!  ; 5 
+	BCC	NoP1DrawNow	; 2 
+	LDY	temp12		; 3 
+	LDA	(P1ColorPointer),y 	; 5
+	STA	COLUP1	; 3 
+	LDA	(temp10),y 	; 5
 saveP1Sprite
-	STA	temp03		; 3 (47) ;
-	; 29
+	STA	temp03		; 3 
+	; 29 (41)
 
-	LDA	temp06		; 3 (53)
-	STA	PF0		; 3 (56)
+	LDA	temp06		; 3 (44)
+	STA	PF0		; 3 (47)
+
+	LDY	temp14		; 3 (50)
 
 
-	CPX	#0		; 2 (58)
+	CPX	#1		; 2 (58)
 	BEQ	ResetAll  	; 2 (60)
 
 	DEX			; 2 (62)
@@ -776,28 +775,8 @@ NoINY
 	DEY
 NoDEY
 
-	LDA	OverLapIndicator
-	BMI	NewLineWithTemp04
 
-	LDA	temp04
-	JMP	Line0
 
-GetSecondPF0
-	LDA	temp03		
-	ASL			
-	ASL			
-	ASL			
-	ASL			
-	STA	PF0	
-	RTS
-
-Line0
-	STA	WSYNC
-	STA	COLUBK		; 3
-	LDA	temp02		; 3 (6)
-	STA	COLUPF		; 3 (9)
-	_sleep	23
-	sleep	2
 
 NewLineWithTemp04
 	LDA	temp04
@@ -810,13 +789,13 @@ NewLine
 	LDA	temp03		
 	STA	PF0
 
-	DEY
+	
 	LDA	(bkColorPointer),y ; 3	
 	CLC			; 2 	
 	ADC	bkBaseColor 	; 3 
 	STA	temp04		; 3 
-	INY
-	sleep	4
+	
+	sleep	8
 
 	LDA	temp03
 	ASL			; 2 (34)
@@ -837,13 +816,13 @@ NewLine
 
 	JSR	GetSecondPF0	
 
-	DEY			; 2 (44)	
+	
 
 	LDA	(pfColorPointer),y	; 5 (55)
 	CLC			; 2 (57)	
 	ADC	pfBaseColor 	; 3 (60)
 	STA	temp02		; 3 (63)
-
+	DEY			
 	STA	WSYNC	
 	LDA	temp03		; 3
 	STA	PF0		; 3 (6)
@@ -863,7 +842,7 @@ NewLine
 NotGray2
 
 	DEX
-	CPX	#255		
+	CPX	#1	
 	BEQ	ResetToOther
 
 
@@ -888,6 +867,7 @@ NoOverLap
 	
 	LDA	OverLapIndicator
 	BPL	NoResetNow	
+
 	JMP	ResetAll
 
 NoResetNow
@@ -966,8 +946,8 @@ SetP0TilePositions
 	STA	temp14		; 3	High nibble of pointer
 
 
-	_sleep	7
-	sleep	8		
+	_sleep	14
+	sleep	3		
 	STA	RESP1		; (41) X pos
 	
 
@@ -1117,8 +1097,8 @@ Loop_Odd_Line2
 
 EvenFrame
 
-	_sleep	49		; (74)
-	sleep	8
+	_sleep	52		; (74)
+	sleep	5
 	
 	LDA	#$00
 	STA	HMP0
@@ -1238,17 +1218,34 @@ ThereItIs
 	STA	COLUPF
 	STA	COLUBK
 
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAY
+	LAX	ExtraWSYNC,y
+DoExtraWSYNC
+	CPX	#0
+	BEQ	NoMoreLiiiiines
+	STA	WSYNC
+	DEX
+	JMP	DoExtraWSYNC
+
+NoMoreLiiiiines
 	JMP	DoItAgainPlease
-	
+
+
 
 	align	256
 FineAdjustTable256
-	fill 	173
+	fill 	156
 
 Zero
 Null
 None
 	.BYTE	#0	; This is an empty byte for constant code usage.
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
 	.BYTE	#0
 	.BYTE	#0
 
@@ -1286,23 +1283,38 @@ Selector
 	byte	#%10000000
 	byte	#%00110011
 
+GetSecondPF0
+	LDA	temp03		
+	ASL			
+	ASL			
+	ASL			
+	ASL			
+	STA	PF0	
+	RTS
+
 ScreenOverlapTop
 	byte	#16
 	byte	#12
-	byte	#8
+	byte	#7
 	byte	#4
 
 ScreenOverlapBottom
 	byte	#16
-	byte	#4
-	byte	#32
-	byte	#6
+	byte	#13
+	byte	#11
+	byte	#8
 
 DecrementTemp1
-	byte	#16
-	byte	#12
-	byte	#34
-	byte	#37
+	byte	#27
+	byte	#30
+	byte	#32
+	byte	#35
+
+ExtraWSYNC
+	byte	#0
+	byte	#1
+	byte	#2
+	byte	#0
 
 ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
@@ -1580,75 +1592,10 @@ TestPlayfield_BG
 	byte	#$02
 	byte	#$00
 
-	align	256
 
+
+	align	256
 TestSprite_Sprite
-	byte	#%01100000	; (0)
-	byte	#%00010000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00111100
-	byte	#%01111110
-	byte	#%11011011
-	byte	#%11010101
-	byte	#%10111110
-	byte	#%00101010
-	byte	#%00011100
-	byte	#%00110000	; (1)
-	byte	#%01100000
-	byte	#%00110000
-	byte	#%00011000
-	byte	#%00011000
-	byte	#%00001100
-	byte	#%00011100
-	byte	#%00110110
-	byte	#%01110110
-	byte	#%11101011
-	byte	#%11011101
-	byte	#%10000001
-	byte	#%00000000	; (2)
-	byte	#%00111100
-	byte	#%01110010
-	byte	#%01110000
-	byte	#%00111000
-	byte	#%00110100
-	byte	#%00110110
-	byte	#%11110111
-	byte	#%11111111
-	byte	#%11101011
-	byte	#%10101011
-	byte	#%00011100
-	byte	#%01111000	; (3)
-	byte	#%00111010
-	byte	#%01011011
-	byte	#%11011101
-	byte	#%11011101
-	byte	#%10011101
-	byte	#%11111111
-	byte	#%11100011
-	byte	#%01111111
-	byte	#%00101010
-	byte	#%00111110
-	byte	#%00011100
-
-TestSprite_SpriteColor
-	byte	#$0A
-	byte	#$0C
-	byte	#$0E
-	byte	#$0E
-	byte	#$0E
-	byte	#$0C
-	byte	#$0A
-	byte	#$0C
-	byte	#$0E
-	byte	#$0E
-	byte	#$0C
-	byte	#$0A
-
-	align	256
-
-Symbols
 	byte	#%11011011	; (0)
 	byte	#%10111101
 	byte	#%11111111
@@ -1778,8 +1725,7 @@ Symbols
 	byte	#%10010001
 	byte	#%00001000
 
-
-SubMenuGradient
+TestSprite_SpriteColor
 	byte	#$00
 	byte	#$02
 	byte	#$04
@@ -1844,9 +1790,31 @@ EnterScreenBank2
 	LDA	#0
 	sta 	frameColor
 	STA	P0SpriteIndex ; 	Sets both indexes to 0;
+	STA	P0X
+	STA	P1X
 	STA	pfBaseColor
 	STA	bkBaseColor
+	STA	M0X
+	STA	M1X
+	STA	BLX
+	STA	TileScreenMainColor
 
+
+	LDA	P0TurnOff
+	AND	#%00111111
+	ORA	#%11000000
+	STA	P0TurnOff	; Turn Off P0 and M0
+
+	LDA	P1TurnOff
+	AND	#%00111111
+	ORA	#%11000000
+	STA	P1TurnOff	; Turn Off P1 and M1
+
+	LDA	BallTurnOff
+	ORA	#%00001000
+	STA	BallTurnOff	; Turn off Ball
+
+	
 	LDA	#26
 	STA	pfIndex
 
@@ -1876,109 +1844,15 @@ EnterScreenBank2
 	STA	bkColorPointer+1
 
 	LDA	#<TestSprite_Sprite
-	STA	P0SpritePointer
-	LDA	#>TestSprite_Sprite
-	STA	P0SpritePointer+1
-
-	LDA	#<TestSprite_SpriteColor
-	STA	P0ColorPointer
-	LDA	#>TestSprite_SpriteColor
-	STA	P0ColorPointer+1
-
-	LDA	#<Zero
-	STA	P1SpritePointer
-	LDA	#>Zero
-	STA	P1SpritePointer+1
-
-	LDA	#0
-	STA	P1Height
-
-	LDA	#200
-	STA	P1Y	
-	STA	M0Y
-	STA	M1Y
-	STA	BLY
-
-	LDA	#82
-	STA	P0X
-	STA	P1X
-	STA	M0X
-	STA	M1X
-	STA	BLX
-
-	LDA	#20
-	STA	P0Y
-
-	LDA	#11
-	STA	P0Height
-
-	LDA	#0
-	STA	P0SpriteIndex ; 	Sets both indexes to 0;
-
-	LDA	pfEdges		; Sprites stop, bullets go through
-	AND	#%00111111
-	STA	temp01
-	LDA	#%01000000
-	ORA	temp01
-	STA	pfEdges
-
-	LDA	P0TurnOff
-	AND	#%00111111
-	ORA	#%10000000
-	STA	P0TurnOff	; Turn M0
-
-	LDA	P1TurnOff
-	AND	#%00111111
-	ORA	#%01000000
-	STA	P1TurnOff	; Turn Off P1 and M1
-
-	LDA	BallTurnOff
-	ORA	#%00001000
-	STA	BallTurnOff	; Turn off Ball
-
-MissileDir = $f0
-NUSIZ = $f1
-Sound = $f2
-
-
-	LDA	#0
-	STA	NUSIZ
-	STA	Sound
-	STA	MissileDir
-
-
-maxFrames=3
-
-	LDA	SubMenuLines
-	AND	#%11111100
-	ORA	#%00000011
-	STA	SubMenuLines	; Set to 4 lines.
-
-	LDA	#<Symbols
 	STA 	TileSetPointer 
-	LDA	#>Symbols
+	LDA	#>TestSprite_Sprite
 	STA 	TileSetPointer+1
 
-	LDA	#<SubMenuGradient
+	LDA	#<TestSprite_SpriteColor
 	STA 	TileColorPointer 
-	LDA	#>SubMenuGradient
+	LDA	#>TestSprite_SpriteColor
 	STA 	TileColorPointer+1
 
-
-	LDA	#$14
-	STA	TileScreenMainColor
-
-*	LDA	#%11111110
-*
-*	LDX	#0
-FillTiles
-*	CLC
-*	ADC	#%0010010
-*	STA	Tile1_1,x
-*	INX
-*	CPX	#12
-*	BNE	FillTiles	
-*
 
 	LDX	#0
 	LDA	#%00000001
@@ -2033,9 +1907,17 @@ FillTiles
 	ORA	#%01000000
 	STA	SubMenu		; Switch to SubMenu Mode	
 	
+	LDA	#$06
+	STA	TileScreenMainColor
 
 	LDA	#%00000000
 	STA	TileSelected
+
+	LDA	SubMenuLines
+	AND	#%11111100
+	ORA	#%00000011
+	STA	SubMenuLines	; Set to 4 lines.
+
 
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
@@ -2115,28 +1997,9 @@ OverScanBank2
 * begins.
 *
 
-	LDA	SWCHB
-	AND	#%00001000
-	ASL
-	ASL
-	ASL
-	STA	temp01
-	LDA	SubMenu
-	AND	#%10111111
-	ORA	temp01
-	STA	SubMenu
-
-
-	LDA	SubMenu
-	AND	#%01000000
-	CMP	#%01000000
-	BNE	ChangeColor
-	JMP	OtherWay
-NoSubMenuHere 
 	LDA	#$08
 	BIT 	SWCHB
-	BNE	ChangeColor
-	
+	BNE	HandleTheSubMenu
 
 	LDA	#$20
 	BIT	SWCHA
@@ -2152,6 +2015,7 @@ DebugIndex
 	LDA	#26
 	CMP	#255
 	BEQ	ChangeColor
+
 	CMP	pfIndex
 	BCS	SmallerThan
 	LDA	#26
@@ -2174,213 +2038,66 @@ NoOneUp
 	BNE 	AllDone
 	INC	bkBaseColor
 AllDone
-*	LDA	#$08
-*	BIT 	SWCHB
-*	BEQ 	MissileDone
-GoWithSprite
+	LDA	SubMenu
+	AND	#%10111111
+	STA	SubMenu		
 
-	bit 	SWCHA
-	BVS	NoLeftMove
-	DEC	P0X
-	LDA	P0Mirrored 
-	ORA	#%00001000
-	STA	P0Mirrored
+	JMP	SubMenuEnded
 
-	JMP	VerticalMovementCheck
-NoLeftMove
-	BMI 	VerticalMovementCheck
-	INC	P0X
-	LDA	P0Mirrored 
-	AND	#%11110111
-	STA	P0Mirrored	
+HandleTheSubMenu
+	LDA	SubMenu
+	ORA	#%01000000
+	STA	SubMenu		
 
-VerticalMovementCheck	
-	LDA	#$10
-	bit 	SWCHA
-	BNE	NoDownMove
-	DEC	P0Y
-	JMP	SpriteEnded
-NoDownMove
-	LDA	#$20
-	bit 	SWCHA
-	BNE	SpriteEnded
-	INC	P0Y
-SpriteEnded
-
-	LDA	counter
-	STA	M0Color
-	AND	#%00000111
-	CMP	#%00000111
-	BNE	NoINC
-
-	LDA	P0SpriteIndex
-	AND	#%00001111
-	TAY
-	STA	temp01
-	CMP	#maxFrames
-	BCC	NoSetZero
-SetZero
-	LDA	P0SpriteIndex
-	AND	#%11110000
-	JMP	SaveSpriteIndex
-NoSetZero
-	LDA	Sound
-	CMP	#0
-	BNE 	GoForSure
-
-	LDA	SWCHA
-	AND	#%11110000
-	CMP	#%11110000
-	BEQ	SetZero
-GoForSure
-	LDA	temp01
-	CLC
-	ADC	#1
-	STA	temp01
-	LDA	P0SpriteIndex	
-	AND	#%11110000
-	ORA	temp01
-SaveSpriteIndex
-	STA	P0SpriteIndex
-NoINC	
-	
-	LDA	Sound
-	CMP	#0
-	BNE	PlaySoundMoveMis
-
-	bit	INPT4	
-	BMI	RemoveMissile
-
-	LDA	P0TurnOff
-	AND	#%01111111	
-	STA	P0TurnOff
-
-	LDA	#12
-	STA	Sound
-	LDA	P0Mirrored
-	AND	#%00001000
-	STA	MissileDir
-	CMP	#0
-	BEQ 	ItsMirrored
-	LDA	P0X
-	CLC
-	ADC	#3
-	JMP	M0XDone
-ItsMirrored
-	LDA	P0X
-	CLC
-	ADC	#5
-	LDY	NUSIZ
-	CPY	#5
-	BNE	Not5
-	ADC	#9
-	JMP	M0XDone
-Not5	
-	CPY	#7
-	BNE	M0XDone
-	ADC	#24
-
-M0XDone
-	STA	M0X
-
-	LDA	P0Height
-	LSR
-	STA	temp02
-
-	LDA	#42
-	SEC
-	SBC	P0Y
-	CLC
-	ADC	P0Height
-	SEC
-	SBC	temp02
-	STA	M0Y
-
-PlaySoundMoveMis
-	LDA	MissileDir
-	AND	#%00001000
-	CMP	#0
-	BNE 	MissileLeft
-	INC	M0X
-	INC	M0X
-	JMP 	ToSound
-MissileLeft	
-	DEC	M0X
-	DEC	M0X
-
-ToSound
-	LDA	Sound
-	STA	AUDV0
-	LDA	#8
-	STA	AUDC0	
-	SEC
-	SBC	Sound
-	STA	AUDF0
-	DEC	Sound
-	JMP	MissileDone
-RemoveMissile
-	LDA	P0TurnOff
-	ORA	#%10000000	
-	STA	P0TurnOff
-	LDA	#0
-	STA	AUDV0
-MissileDone
-	LDA	pfSettings
-	BIT	SWCHB
-	BVC	MoveBehind
-	ORA	#%00000100
-	JMP	MoveBefore
-MoveBehind
-	AND	#%11111011	
-MoveBefore	
-	STA	pfSettings	; Changes behaiour on P0 diff switch.	
-
-	
-	LDA	counter
-	AND	#%011111111
-	CMP	#%011111111
-	BNE	NoNUSIZChange
-	BIT	SWCHB
-	BPL	NoNUSIZChange
-	INC 	NUSIZ
-	LDA	#7
-	CMP	NUSIZ
-	BCS	NoZeroNusiz
-	LDA	#0
-	STA	NUSIZ
-NoZeroNusiz
-	LDA	P0Settings
-	AND	#%11001000
-	ORA	NUSIZ
-	STA	P0Settings
-
-	LDA	NUSIZ
-	CMP	#5
-	BNE	Not5Again
-	LDA	P0Settings
-	AND	#%11001111
-	ORA	#%00010000	
-	JMP	SSSSAVE
-Not5Again
-	CMP	#7
-	BNE	NoNUSIZChange
-	LDA	P0Settings
-	AND	#%11001111
-	ORA	#%00110000
-SSSSAVE	
-	STA	P0Settings
-NoNUSIZChange
-	JMP	ReallyEnded
-
-OtherWay
 	LDA	TileSelected
 	AND	#%11100000
 	STA	temp10
+
+	LDA	#$02
+	BIT	SWCHB
+	BNE	NoBackColorChangeSub
+	INC	frameColor
+NoBackColorChangeSub
+	LDA	INPT4
+	BMI	NoFrontColorChangeSub
+	INC	TileScreenMainColor
+NoFrontColorChangeSub
+	
 
 	LDA	counter
 	AND	#%00000111
 	CMP	#%00000111
 	BNE	SubMenuEnded
+
+	LDA	counter
+	AND	#%00001111
+	CMP	#%00001111
+	BNE	NoRadicalChanges
+
+	LDA	#$01
+	BIT	SWCHB
+	BNE	NoChangeLineNum
+
+	LDA	SubMenuLines
+	AND	#%11111100
+	STA	temp05
+	LDA	SubMenuLines
+	AND	#%00000011
+	ORA	#%11111100
+	CLC
+	ADC	#1
+	AND	#%00000011
+	ORA	temp05			
+
+	STA	SubMenuLines
+NoChangeLineNum
+
+
+NoRadicalChanges
+	LDA	TileSelected
+	AND	#%00011111
+	ORA	temp10
+	STA	TileSelected
 
 	LDA	SubMenuLines
 	AND	#%00000011
@@ -2417,7 +2134,6 @@ NoMore62
 ItsZeroLOL
 	LDA	temp02
 	JMP	SaveTileSelect
-
 
 NoLeftMoveSub
 	bit 	SWCHA
@@ -2490,13 +2206,8 @@ SaveTileSelect2
 	STA	TileSelected
 NoVerMoveSub
 
+
 SubMenuEnded
-	LDA	TileSelected
-	AND	#%00011111
-	ORA	temp10
-	STA	TileSelected
-
-
 	LDA	SWCHB
 	AND	#%11000000
 	LSR	
@@ -2505,14 +2216,7 @@ SubMenuEnded
 	AND	#%10011111
 	ORA	temp01
 	STA	OverlapScreen
-
-
-
-
-ReallyEnded
-	DEC	M1Y
-	LDA	#$0e
-	STA	M1Color
+	
 
 
 *VSYNC
@@ -4537,7 +4241,7 @@ ItsAMissile
 
 NotAMissile
 	STA	temp05
-	LDA	#165	
+	LDA	#160	
 	SEC	
 	SBC	temp05
 	STA	temp01

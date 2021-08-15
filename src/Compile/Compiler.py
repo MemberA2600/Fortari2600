@@ -14,7 +14,7 @@ class Compiler:
 
         if self.__mode == "pfTest":
             self.pfTest()
-        elif self.__mode == "spriteTest":
+        elif self.__mode == "spriteTest" or self.__mode == "tileSetTest":
             self.spriteTest()
         elif self.__mode == "kernelTest":
             self.kernelTest()
@@ -76,8 +76,16 @@ class Compiler:
         self.__openEmulator = True
 
         self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
-        self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enter")
-        self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscan")
+
+        p1Mode = self.__data[8]
+        if p1Mode == 1:
+            self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enterP1")
+            self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscanP1")
+        else:
+            self.__enterCode = self.__io.loadTestElement(self.__mode, self.__kernel, "enter")
+            self.__overScanCode = self.__io.loadTestElement(self.__mode, self.__kernel, "overscan")
+
+
 
         self.__spritePixels = self.__data[0]
         self.__spriteColors = self.__data[1]
@@ -89,16 +97,21 @@ class Compiler:
         bgName = self.__data[6]
         bgColor = self.__data[7]
 
+
+
+
         self.setPFandBGfromFiles(pfName, bgName, bgColor)
 
         if self.__kernel == "common":
             self.__mirrored = [0, 1, 1]
+
 
             min = 26
             max = 26 + (self.__max - 42)
 
             self.__overScanCode = self.__overScanCode.replace("!!!Max!!!", str(max))
             self.__enterCode = self.__enterCode.replace("!!!Min!!!", str(min))
+
             self.__overScanCode = self.__overScanCode.replace("!!!Min!!!", str(min))
 
             StartY = 26 - round(self.__height/2)
@@ -114,11 +127,15 @@ class Compiler:
         if self.__kernel == "common":
             self.__convertedSpite = self.convertPixelsToSpriteFrameLine("TestSprite")
 
+
+
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
         self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
         self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", (self.__convertedPlayfield+"\n\n"+self.__convertedSpite))
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)

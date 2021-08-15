@@ -264,7 +264,8 @@ DivideLoop
 
 	LDA	#0	;2 (11)
 	STA	temp03 	;3 (46) Erase P1 sprite data
-	
+	STA	temp14	;3
+
 	LDA	pfSettings	; 3 (49)
 	ORA	#%00000001	; 2 (51) Reflected playfield
 	AND	#%11111101	; 2 (53) Always get the original colors.
@@ -364,15 +365,12 @@ NoM1TurnOff
 	STY	BLY		; 3 (47)
 
 NoBallTurnOff
-* _sleep numbers:	7, 11, 15, 19, 23, 27,
-*  		 	31, 35, 39, 43, etc. 
-*			(n-3) % 4 = 0
+* _sleep numbers:	6, 10, 14, 18, 22, 26,
+*  		 	30, 34, 38, 42, etc. 
+*			(n-2) % 4 = 0
 
 	STA	WSYNC
 	
-	_sleep 27
-	sleep	3
-
 
 	LDA	temp01		; pfIndex 3 (12)	
 	TAY			; 2(14)
@@ -394,7 +392,8 @@ NoBallTurnOff
 	STA	PF1		; 3(58)
 	
 	LDA	temp02			; 3(73)	
-	JMP	StartWithoutWSYNC	; 3(76)
+	LDY	#0
+	JMP	FirstLine	; 3(76)
 
 NoP0DrawNow
 	CPX	M0Y		; 3
@@ -443,6 +442,7 @@ DrawingTheScreen
 	; temp10, temp11 = P1 sprite pointers
 	; temp12 = p1height
 	; temp13 = lineNum
+	; temp14 = P0 Sprite Data
 
 FirstLine
 	STA	WSYNC		; 3 (76)
@@ -451,94 +451,93 @@ StartWithoutWSYNC
 	LDA	temp04		; 3 (6)
 	STA	COLUBK		; 3 (9)
 
-
 	LDA	temp05		; 3 (12)
 	STA	PF0		; 3 (15)
 
-
-	LDA 	P0Height 	; 3 (18)
-	DCP	temp09 		;  temp09 contains P0Y!  ; 5 (23)
-	BCC	NoP0DrawNow	; 2 (25)
-	LDY	temp09		; 3 (28)
-	LDA	(P0ColorPointer),y 	; 5 (33)
-	STA	COLUP0		; 3 (36)
-	LDA	(temp07),y 	; 5 (41)
-saveP0Sprite
-	TAY			;2 (43)
-	; 28
-
-	LDA	temp06		; 3 (46)	
-	STA	PF0		; 3 (49)
+	LDA	temp03		; 3 (18)
+	STY	GRP0		; 3 (21)
+	STA	GRP1		; 3 (24)
 
 
-	STX	temp13		; 3 (52) Saves the lineNum
-	ldx 	#$1f		; Address of ENABL 2 (51) 
-	txs			; 2 (53) 
-	LDX	temp13		; 3 (55) Retrive the lineNum
-	CLC			; 2
-	
+	STX	temp13		; 3 (27) Saves the lineNum
+	ldx 	#$1f		; Address of ENABL 2 (29) 
+	txs			; 2 (31) 
+	LDX	temp13		; 3 (34) Retrive the lineNum
 
-	LDA	temp03		; 3 (67)
-	STY	GRP0		; 2 (70)
-	STA	GRP1		; 3 (73)
-MiddleLine
+	LDA	temp06		; 3 (36)	
+	STA	PF0		; 3 (39)
 
-	LDY	temp01		; 3 (76)
+	LDY	temp01		; 3 (42)
 
-	LDA	(pf0Pointer),y	; 5 (5)
-	STA	PF0		; 3 (8)
-	STA	temp05		; 3 (11)
+	LDA	(pfColorPointer),y	; 5 (47)
+	ADC	pfBaseColor		; 3 (50)
+	STA	temp02		; 3 (53)
 
-	LDA	(pf1Pointer),y	; 5 (16)
-	STA 	PF1		; 3 (19)
+	LDA	(bkColorPointer),y ;5 (58)
+	ADC	bkBaseColor	; 3 (61)	
+	STA	temp04		; 3 (64)
 
-	LDA	(pf2Pointer),y	; 5 (24)
-	STA 	PF2		; 3 (27)
-	LDA	temp05		; 3 (30)
-	asl			; 2 (32)
-	asl			; 2 (34)
-	asl			; 2 (36)
-	asl			; 2 (38)
-	STA	PF0		; 3 (41)
-	STA	temp06		; 3 (44)
-
-	DEY
 	cpx	BLY		; 3
 	php			; 3
 	cpx	M1Y		; 3
 	php			; 3
 	cpx	M0Y		; 3
-	php			; 3 (12)
+	php			; 18 (6)
 
-	LDA	(pfColorPointer),y	; 6 (73)
-	ADC	pfBaseColor
+MiddleLine
+
+	LDA	(pf0Pointer),y	; 5 (11)
+	STA	PF0		; 3 (14)
+	STA	temp05		; 3 (17)
+
+	LDA	(pf1Pointer),y	; 5 (22)
+	STA 	PF1		; 3 (25)
+
+	LDA	(pf2Pointer),y	; 5 (30)
+	STA 	PF2		; 3 (33)
+	LDA	temp05		; 3 (36)
+	asl			; 2 
+	asl			; 2 
+	asl			; 2 
+	asl			; 8 (44)
+	STA	PF0		; 3 (47)
+	STA	temp06		; 3 (50)
+
+
+	LDA 	P0Height 	; 3 
+	DCP	temp09 		;  temp09 contains P0Y!  ; 5 
+	BCC	NoP0DrawNow	; 2 
+	LDY	temp09		; 3 
+	LDA	(P0ColorPointer),y 	; 5 
+	STA	COLUP0		; 3 
+	LDA	(temp07),y 	; 5 
+saveP0Sprite
+	STA	temp14		; 3 
+	; 29 (3)
+
 LastLine
-	STA	temp02		; 3 (-3)
-	LDA	temp05		; 3 (3)
-	STA	PF0		; 3 (6)
 
-	LDA	(bkColorPointer),y ;5 (11)
-	CLC	 		; 2 (13)
-	ADC	bkBaseColor	; 3 (16)	
-	STA	temp04		; 3 (19)
-	
+	LDA	temp05		; 3 (9)
+	STA	PF0		; 3 (12)
 
-	LDA 	P1Height 	; 3 (21)
-	DCP	temp12 		;  temp12 contains P0Y!  ; 5 (26)
-	BCC	NoP1DrawNow	; 2 (28)
-	LDY	temp12		; 3 (31)
-	LDA	(P1ColorPointer),y 	; 5 (36)
-	STA	COLUP1	; 3 (39)
-	LDA	(temp10),y 	; 5 (44)
+	LDA 	P1Height 	; 3 
+	DCP	temp12 		;  temp12 contains P0Y!  ; 5 
+	BCC	NoP1DrawNow	; 2 
+	LDY	temp12		; 3 
+	LDA	(P1ColorPointer),y 	; 5
+	STA	COLUP1	; 3 
+	LDA	(temp10),y 	; 5
 saveP1Sprite
-	STA	temp03		; 3 (47) ;
-	; 29
+	STA	temp03		; 3 
+	; 29 (41)
 
-	LDA	temp06		; 3 (53)
-	STA	PF0		; 3 (56)
+	LDA	temp06		; 3 (44)
+	STA	PF0		; 3 (47)
+
+	LDY	temp14		; 3 (50)
 
 
-	CPX	#0		; 2 (58)
+	CPX	#1		; 2 (58)
 	BEQ	ResetAll  	; 2 (60)
 
 	DEX			; 2 (62)
@@ -776,28 +775,8 @@ NoINY
 	DEY
 NoDEY
 
-	LDA	OverLapIndicator
-	BMI	NewLineWithTemp04
 
-	LDA	temp04
-	JMP	Line0
 
-GetSecondPF0
-	LDA	temp03		
-	ASL			
-	ASL			
-	ASL			
-	ASL			
-	STA	PF0	
-	RTS
-
-Line0
-	STA	WSYNC
-	STA	COLUBK		; 3
-	LDA	temp02		; 3 (6)
-	STA	COLUPF		; 3 (9)
-	_sleep	23
-	sleep	2
 
 NewLineWithTemp04
 	LDA	temp04
@@ -810,13 +789,13 @@ NewLine
 	LDA	temp03		
 	STA	PF0
 
-	DEY
+	
 	LDA	(bkColorPointer),y ; 3	
 	CLC			; 2 	
 	ADC	bkBaseColor 	; 3 
 	STA	temp04		; 3 
-	INY
-	sleep	4
+	
+	sleep	8
 
 	LDA	temp03
 	ASL			; 2 (34)
@@ -837,13 +816,13 @@ NewLine
 
 	JSR	GetSecondPF0	
 
-	DEY			; 2 (44)	
+	
 
 	LDA	(pfColorPointer),y	; 5 (55)
 	CLC			; 2 (57)	
 	ADC	pfBaseColor 	; 3 (60)
 	STA	temp02		; 3 (63)
-
+	DEY			
 	STA	WSYNC	
 	LDA	temp03		; 3
 	STA	PF0		; 3 (6)
@@ -863,7 +842,7 @@ NewLine
 NotGray2
 
 	DEX
-	CPX	#255		
+	CPX	#1	
 	BEQ	ResetToOther
 
 
@@ -888,6 +867,7 @@ NoOverLap
 	
 	LDA	OverLapIndicator
 	BPL	NoResetNow	
+
 	JMP	ResetAll
 
 NoResetNow
@@ -966,8 +946,8 @@ SetP0TilePositions
 	STA	temp14		; 3	High nibble of pointer
 
 
-	_sleep	7
-	sleep	8		
+	_sleep	14
+	sleep	3		
 	STA	RESP1		; (41) X pos
 	
 
@@ -1117,8 +1097,8 @@ Loop_Odd_Line2
 
 EvenFrame
 
-	_sleep	49		; (74)
-	sleep	8
+	_sleep	52		; (74)
+	sleep	5
 	
 	LDA	#$00
 	STA	HMP0
@@ -1238,17 +1218,34 @@ ThereItIs
 	STA	COLUPF
 	STA	COLUBK
 
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAY
+	LAX	ExtraWSYNC,y
+DoExtraWSYNC
+	CPX	#0
+	BEQ	NoMoreLiiiiines
+	STA	WSYNC
+	DEX
+	JMP	DoExtraWSYNC
+
+NoMoreLiiiiines
 	JMP	DoItAgainPlease
-	
+
+
 
 	align	256
 FineAdjustTable256
-	fill 	173
+	fill 	156
 
 Zero
 Null
 None
 	.BYTE	#0	; This is an empty byte for constant code usage.
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
 	.BYTE	#0
 	.BYTE	#0
 
@@ -1286,23 +1283,38 @@ Selector
 	byte	#%10000000
 	byte	#%00110011
 
+GetSecondPF0
+	LDA	temp03		
+	ASL			
+	ASL			
+	ASL			
+	ASL			
+	STA	PF0	
+	RTS
+
 ScreenOverlapTop
 	byte	#16
 	byte	#12
-	byte	#8
+	byte	#7
 	byte	#4
 
 ScreenOverlapBottom
 	byte	#16
-	byte	#4
-	byte	#32
-	byte	#6
+	byte	#13
+	byte	#11
+	byte	#8
 
 DecrementTemp1
-	byte	#16
-	byte	#12
-	byte	#34
-	byte	#37
+	byte	#27
+	byte	#30
+	byte	#32
+	byte	#35
+
+ExtraWSYNC
+	byte	#0
+	byte	#1
+	byte	#2
+	byte	#0
 
 ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
@@ -3517,7 +3529,7 @@ ItsAMissile
 
 NotAMissile
 	STA	temp05
-	LDA	#165	
+	LDA	#160	
 	SEC	
 	SBC	temp05
 	STA	temp01
