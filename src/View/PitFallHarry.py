@@ -95,6 +95,16 @@ class PitFallHarry:
     def __move(self):
         while self.__window.dead == False and self.stopThread==False:
             from time import sleep
+
+            while self.__harryLabel.winfo_width()==1:
+                try:
+                    self.__harryLabel.config(width=self.__harryFrame.winfo_height(),
+                                             height=round(self.__h * 0.76))
+
+                    self.__harryLabel.place(x=self.__harryPoz, y=0)
+                except:
+                    pass
+
             self.__getDifference()
             if abs(self.__difference)<15:
                 self.__harryStop()

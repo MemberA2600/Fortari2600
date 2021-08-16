@@ -21,7 +21,7 @@ class LockManagerWindow:
 
         self.__screenSize = self.__loader.screenSize
 
-        self.__window = SubMenu(self.__loader, "lockManager", self.__screenSize[0] / 2, self.__screenSize[1] / 5 - 15,
+        self.__window = SubMenu(self.__loader, "lockManager", self.__screenSize[0] / 2.25, self.__screenSize[1] / 5 - 15,
                            None, self.__addElements, 1)
         self.__soundPlayer.playSound("Bounce")
         self.dead = True
@@ -32,6 +32,6 @@ class LockManagerWindow:
 
         from Switch import Switch
         self.__banks = []
-        for num in range(2,9):
+        for num in range(3,9):
             testbank = Switch(self.__loader, self.__topLevel, self.__topLevelWindow, num, self.__banks)
             self.__banks.append(testbank)

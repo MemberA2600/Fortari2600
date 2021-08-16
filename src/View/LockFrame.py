@@ -72,7 +72,7 @@ class LockFrame:
     def createLabels(self):
         self.getImgs()
         self.__labels = []
-        for num in range(1, 9):
+        for num in range(1, 7):
             self.createLabel(num)
 
     def getImgs(self):
@@ -103,10 +103,10 @@ class LockFrame:
     def createLabel(self, num):
         self.__labels.append(Label(self.__frame, image = self.__lockOn))
         self.__labels[num-1].config(bg=self.__loader.colorPalettes.getColor("window"))
-        self.setImg(self.__labels[num-1], num)
+        self.setImg(self.__labels[num-1], num+2)
         self.__labels[num - 1].place(
-            x= ((num-1)%4) * self.__frame.winfo_width()/4,
-            y= ((num-1)//4) * self.__frame.winfo_width()/4+round(self.__frame.winfo_width()/4)-5
+            x= ((num-1)%3) * self.__frame.winfo_width()/3,
+            y= ((num-1)//3) * self.__frame.winfo_width()/3+round(self.__frame.winfo_width()/3)-20
         )
 
     def resize(self):
@@ -119,6 +119,8 @@ class LockFrame:
                 self.__scaleLastY = self.__window.getScales()[1]
                 self.createLabels()
                 self.setButtonFont()
+                for num in range(1, 7):
+                    self.__locks[num - 1] = "LOL"
                 sleep(0.01)
                 continue
 
@@ -140,9 +142,9 @@ class LockFrame:
                 except Exception as e:
                     self.__loader.logger.errorLog(e)
 
-            for num in range(1,9):
-                if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num)]:
-                    self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num)]
+            for num in range(1,7):
+                if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num+2)]:
+                    self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num+2)]
                     if self.__locks[num-1] == None:
                         self.__labels[num-1].config(image = self.__lockOff)
                     else:

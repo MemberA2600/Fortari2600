@@ -11,6 +11,7 @@ class Switch:
         self.__bankNum = bankNum
         self.__banks = banks
 
+
         #self.__fontSize = int(self.__loader.screenSize[0]/1300 * self.__loader.screenSize[1]/1050*14)
         self.__normalFont = self.__loader.fontManager.getFont("normal", False, False, False)
         self.__smallFont = self.__loader.fontManager.getFont("small", False, False, False)
@@ -18,7 +19,7 @@ class Switch:
         self.stopThread = False
         self.__loader.stopThreads.append(self)
 
-        self.__frame = Frame(self.__window, width=self.__window.winfo_width()/7)
+        self.__frame = Frame(self.__window, width=self.__window.winfo_width()/6)
         self.__frame.config(bg="black")
         self.__frame.pack_propagate(False)
         self.__frame.pack(side=LEFT, anchor=NW, fill=Y)
@@ -59,7 +60,7 @@ class Switch:
 
         self.createSwitch()
 
-        if bankNum == 5:
+        if bankNum == 8:
             self.__endButton = Button(self.__frame, bg="black", fg="orangered", font=self.__normalFont,
                                       text=self.__loader.dictionaries.getWordFromCurrentLanguage("exit"),
                                       command=self.killFrame, activebackground="darkred", relief=FLAT)
@@ -82,8 +83,10 @@ class Switch:
 
     def removeLock(self):
         text = self.__loader.virtualMemory.locks["bank"+str(self.__bankNum)].name
+
+
         self.__loader.soundPlayer.playSound("switchOff")
-        for num in range(2,9):
+        for num in range(3,9):
             bank = "bank"+str(num)
             if self.__loader.virtualMemory.locks[bank] != None:
                 if self.__loader.virtualMemory.locks[bank].name == text:
@@ -91,8 +94,9 @@ class Switch:
                     if self.__loader.BFG9000.getSelected()[0]=="bank"+str(self.__bankNum):
                         doIt = True
                     self.__loader.virtualMemory.locks[bank] = None
-                    self.__banks[num-2].createSwitch()
-                    self.__banks[num-2].lockLabel.config(text = "")
+
+                    self.__banks[num-3].createSwitch()
+                    self.__banks[num-3].lockLabel.config(text = "")
                     if doIt == True:
                         self.__loader.BFG9000.first = True
 
