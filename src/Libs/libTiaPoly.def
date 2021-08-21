@@ -1,0 +1,4 @@
+EXPORTS
+    TIASOUND_fill @1
+    TIASOUND_initstate @2
+    createTone @3

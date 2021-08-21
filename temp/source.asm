@@ -154,35 +154,35 @@ PAL_Overscan =	206
 
 *Global
 *---------
-!!!GLOBAL_VARIABLES!!!
+
 
 *Bank2
 *---------
-!!!BANK2_VARIABLES!!!
+
 
 *Bank3
 *---------
-!!!BANK3_VARIABLES!!!
+
 
 *Bank4
 *---------
-!!!BANK4_VARIABLES!!!
+
 
 *Bank5
 *---------
-!!!BANK5_VARIABLES!!!
+
 
 *Bank6
 *---------
-!!!BANK6_VARIABLES!!!
+
 
 *Bank7
 *---------
-!!!BANK7_VARIABLES!!!
+
 
 *Bank8
 *---------
-!!!BANK8_VARIABLES!!!
+
 
 ***************************
 ********* Start of 1st bank
@@ -1372,7 +1372,7 @@ UnderTheTable
 	align 256
 
 Data_Section
-!!!KERNEL_DATA!!!
+
 
 	saveFreeBytes
 	rewind 1fd4
@@ -1425,7 +1425,46 @@ start_bank1
 
 EnterScreenBank2
 
-!!!ENTER_BANK2!!!
+Volume = $e0
+Channel = $e1
+Freq = $e2
+CounterA = $e3
+CounterB = $e4
+
+	LDA	#0
+	STA	Volume
+	STA	Channel
+	STA	Freq
+	STA	CounterB
+
+	LDA	#127
+	STA	CounterA
+
+	LDA	Zero
+	STA	pf0Pointer
+	STA	pf0Pointer+1
+	STA	pf1Pointer
+	STA	pf1Pointer+1
+	STA	pf2Pointer
+	STA	pf2Pointer+1
+	STA	pfColorPointer
+	STA	pfColorPointer+1
+	STA	bkColorPointer
+	STA	bkColorPointer+1
+
+	LDA	P0TurnOff
+	AND	#%00111111
+	ORA	#%01000000
+	STA	P0TurnOff	; Turn Off P0 and M0
+
+	LDA	P1TurnOff
+	AND	#%00111111
+	ORA	#%01000000
+	STA	P1TurnOff	; Turn Off P1 and M1
+
+	LDA	BallTurnOff
+	ORA	#%00001000
+	STA	BallTurnOff	; Turn off Ball
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1439,7 +1478,7 @@ EnterScreenBank2
 
 LeaveScreenBank2
 
-!!!LEAVE_BANK2!!!
+
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
@@ -1493,7 +1532,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1504,7 +1543,83 @@ OverScanBank2
 * begins.
 *
 
-!!!OVERSCAN_BANK2!!!
+DoAgain
+	LDA	CounterA
+	BMI	OtherCount
+
+	DEC	CounterA
+	LDA	#0
+	STA	frameColor
+	STA	AUDV0
+	STA	AUDC0
+	STA	AUDF0
+
+	LDA	#45
+	STA	CounterB	
+
+	JMP	EndAll
+OtherCount
+	
+	LDA	CounterB
+	BPL	CoolThings
+	LDA	#21
+	LDY	Freq
+	CPY	#31
+	BNE	NoADD
+	CLC
+	ADC	#100
+NoADD
+	STA	CounterA
+	INC	Freq
+	JMP	DoAgain
+
+CoolThings
+
+	DEC	CounterB
+	LDA	Freq
+	CMP	#32
+	BNE	NOINC
+	LDA	#0
+	STA	Freq
+	INC	Channel
+
+NOINC	
+	LDA	#8
+	STA	AUDV0
+	LDY	Channel
+	LDA 	TheOnesToLoad,y
+	STA	AUDC0
+	ASL
+	ASL
+	ASL
+	ASL
+	ASL
+	ORA	Freq
+	STA	frameColor
+	
+
+	LDA	Freq
+	STA	AUDF0
+
+
+
+EndAll
+	JMP	ZZZZ
+
+TheOnesToLoad
+	byte	#1
+	byte	#3
+	byte	#4
+	byte	#6
+	byte	#7
+	byte	#8
+	byte	#12
+	byte	#14
+	byte	#15
+
+
+ZZZZ
+
 
 
 *VSYNC
@@ -1537,7 +1652,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -1548,7 +1663,7 @@ WaitUntilOverScanTimerEndsBank2
 *
 VBLANKBank2
 
-!!!VBLANK_BANK2!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1599,7 +1714,7 @@ VBlankEndBank2
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK2!!!
+
 
 
 *SkipIfNoGameSet
@@ -1646,7 +1761,7 @@ JumpToMainKernelBank2
 
 ScreenBottomBank2
 
-!!!SCREENBOTTOM_BANK2!!!
+
 
 	JMP	OverScanBank2
 
@@ -1657,7 +1772,7 @@ ScreenBottomBank2
 * elments.
 *
 
-!!!USER_DATA_BANK2!!!
+
 
 
 ###End-Bank2
@@ -1667,7 +1782,7 @@ ScreenBottomBank2
 * used by the developer.
 *
 
-!!!ROUTINES_BANK2!!!
+
 	
 
 	saveFreeBytes
@@ -1721,7 +1836,7 @@ start_bank2
 
 EnterScreenBank3
 
-!!!ENTER_BANK3!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank3
 
@@ -1735,7 +1850,7 @@ EnterScreenBank3
 
 LeaveScreenBank3
 
-!!!LEAVE_BANK3!!!
+
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
@@ -1789,7 +1904,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1800,7 +1915,7 @@ OverScanBank3
 * begins.
 *
 
-!!!OVERSCAN_BANK3!!!
+
 
 
 *VSYNC
@@ -1833,7 +1948,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -1844,7 +1959,7 @@ WaitUntilOverScanTimerEndsBank3
 *
 VBLANKBank3
 
-!!!VBLANK_BANK3!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1895,7 +2010,7 @@ VBlankEndBank3
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK3!!!
+
 
 
 *SkipIfNoGameSet
@@ -1942,7 +2057,7 @@ JumpToMainKernelBank3
 
 ScreenBottomBank3
 
-!!!SCREENBOTTOM_BANK3!!!
+
 
 	JMP	OverScanBank3
 
@@ -1953,7 +2068,7 @@ ScreenBottomBank3
 * elments.
 *
 
-!!!USER_DATA_BANK3!!!
+
 
 ###End-Bank3
 *Routine Section
@@ -1962,7 +2077,7 @@ ScreenBottomBank3
 * used by the developer.
 *
 
-!!!ROUTINES_BANK3!!!
+
 
 
 	saveFreeBytes
@@ -2016,7 +2131,7 @@ start_bank3
 
 EnterScreenBank4
 
-!!!ENTER_BANK4!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank4
 
@@ -2030,7 +2145,7 @@ EnterScreenBank4
 
 LeaveScreenBank4
 
-!!!LEAVE_BANK4!!!
+
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
@@ -2084,7 +2199,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2095,7 +2210,7 @@ OverScanBank4
 * begins.
 *
 
-!!!OVERSCAN_BANK4!!!
+
 
 
 *VSYNC
@@ -2128,7 +2243,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2139,7 +2254,7 @@ WaitUntilOverScanTimerEndsBank4
 *
 VBLANKBank4
 
-!!!VBLANK_BANK4!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2190,7 +2305,7 @@ VBlankEndBank4
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK4!!!
+
 
 
 *SkipIfNoGameSet
@@ -2237,7 +2352,7 @@ JumpToMainKernelBank4
 
 ScreenBottomBank4
 
-!!!SCREENBOTTOM_BANK4!!!
+
 
 	JMP	OverScanBank4
 
@@ -2248,7 +2363,7 @@ ScreenBottomBank4
 * elments.
 *
 
-!!!USER_DATA_BANK4!!!
+
 
 ###End-Bank4
 *Routine Section
@@ -2257,7 +2372,7 @@ ScreenBottomBank4
 * used by the developer.
 *
 
-!!!ROUTINES_BANK4!!!
+
 	
 
 	saveFreeBytes
@@ -2312,7 +2427,7 @@ start_bank4
 
 EnterScreenBank5
 
-!!!ENTER_BANK5!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank5
 
@@ -2326,7 +2441,7 @@ EnterScreenBank5
 
 LeaveScreenBank5
 
-!!!LEAVE_BANK5!!!
+
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
@@ -2380,7 +2495,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2391,7 +2506,7 @@ OverScanBank5
 * begins.
 *
 
-!!!OVERSCAN_BANK5!!!
+
 
 
 *VSYNC
@@ -2424,7 +2539,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2435,7 +2550,7 @@ WaitUntilOverScanTimerEndsBank5
 *
 VBLANKBank5
 
-!!!VBLANK_BANK5!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2486,7 +2601,7 @@ VBlankEndBank5
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK5!!!
+
 
 
 *SkipIfNoGameSet
@@ -2533,7 +2648,7 @@ JumpToMainKernelBank5
 
 ScreenBottomBank5
 
-!!!SCREENBOTTOM_BANK5!!!
+
 
 	JMP	OverScanBank5
 
@@ -2544,7 +2659,7 @@ ScreenBottomBank5
 * elments.
 *
 
-!!!USER_DATA_BANK5!!!
+
 
 ###End-Bank5
 *Routine Section
@@ -2553,7 +2668,7 @@ ScreenBottomBank5
 * used by the developer.
 *
 
-!!!ROUTINES_BANK5!!!
+
 	
 
 	saveFreeBytes
@@ -2607,7 +2722,7 @@ start_bank5
 
 EnterScreenBank6
 
-!!!ENTER_BANK6!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank6
 
@@ -2621,7 +2736,7 @@ EnterScreenBank6
 
 LeaveScreenBank6
 
-!!!LEAVE_BANK6!!!
+
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
@@ -2675,7 +2790,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2686,7 +2801,7 @@ OverScanBank6
 * begins.
 *
 
-!!!OVERSCAN_BANK6!!!
+
 
 
 *VSYNC
@@ -2719,7 +2834,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2730,7 +2845,7 @@ WaitUntilOverScanTimerEndsBank6
 *
 VBLANKBank6
 
-!!!VBLANK_BANK6!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2781,7 +2896,7 @@ VBlankEndBank6
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK6!!!
+
 
 
 *SkipIfNoGameSet
@@ -2828,7 +2943,7 @@ JumpToMainKernelBank6
 
 ScreenBottomBank6
 
-!!!SCREENBOTTOM_BANK6!!!
+
 
 	JMP	OverScanBank6
 
@@ -2840,7 +2955,7 @@ ScreenBottomBank6
 * elments.
 *
 
-!!!USER_DATA_BANK6!!!
+
 
 ###End-Bank6
 *Routine Section
@@ -2849,7 +2964,7 @@ ScreenBottomBank6
 * used by the developer.
 *
 
-!!!ROUTINES_BANK6!!!
+
 	
 
 	saveFreeBytes
@@ -2903,7 +3018,7 @@ start_bank6
 
 EnterScreenBank7
 
-!!!ENTER_BANK7!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank7
 
@@ -2917,7 +3032,7 @@ EnterScreenBank7
 
 LeaveScreenBank7
 
-!!!LEAVE_BANK7!!!
+
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
@@ -2970,7 +3085,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2981,7 +3096,7 @@ OverScanBank7
 * begins.
 *
 
-!!!OVERSCAN_BANK7!!!
+
 
 
 *VSYNC
@@ -3014,7 +3129,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3025,7 +3140,7 @@ WaitUntilOverScanTimerEndsBank7
 *
 VBLANKBank7
 
-!!!VBLANK_BANK7!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3076,7 +3191,7 @@ VBlankEndBank7
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK7!!!
+
 
 
 *SkipIfNoGameSet
@@ -3123,7 +3238,7 @@ JumpToMainKernelBank7
 
 ScreenBottomBank7
 
-!!!SCREENBOTTOM_BANK7!!!
+
 
 	JMP	OverScanBank7
 
@@ -3134,7 +3249,7 @@ ScreenBottomBank7
 * elments.
 *
 
-!!!USER_DATA_BANK7!!!
+
 
 
 ###End-Bank7
@@ -3144,7 +3259,7 @@ ScreenBottomBank7
 * used by the developer.
 *
 
-!!!ROUTINES_BANK7!!!
+
 	
 
 	saveFreeBytes
@@ -3198,7 +3313,7 @@ start_bank7
 
 EnterScreenBank8
 
-!!!ENTER_BANK8!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank8
 
@@ -3212,7 +3327,7 @@ EnterScreenBank8
 
 LeaveScreenBank8
 
-!!!LEAVE_BANK8!!!
+
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
@@ -3265,7 +3380,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3276,7 +3391,7 @@ OverScanBank8
 * begins.
 *
 
-!!!OVERSCAN_BANK8!!!
+
 
 
 *VSYNC
@@ -3309,7 +3424,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3320,7 +3435,7 @@ WaitUntilOverScanTimerEndsBank8
 *
 VBLANKBank8
 
-!!!VBLANK_BANK8!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3359,7 +3474,7 @@ VBlankEndBank8
 * top part of the screen.
 *
 
-!!!SCREENTOP_BANK8!!!
+
 
 
 *SkipIfNoGameSet
@@ -3406,7 +3521,7 @@ JumpToMainKernelBank8
 
 ScreenBottomBank8
 
-!!!SCREENBOTTOM_BANK8!!!
+
 
 	JMP	OverScanBank8
 
@@ -3417,7 +3532,7 @@ ScreenBottomBank8
 * elments.
 *
 
-!!!USER_DATA_BANK8!!!
+
 
 
 ###End-Bank8
@@ -3427,7 +3542,7 @@ ScreenBottomBank8
 * used by the developer.
 *
 
-!!!ROUTINES_BANK8!!!
+
 
 
 	align 256

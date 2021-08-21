@@ -1484,13 +1484,14 @@ LeaveJumpTableBank2
 *
 
 OverScanBank2
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank2
 
-	STA	WSYNC
-	LDA	#%11000010
-	STA	VBLANK
 	STA	WSYNC
 
     	LDA	#!!!TV!!!_Overscan
@@ -1589,7 +1590,7 @@ VBlankEndBank2
 	LDA 	INTIM
 	BMI 	VBlankEndBank2
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -1780,11 +1781,11 @@ LeaveJumpTableBank3
 *
 
 OverScanBank3
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank3
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -1885,7 +1886,7 @@ VBlankEndBank3
 	LDA 	INTIM
 	BMI 	VBlankEndBank3
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -2075,11 +2076,11 @@ LeaveJumpTableBank4
 *
 
 OverScanBank4
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank4
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -2180,7 +2181,7 @@ VBlankEndBank4
 	LDA 	INTIM
 	BMI 	VBlankEndBank4
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -2371,11 +2372,11 @@ LeaveJumpTableBank5
 *
 
 OverScanBank5
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank5
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -2476,7 +2477,7 @@ VBlankEndBank5
 	LDA 	INTIM
 	BMI 	VBlankEndBank5
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -2666,11 +2667,11 @@ LeaveJumpTableBank6
 *
 
 OverScanBank6
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank6
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -2771,7 +2772,7 @@ VBlankEndBank6
 	LDA 	INTIM
 	BMI 	VBlankEndBank6
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -2961,11 +2962,11 @@ LeaveJumpTableBank7
 *
 
 OverScanBank7
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank7
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -3066,7 +3067,7 @@ VBlankEndBank7
 	LDA 	INTIM
 	BMI 	VBlankEndBank7
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
@@ -3256,11 +3257,11 @@ LeaveJumpTableBank8
 *
 
 OverScanBank8
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank8
 
-	STA	WSYNC
 	LDA	#%11000010
 	STA	VBLANK
 	STA	WSYNC
@@ -3349,7 +3350,7 @@ VBlankEndBank8
 	LDA 	INTIM
 	BMI 	VBlankEndBank8
 
-    	LDA	#229
+    	LDA	#230
     	STA	TIM64T
 
 
