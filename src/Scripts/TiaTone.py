@@ -1,4 +1,5 @@
-#based on https://www.biglist.com/lists/stella/archives/200311/msg00156.html
+# Based on https://www.biglist.com/lists/stella/archives/200311/msg00156.html
+# Written by Adam Wozniak (2003)
 
 from threading import Thread
 from time import sleep
@@ -17,7 +18,25 @@ class TiaState:
 
 class TiaTone:
 
-    def __init__(self, AUDV, AUDC, AUDF, tv):
+    def __init__(self):
+        self.__filePath = ""
+
+
+    def play(self, duration):
+        import simpleaudio as sa
+        from time import sleep
+        waveObj = sa.WaveObject.from_wave_file(self.__filePath)
+        playObj = waveObj.play()
+
+        while duration>0:
+            if playObj.is_playing() == False:
+                break
+            sleep(0.1)
+            duration-=1
+        playObj.stop()
+
+
+    def setTone(self, AUDV, AUDC, AUDF, tv):
 
         self.poly0 =    [1, -1]
         self.poly1 =    [1, 1, -1]
@@ -67,21 +86,21 @@ class TiaTone:
         else:
             self.tiaFreq = 31440  #31399.5 ?
 
+
         self.outputFreq = 44100
         self.size = 44100
 
-        self.buffer = "0"*self.size
+        self.buffer = []
         self.state = TiaState()
-        self.i = 0
+
         self.AUDV = AUDV
         self.AUDC = AUDC
         self.AUDF = AUDF
 
-        self.position = 0
+        self.__fillBuffer()
+        self.__saveBuffer()
 
-        self.fillBuffer()
-
-    def fillBuffer(self):
+    def __fillBuffer(self):
         self.value = 0
         while (self.size>0):
             self.state.f+=1
@@ -105,24 +124,51 @@ class TiaTone:
 
             while((self.state.rate >= self.tiaFreq) and self.size>0):
                 if self.state.last:
-                    self.buffer += str(self.AUDV << 3)
+                    self.buffer.append(self.AUDV << 3)
                     #self.buffer += bin(self.AUDV << 3).replace("0b","")
 
-                    
                 else:
-                    self.buffer += "0"
+                    self.buffer.append(0)
 
                 self.state.rate -= self.tiaFreq
                 self.size -= 1
 
 
-    def playBuffer(self):
+    def open_wave(self, filename):
+        import wave
+
+        try:
+            wav_obj = wave.open(filename, 'wb')
+        except:
+            wav_obj = wave.open("empty.wav", 'wb')
+
+        return wav_obj
+
+    def __saveBuffer(self):
         import numpy as np
-        import simpleaudio as sa
-        pass
 
+        data = []
+        for d in self.buffer:
+            data.append(np.uint8(d))
 
-if __name__ == "__main__":
-    T = TiaTone(8,4,4,"NTSC")
-    print(T.buffer)
-    T.playBuffer()
+        self.__writeDataToWav(data)
+
+    def __writeDataToWav(self, data):
+        from scipy.io.wavfile import write
+        import numpy as np
+
+        data = np.array(data)
+        try:
+            write("temp/playback.wav", 44100, data)
+            self.__filePath = "temp/playback.wav"
+        except:
+            write("playback.wav", 44100, data)
+            self.__filePath = "playback.wav"
+
+    def setAndPlay(self, AUDV, AUDC, AUDF, tv, duration):
+        self.setTone(AUDV, AUDC, AUDF, tv)
+        self.play(duration)
+
+#if __name__ == "__main__":
+#    T = TiaTone()
+#    T.setAndPlay(8,3,4,"NTSC",4)

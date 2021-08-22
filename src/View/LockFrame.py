@@ -106,7 +106,7 @@ class LockFrame:
         self.setImg(self.__labels[num-1], num+2)
         self.__labels[num - 1].place(
             x= ((num-1)%3) * self.__frame.winfo_width()/3,
-            y= ((num-1)//3) * self.__frame.winfo_width()/3+round(self.__frame.winfo_width()/3)-20
+            y= ((num-1)//3) * self.__frame.winfo_width()/3+5
         )
 
     def resize(self):

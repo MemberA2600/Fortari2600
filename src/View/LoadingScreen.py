@@ -87,6 +87,8 @@ class LoadingScreen():
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)
 
+        from TiaTone import TiaTone
+        self.__loader.tiaTone = TiaTone()
 
         self.__Loading_Window.after(1000, self.__Loading_Window.destroy)
 

@@ -23,6 +23,7 @@ class Loader:
         self.atariFrames = []
         self.rocketFrames = []
         self.colorDict = None
+        self.tiaTone = None
 
         self.frames = {}
         self.menuButtons = {}
