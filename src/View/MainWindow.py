@@ -168,11 +168,11 @@ class MainWindow:
                                           self.__openPFEditor, "projectPath",
                                             False, self.__pfButtonHander)
 
-        """
-        self.__colorButton = self.__buttonMaker.createButton("colorPalette", 12,
-                                          self.__openTIAPaletteMaker, "projectPath",
+
+        self.__musicButton = self.__buttonMaker.createButton("music", 12,
+                                          self.__openMusicComposer, "projectPath",
                                             False, None)
-        """
+
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
 
@@ -478,12 +478,12 @@ class MainWindow:
 
         open = OpenProjectWindow(self.__loader, self, self.openProject)
 
-    """
-    def __openTIAPaletteMake(self):
-        from TIAPaletteMaker import TIAPaletteMaker
 
-        TIA = TIAPaletteMaker(self.__loader, self)
-    """
+    def __openMusicComposer(self):
+        from MusicComposer import MusicComposer
+
+        Music = MusicComposer(self.__loader, self)
+
 
 
     def __openPFEditor(self):

@@ -97,10 +97,7 @@ class PlayfieldEditor:
         self.__theField.pack_propagate(False)
         self.__theField.pack(side=LEFT, anchor=W, fill=Y)
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+
         self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         calc2 = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*15

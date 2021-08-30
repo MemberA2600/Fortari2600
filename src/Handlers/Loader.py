@@ -24,6 +24,7 @@ class Loader:
         self.rocketFrames = []
         self.colorDict = None
         self.tiaTone = None
+        self.piaNotes = None
 
         self.frames = {}
         self.menuButtons = {}

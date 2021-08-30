@@ -21,7 +21,6 @@ class TiaTone:
     def __init__(self):
         self.__filePath = ""
 
-
     def play(self, duration):
         import simpleaudio as sa
         from time import sleep
@@ -34,7 +33,6 @@ class TiaTone:
             sleep(0.1)
             duration-=1
         playObj.stop()
-
 
     def setTone(self, AUDV, AUDC, AUDF, tv):
 

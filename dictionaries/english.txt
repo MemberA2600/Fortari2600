@@ -144,3 +144,5 @@ kernelData=Kernel Data:
 asm=6502 Assembly Code
 tileSetMode=TileSet Mode
 testAsP1=Test as P1
+music=Music Composer
+selectChannel=Select Channel:
