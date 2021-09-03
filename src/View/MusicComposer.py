@@ -41,7 +41,8 @@ class MusicComposer:
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.10), False, False, False)
-        self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.55), False, False, False)
+        self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.35), False, False, False)
+        self.__tinyFont2 = self.__fontManager.getFont(int(self.__fontSize*0.50), False, False, False)
 
 
         if self.__loader.virtualMemory.kernel == "common":
@@ -79,7 +80,7 @@ class MusicComposer:
         self.__topLevelWindow = top.getTopLevel()
 
         self.__editorFrame = Frame(self.__topLevelWindow,
-                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.66),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]),
                                    bg=self.__colors.getColor("window"))
         self.__editorFrame.pack_propagate(False)
         self.__editorFrame.pack(side=TOP, fill=X)
@@ -127,17 +128,31 @@ class MusicComposer:
         self.__channelFrame.pack_propagate(False)
         self.__channelFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__h = round(self.__topLevel.getTopLevelDimensions()[1]*0.60)
+        self.__h = round(self.__topLevel.getTopLevelDimensions()[1]*0.60*0.66)
 
-        self.__musicChannel = Frame(self.__channelFrame, height=self.__h,
+        self.__trembleChannel = Frame(self.__channelFrame, height=self.__h,
                                     bg = self.__colors.getColor("window"))
-        self.__musicChannel.pack_propagate(False)
-        self.__musicChannel.pack(side=TOP, anchor=N, fill=X)
+        self.__trembleChannel.pack_propagate(False)
+        self.__trembleChannel.pack(side=TOP, anchor=N, fill=X)
 
-        self.__bass = False
+        self.__XXX = Frame(self.__channelFrame, height=round(self.__h*0.01),
+                                    bg = self.__colors.getColor("font"))
+        self.__XXX.pack_propagate(False)
+        self.__XXX.pack(side=TOP, anchor=N, fill=X)
+
+        self.__bassNUM = 0.7
+
+        self.__bassChannel = Frame(self.__channelFrame, height=round(self.__h*self.__bassNUM),
+                                    bg = self.__colors.getColor("window"))
+        self.__bassChannel.pack_propagate(False)
+        self.__bassChannel.pack(side=TOP, anchor=N, fill=X)
+
+        #self.__bass = True
         self.__buzz = False
-
-        self.__dividerLen = 4
+        self.__correctNotes = 0 # Can be 0-2
+        self.__fadeOutLen = 0
+        self.__dividerLen = 4   # Has effect over 2
+        self.__vibratio = False
 
         self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
         self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
@@ -148,13 +163,30 @@ class MusicComposer:
         self.__topLevelWindow.bind('<ButtonPress-3>', self.pressed)
         self.__topLevelWindow.bind('<ButtonRelease-3>', self.released)
 
-        t1 = Thread(target=self.__drawTheMusicField)
+        self.__table = {}
+        self.__patterns = {}
+        self.__noteButtons = []
+
+        from NoteTable import NoteTable
+        self.numOfFieldsW = 48
+
+        self.__noteTable= NoteTable(self.__loader, self.numOfFieldsW)
+
+        self.__runningThreads = 2
+
+        t1 = Thread(target=self.__drawTrembleField)
         t1.daemon = True
         t1.start()
+
+        t2 = Thread(target=self.__drawBassField)
+        t2.daemon = True
+        t2.start()
 
         t99 = Thread(target=self.checker)
         t99.daemon = True
         t99.start()
+
+
 
     def pressed(self, event):
         try:
@@ -173,29 +205,66 @@ class MusicComposer:
             return
 
 
-
-    def __drawTheMusicField(self):
-        piano_h = self.__h
-        piano_w = round((self.__h/1280*150) * 2)
-
+    def __drawBassField(self):
         from PIL import Image, ImageTk
 
-        self._pianoImg = Image.open("others/img/piano.png")
-        if self.__bass == False:
-            self._pianoImg = self._pianoImg.crop((0,0,150,640))
-        else:
-            self._pianoImg = self._pianoImg.crop((0, 640, 150, 1280))
+        self._pianoImgBass = Image.open("others/img/bassPiano.png")
 
-        self.__pianoImg = self._pianoImg.resize((piano_w, piano_h), Image.ANTIALIAS)
-        self.__pianoImgTK = ImageTk.PhotoImage(self.__pianoImg)
+        while True:
+            try:
+                piano_w = self.__saveW
+                break
+            except:
+                pass
 
-        self.__pianoFrame = Frame(self.__musicChannel, width=round(piano_w*1.5), height=piano_h, bg = self.__colors.getColor("window"))
+
+        piano_h = round(self.__h*self.__bassNUM)
+
+        self._pianoImgBass = self._pianoImgBass.resize((piano_w, piano_h), Image.ANTIALIAS)
+        self._pianoImgBassTK = ImageTk.PhotoImage(self._pianoImgBass)
+
+        self.__pianoFrameB = Frame(self.__bassChannel, width=round(piano_w*1.5), height=piano_h, bg = self.__colors.getColor("window"))
+        self.__pianoFrameB.pack_propagate(False)
+        self.__pianoFrameB.pack(side=LEFT, anchor = W, fill = Y)
+
+        self.__pianoLabelB = Label(self.__pianoFrameB, image=self._pianoImgBassTK, width=round(piano_w / 3 * 2), height=piano_h)
+        self.__pianoLabelB.pack_propagate(False)
+        self.__pianoLabelB.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__bbbB = Frame(self.__pianoFrameB, width=9999, height=piano_h, bg = "white")
+        self.__bbbB.pack_propagate(False)
+        self.__bbbB.pack(side=LEFT, anchor = W, fill = BOTH)
+
+        self.__remainingB = self.__topLevel.getTopLevelDimensions()[0]-(piano_w*1.5)
+
+        self.__fieldFrameB = Frame(self.__bassChannel, bg = self.__colors.getColor("window"), width=self.__remainingB)
+        self.__fieldFrameB.pack_propagate(False)
+        self.__fieldFrameB.pack(side=LEFT, anchor = W, fill = BOTH)
+
+        self.__drawBassFields()
+        self.__runningThreads-=1
+
+    def __drawTrembleField(self):
+        from copy import deepcopy
+        from PIL import Image, ImageTk
+
+        self._pianoImgTremble = Image.open("others/img/tremblePiano.png")
+
+        piano_h = round(self.__h)
+        piano_w = round((self.__h/1280*150)*2)
+        self.__saveW = piano_w
+
+        self._pianoImgTremble = self._pianoImgTremble.resize((piano_w, piano_h), Image.ANTIALIAS)
+        self._pianoImgTrembleTK = ImageTk.PhotoImage(self._pianoImgTremble)
+
+
+        self.__pianoFrame = Frame(self.__trembleChannel, width=round(piano_w*1.5), height=piano_h, bg = self.__colors.getColor("window"))
         self.__pianoFrame.pack_propagate(False)
         self.__pianoFrame.pack(side=LEFT, anchor = W, fill = Y)
 
-        self.__pianoLabel = Label(self.__pianoFrame, image = self.__pianoImgTK, width=round(piano_w/3*2), height=piano_h)
+        self.__pianoLabel = Label(self.__pianoFrame, image=self._pianoImgTrembleTK, width=round(piano_w / 3 * 2), height=piano_h)
         self.__pianoLabel.pack_propagate(False)
-        self.__pianoLabel.pack(side=LEFT, anchor = W, fill = Y)
+        self.__pianoLabel.pack(side=LEFT, anchor=W, fill=Y)
 
         self.__bbb = Frame(self.__pianoFrame, width=9999, height=piano_h, bg = "white")
         self.__bbb.pack_propagate(False)
@@ -203,153 +272,195 @@ class MusicComposer:
 
         self.__remaining = self.__topLevel.getTopLevelDimensions()[0]-(piano_w*1.5)
 
-        self.__fieldFrame = Frame(self.__musicChannel, bg = self.__colors.getColor("window"), width=self.__remaining)
+        self.__fieldFrame = Frame(self.__trembleChannel, bg = self.__colors.getColor("window"), width=self.__remaining)
         self.__fieldFrame.pack_propagate(False)
         self.__fieldFrame.pack(side=LEFT, anchor = W, fill = BOTH)
 
-        self.__drawMusicFields()
+        self.__drawTrembleFields()
+        self.__runningThreads-=1
 
-    def __drawMusicFields(self):
+    def __drawFields(self, start, end, numOfFieldsH, pattern, key, w, h, fieldFrame, bbb, numOfFieldsW):
+
         from PianoButton import PianoButton
 
-        if self.__alreadyDone == False:
+        theY = 0
+        theH = 0
+        self.__table[key] = []
 
-            add = 0
-            if self.__bass == False:
-                add = 44
+        pfffff = 0
+        for counter in range(0, numOfFieldsH):
 
-            numOfFieldsW = 50
-            numofFieldsH = 44 # half of the number of a full piano key
-            w = round(self.__remaining / numOfFieldsW)-1
-            h = round(self.__topLevel.getTopLevelDimensions()[1] * 0.60/numofFieldsH)
+            Y=end-counter
 
-            from NoteTable import NoteTable
-            self.__noteTable = NoteTable(self.__loader, numOfFieldsW)
+            self.__table[key].append([])
+            self.__soundPlayer.playSound("Pong")
 
-            self.__table = []
-            pattern = []
-            if self.__bass == False:
-                pattern = [0]
-                for num in range(0,3):
-                    pattern.extend([0,1,0,1,0,1,0,0,1,0,1,0])
-                pattern.extend([0,1,0,1,0,1,0])
+            theY += theH
+            for X in range(0, numOfFieldsW):
 
+                self.__table[key][counter].append({})
+                theW = 0
+
+                if self.__dividerLen > 1 and (X + 1) % self.__dividerLen == 0:
+                    theW = round(w * (0.85))
+                else:
+                    theW = w
+
+                F = None
+                if pattern[counter] == 0:
+                    theH = round(h * (1.35 + pfffff))
+                    try:
+                        if pattern[counter + 1] == 1:
+                            theH = round(h+(1*pfffff))
+
+                    except:
+                        pass
+                    try:
+                        if pattern[counter - 1] == 1:
+                            theH = round(h * (1.12 + pfffff))
+
+                    except:
+                        pass
+
+                    try:
+                        if pattern[counter + 1] == 1 and pattern[counter - 1] == 1:
+                            theH = round(h * (0.9 + pfffff))
+
+                    except:
+                        pass
+
+                    F = Frame(fieldFrame, bg=self.__colors.getColor("boxBackNormal"), width=theW, height=theH)
+                else:
+                    theH = h
+
+                    F = Frame(fieldFrame, bg=self.__colors.getColor("boxFontNormal"), width=theW, height=theH)
+
+                # F.config(borderwidth = 1, relief=RIDGE)
+                F.pack_propagate(False)
+                F.place(x=X * w, y=theY)
+                self.__table[key][counter][X]["frame"] = F
+                self.__table[key][counter][X]["value"] = 0
+
+                if self.__dividerLen > 1 and (X + 1) % self.__dividerLen == 0:
+                    divider = Frame(fieldFrame, bg=self.__colors.getColor("fontDisabled"), width=round(w * 0.1),
+                                    height=theH)
+                    divider.pack_propagate(False)
+                    divider.place(x=(X * w) + theW, y=theY)
+
+                B = Button(F, name=str(X) + "," + str(Y), bg=self.__table[key][counter][X]["frame"]["bg"],
+                           relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
+
+                if self.__table[key][counter][X]["value"] == True:
+                    B.config(bg=self.__colors.getColor("boxBackUnSaved"))
+
+                B.pack_propagate(False)
+                B.pack(fill=BOTH)
+                B.bind("<Button-1>", self.clickedCommon)
+                B.bind("<Button-3>", self.clickedCommon)
+                B.bind("<Enter>", self.enterCommon)
+
+                self.__table[key][counter][X]["button"] = B
+                #self.__table[key][counter][X]["volume"] = 8
+
+            theW = round((self.__h / 1280 * 150) * 2 / 4)
+
+            notes = self.__piaNotes.getTiaValue(str(Y), None)
+
+            if key == "bass":
+                try:
+                    del notes["4"]
+                except:
+                    pass
+                try:
+                    del notes["12"]
+                except:
+                    pass
             else:
-                for num in range(0,3):
-                    pattern.extend([0,1,0,1,0,0,1,0,1,0,1,0])
-                pattern.extend([0,1,0,1,0,0,1,0])
+                try:
+                    del notes["1"]
+                except:
+                    pass
+                try:
+                    del notes["6"]
+                except:
+                    pass
+            if notes != None:
+                num = 0
+                for channel in notes.keys():
 
-            theY = 0
-            theH = 0
-            self.__noteButtons = []
+                    color = "white"
+                    if pattern[counter] == 1:
+                        color = "black"
 
-            pfffff  = 0
-            for Y in range(0, numofFieldsH):
-                self.__table.append([])
-                self.__soundPlayer.playSound("Pong")
-                #print(theH)
-                theY += theH
-                for X in range(0, numOfFieldsW):
+                    note = notes[channel]
+                    if type(note) == list:
+                        continue
 
-                    self.__table[Y].append({})
-                    theW = 0
 
-                    if (X+1)%self.__dividerLen == 0:
-                        theW = round(w * (0.85+pfffff))
+                    if channel == "6":
+                        b = PianoButton(self.__loader, color, bbb, theW, note, "6",
+                                        self.__tinyFont, theW * num, theY, theH)
+
+                        self.__noteButtons.append(b)
+                        num += 1
+                        b = PianoButton(self.__loader, color, bbb, theW, note, "7",
+                                        self.__tinyFont, theW * num, theY, theH)
+
+                        self.__noteButtons.append(b)
+                        num += 1
                     else:
-                        theW = w
+                        b = PianoButton(self.__loader, color, bbb, theW, note, channel,
+                                        self.__tinyFont, theW * num, theY, theH)
 
-                    F = None
-                    if pattern[Y] == 0:
-                        theH = round(h*(1.35+pfffff))
-                        try:
-                            if pattern[Y+1] == 1:
-                                theH = round(h)
-
-                        except:
-                            pass
-                        try:
-                            if pattern[Y-1] == 1:
-                                theH = round(h*(1.12+pfffff))
-
-                        except:
-                            pass
-
-                        try:
-                            if pattern[Y+1] == 1 and pattern[Y-1] == 1:
-                                theH = round(h*(0.9+pfffff))
-
-                        except:
-                            pass
-
-                        F = Frame(self.__fieldFrame, bg = self.__colors.getColor("boxBackNormal"), width=theW, height=theH)
-                    else:
-                        theH = h
-
-                        F = Frame(self.__fieldFrame, bg = self.__colors.getColor("boxFontNormal"), width=theW, height=theH)
-
-                    #F.config(borderwidth = 1, relief=RIDGE)
-                    F.pack_propagate(False)
-                    F.place(x=X*w, y=theY)
-                    self.__table[Y][X]["frame"] = F
-                    self.__table[Y][X]["value"] = 0
-
-                    if (X+1)%self.__dividerLen == 0:
-                        divider = Frame(self.__fieldFrame, bg = self.__colors.getColor("fontDisabled"), width=round(w*0.1), height=theH)
-                        divider.pack_propagate(False)
-                        divider.place(x=(X * w) + theW, y=theY)
+                        self.__noteButtons.append(b)
+                        num += 1
 
 
-                    B = Button(F, name=str(X) + "," + str(Y), bg=self.__table[Y][X]["frame"]["bg"],
-                               relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
+    def __drawBassFields(self):
 
-                    if self.__table[Y][X]["value"] == True:
-                        B.config(bg = self.__colors.getColor("boxBackUnSaved"))
+        from copy import deepcopy
 
-                    B.pack_propagate(False)
-                    B.pack(fill=BOTH)
-                    B.bind("<Button-1>", self.clickedCommon)
-                    B.bind("<Button-3>", self.clickedCommon)
-                    B.bind("<Enter>", self.enterCommon)
+        numOfFieldsW = 48
+        numofFieldsH = 27
+        start=2
+        end=30
+        w = round(self.__remainingB / numOfFieldsW)
+        h = round(self.__topLevel.getTopLevelDimensions()[1] * 0.4 / numofFieldsH)
 
-                    self.__table[Y][X]["button"] = B
+        pattern = []
+        octave = [0,1,0,1,0,0,1,0,1,0,1,0]
+        for num in range(0, 2):
+            pattern.extend(deepcopy(octave))
+        pattern.extend([0,1,0,1,0])
 
-                theW = round((self.__h/1280*150) * 2 / 4)
+        self.__patterns["bass"] = pattern
+        self.__drawFields(start, end, numofFieldsH, pattern, "bass", w, round(h*self.__bassNUM), self.__fieldFrameB, self.__bbbB, numOfFieldsW)
 
-                number = (44+add)-Y
-                notes = self.__piaNotes.getTiaValue(str(number), None)
+    def __drawTrembleFields(self):
+        from copy import deepcopy
 
-                if notes != None:
-                    num = 0
-                    for channel in notes.keys():
+        numOfFieldsW = 48
+        numofFieldsH = 38
+        start=31
+        end=69
+        w = round(self.__remaining / numOfFieldsW)
+        h = round(self.__topLevel.getTopLevelDimensions()[1] * 0.4 / numofFieldsH)
 
-                        color = "white"
-                        if pattern[Y] == 1:
-                            color = "black"
+        pattern = [0]
+        octave = [0,1,0,1,0,0,1,0,1,0,1,0]
+        for num in range(0, 3):
+            pattern.extend(deepcopy(octave))
+        pattern.append(0)
 
-                        note = notes[channel]
-                        if channel == "6":
-                            b = PianoButton(self.__loader, color, self.__bbb, theW, note, "6",
-                                            self.__tinyFont, theW*num, theY, theH)
+        self.__patterns["tremble"] = pattern
+        self.__drawFields(start, end, numofFieldsH, pattern, "tremble", w, h, self.__fieldFrame, self.__bbb, numOfFieldsW)
 
-                            self.__noteButtons.append(b)
-                            num +=1
-                            b = PianoButton(self.__loader, color, self.__bbb, theW, note, "7",
-                                            self.__tinyFont, theW*num, theY, theH)
-
-                            self.__noteButtons.append(b)
-                            num +=1
-                        else:
-                            b = PianoButton(self.__loader, color, self.__bbb, theW, note, channel,
-                                            self.__tinyFont, theW*num, theY, theH)
-
-                            self.__noteButtons.append(b)
-                            num +=1
-
-        self.__alreadyDone = True
 
 
     def clickedCommon(self, event):
+        if self.__runningThreads>0:
+            return
+
         button = 0
 
         if self.__ctrl == False:
@@ -378,38 +489,45 @@ class MusicComposer:
             X = int(name.split(",")[1])
         except:
             return
-        self.__flipButton(X, Y, True)
+        if X>30:
+            self.__flipButton(X, Y, "tremble")
+        if X<32 and X>3:
+            print(X)
+            self.__flipButton(X, Y, "bass")
 
 
-    def __flipButton(self, Y, X, playSound):
-        pattern = []
-        if self.__bass == False:
-            pattern = [0]
-            for num in range(0, 3):
-                pattern.extend([0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0])
-            pattern.extend([0, 1, 0, 1, 0, 1, 0])
+    def __flipButton(self, Y, X, key):
+        pattern = self.__patterns[key]
 
-        else:
-            for num in range(0, 3):
-                pattern.extend([0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0])
-            pattern.extend([0, 1, 0, 1, 0, 0, 1, 0])
+        realY = Y
 
 
-        self.__table[Y][X]["value"] = 1-self.__table[Y][X]["value"]
+        if key == "tremble":
+            Y = 69-Y
+            #noteTable = self.__noteTableTremble
+        elif key == "bass":
+            Y = 30-Y
+            #noteTable = self.__noteTableBass
+
+        #print(Y, X)
+        self.__table[key][Y][X]["value"] = 1-self.__table[key][Y][X]["value"]
 
         normalColor = self.__colors.getColor("boxBackNormal")
         if pattern[Y] == 1:
             normalColor = self.__colors.getColor("font")
 
-        if self.__table[Y][X]["value"] == 1:
+        if self.__table[key][Y][X]["value"] == 1:
+
+            self.__clearColumns(X)
+
             self.__noteTable.flipField(X,Y)
+            self.__table[key][Y][X]["button"].config(bg = self.__colors.getColor("boxBackUnSaved"),
+                                                fg = self.__colors.getColor("boxFontUnSaved"),
+                                                font = self.__tinyFont2)
 
-            self.__table[Y][X]["button"].config(bg = self.__colors.getColor("boxBackUnSaved"))
-            dominants = self.__noteTable.getDominantChannelsOfScreen()
+            self.__table[key][Y][X]["button"].config(text = self.__noteTable.getValue(X,Y))
+            dominants = self.__noteTable.getDominantChannelsOfScreen(key)
 
-            realY = 44-Y
-            if self.__bass == False:
-                realY = 88 - Y
 
             notes = self.__piaNotes.getTiaValue(str(realY), None)
             #print(realY)
@@ -417,8 +535,18 @@ class MusicComposer:
             channel = None
             freq = None
 
-            if notes==None:
-                reversedDict, orderedList = self.reversedAndOrdered(notes, dominants)
+
+            if type(notes[list(notes.keys())[0]]) == list:
+                from random import randint
+
+                num = randint(0, len(notes[list(notes.keys())[0]])-1)
+                #print(len(notes[list(notes.keys())[0]]), num)
+
+
+                self.__piaNotes.playTia(
+                    notes[list(notes.keys())[0]][num],
+                    list(notes.keys())[0]
+                )
 
             elif len(notes) == 1:
                 self.__piaNotes.playTia(notes[list(notes.keys())[0]],
@@ -432,11 +560,28 @@ class MusicComposer:
                 self.__piaNotes.playTia(notes[str(reversedDict[orderedList[0]])],
                                         reversedDict[orderedList[0]])
 
-
-
         else:
             self.__noteTable.flipField(X,Y)
-            self.__table[Y][X]["button"].config(bg = normalColor)
+            self.__table[key][Y][X]["button"].config(bg = normalColor, text = "")
+
+    def __clearColumns(self, X):
+
+        # 38, 27
+        for Y in range(0,38):
+            self.clearButton("tremble", X, Y)
+
+        for Y in range(0, 27):
+            self.clearButton("bass", X, Y)
+
+    def clearButton(self, key, X, Y):
+        if self.__patterns[key][Y] == 1:
+            color = "black"
+        else:
+            color = "white"
+
+        self.__noteTable.clearField(X, Y)
+        self.__table[key][Y][X]["button"].config(bg=color, text="")
+        self.__table[key][Y][X]["value"] = 0
 
     def reversedAndOrdered(self, notes, dominants):
         reversedDict = {}

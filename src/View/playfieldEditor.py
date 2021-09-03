@@ -35,6 +35,7 @@ class PlayfieldEditor:
         self.__func = None
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
+        self.__largeFont = self.__fontManager.getFont(int(self.__fontSize*1.05), False, False, False)
 
 
         if self.__loader.virtualMemory.kernel == "common":
@@ -156,6 +157,39 @@ class PlayfieldEditor:
         self.__indexSetter = VisualEditorFrameWithLabelAndEntry(self.__loader, "0", self.__theController, ten,
                 "index", self.__smallFont, self.checkIndexEntry, self.checkIndexEntry2)
 
+
+        self.__twoButtons = Frame(self.__theController, bg=self.__loader.colorPalettes.getColor("window"),
+                                     height=round(ten/1.5))
+        self.__twoButtons.config(width=self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)
+        self.__twoButtons.pack_propagate(False)
+        self.__twoButtons.pack(side=TOP, anchor=N, fill=X)
+
+        self.__LFrame = Frame(self.__twoButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                              width=round((self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2),
+                              )
+        self.__LFrame.pack_propagate(False)
+        self.__LFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__RFrame = Frame(self.__twoButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                              width=round((self.__topLevel.getTopLevelDimensions()[0]-calc-calc2)/2),
+                              )
+        self.__RFrame.pack_propagate(False)
+        self.__RFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+
+        self.__LButton = Button(self.__LFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                fg=self.__loader.colorPalettes.getColor("font"), text = "<<",
+                                font=self.__largeFont, command=self.decrement)
+        self.__RButton = Button(self.__RFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                fg=self.__loader.colorPalettes.getColor("font"), text = ">>",
+                                font=self.__largeFont, command=self.increment)
+
+        self.__LButton.pack_propagate(False)
+        self.__RButton.pack_propagate(False)
+        self.__LButton.pack(fill=BOTH)
+        self.__RButton.pack(fill=BOTH)
+
+
         from VisualLoaderFrame import VisualLoaderFrame
 
         self.__playFieldLoader = VisualLoaderFrame(self.__loader, self.__theController, ten, self.__normalFont, self.__smallFont,
@@ -214,6 +248,19 @@ class PlayfieldEditor:
         t.daemon = True
         t.start()
 
+    def decrement(self):
+
+        self.__indexSetter.setValue(str(int(self.__indexSetter.getValue())-1))
+
+        self.checkIndexEntry("")
+        self.checkIndexEntry2("")
+
+    def increment(self):
+
+        self.__indexSetter.setValue(str(int(self.__indexSetter.getValue())+1))
+
+        self.checkIndexEntry("")
+        self.checkIndexEntry2("")
 
     def __loadTest(self):
         t = Thread(target=self.__testThread)

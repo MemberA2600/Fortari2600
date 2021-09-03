@@ -27,7 +27,7 @@ class NoteTable:
     def addNewScreen(self):
         self.table.append(deepcopy(self.__screen))
 
-    def getDominantChannelsOfScreen(self):
+    def getDominantChannelsOfScreen(self, keys):
         channels = {
             1: 0,
             4: 0,
@@ -48,8 +48,39 @@ class NoteTable:
                     if note == 1:
                         for n in notes.keys():
                             channels[int(n)]+=1
+        if keys == "tremble":
+            try:
+                del channels["1"]
+            except:
+                pass
+            try:
+                del channels["6"]
+            except:
+                pass
+        else:
+            try:
+                del channels["4"]
+            except:
+                pass
+            try:
+                del channels["12"]
+            except:
+                pass
         return(channels)
 
     def flipField(self, X, Y):
-        self.table[self.selected][Y][X] = 1 - self.table[self.selected][Y][X]
+        if self.table[self.selected][Y][X] != 0:
+            self.table[self.selected][Y][X] = 0
+        else:
+            self.table[self.selected][Y][X] = 8
+        #self.table[self.selected][Y][X] = 1 - self.table[self.selected][Y][X]
         #print(self.table[self.selected][Y][X])
+
+    def setField(self, X, Y, volume):
+        self.table[self.selected][Y][X] = volume
+
+    def clearField(self, X, Y):
+        self.table[self.selected][Y][X] = 0
+
+    def getValue(self, X, Y):
+        return self.table[self.selected][Y][X]

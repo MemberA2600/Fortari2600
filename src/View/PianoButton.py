@@ -19,6 +19,7 @@ class PianoButton:
                                font=font, command=self.__playNote,
                                text=str(channel)+":"+str(note))
         self.__button.pack_propagate(False)
+
         self.__button.config(text = channel+": "+note)
         self.__button.pack(fill=BOTH)
 

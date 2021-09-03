@@ -8,6 +8,7 @@ class PiaNotes:
 
     def __loadPiaNotes(self):
         self.__piaNotes = {}
+        self.__brokenNotes = {}
         file = open("config/PiaNotes.txt")
         text = file.read()
         file.close()
@@ -16,12 +17,25 @@ class PiaNotes:
 
         for line in text:
             line = line.split("=")
-            if line[1]!="":
+            if line[1]!="" and ("#" not in line[1]):
                 self.__piaNotes[line[0]] = {}
                 __list = line[1].split(",")
                 for item in __list:
                     item = item.split(":")
                     self.__piaNotes[line[0]][item[0]] = item[1]
+            elif line[1]!="":
+                line[1] = line[1][2:-1]
+                temp = line[1].split(",")
+
+                channel = temp[0].split(":")[0]
+                notes = []
+                self.__piaNotes[line[0]] = {}
+
+                for item in temp:
+                    item = item.split(":")
+                    notes.append(item[1])
+
+                self.__piaNotes[line[0]][channel] = notes
 
     def getTiaValue(self, note, channel):
         try:
