@@ -40,17 +40,17 @@ class PiaNotes:
     def getTiaValue(self, note, channel):
         try:
             if channel == None:
-                return(self.__piaNotes[note])
+                return(self.__piaNotes[str(note)])
             else:
-                return(self.__piaNotes[note][channel])
+                return(self.__piaNotes[str(note)][str(channel)])
         except:
             return None
 
-    def playTia(self, note, channel):
+    def playTia(self, volume, channel, note):
         from threading import Thread
-        t = Thread(target=self.playTiaThread, args=[note, channel])
+        t = Thread(target=self.playTiaThread, args=[volume, channel, note])
         t.daemon = True
         t.start()
 
-    def playTiaThread(self, note, channel):
-        self.__tiaTone.setAndPlay(8, int(channel), int(note), "NTSC", 1)
+    def playTiaThread(self, volume, channel, note):
+        self.__tiaTone.setAndPlay(int(volume), int(channel), int(note), "NTSC", 1)

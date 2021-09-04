@@ -482,8 +482,7 @@ class MainWindow:
     def __openMusicComposer(self):
         from MusicComposer import MusicComposer
 
-        Music = MusicComposer(self.__loader, self)
-
+        Music = MusicComposer(self.__loader, self, None)
 
 
     def __openPFEditor(self):
