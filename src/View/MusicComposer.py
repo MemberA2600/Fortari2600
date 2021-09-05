@@ -19,6 +19,8 @@ class MusicComposer:
 
         self.__caller = 0
 
+        self.__choosenOne = None
+
         self.__pressed = {"1": False, "3": False}
 
         self.__config = self.__loader.config
@@ -34,6 +36,8 @@ class MusicComposer:
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
+
+        self.__numberBuffer = []
 
         self.__func = None
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
@@ -208,6 +212,7 @@ class MusicComposer:
         #self.__topLevelWindow.bind('<ButtonPress-3>', self.pressed)
         #self.__topLevelWindow.bind('<ButtonRelease-3>', self.released)
         self.__topLevelWindow.bind("<Button-2>", self.button2)
+        self.__topLevelWindow.bind("<KeyPress>", self.pressedNumber)
 
         """
     def pressed(self, event):
@@ -216,6 +221,46 @@ class MusicComposer:
     def released(self, event):
         self.__pressed[str(event.num)] = False
         """
+    def pressedNumber(self, event):
+        try:
+            number = int(event.char)
+        except:
+            return
+
+        if len(self.__numberBuffer)>1:
+            self.__numberBuffer.pop(0)
+
+        self.__numberBuffer.append(number)
+
+        if self.__choosenOne!=None:
+            try:
+                number = self.__numberBuffer[0]*10+self.__numberBuffer[1]
+                if number<16:
+
+                    button = self.__choosenOne
+                    buttonValues = self.buttonValuesFromWidget(button)
+
+                    name = str(button).split(".")[-1]
+                    Y, X = self.getXYfromName(name)
+
+                    if number == 0:
+                        self.__tiaScreens.setTileValue(X, Y, 0, 0, 0, 0)
+                    else:
+                        self.setValues(X, Y)
+                        self.__tiaScreens.setTileValue(X, Y, number,
+                                                       buttonValues["channel"], buttonValues["freq"], 1)
+
+
+
+                    self.colorButton(X, Y, button)
+                    self.__numberBuffer = []
+
+            except Exception as e:
+                pass
+                #print(self.__numberBuffer)
+                #self.__loader.logger.errorLog(e)
+
+
 
     def button2(self, event):
         self.__draw = 1 - self.__draw
@@ -298,6 +343,8 @@ class MusicComposer:
                 b.bind("<ButtonPress-1>", self.clickedButton)
                 b.bind("<MouseWheel>", self.mouseWheel)
                 b.bind("<Enter>", self.enterCommon)
+                b.bind("<Leave>", self.leave)
+
 
                 theX+=baseW
             theY+=baseH
@@ -408,7 +455,7 @@ class MusicComposer:
             b.bind("<ButtonPress-1>", self.clickedButton)
             b.bind("<MouseWheel>", self.mouseWheel)
             b.bind("<Enter>", self.enterCommon)
-
+            b.bind("<Leave>", self.leave)
 
     def clickedButton(self, event):
         if self.__runningThreads>0:
@@ -563,9 +610,7 @@ class MusicComposer:
         if self.__runningThreads>0:
             return
 
-        name = str(event.widget).split(".")[-1]
-        Y, X = self.getXYfromName(name)
-        buttonValues = self.__tiaScreens.getTileValue(X, Y)
+        buttonValues = self.buttonValuesFromWidget(event.widget)
 
         if buttonValues["volume"] == 0:
             return
@@ -588,14 +633,20 @@ class MusicComposer:
                                     buttonValues["freq"],
                                     1)
 
+    def buttonValuesFromWidget(self, w):
+        name = str(w).split(".")[-1]
+        Y, X = self.getXYfromName(name)
+        return self.__tiaScreens.getTileValue(X, Y)
+
+
+
+
     def enterCommon(self, event):
         if self.__runningThreads > 0:
             return
 
         if self.__draw == 1:
-            name = str(event.widget).split(".")[-1]
-            Y, X = self.getXYfromName(name)
-            buttonValues = self.__tiaScreens.getTileValue(X, Y)
+            buttonValues = self.buttonValuesFromWidget(event.widget)
 
             if self.__ctrl == False:
                 if buttonValues["enabled"] == 1:
@@ -606,6 +657,9 @@ class MusicComposer:
                     self.eraseRow(X)
                     self.setValues(X, Y)
                     self.colorButton(X, Y, event.widget)
+
+
+        self.__choosenOne = event.widget
 
         """
         if self.__ctrl == True:
@@ -621,6 +675,11 @@ class MusicComposer:
                 self.setValues(X, Y)
                 self.colorButton(X, Y, event.widget)
         """
+
+    def leave(self, event):
+        self.__choosenOne = None
+
+
 
     def focusIn(self, event):
         self.focused = event.widget
