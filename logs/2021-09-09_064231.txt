@@ -1,5 +1,5 @@
 **********************************
-*** 2021-09-05 07:05:24.518865 ***
+*** 2021-09-09 06:42:33.745542 ***
 **********************************
 
 Exception: 'ET' object has no attribute '_ET__spriteImage'
@@ -7,12 +7,12 @@ Error Class: <class 'AttributeError'>
 Variables: 
 __name__ = ET
 __file__ = .\src\View\ET.py
-self = <ET.ET object at 0x00000000053DD898>
+self = <ET.ET object at 0x00000000051BCEB8>
 mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
 
 
 **********************************
-*** 2021-09-05 07:05:25.972948 ***
+*** 2021-09-09 06:42:37.045731 ***
 **********************************
 
 Exception: list index out of range
@@ -20,7 +20,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -31,7 +31,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.972948 ***
+*** 2021-09-09 06:42:37.046731 ***
 **********************************
 
 Exception: list index out of range
@@ -39,7 +39,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -50,7 +50,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.973948 ***
+*** 2021-09-09 06:42:37.046731 ***
 **********************************
 
 Exception: list index out of range
@@ -58,27 +58,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
-bank = bank1
-section = global_variables
-validity = global
-lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
-line = 
-data = ['']
-name = 
-TYPE = byte
-
-
-**********************************
-*** 2021-09-05 07:05:25.973948 ***
-**********************************
-
-Exception: list index out of range
-Error Class: <class 'IndexError'>
-Variables: 
-__name__ = VirtualMemory
-__file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -90,7 +70,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.973948 ***
+*** 2021-09-09 06:42:37.046731 ***
 **********************************
 
 Exception: list index out of range
@@ -98,7 +78,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -110,7 +90,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.974948 ***
+*** 2021-09-09 06:42:37.047731 ***
 **********************************
 
 Exception: list index out of range
@@ -118,7 +98,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -130,7 +110,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.974948 ***
+*** 2021-09-09 06:42:37.047731 ***
 **********************************
 
 Exception: list index out of range
@@ -138,7 +118,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -150,7 +130,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.974948 ***
+*** 2021-09-09 06:42:37.048731 ***
 **********************************
 
 Exception: list index out of range
@@ -158,7 +138,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -170,7 +150,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.974948 ***
+*** 2021-09-09 06:42:37.048731 ***
 **********************************
 
 Exception: list index out of range
@@ -178,7 +158,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -190,7 +170,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.975948 ***
+*** 2021-09-09 06:42:37.049731 ***
 **********************************
 
 Exception: list index out of range
@@ -198,7 +178,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -210,7 +190,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.975948 ***
+*** 2021-09-09 06:42:37.049731 ***
 **********************************
 
 Exception: list index out of range
@@ -218,7 +198,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -230,7 +210,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.975948 ***
+*** 2021-09-09 06:42:37.050731 ***
 **********************************
 
 Exception: list index out of range
@@ -238,7 +218,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -250,7 +230,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.976948 ***
+*** 2021-09-09 06:42:37.050731 ***
 **********************************
 
 Exception: list index out of range
@@ -258,7 +238,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -270,7 +250,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.976948 ***
+*** 2021-09-09 06:42:37.051731 ***
 **********************************
 
 Exception: list index out of range
@@ -278,7 +258,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -290,7 +270,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.976948 ***
+*** 2021-09-09 06:42:37.051731 ***
 **********************************
 
 Exception: list index out of range
@@ -298,7 +278,27 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
+bank = bank1
+section = global_variables
+validity = global
+lines = ["*** This is where you set the variables for the whole project, so the ones shouldn't", '', '*** be overwritten anywhere.', '', 'rand=byte', '', 'counter=byte', '', 'temp1=byte', '', 'temp2=byte', '', 'temp3=byte', '', 'temp4=byte', '', 'temp5=byte', '', 'temp6=byte', '', 'temp7=byte', '', 'temp8=byte', '', 'temp9=byte', '', 'item=byte', '', 'zerg=nibble', '', 'terran=nibble', '', 'protoss=byte', '', 'races=array(zerg,protoss)', '', 'WarCraft=array(protoss,temp4)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-09-09 06:42:37.052731 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -310,7 +310,7 @@ TYPE = nibble
 
 
 **********************************
-*** 2021-09-05 07:05:25.976948 ***
+*** 2021-09-09 06:42:37.052731 ***
 **********************************
 
 Exception: list index out of range
@@ -318,7 +318,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -330,7 +330,7 @@ TYPE = nibble
 
 
 **********************************
-*** 2021-09-05 07:05:25.977948 ***
+*** 2021-09-09 06:42:37.053731 ***
 **********************************
 
 Exception: list index out of range
@@ -338,7 +338,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -350,7 +350,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.977948 ***
+*** 2021-09-09 06:42:37.053731 ***
 **********************************
 
 Exception: list index out of range
@@ -358,7 +358,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -371,7 +371,7 @@ item = protoss
 
 
 **********************************
-*** 2021-09-05 07:05:25.977948 ***
+*** 2021-09-09 06:42:37.054731 ***
 **********************************
 
 Exception: list index out of range
@@ -379,7 +379,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -392,7 +392,7 @@ item = temp4
 
 
 **********************************
-*** 2021-09-05 07:05:25.977948 ***
+*** 2021-09-09 06:42:37.054731 ***
 **********************************
 
 Exception: list index out of range
@@ -400,7 +400,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -413,7 +413,7 @@ item = temp4
 
 
 **********************************
-*** 2021-09-05 07:05:25.978948 ***
+*** 2021-09-09 06:42:37.054731 ***
 **********************************
 
 Exception: list index out of range
@@ -421,7 +421,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank2
 section = local_variables
 validity = bank2
@@ -432,7 +432,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.978948 ***
+*** 2021-09-09 06:42:37.055731 ***
 **********************************
 
 Exception: list index out of range
@@ -440,7 +440,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank2
 section = local_variables
 validity = bank2
@@ -451,7 +451,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.978948 ***
+*** 2021-09-09 06:42:37.055731 ***
 **********************************
 
 Exception: list index out of range
@@ -459,7 +459,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -470,7 +470,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.978948 ***
+*** 2021-09-09 06:42:37.056731 ***
 **********************************
 
 Exception: list index out of range
@@ -478,7 +478,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -490,7 +490,7 @@ TYPE = doubleBit
 
 
 **********************************
-*** 2021-09-05 07:05:25.978948 ***
+*** 2021-09-09 06:42:37.056731 ***
 **********************************
 
 Exception: list index out of range
@@ -498,7 +498,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -510,7 +510,7 @@ TYPE = doubleBit
 
 
 **********************************
-*** 2021-09-05 07:05:25.979948 ***
+*** 2021-09-09 06:42:37.056731 ***
 **********************************
 
 Exception: list index out of range
@@ -518,7 +518,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -529,7 +529,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.979948 ***
+*** 2021-09-09 06:42:37.057731 ***
 **********************************
 
 Exception: list index out of range
@@ -537,27 +537,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
-bank = bank4
-section = local_variables
-validity = bank4
-lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
-line = 
-data = ['']
-name = 
-TYPE = byte
-
-
-**********************************
-*** 2021-09-05 07:05:25.979948 ***
-**********************************
-
-Exception: list index out of range
-Error Class: <class 'IndexError'>
-Variables: 
-__name__ = VirtualMemory
-__file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -569,7 +549,7 @@ TYPE = byte
 
 
 **********************************
-*** 2021-09-05 07:05:25.979948 ***
+*** 2021-09-09 06:42:37.057731 ***
 **********************************
 
 Exception: list index out of range
@@ -577,7 +557,27 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2021-09-09 06:42:37.058732 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = .\src\DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -589,7 +589,7 @@ TYPE = bit
 
 
 **********************************
-*** 2021-09-05 07:05:25.980948 ***
+*** 2021-09-09 06:42:37.058732 ***
 **********************************
 
 Exception: list index out of range
@@ -597,7 +597,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -610,7 +610,7 @@ item = Vacsora
 
 
 **********************************
-*** 2021-09-05 07:05:25.980948 ***
+*** 2021-09-09 06:42:37.059732 ***
 **********************************
 
 Exception: list index out of range
@@ -618,7 +618,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -631,7 +631,7 @@ item = temp9
 
 
 **********************************
-*** 2021-09-05 07:05:25.980948 ***
+*** 2021-09-09 06:42:37.059732 ***
 **********************************
 
 Exception: list index out of range
@@ -639,7 +639,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -652,7 +652,7 @@ item = temp9
 
 
 **********************************
-*** 2021-09-05 07:05:25.980948 ***
+*** 2021-09-09 06:42:37.059732 ***
 **********************************
 
 Exception: list index out of range
@@ -660,7 +660,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank5
 section = local_variables
 validity = bank5
@@ -671,7 +671,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.981948 ***
+*** 2021-09-09 06:42:37.060732 ***
 **********************************
 
 Exception: list index out of range
@@ -679,7 +679,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank5
 section = local_variables
 validity = bank5
@@ -690,7 +690,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.981948 ***
+*** 2021-09-09 06:42:37.060732 ***
 **********************************
 
 Exception: list index out of range
@@ -698,7 +698,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank6
 section = local_variables
 validity = bank6
@@ -709,7 +709,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.981948 ***
+*** 2021-09-09 06:42:37.060732 ***
 **********************************
 
 Exception: list index out of range
@@ -717,7 +717,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank6
 section = local_variables
 validity = bank6
@@ -728,7 +728,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.981948 ***
+*** 2021-09-09 06:42:37.061732 ***
 **********************************
 
 Exception: list index out of range
@@ -736,7 +736,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank7
 section = local_variables
 validity = bank7
@@ -747,7 +747,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.981948 ***
+*** 2021-09-09 06:42:37.061732 ***
 **********************************
 
 Exception: list index out of range
@@ -755,7 +755,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank7
 section = local_variables
 validity = bank7
@@ -766,7 +766,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.982948 ***
+*** 2021-09-09 06:42:37.061732 ***
 **********************************
 
 Exception: list index out of range
@@ -774,7 +774,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank8
 section = local_variables
 validity = bank8
@@ -785,7 +785,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:25.982948 ***
+*** 2021-09-09 06:42:37.062732 ***
 **********************************
 
 Exception: list index out of range
@@ -793,7 +793,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank8
 section = local_variables
 validity = bank8
@@ -804,7 +804,7 @@ name =
 
 
 **********************************
-*** 2021-09-05 07:05:26.014950 ***
+*** 2021-09-09 06:42:37.105734 ***
 **********************************
 
 Exception: list.remove(x): x not in list
@@ -812,33 +812,20 @@ Error Class: <class 'ValueError'>
 Variables: 
 __name__ = SubMenu
 __file__ = .\src\View\SubMenu.py
-self = <SubMenu.SubMenu object at 0x00000000053C4F60>
-loader = <Loader.Loader object at 0x0000000001E1D400>
+self = <SubMenu.SubMenu object at 0x00000000051B1240>
+loader = <Loader.Loader object at 0x00000000024BD400>
 name = open
 w = 533.3333333333334
 h = 355.0
 checker = None
-addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x00000000053C4FD0>>
+addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x00000000060FCF98>>
 maxNum = 1
 Thread = <class 'threading.Thread'>
-add = <Thread(Thread-52, stopped daemon 11224)>
+add = <Thread(Thread-50, stopped daemon 10396)>
 
 
 **********************************
-*** 2021-09-05 07:05:26.014950 ***
-**********************************
-
-Exception: bad window path name ".!toplevel2"
-Error Class: <class '_tkinter.TclError'>
-Variables: 
-__name__ = ET
-__file__ = .\src\View\ET.py
-self = <ET.ET object at 0x00000000053DD898>
-mouse = <module 'mouse' from 'E:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
-
-
-**********************************
-*** 2021-09-05 07:05:26.021951 ***
+*** 2021-09-09 06:42:37.114735 ***
 **********************************
 
 Exception: invalid command name ".!toplevel2.!frame2.!frame3.!canvas"
@@ -846,13 +833,13 @@ Error Class: <class '_tkinter.TclError'>
 Variables: 
 __name__ = ET
 __file__ = .\src\View\ET.py
-self = <ET.ET object at 0x00000000053DD898>
+self = <ET.ET object at 0x00000000051BCEB8>
 sleep = <built-in function sleep>
-moving = None
+moving = True
 
 
 **********************************
-*** 2021-09-05 07:05:26.198961 ***
+*** 2021-09-09 06:42:37.318746 ***
 **********************************
 
 Exception: list index out of range
@@ -860,7 +847,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = .\src\DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x0000000004D5FB70>
+self = <VirtualMemory.VirtualMemory object at 0x0000000004D9D1D0>
 bank = bank1
 section = global_variables
 validity = global
@@ -873,7 +860,7 @@ item = temp4
 
 
 **********************************
-*** 2021-09-05 07:05:27.218019 ***
+*** 2021-09-09 06:42:38.307803 ***
 **********************************
 
 Exception: None
@@ -881,12 +868,12 @@ Error Class: <class 'KeyError'>
 Variables: 
 __name__ = OpenProjectWindow
 __file__ = .\src\View\OpenProjectWindow.py
-self = <OpenProjectWindow.OpenProjectWindow object at 0x00000000053C4FD0>
+self = <OpenProjectWindow.OpenProjectWindow object at 0x00000000060FCF98>
 sleep = <built-in function sleep>
 
 
 **********************************
-*** 2021-09-05 07:05:31.404258 ***
+*** 2021-09-09 06:42:41.682996 ***
 **********************************
 
 $80
@@ -1313,7 +1300,7 @@ Csillag: bank4, ['Reggeli', 'temp9']
 
 
 **********************************
-*** 2021-09-05 07:05:41.405830 ***
+*** 2021-09-09 06:42:51.683568 ***
 **********************************
 
 $80
@@ -1740,7 +1727,1288 @@ Csillag: bank4, ['Reggeli', 'temp9']
 
 
 **********************************
-*** 2021-09-05 07:05:47.953205 ***
+*** 2021-09-09 06:43:01.685140 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$c0
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-09-09 06:43:11.686712 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$c0
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-09-09 06:43:21.688284 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+rand
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+temp1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+temp2
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+temp3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+temp4
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+temp5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+temp6
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+temp7
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+temp8
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+temp9
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$c0
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp4']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2021-09-09 06:43:23.734401 ***
 **********************************
 
 Exception: list.remove(x): x not in list
@@ -1748,1296 +3016,29 @@ Error Class: <class 'ValueError'>
 Variables: 
 __name__ = SubMenu
 __file__ = .\src\View\SubMenu.py
-self = <SubMenu.SubMenu object at 0x0000000005504CC0>
-loader = <Loader.Loader object at 0x0000000001E1D400>
+self = <SubMenu.SubMenu object at 0x00000000052E2A58>
+loader = <Loader.Loader object at 0x00000000024BD400>
 name = music
 w = 1454.5454545454545
 h = 1055.9090909090908
 checker = None
-addElements = <bound method MusicComposer.__addElementsCommon of <MusicComposer.MusicComposer object at 0x00000000054CAF98>>
+addElements = <bound method MusicComposer.__addElementsCommon of <MusicComposer.MusicComposer object at 0x000000000528A588>>
 maxNum = 1
 Thread = <class 'threading.Thread'>
-add = <Thread(Thread-94, stopped daemon 10412)>
+add = <Thread(Thread-95, stopped daemon 8640)>
 
 
 **********************************
-*** 2021-09-05 07:05:51.407402 ***
+*** 2021-09-09 06:43:23.735401 ***
 **********************************
 
-$80
-random
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$81
-counter
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$82
-temp01
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$83
-temp02
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$84
-temp03
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$85
-temp04
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$86
-temp05
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$87
-temp06
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$88
-temp07
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$89
-temp08
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8a
-temp09
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8b
-temp10
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8c
-temp11
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8d
-temp12
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8e
-temp13
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8f
-item
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$90
-frameColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$91
-pf0Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$92
-pf0PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$93
-pf1Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$94
-pf1PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$95
-pf2Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$96
-pf2PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$97
-bkBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$98
-pfBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$99
-pfIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9a
-pfLines
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9b
-P0SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9c
-P0SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9d
-P0ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9e
-P0ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9f
-P1SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a0
-P1SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a1
-P1ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a2
-P1ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a3
-P0Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a4
-P1Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a5
-pfSettings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a6
-P0Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a7
-P1Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a8
-P0SpriteIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a9
-P0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$aa
-P1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ab
-M0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ac
-M1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ad
-BLY
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ae
-P0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$af
-P1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b0
-M0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b1
-M1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b2
-BLX
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b3
-M0Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b4
-M1Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b5
-rand
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b6
-temp1
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b7
-temp2
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b8
-temp3
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b9
-temp4
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ba
-temp5
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bb
-temp6
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bc
-temp7
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bd
-temp8
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$be
-temp9
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bf
-zerg
-nibble
-global
-[0, 1, 2, 3]
-terran
-nibble
-global
-[4, 5, 6, 7]
-------------------------------
-$c0
-protoss
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c1
-Pocok
-doubleBit
-bank3
-[0, 1]
-Reggeli
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c2
-vacsora
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c3
-Csiga
-bit
-bank4
-[0]
-------------------------------
-races: global, ['zerg', 'protoss']
-WarCraft: global, ['protoss', 'temp4']
-Kajalas: bank4, ['Reggeli', 'Vacsora']
-Csillag: bank4, ['Reggeli', 'temp9']
-------------------------------
-
-
-**********************************
-*** 2021-09-05 07:06:01.408975 ***
-**********************************
-
-$80
-random
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$81
-counter
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$82
-temp01
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$83
-temp02
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$84
-temp03
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$85
-temp04
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$86
-temp05
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$87
-temp06
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$88
-temp07
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$89
-temp08
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8a
-temp09
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8b
-temp10
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8c
-temp11
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8d
-temp12
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8e
-temp13
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8f
-item
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$90
-frameColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$91
-pf0Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$92
-pf0PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$93
-pf1Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$94
-pf1PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$95
-pf2Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$96
-pf2PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$97
-bkBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$98
-pfBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$99
-pfIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9a
-pfLines
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9b
-P0SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9c
-P0SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9d
-P0ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9e
-P0ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9f
-P1SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a0
-P1SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a1
-P1ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a2
-P1ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a3
-P0Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a4
-P1Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a5
-pfSettings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a6
-P0Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a7
-P1Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a8
-P0SpriteIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a9
-P0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$aa
-P1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ab
-M0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ac
-M1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ad
-BLY
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ae
-P0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$af
-P1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b0
-M0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b1
-M1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b2
-BLX
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b3
-M0Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b4
-M1Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b5
-rand
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b6
-temp1
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b7
-temp2
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b8
-temp3
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b9
-temp4
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ba
-temp5
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bb
-temp6
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bc
-temp7
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bd
-temp8
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$be
-temp9
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bf
-zerg
-nibble
-global
-[0, 1, 2, 3]
-terran
-nibble
-global
-[4, 5, 6, 7]
-------------------------------
-$c0
-protoss
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c1
-Pocok
-doubleBit
-bank3
-[0, 1]
-Reggeli
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c2
-vacsora
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c3
-Csiga
-bit
-bank4
-[0]
-------------------------------
-races: global, ['zerg', 'protoss']
-WarCraft: global, ['protoss', 'temp4']
-Kajalas: bank4, ['Reggeli', 'Vacsora']
-Csillag: bank4, ['Reggeli', 'temp9']
-------------------------------
-
-
-**********************************
-*** 2021-09-05 07:06:11.410547 ***
-**********************************
-
-$80
-random
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$81
-counter
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$82
-temp01
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$83
-temp02
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$84
-temp03
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$85
-temp04
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$86
-temp05
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$87
-temp06
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$88
-temp07
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$89
-temp08
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8a
-temp09
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8b
-temp10
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8c
-temp11
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8d
-temp12
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8e
-temp13
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$8f
-item
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$90
-frameColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$91
-pf0Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$92
-pf0PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$93
-pf1Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$94
-pf1PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$95
-pf2Pointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$96
-pf2PointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$97
-bkBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$98
-pfBaseColor
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$99
-pfIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9a
-pfLines
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9b
-P0SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9c
-P0SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9d
-P0ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9e
-P0ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$9f
-P1SpritePointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a0
-P1SpritePointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a1
-P1ColorPointer
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a2
-P1ColorPointerLO
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a3
-P0Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a4
-P1Settings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a5
-pfSettings
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a6
-P0Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a7
-P1Height
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a8
-P0SpriteIndex
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$a9
-P0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$aa
-P1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ab
-M0Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ac
-M1Y
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ad
-BLY
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ae
-P0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$af
-P1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b0
-M0X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b1
-M1X
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b2
-BLX
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b3
-M0Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b4
-M1Color
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b5
-rand
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b6
-temp1
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b7
-temp2
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b8
-temp3
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$b9
-temp4
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$ba
-temp5
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bb
-temp6
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bc
-temp7
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bd
-temp8
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$be
-temp9
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$bf
-zerg
-nibble
-global
-[0, 1, 2, 3]
-terran
-nibble
-global
-[4, 5, 6, 7]
-------------------------------
-$c0
-protoss
-byte
-global
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c1
-Pocok
-doubleBit
-bank3
-[0, 1]
-Reggeli
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c2
-vacsora
-byte
-bank4
-[0, 1, 2, 3, 4, 5, 6, 7]
-------------------------------
-$c3
-Csiga
-bit
-bank4
-[0]
-------------------------------
-races: global, ['zerg', 'protoss']
-WarCraft: global, ['protoss', 'temp4']
-Kajalas: bank4, ['Reggeli', 'Vacsora']
-Csillag: bank4, ['Reggeli', 'temp9']
-------------------------------
+Exception: invalid command name ".!toplevel3.!frame.!frame.!frame3.!frame.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = MusicComposer
+__file__ = .\src\View\MusicComposer.py
+self = <MusicComposer.MusicComposer object at 0x000000000528A588>
+sleep = <built-in function sleep>
+button = <ChannelChangerButton.ChannelChangerButton object at 0x00000000063467B8>
 
 

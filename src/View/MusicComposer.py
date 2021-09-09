@@ -18,8 +18,10 @@ class MusicComposer:
         self.__loader.stopThreads.append(self)
 
         self.__caller = 0
+        self.forceShit = False
 
         self.__choosenOne = None
+        self.__screenMax = 0
 
         self.__pressed = {"1": False, "3": False}
 
@@ -70,17 +72,68 @@ class MusicComposer:
 
     def checker(self):
         from time import sleep
-        while(self.dead==False and self.__loader.mainWindow.dead == False):
+        while(self.dead==False and self.__loader.mainWindow.dead == False
+        ):
             try:
-               if self.__channelNum[0] != self.__tiaScreens.currentChannel:
-                   self.__tiaScreens.currentChannel = self.__channelNum[0]
+                if self.__runningThreads == 0 and len(self.__piaNoteTable) > 0:
 
+                    self.__ButtonInsertBefore.config(state=NORMAL)
+                    self.__ButtonInsertAfter.config(state=NORMAL)
+                    for button in self.__channelButtons:
+                        button.enable()
+
+                    if self.__channelNum[0] != self.__tiaScreens.currentChannel:
+                        self.__tiaScreens.currentChannel = self.__channelNum[0]
+                        self.__reColorAll()
+                    self.checkScreenSetter()
 
             except Exception as e:
+                print(str(e))
                 self.__loader.logger.errorLog(e)
 
 
             sleep(0.4)
+
+    def __reColorAll(self):
+        for name in self.__piaNoteTable:
+            X = int(name.split(",")[0])
+            Y = int(name.split(",")[1])
+
+            self.colorButton(X, Y, self.__piaNoteTable[name])
+
+
+    def checkScreenSetter(self):
+
+        if (self.__currentSelected.get() != str(self.__tiaScreens.currentScreen+1) or
+            self.__tiaScreens.screenMax != self.__screenMax or
+            self.forceShit == True):
+
+            self.forceShit = False
+
+            self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
+            self.__screenMax = self.__tiaScreens.screenMax
+
+            if self.__tiaScreens.screenMax > 1:
+
+                self.__SetSelectedEntry.config(state=NORMAL)
+                if self.__tiaScreens.currentScreen>0:
+                    self.__ButtonPrev.config(state=NORMAL)
+                else:
+                    self.__ButtonPrev.config(state=DISABLED)
+
+                if self.__tiaScreens.currentScreen<self.__tiaScreens.screenMax-1:
+                    self.__ButtonNext.config(state=NORMAL)
+                else:
+                    self.__ButtonNext.config(state=DISABLED)
+
+
+            else:
+                self.__SetSelectedEntry.config(state=DISABLED)
+                self.__ButtonPrev.config(state=DISABLED)
+                self.__ButtonNext.config(state=DISABLED)
+                self.__deleteCurrentButton.config(state=DISABLED)
+
+
 
     def __addElementsCommon(self, top):
         self.__topLevel = top
@@ -99,7 +152,7 @@ class MusicComposer:
         self.__selectedChannelFrame.pack(side=TOP, fill=X)
 
         self.__selectorForReal = Frame(self.__selectedChannelFrame,
-                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.3),
                                    bg=self.__colors.getColor("window"))
         self.__selectorForReal.pack_propagate(False)
         self.__selectorForReal.pack(side=LEFT, fill=Y)
@@ -123,11 +176,13 @@ class MusicComposer:
         self.__channelNum = [1]
         from ChannelChangerButton import ChannelChangerButton
 
+        self.__channelButtons = []
         for num in range(1,5):
-            self.__channel1Button = ChannelChangerButton(self.__loader, self.__bigFont, num,
+            __channel1Button = ChannelChangerButton(self.__loader, self.__bigFont, num,
                                            self.__channelNum,
                                            round(self.__topLevel.getTopLevelDimensions()[0]*0.002),
                                            self.__selectorButtons)
+            self.__channelButtons.append(__channel1Button)
 
 
         self.__channelFrame = Frame(self.__editorFrame, height=round(self.__topLevel.getTopLevelDimensions()[1]*0.75),
@@ -180,7 +235,7 @@ class MusicComposer:
         self.__patterns = {}
         self.createPattenrs()
 
-        self.__runningThreads = 3
+        self.__runningThreads = 4
 
         t1 = Thread(target=self.__drawField, args=(self.__trembleChannel, self.__h,
                                                    69, 31, self.__patterns["tremble"],
@@ -198,6 +253,9 @@ class MusicComposer:
         t3.daemon = True
         t3.start()
 
+        t4 = Thread(target=self.drawAllTheOthers)
+        t4.daemon = True
+        t4.start()
 
         t99 = Thread(target=self.checker)
         t99.daemon = True
@@ -221,6 +279,221 @@ class MusicComposer:
     def released(self, event):
         self.__pressed[str(event.num)] = False
         """
+
+    def drawAllTheOthers(self):
+
+        self.__screenSetter = Frame(self.__selectedChannelFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.15),
+                                   bg=self.__colors.getColor("window"))
+        self.__screenSetter.pack_propagate(False)
+        self.__screenSetter.pack(side=LEFT, anchor = W, fill=Y)
+
+        self.__screenSetterUp = Frame(self.__screenSetter,
+                                      height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.025),
+                                      bg=self.__colors.getColor("window"))
+        self.__screenSetterUp.pack_propagate(False)
+        self.__screenSetterUp.pack(side=TOP, anchor = N, fill=X)
+
+        self.__labelSelectedS = Label(self.__screenSetterUp,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text = self.__dictionaries.getWordFromCurrentLanguage("selectedScreen"),
+                              font = self.__normalFont
+                                      )
+        self.__labelSelectedS.pack_propagate(False)
+        self.__labelSelectedS.pack(side=TOP, fill=X)
+
+        self.__screenSetterDown = Frame(self.__screenSetter,
+                                      bg=self.__colors.getColor("window"),
+                                        height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.025)
+                                        )
+        self.__screenSetterDown.pack_propagate(False)
+        self.__screenSetterDown.pack(side=TOP, anchor = N, fill=BOTH)
+
+        self.__ButtonPrevFrame = Frame(self.__screenSetterDown,
+                                      bg=self.__colors.getColor("window"),
+                                       width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                       )
+        self.__ButtonPrevFrame.pack_propagate(False)
+        self.__ButtonPrevFrame.pack(side=LEFT, anchor = W, fill=Y)
+
+        self.__ButtonPrev = Button(self.__ButtonPrevFrame,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text="<<",
+                              font=self.__normalFont,
+                              state = DISABLED,
+                              command = self.__PrevScreen
+                              )
+        self.__ButtonPrev.pack_propagate(False)
+        self.__ButtonPrev.pack(fill=BOTH)
+
+        self.__currentSelected = StringVar()
+        self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
+
+        self.__SetSelectedEntryFrame = Frame(self.__screenSetterDown,
+                                      bg=self.__colors.getColor("window"),
+                                       width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.05)
+                                       )
+        self.__SetSelectedEntryFrame.pack_propagate(False)
+        self.__SetSelectedEntryFrame.pack(side=LEFT, anchor = W, fill=Y)
+
+
+        self.__SetSelectedEntry = Entry(self.__SetSelectedEntryFrame,
+                                      bg=self.__colors.getColor("boxBackNormal"),
+                                        fg=self.__colors.getColor("boxFontNormal"),
+                                       width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                        textvariable = self.__currentSelected,
+                                        state = DISABLED, justify=CENTER,
+                                        font=self.__normalFont
+                                       )
+
+        self.__SetSelectedEntry.pack_propagate(False)
+        self.__SetSelectedEntry.pack(fill=BOTH)
+
+        self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
+        self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
+
+
+        self.__ButtonNextFrame = Frame(self.__screenSetterDown,
+                                      bg=self.__colors.getColor("window"),
+                                       width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.05)
+                                       )
+        self.__ButtonNextFrame.pack_propagate(False)
+        self.__ButtonNextFrame.pack(side=LEFT, anchor = W, fill=Y)
+
+        self.__ButtonNext = Button(self.__ButtonNextFrame,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text=">>",
+                              font=self.__normalFont,
+                              state = DISABLED,
+                              command=self.__NextScreen
+                              )
+        self.__ButtonNext.pack_propagate(False)
+        self.__ButtonNext.pack(fill=BOTH)
+
+        self.__screenInsertDeleteFrame= Frame(self.__selectedChannelFrame,
+                                    width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.1),
+                                    bg=self.__colors.getColor("window"))
+        self.__screenInsertDeleteFrame.pack_propagate(False)
+        self.__screenInsertDeleteFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__insertButtonFrame1 = Frame(self.__screenInsertDeleteFrame,
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.016),
+                                    bg=self.__colors.getColor("window"))
+        self.__insertButtonFrame1.pack_propagate(False)
+        self.__insertButtonFrame1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__insertButtonFrame2 = Frame(self.__screenInsertDeleteFrame,
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.016),
+                                    bg=self.__colors.getColor("window"))
+        self.__insertButtonFrame2.pack_propagate(False)
+        self.__insertButtonFrame2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__deleteButtonFrame = Frame(self.__screenInsertDeleteFrame,
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.016),
+                                    bg=self.__colors.getColor("window"))
+        self.__deleteButtonFrame.pack_propagate(False)
+        self.__deleteButtonFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__ButtonInsertBefore = Button(self.__insertButtonFrame1,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text="<<"+self.__dictionaries.getWordFromCurrentLanguage("insertScreen"),
+                              font=self.__tinyFont2, command=self.__tiaScreens.insertBefore,
+                              state=DISABLED
+                              )
+        self.__ButtonInsertBefore.pack_propagate(False)
+        self.__ButtonInsertBefore.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__ButtonInsertAfter = Button(self.__insertButtonFrame2,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text=self.__dictionaries.getWordFromCurrentLanguage("insertScreen")+">>",
+                              font=self.__tinyFont2, command=self.__tiaScreens.insertAfter,
+                                          state=DISABLED
+
+                                          )
+        self.__ButtonInsertAfter.pack_propagate(False)
+        self.__ButtonInsertAfter.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__deleteCurrentButton = Button(self.__deleteButtonFrame,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text=self.__dictionaries.getWordFromCurrentLanguage("deleteCurrentScreen"),
+                              font=self.__tinyFont2,
+                              state = DISABLED
+                              )
+        self.__deleteCurrentButton.pack_propagate(False)
+        self.__deleteCurrentButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__runningThreads -= 1
+
+
+    def __PrevScreen(self):
+        if self.__runningThreads>0:
+            return
+
+        self.__tiaScreens.currentScreen-=1
+        self.__goScreen()
+
+    def __NextScreen(self):
+        if self.__runningThreads>0:
+            return
+
+        self.__tiaScreens.currentScreen+=1
+        self.__goScreen()
+
+    def checkSelectedEntry(self, event):
+        if self.__runningThreads>0:
+            return
+
+        try:
+            number = int(self.__currentSelected.get())
+            self.__SetSelectedEntry.config(
+                bg = self.__colors.getColor("boxBackNormal"),
+                fg = self.__colors.getColor("boxFontNormal")
+            )
+        except:
+            self.__SetSelectedEntry.config(
+                bg = self.__colors.getColor("boxBackUnSaved"),
+                fg = self.__colors.getColor("boxFontUnSaved")
+            )
+            return
+
+        if number<1:
+            number = 1
+            self.__currentSelected.set("1")
+        elif number > self.__tiaScreens.screenMax:
+            number = self.__tiaScreens.screenMax
+            self.__currentSelected.set(str(self.__tiaScreens.screenMax))
+
+        if number != self.__tiaScreens.currentScreen+1:
+            self.__tiaScreens.currentScreen = number-1
+            self.__goScreen()
+
+    def __goScreen(self):
+        screen = self.__tiaScreens.allData[self.__tiaScreens.currentChannel-1][self.__tiaScreens.currentScreen]
+        self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
+
+        for Y in range(0,100):
+            for X in range(0, self.__tiaScreens.numOfFieldsW):
+                try:
+                    cell = screen[Y][X]
+                    Button = self.__piaNoteTable[str(X)+","+str(Y)]
+
+                    if cell["volume"] == 0:
+                        Button.config(text = "")
+                    else:
+                        Button.config(text = str(cell["volume"]))
+
+
+                    self.colorButton(X, Y, Button)
+                except:
+                    pass
+        self.forceShit = True
+
     def pressedNumber(self, event):
         try:
             number = int(event.char)
@@ -288,12 +561,12 @@ class MusicComposer:
         numofFieldsH = 3
 
         listenButtons = Frame(frame, bg = self.__colors.getColor("window"),
-                              width=round(self.__topLevel.getTopLevelDimensions()[0]*0.05))
+                              width=round(self.__topLevel.getTopLevelDimensions()[0]*0.08))
         listenButtons.pack_propagate(False)
         listenButtons.pack(side=LEFT, anchor=W, fill=Y)
 
         setPanel = Frame(frame, bg = self.__colors.getColor("window"),
-                         width=round(self.__topLevel.getTopLevelDimensions()[0]*0.95))
+                         width=round(self.__topLevel.getTopLevelDimensions()[0]*0.92))
         setPanel.pack_propagate(False)
         setPanel.pack(side=LEFT, anchor=W, fill=BOTH)
 
@@ -317,6 +590,7 @@ class MusicComposer:
             if yY % 2 == 1:
                 color1 = "black"
                 color2 = "white"
+
             theX = 0
             for counter in range(0, numofFieldsW):
                 if self.__dividerLen > 1 and (counter + 1) % self.__dividerLen == 0:
@@ -381,12 +655,12 @@ class MusicComposer:
         numofFieldsW = self.__tiaScreens.numOfFieldsW
 
         listenButtons = Frame(frame, bg = self.__colors.getColor("window"),
-                              width=round(self.__topLevel.getTopLevelDimensions()[0]*0.05))
+                              width=round(self.__topLevel.getTopLevelDimensions()[0]*0.08))
         listenButtons.pack_propagate(False)
         listenButtons.pack(side=LEFT, anchor=W, fill=Y)
 
         setPanel = Frame(frame, bg = self.__colors.getColor("window"),
-                         width=round(self.__topLevel.getTopLevelDimensions()[0]*0.95))
+                         width=round(self.__topLevel.getTopLevelDimensions()[0]*0.92))
         setPanel.pack_propagate(False)
         setPanel.pack(side=LEFT, anchor=W, fill=BOTH)
 
@@ -532,16 +806,30 @@ class MusicComposer:
 
         if buttonValues["enabled"] == 0:
 
-            if buttonValues["color"] == "white":
-                color2 = "black"
-            else:
-                color2 = "white"
-            button.config(bg = buttonValues["color"], fg = color2, text = "")
-        else:
+            if (self.__tiaScreens.currentChannel == 1 or
+                self.__tiaScreens.getIfUpperIsOccupied(X,Y) == False):
 
-            button.config(bg = self.__colors.getColor("boxBackUnSaved"),
-                          fg = self.__colors.getColor("boxFontUnSaved"),
-                          text = str(buttonValues["volume"]))
+                if buttonValues["color"] == "white":
+                    color2 = "black"
+                else:
+                    color2 = "white"
+                button.config(bg = buttonValues["color"], fg = color2, text = "")
+            else:
+                button.config(bg=self.__colors.getColor("fontDisabled"),
+                              fg=self.__colors.getColor("font"),
+                              text="")
+
+        else:
+            if (self.__tiaScreens.currentChannel == 1 or
+                self.__tiaScreens.getIfUpperIsOccupied(X,Y) == False):
+
+                button.config(bg = self.__colors.getColor("boxBackUnSaved"),
+                              fg = self.__colors.getColor("boxFontUnSaved"),
+                              text = str(buttonValues["volume"]))
+            else:
+                button.config(bg = self.__colors.getColor("fontDisabled"),
+                              fg = self.__colors.getColor("boxFontUnSaved"),
+                              text = str(buttonValues["volume"]))
 
 
 
@@ -625,8 +913,9 @@ class MusicComposer:
             else:
                 V = buttonValues["volume"] - 1
 
-
         event.widget.config(text=str(V))
+        name = str(event.widget).split(".")[-1]
+        Y, X = self.getXYfromName(name)
         self.__tiaScreens.setTileValue(X, Y,
                                     V ,
                                     buttonValues["channel"],

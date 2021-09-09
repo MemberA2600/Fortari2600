@@ -3,9 +3,10 @@ class TiaScreens:
     def __init__(self, loader):
         self.__loader = loader
         self.__piaNotes = loader.piaNotes
+        self.__fileDialogs = self.__loader.fileDialogs
+        self.__dictionaries = self.__loader.dictionaries
 
-
-        self.numOfFieldsW = 52
+        self.numOfFieldsW = 48
         self.__runningThreads = 2
 
         from copy import deepcopy
@@ -29,7 +30,7 @@ class TiaScreens:
 
         self.currentChannel = 1
         self.currentScreen = 0
-        self.screenMax = 1
+        self.screenMax = 0
 
         self.allData = []
 
@@ -37,6 +38,49 @@ class TiaScreens:
         for n in range(0, 4):
             self.allData.append(deepcopy(screens))
 
+    def insertBefore(self):
+        self.__insert(self.currentScreen)
+        self.screenMax+=1
+
+    def insertAfter(self):
+        self.__insert(self.currentScreen+1)
+        self.screenMax+=1
+
+    def deleteCurrent(self):
+        num = 0
+        for channelNum in range(0,4):
+            for row in self.allData[channelNum][self.currentScreen]:
+                for cell in row:
+                    if cell["volume"]>0:
+                        num = 1
+                        break
+
+        answer = None
+        if num > 0:
+            answer = self.__fileDialogs.askYesOrNo(self.__dictionaries.getWordFromCurrentLanguage("notEmpty"),
+                                          self.__dictionaries.getWordFromCurrentLanguage("notEmptyMessage")
+                                          )
+        if num ==0 or answer == "Yes":
+            for num in range(0,4):
+                self.allData[num].pop(self.currentScreen)
+            self.screenMax-=1
+            if self.currentScreen == self.screenMax-1:
+                self.currentScreen-=1
+
+
+    def __insert(self, N):
+        from copy import deepcopy
+
+        for num in range(0,4):
+            self.allData[num].insert(N, deepcopy(self.__screen))
+
+    def getIfUpperIsOccupied(self, X, Y):
+
+        for num in range(1, self.currentChannel):
+            if self.allData[num-1][self.currentScreen][Y][X]["enabled"] == 1:
+                return (True)
+
+        return (False)
 
     def playTone(self, X, Y):
         note = self.allData[self.currentChannel-1][self.currentScreen][Y][X]
@@ -52,7 +96,9 @@ class TiaScreens:
         self.allData[self.currentChannel-1][self.currentScreen][Y][X]["enabled"] = enabled
 
     def setColorValue(self, X, Y, color):
-        self.allData[self.currentChannel-1][self.currentScreen][Y][X]["color"] = color
+        for num in range(0,4):
+            self.allData[num][self.currentScreen][Y][X]["color"] = color
+        self.__screen[Y][X]["color"] = color
 
     def getDomimantChannel(self):
         channels = {
@@ -61,8 +107,8 @@ class TiaScreens:
 
         for channel in self.allData:
             for screen in channel:
-                for column in screen:
-                    for cell in column:
+                for row in screen:
+                    for cell in row:
                         if cell["channel"] in channels.keys():
                             channels[cell["channel"]]+=1
 
