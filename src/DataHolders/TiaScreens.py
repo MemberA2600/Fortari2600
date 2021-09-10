@@ -40,6 +40,7 @@ class TiaScreens:
 
     def insertBefore(self):
         self.__insert(self.currentScreen)
+        self.currentScreen+=1
         self.screenMax+=1
 
     def insertAfter(self):
@@ -57,14 +58,12 @@ class TiaScreens:
 
         answer = None
         if num > 0:
-            answer = self.__fileDialogs.askYesOrNo(self.__dictionaries.getWordFromCurrentLanguage("notEmpty"),
-                                          self.__dictionaries.getWordFromCurrentLanguage("notEmptyMessage")
-                                          )
+            answer = self.__fileDialogs.askYesOrNo("notEmpty", "notEmptyMessage")
         if num ==0 or answer == "Yes":
             for num in range(0,4):
                 self.allData[num].pop(self.currentScreen)
             self.screenMax-=1
-            if self.currentScreen == self.screenMax-1:
+            if self.currentScreen > self.screenMax:
                 self.currentScreen-=1
 
 
@@ -74,11 +73,16 @@ class TiaScreens:
         for num in range(0,4):
             self.allData[num].insert(N, deepcopy(self.__screen))
 
-    def getIfUpperIsOccupied(self, X, Y):
+    def getIfUpperIsOccupied(self, X):
+        thereIsOne = False
 
         for num in range(1, self.currentChannel):
-            if self.allData[num-1][self.currentScreen][Y][X]["enabled"] == 1:
-                return (True)
+            for Y in range(0,100):
+                if self.allData[num-1][self.currentScreen][Y][X]["enabled"] == 1:
+                    if thereIsOne == False:
+                        thereIsOne = True
+                    else:
+                        return (True)
 
         return (False)
 

@@ -23,6 +23,8 @@ class MusicComposer:
         self.__choosenOne = None
         self.__screenMax = 0
 
+        self.__frames = {}
+
         self.__pressed = {"1": False, "3": False}
 
         self.__config = self.__loader.config
@@ -81,6 +83,8 @@ class MusicComposer:
                     self.__ButtonInsertAfter.config(state=NORMAL)
                     for button in self.__channelButtons:
                         button.enable()
+                    self.__dividerSetter.enable()
+                    self.__fadeOutSetter.enable()
 
                     if self.__channelNum[0] != self.__tiaScreens.currentChannel:
                         self.__tiaScreens.currentChannel = self.__channelNum[0]
@@ -113,7 +117,7 @@ class MusicComposer:
             self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
             self.__screenMax = self.__tiaScreens.screenMax
 
-            if self.__tiaScreens.screenMax > 1:
+            if self.__tiaScreens.screenMax > 0:
 
                 self.__SetSelectedEntry.config(state=NORMAL)
                 if self.__tiaScreens.currentScreen>0:
@@ -121,10 +125,11 @@ class MusicComposer:
                 else:
                     self.__ButtonPrev.config(state=DISABLED)
 
-                if self.__tiaScreens.currentScreen<self.__tiaScreens.screenMax-1:
+                if self.__tiaScreens.currentScreen<self.__screenMax:
                     self.__ButtonNext.config(state=NORMAL)
                 else:
                     self.__ButtonNext.config(state=DISABLED)
+                self.__deleteCurrentButton.config(state=NORMAL)
 
 
             else:
@@ -224,11 +229,11 @@ class MusicComposer:
         self.__drumChannel.pack(side=TOP, anchor=N, fill=X)
 
         #self.__bass = True
-        self.__buzz = False
+        self.__buzz = 1
         self.__correctNotes = 0 # Can be 0-2
         self.__fadeOutLen = 0
-        self.__dividerLen = 4   # Has effect over 2
-        self.__vibratio = False
+        self.__dividerLen = 4   # Has effect over 2, goes to 4
+        self.__vibratio = 1
 
         self.__piaNoteTable = {}
 
@@ -401,7 +406,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text="<<"+self.__dictionaries.getWordFromCurrentLanguage("insertScreen"),
-                              font=self.__tinyFont2, command=self.__tiaScreens.insertBefore,
+                              font=self.__tinyFont2, command=self.__insertBefore,
                               state=DISABLED
                               )
         self.__ButtonInsertBefore.pack_propagate(False)
@@ -423,13 +428,84 @@ class MusicComposer:
                               fg=self.__colors.getColor("font"),
                               text=self.__dictionaries.getWordFromCurrentLanguage("deleteCurrentScreen"),
                               font=self.__tinyFont2,
-                              state = DISABLED
-                              )
+                              state = DISABLED,
+                              command = self.__deleteCurrent)
+
         self.__deleteCurrentButton.pack_propagate(False)
         self.__deleteCurrentButton.pack(side=TOP, anchor=N, fill=BOTH)
 
+
+        self.__smallSetterBox = Frame(self.__selectedChannelFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.12),
+                                   bg=self.__colors.getColor("window"))
+        self.__smallSetterBox.pack_propagate(False)
+        self.__smallSetterBox.pack(side=LEFT, anchor = W, fill=Y)
+
+        self.__buzzer = IntVar()
+        self.__buzzer.set(1)
+
+        self.__vibrator = IntVar()
+        self.__vibrator.set(1)
+
+        self.__buzzSetter = Checkbutton(self.__smallSetterBox, variable = self.__buzzer,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("buzzer"),
+                                        bg=self.__colors.getColor("window"),
+                                        fg=self.__colors.getColor("font"),
+                                        font=self.__tinyFont2, justify=LEFT,
+                                        command = self.setBuzz
+                                        )
+
+        self.__buzzSetter.pack_propagate(False)
+        self.__buzzSetter.pack(side=TOP, anchor=W)
+
+        self.__vibrSetter = Checkbutton(self.__smallSetterBox, variable = self.__vibrator,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("vibratio"),
+                                        bg=self.__colors.getColor("window"),
+                                        fg=self.__colors.getColor("font"),
+                                        font=self.__tinyFont2, justify=LEFT,
+                                        command=self.setVibratio
+                                        )
+
+        self.__vibrSetter.pack_propagate(False)
+        self.__vibrSetter.pack(side=TOP, anchor=W)
+
+
+        from FrameLabelEntryUpDown import FrameLabelEntryUpDown
+
+        self.__dividerSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
+                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+                                                     "beat", 1, 4, self.__tinyFont2, self.__sizeAll, self.__dividerLen, self.__normalFont
+                                                     )
+
+        self.__fadeOutSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
+                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+                                                     "fadeOut", 0, 9999, self.__tinyFont2, self.setFadeOut, self.__fadeOutLen, self.__normalFont
+                                                     )
+
+
         self.__runningThreads -= 1
 
+    def setFadeOut(self, num):
+        self.__fadeOutLen = num
+
+    def __insertBefore(self):
+        self.__tiaScreens.insertBefore()
+        self.__currentSelected.set(str(self.__tiaScreens.currentScreen))
+
+
+    def __deleteCurrent(self):
+        self.__tiaScreens.deleteCurrent()
+        self.forceShit = True
+        self.__goScreen()
+
+
+    def setBuzz(self):
+        self.__buzz = self.__buzzer.get()
+
+    def setVibratio(self):
+        self.__vibratio = self.__vibrator.get()
 
     def __PrevScreen(self):
         if self.__runningThreads>0:
@@ -490,9 +566,17 @@ class MusicComposer:
 
 
                     self.colorButton(X, Y, Button)
+                    self.reSize(X,Y)
                 except:
                     pass
         self.forceShit = True
+
+    def __sizeAll(self, number):
+        self.__dividerLen = number
+        for button in self.__piaNoteTable:
+            name = str(button).split(".")[-1]
+            Y, X = self.getXYfromName(name)
+            self.reSize(X, Y)
 
     def pressedNumber(self, event):
         try:
@@ -533,6 +617,13 @@ class MusicComposer:
                 #print(self.__numberBuffer)
                 #self.__loader.logger.errorLog(e)
 
+    def reSize(self, X, Y):
+        name = str(X)+","+str(Y)
+        w = round(round(self.__topLevel.getTopLevelDimensions()[0] * 0.85) / self.__tiaScreens.numOfFieldsW)
+
+        if self.__dividerLen > 1 and (X + 1) % self.__dividerLen == 0:
+            w = w*0.95
+        self.__frames[name].config(width=w)
 
 
     def button2(self, event):
@@ -598,9 +689,12 @@ class MusicComposer:
                 else:
                     theW = baseW
 
-                f = Frame(setPanel, width=theW, height=baseH, bg=color1)
+                f = Frame(setPanel, width=theW, height=baseH, bg=color1,
+                          name = str(counter) + "," +str(yY+89))
                 f.pack_propagate(False)
                 f.place(x=theX, y=theY)
+
+                self.__frames[str(counter) + "," +str(yY+89)] = f
 
                 b = Button(f, width=theW, height=baseH, bg=color1,
                            fg=color2,
@@ -708,9 +802,12 @@ class MusicComposer:
             else:
                 theW = W
 
-            f = Frame(frame, width=theW, height=H, bg=colorBack)
+            f = Frame(frame, width=theW, height=H, bg=colorBack,
+                      name = str(counter) + "," +str(theY))
             f.pack_propagate(False)
             f.place(x=X, y=Y)
+
+            self.__frames[str(counter) + "," + str(theY)] = f
 
             self.__tiaScreens.setColorValue(theX, theY, colorBack)
 
@@ -789,7 +886,7 @@ class MusicComposer:
                 F = int(notes[list(notes.keys())[0]])
 
         self.__tiaScreens.setTileValue(X, Y, 8, C, F, 1)
-        if self.__buzz == True and C == 6:
+        if self.__buzz == 1 and C == 6:
             C = 7
         self.__piaNotes.playTia(8, C, F)
 
@@ -806,8 +903,8 @@ class MusicComposer:
 
         if buttonValues["enabled"] == 0:
 
-            if (self.__tiaScreens.currentChannel == 1 or
-                self.__tiaScreens.getIfUpperIsOccupied(X,Y) == False):
+            if (self.__tiaScreens.currentChannel < 3 or
+                self.__tiaScreens.getIfUpperIsOccupied(X) == False):
 
                 if buttonValues["color"] == "white":
                     color2 = "black"
@@ -820,8 +917,8 @@ class MusicComposer:
                               text="")
 
         else:
-            if (self.__tiaScreens.currentChannel == 1 or
-                self.__tiaScreens.getIfUpperIsOccupied(X,Y) == False):
+            if (self.__tiaScreens.currentChannel < 3 or
+                self.__tiaScreens.getIfUpperIsOccupied(X) == False):
 
                 button.config(bg = self.__colors.getColor("boxBackUnSaved"),
                               fg = self.__colors.getColor("boxFontUnSaved"),

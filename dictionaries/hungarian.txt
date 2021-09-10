@@ -154,3 +154,7 @@ insertScreen=Új Képernyõ Beszúrása
 deleteCurrentScreen=Jelenlegi Képernyõ Törlése
 notEmpty=Nem Üres
 notEmptyMessage=A képernyõ tartalmaz hangjegyeket. Mégis törlöd?
+buzzer=Buzz Hatás (basszus)
+vibratio=Vibráció Hatás (Magas)
+beat=Ütemezõ:
+fadeOut=Halkulás:

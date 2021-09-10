@@ -156,3 +156,7 @@ insertScreen=Insert New Screen
 deleteCurrentScreen=Delete Current Screen
 notEmpty=Not Empty
 notEmptyMessage=Seems like the screen contains notes. Delete anyway?
+buzzer=Buzz Effect (for bass)
+vibratio=Vibratio Effect (for tremble)
+beat=Beats:
+fadeOut=Fadeout:
