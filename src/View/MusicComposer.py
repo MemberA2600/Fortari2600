@@ -85,6 +85,9 @@ class MusicComposer:
                         button.enable()
                     self.__dividerSetter.enable()
                     self.__fadeOutSetter.enable()
+                    self.__frameLenSetter.enable()
+                    self.__correctorSetter.enable()
+
 
                     if self.__channelNum[0] != self.__tiaScreens.currentChannel:
                         self.__tiaScreens.currentChannel = self.__channelNum[0]
@@ -230,17 +233,18 @@ class MusicComposer:
 
         #self.__bass = True
         self.__buzz = 1
-        self.__correctNotes = 0 # Can be 0-2
+        self.__correctNotes = 2 # Can be 0-2
         self.__fadeOutLen = 0
         self.__dividerLen = 4   # Has effect over 2, goes to 4
         self.__vibratio = 1
+        self.__frameLen = 1
 
         self.__piaNoteTable = {}
 
         self.__patterns = {}
         self.createPattenrs()
 
-        self.__runningThreads = 4
+        self.__runningThreads = 5
 
         t1 = Thread(target=self.__drawField, args=(self.__trembleChannel, self.__h,
                                                    69, 31, self.__patterns["tremble"],
@@ -261,6 +265,16 @@ class MusicComposer:
         t4 = Thread(target=self.drawAllTheOthers)
         t4.daemon = True
         t4.start()
+
+        self.__bottomFrame = Frame(self.__editorFrame,
+                                   height=99999,
+                                   bg=self.__colors.getColor("window"))
+        self.__bottomFrame.pack_propagate(False)
+        self.__bottomFrame.pack(side=TOP, fill=BOTH)
+
+        t5 = Thread(target=self.drawBottom)
+        t5.daemon = True
+        t5.start()
 
         t99 = Thread(target=self.checker)
         t99.daemon = True
@@ -284,6 +298,36 @@ class MusicComposer:
     def released(self, event):
         self.__pressed[str(event.num)] = False
         """
+
+    def drawBottom(self):
+
+        self.__bottomFrame1 = Frame(self.__bottomFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5),
+                                    height=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__bottomFrame1.pack_propagate(False)
+        self.__bottomFrame1.pack(side=LEFT, fill=Y)
+
+        self.__artistName = StringVar()
+        self.__songTitle = StringVar()
+
+        from SongInput import SongInput
+
+        self.__artistEntry = SongInput(self.__loader, self.__bottomFrame1,
+                                       round(self.__topLevel.getTopLevelDimensions()[0] * 0.5),
+                                       round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
+                                       "artist", self.__artistName, self.__smallFont
+                                       )
+
+        self.__songEntry = SongInput(self.__loader, self.__bottomFrame1,
+                                       round(self.__topLevel.getTopLevelDimensions()[0] * 0.5),
+                                       round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
+                                       "title", self.__songTitle, self.__smallFont
+                                       )
+
+        self.__runningThreads -= 1
+
+
 
     def drawAllTheOthers(self):
 
@@ -484,11 +528,28 @@ class MusicComposer:
                                                      "fadeOut", 0, 9999, self.__tinyFont2, self.setFadeOut, self.__fadeOutLen, self.__normalFont
                                                      )
 
+        self.__frameLenSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
+                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+                                                     "toneLen", 1, 9999, self.__tinyFont2, self.setFrameLen, self.__frameLen, self.__normalFont
+                                                     )
+
+        self.__correctorSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
+                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
+                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+                                                     "corrector", 0, 2, self.__tinyFont2, self.setCorrection, self.__correctNotes, self.__normalFont
+                                                     )
 
         self.__runningThreads -= 1
 
     def setFadeOut(self, num):
         self.__fadeOutLen = num
+
+    def setFrameLen(self, num):
+        self.__frameLen = num
+
+    def setCorrection(self, num):
+        self.__correctNotes = num
 
     def __insertBefore(self):
         self.__tiaScreens.insertBefore()
@@ -497,6 +558,8 @@ class MusicComposer:
 
     def __deleteCurrent(self):
         self.__tiaScreens.deleteCurrent()
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
         self.forceShit = True
         self.__goScreen()
 
@@ -550,9 +613,32 @@ class MusicComposer:
             self.__goScreen()
 
     def __goScreen(self):
-        screen = self.__tiaScreens.allData[self.__tiaScreens.currentChannel-1][self.__tiaScreens.currentScreen]
+        screen = self.__tiaScreens.allData[self.__tiaScreens.currentChannel-1][self.__tiaScreens.currentScreen]["screen"]
+        screenY = self.__tiaScreens.allData[self.__tiaScreens.currentChannel-1][self.__tiaScreens.currentScreen]["Y"]
+
         self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
 
+        """
+        for X in range(0, self.__tiaScreens.numOfFieldsW):
+            Y = screenY[X]
+            if Y == -1:
+                continue
+
+            try:
+                cell = screen[Y][X]
+                Button = self.__piaNoteTable[str(X) + "," + str(Y)]
+
+                if cell["volume"] == 0:
+                    Button.config(text="")
+                else:
+                    Button.config(text=str(cell["volume"]))
+
+                self.colorButton(X, Y, Button)
+                self.reSize(X, Y)
+            except Exception as e:
+                print(e)
+
+        """
         for Y in range(0,100):
             for X in range(0, self.__tiaScreens.numOfFieldsW):
                 try:
@@ -569,6 +655,8 @@ class MusicComposer:
                     self.reSize(X,Y)
                 except:
                     pass
+
+
         self.forceShit = True
 
     def __sizeAll(self, number):
@@ -863,11 +951,20 @@ class MusicComposer:
 
         elif len(notes) == 1:
             if type(notes[list(notes.keys())[0]]) == list:
-                from random import randint
-                num = randint(0, len(notes[list(notes.keys())[0]])-1)
+                if self.__correctNotes > 0:
+                    from random import randint
+                    num = randint(0, len(notes[list(notes.keys())[0]])-1)
 
-                C = int(list(notes.keys())[0])
-                F = int(notes[list(notes.keys())[0]][num])
+                    C = int(list(notes.keys())[0])
+                    F = int(notes[list(notes.keys())[0]][num])
+                else:
+                    F = int(notes[list(notes.keys())[0]][0])
+                    N = 0
+
+                    for num in range(0,len(notes[list(notes.keys())[0]])):
+                        N += int(list(notes.keys())[0])
+
+                    C = N // len(notes[list(notes.keys())[0]])
 
             else:
                 C = int(list(notes.keys())[0])
@@ -897,6 +994,8 @@ class MusicComposer:
                 self.colorButton(X,Y,self.__piaNoteTable[str(X)+","+str(Y)])
             except:
                 pass
+
+        self.__tiaScreens.setMinusOne(X)
 
     def colorButton(self, X, Y, button):
         buttonValues = self.__tiaScreens.getTileValue(X, Y)

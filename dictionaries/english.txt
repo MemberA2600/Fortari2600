@@ -160,3 +160,7 @@ buzzer=Buzz Effect (for bass)
 vibratio=Vibratio Effect (for tremble)
 beat=Beats:
 fadeOut=Fadeout:
+toneLen=Tone Length:
+corrector=Corrector:
+artist=Artist:
+title=Title:

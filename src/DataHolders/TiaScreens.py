@@ -21,12 +21,21 @@ class TiaScreens:
         }
 
         row = []
+        row2 = []
+
         for X in range(0, self.numOfFieldsW):
             row.append(deepcopy(self.__tiaNote))
+            row2.append(-1)
 
-        self.__screen = []
+
+        self.__screen = {
+            "screen": [],
+            "Y": deepcopy(row2)
+
+        }
+
         for Y in range(0,100):
-            self.__screen.append(deepcopy(row))
+            self.__screen["screen"].append(deepcopy(row))
 
         self.currentChannel = 1
         self.currentScreen = 0
@@ -34,9 +43,9 @@ class TiaScreens:
 
         self.allData = []
 
-        screens = [deepcopy(self.__screen)]
+        screen = [deepcopy(self.__screen)]
         for n in range(0, 4):
-            self.allData.append(deepcopy(screens))
+            self.allData.append(deepcopy(screen))
 
     def insertBefore(self):
         self.__insert(self.currentScreen)
@@ -50,11 +59,19 @@ class TiaScreens:
     def deleteCurrent(self):
         num = 0
         for channelNum in range(0,4):
-            for row in self.allData[channelNum][self.currentScreen]:
+            """
+            for row in self.allData[channelNum][self.currentScreen]["screen"]:
                 for cell in row:
                     if cell["volume"]>0:
                         num = 1
                         break
+            """
+            for X in self.allData[num-1][self.currentScreen]["Y"]:
+                if self.allData[num-1][self.currentScreen]["Y"][X] != -1:
+                    num = 1
+                    break
+
+
 
         answer = None
         if num > 0:
@@ -76,33 +93,49 @@ class TiaScreens:
     def getIfUpperIsOccupied(self, X):
         thereIsOne = False
 
+
         for num in range(1, self.currentChannel):
+            Y = self.allData[num-1][self.currentScreen]["Y"][X]
+            if Y != -1:
+                if thereIsOne == False:
+                    thereIsOne = True
+                else:
+                    return (True)
+
+            """
             for Y in range(0,100):
-                if self.allData[num-1][self.currentScreen][Y][X]["enabled"] == 1:
+                if self.allData[num-1][self.currentScreen]["screen"][Y][X]["enabled"] == 1:
                     if thereIsOne == False:
                         thereIsOne = True
+                        break
                     else:
                         return (True)
+            """
 
         return (False)
 
     def playTone(self, X, Y):
-        note = self.allData[self.currentChannel-1][self.currentScreen][Y][X]
+        note = self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]
         self.__piaNotes.playTia(note["volume"], note["channel"], note["freq"])
 
     def getTileValue(self, X, Y):
-        return(self.allData[self.currentChannel-1][self.currentScreen][Y][X])
+        return(self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X])
 
     def setTileValue(self, X, Y, V, C, F, enabled):
-        self.allData[self.currentChannel-1][self.currentScreen][Y][X]["volume"] = V
-        self.allData[self.currentChannel-1][self.currentScreen][Y][X]["channel"] = C
-        self.allData[self.currentChannel-1][self.currentScreen][Y][X]["freq"] = F
-        self.allData[self.currentChannel-1][self.currentScreen][Y][X]["enabled"] = enabled
+        self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]["volume"] = V
+        self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]["channel"] = C
+        self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]["freq"] = F
+        self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]["enabled"] = enabled
+        if enabled == 1:
+            self.allData[self.currentChannel-1][self.currentScreen]["Y"][X] = Y
+
+    def setMinusOne(self, X):
+        self.allData[self.currentChannel - 1][self.currentScreen]["Y"][X] = -1
 
     def setColorValue(self, X, Y, color):
         for num in range(0,4):
-            self.allData[num][self.currentScreen][Y][X]["color"] = color
-        self.__screen[Y][X]["color"] = color
+            self.allData[num][self.currentScreen]["screen"][Y][X]["color"] = color
+        self.__screen["screen"][Y][X]["color"] = color
 
     def getDomimantChannel(self):
         channels = {
@@ -111,10 +144,20 @@ class TiaScreens:
 
         for channel in self.allData:
             for screen in channel:
-                for row in screen:
+                for X in range(0, self.numOfFieldsW):
+                    Y = screen["Y"][X]
+                    cell = screen["screen"][Y][X]
+                    if cell["channel"] in channels.keys():
+                        channels[cell["channel"]] += 1
+
+
+
+                """
+                for row in screen["screen"]:
                     for cell in row:
                         if cell["channel"] in channels.keys():
                             channels[cell["channel"]]+=1
+                """
 
         forSort = []
         for key in channels.keys():
