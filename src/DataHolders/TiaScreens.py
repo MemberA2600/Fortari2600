@@ -12,6 +12,8 @@ class TiaScreens:
         from copy import deepcopy
         self.__noteTable = []
 
+        self.__colors = {}
+
         self.__tiaNote = {
             "volume": 0,
             "channel": 0,
@@ -31,7 +33,6 @@ class TiaScreens:
         self.__screen = {
             "screen": [],
             "Y": deepcopy(row2)
-
         }
 
         for Y in range(0,100):
@@ -83,12 +84,101 @@ class TiaScreens:
             if self.currentScreen > self.screenMax:
                 self.currentScreen-=1
 
+    def getWholeChannelDate(self, num):
+        from copy import deepcopy
+
+        data = []
+
+        for screen in range(0, self.screenMax+1):
+            S = []
+            for X in range(0, self.numOfFieldsW):
+                Y = self.allData[num - 1][screen]["Y"][X]
+
+                if Y == -1:
+                    S.append("#")
+                else:
+                    item = self.allData[num-1][screen]["screen"][Y][X]
+                    txt = str(Y)+" "+str(item["volume"])+" "+str(item["channel"])+" "+str(item["freq"])
+                    S.append(txt)
+
+            data.append(",".join(S))
+
+        return(";".join(data))
+
+    def getLoadedInputAndSetData(self, musicComposer, data):
+        from time import sleep
+        from threading import Thread
+        for c in range(0, 4):
+            if ";" in data[c]:
+                data[c] = data[c].split(";")
+            else:
+                data[c] = [data[c]]
+
+            for i in range(0, len(data[c])):
+                data[c][i] = data[c][i].split(",")
+
+        # If you got here without exception, the data seems to be correct.
+        self.screenMax = len(data[0])-1
+        musicComposer.reset = True
+
+        # Here must be a lot of precessing so the Music Composer has enough time on resetting the variables.
+
+
+        self.__all = 4
+        self.allData = [
+            [], [], [], []
+        ]
+
+        t1 = Thread(target=self.channelThread, args=(data[0], 0))
+        t2 = Thread(target=self.channelThread, args=(data[1], 1))
+        t3 = Thread(target=self.channelThread, args=(data[2], 2))
+        t4 = Thread(target=self.channelThread, args=(data[3], 3))
+
+        t1.daemon = True
+        t2.daemon = True
+        t3.daemon = True
+        t4.daemon = True
+
+        t1.start()
+        t2.start()
+        t3.start()
+        t4.start()
+
+        while self.__all>0:
+            sleep(0.0001)
+
+        #sleep(0.5)
+        musicComposer.reColorAll()
+
+    def channelThread(self, data, num):
+        from copy import deepcopy
+        from threading import Thread
+        from time import sleep
+
+        for s in data:
+            self.allData[num].append(deepcopy(self.__screen))
+            for noteNum in range(0, self.numOfFieldsW):
+                if s[noteNum] != "#":
+                    d = s[noteNum].split(" ")
+                    Y = int(d[0])
+                    self.allData[num][-1]["Y"] = Y
+
+                    field = self.allData[num][-1]["screen"][Y][noteNum]
+                    field["volume"] = int(d[1])
+                    field["channel"] = int(d[2])
+                    field["freq"] = int(d[3])
+                    field["enabled"] = 1
+
+        self.__all-=1
+
+
 
     def __insert(self, N):
         from copy import deepcopy
 
         for num in range(0,4):
             self.allData[num].insert(N, deepcopy(self.__screen))
+
 
     def getIfUpperIsOccupied(self, X):
         thereIsOne = False
@@ -136,6 +226,7 @@ class TiaScreens:
         for num in range(0,4):
             self.allData[num][self.currentScreen]["screen"][Y][X]["color"] = color
         self.__screen["screen"][Y][X]["color"] = color
+        #self.__colors[str(Y)] = color
 
     def getDomimantChannel(self):
         channels = {

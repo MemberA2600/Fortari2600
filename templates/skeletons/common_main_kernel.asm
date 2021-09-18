@@ -1484,6 +1484,7 @@ LeaveJumpTableBank2
 *
 
 OverScanBank2
+
 	CLC
         LDA	INTIM 
         BNE 	OverScanBank2
@@ -1532,13 +1533,13 @@ WaitUntilOverScanTimerEndsBank2
 
 * Set the timer for VBlank
 *
-
 	STA	VBLANK
 	STA 	WSYNC
 
 	CLC
  	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
+
 
 *VBLANK
 *-----------------------------
@@ -1656,6 +1657,8 @@ ScreenBottomBank2
 * custom ScreenTop and ScreenBottom
 * elments.
 *
+
+	align	256
 
 !!!USER_DATA_BANK2!!!
 
@@ -1836,6 +1839,7 @@ WaitUntilOverScanTimerEndsBank3
  	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
+
 *VBLANK
 *-----------------------------
 * This is were you can set a piece
@@ -1952,6 +1956,8 @@ ScreenBottomBank3
 * custom ScreenTop and ScreenBottom
 * elments.
 *
+
+	align	256
 
 !!!USER_DATA_BANK3!!!
 
@@ -2247,6 +2253,8 @@ ScreenBottomBank4
 * custom ScreenTop and ScreenBottom
 * elments.
 *
+
+	align	256
 
 !!!USER_DATA_BANK4!!!
 
@@ -2544,6 +2552,8 @@ ScreenBottomBank5
 * elments.
 *
 
+	align	256
+
 !!!USER_DATA_BANK5!!!
 
 ###End-Bank5
@@ -2840,6 +2850,8 @@ ScreenBottomBank6
 * elments.
 *
 
+	align	256
+
 !!!USER_DATA_BANK6!!!
 
 ###End-Bank6
@@ -3017,6 +3029,7 @@ WaitUntilOverScanTimerEndsBank7
  	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
+
 *VBLANK
 *-----------------------------
 * This is were you can set a piece
@@ -3133,6 +3146,8 @@ ScreenBottomBank7
 * custom ScreenTop and ScreenBottom
 * elments.
 *
+
+	align	256
 
 !!!USER_DATA_BANK7!!!
 
@@ -3416,6 +3431,8 @@ ScreenBottomBank8
 * custom ScreenTop and ScreenBottom
 * elments.
 *
+
+	align	256
 
 !!!USER_DATA_BANK8!!!
 

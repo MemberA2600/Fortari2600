@@ -98,6 +98,9 @@ class KernelTesterLoaderFrame:
     def getValue(self):
         return self.__entryVal.get()
 
+    def setValue(self, val):
+        self.__entryVal.set(val)
+
     def checkIfValidFileName(self, event):
         widget = self.__entry
         value = self.__entryVal.get()

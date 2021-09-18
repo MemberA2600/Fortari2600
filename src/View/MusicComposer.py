@@ -19,6 +19,7 @@ class MusicComposer:
 
         self.__caller = 0
         self.forceShit = False
+        self.reset = False
 
         self.__choosenOne = None
         self.__screenMax = 0
@@ -37,6 +38,8 @@ class MusicComposer:
         self.__colors = self.__loader.colorPalettes
         self.__colorDict = self.__loader.colorDict
         self.__piaNotes = self.__loader.piaNotes
+        self.__io = self.__loader.io
+
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -88,10 +91,16 @@ class MusicComposer:
                     self.__frameLenSetter.enable()
                     self.__correctorSetter.enable()
 
+                    self.__IOButtons()
+                    if self.reset == True:
+                        self.__channelNum[0] = 1
+                        self.__currentSelected.set(0)
+                        self.reset = False
+
 
                     if self.__channelNum[0] != self.__tiaScreens.currentChannel:
                         self.__tiaScreens.currentChannel = self.__channelNum[0]
-                        self.__reColorAll()
+                        self.reColorAll()
                     self.checkScreenSetter()
 
             except Exception as e:
@@ -101,12 +110,22 @@ class MusicComposer:
 
             sleep(0.4)
 
-    def __reColorAll(self):
+    def reColorAll(self):
         for name in self.__piaNoteTable:
             X = int(name.split(",")[0])
             Y = int(name.split(",")[1])
 
             self.colorButton(X, Y, self.__piaNoteTable[name])
+
+    def __IOButtons(self):
+        self.__openButton.changeState(True)
+        self.__saveButton.changeState(False)
+        self.__testingButton.changeState(True)
+
+        if self.changed == True:
+            if (self.__io.checkIfValidFileName(self.__songTitle.get()) == True and
+                    self.__io.checkIfValidFileName(self.__artistName.get())):
+                self.__saveButton.changeState(True)
 
 
     def checkScreenSetter(self):
@@ -309,7 +328,10 @@ class MusicComposer:
         self.__bottomFrame1.pack(side=LEFT, fill=Y)
 
         self.__artistName = StringVar()
+        self.__artistName.set("Stellazy")
+
         self.__songTitle = StringVar()
+        self.__songTitle.set("'Till my ears bleed pixels")
 
         from SongInput import SongInput
 
@@ -325,9 +347,102 @@ class MusicComposer:
                                        "title", self.__songTitle, self.__smallFont
                                        )
 
+        self.__buttonFrame = Frame(self.__bottomFrame1,
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                    width=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__buttonFrame.pack_propagate(False)
+        self.__buttonFrame.pack(side=TOP, fill=X)
+
+        from MCButton import MCButton
+
+        w = round(self.__topLevel.getTopLevelDimensions()[0] * 0.08)
+
+        self.__testingButton = MCButton(self.__loader, self.__buttonFrame, "stella", w, None)
+        self.__saveButton = MCButton(self.__loader, self.__buttonFrame, "save", w, self.__saveDataToFile)
+        self.__openButton = MCButton(self.__loader, self.__buttonFrame, "open", w, self.__openFile)
+
+
         self.__runningThreads -= 1
 
 
+    def __saveDataToFile(self):
+        import os
+
+        fileName = self.__loader.mainWindow.projectPath+"musics/"+self.__artistName.get().replace(" ", "_")+"_-_"+self.__songTitle.get().replace(" ", "_")+".a26"
+
+        if os.path.exists(fileName):
+            answer = self.__fileDialogs.askYesOrNo("musicExists", "musicExistsMessage")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "No":
+                return
+
+
+        text = self.__artistName.get()+"\n"+self.__songTitle.get()+"\n"
+
+        text+=(str(self.__buzz)+","+str(self.__correctNotes)+","+str(self.__fadeOutLen)+","+
+                str(self.__dividerLen)+","+str(self.__vibratio)+","+str(self.__frameLen)+"\n"
+               )
+
+        data = "\n".join([
+            self.__tiaScreens.getWholeChannelDate(1),
+            self.__tiaScreens.getWholeChannelDate(2),
+            self.__tiaScreens.getWholeChannelDate(3),
+            self.__tiaScreens.getWholeChannelDate(4)
+        ])
+
+        text += data
+        file = open(fileName, "w")
+        file.write(text)
+        file.close()
+        self.__soundPlayer.playSound("Success")
+
+    def __openFile(self):
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "Cancel":
+                return
+            elif answer == "Yes":
+                self.__saveDataToFile()
+
+        fileName = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "musics/")
+
+        file = open(fileName, "r")
+        text = file.read()
+        file.close()
+
+        lines = text.replace("\r", "").split("\n")
+
+
+        numbers = lines[2].split(",")
+
+        self.__tiaScreens.getLoadedInputAndSetData(self, lines[3:])
+        self.__buzz = int(numbers[0])
+        self.__buzzer.set(int(numbers[0]))
+        self.__vibratio = int(numbers[4])
+        self.__vibrator.set(int(numbers[4]))
+
+        self.__correctNotes = int(numbers[1])
+        self.__correctorSetter.setValue(numbers[1])
+        self.__fadeOutLen = int(numbers[2])
+        self.__fadeOutSetter.setValue(numbers[2])
+        self.__dividerLen = int(numbers[3])
+        self.__dividerSetter.setValue(numbers[3])
+        self.__frameLen = int(numbers[5])
+        self.__frameLenSetter.setValue(numbers[5])
+
+        self.__artistName.set(lines[0])
+        self.__songTitle.set(lines[1])
+
+        self.__soundPlayer.playSound("Success")
+
+        self.changed = False
 
     def drawAllTheOthers(self):
 
@@ -460,7 +575,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text=self.__dictionaries.getWordFromCurrentLanguage("insertScreen")+">>",
-                              font=self.__tinyFont2, command=self.__tiaScreens.insertAfter,
+                              font=self.__tinyFont2, command=self.__insertAfter,
                                           state=DISABLED
 
                                           )
@@ -544,17 +659,24 @@ class MusicComposer:
 
     def setFadeOut(self, num):
         self.__fadeOutLen = num
+        self.changed = True
 
     def setFrameLen(self, num):
         self.__frameLen = num
+        self.changed = True
 
     def setCorrection(self, num):
         self.__correctNotes = num
+        self.changed = True
 
     def __insertBefore(self):
         self.__tiaScreens.insertBefore()
         self.__currentSelected.set(str(self.__tiaScreens.currentScreen))
+        self.changed = True
 
+    def __insertAfter(self):
+        self.__tiaScreens.insertAfter()
+        self.changed = True
 
     def __deleteCurrent(self):
         self.__tiaScreens.deleteCurrent()
@@ -562,13 +684,16 @@ class MusicComposer:
         self.__topLevelWindow.focus()
         self.forceShit = True
         self.__goScreen()
+        self.changed = True
 
 
     def setBuzz(self):
         self.__buzz = self.__buzzer.get()
+        self.changed = True
 
     def setVibratio(self):
         self.__vibratio = self.__vibrator.get()
+        self.changed = True
 
     def __PrevScreen(self):
         if self.__runningThreads>0:
@@ -594,6 +719,7 @@ class MusicComposer:
                 bg = self.__colors.getColor("boxBackNormal"),
                 fg = self.__colors.getColor("boxFontNormal")
             )
+            self.changed = True
         except:
             self.__SetSelectedEntry.config(
                 bg = self.__colors.getColor("boxBackUnSaved"),
@@ -934,6 +1060,8 @@ class MusicComposer:
             self.setValues(X, Y)
             self.colorButton(X,Y,event.widget)
 
+        self.changed = True
+
     def setValues(self, X, Y):
         notes = self.__piaNotes.getTiaValue(Y, None)
 
@@ -1117,6 +1245,7 @@ class MusicComposer:
                                     buttonValues["channel"],
                                     buttonValues["freq"],
                                     1)
+        self.changed = True
 
     def buttonValuesFromWidget(self, w):
         name = str(w).split(".")[-1]
@@ -1143,8 +1272,11 @@ class MusicComposer:
                     self.setValues(X, Y)
                     self.colorButton(X, Y, event.widget)
 
+            self.changed = True
+
 
         self.__choosenOne = event.widget
+
 
         """
         if self.__ctrl == True:

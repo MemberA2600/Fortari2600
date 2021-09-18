@@ -38,7 +38,7 @@ class KernelTester:
         self.__smallerFont = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
 
         w = round(self.__screenSize[0] / 3)
-        h = round(self.__screenSize[1]/3  - 40)
+        h = round(self.__screenSize[1]/2.6  - 40)
 
         self.__topLevelWindow  = Toplevel()
         self.__topLevelWindow.title(self.__dictionaries.getWordFromCurrentLanguage("kernelTester"))
@@ -96,6 +96,8 @@ class KernelTester:
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelFile", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
+        self.__openKernelFrame.setValue("E:/PyCharm/P/Fortari2600/templates/skeletons/common_main_kernel.asm")
+
         self.__openEnter = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "enterBank2", round(self.__topLevel.getTopLevelDimensions()[0]), self)
@@ -104,9 +106,14 @@ class KernelTester:
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "overscanBank2", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
+        self.__openScreenTopData = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
+                                                         round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
+                                                         "screenTopData", round(self.__topLevel.getTopLevelDimensions()[0]), self)
+
         self.__openKernelData = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelData", round(self.__topLevel.getTopLevelDimensions()[0]), self)
+
 
         self.__testButton = Button(self.__topLevelWindow, stat=DISABLED,
                                    bg=self.__loader.colorPalettes.getColor("window"),
@@ -132,7 +139,9 @@ class KernelTester:
                         and self.__openEnter.valid == True
                         and self.__openOverscan.valid == True
                         and self.__openKernelData.valid == True
-                        ) :
+                        and self.__openScreenTopData.valid == True
+
+                ) :
                     self.__testButton.config(state=NORMAL)
                 else:
                     self.__testButton.config(state=DISABLED)
@@ -155,5 +164,6 @@ class KernelTester:
             self.__loader.io.loadWholeText(self.__openKernelFrame.getValue()),
             self.__loader.io.loadWholeText(self.__openEnter.getValue()),
             self.__loader.io.loadWholeText(self.__openOverscan.getValue()),
+            self.__loader.io.loadWholeText(self.__openScreenTopData.getValue()),
             self.__loader.io.loadWholeText(self.__openKernelData.getValue())
             ])

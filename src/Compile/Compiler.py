@@ -25,11 +25,14 @@ class Compiler:
         self.__mainCode = self.__data[0]
         self.__enterCode = self.__data[1]
         self.__overScanCode = self.__data[2]
-        self.__kernelData = self.__data[3]
+        self.__screenTopCode = self.__data[3]
+        self.__kernelData = self.__data[4]
+
 
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", "NTSC")
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
         self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__screenTopCode)
         self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__kernelData)
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 

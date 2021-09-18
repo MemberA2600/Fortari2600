@@ -77,3 +77,6 @@ class FrameLabelEntryUpDown:
         if self.__function!=None:
             self.__function(number)
 
+
+    def setValue(self, val):
+        self.__variable.set(str(val))
