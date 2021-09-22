@@ -1,0 +1,345 @@
+48pxText
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	HMCLR		; 3
+	STA	COLUBK		; 3 (6)
+	LDA	#0		; 2 (8)
+	STA	PF0		; 3 (11)
+	STA	PF1		; 3 (14)
+	STA	PF2		; 3 (17)
+	STA	GRP0		; 3 (20)
+	STA	GRP1		; 3 (23)
+	STA	VDELP0		; 3 (26)
+	STA	VDELP1		; 3 (29)
+
+	sleep	7		
+
+	STA	RESP0		; 3 	
+	STA	RESP1		; 3 Set the X pozition of sprites.
+
+	LDA	TextColor	; 3 
+	STA	COLUP0		; 3 
+	LDA	#$88
+	STA	COLUP1		; 3 
+	
+	LDA	#$00		; 2 
+	STA	HMP0		; 3 
+	LDA	#$10		; 2 
+	STA	HMP1		; 3 
+
+	LDA	#$03		; 2 			
+	STA	NUSIZ0		; 3 
+	STA	NUSIZ1		; 3 
+	
+48pxTextCursorBlinking
+	LDX	#0
+	BIT	counter
+	BVS	48pxTextOtherWayAround	;  turn every 64 frame
+	LDY	#41
+	LDA	#40
+	JMP	48pxTextCheckForBlinking
+48pxTextOtherWayAround
+	LDY	#40
+	LDA	#41
+48pxTextCheckForBlinking
+	CPX	#12
+	BCC	48pxTextPrepareForDarkness
+	CMP	Letter01,x
+	BNE	48pxTextNoChangeForBlinking
+	STY	Letter01,x	
+48pxTextNoChangeForBlinking
+	INX
+	JMP 	48pxTextCheckForBlinking
+
+48pxTextPrepareForDarkness
+	LDA	BackColor	
+	STA	WSYNC
+	STA	HMOVE		
+	STA	COLUBK	
+	
+	LDY	#4		
+	STY	temp02		
+	TSX			
+	STX	item		
+
+48pxTextCalculateDataStart
+	LDX	#0
+48pxTextResetGRP
+	STX	GRP0
+	STX	GRP1
+48pxTextCalculateData
+	TXS
+	LDA	Letter01,x
+	LSR
+	TAX
+	LDA	BankXX5Table,x	; Got starting address
+	STA	temp01
+	TYA
+	CLC	
+	ADC	temp01		; Got str address + line num	
+	TAX
+	LDA	BankXX0_1,x
+	STA	temp01		; Got letter(s) data
+	
+	TSX
+	LDA 	Letter01,x
+	AND	#%00000001
+	CMP	#%00000001
+	BNE	48pxTextGetLowNibble
+	LDA	temp01
+	AND	#%11110000	
+	sleep	5
+	JMP	48pxTextCalculateJobDone1
+48pxTextGetLowNibble
+	LDA	temp01
+	AND	#%00001111
+	asl
+	asl
+	asl
+	asl
+48pxTextCalculateJobDone1
+	STA	temp03,x
+
+	TSX
+	LDA	Letter02,x
+	LSR
+	TAX
+	LDA	BankXX5Table,x	; Got starting address
+	STA	temp01
+	TYA
+	CLC	
+	ADC	temp01		; Got str address + line num	
+	TAX
+	LDA	BankXX0_1,x
+	STA	temp01		; Got letter(s) data
+
+	TSX
+	LDA 	Letter02,x
+	AND	#%00000001
+	CMP	#%00000001
+	BEQ	48pxTextGetHighNibble
+	LDA	temp01
+	AND	#%00001111
+	sleep	5
+	JMP	48pxTextCalculateJobDone2
+48pxTextGetHighNibble
+	LDA	temp01
+	AND	#%11110000
+	lsr
+	lsr
+	lsr
+	lsr
+48pxTextCalculateJobDone2
+	ORA	temp03,x
+	STA	temp03,x
+
+	INX
+	INX
+	CPX	#12
+	BCS	48pxTextThisLineIsCalculated	
+	JMP	48pxTextCalculateData
+
+48pxTextThisLineIsCalculated	
+	STX	random
+
+	STA	WSYNC
+
+	LDA	temp03		; 3 (6)
+	STA	GRP0		; 3 (9)
+	LDA	temp04		; 3 (12)
+	STA	GRP1		; 3 (15)
+
+	sleep	45
+
+	DEC	temp02		; 5
+	LDY	temp02		; 3
+	BMI	48pxTextReset	; 2 
+	JMP	48pxTextCalculateDataStart   ; 3
+
+
+48pxTextReset
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK		
+	LDA	#0		
+	STA	PF0
+	STA	PF1		
+	STA	PF2		
+	STA	GRP0		
+	STA	GRP1		
+	STA	VDELP0		
+	STA	VDELP1	
+
+	LDX	item		
+	TXS	
+
+	JMP	EndTest
+
+	align	256
+
+BankXXFont
+BankXX0_1
+	BYTE	#%01100010
+	BYTE	#%10010010
+	BYTE	#%11011010
+	BYTE	#%10110110
+	BYTE	#%01100010
+BankXX2_3
+	BYTE	#%11110110
+	BYTE	#%01001001
+	BYTE	#%00100010
+	BYTE	#%10011001
+	BYTE	#%01100110
+BankXX4_5
+	BYTE	#%00101111
+	BYTE	#%01001000
+	BYTE	#%10101111
+	BYTE	#%11110001
+	BYTE	#%00101110
+BankXX6_7
+	BYTE	#%01101000
+	BYTE	#%10010100
+	BYTE	#%01110010
+	BYTE	#%10010001
+	BYTE	#%01101111
+BankXX8_9
+	BYTE	#%01100110
+	BYTE	#%10011001
+	BYTE	#%01100111
+	BYTE	#%10011001
+	BYTE	#%01100110
+BankXXSpace_A
+	BYTE	#%00001001
+	BYTE	#%00001001
+	BYTE	#%00001111
+	BYTE	#%00001001
+	BYTE	#%00000110
+BankXXB_C
+	BYTE	#%11100110
+	BYTE	#%10011001
+	BYTE	#%11101000
+	BYTE	#%10011001
+	BYTE	#%11100110
+BankXXD_E
+	BYTE	#%11101111
+	BYTE	#%10011000
+	BYTE	#%10011100
+	BYTE	#%10011000
+	BYTE	#%11101111
+BankXXF_G
+	BYTE	#%10000110
+	BYTE	#%10001001
+	BYTE	#%11001011
+	BYTE	#%10001000
+	BYTE	#%11110111
+BankXXH_I
+	BYTE	#%10011110
+	BYTE	#%10010100
+	BYTE	#%11110100
+	BYTE	#%10010100
+	BYTE	#%10011110
+BankXXJ_K
+	BYTE	#%01101001
+	BYTE	#%10011010
+	BYTE	#%00011001
+	BYTE	#%00011010
+	BYTE	#%00011100
+BankXXL_M
+	BYTE	#%11111001
+	BYTE	#%10001001
+	BYTE	#%10001111
+	BYTE	#%10001111
+	BYTE	#%10001001
+BankXXN_O
+	BYTE	#%10010110
+	BYTE	#%10011001
+	BYTE	#%10111001
+	BYTE	#%11011001
+	BYTE	#%10010110
+BankXXP_Q
+	BYTE	#%10000101
+	BYTE	#%10001010
+	BYTE	#%11101110
+	BYTE	#%10011010
+	BYTE	#%11100100
+BankXXR_S
+	BYTE	#%10100111
+	BYTE	#%11001000
+	BYTE	#%11100110
+	BYTE	#%10010001
+	BYTE	#%11101110
+BankXXT_U
+	BYTE	#%01000110
+	BYTE	#%01001001
+	BYTE	#%01001001
+	BYTE	#%01001001
+	BYTE	#%11101001
+BankXXV_W
+	BYTE	#%01000110
+	BYTE	#%10101111
+	BYTE	#%10011001
+	BYTE	#%10011001
+	BYTE	#%10011001
+BankXXX_Y
+	BYTE	#%10010100
+	BYTE	#%10010100
+	BYTE	#%01100100
+	BYTE	#%10011010
+	BYTE	#%10011010
+BankXXZ_Dot
+	BYTE	#%11110100
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%00010000
+	BYTE	#%11110000 
+BankXXCursor
+	BYTE	#%11110000
+	BYTE	#%11110000
+	BYTE	#%11110000
+	BYTE	#%11110000
+	BYTE	#%11110000
+	; 	100
+
+	BYTE	#%01100000
+	BYTE	#%01100000
+	BYTE	#%11111111
+	BYTE	#%01100000
+	BYTE	#%01100000
+
+	BYTE	#%10000001
+	BYTE	#%01000010
+	BYTE	#%00100100
+	BYTE	#%00100100
+	BYTE	#%00011000
+
+BankXX5Table
+	BYTE	#0
+	BYTE	#5
+	BYTE	#10
+	BYTE	#15
+	BYTE	#20
+	BYTE	#25
+	BYTE	#30
+	BYTE	#35
+	BYTE	#40
+	BYTE	#45
+	BYTE	#50
+	BYTE	#55
+	BYTE	#60
+	BYTE	#65
+	BYTE	#70
+	BYTE	#75
+	BYTE	#80
+	BYTE	#85
+	BYTE	#90
+	BYTE	#95
+	BYTE	#100
+	BYTE	#105
+	BYTE	#110
+	BYTE	#115
+	BYTE	#120
+	BYTE	#125
+EndTest
+
+
+

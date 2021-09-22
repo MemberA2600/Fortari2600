@@ -362,3 +362,5 @@ pic64px_BGColor
 	BYTE #$1a
 	BYTE #$1c
 	BYTE #$1e
+
+	align	256

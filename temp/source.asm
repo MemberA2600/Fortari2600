@@ -1425,21 +1425,54 @@ start_bank1
 
 EnterScreenBank2
 
-picIndex = $d2
-picDisplayHeight = $d3
-picHeight = 27
+Letter01 = $d2
+Letter02 = $d3
+Letter03 = $d4
+Letter04 = $d5
+Letter05 = $d6
+Letter06 = $d7
+Letter07 = $d8
+Letter08 = $d9
+Letter09 = $da
+Letter10 = $db
+Letter11 = $dc
+Letter12 = $dd
+TextColor = $de
+BackColor = $df
+
+	LDA	#0
+	STA	Letter01
+	LDA	#1
+	STA	Letter02
+	LDA	#2
+	STA	Letter03
+	LDA	#3
+	STA	Letter04
+	LDA	#4
+	STA	Letter05
+	LDA	#5
+	STA	Letter06
+	LDA	#6
+	STA	Letter07
+	LDA	#7
+	STA	Letter08
+	LDA	#8
+	STA	Letter09
+	LDA	#9
+	STA	Letter10
+	LDA	#10
+	STA	Letter11
+	LDA	#11
+	STA	Letter12
 
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
-	LDA	#27
-	STA	picDisplayHeight
-
-	LDA	#0
-	STA	picIndex
-
+	LDA	#$1a
+	STA	TextColor
 	
-
+	LDA	#$40
+	STA	BackColor	
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1614,228 +1647,275 @@ VBlankEndBank2
 * top part of the screen.
 *
 
-pic64px_KernelStart
+48pxText
 	LDA	frameColor
 	STA	WSYNC		; (76)
 	STA	HMCLR		; 3
 	STA	COLUBK		; 3 (6)
-	STA	COLUP0		; 3 (9)
-	STA	COLUP1		; 3 (12)
-	STA	COLUPF		; 3 (15)
+	LDA	#0		; 2 (8)
+	STA	PF0		; 3 (11)
+	STA	PF1		; 3 (14)
+	STA	PF2		; 3 (17)
+	STA	GRP0		; 3 (20)
+	STA	GRP1		; 3 (23)
+	STA	VDELP0		; 3 (26)
+	STA	VDELP1		; 3 (29)
+	STA	CTRLPF		; 3 (32)
 
-	LDA	#0		; 2 (17)
-	STA	PF0		; 3 (20)
-	STA	PF1		; 3 (23)
-	STA	PF2		; 3 (26)
-	STA	GRP0		; 3 (29)
-	STA	GRP1		; 3 (32)
-	STA	VDELP0		; 3 (35)
-	STA	VDELP1		; 3 (38)
+	sleep	4		
 
-	LDA	#$02		; 2 (40)
-	STA	NUSIZ0		; 3 (43)
-	STA	NUSIZ1		; 3 (46) 
+	STA	RESP0		; 3 	
+	STA	RESP1		; 3 Set the X pozition of sprites.
 
-	LDA	#%00000001	; mirrored pf with regular colors 2 (48)
- 	STA	CTRLPF		; 3 (51)
+	LDA	#$00		; 2 
+	STA	HMP0		; 3 
 
-	LDA	#picHeight	; height of the picture 3 (53)
-	SEC			; 2 (55)
-	SBC	picIndex	; index of scrolling 3 (58)
-	STA	temp01		; starting point 3 (61)
-	TAY			; 2 (63)
-	SEC			; 2 (65)
-	SBC 	picDisplayHeight ; 3 (68)
-	STA 	temp02		; displayed height (stops if Y gets here) 3 (71)
-	STA	WSYNC		; (76)	- One line wasted
+	LDA	#$10		; 2 
+	STA	RESBL
+	STA	HMP1		; 3 
 
-	_sleep	26
-	sleep 3
+	LDA	#$E0
+	STA	HMBL
 
-	STA	RESP0		; 3 (32)
-	sleep	3		;   (34)	
-	STA	RESP1		; 3 (37) Set the X pozition of sprites.
-
-	LDA	counter		; 3 (6)
-	AND	#%00000001	; 2 (8)
-	CMP	#%00000001	; 2 (10)
-	BNE	pic64px_OddFrame  ; 2 (12)
-	JMP	pic64px_EvenFrame ; 3 (15)	
-
-	align	256
-
-pic64px_OddFrame
-	sleep	47
-
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-
-	LAX	pic64px_06,y
-
-	LDA	#$00				; 2
-	STA 	HMP0				; 3 
-	LDA	#$20				; 2
-	STA 	HMP1				; 3 
-	STA 	WSYNC				; 76
-
-pic64px_OddFrame_Line1
-	STA	HMOVE				; 3 
-
-	LDA	pic64px_BGColor,y		; 4 (7)
-	STA	COLUBK				; 3 (10)	
-	LDA	pic64px_PF,y			; 4 (14)
-	STA	PF2				; 3 (17)
-	LDA	pic64px_PFColor,y		; 4 (21)
-	STA	COLUPF				; 3 (24)
-		
-	LDA	pic64px_Color,y			; 4 
-	STA	COLUP0				; 3 
-	STA	COLUP1				; 3 
+	LDA	#$03		; 2 			
+	STA	NUSIZ0		; 3 
+	STA	NUSIZ1		; 3 
 	
-	LDA	pic64px_00,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_02,y			; 4
-	STA	GRP1				; 3 
+48pxTextCursorBlinking
+	LDX	#0
+	BIT	counter
+	BVS	48pxTextOtherWayAround	;  turn every 64 frame
+	LDY	#41
+	LDA	#40
+	JMP	48pxTextCheckForBlinking
+48pxTextOtherWayAround
+	LDY	#40
+	LDA	#41
+48pxTextCheckForBlinking
+	CPX	#12
+	BCC	48pxTextPrepareForDarkness
+	CMP	Letter01,x
+	BNE	48pxTextNoChangeForBlinking
+	STY	Letter01,x	
+48pxTextNoChangeForBlinking
+	INX
+	JMP 	48pxTextCheckForBlinking
 
-	LDA	pic64px_04,y			; 4
-	STA	GRP0				; 3 
+48pxTextPrepareForDarkness
+	LDA	BackColor	
+	STA	WSYNC
+	STA	HMOVE		; 3	
+	STA	COLUBK		; 3 (6)
 
-	STX	GRP1				; 3 
+	LDY	#4		
+	STY	temp02		
+	TSX			
+	STX	item	
 
-*		+13
-*	sleep	49
-						; (65)
-	LDA	#$80				; 2 (67)
-	STA 	HMP0				; 3 (70)
-	STA 	HMP1				; 3 (73)
+48pxTextFillerLine1
+	LDA	counter	
+	AND	#%00000010
+	CMP	#%00000010
+	BEQ	48pxTextCalculateDataStart
+	STA	WSYNC
+	STA	WSYNC
 
-pic64px_OddFrame_Line2
-	STA 	WSYNC
-	STA	HMOVE				; 3 
+48pxTextCalculateDataStart
+	STA	WSYNC
+	LDX	#0
+48pxTextResetGRP
+	STX	GRP0
+	STX	GRP1
+	STX	ENABL
 
-	LDA	pic64px_01,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_03,y			; 4 
-	STA	GRP1				; 3 
+48pxTextCalculateData
+	TYA
+	EOR	counter		  	; Seems like the best way to decide
+	AND	#%00000001		; which lines to draw.
+	CMP	#%00000001
+	BEQ	48pxTextEvenLine
 
-	DEY
-	LAX	pic64px_06,y			; 4
-	INY
-
-	sleep	12
-
-	LDA	pic64px_05,y			; 4 
-	STA	GRP0				; 3 
-
-	LDA	pic64px_07,y			; 4 
-	STA	GRP1				; 3 
-
-
-***	sleep	48
-						; (56, but 52?!)
-	LDA	#$00				; 2 (58)
-	STA 	HMP0				; 3 (61)
-	STA 	HMP1				; 3 (64)
-	DEY					; 2 (66)
-	CPY	temp02				; 3 (69)
-	BEQ	pic64px_Reset			; 2 (71)	
-	JMP	pic64px_OddFrame_Line1		; 3 (74)
-
-pic64px_EvenFrame
-	sleep	35
-
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-
-	LDA	pic64px_PFColor,y		
-	STA	COLUPF				
-
-	LAX	pic64px_07,y
-	TXS
-	LAX	pic64px_05,y
-
-	LDA	#$80				
-	STA 	HMP0				
-	LDA	#$A0				
-	STA 	HMP1	
-
-pic64px_EvenFrame_Line1			
-	STA 	WSYNC				; 76
-	STA	HMOVE				; 3
-
-	LDA	pic64px_BGColor,y		; 4 (7)
-	STA	COLUBK				; 3 (10)	
-	LDA	pic64px_PF,y			; 4 (14)
-	STA	PF2				; 3 (17)
-	sleep	5
-		
-	LDA	pic64px_Color,y			; 4 
-	STA	COLUP0				; 3 
-	STA	COLUP1				; 3 (34 - 31)
-
-	LDA	pic64px_01,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_03,y			; 4 
-
-	STA	GRP1				; 3 
-	STX	GRP0				; 3 
-	TSX					; 2
-	STX	GRP1				; 3
-
-	sleep	8
-
-***	+13 (59)
-***	sleep	46
-						; (66)
-	LDA	#$00				; 2 (68)
-	STA 	HMP0				; 3 (71)
-	STA 	HMP1				; 3 (74)
-pic64px_EvenFrame_Line2
-	STA	HMOVE				; 3 
-
-	LDA	pic64px_00,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_02,y			; 4 
-	STA	GRP1				; 3 
+48pxTextOddLine
+	LDA	Letter01
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp03
 	
-	DEY
-	LAX	pic64px_07,y	
-	TXS
-	LAX	pic64px_05,y
-	INY
+	LDA	Letter03
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp04
 
+	LDA	Letter05
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp05
 
-	LDA	#$80				; 2 
-	STA 	HMP0				; 3 
-	STA 	HMP1				; 3 
+	LDA	Letter07
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp06
 
-	sleep	6
+	LDA	Letter09
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp07
+
+	LDA	Letter11
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp08
+
+	JMP	48pxTextThisLineIsCalculated	
+48pxTextEvenLine
+	LDA	Letter02
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp03
 	
-	LDA	pic64px_04,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_06,y			; 4 
-	STA	GRP1				; 3 
+	LDA	Letter04
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp04
 
-	DEY
-	LDA	pic64px_PFColor,y		
+	LDA	Letter06
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp05
+
+	LDA	Letter08
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp06
+
+	LDA	Letter10
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp07
+
+	LDA	Letter12
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp08
+
+48pxTextThisLineIsCalculated	
+	LDA	TextColor
+	ADC	BankXXColors,y
+	STA	COLUP0
+	STA	COLUP1
 	STA	COLUPF
 
+	STA	WSYNC
 
-***	sleep	55				; (58)
+	LDA	temp03		; 3 (6)
+	STA	GRP0		; 3 (9)
+	LDA	temp04		; 3 (12)
+	STA	GRP1		; 3 (15)
 
-***	DEY					; 2 (68)
-	CPY	temp02				; 3 (71)
-	BNE	pic64px_EvenFrame_Line1		; 2 (73)
+	LDX	temp08
+	TXS
+	TXA	
+	LDY	temp06
+	LDX	temp07
 
-pic64px_Reset
+	ROL
+	ROL
+	ROL
+	STA	ENABL
+
+	sleep	3
+
+	LDA	temp05		; 3 
+	STA	GRP0		; 3 
+	
+	STY	GRP1
+	STX	GRP0
+	TSX
+	STX	GRP1
+
+
+	DEC	temp02		; 5
+	LDY	temp02		; 3
+	BMI	48pxTextFillerLine2	; 2 
+	JMP	48pxTextCalculateDataStart   ; 3
+
+48pxTextFillerLine2
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA 	ENABL		
+
+	LDA	counter	
+	AND	#%00000010
+	CMP	#%00000010
+	BNE	48pxTextReset
+	STA	WSYNC
+	STA	WSYNC
+
+48pxTextReset
 	LDA	frameColor
 	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF
+	STA	COLUBK		
 	LDA	#0		
 	STA	PF0
 	STA	PF1		
@@ -1844,380 +1924,159 @@ pic64px_Reset
 	STA	GRP1		
 	STA	VDELP0		
 	STA	VDELP1	
-		
 
-	JMP	TestEnded
+	LDX	item		
+	TXS	
 
-pic64px_Data_Section
-
-	align	256
-
-pic64px_00
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110
-	BYTE %00001110 
-	BYTE %00001110
-	BYTE %00001111
-	BYTE %00011111
-	BYTE %00011111
-	BYTE %00111111
-	BYTE %11111111
-	BYTE %11111110
-	BYTE %11111110
-	BYTE %11111110
-	BYTE %11111110 
-	BYTE %11111110
-	BYTE %11111110
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-
-pic64px_01
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000111
-	BYTE %00001111
-	BYTE %00011111
-	BYTE %00011110
-	BYTE %00011110
-	BYTE %00011110
-	BYTE %00011111
-	BYTE %00001111
-	BYTE %00001111
-	BYTE %00000111
-	BYTE %00000001
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_02
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111000
-	BYTE %11111100
-	BYTE %00111110
-	BYTE %00011110
-	BYTE %00011110
-	BYTE %00011110
-	BYTE %00111110
-	BYTE %11111100
-	BYTE %11111100
-	BYTE %11111000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_03
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11110000
-	BYTE %11110000
-	BYTE %11110000
-	BYTE %11110001
-	BYTE %11110001
-	BYTE %11110001
-	BYTE %11110001
-	BYTE %11111001
-	BYTE %01111101
-	BYTE %00111101
-	BYTE %00011101
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_04
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00111000
-	BYTE %11111001
-	BYTE %11110011
-	BYTE %11100011
-	BYTE %11100011
-	BYTE %11100011
-	BYTE %11100011
-	BYTE %11100011
-	BYTE %11111001
-	BYTE %11111000
-	BYTE %11111000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %11100000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_05
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111101
-	BYTE %11111111
-	BYTE %11000111
-	BYTE %10000011
-	BYTE %10000011
-	BYTE %10000011
-	BYTE %11000111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111110
-	BYTE %01111100
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_06
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11011110
-	BYTE %11011110
-	BYTE %11011110
-	BYTE %11011110
-	BYTE %11011110
-	BYTE %11011110
-	BYTE %10011110
-	BYTE %10011111
-	BYTE %00001111
-	BYTE %00000111
-	BYTE %00000011
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %11111111
-	BYTE %00000000
-
-pic64px_07
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %01111111
-	BYTE %01111111
-	BYTE %01111111
-	BYTE %01111111
-	BYTE %00111111
-	BYTE %00001111
-	BYTE %00000111
-	BYTE %00000111
-	BYTE %10000111
-	BYTE %10000111
-	BYTE %10000111
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000111
-	BYTE %00000111
-	BYTE %00000111
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11110000
-	BYTE %11111000
-	BYTE %11110000
-	BYTE %00000000 	; 224
-
-
-pic64px_Color
-	BYTE #$00
-	BYTE #$02
-	BYTE #$04
-	BYTE #$06
-	BYTE #$08
-	BYTE #$0a
-	BYTE #$0c
-	BYTE #$0e
-	BYTE #$0c
-	BYTE #$0a
-	BYTE #$08
-	BYTE #$06
-	BYTE #$08
-	BYTE #$0a
-	BYTE #$0a
-	BYTE #$08
-	BYTE #$06
-	BYTE #$08
-	BYTE #$0a
-	BYTE #$0c
-	BYTE #$0e
-	BYTE #$0c
-	BYTE #$0a
-	BYTE #$08
-	BYTE #$06
-	BYTE #$04
-	BYTE #$02
-	BYTE #$00	; 252
+	JMP	EndTest
 
 	align	256
 
-pic64px_PF
-	BYTE %10000110
-	BYTE %10001110
-	BYTE %10011110
-	BYTE %10011100
-	BYTE %10011000
-	BYTE %10011000
-	BYTE %10011000
-	BYTE %10011000
-	BYTE %10011000
-	BYTE %10011000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10110000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10100000
+BankXXFont
+BankXX_0
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_1
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+BankXX_2
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%10101010	
+	BYTE	#%01000100
+BankXX_3
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%01100110
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_4
+	BYTE	#%00100010
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%01000100	
+	BYTE	#%00100010
+BankXX_5
+	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%11001100
+	BYTE	#%10001000	
+	BYTE	#%11101110
+BankXX_6
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01100110
+BankXX_7
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%11101110
+BankXX_8	
+	BYTE	#%01000100
+	BYTE	#%10101010	
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_9
+	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%01100110
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_A
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_B
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+
+BankX_Space
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+
+BankXXColors
+	BYTE	#$00
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$00
+
+BankXX5Table
+	BYTE	#0
+	BYTE	#5
+	BYTE	#10
+	BYTE	#15
+	BYTE	#20
+	BYTE	#25
+	BYTE	#30
+	BYTE	#35
+	BYTE	#40
+	BYTE	#45
+	BYTE	#50
+	BYTE	#55
+	BYTE	#60
+	BYTE	#65
+	BYTE	#70
+	BYTE	#75
+	BYTE	#80
+	BYTE	#85
+	BYTE	#90
+	BYTE	#95
+	BYTE	#100
+	BYTE	#105
+	BYTE	#110
+	BYTE	#115
+	BYTE	#120
+	BYTE	#125
+	BYTE	#130
+	BYTE	#135
+	BYTE	#140
+	BYTE	#145
+	BYTE	#150
+	BYTE	#155
+	BYTE	#160
+	BYTE	#165
+	BYTE	#170
+	BYTE	#175
+	BYTE	#180
+	BYTE	#185
+	BYTE	#190
+	BYTE	#195
+	BYTE	#200
+	BYTE	#205
+	BYTE	#210
+	BYTE	#215
+	BYTE	#220
+	BYTE	#225
+	BYTE	#230
+	BYTE	#235
+	BYTE	#240
+	BYTE	#245
+	BYTE	#250
+EndTest
 
 
-pic64px_PFColor
-	BYTE #$40
-	BYTE #$42
-	BYTE #$44
-	BYTE #$46
-	BYTE #$48
-	BYTE #$46
-	BYTE #$48
-	BYTE #$4a
-	BYTE #$48
-	BYTE #$4a
-	BYTE #$48
-	BYTE #$4a
-	BYTE #$4c
-	BYTE #$4a
-	BYTE #$4a
-	BYTE #$4c
-	BYTE #$4a
-	BYTE #$48
-	BYTE #$4a
-	BYTE #$48
-	BYTE #$4a
-	BYTE #$48
-	BYTE #$46
-	BYTE #$48
-	BYTE #$46
-	BYTE #$44
-	BYTE #$42
-	BYTE #$40
 
-pic64px_BGColor
-	BYTE #$1e
-	BYTE #$1c
-	BYTE #$1a
-	BYTE #$18
-	BYTE #$16
-	BYTE #$14
-	BYTE #$12
-	BYTE #$10
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$00
-	BYTE #$10
-	BYTE #$12
-	BYTE #$14
-	BYTE #$16
-	BYTE #$18
-	BYTE #$1a
-	BYTE #$1c
-	BYTE #$1e
 
-TestEnded
 
 
 *SkipIfNoGameSet

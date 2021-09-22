@@ -49,7 +49,8 @@ pic64px_KernelStart
 	align	256
 
 pic64px_OddFrame
-	sleep	47
+	_sleep	42
+	sleep	5
 
 	LDA	#0
 	STA	GRP0
@@ -127,7 +128,8 @@ pic64px_OddFrame_Line2
 	JMP	pic64px_OddFrame_Line1		; 3 (74)
 
 pic64px_EvenFrame
-	sleep	35
+	_sleep	30
+	sleep	5
 
 	LDA	#0
 	STA	GRP0
