@@ -1,2 +1,1 @@
 zerg=projects/zerg/
-sss=projects/sss/

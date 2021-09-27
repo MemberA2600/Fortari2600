@@ -11,7 +11,7 @@ Letter10 = $db
 Letter11 = $dc
 Letter12 = $dd
 TextColor = $de
-BackColor = $df
+TextBackColor = $df
 
 	LDA	#0
 	STA	Letter01
@@ -45,4 +45,4 @@ BackColor = $df
 	STA	TextColor
 	
 	LDA	#$40
-	STA	BackColor	
+	STA	TextBackColor	

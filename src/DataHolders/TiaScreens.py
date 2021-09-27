@@ -161,7 +161,7 @@ class TiaScreens:
                 if s[noteNum] != "#":
                     d = s[noteNum].split(" ")
                     Y = int(d[0])
-                    self.allData[num][-1]["Y"] = Y
+                    self.allData[num][-1]["Y"][noteNum] = Y
 
                     field = self.allData[num][-1]["screen"][Y][noteNum]
                     field["volume"] = int(d[1])
@@ -265,4 +265,407 @@ class TiaScreens:
 
 
         return(sendBack)
+
+
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio):
+        from TiaNote import TiaNote
+        #compress the 4 channels into two
+
+        data1 = [
+            [],
+            []
+        ]   # contains channel 0 and 1 of TIA
+
+        for screenNum in range(0, self.screenMax+1):
+            for noteNum in range(0, self.numOfFieldsW):
+                # self.allData[0][screenNum]["Y"][noteNum]
+                nums = []
+
+                for channelNum in range(0,4):
+                    if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
+                        nums.append([channelNum, self.allData[channelNum][screenNum]["Y"][noteNum]])
+
+                if len(nums)>2:
+                    nums = nums[:2]
+                elif len(nums)<2:
+                    while len(nums)<2:
+                        nums.append(-1)
+
+                if nums[0] == -1:
+                    for filler in range(0, frameLen):
+                        data1[0].append(TiaNote(0,0,0,1,-1))
+                        data1[1].append(TiaNote(0,0,0,1,-1))
+                else:
+                    note = self.allData[nums[0][0]][screenNum]["screen"][nums[0][1]][noteNum]
+                    for filler in range(0, frameLen):
+                        data1[0].append(TiaNote(note["volume"], note["channel"], note["freq"], 1,
+                                                self.allData[nums[0][0]][screenNum]["Y"][noteNum]))
+                        if buzz == 1 and note["channel"] == 6:
+                            data1[0][-1].channel = 7
+
+                    if nums[-1] == -1:
+                        for filler in range(0, frameLen):
+                            data1[1].append(TiaNote(0, 0, 0, 1, 0))
+                    else:
+                        note = self.allData[nums[1][0]][screenNum]["screen"][nums[1][1]][noteNum]
+                        for filler in range(0, frameLen):
+                            data1[1].append(TiaNote(note["volume"], note["channel"], note["freq"], 1,
+                                                    self.allData[nums[1][0]][screenNum]["Y"][noteNum]))
+                            if buzz == 1 and note["channel"] == 6:
+                                data1[1][-1].channel = 7
+
+        #buzz and framelen is processed during the first run.
+        dominants = [
+            {1: 0, 4: 0, 6: 0, 7: 0, 12: 0},
+            {1: 0, 4: 0, 6: 0, 7: 0, 12: 0}
+        ]
+
+        #get dominants
+        for num in range(0,2):
+            channel = data1[num]
+            for tiaNote in channel:
+                if tiaNote.channel in [1,4,6,7,12]:
+                    dominants[num][tiaNote.channel]+=1
+
+            if buzz == 1:
+                del dominants[num][6]
+                if dominants[num][1]<dominants[num][7]:
+                    del dominants[num][1]
+                else:
+                    del dominants[num][7]
+
+            else:
+                del dominants[num][7]
+                if dominants[num][1]<dominants[num][6]:
+                    del dominants[num][1]
+                else:
+                    del dominants[num][6]
+
+            if dominants[num][4]<dominants[num][12]:
+                del dominants[num][4]
+            else:
+                del dominants[num][12]
+
+
+        pairs = {
+            4: 12, 12: 4, 1: 6, 6: 1, 7: 1
+
+        }
+
+        #print(data1[0][0].piaNote)
+        #return(data1)
+        #change one to the dominant pair
+        for num in range(0,2):
+            channel = data1[num]
+            for tiaNote in channel:
+                if tiaNote.channel in [1,4,6,7,12]:
+                    if tiaNote.channel not in dominants[num]:
+                        if tiaNote.channel in [4,12]:
+                            if 4 in dominants[num]:
+                                dominantChannel = 4
+                                dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, 4)
+                            else:
+                                dominantChannel = 12
+                                dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, 12)
+                        else:
+                            if 1 in dominants[num]:
+                                dominantChannel = 1
+                                dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, 1)
+                            elif 6 in dominants[num]:
+                                dominantChannel = 6
+                                dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, 6)
+                            else:
+                                dominantChannel = 7
+                                dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, 7)
+
+                        if dominantNote != None:
+                            if type(dominantNote) != list:
+                                tiaNote.channel = dominantChannel
+                                tiaNote.freq = int(dominantNote)
+                            else:
+                                tiaNote.channel = dominantChannel
+                                N = 0
+                                for num2 in dominantNote:
+                                    N+=int(num2)
+                                tiaNote.freq=round(N/len(dominantNote))
+                        else:
+                            newChannel = pairs[dominantChannel]
+                            if newChannel == 6 and buzz == 1:
+                                newChannel = 7
+                            dominantNote = self.__piaNotes.getTiaValue(tiaNote.piaNote, newChannel)
+                            if dominantNote != None:
+                                if type(dominantNote) != list:
+                                    tiaNote.channel = newChannel
+                                    tiaNote.freq = int(dominantNote)
+                                else:
+                                    tiaNote.channel = newChannel
+                                    N = 0
+                                    for num2 in dominantNote:
+                                        N += int(num2)
+                                    tiaNote.freq = round(N / len(dominantNote))
+
+        #correction
+        #print(data1[0][0].piaNote)
+
+        # print(data1[0][0].piaNote)
+        # processing vibratio
+        if vibratio == 1:
+            for channel in data1:
+                counter = 0
+                sum = 0
+                for tiaNote in channel:
+                    if tiaNote.channel in [4, 12]:
+                        sum += tiaNote.piaNote
+
+                if (sum // len(channel)) < 33:
+                    changer = -8
+                else:
+                    changer = 8
+
+                # Get the average to decide vibrate over or under.
+
+                tempChannel = None
+                tempNote = None
+                counter = 0
+
+                for tiaNote in channel:
+                    if tiaNote.channel not in [4, 12]:
+                        tempChannel = None
+                        tempNote = None
+                        counter = 0
+                    else:
+                        if counter == 5 or (tempChannel != tiaNote.channel or tempNote != tiaNote.piaNote):
+                            counter = 0
+                        else:
+                            counter += 1
+
+                        tempChannel = tiaNote.channel
+                        tempNote = tiaNote.piaNote
+
+                        if counter > 2:
+                            note = tiaNote.piaNote
+                            if note < 32:
+                                continue
+                            else:
+                                note += changer
+                                if note > 30 or note < 66:
+                                    newNote = self.__piaNotes.getTiaValue(note, tiaNote.channel)
+                                    if newNote != None:
+                                        if type(newNote) != list:
+                                            tiaNote.piaNote = note
+                                            tiaNote.freq = int(newNote)
+                                        else:
+                                            N = 0
+                                            for num2 in newNote:
+                                                N += int(num2)
+
+                                            tiaNote.piaNote = note
+                                            tiaNote.freq = round(N / len(newNote))
+                                    else:
+                                        newChannel = pairs(tiaNote.channel)
+                                        newNote = self.__piaNotes.getTiaValue(note, newChannel)
+                                        if newChannel == 6 and buzz == 1:
+                                            newChannel = 7
+                                        if newNote != None:
+                                            if type(newNote) != list:
+                                                tiaNote.piaNote = note
+                                                tiaNote.channel = newChannel
+                                                tiaNote.freq = int(newNote)
+                                            else:
+                                                N = 0
+                                                for num2 in newNote:
+                                                    N += int(num2)
+                                                tiaNote.channel = newChannel
+                                                tiaNote.piaNote = note
+                                                tiaNote.freq = round(N / len(newNote))
+
+
+
+        #return(data1)
+
+        if fadeOutLen > 0:
+            for channel in data1:
+                tiaNoteNum = 0
+                while tiaNoteNum < (len(channel) - fadeOutLen):
+                    tiaNote = channel[tiaNoteNum]
+                    nextNote1 = channel[tiaNoteNum + 1]
+                    if fadeOutLen > 1:
+                        nextNote2 = channel[tiaNoteNum + 2]
+                    if fadeOutLen > 2:
+                        nextNote3 = channel[tiaNoteNum + 3]
+                    if fadeOutLen > 3:
+                        nextNote4 = channel[tiaNoteNum + 4]
+
+                    jobdone = False
+
+                    if (fadeOutLen == 4
+                            and tiaNote.volume != 0
+                            and nextNote1.volume == 0
+                            and nextNote2.volume == 0
+                            and nextNote3.volume == 0
+                            and nextNote4.volume == 0
+                            and jobdone == False):
+
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-1, 3)
+                        channel[tiaNoteNum + 1] = nextNote1
+                        nextNote2 = self.getNextNote(tiaNote, 3, tiaNote.volume-2, 2)
+                        channel[tiaNoteNum + 2] = nextNote2
+                        nextNote3 = self.getNextNote(tiaNote, 5, tiaNote.volume-3, 2)
+                        channel[tiaNoteNum + 3] = nextNote3
+                        nextNote4 = self.getNextNote(tiaNote, 9, tiaNote.volume-4, 1)
+                        channel[tiaNoteNum + 4] = nextNote4
+                        tiaNoteNum += 4
+                        jobdone = True
+
+                    if (fadeOutLen > 2
+                            and tiaNote.volume != 0
+                            and nextNote1.volume == 0
+                            and nextNote2.volume == 0
+                            and nextNote3.volume == 0
+                            and jobdone == False):
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-1, 3)
+                        channel[tiaNoteNum + 1] = nextNote1
+                        nextNote2 = self.getNextNote(tiaNote, 4, tiaNote.volume-2, 2)
+                        channel[tiaNoteNum + 2] = nextNote2
+                        nextNote3 = self.getNextNote(tiaNote, 7, tiaNote.volume-3, 1)
+                        channel[tiaNoteNum + 3] = nextNote3
+                        tiaNoteNum += 3
+                        jobdone = True
+
+                    if (fadeOutLen > 1
+                            and tiaNote.volume != 0
+                            and nextNote1.volume == 0
+                            and nextNote2.volume == 0
+                            and jobdone == False):
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-2, 3)
+                        channel[tiaNoteNum + 1] = nextNote1
+                        nextNote2 = self.getNextNote(tiaNote, 5, tiaNote.volume-3, 1)
+                        channel[tiaNoteNum + 2] = nextNote2
+                        tiaNoteNum += 2
+                        jobdone = True
+
+                    if (tiaNote.volume != 0
+                            and nextNote1.volume == 0
+                            and jobdone == False):
+                        nextNote1 = self.getNextNote(tiaNote, 3, tiaNote.volume-3, 2)
+                        channel[tiaNoteNum + 1] = nextNote1
+                        tiaNoteNum += 1
+                        jobdone = True
+
+                    tiaNoteNum += 1
+
+        #return(data1)
+
+
+        tempChannel = None
+        tempNote = None
+        counter = 0
+
+        if correctNotes > 0:
+            for channel in data1:
+                for tiaNoteNum in range(0, len(channel)):
+                    tiaNote = channel[tiaNoteNum]
+
+                    try:
+                        nextNote = channel[tiaNoteNum+1]
+                    except:
+                        nextNote = None
+
+                    try:
+                        prevNote = channel[tiaNoteNum-1]
+                    except:
+                        prevNote = None
+
+                    notes = self.__piaNotes.getTiaValue(tiaNote.piaNote, tiaNote.channel)
+                    if notes == None:
+                        continue
+
+                    if type(notes) != list:
+                        tempChannel = None
+                        tempNote = None
+                        counter = 0
+                    else:
+                        if counter == len(notes) - 1 or (tempChannel != tiaNote.channel or tempNote != tiaNote.piaNote):
+                            counter = 0
+                        else:
+                            counter += 1
+
+                        tempChannel = tiaNote.channel
+                        tempNote = tiaNote.piaNote
+
+
+
+                        if ((tiaNote.piaNote != nextNote.piaNote or nextNote == None) and
+                                (tiaNote.piaNote != prevNote.piaNote or prevNote == None)):
+                            N = 0
+                            for num in notes:
+                                N+=int(num)
+                            N = round(N/len(notes))
+                            tiaNote.freq = N
+                        else:
+                            tiaNote.freq = notes[counter]
+
+        #print(data1[0][0].piaNote)
+
+        data2 = [
+            [],
+            []
+        ]
+
+        for channelNum in range(0,2):
+            channel = data1[channelNum]
+            tempVolume = None
+            tempChannel = None
+            tempFreq = None
+
+            for tiaNote in channel:
+                if (tiaNote.volume != tempVolume or
+                    tiaNote.channel != tempChannel or
+                    tiaNote.freq != tempFreq or data2[channelNum][-1].duration==255):
+
+                    newTiaTone = TiaNote(tiaNote.volume, tiaNote.channel, tiaNote.freq, 1, tiaNote.piaNote)
+                    data2[channelNum].append(newTiaTone)
+                else:
+                    data2[channelNum][-1].duration+=1
+
+        return(data2)
+
+
+    def getNextNote(self, tiaNote, divider, max, min):
+        from TiaNote import TiaNote
+        nextNote = TiaNote(0,0,0,1,0)
+        nextNote.volume = tiaNote.volume // divider
+        nextNote.channel = tiaNote.channel
+        nextNote.piaNote = tiaNote.piaNote
+        nextNote.freq = tiaNote.freq
+
+
+        """
+        notes = self.__piaNotes.getTiaValue(tiaNote.piaNote, tiaNote.channel)
+
+        if type(notes) != list:
+            nextNote.freq = tiaNote.freq
+        else:
+            while num>len(notes)-1:
+                num -= (len(notes)-1)
+
+            nextNote.freq = int(notes[num])
+        """
+
+        if nextNote.volume<min:
+            nextNote.volume = min
+
+
+        if nextNote.volume>max:
+            nextNote.volume = max
+
+
+
+        if nextNote.volume>tiaNote.volume:
+            nextNote.volume = tiaNote.volume - 1
+
+        if nextNote.volume == 0:
+            nextNote.volume = 1
+
+        return(nextNote)
 

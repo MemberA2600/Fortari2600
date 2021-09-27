@@ -253,7 +253,7 @@ class MusicComposer:
         #self.__bass = True
         self.__buzz = 1
         self.__correctNotes = 2 # Can be 0-2
-        self.__fadeOutLen = 0
+        self.__fadeOutLen = 1
         self.__dividerLen = 4   # Has effect over 2, goes to 4
         self.__vibratio = 1
         self.__frameLen = 1
@@ -358,12 +358,24 @@ class MusicComposer:
 
         w = round(self.__topLevel.getTopLevelDimensions()[0] * 0.08)
 
-        self.__testingButton = MCButton(self.__loader, self.__buttonFrame, "stella", w, None)
+        self.__testingButton = MCButton(self.__loader, self.__buttonFrame, "stella", w, self.__testingCurrent)
         self.__saveButton = MCButton(self.__loader, self.__buttonFrame, "save", w, self.__saveDataToFile)
         self.__openButton = MCButton(self.__loader, self.__buttonFrame, "open", w, self.__openFile)
 
 
         self.__runningThreads -= 1
+
+
+    def __testingCurrent(self):
+        extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio)
+        self.testPrinting(extracted)
+
+    def testPrinting(self, data):
+        for channelNum in range(0,2):
+            print("Channel_"+str(channelNum))
+            for tiaNote in data[channelNum]:
+                print("("+str(tiaNote.volume)+", "+str(tiaNote.channel)+", "+str(tiaNote.freq)+")")
+
 
 
     def __saveDataToFile(self):
@@ -640,13 +652,13 @@ class MusicComposer:
         self.__fadeOutSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
-                                                     "fadeOut", 0, 9999, self.__tinyFont2, self.setFadeOut, self.__fadeOutLen, self.__normalFont
+                                                     "fadeOut", 0, 4, self.__tinyFont2, self.setFadeOut, self.__fadeOutLen, self.__normalFont
                                                      )
 
         self.__frameLenSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
-                                                     "toneLen", 1, 9999, self.__tinyFont2, self.setFrameLen, self.__frameLen, self.__normalFont
+                                                     "toneLen", 1, 255, self.__tinyFont2, self.setFrameLen, self.__frameLen, self.__normalFont
                                                      )
 
         self.__correctorSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
@@ -1086,13 +1098,13 @@ class MusicComposer:
                     C = int(list(notes.keys())[0])
                     F = int(notes[list(notes.keys())[0]][num])
                 else:
-                    F = int(notes[list(notes.keys())[0]][0])
+                    C = int(list(notes.keys())[0])
                     N = 0
 
                     for num in range(0,len(notes[list(notes.keys())[0]])):
-                        N += int(list(notes.keys())[0])
+                        N+=int(notes[list(notes.keys())[0]][num])
 
-                    C = N // len(notes[list(notes.keys())[0]])
+                    F = round(N / len(notes[list(notes.keys())[0]]))
 
             else:
                 C = int(list(notes.keys())[0])

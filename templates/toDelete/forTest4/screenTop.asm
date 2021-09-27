@@ -11,9 +11,11 @@
 	STA	GRP1		; 3 (23)
 	STA	VDELP0		; 3 (26)
 	STA	VDELP1		; 3 (29)
+
+	LDA	#%00000101	; 3
 	STA	CTRLPF		; 3 (32)
 
-	sleep	4		
+	sleep	2		
 
 	STA	RESP0		; 3 	
 	STA	RESP1		; 3 Set the X pozition of sprites.
@@ -32,31 +34,12 @@
 	STA	NUSIZ0		; 3 
 	STA	NUSIZ1		; 3 
 	
-48pxTextCursorBlinking
-	LDX	#0
-	BIT	counter
-	BVS	48pxTextOtherWayAround	;  turn every 64 frame
-	LDY	#38
-	LDA	#39
-	JMP	48pxTextCheckForBlinking
-48pxTextOtherWayAround
-	LDY	#39
-	LDA	#38
-48pxTextCheckForBlinking
-	CPX	#12
-	BCC	48pxTextPrepareForDarkness
-	CMP	Letter01,x
-	BNE	48pxTextNoChangeForBlinking
-	STY	Letter01,x	
-48pxTextNoChangeForBlinking
-	INX
-	JMP 	48pxTextCheckForBlinking
-
 48pxTextPrepareForDarkness
-	LDA	BackColor	
+	LDA	TextBackColor	
 	STA	WSYNC
 	STA	HMOVE		; 3	
 	STA	COLUBK		; 3 (6)
+	STA	COLUPF
 
 	LDY	#4		
 	STY	temp02		
@@ -77,7 +60,11 @@
 48pxTextResetGRP
 	STX	GRP0
 	STX	GRP1
-	STX	ENABL
+
+	LDA	#2
+	STA	ENABL
+	LDA	TextBackColor
+	STA	COLUPF
 
 48pxTextCalculateData
 	TYA
@@ -209,15 +196,22 @@
 	AND	#%00001111
 	STA	temp08
 
+	JMP	48pxTextThisLineIsCalculated
+
+	align 	256
+
 48pxTextThisLineIsCalculated	
 	LDA	TextColor
 	ADC	BankXXColors,y
 	STA	COLUP0
 	STA	COLUP1
+
+	BIT	temp08
+	BPL	48pxTextNoReColor
 	STA	COLUPF
+48pxTextNoReColor
 
 	STA	WSYNC
-
 	LDA	temp03		; 3 (6)
 	STA	GRP0		; 3 (9)
 	LDA	temp04		; 3 (12)
@@ -229,12 +223,7 @@
 	LDY	temp06
 	LDX	temp07
 
-	ROL
-	ROL
-	ROL
-	STA	ENABL
-
-	sleep	3
+	sleep	12
 
 	LDA	temp05		; 3 
 	STA	GRP0		; 3 
@@ -274,7 +263,7 @@
 	STA	GRP0		
 	STA	GRP1		
 	STA	VDELP0		
-	STA	VDELP1	
+	STA	VDELP1
 
 	LDX	item		
 	TXS	
@@ -425,8 +414,8 @@ BankXX_M
 BankXX_N
 	BYTE	#%10101010
 	BYTE	#%10101010
-	BYTE	#%11101010
-	BYTE	#%11101010
+	BYTE	#%11101110
+	BYTE	#%11101110
 	BYTE	#%10101010
 BankXX_O
 	BYTE	#%01000100
@@ -453,11 +442,11 @@ BankXX_R
 	BYTE	#%10101010
 	BYTE	#%11001100
 BankXX_S
-	BYTE	#%01100110
-	BYTE	#%10001000
-	BYTE	#%01000100
-	BYTE	#%00100010
 	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
+	BYTE	#%01100110
 BankXX_T
 	BYTE	#%01000100
 	BYTE	#%01000100
@@ -472,7 +461,7 @@ BankXX_U
 	BYTE	#%10101010
 BankXX_V
 	BYTE	#%01000100
-	BYTE	#%11001100
+	BYTE	#%11101110
 	BYTE	#%10101010
 	BYTE	#%10101010
 	BYTE	#%10101010
@@ -506,18 +495,18 @@ BankXX_Space
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
-BankXX_Cursor1
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-BankXX_Cursor2
-	BYTE	#%11111111
-	BYTE	#%11111111
-	BYTE	#%11111111
-	BYTE	#%11111111
-	BYTE	#%11111111
+BankXX_Smaller
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+BankXX_Larger
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
 BankXX_Plus
 	BYTE	#%01000100
 	BYTE	#%01000100

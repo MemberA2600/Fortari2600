@@ -8,7 +8,6 @@ class PiaNotes:
 
     def __loadPiaNotes(self):
         self.__piaNotes = {}
-        self.__brokenNotes = {}
         file = open("config/PiaNotes.txt")
         text = file.read()
         file.close()
@@ -45,6 +44,24 @@ class PiaNotes:
                 return(self.__piaNotes[str(note)][str(channel)])
         except:
             return None
+
+
+    def getPianoKey(self, note, channel):
+        for key in self.__piaNotes:
+            if channel in self.__piaNotes[key]:
+                if type(self.__piaNotes[key][channel]) == list:
+                    N = 0
+                    for item in self.__piaNotes[key][channel]:
+                        N += int(item)
+
+                    brokenNote = str(N // len(self.__piaNotes[key][channel]))
+
+                    if note == brokenNote:
+                        return(key)
+                else:
+                    if self.__piaNotes[key][channel] == note:
+                        return(key)
+
 
     def playTia(self, volume, channel, note):
         from threading import Thread
