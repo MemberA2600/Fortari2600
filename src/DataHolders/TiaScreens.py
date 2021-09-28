@@ -267,15 +267,19 @@ class TiaScreens:
         return(sendBack)
 
 
-    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio):
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, tv):
         from TiaNote import TiaNote
         #compress the 4 channels into two
+        from copy import deepcopy
 
         data1 = [
             [],
+            [],
+            [],
             []
-        ]   # contains channel 0 and 1 of TIA
+        ]
 
+        """
         for screenNum in range(0, self.screenMax+1):
             for noteNum in range(0, self.numOfFieldsW):
                 # self.allData[0][screenNum]["Y"][noteNum]
@@ -285,10 +289,8 @@ class TiaScreens:
                     if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
                         nums.append([channelNum, self.allData[channelNum][screenNum]["Y"][noteNum]])
 
-                if len(nums)>2:
-                    nums = nums[:2]
-                elif len(nums)<2:
-                    while len(nums)<2:
+                if len(nums)<4:
+                    while len(nums)<4:
                         nums.append(-1)
 
                 if nums[0] == -1:
@@ -313,15 +315,34 @@ class TiaScreens:
                                                     self.allData[nums[1][0]][screenNum]["Y"][noteNum]))
                             if buzz == 1 and note["channel"] == 6:
                                 data1[1][-1].channel = 7
+        """
+        for screenNum in range(0, self.screenMax + 1):
+            for noteNum in range(0, self.numOfFieldsW):
+                nums = [
+                    TiaNote(0, 0, 0, 1, -1),
+                    TiaNote(0, 0, 0, 1, -1),
+                    TiaNote(0, 0, 0, 1, -1),
+                    TiaNote(0, 0, 0, 1, -1)
+                ]
+                for channelNum in range(0, 4):
+                    if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
+                        Y = self.allData[channelNum][screenNum]["Y"][noteNum]
+                        note = self.allData[channelNum][screenNum]["screen"][Y][noteNum]
+
+                        nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
+                    data1[channelNum].append(deepcopy(nums[channelNum]))
+
 
         #buzz and framelen is processed during the first run.
         dominants = [
+            {1: 0, 4: 0, 6: 0, 7: 0, 12: 0},
+            {1: 0, 4: 0, 6: 0, 7: 0, 12: 0},
             {1: 0, 4: 0, 6: 0, 7: 0, 12: 0},
             {1: 0, 4: 0, 6: 0, 7: 0, 12: 0}
         ]
 
         #get dominants
-        for num in range(0,2):
+        for num in range(0,4):
             channel = data1[num]
             for tiaNote in channel:
                 if tiaNote.channel in [1,4,6,7,12]:
@@ -352,10 +373,11 @@ class TiaScreens:
 
         }
 
+
         #print(data1[0][0].piaNote)
         #return(data1)
         #change one to the dominant pair
-        for num in range(0,2):
+        for num in range(0,4):
             channel = data1[num]
             for tiaNote in channel:
                 if tiaNote.channel in [1,4,6,7,12]:
@@ -406,6 +428,7 @@ class TiaScreens:
 
         #correction
         #print(data1[0][0].piaNote)
+
 
         # print(data1[0][0].piaNote)
         # processing vibratio
@@ -462,7 +485,7 @@ class TiaScreens:
                                             tiaNote.piaNote = note
                                             tiaNote.freq = round(N / len(newNote))
                                     else:
-                                        newChannel = pairs(tiaNote.channel)
+                                        newChannel = pairs[tiaNote.channel]
                                         newNote = self.__piaNotes.getTiaValue(note, newChannel)
                                         if newChannel == 6 and buzz == 1:
                                             newChannel = 7
@@ -478,7 +501,6 @@ class TiaScreens:
                                                 tiaNote.channel = newChannel
                                                 tiaNote.piaNote = note
                                                 tiaNote.freq = round(N / len(newNote))
-
 
 
         #return(data1)
@@ -556,7 +578,6 @@ class TiaScreens:
 
         #return(data1)
 
-
         tempChannel = None
         tempNote = None
         counter = 0
@@ -607,28 +628,62 @@ class TiaScreens:
 
         #print(data1[0][0].piaNote)
 
+
         data2 = [
             [],
             []
         ]
 
+        for noteNum in range(0, len(data1[0])):
+            nums = [
+                    TiaNote(0, 0, 0, 1, -1),
+                    TiaNote(0, 0, 0, 1, -1)
+                ]
+            for channelNum in range(0, 4):
+                if data1[channelNum][noteNum].piaNote != -1:
+                    if nums[0].piaNote == -1:
+                        nums[0] = deepcopy(data1[channelNum][noteNum])
+                    elif nums[1].piaNote == -1:
+                        nums[1] = deepcopy(data1[channelNum][noteNum])
+            data2[0].append(deepcopy(nums[0]))
+            data2[1].append(deepcopy(nums[1]))
+
+        data3 = [
+            [],
+            []
+        ]
+
         for channelNum in range(0,2):
-            channel = data1[channelNum]
+            channel = data2[channelNum]
             tempVolume = None
             tempChannel = None
             tempFreq = None
 
             for tiaNote in channel:
+
+                if buzz == 1 and tiaNote.channel == 6:
+                    tiaNote.channel = 7
+
                 if (tiaNote.volume != tempVolume or
                     tiaNote.channel != tempChannel or
-                    tiaNote.freq != tempFreq or data2[channelNum][-1].duration==255):
+                    tiaNote.freq != tempFreq or data3[channelNum][-1].duration==255):
+
+                    tempVolume = tiaNote.volume
+                    tempChannel = tiaNote.channel
+                    tempFreq = tiaNote.freq
 
                     newTiaTone = TiaNote(tiaNote.volume, tiaNote.channel, tiaNote.freq, 1, tiaNote.piaNote)
-                    data2[channelNum].append(newTiaTone)
+                    data3[channelNum].append(newTiaTone)
                 else:
-                    data2[channelNum][-1].duration+=1
+                    data3[channelNum][-1].duration+=1
 
-        return(data2)
+
+        if tv == "PAL":
+            for channel in data3:
+                for tiaNote in channel:
+                    tiaNote.duration = round(tiaNote.duration*262/314)
+
+        return(data3)
 
 
     def getNextNote(self, tiaNote, divider, max, min):

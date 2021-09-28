@@ -367,14 +367,14 @@ class MusicComposer:
 
 
     def __testingCurrent(self):
-        extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio)
+        extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, "NTSC")
         self.testPrinting(extracted)
 
     def testPrinting(self, data):
         for channelNum in range(0,2):
             print("Channel_"+str(channelNum))
             for tiaNote in data[channelNum]:
-                print("("+str(tiaNote.volume)+", "+str(tiaNote.channel)+", "+str(tiaNote.freq)+")")
+                print("("+str(tiaNote.volume)+", "+str(tiaNote.channel)+", "+str(tiaNote.freq)+", " + str(tiaNote.duration)+ ")")
 
 
 
