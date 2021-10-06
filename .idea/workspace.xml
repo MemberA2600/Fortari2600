@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/venv/szar.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-09-27_062547.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-09-28_062235.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/skeletons/48pxFont.asm" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,6 +28,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$Dictionary.coverage" NAME="Dictionary Coverage Results" MODIFIED="1618066138203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Logger.coverage" NAME="Logger Coverage Results" MODIFIED="1619599026374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$PictureToCode.coverage" NAME="PictureToCode Coverage Results" MODIFIED="1626932906052" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
+    <SUITE FILE_PATH="coverage/Fortari2600$szar.coverage" NAME="szar Coverage Results" MODIFIED="1633456700102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$AutoSetter.coverage" NAME="AutoSetter Coverage Results" MODIFIED="1618118363590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/App" />
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrame.coverage" NAME="RightFrame Coverage Results" MODIFIED="1619675289357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$6507Compiler.coverage" NAME="6507Compiler Coverage Results" MODIFIED="1628274705135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../6507Compiler" />
@@ -41,9 +45,10 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1632802954056" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1633494708361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1626239941461" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Config.coverage" NAME="Config Coverage Results" MODIFIED="1618064003932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Boo_T.coverage" NAME="Boo-T Coverage Results" MODIFIED="1618080702573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Boo-T/Boo-T" />
     <SUITE FILE_PATH="coverage/Fortari2600$FrameContent.coverage" NAME="FrameContent Coverage Results" MODIFIED="1618197790373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
@@ -53,22 +58,22 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="225" />
+          <entry key="project.closed" value="232" />
           <entry key="project.open.time.0" value="5" />
           <entry key="project.open.time.3" value="76" />
-          <entry key="project.open.time.4" value="166" />
+          <entry key="project.open.time.4" value="177" />
           <entry key="project.open.time.5" value="9" />
           <entry key="project.open.time.6" value="2" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="260" />
+          <entry key="project.opened" value="271" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="1513" />
+          <entry key="py" value="1517" />
           <entry key="txt" value="5" />
           <entry key="wav" value="1" />
         </counts>
@@ -77,20 +82,20 @@
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="1513" />
+          <entry key="Python" value="1517" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="270217" />
+          <entry key="py" value="276531" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="270217" />
+          <entry key="Python" value="276531" />
         </counts>
       </usages-collector>
     </session>
@@ -100,25 +105,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-921">
-              <caret line="369" column="142" selection-start-line="369" selection-start-column="142" selection-end-line="369" selection-end-column="142" />
+            <state relative-caret-position="256">
+              <caret line="383" selection-start-line="383" selection-end-line="383" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
-                <marker date="1632798768946" expanded="true" signature="3905:4507" ph="..." />
-                <marker date="1632798768946" expanded="true" signature="15168:15652" ph="..." />
-                <marker date="1632798768946" expanded="true" signature="15385:15652" ph="..." />
-                <marker date="1632798768946" expanded="true" signature="16840:18333" ph="..." />
-                <marker date="1632798768946" expanded="true" signature="18360:18370" ph="..." />
+                <marker date="1633246276024" expanded="true" signature="4066:4668" ph="..." />
+                <marker date="1633246276024" expanded="true" signature="15329:16271" ph="..." />
+                <marker date="1633246276024" expanded="true" signature="15996:16271" ph="..." />
+                <marker date="1633246276024" expanded="true" signature="17459:18952" ph="..." />
+                <marker date="1633246276024" expanded="true" signature="18979:18989" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="720">
-              <caret line="659" column="27" lean-forward="true" selection-start-line="659" selection-start-column="27" selection-end-line="659" selection-end-column="27" />
+            <state relative-caret-position="592">
+              <caret line="152" column="81" selection-start-line="152" selection-start-column="81" selection-end-line="152" selection-end-column="81" />
+              <folding>
+                <marker date="1633494364023" expanded="true" signature="7899:8010" ph="..." />
+                <marker date="1633494364023" expanded="true" signature="8043:8677" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -134,14 +143,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>color</find>
-      <find>channel</find>
-      <find>__correctNotes</find>
-      <find>__buzzSetter</find>
-      <find>openBu</find>
-      <find>__openFile</find>
-      <find>allData</find>
-      <find>button</find>
       <find>Button</find>
       <find>open</find>
       <find>openButt</find>
@@ -164,6 +165,14 @@
       <find>len(</find>
       <find>print</find>
       <find>//</find>
+      <find>Asse</find>
+      <find>[,]</find>
+      <find>template</find>
+      <find>Composer</find>
+      <find>Compiler</find>
+      <find>Compil</find>
+      <find>__musicMode</find>
+      <find>256</find>
     </findStrings>
     <replaceStrings>
       <replace>array</replace>
@@ -204,7 +213,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/KernelChanger.py" />
         <option value="$PROJECT_DIR$/src/View/OpenProjectWindow.py" />
         <option value="$PROJECT_DIR$/venv/eee.py" />
         <option value="$PROJECT_DIR$/src/Handlers/IO.py" />
@@ -248,13 +256,14 @@
         <option value="$PROJECT_DIR$/src/View/SongInput.py" />
         <option value="$PROJECT_DIR$/src/View/MCButton.py" />
         <option value="$PROJECT_DIR$/src/View/FrameLabelEntryUpDown.py" />
-        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTester.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTesterLoaderFrame.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaNote.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+        <option value="$PROJECT_DIR$/venv/szar.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
       </list>
     </option>
   </component>
@@ -380,7 +389,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="MusicComposer" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Compiler" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -388,12 +397,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/View" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Compile" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Compile/Compiler.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -446,7 +455,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="stocks3" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="szar" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -454,12 +463,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/stocks3.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/szar.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -492,18 +501,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.MusicComposer" />
-      <item itemvalue="Python.stocks3" />
       <item itemvalue="Python.toneCalc" />
       <item itemvalue="Python.TiaScreens" />
+      <item itemvalue="Python.szar" />
+      <item itemvalue="Python.Compiler" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.Compiler" />
+        <item itemvalue="Python.szar" />
         <item itemvalue="Python.TiaScreens" />
         <item itemvalue="Python.toneCalc" />
-        <item itemvalue="Python.stocks3" />
-        <item itemvalue="Python.MusicComposer" />
       </list>
     </recent_temporary>
   </component>
@@ -524,12 +533,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.24903722" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.20603338" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49935815" visible="true" weight="0.28202677" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49935815" visible="true" weight="0.23135756" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -548,7 +557,7 @@
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.1745828" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.25866497" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -593,13 +602,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/PitFallHarry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="823">
-          <caret line="107" column="34" lean-forward="true" selection-start-line="107" selection-start-column="34" selection-end-line="107" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/Lock.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="80">
@@ -804,13 +806,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-137">
-          <caret line="26" column="10" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/FrameContent.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -866,13 +861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="9" selection-start-line="9" selection-end-line="34" selection-end-column="72" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/KernelTester.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="967">
@@ -901,25 +889,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="839">
+          <caret line="693" selection-start-line="693" selection-end-line="693" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/szar.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-921">
-          <caret line="369" column="142" selection-start-line="369" selection-start-column="142" selection-end-line="369" selection-end-column="142" />
+        <state relative-caret-position="256">
+          <caret line="383" selection-start-line="383" selection-end-line="383" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
-            <marker date="1632798768946" expanded="true" signature="3905:4507" ph="..." />
-            <marker date="1632798768946" expanded="true" signature="15168:15652" ph="..." />
-            <marker date="1632798768946" expanded="true" signature="15385:15652" ph="..." />
-            <marker date="1632798768946" expanded="true" signature="16840:18333" ph="..." />
-            <marker date="1632798768946" expanded="true" signature="18360:18370" ph="..." />
+            <marker date="1633246276024" expanded="true" signature="4066:4668" ph="..." />
+            <marker date="1633246276024" expanded="true" signature="15329:16271" ph="..." />
+            <marker date="1633246276024" expanded="true" signature="15996:16271" ph="..." />
+            <marker date="1633246276024" expanded="true" signature="17459:18952" ph="..." />
+            <marker date="1633246276024" expanded="true" signature="18979:18989" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="659" column="27" lean-forward="true" selection-start-line="659" selection-start-column="27" selection-end-line="659" selection-end-column="27" />
+        <state relative-caret-position="592">
+          <caret line="152" column="81" selection-start-line="152" selection-start-column="81" selection-end-line="152" selection-end-column="81" />
+          <folding>
+            <marker date="1633494364023" expanded="true" signature="7899:8010" ph="..." />
+            <marker date="1633494364023" expanded="true" signature="8043:8677" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

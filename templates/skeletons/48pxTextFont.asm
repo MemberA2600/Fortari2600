@@ -359,3 +359,5 @@ BankXX5Table
 	BYTE	#240
 	BYTE	#245
 	BYTE	#250
+
+	align	256

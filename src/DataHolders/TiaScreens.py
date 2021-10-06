@@ -683,6 +683,15 @@ class TiaScreens:
                 for tiaNote in channel:
                     tiaNote.duration = round(tiaNote.duration*262/314)
 
+        deleteChannel1 = True
+        for tiaNote in data3[1]:
+            if tiaNote.volume > 0:
+                deleteChannel1 = False
+                break
+
+        if deleteChannel1 == True:
+            data3.pop(1)
+
         return(data3)
 
 

@@ -40,6 +40,10 @@ class MusicComposer:
         self.__piaNotes = self.__loader.piaNotes
         self.__io = self.__loader.io
 
+        self.__picturePath = None
+        self.__banks = [3,4]
+        self.__variables = [None, None, None, None]
+        self.__colorConstans = ["$18", "$00"]
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -368,10 +372,19 @@ class MusicComposer:
 
     def __testingCurrent(self):
         extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, "NTSC")
-        self.testPrinting(extracted)
+        #self.testPrinting(extracted)
+
+        if self.__picturePath == None:
+            pictureData = [27, 27, 0]
+
+        from Compiler import Compiler
+        C = Compiler(self.__loader, "common", "music", [self.__picturePath, "temp/", True, self.__artistName.get(),
+                                                        self.__songTitle.get(), extracted, self.__banks,
+                                                        self.__variables, self.__colorConstans, pictureData])
+
 
     def testPrinting(self, data):
-        for channelNum in range(0,2):
+        for channelNum in range(0,len(data)):
             print("Channel_"+str(channelNum))
             for tiaNote in data[channelNum]:
                 print("("+str(tiaNote.volume)+", "+str(tiaNote.channel)+", "+str(tiaNote.freq)+", " + str(tiaNote.duration)+ ")")
