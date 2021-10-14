@@ -165,3 +165,7 @@ artist=Elõadó:
 title=Cím:
 musicExists=Létezõ Zene
 musicExistsMessage=Az általad választott zeneszám név már foglalt! Felülírod?
+cover=Borító:
+banksToLock=Lezárandó Bankok:
+bankLockError=Bankzárás Hiba
+bankLockErrorMessage=Nem található szabad lezárható bank.

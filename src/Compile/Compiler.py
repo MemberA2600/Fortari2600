@@ -20,10 +20,14 @@ class Compiler:
             self.kernelTest()
         elif self.__mode == 'music':
             self.generateMusicROM()
+        elif self.__mode == 'getMusicBytes':
+            self.getMusicBytesSizeOnly()
+
+    def getMusicBytesSizeOnly(self):
+        self.banks = len(self.generateSongBytes(self.__data[0], "NTSC"))
 
     def generateMusicROM(self):
         import re
-
 
         self.__picturePath = self.__data[0]
         self.__pathToSave = self.__data[1]
@@ -34,7 +38,7 @@ class Compiler:
         self.__openEmulator = self.__data[2]
 
         self.__textBytes, self.__charNums = self.generateTextDataFromString(self.__data[3] + " - "+self.__data[4])
-        self.__songData = self.generateSongBytes(self.__data[5])
+        self.__songData = self.generateSongBytes(self.__data[5], "NTSC")
 
         self.__banks = self.__data[6]
         self.__variables = self.__data[7]
@@ -43,18 +47,18 @@ class Compiler:
 
 
         CoolSong = (self.__data[3] + " - "+self.__data[4]).replace(" ", "_")
-
-        self.__init = ""
+        CoolSong = "".join(re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', CoolSong))
 
         #self.__init += "\n" + self.__loader.io.loadWholeText("templates/testCodes/musicEnterPlus.asm")
 
-        self.__init.replace("COLOR1", str(self.__colors[0]))
-        self.__init.replace("COLOR2", str(self.__colors[1]))
-
-        self.__init += ("\n" + self.__loader.io.loadWholeText("templates/testCodes/musicTestEnter.asm")
+        self.__init = ("\n" + self.__loader.io.loadWholeText("templates/testCodes/musicTestEnter.asm")
                         .replace("FULLHEIGHT", str(self.__pictureData[0]))
                         .replace("DSPHEIGHT", str(self.__pictureData[1]))
-                        .replace("DSPINDEX", str(self.__pictureData[2])))
+                        .replace("DSPINDEX", str(self.__pictureData[2]))
+                        .replace("TEST_TEXT_COLOR", str(self.__colors[0]))
+                        .replace("TEST_BACK_COLOR", str(self.__colors[1]))
+                        .replace("TEST_TEXT_END", str(len(self.__charNums)-12)))
+
 
         for num in range(0,12):
             strNum = str(num+1)
@@ -62,9 +66,9 @@ class Compiler:
                 strNum = "0"+strNum
             self.__init = self.__init.replace("INITLETTER"+strNum, str(self.__charNums[num]))
 
-        self.__music0 = self.createMusicEngine(0).replace("Cool_Song", CoolSong).replace("@@", "0")
+        self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
-            self.__music1 = self.createMusicEngine(1).replace("Cool_Song", CoolSong).replace("@@", "1")
+            self.__music1 = self.createMusicEngine(1, CoolSong)
         else:
             self.__music1 = None
 
@@ -88,11 +92,11 @@ class Compiler:
                                   self.__loader.io.loadWholeText("templates/skeletons/musicJumpBack.asm"))
 
         if self.__musicMode == "mono":
-            self.__init += "\n" + "CoolSong_Pointer0 = $e1\nCoolSong_Duration0 = $e3"
+            self.__init += "\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4"
             self.__init += "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitMono.asm")
 
         else:
-            self.__init += "\n\n" + "CoolSong_Pointer0 = $e1\nCoolSong_Duration0 = $e3\nCoolSong_Pointer1 = $e4\nCoolSong_Duration1 = $e6"
+            self.__init += "\n\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4\nCoolSong_Pointer1 = $e5\nCoolSong_Duration1 = $e7"
 
             self.__init += "\n\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitStereo.asm")
 
@@ -105,9 +109,9 @@ class Compiler:
         self.__kernelText = self.__kernelText.replace("!!!ENTER_BANK2!!!", self.__init)
 
         self.__kernelText = self.__kernelText.replace("!!!OVERSCAN_BANK2!!!",
-                                  self.__loader.io.loadWholeText("templates/skeletons/musicJumpStart.asm")
+                                  (self.__loader.io.loadWholeText("templates/testCodes/musicTestOverScan.asm")
+                                   + "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicJumpStart.asm"))
                                   .replace("BANKBACK", "2")
-                                  .replace("CoolSong", CoolSong)
                                   .replace("BANKNEXT", str(self.__banks[0]))
                                   )
 
@@ -136,7 +140,7 @@ class Compiler:
                                                           self.__music1 + "\n" + self.__songData[1]
                                                           )
 
-        self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont.asm").replace("BankXX", "Bank2")
+        self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont.asm")
 
         if self.__picturePath == None:
             picName = "fortari"
@@ -157,11 +161,33 @@ class Compiler:
                              .replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)
                              )
 
+        self.__kernelText = self.__kernelText.replace("!!!TV!!!", "NTSC").replace("BankXX", "Bank2")
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText).replace("CoolSong", CoolSong)
+
+        if self.__musicMode == "double":
+            self.changePointerToZero(self.__banks[1])
+        self.changePointerToZero(self.__banks[0])
 
 
-        file = open("ffff.txt", "w")
-        file.write(self.__kernelText)
-        file.close()
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+        #file = open("ffff.txt", "w")
+        #file.write(self.__kernelText)
+        #file.close()
+
+
+    def changePointerToZero(self, bankNum):
+        items = [
+            "ScreenBottomBank@@", "EnterScreenBank@@", "VBlankEndBank@@"
+        ]
+
+        for item in items:
+            item = item.replace("@@", str(bankNum))
+            self.__mainCode = self.__mainCode.replace(item, "Zero")
+
 
     def findAndDotALLReplace(self, string, pattern, repl):
 
@@ -170,54 +196,71 @@ class Compiler:
 
 
 
-    def createMusicEngine(self, num):
+    def createMusicEngine(self, num, title):
         __music = self.__loader.io.loadWholeText("templates/skeletons/musicEngine.asm")
-        __music.replace("@@", str(num))
-        __music.replace("CoolSong", (self.__data[3] + " - " + self.__data[4]).replace(" ", "_"))
+        __music = __music.replace("@@", str(num))
+        __music = __music.replace("CoolSong", title)
 
         if self.__variables[num*2] == None:
-            __music.replace("temp&1", "temp"+str(16+(num*2)))
+            __music = __music.replace("temp&1", "temp"+str(16+(num*2)))
         else:
-            __music.replace("temp&1", self.__variables[num*2])
+            __music = __music.replace("temp&1", self.__variables[num*2])
 
         if self.__variables[(num*2)+1] == None:
-            __music.replace("temp&2", "temp"+str(17+(num*2)))
+            __music = __music.replace("temp&2", "temp"+str(17+(num*2)))
         else:
-            __music.replace("temp&2", self.__variables[(num*2)+1])
+            __music = __music.replace("temp&2", self.__variables[(num*2)+1])
 
         return(__music)
 
 
 
-    def generateSongBytes(self, tiaData):
+    def generateSongBytes(self, tiaData, tv):
         from TiaNote import TiaNote
-        Channels = ["CoolSongData0\n", "CoolSongData1\n"]
+        Channels = ["CoolSong_Data0\n", "CoolSong_Data1\n"]
+        tempDur = 0
 
         bytes = [0,0]
 
         if len(tiaData) == 1:
             Channels.pop(1)
             self.__musicMode = "mono"
+        else:
+            self.__musicMode = "stereo"
 
         for num in range(0, len(tiaData)):
             for tiaNote in tiaData[num]:
                 firstByte = self.createBits(tiaNote.channel, 4) + self.createBits(tiaNote.volume, 4)
 
+                if tv == 'PAL':
+                    duration = int(tiaNote.duration/6*5)
+                    tempDur +=tiaNote.duration-duration
+
+                    if tempDur>1:
+                        duration+=1
+                        tempDur-=1
+
+                else:
+                    duration = tiaNote.duration
+
                 if tiaNote.volume == 0:
-                    Channels[num] += "\tBYTE\t#0\n\tBYTE\t#"+self.createBits(tiaNote.duration, 8)+"\n"
+                    Channels[num] += "\tBYTE\t#0\n\tBYTE\t#%"+self.createBits(duration, 8)+"\n"
                     bytes[num] +=2
 
-                elif tiaNote.duration<8:
-                    secondByte = self.createBits(tiaNote.duration, 3) + self.createBits(tiaNote.freq, 5)
-                    Channels[num]+="\tBYTE\t#"+firstByte+"\n\tBYTE\t#"+secondByte+"\n"
+                elif duration<8:
+                    secondByte = self.createBits(duration, 3) + self.createBits(tiaNote.freq, 5)
+                    Channels[num]+="\tBYTE\t#%"+firstByte+"\n\tBYTE\t#%"+secondByte+"\n"
 
                     bytes[num] +=2
                 else:
                     secondByte = self.createBits(tiaNote.freq, 8)
-                    thirdByte = self.createBits(tiaNote.duration, 8)
+                    thirdByte = self.createBits(duration, 8)
 
-                    Channels[num] += "\tBYTE\t#" + firstByte + "\n\tBYTE\t#" + secondByte + "\n"+"\n\tBYTE\t#" + thirdByte + "\n"
+                    Channels[num] += "\tBYTE\t#%" + firstByte + "\n\tBYTE\t#%" + secondByte + "\n"+"\n\tBYTE\t#%" + thirdByte + "\n"
                     bytes[num] += 3
+
+
+        #print(self.__musicMode)
 
         Channels[0] += "\tBYTE\t#240\n"
         bytes[0] += 1
@@ -241,7 +284,7 @@ class Compiler:
         return(num)
 
     def generateTextDataFromString(self, text):
-        textToReturn = "\talign\t256\nReallyNiceText\n"
+        textToReturn = "\talign\t256\nCoolSong_ReallyNiceText\n"
         charNums = []
 
         charset = {

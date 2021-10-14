@@ -43,8 +43,6 @@
 
 	LDY	#4		
 	STY	temp02		
-	TSX			
-	STX	item	
 
 48pxTextFillerLine1
 	LDA	counter	
@@ -253,21 +251,3 @@
 	STA	WSYNC
 
 48pxTextReset
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK		
-	LDA	#0		
-	STA	PF0
-	STA	PF1		
-	STA	PF2		
-	STA	GRP0		
-	STA	GRP1		
-	STA	VDELP0		
-	STA	VDELP1
-
-	LDX	item		
-	TXS	
-
-	JMP	EndTest
-
-	align	256

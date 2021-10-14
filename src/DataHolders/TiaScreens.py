@@ -67,12 +67,10 @@ class TiaScreens:
                         num = 1
                         break
             """
-            for X in self.allData[num-1][self.currentScreen]["Y"]:
-                if self.allData[num-1][self.currentScreen]["Y"][X] != -1:
+            for X in range(0,48):
+                if self.allData[channelNum][self.currentScreen]["Y"][X] != -1:
                     num = 1
                     break
-
-
 
         answer = None
         if num > 0:
@@ -171,6 +169,8 @@ class TiaScreens:
 
         self.__all-=1
 
+    def setYToMinusOneManually(self, X):
+        self.allData[self.currentChannel-1][self.currentScreen]["Y"][X] = -1
 
 
     def __insert(self, N):
@@ -218,6 +218,8 @@ class TiaScreens:
         self.allData[self.currentChannel-1][self.currentScreen]["screen"][Y][X]["enabled"] = enabled
         if enabled == 1:
             self.allData[self.currentChannel-1][self.currentScreen]["Y"][X] = Y
+        else:
+            self.allData[self.currentChannel-1][self.currentScreen]["Y"][X] = -1
 
     def setMinusOne(self, X):
         self.allData[self.currentChannel - 1][self.currentScreen]["Y"][X] = -1
@@ -733,3 +735,12 @@ class TiaScreens:
 
         return(nextNote)
 
+    def isThereAnyNote(self):
+        for channel in range(0,4):
+            for screen in range(0, self.screenMax+1):
+                for X in range(0,48):
+                    note = self.allData[channel][screen]["Y"][X]
+                    if note != -1:
+                        return(True)
+
+        return(False)

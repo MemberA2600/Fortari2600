@@ -177,6 +177,8 @@ class Assembler():
         for line in code:
             if (len(re.findall(r"[a-zA-Z]", line)) == 0) or ("=" in line):
                 continue
+            elif ("#<" in line) or ("#>" in line):
+                continue
 
             if line.startswith(" ") == False:
                 sections[line.replace(" ", "")] = None
@@ -191,6 +193,7 @@ class Assembler():
         branchers = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
 
         sections = self.getSectionNames(code)
+
         codeLines = []
         freebytes = {}
         currentBank = 1
@@ -223,7 +226,6 @@ class Assembler():
             if line.startswith(" ") == False:
                 sections[line.replace(" ", "")] = "$"+hex(currentAddress)[2:]
             else:
-
 
                 line = line.split(" ")
                 new = []
@@ -322,8 +324,9 @@ class Assembler():
                     current.seq = currentSEQNumber
                     currentSEQNumber += 1
 
-
         for line in codeLines:
+            #print(line.raw)
+
             counter = 0
             second = ""
 
@@ -493,8 +496,6 @@ class Assembler():
         if "," in second:
             second = second.split(",")[0]
 
-
-
         second = second.replace("#", "").replace("(", "").replace(")","")
         if second.startswith("%"):
             self.appendBytes(line, second.replace("%", "0b"))
@@ -523,6 +524,19 @@ class Assembler():
         if ("+" not in raw) and ("-" not in raw):
             return(raw)
 
+        isItMath = False
+        for charNum in range(0, len(raw)):
+            if raw[charNum] == "+" or raw[charNum] == "-":
+                try:
+                    test = int(raw[charNum+1])
+                    isItMath = True
+                    break
+                except:
+                    continue
+
+        if isItMath == False:
+            return(raw)
+
         num = re.findall(r'[+|-]\d+', raw)[0]
         if "$" in raw:
             base = re.findall(r'\$[a-fA-f0-9]+', raw)[0]
@@ -546,8 +560,6 @@ class Assembler():
 
         if ("<" not in raw) and (">" not in raw):
             return(raw)
-
-        #print("-------------\n"+raw)
 
 
         try:
@@ -585,6 +597,8 @@ class Assembler():
         import re
 
         tempraw = re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', raw)
+        #print(raw, tempraw)
+
         if tempraw==[]:
             return (raw)
         else:

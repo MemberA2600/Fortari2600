@@ -5,7 +5,7 @@ CoolSong_Driver@@
 	BNE	CoolSong_Skip@@
 
 	LDX	#CoolSong_Pointer@@
-	LDA	(0,x)
+	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
@@ -26,13 +26,13 @@ CoolSong_if240@@
 	BNE	CoolSong_NoRestart@@
 
 CoolSong_Restart@@
-	LDA	#<.CoolSong_Data@@
+	LDA	#<CoolSong_Data@@
 	STA	CoolSong_Pointer@@
-	LDA	#>.CoolSong_Data@@
+	LDA	#>CoolSong_Data@@
 	STA	CoolSong_Pointer@@+1
 
 	LDX	#CoolSong_Pointer@@
-	LDA	(0,x)
+	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
@@ -48,7 +48,7 @@ CoolSong_NoRestart@@
 	STA	AUDC@@
 
 	LDX	#CoolSong_Pointer@@
-	LDA	(0,x)
+	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
@@ -71,11 +71,11 @@ CoolSong_NoRestart@@
 CoolSong_NotSharedByte@@
 	
 	LDX	#CoolSong_Pointer@@
-	LDA	(0,x)
+	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
 	STA	CoolSong_Duration@@
 
 CoolSong_Skip@@
-	!!!JumpOrReturn!!!
+!!!JumpOrReturn!!!

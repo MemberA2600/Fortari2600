@@ -445,3 +445,26 @@ class VirtualMemory:
 
 
         #self.moveMemorytoVariables("bank1")
+
+    def getBanksAvailableForLocking(self):
+        this = []
+        for num in range(3, 9):
+            bankNum = "bank" + str(num)
+            if self.locks[bankNum] == None:
+                this.append(num)
+
+        return(this)
+
+    def registerNewLock(self, bankNum, name, type, number, last):
+        from Lock import Lock
+
+        bankNum = "bank" + str(bankNum)
+
+        if self.locks[bankNum] == None:
+            if last == "LAST":
+                self.locks[bankNum] = Lock(name+","+type+","+str(number)+",LAST")
+            else:
+                self.locks[bankNum] = Lock(name+","+type+","+str(number))
+            return(True)
+        else:
+            return(False)

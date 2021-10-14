@@ -154,35 +154,35 @@ PAL_Overscan =	206
 
 *Global
 *---------
-!!!GLOBAL_VARIABLES!!!
+
 
 *Bank2
 *---------
-!!!BANK2_VARIABLES!!!
+
 
 *Bank3
 *---------
-!!!BANK3_VARIABLES!!!
+
 
 *Bank4
 *---------
-!!!BANK4_VARIABLES!!!
+
 
 *Bank5
 *---------
-!!!BANK5_VARIABLES!!!
+
 
 *Bank6
 *---------
-!!!BANK6_VARIABLES!!!
+
 
 *Bank7
 *---------
-!!!BANK7_VARIABLES!!!
+
 
 *Bank8
 *---------
-!!!BANK8_VARIABLES!!!
+
 
 ***************************
 ********* Start of 1st bank
@@ -1372,7 +1372,7 @@ UnderTheTable
 	align 256
 
 Data_Section
-!!!KERNEL_DATA!!!
+
 
 	saveFreeBytes
 	rewind 1fd4
@@ -1425,7 +1425,54 @@ start_bank1
 
 EnterScreenBank2
 
-!!!ENTER_BANK2!!!
+Letter01 = $d2
+Letter02 = $d3
+Letter03 = $d4
+Letter04 = $d5
+Letter05 = $d6
+Letter06 = $d7
+Letter07 = $d8
+Letter08 = $d9
+Letter09 = $da
+Letter10 = $db
+Letter11 = $dc
+Letter12 = $dd
+TextColor = $de
+TextBackColor = $df
+
+	LDA	#0
+	STA	Letter01
+	LDA	#1
+	STA	Letter02
+	LDA	#2
+	STA	Letter03
+	LDA	#3
+	STA	Letter04
+	LDA	#4
+	STA	Letter05
+	LDA	#5
+	STA	Letter06
+	LDA	#6
+	STA	Letter07
+	LDA	#7
+	STA	Letter08
+	LDA	#8
+	STA	Letter09
+	LDA	#9
+	STA	Letter10
+	LDA	#10
+	STA	Letter11
+	LDA	#11
+	STA	Letter12
+
+	LDA	#%10000000	; Disables game kernel, so won't run
+	STA	NoGameMode 	; main kernel and vblank code.
+
+	LDA	#$1a
+	STA	TextColor
+	
+	LDA	#$40
+	STA	TextBackColor	
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1439,7 +1486,7 @@ EnterScreenBank2
 
 LeaveScreenBank2
 
-!!!LEAVE_BANK2!!!
+
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
@@ -1494,7 +1541,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1505,7 +1552,53 @@ OverScanBank2
 * begins.
 *
 
-!!!OVERSCAN_BANK2!!!
+	LDA	counter
+	AND	#%00000111
+	CMP	#%00000111	
+	BNE	NoPressedRight
+
+
+	BIT	SWCHA
+	BMI	NoPressedLeft
+
+	LDA	Letter01
+	CMP	#38	
+	BCS	NoPressedRight
+	INC	Letter01
+	INC	Letter02
+	INC	Letter03
+	INC	Letter04
+	INC	Letter05
+	INC	Letter06
+	INC	Letter07
+	INC	Letter08
+	INC	Letter09
+	INC	Letter10
+	INC	Letter11
+	INC	Letter12
+
+	JMP	NoPressedRight
+NoPressedLeft
+
+	BIT	SWCHA
+	BVS	NoPressedRight
+
+	LDA	#0
+	CMP	Letter01
+	BCS	NoPressedRight
+	DEC	Letter01
+	DEC	Letter02
+	DEC	Letter03
+	DEC	Letter04
+	DEC	Letter05
+	DEC	Letter06
+	DEC	Letter07
+	DEC	Letter08
+	DEC	Letter09
+	DEC	Letter10
+	DEC	Letter11
+	DEC	Letter12
+NoPressedRight
 
 
 *VSYNC
@@ -1537,7 +1630,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -1549,7 +1642,7 @@ WaitUntilOverScanTimerEndsBank2
 *
 VBLANKBank2
 
-!!!VBLANK_BANK2!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1600,21 +1693,647 @@ VBlankEndBank2
 * top part of the screen.
 *
 
-
-	tsx
-	stx	item
-
-!!!SCREENTOP_BANK2!!!
-
+48pxText
 	LDA	frameColor
 	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	STA	HMCLR		; 3
+	STA	COLUBK		; 3 (6)
+	LDA	#0		; 2 (8)
+	STA	PF0		; 3 (11)
+	STA	PF1		; 3 (14)
+	STA	PF2		; 3 (17)
+	STA	GRP0		; 3 (20)
+	STA	GRP1		; 3 (23)
+	STA	VDELP0		; 3 (26)
+	STA	VDELP1		; 3 (29)
 
-	ldx	item
-	txs
+	LDA	#%00000101	; 3
+	STA	CTRLPF		; 3 (32)
+
+	sleep	2		
+
+	STA	RESP0		; 3 	
+	STA	RESP1		; 3 Set the X pozition of sprites.
+
+	LDA	#$00		; 2 
+	STA	HMP0		; 3 
+
+	LDA	#$10		; 2 
+	STA	RESBL
+	STA	HMP1		; 3 
+
+	LDA	#$E0
+	STA	HMBL
+
+	LDA	#$03		; 2 			
+	STA	NUSIZ0		; 3 
+	STA	NUSIZ1		; 3 
+	
+48pxTextPrepareForDarkness
+	LDA	TextBackColor	
+	STA	WSYNC
+	STA	HMOVE		; 3	
+	STA	COLUBK		; 3 (6)
+	STA	COLUPF
+
+	LDY	#4		
+	STY	temp02		
+	TSX			
+	STX	item	
+
+48pxTextFillerLine1
+	LDA	counter	
+	AND	#%00000010
+	CMP	#%00000010
+	BEQ	48pxTextCalculateDataStart
+	STA	WSYNC
+	STA	WSYNC
+
+48pxTextCalculateDataStart
+	STA	WSYNC
+	LDX	#0
+48pxTextResetGRP
+	STX	GRP0
+	STX	GRP1
+
+	LDA	#2
+	STA	ENABL
+	LDA	TextBackColor
+	STA	COLUPF
+
+48pxTextCalculateData
+	TYA
+	EOR	counter		  	; Seems like the best way to decide
+	AND	#%00000001		; which lines to draw.
+	CMP	#%00000001
+	BEQ	48pxTextEvenLine
+
+48pxTextOddLine
+	LDA	Letter01
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp03
+	
+	LDA	Letter03
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp04
+
+	LDA	Letter05
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp05
+
+	LDA	Letter07
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp06
+
+	LDA	Letter09
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp07
+
+	LDA	Letter11
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%11110000
+	STA	temp08
+
+	JMP	48pxTextThisLineIsCalculated	
+48pxTextEvenLine
+	LDA	Letter02
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp03
+	
+	LDA	Letter04
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp04
+
+	LDA	Letter06
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp05
+
+	LDA	Letter08
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp06
+
+	LDA	Letter10
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp07
+
+	LDA	Letter12
+	TAX
+	LDA	BankXX5Table,x		; Got the starting address
+	CLC
+	ADC	temp02
+	TAX
+	LDA	BankXXFont,x		; Got the font data
+	AND	#%00001111
+	STA	temp08
+
+	JMP	48pxTextThisLineIsCalculated
+
+	align 	256
+
+48pxTextThisLineIsCalculated	
+	LDA	TextColor
+	ADC	BankXXColors,y
+	STA	COLUP0
+	STA	COLUP1
+
+	BIT	temp08
+	BPL	48pxTextNoReColor
+	STA	COLUPF
+48pxTextNoReColor
+
+	STA	WSYNC
+	LDA	temp03		; 3 (6)
+	STA	GRP0		; 3 (9)
+	LDA	temp04		; 3 (12)
+	STA	GRP1		; 3 (15)
+
+	LDX	temp08
+	TXS
+	TXA	
+	LDY	temp06
+	LDX	temp07
+
+	sleep	12
+
+	LDA	temp05		; 3 
+	STA	GRP0		; 3 
+	
+	STY	GRP1
+	STX	GRP0
+	TSX
+	STX	GRP1
+
+
+	DEC	temp02		; 5
+	LDY	temp02		; 3
+	BMI	48pxTextFillerLine2	; 2 
+	JMP	48pxTextCalculateDataStart   ; 3
+
+48pxTextFillerLine2
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA 	ENABL		
+
+	LDA	counter	
+	AND	#%00000010
+	CMP	#%00000010
+	BNE	48pxTextReset
+	STA	WSYNC
+	STA	WSYNC
+
+48pxTextReset
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK		
+	LDA	#0		
+	STA	PF0
+	STA	PF1		
+	STA	PF2		
+	STA	GRP0		
+	STA	GRP1		
+	STA	VDELP0		
+	STA	VDELP1
+
+	LDX	item		
+	TXS	
+
+	JMP	EndTest
+
+	align	256
+
+BankXXFont
+BankXX_0
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%01000100
+BankXX_1
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+BankXX_2
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%10101010	
+	BYTE	#%01000100
+BankXX_3
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%01100110
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_4
+	BYTE	#%00100010
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%01000100	
+	BYTE	#%00100010
+BankXX_5
+	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%11001100
+	BYTE	#%10001000	
+	BYTE	#%11101110
+BankXX_6
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01100110
+BankXX_7
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%11101110
+BankXX_8	
+	BYTE	#%01000100
+	BYTE	#%10101010	
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_9
+	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%01100110
+	BYTE	#%10101010
+	BYTE	#%01000100	; 10
+BankXX_A
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_B
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+BankXX_C
+	BYTE	#%01100110
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01100110
+BankXX_D
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%11001100
+BankXX_E
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%11001100
+	BYTE	#%10001000
+	BYTE	#%11101110
+BankXX_F
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%11001100
+	BYTE	#%10001000
+	BYTE	#%11101110
+BankXX_G
+	BYTE	#%01100110
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01100110
+BankXX_H
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%10101010
+BankXX_I
+	BYTE	#%11101110
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%11101110
+BankXX_J
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%01100110	; 20
+BankXX_K
+	BYTE	#%10101010
+	BYTE	#%11001100
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%10001000
+BankXX_L
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10001000
+BankXX_M
+	BYTE	#%10011001
+	BYTE	#%10011001
+	BYTE	#%11011101
+	BYTE	#%11111111
+	BYTE	#%11111111
+BankXX_N
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%11101110
+	BYTE	#%11101110
+	BYTE	#%10101010
+BankXX_O
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_P
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+BankXX_Q
+	BYTE	#%01110111
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%01000100
+BankXX_R
+	BYTE	#%10101010
+	BYTE	#%11001100
+	BYTE	#%11001100
+	BYTE	#%10101010
+	BYTE	#%11001100
+BankXX_S
+	BYTE	#%11001100
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
+	BYTE	#%01100110
+BankXX_T
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%11101110	; 30
+BankXX_U
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+BankXX_V
+	BYTE	#%01000100
+	BYTE	#%11101110
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+BankXX_W
+	BYTE	#%01100110
+	BYTE	#%11111111
+	BYTE	#%10111011
+	BYTE	#%10011001
+	BYTE	#%10011001
+BankXX_X
+	BYTE	#%10101010
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+BankXX_Y
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%10101010
+BankXX_Z
+	BYTE	#%11101110
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%11101110
+BankXX_Space
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+BankXX_Smaller
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+BankXX_Larger
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%01000100
+	BYTE	#%10001000
+BankXX_Plus
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%11101110
+	BYTE	#%01000100
+	BYTE	#%01000100	; 40
+BankXX_Minus
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11101110
+	BYTE	#%00000000
+	BYTE	#%00000000	
+BankXX_Eq
+	BYTE	#%00000000
+	BYTE	#%11101110
+	BYTE	#%00000000
+	BYTE	#%11101110
+	BYTE	#%00000000
+BankXX_Multi
+	BYTE	#%00000000
+	BYTE	#%10101010
+	BYTE	#%01000100
+	BYTE	#%10101010
+	BYTE	#%00000000
+BankXX_Div
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%00100010
+BankXX_Percent
+	BYTE	#%10101010
+	BYTE	#%10001000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%10101010
+BankXX_Underline
+	BYTE	#%11101110
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+BankXX_Dot
+	BYTE	#%01000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+BankXX_Mark1
+	BYTE	#%01000100
+	BYTE	#%00000000
+	BYTE	#%01000100
+	BYTE	#%01000100
+	BYTE	#%01000100
+BankXX_Mark2
+	BYTE	#%01000100
+	BYTE	#%00000000
+	BYTE	#%01000100
+	BYTE	#%00100010
+	BYTE	#%11001100
+BankXX_Dots
+	BYTE	#%00000000
+	BYTE	#%01000100
+	BYTE	#%00000000
+	BYTE	#%01000100
+	BYTE	#%00000000	; 50
+
+BankXXColors
+	BYTE	#$00
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$00
+
+BankXX5Table
+	BYTE	#0
+	BYTE	#5
+	BYTE	#10
+	BYTE	#15
+	BYTE	#20
+	BYTE	#25
+	BYTE	#30
+	BYTE	#35
+	BYTE	#40
+	BYTE	#45
+	BYTE	#50
+	BYTE	#55
+	BYTE	#60
+	BYTE	#65
+	BYTE	#70
+	BYTE	#75
+	BYTE	#80
+	BYTE	#85
+	BYTE	#90
+	BYTE	#95
+	BYTE	#100
+	BYTE	#105
+	BYTE	#110
+	BYTE	#115
+	BYTE	#120
+	BYTE	#125
+	BYTE	#130
+	BYTE	#135
+	BYTE	#140
+	BYTE	#145
+	BYTE	#150
+	BYTE	#155
+	BYTE	#160
+	BYTE	#165
+	BYTE	#170
+	BYTE	#175
+	BYTE	#180
+	BYTE	#185
+	BYTE	#190
+	BYTE	#195
+	BYTE	#200
+	BYTE	#205
+	BYTE	#210
+	BYTE	#215
+	BYTE	#220
+	BYTE	#225
+	BYTE	#230
+	BYTE	#235
+	BYTE	#240
+	BYTE	#245
+	BYTE	#250
+EndTest
+
+
+
+
+
 
 *SkipIfNoGameSet
 *---------------------------------
@@ -1660,20 +2379,7 @@ JumpToMainKernelBank2
 
 ScreenBottomBank2
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK2!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank2
 
@@ -1686,7 +2392,7 @@ ScreenBottomBank2
 
 	align	256
 
-!!!USER_DATA_BANK2!!!
+
 
 
 ###End-Bank2
@@ -1696,7 +2402,7 @@ ScreenBottomBank2
 * used by the developer.
 *
 
-!!!ROUTINES_BANK2!!!
+
 	
 
 	saveFreeBytes
@@ -1750,7 +2456,7 @@ start_bank2
 
 EnterScreenBank3
 
-!!!ENTER_BANK3!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank3
 
@@ -1764,7 +2470,7 @@ EnterScreenBank3
 
 LeaveScreenBank3
 
-!!!LEAVE_BANK3!!!
+
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
@@ -1818,7 +2524,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1829,7 +2535,7 @@ OverScanBank3
 * begins.
 *
 
-!!!OVERSCAN_BANK3!!!
+
 
 
 *VSYNC
@@ -1862,7 +2568,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -1874,7 +2580,7 @@ WaitUntilOverScanTimerEndsBank3
 *
 VBLANKBank3
 
-!!!VBLANK_BANK3!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1925,20 +2631,7 @@ VBlankEndBank3
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK3!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -1985,20 +2678,7 @@ JumpToMainKernelBank3
 
 ScreenBottomBank3
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK3!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank3
 
@@ -2011,7 +2691,7 @@ ScreenBottomBank3
 
 	align	256
 
-!!!USER_DATA_BANK3!!!
+
 
 ###End-Bank3
 *Routine Section
@@ -2020,7 +2700,7 @@ ScreenBottomBank3
 * used by the developer.
 *
 
-!!!ROUTINES_BANK3!!!
+
 
 
 	saveFreeBytes
@@ -2074,7 +2754,7 @@ start_bank3
 
 EnterScreenBank4
 
-!!!ENTER_BANK4!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank4
 
@@ -2088,7 +2768,7 @@ EnterScreenBank4
 
 LeaveScreenBank4
 
-!!!LEAVE_BANK4!!!
+
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
@@ -2142,7 +2822,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2153,7 +2833,7 @@ OverScanBank4
 * begins.
 *
 
-!!!OVERSCAN_BANK4!!!
+
 
 
 *VSYNC
@@ -2186,7 +2866,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2197,7 +2877,7 @@ WaitUntilOverScanTimerEndsBank4
 *
 VBLANKBank4
 
-!!!VBLANK_BANK4!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2248,20 +2928,7 @@ VBlankEndBank4
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK4!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -2308,20 +2975,7 @@ JumpToMainKernelBank4
 
 ScreenBottomBank4
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK4!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank4
 
@@ -2334,7 +2988,7 @@ ScreenBottomBank4
 
 	align	256
 
-!!!USER_DATA_BANK4!!!
+
 
 ###End-Bank4
 *Routine Section
@@ -2343,7 +2997,7 @@ ScreenBottomBank4
 * used by the developer.
 *
 
-!!!ROUTINES_BANK4!!!
+
 	
 
 	saveFreeBytes
@@ -2398,7 +3052,7 @@ start_bank4
 
 EnterScreenBank5
 
-!!!ENTER_BANK5!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank5
 
@@ -2412,7 +3066,7 @@ EnterScreenBank5
 
 LeaveScreenBank5
 
-!!!LEAVE_BANK5!!!
+
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
@@ -2466,7 +3120,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2477,7 +3131,7 @@ OverScanBank5
 * begins.
 *
 
-!!!OVERSCAN_BANK5!!!
+
 
 
 *VSYNC
@@ -2510,7 +3164,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2521,7 +3175,7 @@ WaitUntilOverScanTimerEndsBank5
 *
 VBLANKBank5
 
-!!!VBLANK_BANK5!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2572,20 +3226,7 @@ VBlankEndBank5
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK5!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -2632,20 +3273,7 @@ JumpToMainKernelBank5
 
 ScreenBottomBank5
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK5!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank5
 
@@ -2658,7 +3286,7 @@ ScreenBottomBank5
 
 	align	256
 
-!!!USER_DATA_BANK5!!!
+
 
 ###End-Bank5
 *Routine Section
@@ -2667,7 +3295,7 @@ ScreenBottomBank5
 * used by the developer.
 *
 
-!!!ROUTINES_BANK5!!!
+
 	
 
 	saveFreeBytes
@@ -2721,7 +3349,7 @@ start_bank5
 
 EnterScreenBank6
 
-!!!ENTER_BANK6!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank6
 
@@ -2735,7 +3363,7 @@ EnterScreenBank6
 
 LeaveScreenBank6
 
-!!!LEAVE_BANK6!!!
+
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
@@ -2789,7 +3417,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2800,7 +3428,7 @@ OverScanBank6
 * begins.
 *
 
-!!!OVERSCAN_BANK6!!!
+
 
 
 *VSYNC
@@ -2833,7 +3461,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2844,7 +3472,7 @@ WaitUntilOverScanTimerEndsBank6
 *
 VBLANKBank6
 
-!!!VBLANK_BANK6!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2895,20 +3523,7 @@ VBlankEndBank6
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK6!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -2955,20 +3570,7 @@ JumpToMainKernelBank6
 
 ScreenBottomBank6
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK6!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank6
 
@@ -2982,7 +3584,7 @@ ScreenBottomBank6
 
 	align	256
 
-!!!USER_DATA_BANK6!!!
+
 
 ###End-Bank6
 *Routine Section
@@ -2991,7 +3593,7 @@ ScreenBottomBank6
 * used by the developer.
 *
 
-!!!ROUTINES_BANK6!!!
+
 	
 
 	saveFreeBytes
@@ -3045,7 +3647,7 @@ start_bank6
 
 EnterScreenBank7
 
-!!!ENTER_BANK7!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank7
 
@@ -3059,7 +3661,7 @@ EnterScreenBank7
 
 LeaveScreenBank7
 
-!!!LEAVE_BANK7!!!
+
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
@@ -3112,7 +3714,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3123,7 +3725,7 @@ OverScanBank7
 * begins.
 *
 
-!!!OVERSCAN_BANK7!!!
+
 
 
 *VSYNC
@@ -3156,7 +3758,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -3168,7 +3770,7 @@ WaitUntilOverScanTimerEndsBank7
 *
 VBLANKBank7
 
-!!!VBLANK_BANK7!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3219,20 +3821,7 @@ VBlankEndBank7
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK7!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -3279,20 +3868,7 @@ JumpToMainKernelBank7
 
 ScreenBottomBank7
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK7!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank7
 
@@ -3305,7 +3881,7 @@ ScreenBottomBank7
 
 	align	256
 
-!!!USER_DATA_BANK7!!!
+
 
 
 ###End-Bank7
@@ -3315,7 +3891,7 @@ ScreenBottomBank7
 * used by the developer.
 *
 
-!!!ROUTINES_BANK7!!!
+
 	
 
 	saveFreeBytes
@@ -3369,7 +3945,7 @@ start_bank7
 
 EnterScreenBank8
 
-!!!ENTER_BANK8!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank8
 
@@ -3383,7 +3959,7 @@ EnterScreenBank8
 
 LeaveScreenBank8
 
-!!!LEAVE_BANK8!!!
+
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
@@ -3436,7 +4012,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3447,7 +4023,7 @@ OverScanBank8
 * begins.
 *
 
-!!!OVERSCAN_BANK8!!!
+
 
 
 *VSYNC
@@ -3480,7 +4056,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3491,7 +4067,7 @@ WaitUntilOverScanTimerEndsBank8
 *
 VBLANKBank8
 
-!!!VBLANK_BANK8!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3530,20 +4106,7 @@ VBlankEndBank8
 * top part of the screen.
 *
 
-	tsx
-	stx	item
 
-!!!SCREENTOP_BANK8!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 
 *SkipIfNoGameSet
@@ -3590,20 +4153,7 @@ JumpToMainKernelBank8
 
 ScreenBottomBank8
 
-	tsx
-	stx	item
 
-!!!SCREENBOTTOM_BANK8!!!
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
 
 	JMP	OverScanBank8
 
@@ -3616,7 +4166,7 @@ ScreenBottomBank8
 
 	align	256
 
-!!!USER_DATA_BANK8!!!
+
 
 
 ###End-Bank8
@@ -3626,7 +4176,7 @@ ScreenBottomBank8
 * used by the developer.
 *
 
-!!!ROUTINES_BANK8!!!
+
 
 
 	align 256

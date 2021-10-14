@@ -13,9 +13,13 @@ Letter08 = $db
 Letter09 = $dc
 Letter10 = $dd
 Letter11 = $de
-Letter12 = $de
-TextColor = $df
-TextBackColor = $e0
+Letter12 = $df
+TextColor = $e0
+TextBackColor = $e1
+
+TextEnd = TEST_TEXT_END
+TextPoz = $e8
+TextDir = $e9
 
 	LDA	#0
 	STA	Letter01
@@ -34,10 +38,10 @@ TextBackColor = $e0
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
-	LDA	#$1a
+	LDA	#TEST_TEXT_COLOR
 	STA	TextColor
 	
-	LDA	#$40
+	LDA	#$TEST_BACK_COLOR
 	STA	TextBackColor	
 
 	LDA	#%10000000	; Disables game kernel, so won't run

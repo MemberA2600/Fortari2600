@@ -2,11 +2,14 @@ from tkinter import *
 
 class FrameLabelEntryUpDown:
 
-    def __init__(self, loader, parent, w, h, text, mini, maxi, font, function, default, font2):
+    def __init__(self, loader, parent, w, h, text, mini, maxi, font, function, default, font2, key, errors):
 
         self.__loader = loader
         self.__colors = self.__loader.colorPalettes
         self.__dictionaries = self.__loader.dictionaries
+
+        self.__errorCounters = errors
+        self.__key = key
 
         self.__frame = Frame(parent, width=w,
                                    bg=self.__colors.getColor("window"))
@@ -65,8 +68,11 @@ class FrameLabelEntryUpDown:
         except:
             self.__entry.config(bg=self.__colors.getColor("boxBackUnSaved"),
                                 fg=self.__colors.getColor("boxFontUnSaved"))
+
+            self.__errorCounters[self.__key] = 1
             return
 
+        self.__errorCounters[self.__key] = 0
         if number < self.__min:
             number = self.__min
         elif number > self.__max:

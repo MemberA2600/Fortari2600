@@ -43,14 +43,16 @@ pic64px_KernelStart
 	LDA	counter		; 3 (6)
 	AND	#%00000001	; 2 (8)
 	CMP	#%00000001	; 2 (10)
-	BNE	pic64px_OddFrame  ; 2 (12)
+	BNE	pic64px_OddFrameJMP  ; 2 (12)
 	JMP	pic64px_EvenFrame ; 3 (15)	
+pic64px_OddFrameJMP
+	JMP	pic64px_OddFrame  ; 3 (15)
 
 	align	256
 
 pic64px_OddFrame
 	_sleep	42
-	sleep	5
+	sleep	2
 
 	LDA	#0
 	STA	GRP0
@@ -205,17 +207,3 @@ pic64px_EvenFrame_Line2
 	BNE	pic64px_EvenFrame_Line1		; 2 (73)
 
 pic64px_Reset
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF
-	LDA	#0		
-	STA	PF0
-	STA	PF1		
-	STA	PF2		
-	STA	GRP0		
-	STA	GRP1		
-	STA	VDELP0		
-	STA	VDELP1	

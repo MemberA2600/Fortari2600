@@ -167,3 +167,7 @@ artist=Artist:
 title=Title:
 musicExists=Music Exists
 musicExistsMessage=Seems like the music name you selected already exists! Want to overwrite?
+cover=Cover:
+banksToLock=Banks to Lock:
+bankLockError=Bank Lock Error
+bankLockErrorMessage=No free bank for lock found.
