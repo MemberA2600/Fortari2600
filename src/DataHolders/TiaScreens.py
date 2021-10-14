@@ -332,7 +332,9 @@ class TiaScreens:
                         note = self.allData[channelNum][screenNum]["screen"][Y][noteNum]
 
                         nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
-                    data1[channelNum].append(deepcopy(nums[channelNum]))
+
+                    for piece in range(0, frameLen):
+                        data1[channelNum].append(deepcopy(nums[channelNum]))
 
 
         #buzz and framelen is processed during the first run.
@@ -428,8 +430,8 @@ class TiaScreens:
                                         N += int(num2)
                                     tiaNote.freq = round(N / len(dominantNote))
 
-        #correction
-        #print(data1[0][0].piaNote)
+
+
 
 
         # print(data1[0][0].piaNote)

@@ -18,6 +18,7 @@ class MusicComposer:
 
         self.__virtualMemory = self.__loader.virtualMemory
         self.__loader.stopThreads.append(self)
+        self.__colorDict = self.__loader.colorDict
 
         self.__caller = 0
         self.forceShit = False
@@ -524,9 +525,149 @@ class MusicComposer:
         self.__theTwoBanksEntry2.bind("<FocusOut>", self.__checkBank)
         self.__theTwoBanksEntry2.bind("<KeyRelease>", self.__checkBank)
 
+        self.__colorEntry1 = StringVar()
+        self.__colorEntry1.set(str(self.__colorConstans[0]))
 
+        self.__colorEntry2 = StringVar()
+        self.__colorEntry2.set(str(self.__colorConstans[1]))
+
+        self.__colorTitle = Label(self.__bottomFrame2Third2,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text = self.__dictionaries.getWordFromCurrentLanguage("textColors"),
+                              font = self.__normalFont
+                                      )
+
+        self.__colorTitle.pack_propagate(False)
+        self.__colorTitle.pack(side=TOP, fill=BOTH)
+
+        self.__theTwoColorsFrame = Frame(self.__bottomFrame2Third2,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__theTwoColorsFrame.pack_propagate(False)
+        self.__theTwoColorsFrame.pack(side=TOP, fill=X)
+
+        self.__theTwoColorsFrame1 = Frame(self.__theTwoColorsFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__theTwoColorsFrame1.pack_propagate(False)
+        self.__theTwoColorsFrame1.pack(side=LEFT, fill=Y)
+
+        self.__theTwoColorsFrame2 = Frame(self.__theTwoColorsFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__theTwoColorsFrame2.pack_propagate(False)
+        self.__theTwoColorsFrame2.pack(side=LEFT, fill=Y)
+
+
+        self.__theTwoColorsEntry1 = Entry(self.__theTwoColorsFrame1, name="color1",
+                                        bg=self.__colors.getColor("boxBackNormal"),
+                                        fg=self.__colors.getColor("boxFontNormal"),
+                                        width=9999999,
+                                        textvariable=self.__colorEntry1,
+                                        justify=CENTER,
+                                        font=self.__normalFont
+                                        )
+
+        self.__theTwoColorsEntry1.pack_propagate(False)
+        self.__theTwoColorsEntry1.pack(fill=BOTH)
+
+        self.__theTwoColorsEntry1.bind("<FocusOut>", self.__checkColorEntry)
+        self.__theTwoColorsEntry1.bind("<KeyRelease>", self.__checkColorEntry)
+
+        self.__theTwoColorsEntry2 = Entry(self.__theTwoColorsFrame2, name="color2",
+                                        bg=self.__colors.getColor("boxBackNormal"),
+                                        fg=self.__colors.getColor("boxFontNormal"),
+                                        width=9999999,
+                                        textvariable=self.__colorEntry2,
+                                        justify=CENTER,
+                                        font=self.__normalFont
+                                        )
+
+        self.__theTwoColorsEntry2.pack_propagate(False)
+        self.__theTwoColorsEntry2.pack(fill=BOTH)
+
+        self.__theTwoColorsEntry2.bind("<FocusOut>", self.__checkColorEntry)
+        self.__theTwoColorsEntry2.bind("<KeyRelease>", self.__checkColorEntry)
+
+        self.setColorOfEntry("color1")
+        self.setColorOfEntry("color2")
 
         self.__runningThreads -= 1
+
+    def setColorOfEntry(self, name):
+        entries = {
+            "color1": self.__colorEntry1,
+            "color2": self.__colorEntry2
+        }
+
+        that = {
+            "color1": self.__theTwoColorsEntry1,
+            "color2": self.__theTwoColorsEntry2
+        }
+
+        widget = entries[name]
+
+        color1 = self.__colorDict.getHEXValueFromTIA(widget.get())
+
+        num = int("0x"+widget.get()[2], 16)
+        if num>8:
+            num = widget.get()[:2]+hex(num-6).replace("0x","")
+        else:
+            num = widget.get()[:2]+hex(num+6).replace("0x","")
+
+        color2 = self.__colorDict.getHEXValueFromTIA(num)
+        that[name].config(bg=color1, fg=color2)
+
+
+    def __checkColorEntry(self, event):
+        name = str(event.widget).split(".")[-1]
+
+        entries = {
+            "color1": self.__colorEntry1,
+            "color2": self.__colorEntry2
+        }
+
+        that = {
+            "color1": self.__theTwoColorsEntry1,
+            "color2": self.__theTwoColorsEntry2
+        }
+
+        number = {
+            "color1": 0,
+            "color2": 1
+        }
+
+        widget = entries[name]
+
+        if (len(widget.get()))<3:
+            self.setInValid(that[name])
+            return
+        elif (len(widget.get()))>3:
+            widget.set(widget.get()[:3])
+
+        if widget.get()[0]!="$":
+            self.setInValid(that[name])
+            return
+
+        try:
+            num = int(widget.get().replace("$", "0x"), 16)
+        except:
+            self.setInValid(that[name])
+            return
+
+        self.setColorOfEntry(name)
+        self.__colorConstans[number[name]] = widget.get()
+
+    def setInValid(self, widget):
+        widget.config(
+            bg = self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+            fg = self.__loader.colorPalettes.getColor("boxFontUnSaved")
+        )
+
 
     def __checkBank(self, event):
         name = str(event.widget).split(".")[-1]

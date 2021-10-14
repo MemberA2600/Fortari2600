@@ -171,3 +171,4 @@ cover=Cover:
 banksToLock=Banks to Lock:
 bankLockError=Bank Lock Error
 bankLockErrorMessage=No free bank for lock found.
+textColors=Text/Back Colors:
