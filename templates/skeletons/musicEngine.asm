@@ -13,9 +13,9 @@ CoolSong_Driver@@
 	CMP	#0
 	BNE	CoolSong_if240@@
 
-	STA	AUDV0
-	STA	AUDF0
-	STA	AUDC0
+	STA	AUDV@@
+	STA	AUDF@@
+	STA	AUDC@@
 	STA	temp&1
 	STA	temp&2
 	JMP	CoolSong_NotSharedByte@@

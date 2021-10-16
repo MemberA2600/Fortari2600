@@ -170,3 +170,4 @@ banksToLock=Lezárandó Bankok:
 bankLockError=Bankzárás Hiba
 bankLockErrorMessage=Nem található szabad lezárható bank.
 textColors=Betû/Háttér Színek:
+frameColor=Keretszín:

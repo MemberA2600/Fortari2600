@@ -21,20 +21,6 @@ TextEnd = TEST_TEXT_END
 TextPoz = $e8
 TextDir = $e9
 
-	LDA	#0
-	STA	Letter01
-	STA	Letter02
-	STA	Letter03
-	STA	Letter04
-	STA	Letter05
-	STA	Letter06
-	STA	Letter07
-	STA	Letter08
-	STA	Letter09
-	STA	Letter10
-	STA	Letter11
-	STA	Letter12
-
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
@@ -88,3 +74,6 @@ TextDir = $e9
 
 	LDA	#INITLETTER12
 	STA	Letter12
+
+	LDA	#FRAME_COLOR
+	STA	frameColor

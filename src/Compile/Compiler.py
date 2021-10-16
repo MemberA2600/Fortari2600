@@ -57,14 +57,23 @@ class Compiler:
                         .replace("DSPINDEX", str(self.__pictureData[2]))
                         .replace("TEST_TEXT_COLOR", str(self.__colors[0]))
                         .replace("TEST_BACK_COLOR", str(self.__colors[1]))
+                        .replace("FRAME_COLOR", str(self.__colors[2]))
                         .replace("TEST_TEXT_END", str(len(self.__charNums)-12)))
 
 
         for num in range(0,12):
+
             strNum = str(num+1)
             if len(strNum) == 1:
                 strNum = "0"+strNum
-            self.__init = self.__init.replace("INITLETTER"+strNum, str(self.__charNums[num]))
+
+            try:
+                self.__init = self.__init.replace("INITLETTER"+strNum, str(self.__charNums[num]))
+            except:
+                self.__init = self.__init.replace("INITLETTER"+strNum, "0")
+
+
+
 
         self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
@@ -151,11 +160,33 @@ class Compiler:
 
         self.__bank2Data+="\n"+self.__textBytes
 
-        self.__screenTop = self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" + \
-                           self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay.asm")
+        musicVisuals = self.__loader.io.loadWholeText("templates/skeletons/musicVisualizer.asm").replace("Music_Visuals", CoolSong+"_Visuals")
+        if self.__variables[0] == None:
+            musicVisuals = musicVisuals.replace("temp&1", "temp16")
+        else:
+            musicVisuals = musicVisuals.replace("temp&1", self.__variables[0])
+
+        if self.__variables[1] == None:
+            musicVisuals = musicVisuals.replace("temp&2", "temp17")
+        else:
+            musicVisuals = musicVisuals.replace("temp&2", self.__variables[1])
+
+        if self.__variables[2] == None:
+            musicVisuals = musicVisuals.replace("temp&3", "temp18")
+        else:
+            musicVisuals = musicVisuals.replace("temp&3", self.__variables[2])
+
+        if self.__variables[3] == None:
+            musicVisuals = musicVisuals.replace("temp&4", "temp19")
+        else:
+            musicVisuals = musicVisuals.replace("temp&4", self.__variables[3])
+
+
+        self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
+                           self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay.asm")+ "\n" +
+                            musicVisuals + "\n")
 
         self.__screenTop = self.__screenTop.replace("pic64px", picName).replace("48pxText", CoolSong)
-
 
         self.__kernelText = (self.__kernelText.replace("!!!USER_DATA_BANK2!!!", self.__bank2Data)
                              .replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)

@@ -349,6 +349,7 @@ class Assembler():
                     second = self.checkIfSectionName(line.raw[1], sections)
                     second = self.starToAddress(currentAddress, second)
                     second = self.secondByteToNumeric(second, variables, registers, sections)
+                    second = self.checkSARA(second)
                     second = self.doTheMath(second)
                     second = self.lowHighNibble(second)
                     line.bytes.append(bytes([int(second.replace("#$", "0x"), 16)]))
@@ -373,6 +374,7 @@ class Assembler():
                         second = self.checkIfSectionName(line.raw[1], sections)
                         second = self.starToAddress(line.address, second)
                         second = self.secondByteToNumeric(second, variables, registers, sections)
+                        second = self.checkSARA(second)
                         second = self.doTheMath(second)
                         second = int(second.replace("$", "0x"), 16)
 
@@ -387,6 +389,7 @@ class Assembler():
                         second = self.checkIfSectionName(line.raw[1], sections)
                         second = self.starToAddress(line.address, second)
                         second = self.secondByteToNumeric(second, variables, registers, sections)
+                        second = self.checkSARA(second)
                         second = self.doTheMath(second)
                         second = self.lowHighNibble(second)
 
@@ -418,6 +421,35 @@ class Assembler():
 
 
         return(freebytes, codeLines, sections)
+
+    def checkSARA(self, code):
+        import re
+
+        if ("LDA" not in code.upper()) and ("STA" not in code.upper()):
+            return(code)
+        elif "LDA" in code.upper():
+            opcode = "LDA"
+        else:
+            opcode = "STA"
+
+        number = re.findall(r"\$[a-fA-F0-9]{4}", code)[0].upper()
+        number = int(number.replace("$", "0x"), 16)
+        if number < 61440 or number > 61695:
+            return (code)
+
+        if opcode == "LDA" and number < 61568:
+            number+=128
+        elif opcode == "STA" and number > 61567:
+            number-=128
+
+        number = hex(number).replace("0x", "$")
+        sendBack = "\t"+opcode+"\t"+number
+
+        if "," in code:
+            sendBack += ","+code.split(",")[1]
+
+        return(sendBack)
+
 
     def checkForTooDistant(self, code, branchers):
         from copy import deepcopy
@@ -511,6 +543,7 @@ class Assembler():
             self.appendBytes(line, second)
 
     def appendBytes(self, line, second):
+
         if second.startswith("0b"):
             line.bytes.append(bytes([int(second, 2)]))
         elif second.startswith("0x"):
