@@ -181,6 +181,9 @@ class Compiler:
         else:
             musicVisuals = musicVisuals.replace("temp&4", self.__variables[3])
 
+        musicVisuals = (musicVisuals.replace("#COLOR3#", self.__colors[3][1])
+                                    .replace("#COLOR4#", self.__colors[4][1])
+                                    .replace("#COLOR5#", self.__colors[5][1]))
 
         self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
                            self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay.asm")+ "\n" +

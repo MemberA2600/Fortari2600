@@ -37,8 +37,8 @@ MusicIndicator8 = $ce
 	LDA	counter
 	STA	RESM0
 
-	AND	#%00000111
-	CMP	#%00000111
+	AND	#%00000011
+	CMP	#%00000011
 	BEQ	Music_Visuals_DECR
 	
 	_sleep	34
@@ -138,6 +138,7 @@ Music_Visuals_NoChangeChannel1
 	JMP	Music_Visuals_Display
 
 Music_Visuals_Data
+
 Music_Visuals_Data_Pointers
 	BYTE	#0
 	BYTE	#0				; 0
@@ -173,137 +174,137 @@ Music_Visuals_Data_Pointers
 	BYTE	#>Music_Visuals_Data_Channel_6	; 15
 
 Music_Visuals_Data_Channel_1
-	BYTE	#7
+	BYTE	#0
+	BYTE	#2
+	BYTE	#4
 	BYTE	#5
-	BYTE	#3
-	BYTE	#2
-	BYTE	#2
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
+	BYTE	#5
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
 Music_Visuals_Data_Channel_4
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#6
-	BYTE	#6
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#1
+	BYTE	#1
+	BYTE	#2
+	BYTE	#2
+	BYTE	#2
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#4
+	BYTE	#4
+	BYTE	#4
+	BYTE	#4
+	BYTE	#4
+	BYTE	#4
+	BYTE	#4
 	BYTE	#5
 	BYTE	#5
 	BYTE	#5
-	BYTE	#4
-	BYTE	#4
-	BYTE	#4
-	BYTE	#4
-	BYTE	#3
-	BYTE	#3
-	BYTE	#3
-	BYTE	#3
-	BYTE	#3
-	BYTE	#3
-	BYTE	#3
-	BYTE	#2
-	BYTE	#2
-	BYTE	#2
-	BYTE	#2
+	BYTE	#5
 Music_Visuals_Data_Channel_6
-	BYTE	#5
 	BYTE	#2
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
+	BYTE	#5
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
 Music_Visuals_Data_Channel_12
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
-	BYTE	#7
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#2
+	BYTE	#3
+	BYTE	#3
+	BYTE	#4
+	BYTE	#4
 	BYTE	#5
-	BYTE	#4
-	BYTE	#4
-	BYTE	#3
-	BYTE	#3
-	BYTE	#2
-	BYTE	#2
-	BYTE	#2
-	BYTE	#2
-	BYTE	#2
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#1
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
-	BYTE	#0
+	BYTE	#5
+	BYTE	#5
+	BYTE	#5
+	BYTE	#5
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#6
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
+	BYTE	#7
 
 Music_Visuals_Data_Bars
 	BYTE	#%00000000
@@ -318,15 +319,15 @@ Music_Visuals_Data_Bars
 
 
 Music_Visuals_Data_Barcolors
-	BYTE	#$18
-	BYTE	#$16
-	BYTE	#$14
-	BYTE	#$38
-	BYTE	#$36
-	BYTE	#$34
-	BYTE	#$48
-	BYTE	#$46
-	BYTE	#$44
+	BYTE	#$#COLOR5#8
+	BYTE	#$#COLOR5#6
+	BYTE	#$#COLOR5#4
+	BYTE	#$#COLOR4#8
+	BYTE	#$#COLOR4#6
+	BYTE	#$#COLOR4#4
+	BYTE	#$#COLOR3#8
+	BYTE	#$#COLOR3#6
+	BYTE	#$#COLOR3#4
 
 	align	256
 Music_Visuals_Display

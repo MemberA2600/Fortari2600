@@ -71,3 +71,5 @@ class PiaNotes:
 
     def playTiaThread(self, volume, channel, note):
         self.__tiaTone.setAndPlay(int(volume), int(channel), int(note), "NTSC", 1)
+
+

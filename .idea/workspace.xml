@@ -2,18 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/View/HexEntry.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/get8Lines/doIt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Converters/MidiConverter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-10-14_200317.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Stellazy_-_'Till_my_ears_bleed_pixels.a26" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-10-16_103921.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/musicEngine.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/musicEngine.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/testCodes/musicTestEnter.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/testCodes/musicTestEnter.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/skeletons/musicVisualizer.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/musicVisualizer.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/get8Lines/doIt.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/get8Lines/doIt.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,36 +49,37 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1634373560340" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1634526846942" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Config.coverage" NAME="Config Coverage Results" MODIFIED="1618064003932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/Fortari2600$Miditari_0_14.coverage" NAME="Miditari 0.14 Coverage Results" MODIFIED="1634526843144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/Miditari" />
     <SUITE FILE_PATH="coverage/Fortari2600$Boo_T.coverage" NAME="Boo-T Coverage Results" MODIFIED="1618080702573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Boo-T/Boo-T" />
     <SUITE FILE_PATH="coverage/Fortari2600$FrameContent.coverage" NAME="FrameContent Coverage Results" MODIFIED="1618197790373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$doIt.coverage" NAME="doIt Coverage Results" MODIFIED="1634370531598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/get8Lines" />
+    <SUITE FILE_PATH="coverage/Fortari2600$doIt.coverage" NAME="doIt Coverage Results" MODIFIED="1634381564761" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv/get8Lines" />
     <SUITE FILE_PATH="coverage/Fortari2600$PitFallHarry.coverage" NAME="PitFallHarry Coverage Results" MODIFIED="1618602702401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="250" />
+          <entry key="project.closed" value="253" />
           <entry key="project.open.time.0" value="5" />
-          <entry key="project.open.time.3" value="76" />
-          <entry key="project.open.time.4" value="196" />
-          <entry key="project.open.time.5" value="10" />
+          <entry key="project.open.time.3" value="77" />
+          <entry key="project.open.time.4" value="200" />
+          <entry key="project.open.time.5" value="11" />
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="292" />
+          <entry key="project.opened" value="298" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="1542" />
+          <entry key="py" value="1561" />
           <entry key="txt" value="5" />
           <entry key="wav" value="1" />
         </counts>
@@ -88,90 +88,79 @@
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="1542" />
+          <entry key="Python" value="1561" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="285098" />
+          <entry key="py" value="293486" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="285098" />
+          <entry key="Python" value="293486" />
         </counts>
       </usages-collector>
     </session>
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Fortari2600" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="548">
-              <caret line="1263" column="49" selection-start-line="1263" selection-start-column="49" selection-end-line="1263" selection-end-column="49" />
+            <state relative-caret-position="580">
+              <caret line="1413" column="44" selection-start-line="1413" selection-start-column="42" selection-end-line="1413" selection-end-column="44" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
-                <marker date="1634371136126" expanded="true" signature="3120:3244" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="4555:5216" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="26146:26153" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="26182:27455" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="27482:27491" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="27482:28424" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="28149:28424" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="31098:34170" ph="..." />
-                <marker date="1634371136126" expanded="true" signature="34197:34207" ph="..." />
+                <marker date="1634480005544" expanded="true" signature="31195:32457" ph="..." />
+                <marker date="1634480005544" expanded="true" signature="33786:33928" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
+            <state relative-caret-position="420">
+              <caret line="136" column="35" selection-start-line="136" selection-start-column="27" selection-end-line="136" selection-end-column="35" />
               <folding>
-                <marker date="1634271413902" expanded="true" signature="38:39" ph="..." />
-                <marker date="1634271413902" expanded="true" signature="38:44" ph="..." />
+                <element signature="e#0#11#0" expanded="true" />
+                <marker date="1634530991244" expanded="true" signature="3866:3974" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1012">
-              <caret line="170" column="13" selection-start-line="170" selection-start-column="13" selection-end-line="170" selection-end-column="13" />
-              <folding>
-                <marker date="1634371703570" expanded="true" signature="9886:10142" ph="..." />
-              </folding>
+            <state relative-caret-position="560">
+              <caret line="41" column="38" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="38" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="45" selection-start-line="45" selection-end-line="45" />
+            <state relative-caret-position="384">
+              <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/MidiNote.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="860">
-              <caret line="729" column="17" selection-start-line="729" selection-start-column="17" selection-end-line="729" selection-end-column="17" />
-              <folding>
-                <marker date="1634371631423" expanded="true" signature="14138:14871" ph="..." />
-                <marker date="1634371631423" expanded="true" signature="14917:14926" ph="..." />
-              </folding>
+            <state relative-caret-position="80">
+              <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
             </state>
           </provider>
         </entry>
@@ -187,36 +176,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sections</find>
-      <find>checkIfSectionName</find>
-      <find>variable</find>
-      <find>Cools</find>
-      <find>BYTE</find>
-      <find>Bank</find>
-      <find>CoolSong</find>
-      <find>temp&amp;</find>
-      <find>replace(&quot;CoolSong&quot;</find>
-      <find>Really</find>
-      <find>__colorConstans</find>
-      <find>colo</find>
-      <find>fff</find>
-      <find>color</find>
-      <find>colors.</find>
-      <find>colorPal</find>
-      <find>__colorDict</find>
-      <find>UnSAv</find>
-      <find>__theTwoBanksEntry</find>
-      <find>Hex</find>
-      <find>INIT</find>
-      <find>setFrameLen</find>
-      <find>__frameLen</find>
       <find>secondByteToNumeric</find>
       <find>Drum</find>
       <find>createMusicEngine</find>
       <find>checkSARA</find>
       <find>variables</find>
-      <find>print</find>
       <find>temp&amp;1</find>
+      <find>Hex</find>
+      <find>open</find>
+      <find>askForFileName</find>
+      <find>vi</find>
+      <find>rtmidi</find>
+      <find>Cancel</find>
+      <find>open_midi</find>
+      <find>rounder</find>
+      <find>/10</find>
+      <find>/1</find>
+      <find>dur</find>
+      <find>remain</find>
+      <find>Midi</find>
+      <find>Compi</find>
+      <find>dura</find>
+      <find>piaNotes</find>
+      <find>15</find>
+      <find>.get</find>
+      <find>print</find>
+      <find>8:</find>
+      <find>rawDr</find>
+      <find>!=</find>
+      <find>!=9</find>
+      <find>&quot;15,20&quot;, &quot;8,0&quot;, &quot;15,2&quot;, &quot;8,8&quot;, &quot;2,0&quot;, &quot;3,0&quot;, &quot;3,1&quot;dr</find>
     </findStrings>
     <replaceStrings>
       <replace>array</replace>
@@ -257,11 +246,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Handlers/MainWindowHandler.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/Config.py" />
-        <option value="$PROJECT_DIR$/src/View/NewListBoxInFrame.py" />
-        <option value="$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py" />
-        <option value="$PROJECT_DIR$/src/View/EmuTestFrame.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/ColorDict.py" />
         <option value="$PROJECT_DIR$/src/View/ConvertFromImageFrame.py" />
         <option value="$PROJECT_DIR$/src/Scripts/PictureToCode.py" />
@@ -296,7 +280,6 @@
         <option value="$PROJECT_DIR$/src/View/MCButton.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTester.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTesterLoaderFrame.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaNote.py" />
         <option value="$PROJECT_DIR$/venv/szar.py" />
         <option value="$PROJECT_DIR$/src/View/LockManagerWindow.py" />
@@ -304,10 +287,16 @@
         <option value="$PROJECT_DIR$/src/View/FrameLabelEntryUpDown.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
         <option value="$PROJECT_DIR$/src/View/HexEntry.py" />
-        <option value="$PROJECT_DIR$/venv/get8Lines/doIt.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
         <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
+        <option value="$PROJECT_DIR$/venv/get8Lines/doIt.py" />
+        <option value="$PROJECT_DIR$/src/View/HexEntryButLowNibbleFixed.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+        <option value="$PROJECT_DIR$/src/Handlers/IO.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/MidiNote.py" />
+        <option value="$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
+        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
       </list>
     </option>
   </component>
@@ -331,7 +320,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -348,19 +336,7 @@
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Compile" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="DataHolders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Handlers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
@@ -368,49 +344,11 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Scripts" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="View" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-              <item name="get8Lines" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
-              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
-              <item name="get8Lines" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -422,15 +360,15 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="E:\PyCharm\P\projects" />
-      <recent name="E:\PyCharm\P\Fortari2600\src\View" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\PyCharm\P\Fortari2600\src\Handlers" />
       <recent name="E:\PyCharm\P\Fortari2600\src\DataHolders" />
       <recent name="E:\PyCharm\P\Fortari2600\src\App" />
       <recent name="E:\PyCharm\P\Fortari2600\src\View" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\PyCharm\P\Fortari2600\src\View" />
+      <recent name="E:\PyCharm\P\projects" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -490,6 +428,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Miditari 0.14" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects/jetbrains/Miditari" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="doIt" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -534,42 +494,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="szar" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/szar.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.szar" />
       <item itemvalue="Python.Compiler" />
       <item itemvalue="Python.doIt" />
       <item itemvalue="Python.Assembler" />
+      <item itemvalue="Python.Miditari 0.14" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.Assembler" />
+        <item itemvalue="Python.Miditari 0.14" />
         <item itemvalue="Python.doIt" />
+        <item itemvalue="Python.Assembler" />
         <item itemvalue="Python.Compiler" />
-        <item itemvalue="Python.szar" />
       </list>
     </recent_temporary>
   </component>
@@ -590,9 +528,9 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49318182" visible="true" weight="0.10654686" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.114249036" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49935815" weight="0.23135756" />
@@ -613,6 +551,30 @@
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.11296534" />
+      <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
+      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49935815" visible="true" weight="0.23135756" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5006418" side_tool="true" weight="0.28393883" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3298279" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -635,62 +597,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/../projects/stocks2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1207">
-          <caret line="178" column="14" selection-start-line="178" selection-start-column="7" selection-end-line="178" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../projects/stocks3.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LoadingScreen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="759">
-          <caret line="102" lean-forward="true" selection-start-line="102" selection-end-line="102" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/MusicComposer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="406" lean-forward="true" selection-start-line="406" selection-end-line="406" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/getPairs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="12" selection-start-line="16" selection-start-column="12" selection-end-line="16" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/PIL/Image.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="2911" selection-start-line="2911" selection-end-line="2911" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../Boo-T/Boo-T/Boo-T.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="388">
-          <caret line="553" column="32" selection-start-line="553" selection-start-column="17" selection-end-line="553" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/NoteTable.py" />
     <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/NoteTable.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -763,27 +669,10 @@
     <entry file="file://$PROJECT_DIR$/src/View/FrameContent.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="19" column="22" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/KernelTesterLoaderFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1264">
           <caret line="79" selection-start-line="79" selection-end-line="100" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1952">
-          <caret line="134" column="63" selection-start-line="134" selection-start-column="60" selection-end-line="134" selection-end-column="63" />
         </state>
       </provider>
     </entry>
@@ -812,13 +701,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
           <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="672">
-          <caret line="43" column="61" selection-start-line="43" selection-start-column="54" selection-end-line="43" selection-end-column="61" />
         </state>
       </provider>
     </entry>
@@ -853,13 +735,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/BFG9000.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2284">
-          <caret line="151" column="55" selection-start-line="151" selection-start-column="51" selection-end-line="151" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="725">
@@ -891,13 +766,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="519">
-          <caret line="335" column="52" selection-start-line="335" selection-start-column="52" selection-end-line="335" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="244">
@@ -919,70 +787,142 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/HexEntryButLowNibbleFixed.py" />
     <entry file="file://$PROJECT_DIR$/venv/get8Lines/doIt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="35" column="53" selection-start-line="35" selection-start-column="53" selection-end-line="35" selection-end-column="53" />
-          <folding>
-            <marker date="1634362079707" expanded="true" signature="26:31" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="45" selection-start-line="45" selection-end-line="45" />
+        <state relative-caret-position="823">
+          <caret line="57" column="60" selection-start-line="57" selection-start-column="60" selection-end-line="57" selection-end-column="60" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
+        <state relative-caret-position="592">
           <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
-          <folding>
-            <marker date="1634271413902" expanded="true" signature="38:39" ph="..." />
-            <marker date="1634271413902" expanded="true" signature="38:44" ph="..." />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="71">
+          <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/MainWindowHandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="16" column="11" selection-start-line="16" selection-start-column="11" selection-end-line="16" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/BFG9000.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="115" column="31" lean-forward="true" selection-start-line="115" selection-start-column="31" selection-end-line="115" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="860">
-          <caret line="729" column="17" selection-start-line="729" selection-start-column="17" selection-end-line="729" selection-end-column="17" />
-          <folding>
-            <marker date="1634371631423" expanded="true" signature="14138:14871" ph="..." />
-            <marker date="1634371631423" expanded="true" signature="14917:14926" ph="..." />
-          </folding>
+        <state relative-caret-position="10768">
+          <caret line="676" column="28" selection-start-line="676" selection-start-column="28" selection-end-line="676" selection-end-column="28" />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/threading.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="916" selection-start-line="916" selection-end-line="916" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../projects/jetbrains/Fortari2600/AllToTIAv0.05.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2976" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1012">
-          <caret line="170" column="13" selection-start-line="170" selection-start-column="13" selection-end-line="170" selection-end-column="13" />
+        <state relative-caret-position="725">
+          <caret line="202" column="41" selection-start-line="202" selection-start-column="41" selection-end-line="202" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="629">
+          <caret line="88" selection-start-line="88" selection-end-line="88" />
           <folding>
-            <marker date="1634371703570" expanded="true" signature="9886:10142" ph="..." />
+            <element signature="e#0#32#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="24" column="16" lean-forward="true" selection-start-line="24" selection-start-column="16" selection-end-line="24" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="41" column="38" selection-start-line="41" selection-start-column="28" selection-end-line="41" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="725">
+          <caret line="408" column="29" selection-start-line="408" selection-start-column="24" selection-end-line="408" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/MidiNote.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="5" column="16" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="16" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="548">
-          <caret line="1263" column="49" selection-start-line="1263" selection-start-column="49" selection-end-line="1263" selection-end-column="49" />
+        <state relative-caret-position="580">
+          <caret line="1413" column="44" selection-start-line="1413" selection-start-column="42" selection-end-line="1413" selection-end-column="44" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
-            <marker date="1634371136126" expanded="true" signature="3120:3244" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="4555:5216" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="26146:26153" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="26182:27455" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="27482:27491" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="27482:28424" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="28149:28424" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="31098:34170" ph="..." />
-            <marker date="1634371136126" expanded="true" signature="34197:34207" ph="..." />
+            <marker date="1634480005544" expanded="true" signature="31195:32457" ph="..." />
+            <marker date="1634480005544" expanded="true" signature="33786:33928" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="136" column="35" selection-start-line="136" selection-start-column="27" selection-end-line="136" selection-end-column="35" />
+          <folding>
+            <element signature="e#0#11#0" expanded="true" />
+            <marker date="1634530991244" expanded="true" signature="3866:3974" ph="..." />
           </folding>
         </state>
       </provider>

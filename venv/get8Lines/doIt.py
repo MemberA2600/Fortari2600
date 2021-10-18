@@ -55,7 +55,7 @@ if __name__ == "__main__":
         text+="Music_Visuals_Data_Channel_"+str(channel)+"\n"
 
         for note in range(0,32):
-            text+="\tBYTE\t#"+str(result[channel][note])+"\n"
+            text+="\tBYTE\t#"+str(7-(result[channel][note]))+"\n"
 
         text+"\n"
     print(text)

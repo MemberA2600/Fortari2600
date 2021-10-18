@@ -56,7 +56,7 @@ class MusicComposer:
         self.__picturePath = None
         self.__banks = [3,4]
         self.__variables = [None, None, None, None]
-        self.__colorConstans = ["$18", "$00", "$00"]
+        self.__colorConstans = ["$18", "$00", "$00", "$44", "$34", "$14"]
 
 
         self.__focused = None
@@ -110,6 +110,7 @@ class MusicComposer:
 
                     self.__ButtonInsertBefore.config(state=NORMAL)
                     self.__ButtonInsertAfter.config(state=NORMAL)
+                    self.__importButton.config(state=NORMAL)
                     for button in self.__channelButtons:
                         button.enable()
                     self.__dividerSetter.enable()
@@ -589,6 +590,125 @@ class MusicComposer:
 
         self.__runningThreads -= 1
 
+        self.__bottomFrame2Third3 = Frame(self.__bottomFrame2,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
+                                    height=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__bottomFrame2Third3.pack_propagate(False)
+        self.__bottomFrame2Third3.pack(side=LEFT, fill=BOTH)
+
+        self.__visualizerColorsTitle = Label(self.__bottomFrame2Third3,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text = self.__dictionaries.getWordFromCurrentLanguage("visualizerColors"),
+                              font = self.__normalFont
+                                      )
+
+        self.__visualizerColorsTitle.pack_propagate(False)
+        self.__visualizerColorsTitle.pack(side=TOP, fill=X)
+
+        self.__visualizerColorsFrame = Frame(self.__bottomFrame2Third3,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__visualizerColorsFrame.pack_propagate(False)
+        self.__visualizerColorsFrame.pack(side=TOP, fill=Y)
+
+        self.__visualizerColorsFrame1 = Frame(self.__visualizerColorsFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.10),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__visualizerColorsFrame1.pack_propagate(False)
+        self.__visualizerColorsFrame1.pack(side=LEFT, fill=Y)
+
+        self.__visualizerColorsFrame2 = Frame(self.__visualizerColorsFrame,
+                                              width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.5 * 0.10),
+                                              height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
+                                              bg=self.__colors.getColor("window"))
+        self.__visualizerColorsFrame2.pack_propagate(False)
+        self.__visualizerColorsFrame2.pack(side=LEFT, fill=Y)
+
+        self.__visualizerColorsFrame3 = Frame(self.__visualizerColorsFrame,
+                                              width=round(self.__topLevel.getTopLevelDimensions()[0] * 0.5 * 0.10),
+                                              height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
+                                              bg=self.__colors.getColor("window"))
+        self.__visualizerColorsFrame3.pack_propagate(False)
+        self.__visualizerColorsFrame3.pack(side=LEFT, fill=Y)
+
+        self.__visualColor1 = HexEntry(self.__loader, self.__visualizerColorsFrame1, self.__colors,
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 3)
+
+        self.__visualColor2 = HexEntry(self.__loader, self.__visualizerColorsFrame2, self.__colors,
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 4)
+
+        self.__visualColor3 = HexEntry(self.__loader, self.__visualizerColorsFrame3, self.__colors,
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 5)
+
+        self.__importMediaTitle = Label(self.__bottomFrame2Third3,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text = self.__dictionaries.getWordFromCurrentLanguage("importMedia"),
+                              font = self.__normalFont
+                                      )
+
+        self.__importMediaTitle.pack_propagate(False)
+        self.__importMediaTitle.pack(side=TOP, fill=X)
+
+        self.__importMediaFrame = Frame(self.__bottomFrame2Third3,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
+                                   bg=self.__colors.getColor("window"))
+        self.__importMediaFrame.pack_propagate(False)
+        self.__importMediaFrame.pack(side=TOP, fill=Y)
+
+        self.__importButton = Button(self.__importMediaFrame,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text = self.__dictionaries.getWordFromCurrentLanguage("importFile"),
+                              font = self.__normalFont, command = self.openMedium, state=DISABLED
+                                      )
+        self.__importButton.pack_propagate(False)
+        self.__importButton.pack(fill=BOTH)
+
+    def openMedium(self):
+        fileName = self.__fileDialogs.askForFileName("openFile", False,
+                                                     ["mid", "sid", "vgm", "mod", "*"],
+                                                  self.__loader.mainWindow.projectPath)
+
+        functions = {
+            "mid": self.convertMidi,
+            "sid": None,
+            "vgm": None,
+            "mod": None
+        }
+
+        converted = None
+        errorText = ""
+
+        extension = fileName.split(".")[-1]
+        if extension in functions.keys():
+            #try:
+                converted = functions[extension](fileName)
+            #except Exception as e:
+            #    errorText = str(e)
+        else:
+            for func in functions.keys():
+                try:
+                    converted = function[func](fileName)
+                    break
+                except Exception as e:
+                    errorText += str(e)
+
+        if converted == None:
+            self.__fileDialogs.displayError("importError", "importErrorMessage", None, errorText)
+        else:
+            pass
+
+    def convertMidi(self, path):
+        from MidiConverter import MidiConverter
+        midiConverter = MidiConverter(path, self.__loader)
+        return (midiConverter.result)
+
 
     def __checkBank(self, event):
         name = str(event.widget).split(".")[-1]
@@ -628,6 +748,14 @@ class MusicComposer:
         self.__loader.fileDialogs.displayError("bankLockError", "bankLockErrorMessage", None, None)
 
     def __testingCurrent(self):
+        from threading import Thread
+
+        t = Thread(target=self.__testingCurrentThread)
+        t.daemon = True
+        t.start()
+
+
+    def __testingCurrentThread(self):
         extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, "NTSC")
         #self.testPrinting(extracted)
 
@@ -724,6 +852,8 @@ class MusicComposer:
             self.__topLevelWindow.focus()
 
             if answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
                 return
             elif answer == "Yes":
                 self.__saveDataToFile()
