@@ -253,17 +253,40 @@ class Compiler:
         from TiaNote import TiaNote
         Channels = ["CoolSong_Data0\n", "CoolSong_Data1\n"]
         tempDur = 0
-
         bytes = [0,0]
 
         if len(tiaData) == 1:
             Channels.pop(1)
             self.__musicMode = "mono"
+            if tiaData[0][-1].volume == 0 and tiaData[0][-1].duration > 6:
+               tiaData[0][-1].duration = 6
+
+            while tiaData[0][0].volume == 0:
+                tiaData[0].pop(0)
+
         else:
             self.__musicMode = "stereo"
+            if tiaData[0][-1].volume == 0 and tiaData[1][-1].volume == 0:
+                if tiaData[0][-1].duration > tiaData[1][-1].duration:
+                    if tiaData[1][-1].duration > 6:
+                        maxi = 6
+                    else:
+                        maxi = tiaData[1][-1].duration
+                else:
+                    if tiaData[0][-1].duration > 6:
+                        maxi = 6
+                    else:
+                        maxi = tiaData[0][-1].duration
+                tiaData[0][-1].duration = maxi
+                tiaData[1][-1].duration = maxi
+
+
 
         for num in range(0, len(tiaData)):
             for tiaNote in tiaData[num]:
+                #if int(tiaNote.volume)<0 or int(tiaNote.channel)<0 or int(tiaNote.freq)<0 or int(tiaNote.duration)<0:
+                #    print(tiaNote.volume, tiaNote.channel, tiaNote.freq, tiaNote.duration)
+
                 firstByte = self.createBits(tiaNote.channel, 4) + self.createBits(tiaNote.volume, 4)
 
                 if tv == 'PAL':
@@ -311,10 +334,16 @@ class Compiler:
         return(Channels)
 
     def createBits(self, num, l):
+        source = num
         num = int(num)
-        num = bin(num)[2:]
+        num = bin(num).replace("0b", "")
         while len(num)<l:
             num = "0"+num
+
+        if ("b" in num) or ("-" in num):
+            ff = []
+            print(source, num, l)
+            print(ff[0])
         return(num)
 
     def generateTextDataFromString(self, text):

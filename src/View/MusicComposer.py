@@ -671,6 +671,18 @@ class MusicComposer:
         self.__importButton.pack(fill=BOTH)
 
     def openMedium(self):
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                return
+            elif answer == "Yes":
+                self.__saveDataToFile()
+
         fileName = self.__fileDialogs.askForFileName("openFile", False,
                                                      ["mid", "sid", "vgm", "mod", "*"],
                                                   self.__loader.mainWindow.projectPath)
@@ -687,14 +699,14 @@ class MusicComposer:
 
         extension = fileName.split(".")[-1]
         if extension in functions.keys():
-            #try:
-                converted = functions[extension](fileName)
-            #except Exception as e:
-            #    errorText = str(e)
+            try:
+                converted, songTitle = functions[extension](fileName)
+            except Exception as e:
+                errorText = str(e)
         else:
             for func in functions.keys():
                 try:
-                    converted = function[func](fileName)
+                    converted, songTitle = function[func](fileName)
                     break
                 except Exception as e:
                     errorText += str(e)
@@ -702,12 +714,54 @@ class MusicComposer:
         if converted == None:
             self.__fileDialogs.displayError("importError", "importErrorMessage", None, errorText)
         else:
-            pass
+            counter = 0
+            theLen = 0
+            for num in range(0, 16):
+                try:
+                    if (len(converted[num]) > 0):
+                        theLen = len(converted[num])
+                        break
+                except Exception as e:
+                    pass
+
+            screenMaxNum = theLen // self.__tiaScreens.numOfFieldsW
+
+            #print(theLen, screenMaxNum)
+
+            self.__tiaScreens.initWithGivenNumberOfScreens(screenMaxNum)
+            self.__tiaScreens.insertDataFromConverted(converted, theLen, screenMaxNum)
+            self.reset = True
+            self.reColorAll()
+
+            """
+            self.__buzz = 1
+            self.__buzzer.set(1)
+            self.__vibratio = 1
+            self.__vibrator.set(1)
+
+            self.__correctNotes = int(3)
+            self.__correctorSetter.setValue("3")
+            self.__fadeOutLen = int(4)
+            self.__fadeOutSetter.setValue("4")
+            """
+            self.__frameLen = int(1)
+            self.__frameLenSetter.setValue("1")
+
+            self.__artistName.set("")
+            self.__songTitle.set(songTitle)
+            #print(self.__tiaScreens.screenMax, self.__screenMax)
+            self.__soundPlayer.playSound("Success")
+
+        self.changed = True
+        self.forceShit = True
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
         midiConverter = MidiConverter(path, self.__loader)
-        return (midiConverter.result)
+
+        return (midiConverter.result, midiConverter.songName)
 
 
     def __checkBank(self, event):
@@ -860,6 +914,12 @@ class MusicComposer:
 
         fileName = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
                                                   self.__loader.mainWindow.projectPath + "musics/")
+
+        if fileName == "":
+            self.__soundPlayer.playSound("Error")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
 
         file = open(fileName, "r")
         text = file.read()

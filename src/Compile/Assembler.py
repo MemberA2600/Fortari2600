@@ -12,6 +12,11 @@ class Assembler():
 
         self.compile(projectPath+"source.asm")
 
+        for num in self.freeBytes:
+            if self.freeBytes[num] < 0:
+                testIt = False
+                break
+
         if testIt == True:
             path = "emulator/32-bit/Stella.exe"
             if __loader.config.getOSbits() == "64bit":
@@ -345,7 +350,7 @@ class Assembler():
                         num = int(num, 10)
                     line.bytes.append(bytes([num]))
                 except Exception as e:
-
+                    #print(line.raw[1])
                     second = self.checkIfSectionName(line.raw[1], sections)
                     second = self.starToAddress(currentAddress, second)
                     second = self.secondByteToNumeric(second, variables, registers, sections)
@@ -579,6 +584,7 @@ class Assembler():
             newNum = hex(baseNumber+int(num)).replace("0x", "$")
             raw = raw.replace(base, newNum).replace(num, "")
         else:
+            #print(raw)
             base = re.findall(r'\d+[+|-]]', raw)[0]
             baseNumber = int(base[:-1])
             newNum = str(baseNumber+int(num))
@@ -739,4 +745,6 @@ class Assembler():
             txt += str(freeBytes[data]) + "\n"
         free.write(txt)
         free.close()
+
+        self.freeBytes = freeBytes
 

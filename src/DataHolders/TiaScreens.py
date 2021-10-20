@@ -57,6 +57,82 @@ class TiaScreens:
         self.__insert(self.currentScreen+1)
         self.screenMax+=1
 
+    def initWithGivenNumberOfScreens(self, screenNum):
+        from copy import deepcopy
+
+        self.screenMax = screenNum
+        self.allData = []
+
+        screen = [deepcopy(self.__screen)]
+        for n in range(0, 4):
+            self.allData.append(deepcopy(screen))
+        for num in range(1, self.screenMax+1):
+            self.allData[0].append(deepcopy(self.allData[0][0]))
+            self.allData[1].append(deepcopy(self.allData[0][0]))
+            self.allData[2].append(deepcopy(self.allData[0][0]))
+            self.allData[3].append(deepcopy(self.allData[0][0]))
+
+
+        #print("***" , len(self.allData[0]) , "***")
+        self.currentChannel = 1
+        self.currentScreen = 0
+
+    def insertDataFromConverted(self, data, theLen, screenMax):
+        from threading import Thread
+        from time import sleep
+
+        self.__bruhuhuThreads = 0
+        for num in range(0,4):
+            t = Thread(target=self.__setChannelDataFromConverted, args=(data, num, theLen))
+            t.daemon = True
+            t.start()
+
+        """
+        for channel in self.allData:
+            for screen in channel:
+                theScreen = screen["screen"]
+                for X in range(0,48):
+                    Y = screen["Y"][X]
+                    note = theScreen[Y][X]
+                    if note["volume"]<0:
+                        print("szar")
+                    print(Y)
+        """
+
+        while self.__bruhuhuThreads > 0:
+            sleep(0.000000001)
+
+        self.screenMax = screenMax
+        self.currentChannel = 1
+        self.currentScreen = 0
+
+
+    def __setChannelDataFromConverted(self, data, channelNum, theLen):
+        self.__bruhuhuThreads+=1
+        X = 0
+        screen = 0
+        for num in range(0, theLen):
+            #print(channelNum, screen, X)
+
+            if int(data[channelNum+1][num]["enabled"]) == 0:
+                self.allData[channelNum][screen]["Y"][X] = -1
+            else:
+                Y = int(data[channelNum+1][num]["Y"])
+                self.allData[channelNum][screen]["Y"][X] = Y
+                note = self.allData[channelNum][screen]["screen"][Y][X]
+                note["enabled"] = 1
+                note["volume"] = int(data[channelNum+1][num]["volume"])
+                note["channel"] = int(data[channelNum+1][num]["channel"])
+                note["freq"] = int(data[channelNum+1][num]["freq"])
+            X+=1
+            if (X > self.numOfFieldsW-1):
+                #if channelNum == 0:
+                #    print(self.allData[0][screen]["Y"])
+                screen+=1
+                X = 0
+
+        self.__bruhuhuThreads-=1
+
     def deleteCurrent(self):
         num = 0
         for channelNum in range(0,4):
@@ -532,13 +608,21 @@ class TiaScreens:
                             and nextNote4.volume == 0
                             and jobdone == False):
 
-                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-1, 3)
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-(tiaNote.volume//7), tiaNote.volume)
+                        if nextNote1.volume<0:
+                            nextNote1.volume = 0
                         channel[tiaNoteNum + 1] = nextNote1
-                        nextNote2 = self.getNextNote(tiaNote, 3, tiaNote.volume-2, 2)
+                        nextNote2 = self.getNextNote(tiaNote, 3, tiaNote.volume-(tiaNote.volume//4), nextNote1.volume)
+                        if nextNote2.volume<0:
+                            nextNote2.volume = 0
                         channel[tiaNoteNum + 2] = nextNote2
-                        nextNote3 = self.getNextNote(tiaNote, 5, tiaNote.volume-3, 2)
+                        nextNote3 = self.getNextNote(tiaNote, 5, tiaNote.volume-(tiaNote.volume//2.5), nextNote2.volume)
+                        if nextNote3.volume<0:
+                            nextNote3.volume = 0
                         channel[tiaNoteNum + 3] = nextNote3
-                        nextNote4 = self.getNextNote(tiaNote, 9, tiaNote.volume-4, 1)
+                        nextNote4 = self.getNextNote(tiaNote, 9, tiaNote.volume-(tiaNote.volume//1.25), nextNote3.volume)
+                        if nextNote4.volume<0:
+                            nextNote4.volume = 0
                         channel[tiaNoteNum + 4] = nextNote4
                         tiaNoteNum += 4
                         jobdone = True
@@ -549,11 +633,17 @@ class TiaScreens:
                             and nextNote2.volume == 0
                             and nextNote3.volume == 0
                             and jobdone == False):
-                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-1, 3)
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-(tiaNote.volume//4), tiaNote.volume)
+                        if nextNote1.volume<0:
+                            nextNote1.volume = 0
                         channel[tiaNoteNum + 1] = nextNote1
-                        nextNote2 = self.getNextNote(tiaNote, 4, tiaNote.volume-2, 2)
+                        nextNote2 = self.getNextNote(tiaNote, 4, tiaNote.volume-(tiaNote.volume//2), nextNote1.volume)
+                        if nextNote2.volume<0:
+                            nextNote2.volume = 0
                         channel[tiaNoteNum + 2] = nextNote2
-                        nextNote3 = self.getNextNote(tiaNote, 7, tiaNote.volume-3, 1)
+                        nextNote3 = self.getNextNote(tiaNote, 7, tiaNote.volume-(tiaNote.volume//1.5), nextNote2.volume)
+                        if nextNote3.volume<0:
+                            nextNote3.volume = 0
                         channel[tiaNoteNum + 3] = nextNote3
                         tiaNoteNum += 3
                         jobdone = True
@@ -563,9 +653,13 @@ class TiaScreens:
                             and nextNote1.volume == 0
                             and nextNote2.volume == 0
                             and jobdone == False):
-                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-2, 3)
+                        nextNote1 = self.getNextNote(tiaNote, 2, tiaNote.volume-(tiaNote.volume//4), tiaNote.volume)
+                        if nextNote1.volume<0:
+                            nextNote1.volume = 0
                         channel[tiaNoteNum + 1] = nextNote1
-                        nextNote2 = self.getNextNote(tiaNote, 5, tiaNote.volume-3, 1)
+                        nextNote2 = self.getNextNote(tiaNote, 5, tiaNote.volume-(tiaNote.volume//2.5), nextNote1.volume)
+                        if nextNote2.volume<0:
+                            nextNote2.volume = 0
                         channel[tiaNoteNum + 2] = nextNote2
                         tiaNoteNum += 2
                         jobdone = True
@@ -573,7 +667,9 @@ class TiaScreens:
                     if (tiaNote.volume != 0
                             and nextNote1.volume == 0
                             and jobdone == False):
-                        nextNote1 = self.getNextNote(tiaNote, 3, tiaNote.volume-3, 2)
+                        nextNote1 = self.getNextNote(tiaNote, 3, tiaNote.volume-(tiaNote.volume//2), tiaNote.volume)
+                        if nextNote1.volume<0:
+                            nextNote1.volume = 0
                         channel[tiaNoteNum + 1] = nextNote1
                         tiaNoteNum += 1
                         jobdone = True
@@ -699,14 +795,18 @@ class TiaScreens:
         return(data3)
 
 
-    def getNextNote(self, tiaNote, divider, max, min):
+    def getNextNote(self, tiaNote, mini, maxi, prev):
         from TiaNote import TiaNote
         nextNote = TiaNote(0,0,0,1,0)
-        nextNote.volume = tiaNote.volume // divider
+
+        if (maxi > mini):
+            nextNote.volume = maxi
+        else:
+            nextNote.volume = mini
+
         nextNote.channel = tiaNote.channel
         nextNote.piaNote = tiaNote.piaNote
         nextNote.freq = tiaNote.freq
-
 
         """
         notes = self.__piaNotes.getTiaValue(tiaNote.piaNote, tiaNote.channel)
@@ -720,19 +820,11 @@ class TiaScreens:
             nextNote.freq = int(notes[num])
         """
 
-        if nextNote.volume<min:
-            nextNote.volume = min
+        if nextNote.volume>prev:
+            nextNote.volume = prev
 
 
-        if nextNote.volume>max:
-            nextNote.volume = max
-
-
-
-        if nextNote.volume>tiaNote.volume:
-            nextNote.volume = tiaNote.volume - 1
-
-        if nextNote.volume == 0:
+        if nextNote.volume < 1:
             nextNote.volume = 1
 
         return(nextNote)

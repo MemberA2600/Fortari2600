@@ -55,6 +55,12 @@ class MidiConverter:
         while self.__threadNum > 0:
             sleep(0.00001)
 
+        """
+        for midiNote in self.__channels[9]:
+            if midiNote.note!=0:
+                print(midiNote.note)
+        """
+
         self.equalLen()
 
         onesToLookAt = []
@@ -70,7 +76,8 @@ class MidiConverter:
             "totalLenOfNotes": 0,
             "dominantTiaChannel": 0,
             "correctNotePercent": 0,
-
+            "monotony": 0,
+            "variety": 0
         }
 
         self.__channelAttributes = {}
@@ -108,7 +115,15 @@ class MidiConverter:
             "channel": 0,
             "freq": 0,
             "enabled": 0,
+            "Y": 0
         }
+        """
+        for channel in self.__seperatedNotes:
+            print(str(channel)+"\n"+"-----")
+            for midiNote in self.__seperatedNotes[channel]:
+                if midiNote.note!=0:
+                    print(midiNote.note)
+        """
 
         for num in range(0, len(self.__seperatedNotes[onesToLookAt[0]])):
             self.__tempResult[1].append(deepcopy(__tiaNote))
@@ -117,6 +132,78 @@ class MidiConverter:
             self.__tempResult[4].append(deepcopy(__tiaNote))
 
         self.__createDrums()
+
+        self.__threadNum = 0
+        for channel in newSorter:
+            getChannel = Thread(target=self.__convertChannelData, args=[channel])
+            getChannel.daemon = True
+            getChannel.start()
+
+        while self.__threadNum > 0:
+            sleep(0.00001)
+
+        while(self.__tempResult[1][0]["enabled"] == 0):
+            self.__tempResult[1].pop(0)
+            self.__tempResult[2].pop(0)
+            self.__tempResult[3].pop(0)
+            self.__tempResult[4].pop(0)
+
+
+
+        self.result = deepcopy(self.__tempResult)
+
+        """
+        for channel in self.result:
+            print(str(channel)+"\n------")
+            for note in self.result[channel]:
+                print(note["Y"], note["enabled"])
+        """
+
+    def __convertChannelData(self, c):
+        self.__threadNum+=1
+
+        for num in range(0, len(self.__seperatedNotes[c])):
+            midiNote = self.__seperatedNotes[c][num]
+            if midiNote.note<32:
+                volume = midiNote.velocity//24
+            else:
+                volume = midiNote.velocity//12
+            if volume == 0:
+                continue
+
+            saveNum = None
+            for channelNum in range(1,5):
+                if self.__tempResult[channelNum][num]["enabled"] == 0:
+                    saveNum = channelNum
+                    break
+
+            if saveNum == None:
+                continue
+
+            self.__tempResult[saveNum][num]["volume"] = volume
+            self.__tempResult[saveNum][num]["Y"] = midiNote.note
+            self.__tempResult[saveNum][num]["enabled"] = 1
+
+            filler1, filler2, channelsToSort, filler3 = self.__getMonotones(self.__channels[c])
+            channelsToSort = sorted(channelsToSort.items(), key=lambda x: x[1], reverse=True)
+
+            for item in channelsToSort:
+                data = self.__piaNotes.getTiaValue(midiNote.note, item[0])
+                if data != None:
+                    self.__tempResult[saveNum][num]["channel"] = item[0]
+                    if type(data) != list:
+                        self.__tempResult[saveNum][num]["freq"] = int(data)
+                    else:
+                        temp = 0
+                        for item in data:
+                            temp+=int(item)
+
+                        self.__tempResult[saveNum][num]["freq"] = temp//len(data)
+                    break
+
+        self.__threadNum-=1
+
+
 
     def __createDrums(self):
         #"15,20" 89 (drum), "8,0" 90 (hi-hat), "15,2" 91(hi-hat),
@@ -132,9 +219,51 @@ class MidiConverter:
             95: [40, 49, 61, 63, 68, 72, 81]
         }
 
+        channelCodes = {89: (15, 20),
+                        90: (8, 0),
+                        91: (15, 2),
+                        92: (8, 8),
+                        93: (2, 0),
+                        94: (3, 0),
+                        95: (3, 1)
+                        }
 
-        for midiNote in self.__seperatedNotes[9]:
-            print(midiNote.velocity ,midiNote.note)
+        counter = 0
+        last = -1
+        for num in range(0, len(self.__seperatedNotes[9])):
+            midiNote = self.__seperatedNotes[9][num]
+            if midiNote.note != 0:
+                Y = self.__getDrumY(midiNote.note, drumsDict)
+                velocity = midiNote.velocity//24
+                if velocity == 0:
+                    last = 0
+                    continue
+
+                if last == Y:
+                    counter+=1
+                else:
+                    counter=0
+                last = Y
+
+                if counter<2:
+                    saveNum = 1
+                else:
+                    saveNum = 4
+
+                self.__tempResult[saveNum][num]["volume"] = velocity
+                self.__tempResult[saveNum][num]["Y"] = Y
+                self.__tempResult[saveNum][num]["freq"] = channelCodes[Y][1]
+                self.__tempResult[saveNum][num]["channel"] = channelCodes[Y][0]
+                self.__tempResult[saveNum][num]["enabled"] = 1
+
+            else:
+                counter = 0
+
+    def __getDrumY(self, note, drumsDict):
+        for drumKey in drumsDict:
+            for n in drumsDict[drumKey]:
+                if n == note+20:
+                    return(drumKey)
 
     def equalLen(self):
         lens = []
@@ -178,18 +307,53 @@ class MidiConverter:
         correctNotesPercents[8] = self.__getPercentOfCorrectNotes(clonePlus8)
         correctNotesPercents[-8] = self.__getPercentOfCorrectNotes(cloneMinus8)
 
+        monoTones = {0: [0.0, 0.0, 0.0],
+                    8: [0.0, 0.0, 0.0],
+                    -8: [0.0, 0.0, 0.0]}
+
+        monoTones[0][0], monoTones[0][1], filler, monoTones[0][2] = self.__getMonotones(self.__channels[num])
+        monoTones[8][0], monoTones[8][1], filler, monoTones[8][2] = self.__getMonotones(clonePlus8)
+        monoTones[-8][0], monoTones[-8][1], filler, monoTones[-8][2] = self.__getMonotones(cloneMinus8)
+
         largest = max(correctNotesPercents, key = correctNotesPercents.get)
-        if largest == 8:
+
+        if largest == 8 and (monoTones[8] > monoTones[0]):
             self.__channels[num] = clonePlus8
-        elif largest == -8:
+        elif largest == -8 and (monoTones[-8] > monoTones[0]):
             self.__channels[num] = cloneMinus8
 
+        self.__channelAttributes[num]["dominantTiaChannel"] = monoTones[largest][0]
+        self.__channelAttributes[num]["monotony"] = monoTones[largest][1]
+        self.__channelAttributes[num]["variety"] = monoTones[largest][2]
+
         self.__channelAttributes[num]["correctNotePercent"] = correctNotesPercents[largest] * 100
-        self.__channelAttributes[num]["dominantTiaChannel"] = self.__getDominantChannel(self.__channels[num])
-        self.__channelAttributes[num]["priority"] *= (((100-self.__channelAttributes[num]["correctNotePercent"])/2+self.__channelAttributes[num]["correctNotePercent"])/100)
+        #self.__channelAttributes[num]["dominantTiaChannel"] = self.__getDominantChannel(self.__channels[num])
+        self.__channelAttributes[num]["priority"] *= (((100-self.__channelAttributes[num]["correctNotePercent"])/2+self.__channelAttributes[num]["correctNotePercent"])/100
+                                                      * self.__channelAttributes[num]["monotony"] * self.__channelAttributes[num]["variety"])
 
         self.__threadNum -= 1
 
+    def __getMonotones(self, source):
+        channels = {}
+        notes = []
+
+        for item in source:
+            if item.note>0:
+                note = self.__piaNotes.getTiaValue(item.note, None)
+                notes.append(item.note)
+                #print(item.note)
+
+                for n in note:
+                    if n not in channels.keys():
+                        channels[n] = 0
+                    channels[n]+=1
+        maxi = max(channels, key=channels.get)
+        mono = int(maxi) / len(source)
+
+        variety = len(set(notes)) / len(source)
+
+        return(maxi, mono, channels, variety)
+    """
     def __getDominantChannel(self, source):
         channels = {}
         for item in source:
@@ -200,7 +364,7 @@ class MidiConverter:
                         channels[n] = 0
                     channels[n]+=1
         return(max(channels, key=channels.get))
-
+    """
 
 
     def __getPercentOfCorrectNotes(self, source):
@@ -281,6 +445,7 @@ class MidiConverter:
                     if d["channel"] != channelNum or ("Note_On" not in d.keys()):
                         continue
                     else:
+
                         d["note"]-=20
                         if d["Note_On"] == True:
                             self.__channels[channelNum].append(MidiNote(d["velocity"], d["note"], 0))
