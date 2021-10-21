@@ -2,7 +2,10 @@ from tkinter import *
 
 class FrameLabelEntryUpDown:
 
-    def __init__(self, loader, parent, w, h, text, mini, maxi, font, function, default, font2, key, errors):
+    def __init__(self, loader, parent, w, h, text, mini, maxi, font, function, default, font2, key, errors, focusIn, focusOut):
+
+        self.focusIn = focusIn
+        self.focusOut = focusOut
 
         self.__loader = loader
         self.__colors = self.__loader.colorPalettes
@@ -52,6 +55,7 @@ class FrameLabelEntryUpDown:
         )
         self.__entry.pack(side=TOP, anchor = N, fill = BOTH)
 
+        self.__entry.bind("<FocusIn>", self.focusIn)
         self.__entry.bind("<FocusOut>", self.__checkEntry)
         self.__entry.bind("<KeyRelease>", self.__checkEntry)
         self.__min = mini
@@ -61,6 +65,8 @@ class FrameLabelEntryUpDown:
         self.__entry.config(state=NORMAL)
 
     def __checkEntry(self, event):
+        if "FocusOut" in str(event):
+            self.focusOut(event)
         try:
             number = int(self.__variable.get())
             self.__entry.config(bg=self.__colors.getColor("boxBackNormal"),

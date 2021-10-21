@@ -24,7 +24,9 @@ class Compiler:
             self.getMusicBytesSizeOnly()
 
     def getMusicBytesSizeOnly(self):
-        self.banks = len(self.generateSongBytes(self.__data[0], "NTSC"))
+        self.__banks = len(self.generateSongBytes(self.__data[0], "NTSC"))
+        self.musicMode = self.__musicMode
+
 
     def generateMusicROM(self):
         import re
@@ -72,9 +74,6 @@ class Compiler:
             except:
                 self.__init = self.__init.replace("INITLETTER"+strNum, "0")
 
-
-
-
         self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
             self.__music1 = self.createMusicEngine(1, CoolSong)
@@ -92,7 +91,7 @@ class Compiler:
                                   self.__loader.io.loadWholeText("templates/skeletons/musicJumpBack.asm"))
             self.__music1 = None
 
-        else:
+        elif self.__musicMode == "double":
             self.__music0 = self.__music0.replace("!!!JumpOrReturn!!!",
                                   self.__loader.io.loadWholeText("templates/skeletons/musicJumpNext.asm")
                                   .replace("BANKNEXT", str(self.__banks[1]))
@@ -137,7 +136,7 @@ class Compiler:
             self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
                                                           self.__music0 + "\n"+self.__songData[0] + "\n" + self.__songData[1]
                                                           )
-        else:
+        elif self.__musicMode == "double":
             #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+self.__songData[0], self.__kernelText, re.DOTALL)
             #self.__kernelText = re.sub(r'###Start-Bank4.+###End-Bank4', self.__music1 + "\n\talign\t256\n"+self.__songData[1], self.__kernelText, re.DOTALL)
 
@@ -203,8 +202,6 @@ class Compiler:
             self.changePointerToZero(self.__banks[1])
         self.changePointerToZero(self.__banks[0])
 
-
-
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
@@ -231,9 +228,11 @@ class Compiler:
 
 
     def createMusicEngine(self, num, title):
+        dividersAsl = {1:0, 2:1, 4:2, 8:3, 16:4, 32:5, 64:6, 128:7}
+
         __music = self.__loader.io.loadWholeText("templates/skeletons/musicEngine.asm")
         __music = __music.replace("@@", str(num))
-        __music = __music.replace("CoolSong", title)
+        __music = __music.replace("CoolSong", title).replace("!!!ASL!!!", (dividersAsl[self.__largestDividers[num]]) * "\tASL\n")
 
         if self.__variables[num*2] == None:
             __music = __music.replace("temp&1", "temp"+str(16+(num*2)))
@@ -247,13 +246,76 @@ class Compiler:
 
         return(__music)
 
+    """
+    def multiList(self, L):
+        from copy import deepcopy
+        from math import sqrt
 
+        multi = 1
+        L2 = deepcopy(L)
+
+        for item in L:
+            if sqrt(item) in L2:
+                L2.remove(sqrt(item))
+
+        for item in L2:
+            multi*=item
+
+        return(multi)
+    """
+
+    def __getLargestDividerChannel(self, channelNum, tiaData, tv):
+        from copy import deepcopy
+
+        largest = 1
+        #dividers = [2, 3, 4, 5, 7, 9, 11, 13, 16, 17, 19, 23, 25]
+        dividers = [2, 4, 8, 16, 32, 64, 128]
+
+        for divider in dividers:
+            tempDur = 0
+            setShit = True
+            for note in tiaData[channelNum]:
+                if tv == "PAL":
+                    duration = int(note.duration/6*5)
+                    tempDur +=note.duration-duration
+
+                    if tempDur>1:
+                        duration+=1
+                        tempDur-=1
+
+                else:
+                    duration = note.duration
+
+                if duration%divider!=0:
+                    setShit = False
+                    break
+
+            if setShit == True:
+                largest = divider
+            else:
+                break
+        return(largest)
 
     def generateSongBytes(self, tiaData, tv):
         from TiaNote import TiaNote
         Channels = ["CoolSong_Data0\n", "CoolSong_Data1\n"]
         tempDur = 0
         bytes = [0,0]
+
+        """
+        foundDividersC0 = []
+        foundDividersC1 = []
+
+        foundDividersC0 = self.__getLargestDividerChannel(0, tiaData)
+        if len(tiaData) == 2:
+            foundDividersC1 = self.__getLargestDividerChannel(1, tiaData)
+
+        from functools import reduce
+        self.__largestDividerC0 = self.multiList(foundDividersC0)
+
+        if len(foundDividersC1)>0:
+            self.__largestDividerC1 = self.multiList(foundDividersC1)
+        """
 
         if len(tiaData) == 1:
             Channels.pop(1)
@@ -280,7 +342,9 @@ class Compiler:
                 tiaData[0][-1].duration = maxi
                 tiaData[1][-1].duration = maxi
 
-
+        self.__largestDividers = [self.__getLargestDividerChannel(0, tiaData, tv)]
+        if len(tiaData) == 2:
+            self.__largestDividers.append(self.__getLargestDividerChannel(1, tiaData, tv))
 
         for num in range(0, len(tiaData)):
             for tiaNote in tiaData[num]:
@@ -290,7 +354,7 @@ class Compiler:
                 firstByte = self.createBits(tiaNote.channel, 4) + self.createBits(tiaNote.volume, 4)
 
                 if tv == 'PAL':
-                    duration = int(tiaNote.duration/6*5)
+                    duration = int(tiaNote.duration/self.__largestDividers[num]/6*5)
                     tempDur +=tiaNote.duration-duration
 
                     if tempDur>1:
@@ -298,7 +362,7 @@ class Compiler:
                         tempDur-=1
 
                 else:
-                    duration = tiaNote.duration
+                    duration = tiaNote.duration/self.__largestDividers[num]
 
                 if tiaNote.volume == 0:
                     Channels[num] += "\tBYTE\t#0\n\tBYTE\t#%"+self.createBits(duration, 8)+"\n"
@@ -317,7 +381,6 @@ class Compiler:
                     bytes[num] += 3
 
 
-        #print(self.__musicMode)
 
         Channels[0] += "\tBYTE\t#240\n"
         bytes[0] += 1
@@ -326,10 +389,17 @@ class Compiler:
             bytes[1] += 1
             Channels[1] += "\tBYTE\t#240\n"
 
-            if bytes[0]>3600 or bytes[1]>3600:
+            if (bytes[0] + bytes[1]) > 3600:
                 self.__musicMode = "double"
+                if (bytes[0]>3600) or (bytes[1]>3600):
+                    self.__musicMode = "complex"
+
             else:
                 self.__musicMode = "stereo"
+
+
+
+        print(bytes[0], bytes[1], self.__musicMode)
 
         return(Channels)
 

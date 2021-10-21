@@ -65,6 +65,8 @@ CoolSong_NoRestart@@
 	lsr
 	lsr
 	lsr
+!!!ASL!!!
+
 	STA	CoolSong_Duration@@
 	JMP	CoolSong_Skip@@
 
@@ -75,6 +77,7 @@ CoolSong_NotSharedByte@@
 	INC	0,x
 	BNE	*+4
 	INC	1,x
+!!!ASL!!!
 	STA	CoolSong_Duration@@
 
 CoolSong_Skip@@

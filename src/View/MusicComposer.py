@@ -29,6 +29,13 @@ class MusicComposer:
 
         self.__frames = {}
 
+        self.__bankEntries = {
+            1: None,
+            2: None,
+            3: None,
+            4: None
+        }
+
         self.__errorCounters = {
             "selected": 0,
             "beats": 0,
@@ -36,7 +43,9 @@ class MusicComposer:
             "toneLenght": 0,
             "corrector": 0,
             "bank1": 0,
-            "bank2": 0
+            "bank2": 0,
+            "bank3": 0,
+            "bank4": 0
         }
 
         self.__pressed = {"1": False, "3": False}
@@ -54,12 +63,12 @@ class MusicComposer:
         self.__io = self.__loader.io
 
         self.__picturePath = None
-        self.__banks = [3,4]
+        self.__banks = [3,4,5,6]
         self.__variables = [None, None, None, None]
         self.__colorConstans = ["$18", "$00", "$00", "$44", "$34", "$14"]
 
 
-        self.__focused = None
+        self.focused = None
         self.__screenSize = self.__loader.screenSize
 
         self.__numberBuffer = []
@@ -476,6 +485,33 @@ class MusicComposer:
         self.__theTwoBanksFrame.pack_propagate(False)
         self.__theTwoBanksFrame.pack(side=TOP, fill=X)
 
+        from MusicBankFrameEntry import MusicBankFrameEntry
+
+        self.__bank1 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
+                                           self.__banks, 0, self.focusIn, self.focusOut,
+                                           self.__normalFont, self.__errorCounters,
+                                           self.__bankEntries, [self.__artistName, self.__songTitle]
+                                           )
+
+        self.__bank2 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
+                                           self.__banks, 1, self.focusIn, self.focusOut,
+                                           self.__normalFont, self.__errorCounters,
+                                           self.__bankEntries, [self.__artistName, self.__songTitle]
+                                           )
+
+        self.__bank3 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
+                                           self.__banks, 2, self.focusIn, self.focusOut,
+                                           self.__normalFont, self.__errorCounters,
+                                           self.__bankEntries, [self.__artistName, self.__songTitle]
+                                           )
+
+        self.__bank4 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
+                                           self.__banks, 3, self.focusIn, self.focusOut,
+                                           self.__normalFont, self.__errorCounters,
+                                           self.__bankEntries, [self.__artistName, self.__songTitle]
+                                           )
+
+        """
         self.__theTwoBanksFrame1 = Frame(self.__theTwoBanksFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
                                     height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
@@ -505,6 +541,7 @@ class MusicComposer:
         self.__theTwoBanksEntry1.pack_propagate(False)
         self.__theTwoBanksEntry1.pack(fill=BOTH)
 
+        self.__theTwoBanksEntry1.bind("<FocusIn>", self.focusIn)
         self.__theTwoBanksEntry1.bind("<FocusOut>", self.__checkBank)
         self.__theTwoBanksEntry1.bind("<KeyRelease>", self.__checkBank)
 
@@ -523,9 +560,10 @@ class MusicComposer:
         self.__theTwoBanksEntry2.pack_propagate(False)
         self.__theTwoBanksEntry2.pack(fill=BOTH)
 
+        self.__theTwoBanksEntry2.bind("<FocusIn>", self.focusIn)
         self.__theTwoBanksEntry2.bind("<FocusOut>", self.__checkBank)
         self.__theTwoBanksEntry2.bind("<KeyRelease>", self.__checkBank)
-
+        """
 
 
         self.__colorTitle = Label(self.__bottomFrame2Third2,
@@ -716,6 +754,46 @@ class MusicComposer:
         else:
             counter = 0
             theLen = 0
+
+
+            """
+            possibleDividers = [2, 4, 8, 16, 32, 64, 128]
+            maxDivider = 1
+            for divider in possibleDividers:
+                noMax = False
+
+                for channelNum in converted:
+                    duration = 0
+                    volume = None
+                    channel = None
+                    freq = None
+                    for note in converted[channelNum]:
+                        if note["volume"] == None:
+                            volume = note["volume"]
+                            channel = note["channel"]
+                            freq = note["freq"]
+                            duration = 0
+                        elif note["volume"] != volume or note["channel"] != channel or note["freq"] != freq:
+                            if duration % divider != 0:
+                                noMax = True
+                                break
+                            volume = note["volume"]
+                            channel = note["channel"]
+                            freq = note["freq"]
+                            duration = 0
+                        else:
+                            duration+=1
+
+                if noMax == False:
+                   maxDivider = divider
+                else:
+                   break
+
+            print(maxDivider)
+            """
+            # Did not found any midis that had all notes corresponding a divider and also it won't improve
+            # storage, so I commented this out.
+
             for num in range(0, 16):
                 try:
                     if (len(converted[num]) > 0):
@@ -763,8 +841,10 @@ class MusicComposer:
 
         return (midiConverter.result, midiConverter.songName)
 
-
+    """
     def __checkBank(self, event):
+        if "FocusOut" in str(event):
+            self.focusOut(event)
         name = str(event.widget).split(".")[-1]
         num = 0
 
@@ -788,7 +868,7 @@ class MusicComposer:
             return
 
         self.__errorCounters[name] = 0
-        if num<3 or num>8 or (int(entries["bank1"].get()) == int(entries["bank2"].get())) or (int(entries[name]) not in freeBanks):
+        if num<3 or num>8 or (int(entries["bank1"].get()) == int(entries["bank2"].get())) or (int(entries[name].get()) not in freeBanks):
             for changeNum in range(3,8):
                 if changeNum in freeBanks:
                     entries[name].set(str(changeNum))
@@ -800,6 +880,7 @@ class MusicComposer:
                     return
 
         self.__loader.fileDialogs.displayError("bankLockError", "bankLockErrorMessage", None, None)
+        """
 
     def __testingCurrent(self):
         from threading import Thread
@@ -861,26 +942,26 @@ class MusicComposer:
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
-        if numOfBanks == 1:
+        if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
-                self.__banks[0] = int(self.__bankEntry1.get())
+                self.__banks[0] = int(self.__bank1.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
             except:
                 pass
-        else:
+        elif numOfBanks.musicMode == "double":
             try:
-                self.__banks[0] = int(self.__bankEntry1.get())
+                self.__banks[0] = int(self.__bank1.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
             except:
                 pass
 
             try:
-                self.__banks[1] = int(self.__bankEntry2.get())
+                self.__banks[1] = int(self.__bank2.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
             except:
                 pass
 
-        text += str(self.__banks[0])+","+str(self.__banks[1])+"\n"
+        text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
 
         data = "\n".join([
             self.__tiaScreens.getWholeChannelDate(1),
@@ -950,8 +1031,10 @@ class MusicComposer:
 
         bbb = lines[3].split(",")
 
-        self.__bankEntry1.set(bbb[0])
-        self.__bankEntry2.set(bbb[1])
+        self.__bank1.setValue(bbb[0])
+        self.__bank2.setValue(bbb[1])
+        self.__bank3.setValue(bbb[2])
+        self.__bank4.setValue(bbb[3])
 
         self.__banks = [int(bbb[0]), int(bbb[1])]
 
@@ -966,21 +1049,22 @@ class MusicComposer:
                                                               self.__fadeOutLen,
                                                               self.__frameLen,
                                                               self.__vibratio, "NTSC")])
-        if numOfBanks == 1:
+
+        if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
-                self.__banks[0] = int(self.__bankEntry1.get())
+                self.__banks[0] = int(self.__bank1.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
             except:
                 pass
-        else:
+        elif numOfBanks.musicMode == "double":
             try:
-                self.__banks[0] = int(self.__bankEntry1.get())
+                self.__banks[0] = int(self.__bank1.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
             except:
                 pass
 
             try:
-                self.__banks[1] = int(self.__bankEntry2.get())
+                self.__banks[1] = int(self.__bank2.getValue())
                 self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
             except:
                 pass
@@ -1062,6 +1146,8 @@ class MusicComposer:
         self.__SetSelectedEntry.pack_propagate(False)
         self.__SetSelectedEntry.pack(fill=BOTH)
 
+
+        self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
         self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
         self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
 
@@ -1182,28 +1268,28 @@ class MusicComposer:
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
                                                      "beat", 1, 4, self.__tinyFont2, self.__sizeAll, self.__dividerLen, self.__normalFont,
-                                                     "beats", self.__errorCounters
+                                                     "beats", self.__errorCounters, self.focusIn, self.focusOut
                                                      )
 
         self.__fadeOutSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
                                                      "fadeOut", 0, 4, self.__tinyFont2, self.setFadeOut, self.__fadeOutLen, self.__normalFont,
-                                                     "fadeOut", self.__errorCounters
+                                                     "fadeOut", self.__errorCounters, self.focusIn, self.focusOut
                                                      )
 
         self.__frameLenSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
                                                      "toneLen", 1, 255, self.__tinyFont2, self.setFrameLen, self.__frameLen, self.__normalFont,
-                                                     "toneLenght", self.__errorCounters
+                                                     "toneLenght", self.__errorCounters, self.focusIn, self.focusOut
                                                      )
 
         self.__correctorSetter = FrameLabelEntryUpDown(self.__loader, self.__selectedChannelFrame,
                                                      round(self.__topLevel.getTopLevelDimensions()[0] * 0.05),
                                                      round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
                                                      "corrector", 0, 2, self.__tinyFont2, self.setCorrection, self.__correctNotes, self.__normalFont,
-                                                     "corrector", self.__errorCounters
+                                                     "corrector", self.__errorCounters, self.focusIn, self.focusOut
                                                      )
 
         self.__runningThreads -= 1
@@ -1261,6 +1347,8 @@ class MusicComposer:
         self.__goScreen()
 
     def checkSelectedEntry(self, event):
+        if "FocusOut" in str(event):
+            self.focusOut(event)
         if self.__runningThreads>0:
             return
 
@@ -1347,6 +1435,8 @@ class MusicComposer:
             self.reSize(X, Y)
 
     def pressedNumber(self, event):
+        if self.focused != None:
+            return
         try:
             number = int(event.char)
         except:
@@ -1849,8 +1939,6 @@ class MusicComposer:
 
     def leave(self, event):
         self.__choosenOne = None
-
-
 
     def focusIn(self, event):
         self.focused = event.widget
