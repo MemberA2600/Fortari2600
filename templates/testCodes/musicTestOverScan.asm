@@ -1,7 +1,13 @@
 CoolSong_Move_text
+
+	LDA	#TextEnd 
+	CMP	#0
+	BEQ	CoolSong_Move_Ended
+
 	LDA	counter
-	AND	#%00000111
-	CMP	#%00000111
+	AND	#%00011111
+	CMP	#%00011111
+
 	BNE	CoolSong_Move_Ended
 
 	LDA	TextDir
@@ -10,7 +16,7 @@ CoolSong_Move_text
 
 	LDA	TextPoz
 	CMP	#TextEnd
-	BNE	CoolSong_INCR
+	BCC	CoolSong_INCR
 
 	LDA	#1
 	STA	TextDir
@@ -31,7 +37,6 @@ CoolSong_Move_Ended
 
 	LDY	TextPoz
 	LDX	#255
-	
 
 CoolSong_Text_Create_Loop
 	INX

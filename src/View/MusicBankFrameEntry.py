@@ -21,7 +21,7 @@ class MusicBankFrameEntry:
         self.focusIn = focusIn
         self.focusOut = focusOut
 
-        self.__container = Frame(frame, width=round(topLevel.getTopLevelDimensions()[0]*0.5*0.08),
+        self.__container = Frame(frame, width=round(topLevel.getTopLevelDimensions()[0]*0.5*0.15),
                                     height=round(topLevel.getTopLevelDimensions()[1]*0.03),
                                    bg=self.__colors.getColor("window"))
         self.__container.pack_propagate(False)

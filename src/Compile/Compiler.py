@@ -24,9 +24,9 @@ class Compiler:
             self.getMusicBytesSizeOnly()
 
     def getMusicBytesSizeOnly(self):
-        self.__banks = len(self.generateSongBytes(self.__data[0], "NTSC"))
+        self.__banks, bytes = self.generateSongBytes(self.__data[0], "NTSC")
         self.musicMode = self.__musicMode
-
+        self.bytes = bytes
 
     def generateMusicROM(self):
         import re
@@ -40,7 +40,7 @@ class Compiler:
         self.__openEmulator = self.__data[2]
 
         self.__textBytes, self.__charNums = self.generateTextDataFromString(self.__data[3] + " - "+self.__data[4])
-        self.__songData = self.generateSongBytes(self.__data[5], "NTSC")
+        self.__songData, bytes = self.generateSongBytes(self.__data[5], "NTSC")
 
         self.__banks = self.__data[6]
         self.__variables = self.__data[7]
@@ -74,6 +74,7 @@ class Compiler:
             except:
                 self.__init = self.__init.replace("INITLETTER"+strNum, "0")
 
+
         self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
             self.__music1 = self.createMusicEngine(1, CoolSong)
@@ -101,10 +102,12 @@ class Compiler:
 
         if self.__musicMode == "mono":
             self.__init += "\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4"
+            self.__init += "\n" + "CoolSong_PointerBackUp0 = $e5"
             self.__init += "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitMono.asm")
 
         else:
             self.__init += "\n\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4\nCoolSong_Pointer1 = $e5\nCoolSong_Duration1 = $e7"
+            self.__init += "\n" + "CoolSong_PointerBackUp0 = $e8" + "\n" + "CoolSong_PointerBackUp1 = $ea" + "\n"
 
             self.__init += "\n\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitStereo.asm")
 
@@ -184,6 +187,7 @@ class Compiler:
                                     .replace("#COLOR4#", self.__colors[4][1])
                                     .replace("#COLOR5#", self.__colors[5][1]))
 
+        
         self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
                            self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay.asm")+ "\n" +
                             musicVisuals + "\n")
@@ -202,8 +206,11 @@ class Compiler:
             self.changePointerToZero(self.__banks[1])
         self.changePointerToZero(self.__banks[0])
 
-        self.doSave("temp/")
-        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+        if self.__musicMode != "overflow":
+            self.doSave("temp/")
+            assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+        else:
+            self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
 
         #file = open("ffff.txt", "w")
         #file.write(self.__kernelText)
@@ -298,7 +305,7 @@ class Compiler:
 
     def generateSongBytes(self, tiaData, tv):
         from TiaNote import TiaNote
-        Channels = ["CoolSong_Data0\n", "CoolSong_Data1\n"]
+        Channels = ["", ""]
         tempDur = 0
         bytes = [0,0]
 
@@ -346,11 +353,14 @@ class Compiler:
         if len(tiaData) == 2:
             self.__largestDividers.append(self.__getLargestDividerChannel(1, tiaData, tv))
 
+
+        dataBytesNotes = [[], []]
         for num in range(0, len(tiaData)):
             for tiaNote in tiaData[num]:
                 #if int(tiaNote.volume)<0 or int(tiaNote.channel)<0 or int(tiaNote.freq)<0 or int(tiaNote.duration)<0:
                 #    print(tiaNote.volume, tiaNote.channel, tiaNote.freq, tiaNote.duration)
 
+                noteText = ""
                 firstByte = self.createBits(tiaNote.channel, 4) + self.createBits(tiaNote.volume, 4)
 
                 if tv == 'PAL':
@@ -365,12 +375,15 @@ class Compiler:
                     duration = tiaNote.duration/self.__largestDividers[num]
 
                 if tiaNote.volume == 0:
-                    Channels[num] += "\tBYTE\t#0\n\tBYTE\t#%"+self.createBits(duration, 8)+"\n"
+                    Channels[num] += "\tBYTE\t#%00000000\n\tBYTE\t#%"+self.createBits(duration, 8)+"\n"
+                    noteText+= "\tBYTE\t#%00000000\n\tBYTE\t#%"+self.createBits(duration, 8)+"\n"
+
                     bytes[num] +=2
 
                 elif duration<8:
                     secondByte = self.createBits(duration, 3) + self.createBits(tiaNote.freq, 5)
                     Channels[num]+="\tBYTE\t#%"+firstByte+"\n\tBYTE\t#%"+secondByte+"\n"
+                    noteText += "\tBYTE\t#%"+firstByte+"\n\tBYTE\t#%"+secondByte+"\n"
 
                     bytes[num] +=2
                 else:
@@ -378,30 +391,155 @@ class Compiler:
                     thirdByte = self.createBits(duration, 8)
 
                     Channels[num] += "\tBYTE\t#%" + firstByte + "\n\tBYTE\t#%" + secondByte + "\n"+"\n\tBYTE\t#%" + thirdByte + "\n"
+                    noteText+= "\tBYTE\t#%" + firstByte + "\n\tBYTE\t#%" + secondByte + "\n"+"\n\tBYTE\t#%" + thirdByte + "\n"
+
                     bytes[num] += 3
+                dataBytesNotes[num].append(noteText.replace("\n\n", "\n"))
 
 
 
+
+
+        Channels[0] = re.sub("\n+", "\n", Channels[0])
+        if self.__musicMode != "mono":
+            Channels[1] = re.sub("\n+", "\n", Channels[1])
+
+        Channels[0], bytes[0] = self.compress(Channels[0], "CoolSong", 0, dataBytesNotes[0])
         Channels[0] += "\tBYTE\t#240\n"
         bytes[0] += 1
 
-        if self.__musicMode != "mono":
+        self.bytes = bytes
+
+        if bytes[0] > bytes[0]>3600:
+            self.__musicMode = "overflow"
+
+        if self.__musicMode != "mono" and self.__musicMode != "overflow":
+            Channels[1], bytes[1] = self.compress(Channels[1], "CoolSong", 1, dataBytesNotes[1])
             bytes[1] += 1
             Channels[1] += "\tBYTE\t#240\n"
 
             if (bytes[0] + bytes[1]) > 3600:
                 self.__musicMode = "double"
                 if (bytes[0]>3600) or (bytes[1]>3600):
-                    self.__musicMode = "complex"
+                    self.__musicMode = "overflow"
 
             else:
                 self.__musicMode = "stereo"
 
+        #print(bytes[0], bytes[1], self.__musicMode)
+
+        return(Channels, bytes)
+
+    def compress(self, data, sectonName, channelNum, dataArrayNotes):
+        patterns = {}
+        patternsWithKeys = {"00010000": "",
+                            "00100000": "",
+                            "00110000": "",
+                            "01000000": "",
+                            "01010000": "",
+                            "01100000": "",
+                            "01110000": "",
+                            "10000000": "",
+                            "10010000": "",
+                            "10100000": "",
+                            "10110000": "",
+                            "11000000": ""
+
+        }
 
 
-        print(bytes[0], bytes[1], self.__musicMode)
 
-        return(Channels)
+        sizes = []
+        data = data.replace("\n\n", "\n")
+
+        """
+        dataArrayX = data.split("\n")
+
+        dataArray = []
+        for item in dataArrayX:
+            if "BYTE" in item.upper():
+                dataArray.append(item)
+
+        dataArrayNotes = []
+
+
+
+        index = 0
+        while index<len(dataArray):
+            if "#%00000000" in dataArray[0]:
+                dataArrayNotes.append(dataArray[index]+"\n"+dataArray[index+1])
+                index+=2
+            else:
+                number = dataArray[index+1].split("%")[1]
+                if number[:3] == "000":
+                    dataArrayNotes.append(dataArray[index] + "\n" + dataArray[index + 1]+"\n"+dataArray[index + 2]+"\n"+dataArray[index + 3])
+                    index += 4
+                else:
+                    dataArrayNotes.append(dataArray[index] + "\n" + dataArray[index + 1]+"\n"+dataArray[index + 2])
+                    index += 3
+        """
+
+
+        for piecesToJoin in range(0, 256):
+            for index in range(0, len(dataArrayNotes)-piecesToJoin):
+                pattern = "\n".join(dataArrayNotes[index:index+piecesToJoin])
+                patterns[pattern] = [data.count(pattern), len(pattern), data.count(pattern) * len(pattern)]
+
+        try:
+            del patterns['']
+        except:
+            pass
+
+        for key in patterns:
+            if patterns[key][0]>1:
+                sizes.append(patterns[key][2])
+
+        sizes.sort(reverse=True)
+
+        num = 0
+        for size in sizes:
+            for P in patterns:
+                if patterns[P][2] == size:
+                    patternsWithKeys[list(patternsWithKeys.keys())[num]] = P
+                    num+=1
+                    if num == 10:
+                        break
+            if num == 10:
+                break
+
+        stringData = sectonName+"_Data"+ str(channelNum)+"_CompressedPointerTable\n\tBYTE\t#0\n\tBYTE\t#0\n"
+        for name in patternsWithKeys.keys():
+            if patternsWithKeys[name] != "":
+                stringData+="\tBYTE\t#<"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
+                stringData+="\tBYTE\t#>"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
+
+        for name in patternsWithKeys.keys():
+            if patternsWithKeys[name] != "":
+                stringData+="\n"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"+patternsWithKeys[name]+"\n\tBYTE\t#%10110000\n\n"
+
+        bytesO = 0
+        for line in data.split("\n"):
+            if "BYTE" in line.upper():
+                bytesO+=1
+
+        for name in patternsWithKeys.keys():
+            if patternsWithKeys[name] != "":
+                data = data.replace(patternsWithKeys[name], "\tBYTE\t#%"+name+"\t; This was changed\n****"+patternsWithKeys[name].replace("\n", "\n****")+"\n\n")
+
+        stringData+=sectonName+"_Data"+str(channelNum)+"\n"+data+"\n"
+
+        stringData = stringData.replace("\n\n", "\n")
+
+        lines = stringData.split("\n")
+        bytes = 0
+        for line in lines:
+            if ("BYTE" in line.upper()) and ("*" not in line):
+                bytes+=1
+
+
+        #print(stringData)
+        return(stringData, bytes)
+
 
     def createBits(self, num, l):
         source = num
@@ -419,6 +557,9 @@ class Compiler:
     def generateTextDataFromString(self, text):
         textToReturn = "\talign\t256\nCoolSong_ReallyNiceText\n"
         charNums = []
+
+        while len(text)<12:
+            text+=" "
 
         charset = {
             "0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,

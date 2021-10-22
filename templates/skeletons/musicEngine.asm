@@ -4,6 +4,7 @@ CoolSong_Driver@@
 	CMP	#0
 	BNE	CoolSong_Skip@@
 
+CoolSong_ReadFirst@@
 	LDX	#CoolSong_Pointer@@
 	LDA	($00,x)
 	INC	0,x
@@ -20,7 +21,6 @@ CoolSong_Driver@@
 	STA	temp&2
 	JMP	CoolSong_NotSharedByte@@
 
-
 CoolSong_if240@@
 	CMP	#240
 	BNE	CoolSong_NoRestart@@
@@ -31,14 +31,42 @@ CoolSong_Restart@@
 	LDA	#>CoolSong_Data@@
 	STA	CoolSong_Pointer@@+1
 
-	LDX	#CoolSong_Pointer@@
-	LDA	($00,x)
-	INC	0,x
-	BNE	*+4
-	INC	1,x
+	JMP	CoolSong_ReadFirst@@
 
 CoolSong_NoRestart@@
+	STA	temp06
+	AND	#%00001111
+	CMP	#0
+	BNE	CoolSong_CommonNote@@
+	LDA	temp06
+	lsr
+	lsr
+	lsr
+	lsr
+	CMP	#%00001011
+	BNE	CoolSong_NoRestorePointer@@
+	LDA	CoolSong_PointerBackUp@@
+	STA	CoolSong_Pointer@@
+	LDA	CoolSong_PointerBackUp@@+1
+	STA	CoolSong_Pointer@@+1
+	JMP	CoolSong_ReadFirst@@
+CoolSong_NoRestorePointer@@
+	
+	LDY	CoolSong_Pointer@@	
+	STY	CoolSong_PointerBackUp@@	
+	LDY	CoolSong_Pointer@@+1
+	STY	CoolSong_PointerBackUp@@+1	
 
+	ASL
+	TAX
+	LDA	CoolSong_Data@@_CompressedPointerTable,x
+	STA	CoolSong_Pointer@@
+	LDA	CoolSong_Data@@_CompressedPointerTable+1,x
+	STA	CoolSong_Pointer@@+1
+	JMP	CoolSong_ReadFirst@@
+
+CoolSong_CommonNote@@
+	LDA	temp06
 	STA	AUDV@@
 	STA	temp&1
 	lsr

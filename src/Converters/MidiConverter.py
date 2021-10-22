@@ -8,7 +8,7 @@ from math import sqrt
 
 class MidiConverter:
 
-    def __init__(self, path, loader):
+    def __init__(self, path, loader, removeDrums, maxChannels):
 
         #This is the one the main program accesses. The process was
         #successful if it is not None.
@@ -117,13 +117,7 @@ class MidiConverter:
             "enabled": 0,
             "Y": 0
         }
-        """
-        for channel in self.__seperatedNotes:
-            print(str(channel)+"\n"+"-----")
-            for midiNote in self.__seperatedNotes[channel]:
-                if midiNote.note!=0:
-                    print(midiNote.note)
-        """
+
 
         for num in range(0, len(self.__seperatedNotes[onesToLookAt[0]])):
             self.__tempResult[1].append(deepcopy(__tiaNote))
@@ -131,7 +125,11 @@ class MidiConverter:
             self.__tempResult[3].append(deepcopy(__tiaNote))
             self.__tempResult[4].append(deepcopy(__tiaNote))
 
-        self.__createDrums()
+        if removeDrums == 0:
+            self.__createDrums()
+
+        if maxChannels<len(newSorter):
+            newSorter = newSorter[0:maxChannels]
 
         self.__threadNum = 0
         for channel in newSorter:
@@ -167,7 +165,7 @@ class MidiConverter:
             if midiNote.note<32:
                 volume = midiNote.velocity//24
             else:
-                volume = midiNote.velocity//12
+                volume = midiNote.velocity//10
             if volume == 0:
                 continue
 
@@ -234,7 +232,7 @@ class MidiConverter:
             midiNote = self.__seperatedNotes[9][num]
             if midiNote.note != 0:
                 Y = self.__getDrumY(midiNote.note, drumsDict)
-                velocity = midiNote.velocity//24
+                velocity = midiNote.velocity//19
                 if velocity == 0:
                     last = 0
                     continue
@@ -407,7 +405,10 @@ class MidiConverter:
                 message = str(message)
                 if "MetaMessage" in message:
                     if "track_name" in message:
-                        self.songName += re.findall(r"name=\'.+\'", message)[0].replace("name='", "")[:-1]
+                        try:
+                            self.songName += re.findall(r"name=\'.+\'", message)[0].replace("name='", "")[:-1]
+                        except:
+                            pass
         self.songName = re.sub(r'\s+', " ", self.songName)
 
         self.__threadNum-=1

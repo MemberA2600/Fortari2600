@@ -18,8 +18,9 @@ TextColor = $e0
 TextBackColor = $e1
 
 TextEnd = TEST_TEXT_END
-TextPoz = $e8
-TextDir = $e9
+TextPoz = $ec
+TextDir = $ed
+
 
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.

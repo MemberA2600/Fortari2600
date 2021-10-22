@@ -345,7 +345,7 @@ class TiaScreens:
         return(sendBack)
 
 
-    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, tv):
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, tv):
         from TiaNote import TiaNote
         #compress the 4 channels into two
         from copy import deepcopy
@@ -357,43 +357,7 @@ class TiaScreens:
             []
         ]
 
-        """
-        for screenNum in range(0, self.screenMax+1):
-            for noteNum in range(0, self.numOfFieldsW):
-                # self.allData[0][screenNum]["Y"][noteNum]
-                nums = []
 
-                for channelNum in range(0,4):
-                    if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
-                        nums.append([channelNum, self.allData[channelNum][screenNum]["Y"][noteNum]])
-
-                if len(nums)<4:
-                    while len(nums)<4:
-                        nums.append(-1)
-
-                if nums[0] == -1:
-                    for filler in range(0, frameLen):
-                        data1[0].append(TiaNote(0,0,0,1,-1))
-                        data1[1].append(TiaNote(0,0,0,1,-1))
-                else:
-                    note = self.allData[nums[0][0]][screenNum]["screen"][nums[0][1]][noteNum]
-                    for filler in range(0, frameLen):
-                        data1[0].append(TiaNote(note["volume"], note["channel"], note["freq"], 1,
-                                                self.allData[nums[0][0]][screenNum]["Y"][noteNum]))
-                        if buzz == 1 and note["channel"] == 6:
-                            data1[0][-1].channel = 7
-
-                    if nums[-1] == -1:
-                        for filler in range(0, frameLen):
-                            data1[1].append(TiaNote(0, 0, 0, 1, 0))
-                    else:
-                        note = self.allData[nums[1][0]][screenNum]["screen"][nums[1][1]][noteNum]
-                        for filler in range(0, frameLen):
-                            data1[1].append(TiaNote(note["volume"], note["channel"], note["freq"], 1,
-                                                    self.allData[nums[1][0]][screenNum]["Y"][noteNum]))
-                            if buzz == 1 and note["channel"] == 6:
-                                data1[1][-1].channel = 7
-        """
         for screenNum in range(0, self.screenMax + 1):
             for noteNum in range(0, self.numOfFieldsW):
                 nums = [
@@ -404,10 +368,13 @@ class TiaScreens:
                 ]
                 for channelNum in range(0, 4):
                     if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
+
                         Y = self.allData[channelNum][screenNum]["Y"][noteNum]
                         note = self.allData[channelNum][screenNum]["screen"][Y][noteNum]
-
-                        nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
+                        if noPercuss == 1 and (note["channel"] in [15, 8, 2, 3]):
+                            pass
+                        else:
+                            nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
 
                     for piece in range(0, frameLen):
                         data1[channelNum].append(deepcopy(nums[channelNum]))
@@ -512,15 +479,23 @@ class TiaScreens:
 
         # print(data1[0][0].piaNote)
         # processing vibratio
-        if vibratio == 1:
+        if vibratio == 1 or vibratio2:
+
+            if vibratio == 1 and vibratio2 == 1:
+                CH = [4, 12]
+            elif vibratio == 0 and vibratio2 == 1:
+                CH = [12]
+            else:
+                CH = [4]
+
             for channel in data1:
                 counter = 0
                 sum = 0
                 for tiaNote in channel:
-                    if tiaNote.channel in [4, 12]:
+                    if tiaNote.channel in CH:
                         sum += tiaNote.piaNote
 
-                if (sum // len(channel)) < 33:
+                if (sum // len(channel)) < 51:
                     changer = -8
                 else:
                     changer = 8
@@ -532,12 +507,22 @@ class TiaScreens:
                 counter = 0
 
                 for tiaNote in channel:
+
                     if tiaNote.channel not in [4, 12]:
                         tempChannel = None
                         tempNote = None
                         counter = 0
+                    elif (vibratio==1) and (vibratio2==0) and tiaNote.piaNote < 51:
+                        tempChannel = None
+                        tempNote = None
+                        counter = 0
+                    elif (vibratio2==1) and (vibratio==0) and tiaNote.piaNote > 50:
+                        tempChannel = None
+                        tempNote = None
+                        counter = 0
+
                     else:
-                        if counter == 5 or (tempChannel != tiaNote.channel or tempNote != tiaNote.piaNote):
+                        if counter == 4 or (tempChannel != tiaNote.channel or tempNote != tiaNote.piaNote):
                             counter = 0
                         else:
                             counter += 1
@@ -715,15 +700,17 @@ class TiaScreens:
                         tempNote = tiaNote.piaNote
 
 
-
-                        if ((tiaNote.piaNote != nextNote.piaNote or nextNote == None) and
-                                (tiaNote.piaNote != prevNote.piaNote or prevNote == None)):
-                            N = 0
-                            for num in notes:
-                                N+=int(num)
-                            N = round(N/len(notes))
-                            tiaNote.freq = N
-                        else:
+                        try:
+                            if ((tiaNote.piaNote != nextNote.piaNote or nextNote == None) and
+                                    (tiaNote.piaNote != prevNote.piaNote or prevNote == None)):
+                                N = 0
+                                for num in notes:
+                                    N+=int(num)
+                                N = round(N/len(notes))
+                                tiaNote.freq = N
+                            else:
+                                tiaNote.freq = notes[counter]
+                        except:
                             tiaNote.freq = notes[counter]
 
         #print(data1[0][0].piaNote)

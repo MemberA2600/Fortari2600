@@ -26,14 +26,13 @@ class MusicComposer:
 
         self.__choosenOne = None
         self.__screenMax = 0
+        self.__maxChannels = 999
 
         self.__frames = {}
 
         self.__bankEntries = {
             1: None,
             2: None,
-            3: None,
-            4: None
         }
 
         self.__errorCounters = {
@@ -44,8 +43,7 @@ class MusicComposer:
             "corrector": 0,
             "bank1": 0,
             "bank2": 0,
-            "bank3": 0,
-            "bank4": 0
+            "maxChannels": 0,
         }
 
         self.__pressed = {"1": False, "3": False}
@@ -63,7 +61,7 @@ class MusicComposer:
         self.__io = self.__loader.io
 
         self.__picturePath = None
-        self.__banks = [3,4,5,6]
+        self.__banks = [3,4]
         self.__variables = [None, None, None, None]
         self.__colorConstans = ["$18", "$00", "$00", "$44", "$34", "$14"]
 
@@ -79,6 +77,8 @@ class MusicComposer:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.10), False, False, False)
         self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.35), False, False, False)
         self.__tinyFont2 = self.__fontManager.getFont(int(self.__fontSize*0.50), False, False, False)
+        self.__tinyFont3 = self.__fontManager.getFont(int(self.__fontSize*0.35), False, False, False)
+
 
         if tiaScreens == None:
             from TiaScreens import TiaScreens
@@ -126,6 +126,7 @@ class MusicComposer:
                     self.__fadeOutSetter.enable()
                     self.__frameLenSetter.enable()
                     self.__correctorSetter.enable()
+                    self.__maxChannelsSetter.enable()
 
                     self.__IOButtons()
                     if self.reset == True:
@@ -156,8 +157,14 @@ class MusicComposer:
     def __IOButtons(self):
         self.__openButton.changeState(True)
         self.__saveButton.changeState(False)
+        self.__testingButton.changeState(False)
+        self.__summaButton.changeState(False)
 
-        self.__testingButton.changeState(self.__tiaScreens.isThereAnyNote())
+
+        if (self.__io.checkIfValidFileName(self.__songTitle.get()) == True and
+            self.__io.checkIfValidFileName(self.__artistName.get())) and self.__errorSum() == 0:
+                self.__testingButton.changeState(self.__tiaScreens.isThereAnyNote())
+                self.__summaButton.changeState(self.__tiaScreens.isThereAnyNote())
 
 
         if self.changed == True:
@@ -211,7 +218,7 @@ class MusicComposer:
         self.__editorFrame.pack(side=TOP, fill=X)
 
         self.__selectedChannelFrame = Frame(self.__editorFrame,
-                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.065),
                                    bg=self.__colors.getColor("window"))
         self.__selectedChannelFrame.pack_propagate(False)
         self.__selectedChannelFrame.pack(side=TOP, fill=X)
@@ -294,6 +301,7 @@ class MusicComposer:
         self.__fadeOutLen = 1
         self.__dividerLen = 4   # Has effect over 2, goes to 4
         self.__vibratio = 1
+        self.__vibratio2 = 1
         self.__frameLen = 2
 
         self.__piaNoteTable = {}
@@ -394,11 +402,25 @@ class MusicComposer:
 
         from MCButton import MCButton
 
-        w = round(self.__topLevel.getTopLevelDimensions()[0] * 0.08)
+        w = round(self.__topLevel.getTopLevelDimensions()[0] * 0.065)
 
+        self.__summaButton = MCButton(self.__loader, self.__buttonFrame, "sum", w, self.__justBytesThread)
         self.__testingButton = MCButton(self.__loader, self.__buttonFrame, "stella", w, self.__testingCurrent)
         self.__saveButton = MCButton(self.__loader, self.__buttonFrame, "save", w, self.__saveDataToFile)
         self.__openButton = MCButton(self.__loader, self.__buttonFrame, "open", w, self.__openFile)
+
+        self.__bankLabelText = StringVar()
+        self.__bankLabel = Label(self.__buttonFrame, textvariable = self.__bankLabelText,
+                                 width=999999, font = self.__smallFont,
+                                 bg = self.__colors.getColor("window"),
+                                 fg = self.__colors.getColor("font"))
+
+        self.__bankLabel.pack_propagate(False)
+        self.__bankLabel.pack(side=RIGHT, fill=BOTH)
+
+        self.__setBankLabelText([0,0])
+
+
 
         self.__bottomFrame2 = Frame(self.__bottomFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5),
@@ -472,7 +494,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text = self.__dictionaries.getWordFromCurrentLanguage("banksToLock"),
-                              font = self.__normalFont
+                              font = self.__smallFont
                                       )
 
         self.__bankTitle.pack_propagate(False)
@@ -499,6 +521,7 @@ class MusicComposer:
                                            self.__bankEntries, [self.__artistName, self.__songTitle]
                                            )
 
+        """
         self.__bank3 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
                                            self.__banks, 2, self.focusIn, self.focusOut,
                                            self.__normalFont, self.__errorCounters,
@@ -510,7 +533,7 @@ class MusicComposer:
                                            self.__normalFont, self.__errorCounters,
                                            self.__bankEntries, [self.__artistName, self.__songTitle]
                                            )
-
+        """
         """
         self.__theTwoBanksFrame1 = Frame(self.__theTwoBanksFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
@@ -570,7 +593,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text = self.__dictionaries.getWordFromCurrentLanguage("textColors"),
-                              font = self.__normalFont
+                              font = self.__smallFont
                                       )
 
         self.__colorTitle.pack_propagate(False)
@@ -609,7 +632,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text = self.__dictionaries.getWordFromCurrentLanguage("frameColor"),
-                              font = self.__normalFont
+                              font = self.__smallFont
                                       )
 
         self.__colorTitle.pack_propagate(False)
@@ -639,7 +662,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text = self.__dictionaries.getWordFromCurrentLanguage("visualizerColors"),
-                              font = self.__normalFont
+                              font = self.__smallFont
                                       )
 
         self.__visualizerColorsTitle.pack_propagate(False)
@@ -686,7 +709,7 @@ class MusicComposer:
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
                               text = self.__dictionaries.getWordFromCurrentLanguage("importMedia"),
-                              font = self.__normalFont
+                              font = self.__smallFont
                                       )
 
         self.__importMediaTitle.pack_propagate(False)
@@ -707,6 +730,123 @@ class MusicComposer:
                                       )
         self.__importButton.pack_propagate(False)
         self.__importButton.pack(fill=BOTH)
+
+        self.__removePercuss = IntVar()
+        self.__removePercuss.set(0)
+
+        self.__veryBottomFrame = Frame(self.__bottomFrame2Third3,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                   bg=self.__colors.getColor("window"))
+        self.__veryBottomFrame.pack_propagate(False)
+        self.__veryBottomFrame.pack(side=TOP, fill=BOTH)
+
+        self.__veryBottomFrame1 = Frame(self.__veryBottomFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                   bg=self.__colors.getColor("window"))
+        self.__veryBottomFrame1.pack_propagate(False)
+        self.__veryBottomFrame1.pack(side=LEFT, fill=Y)
+
+        self.__veryBottomFrame2 = Frame(self.__veryBottomFrame,
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                   bg=self.__colors.getColor("window"))
+        self.__veryBottomFrame2.pack_propagate(False)
+        self.__veryBottomFrame2.pack(side=LEFT, fill=Y)
+
+
+        self.__removerPercussBox =  Checkbutton(self.__veryBottomFrame2, variable=self.__removePercuss,
+                text=self.__dictionaries.getWordFromCurrentLanguage("cutPerc"),
+                bg=self.__colors.getColor("window"),
+                fg=self.__colors.getColor("font"),
+                font=self.__tinyFont2, justify=LEFT,
+                command=self.changedSetToYes,
+                activebackground=self.__colors.getColor("highLight"))
+
+
+        self.__removerPercussBox.pack_propagate(False)
+        self.__removerPercussBox.pack(side=TOP, fill=X, anchor=E)
+
+        from FrameLabelEntryUpDown import FrameLabelEntryUpDown
+
+        self.__maxChannelsSetter = FrameLabelEntryUpDown(self.__loader, self.__veryBottomFrame1,
+                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.15),
+                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+                                                     "maxChannels", 1, 999, self.__tinyFont3, self.setFrameLen, self.__maxChannels, self.__normalFont,
+                                                     "maxChannels", self.__errorCounters, self.focusIn, self.focusOut
+                                                     )
+    def setMaxChannels(self, value):
+        self.__maxChannels = int(value)
+
+    def changedSetToYes(self):
+        self.changed = True
+
+    def __justBytesThread(self):
+        from threading import Thread
+
+        t = Thread(target=self.__justBytes, args=[True])
+        t.daemon = True
+        t.start()
+
+
+    def __justBytes(self, playSound):
+        from Compiler import Compiler
+
+        numOfBanks = Compiler(self.__loader, "common",
+                              "getMusicBytes", [
+                                self.__tiaScreens.composeData(self.__correctNotes,
+                                                              self.__buzz,
+                                                              self.__fadeOutLen,
+                                                              self.__frameLen,
+                                                              self.__vibratio,
+                                                              self.__vibratio2,
+                                                              int(self.__removePercuss.get()),
+                                                              self.__maxChannels,
+                                                              "NTSC")])
+
+        self.__setBankLabelText(numOfBanks.bytes)
+        if playSound == True:
+            from random import randint
+            num = randint(0,1000)
+            if num <995:
+                self.__loader.soundPlayer.playSound("OK")
+            else:
+                self.__loader.soundPlayer.playSound("Probe")
+
+
+
+    def __setBankLabelText(self, data):
+        numbers = []
+
+        for number in data:
+            number = str(number)
+            while len(number)<5:
+                number = "0" + number
+            numbers.append(number)
+
+        if data[0]<3601 and data[1]<3601:
+            self.__bankLabelText.set("Bank0: " +numbers[0]+" Bank1: "+numbers[1])
+            self.__bankLabel.config(
+                bg=self.__colors.getColor("window"),
+                fg=self.__colors.getColor("font")
+            )
+        else:
+            if data[0]<data[1]:
+                tooMuch = data[0]
+            else:
+                tooMuch = data[1]
+
+            #n = str(tooMuch-3600)
+            #while len(n)<5:
+            #    n = "0" + n
+
+            self.__bankLabelText.set(self.__dictionaries.getWordFromCurrentLanguage("overflow").upper())
+            self.__bankLabel.config(
+                bg=self.__colors.getColor("boxBackUnSaved"),
+                fg=self.__colors.getColor("boxFontUnSaved")
+            )
+
 
     def openMedium(self):
         if self.changed == True:
@@ -828,7 +968,9 @@ class MusicComposer:
             self.__artistName.set("")
             self.__songTitle.set(songTitle)
             #print(self.__tiaScreens.screenMax, self.__screenMax)
+            self.__justBytes(False)
             self.__soundPlayer.playSound("Success")
+
 
         self.changed = True
         self.forceShit = True
@@ -837,50 +979,10 @@ class MusicComposer:
 
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
-        midiConverter = MidiConverter(path, self.__loader)
+        midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()), self.__maxChannels)
 
         return (midiConverter.result, midiConverter.songName)
 
-    """
-    def __checkBank(self, event):
-        if "FocusOut" in str(event):
-            self.focusOut(event)
-        name = str(event.widget).split(".")[-1]
-        num = 0
-
-        freeBanks = self.__virtualMemory.getBanksAvailableForLocking()
-
-        entries = {
-            "bank1": self.__bankEntry1,
-            "bank2": self.__bankEntry2
-        }
-
-        try:
-            num = int(entries[name].get())
-        except:
-            event.widget.config(
-                bg = self.__colors.getColor("boxBackUnSaved"),
-                fg = self.__colors.getColor("boxFontUnSaved")
-            )
-
-            self.__errorCounters[name] = 1
-
-            return
-
-        self.__errorCounters[name] = 0
-        if num<3 or num>8 or (int(entries["bank1"].get()) == int(entries["bank2"].get())) or (int(entries[name].get()) not in freeBanks):
-            for changeNum in range(3,8):
-                if changeNum in freeBanks:
-                    entries[name].set(str(changeNum))
-                    return
-
-                title = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
-                if self.__loader.virtualMemory.locks["bank"+str(changeNum)].name == title:
-                    entries[name].set(str(changeNum))
-                    return
-
-        self.__loader.fileDialogs.displayError("bankLockError", "bankLockErrorMessage", None, None)
-        """
 
     def __testingCurrent(self):
         from threading import Thread
@@ -891,7 +993,9 @@ class MusicComposer:
 
 
     def __testingCurrentThread(self):
-        extracted = self.__tiaScreens.composeData(self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, "NTSC")
+        extracted = self.__tiaScreens.composeData(
+            self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, self.__vibratio2,
+            int(self.__removePercuss.get()), self.__maxChannels, "NTSC")
         #self.testPrinting(extracted)
 
         if self.__picturePath == None:
@@ -901,6 +1005,8 @@ class MusicComposer:
         C = Compiler(self.__loader, "common", "music", [self.__picturePath, "temp/", True, self.__artistName.get(),
                                                         self.__songTitle.get(), extracted, self.__banks,
                                                         self.__variables, self.__colorConstans, pictureData])
+
+        self.__setBankLabelText(C.bytes)
 
 
     def testPrinting(self, data):
@@ -928,7 +1034,8 @@ class MusicComposer:
         text = self.__artistName.get()+"\n"+self.__songTitle.get()+"\n"
 
         text+=(str(self.__buzz)+","+str(self.__correctNotes)+","+str(self.__fadeOutLen)+","+
-                str(self.__dividerLen)+","+str(self.__vibratio)+","+str(self.__frameLen)+"\n"
+                str(self.__dividerLen)+","+str(self.__vibratio)+","+str(self.__vibratio2)+
+                ","+str(self.__frameLen)+","+str(self.__removePercuss.get())+","+str(self.__maxChannels)+"\n"
                )
 
         from Compiler import Compiler
@@ -938,7 +1045,11 @@ class MusicComposer:
                                                               self.__buzz,
                                                               self.__fadeOutLen,
                                                               self.__frameLen,
-                                                              self.__vibratio, "NTSC")])
+                                                              self.__vibratio,
+                                                              self.__vibratio2,
+                                                              int(self.__removePercuss.get()),
+                                                              self.__maxChannels,
+                                                              "NTSC")])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
@@ -961,7 +1072,9 @@ class MusicComposer:
             except:
                 pass
 
-        text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
+        #text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
+        text += str(self.__banks[0])+","+str(self.__banks[1])+"\n"
+
 
         data = "\n".join([
             self.__tiaScreens.getWholeChannelDate(1),
@@ -978,6 +1091,7 @@ class MusicComposer:
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
+        self.__setBankLabelText(numOfBanks.bytes)
         self.__soundPlayer.playSound("Success")
 
     def __openFile(self):
@@ -1017,14 +1131,20 @@ class MusicComposer:
         self.__vibratio = int(numbers[4])
         self.__vibrator.set(int(numbers[4]))
 
+        self.__vibratio2 = int(numbers[5])
+        self.__vibrator2.set(int(numbers[5]))
+
         self.__correctNotes = int(numbers[1])
         self.__correctorSetter.setValue(numbers[1])
         self.__fadeOutLen = int(numbers[2])
         self.__fadeOutSetter.setValue(numbers[2])
         self.__dividerLen = int(numbers[3])
         self.__dividerSetter.setValue(numbers[3])
-        self.__frameLen = int(numbers[5])
-        self.__frameLenSetter.setValue(numbers[5])
+        self.__frameLen = int(numbers[6])
+        self.__frameLenSetter.setValue(numbers[6])
+        self.__removePercuss.set(int(numbers[7]))
+        self.__maxChannels = int(numbers[8])
+        self.__maxChannelsSetter.setValue(numbers[8])
 
         self.__artistName.set(lines[0])
         self.__songTitle.set(lines[1])
@@ -1033,8 +1153,8 @@ class MusicComposer:
 
         self.__bank1.setValue(bbb[0])
         self.__bank2.setValue(bbb[1])
-        self.__bank3.setValue(bbb[2])
-        self.__bank4.setValue(bbb[3])
+        #self.__bank3.setValue(bbb[2])
+        #self.__bank4.setValue(bbb[3])
 
         self.__banks = [int(bbb[0]), int(bbb[1])]
 
@@ -1048,7 +1168,11 @@ class MusicComposer:
                                                               self.__buzz,
                                                               self.__fadeOutLen,
                                                               self.__frameLen,
-                                                              self.__vibratio, "NTSC")])
+                                                              self.__vibratio,
+                                                              self.__vibratio2,
+                                                              int(self.__removePercuss.get()),
+                                                              self.__maxChannels,
+                                                              "NTSC")])
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
@@ -1073,6 +1197,7 @@ class MusicComposer:
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
+        self.__setBankLabelText(numOfBanks.bytes)
         self.changed = False
 
     def drawAllTheOthers(self):
@@ -1239,28 +1364,44 @@ class MusicComposer:
         self.__vibrator = IntVar()
         self.__vibrator.set(1)
 
+        self.__vibrator2 = IntVar()
+        self.__vibrator2.set(1)
+
         self.__buzzSetter = Checkbutton(self.__smallSetterBox, variable = self.__buzzer,
                                         text=self.__dictionaries.getWordFromCurrentLanguage("buzzer"),
                                         bg=self.__colors.getColor("window"),
                                         fg=self.__colors.getColor("font"),
                                         font=self.__tinyFont2, justify=LEFT,
-                                        command = self.setBuzz
+                                        command = self.setBuzz,
+                                        activebackground=self.__colors.getColor("highLight")
                                         )
 
         self.__buzzSetter.pack_propagate(False)
         self.__buzzSetter.pack(side=TOP, anchor=W)
 
         self.__vibrSetter = Checkbutton(self.__smallSetterBox, variable = self.__vibrator,
-                                        text=self.__dictionaries.getWordFromCurrentLanguage("vibratio"),
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("vibratio").replace("##", "04"),
                                         bg=self.__colors.getColor("window"),
                                         fg=self.__colors.getColor("font"),
                                         font=self.__tinyFont2, justify=LEFT,
-                                        command=self.setVibratio
+                                        command=self.setVibratio,
+                                        activebackground = self.__colors.getColor("highLight")
                                         )
 
         self.__vibrSetter.pack_propagate(False)
         self.__vibrSetter.pack(side=TOP, anchor=W)
 
+        self.__vibrSetter2 = Checkbutton(self.__smallSetterBox, variable = self.__vibrator2,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("vibratio").replace("##", "12"),
+                                        bg=self.__colors.getColor("window"),
+                                        fg=self.__colors.getColor("font"),
+                                        font=self.__tinyFont2, justify=LEFT,
+                                        command=self.setVibratio2,
+                                         activebackground=self.__colors.getColor("highLight")
+                                        )
+
+        self.__vibrSetter2.pack_propagate(False)
+        self.__vibrSetter2.pack(side=TOP, anchor=W)
 
         from FrameLabelEntryUpDown import FrameLabelEntryUpDown
 
@@ -1332,6 +1473,10 @@ class MusicComposer:
         self.__vibratio = self.__vibrator.get()
         self.changed = True
 
+    def setVibratio2(self):
+        self.__vibratio2 = self.__vibrator2.get()
+        self.changed = True
+
     def __PrevScreen(self):
         if self.__runningThreads>0:
             return
@@ -1386,27 +1531,6 @@ class MusicComposer:
 
         self.__currentSelected.set(str(self.__tiaScreens.currentScreen+1))
 
-        """
-        for X in range(0, self.__tiaScreens.numOfFieldsW):
-            Y = screenY[X]
-            if Y == -1:
-                continue
-
-            try:
-                cell = screen[Y][X]
-                Button = self.__piaNoteTable[str(X) + "," + str(Y)]
-
-                if cell["volume"] == 0:
-                    Button.config(text="")
-                else:
-                    Button.config(text=str(cell["volume"]))
-
-                self.colorButton(X, Y, Button)
-                self.reSize(X, Y)
-            except Exception as e:
-                print(e)
-
-        """
         for Y in range(0,100):
             for X in range(0, self.__tiaScreens.numOfFieldsW):
                 try:
