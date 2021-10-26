@@ -188,3 +188,5 @@ cutPerc=Cut Percussion
 maxChannels=Max Convertable Channels:
 64pxPicture=64 Pixels Picture Generator
 savePicture=Save Picture
+invertPF=Mirror PF pixels
+invertColors=Invert PF/BG colors

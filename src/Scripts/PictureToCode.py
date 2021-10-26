@@ -54,9 +54,12 @@ class PictureToCode:
             self.__smallFont = self.__fontManager.getFont(int(self.__fontSize * 0.80), False, False, False)
             self.__smallFont2 = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
 
-
-            self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
+            if self.__mode == "playfield":
+                self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
                                     self.__screenSize[1] / 4 - 45, None, self.__addElements, 2)
+            else:
+                self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
+                                    self.__screenSize[1] / 3 - 45, None, self.__addElements, 2)
 
             self.dead = True
 
@@ -193,9 +196,16 @@ class PictureToCode:
             #print(data[Y])
             spriteData = data[Y]["sprites"]["pixels"]
             spriteColor = data[Y]["sprites"]["color"]
-            pfData = data[Y]["playfield"]["pixels"]
-            pfColors = data[Y]["playfield"]["color"]
-            bg = data[Y]["background"]
+            if self.__mirrorPF.get() == 1:
+                pfData = data[Y]["playfield"]["pixels"][::-1]
+            else:
+                pfData = data[Y]["playfield"]["pixels"]
+            if self.__invertPFBG.get() == 1:
+                bg = data[Y]["playfield"]["color"]
+                pfColors = data[Y]["background"]
+            else:
+                pfColors = data[Y]["playfield"]["color"]
+                bg = data[Y]["background"]
 
             for pixelNum in range(0,64,8):
                 pic64px_Sprite[pixelNum//8] += ("\tBYTE\t#%"+
@@ -323,12 +333,24 @@ class PictureToCode:
             for item in notUsed:
                 grrr[item] = sums[item]["allSet"]
                 sorted(grrr, key=grrr.get, reverse=True)
+            if grrr[list(grrr.keys())[0]] == grrr[list(grrr.keys())[1]]:
+                grrr = {}
+                for item in notUsed:
+                    grrr[item] = int("0x"+sums[item]["domiTIA"][2], 16)
+                    sorted(grrr, key=grrr.get)
+
             key = list(grrr.keys())[0]
         else:
             if sums[list(temp.keys())[0]]["pfError"] == sums[list(temp.keys())[1]]["pfError"]:
                 grrr = {}
                 grrr[list(temp.keys())[0]] = sums[list(temp.keys())[0]]["allSet"]
                 grrr[list(temp.keys())[1]] = sums[list(temp.keys())[1]]["allSet"]
+                if grrr[list(grrr.keys())[0]] == grrr[list(grrr.keys())[1]]:
+                    grrr = {}
+                    for item in notUsed:
+                        grrr[item] = int("0x" + sums[item]["domiTIA"][2], 16)
+                        sorted(grrr, key=grrr.get)
+
                 sorted(grrr, key=grrr.get, reverse=True)
                 key = list(grrr.keys())[0]
             else:
@@ -678,14 +700,45 @@ class PictureToCode:
                                        )
             self.__rightB.pack(side=RIGHT, anchor=E, fill=X)
         elif self.__mode == "64pxPicture":
-            self.__thisLabel = Label(self.__cBoxFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+            self.__mirrorPF = IntVar()
+            self.__mirrorPF.set(0)
+
+            self.__mirrorPFCheck = Checkbutton(self.__cBoxFrame,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("invertPF"),
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       font=self.__smallFont,
+                                       variable=self.__mirrorPF
+                                       )
+            self.__mirrorPFCheck.pack(side=LEFT, anchor=E, fill=X)
+
+            self.__invertPFBG = IntVar()
+            self.__invertPFBG.set(0)
+
+            self.__invertPFBGCheck = Checkbutton(self.__cBoxFrame,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("invertColors"),
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       font=self.__smallFont,
+                                       variable=self.__invertPFBG
+                                       )
+            self.__invertPFBGCheck.pack(side=RIGHT, anchor=E, fill=X)
+
+            self.__EntryFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
+            self.__EntryFrame.config(
+                width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+                height=round(self.__topLevel.getTopLevelDimensions()[1] / 8))
+            self.__EntryFrame.pack_propagate(False)
+            self.__EntryFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+            self.__thisLabel = Label(self.__EntryFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
                                   bg = self.__loader.colorPalettes.getColor("window"),
                                   fg = self.__loader.colorPalettes.getColor("font"), justify = "center",
                                   font=self.__smallFont
                                   )
-            self.__thisLabel.pack(side=LEFT, anchor=E)
+            self.__thisLabel.pack(side=LEFT, anchor=E, fill=Y)
 
-            self.__thisFrame = Label(self.__cBoxFrame,
+            self.__thisFrame = Label(self.__EntryFrame,
                                   bg = self.__loader.colorPalettes.getColor("window"), width=99999999)
             self.__thisFrame.pack_propagate(False)
             self.__thisFrame.pack(side=LEFT, anchor=E, fill=BOTH)

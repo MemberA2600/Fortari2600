@@ -186,3 +186,5 @@ cutPerc=Zenei alap levágása
 maxChannels=Maximális csatornakonvertálás:
 64pxPicture=64 Pixeles Nagykép Generáló
 savePicture=Kép Mentése
+invertPF=PF pixelek tükrözése
+invertColors=PF/BG színek felcserélése
