@@ -1053,6 +1053,11 @@ class MusicComposer:
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
+        for bankNum in range(0, len(numOfBanks.banks)):
+            F = open(fileName.replace(".a26", "_bank"+str(bankNum)+"_"+numOfBanks.musicMode+".asm"), "w")
+            F.write(numOfBanks.banks[bankNum])
+            F.close()
+
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
                 self.__banks[0] = int(self.__bank1.getValue())

@@ -168,9 +168,12 @@ class MainWindow:
                                           self.__openPFEditor, "projectPath",
                                             False, self.__pfButtonHander)
 
-
         self.__musicButton = self.__buttonMaker.createButton("music", 12,
                                           self.__openMusicComposer, "projectPath",
+                                            False, None)
+
+        self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", 13,
+                                          self.__openPictureConverter, "projectPath",
                                             False, None)
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
@@ -483,6 +486,11 @@ class MainWindow:
         from MusicComposer import MusicComposer
 
         Music = MusicComposer(self.__loader, self, None)
+
+    def __openPictureConverter(self):
+        from PictureToCode import PictureToCode
+
+        pictureToCode = PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
 
 
     def __openPFEditor(self):

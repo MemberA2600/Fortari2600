@@ -22,11 +22,36 @@ class Compiler:
             self.generateMusicROM()
         elif self.__mode == 'getMusicBytes':
             self.getMusicBytesSizeOnly()
+        elif self.__mode == 'test64px':
+            self.test64PX()
+
+    def test64PX(self):
+        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__pictureData = self.__data[0]
+        self.__h = self.__data[1]
+
+        self.__init = (self.__loader.io.loadWholeText("templates/testCodes/64pxPictureEnter.asm").replace("FULLHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPINDEX", "0")
+                       )
+        self.__engine = self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")
+
+        self.__overScan = (self.__loader.io.loadWholeText("templates/testCodes/64pxPictureOverScan.asm").replace("FULLHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPINDEX", "0"))
+
+        self.__kernelText = (self.__kernelText.replace("!!!OVERSCAN_BANK2!!!", self.__overScan).replace("!!!ENTER_BANK2!!!", self.__init)
+                            .replace("!!!SCREENTOP_BANK2!!!", self.__engine).replace("!!!USER_DATA_BANK2!!!", self.__pictureData)
+                             .replace("!!!TV!!!", "NTSC")
+                             )
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def getMusicBytesSizeOnly(self):
-        self.__banks, bytes = self.generateSongBytes(self.__data[0], "NTSC")
+        self.banks, self.bytes = self.generateSongBytes(self.__data[0], "NTSC")
         self.musicMode = self.__musicMode
-        self.bytes = bytes
 
     def generateMusicROM(self):
         import re

@@ -10,3 +10,10 @@ picHeight = FULLHEIGHT
 
 	LDA	#DSPINDEX
 	STA	picIndex
+
+	LDA	#90
+	CMP	picDisplayHeight
+	BCS	64pxPicture_NoINITDec
+	STA	picDisplayHeight
+
+64pxPicture_NoINITDec

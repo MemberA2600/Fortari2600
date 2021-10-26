@@ -184,3 +184,5 @@ overflow=Túlcsordulás
 overflowMessage=Adattúlcsordulás történt. Az elkészült ROM hibás.
 cutPerc=Zenei alap levágása
 maxChannels=Maximális csatornakonvertálás:
+64pxPicture=64 Pixeles Nagykép Generáló
+savePicture=Kép Mentése

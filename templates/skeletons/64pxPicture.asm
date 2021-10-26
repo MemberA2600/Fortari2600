@@ -76,19 +76,20 @@ pic64px_OddFrame_Line1
 	LDA	pic64px_PFColor,y		; 4 (21)
 	STA	COLUPF				; 3 (24)
 		
-	LDA	pic64px_Color,y			; 4 
-	STA	COLUP0				; 3 
-	STA	COLUP1				; 3 
+	LDA	pic64px_Color,y			; 4 (28)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
 	
-	LDA	pic64px_00,y			; 4 
-	STA	GRP0				; 3 
-	LDA	pic64px_02,y			; 4
-	STA	GRP1				; 3 
+	LDA	pic64px_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	pic64px_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
 
-	LDA	pic64px_04,y			; 4
-	STA	GRP0				; 3 
+	LDA	pic64px_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
 
-	STX	GRP1				; 3 
+	STX	GRP1				; 3 (58)
+
 
 						; (65)
 	LDA	#$80				; 2 (67)
@@ -124,6 +125,7 @@ pic64px_OddFrame_Line2
 	CPY	temp02				; 3 (69)
 	BEQ	pic64px_Reset			; 2 (71)	
 	JMP	pic64px_OddFrame_Line1		; 3 (74)
+	
 
 pic64px_EvenFrame
 	_sleep	30
