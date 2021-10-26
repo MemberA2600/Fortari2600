@@ -188,3 +188,5 @@ maxChannels=Maximális csatornakonvertálás:
 savePicture=Kép Mentése
 invertPF=PF pixelek tükrözése
 invertColors=PF/BG színek felcserélése
+reduceBG=Háttér koncentrálása
+oneColorBG=Lehetséges BG redukálás egy színre

@@ -190,3 +190,5 @@ maxChannels=Max Convertable Channels:
 savePicture=Save Picture
 invertPF=Mirror PF pixels
 invertColors=Invert PF/BG colors
+reduceBG=Reduce BG Colors
+oneColorBG=Possible one color BG reduction

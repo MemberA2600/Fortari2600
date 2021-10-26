@@ -191,21 +191,77 @@ class PictureToCode:
         pic64px_PFColor = "pic64px_PFColor\n"
         pic64px_BGColor = "pic64px_BGColor\n"
 
+        #correctBG
+        bgColors = {}
+        #correctPF
+
+        for Y in range(0, h):
+            canCutBG = 0
+            if self.__invertPFBG.get() == 1:
+                bg = data[Y]["playfield"]["color"]
+            else:
+                bg = data[Y]["background"]
+            bg = bg[1]
+
+            if bg in bgColors.keys():
+                bgColors[bg]+=1
+            else:
+                bgColors[bg]=1
+
+            if self.__mirrorPF.get() == 1:
+                pfData = data[Y]["playfield"]["pixels"][::-1]
+            else:
+                pfData = data[Y]["playfield"]["pixels"]
+
+            pf = []
+            for P in pfData:
+                pf.append(P)
+
+            spriteData = data[Y]["sprites"]["pixels"]
+            for pixelNum in range(0,32,4):
+                sprite1 = spriteData[pixelNum:(pixelNum+4)]
+                sprite2 = spriteData[(63-pixelNum-4):(63-pixelNum)][::-1]
+
+                if sprite1 == "1111" and sprite2 == "1111":
+                    pf[pixelNum//4] = "0"
+            data[Y]["playfield"]["pixels"]="".join(pf)
+
+            lineOfPF = ""
+            for P in pf:
+                lineOfPF+=P*4
+
+            lineOfPF += lineOfPF[::-1]
+
+
+            for pixelNum in range(0,64):
+                if spriteData[pixelNum]=="0" and lineOfPF[pixelNum]=="0":
+                    canCutBG +=1
+
+        sorted(bgColors, key=bgColors.get, reverse=True)
+
+        bgMain = list(bgColors.keys())[0]
+
         for Y in range(0, h):
             Y = h-1-Y
             #print(data[Y])
             spriteData = data[Y]["sprites"]["pixels"]
             spriteColor = data[Y]["sprites"]["color"]
-            if self.__mirrorPF.get() == 1:
-                pfData = data[Y]["playfield"]["pixels"][::-1]
-            else:
-                pfData = data[Y]["playfield"]["pixels"]
+            pfData = data[Y]["playfield"]["pixels"]
+
             if self.__invertPFBG.get() == 1:
-                bg = data[Y]["playfield"]["color"]
+                if self.__reduceBG.get() == 1:
+                    bg = "$"+bgMain+data[Y]["playfield"]["color"][2]
+                else:
+                    bg = data[Y]["playfield"]["color"]
+
                 pfColors = data[Y]["background"]
             else:
                 pfColors = data[Y]["playfield"]["color"]
-                bg = data[Y]["background"]
+                if self.__reduceBG.get() == 1:
+                    bg = "$"+bgMain+data[Y]["background"][2]
+                else:
+                    bg = data[Y]["background"]
+
 
             for pixelNum in range(0,64,8):
                 pic64px_Sprite[pixelNum//8] += ("\tBYTE\t#%"+
@@ -215,7 +271,11 @@ class PictureToCode:
             pic64px_Color += ("\tBYTE\t#"+ spriteColor+"\n")
             pic64px_PF += ("\tBYTE\t#%"+ pfData+"\n")
             pic64px_PFColor += ("\tBYTE\t#" + pfColors + "\n")
-            pic64px_BGColor += ("\tBYTE\t#" + bg + "\n")
+
+            if canCutBG<24 and self.__cutBG.get()==1:
+                pic64px_BGColor += ("\tBYTE\t#"+self.__oneColor+"\n")
+            else:
+                pic64px_BGColor += ("\tBYTE\t#" + bg + "\n")
 
 
         allData = [
@@ -669,14 +729,16 @@ class PictureToCode:
         self.__minus = self.__loader.io.getImg("negative", None)
         self.__plus = self.__loader.io.getImg("positive", None)
 
-        self.__cBoxFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
-        self.__cBoxFrame.config(
-            width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
-            height=round(self.__topLevel.getTopLevelDimensions()[1] / 6))
-        self.__cBoxFrame.pack_propagate(False)
-        self.__cBoxFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
         if self.__mode == "playfield":
+            self.__cBoxFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
+            self.__cBoxFrame.config(
+                width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+                height=round(self.__topLevel.getTopLevelDimensions()[1] / 6))
+            self.__cBoxFrame.pack_propagate(False)
+            self.__cBoxFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+
             self.__invert = IntVar()
             self.__invert.set(0)
 
@@ -700,6 +762,20 @@ class PictureToCode:
                                        )
             self.__rightB.pack(side=RIGHT, anchor=E, fill=X)
         elif self.__mode == "64pxPicture":
+            self.__cBoxFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
+            self.__cBoxFrame.config(
+                width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+                height=round(self.__topLevel.getTopLevelDimensions()[1] / 12))
+            self.__cBoxFrame.pack_propagate(False)
+            self.__cBoxFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+            self.__cBoxFrame2 = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
+            self.__cBoxFrame2.config(
+                width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+                height=round(self.__topLevel.getTopLevelDimensions()[1] / 12))
+            self.__cBoxFrame2.pack_propagate(False)
+            self.__cBoxFrame2.pack(side=TOP, anchor=N, fill=BOTH)
+
             self.__mirrorPF = IntVar()
             self.__mirrorPF.set(0)
 
@@ -723,6 +799,46 @@ class PictureToCode:
                                        variable=self.__invertPFBG
                                        )
             self.__invertPFBGCheck.pack(side=RIGHT, anchor=E, fill=X)
+
+
+            self.__reduceBG = IntVar()
+            self.__reduceBG.set(0)
+            """
+            self.__reduceBGCheck = Checkbutton(self.__cBoxFrame2,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("reduceBG"),
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       font=self.__smallFont,
+                                       variable=self.__reduceBG
+                                       )
+            self.__reduceBGCheck.pack(side=LEFT, anchor=E, fill=X)
+            """
+
+            self.__cutBG = IntVar()
+            self.__cutBG.set(0)
+
+            self.__cutBGCheck = Checkbutton(self.__cBoxFrame2,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("oneColorBG"),
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       font=self.__smallFont,
+                                       variable=self.__cutBG
+                                       )
+            self.__cutBGCheck.pack(side=LEFT, anchor=E, fill=X)
+
+
+            self.__imgColor = self.__loader.io.getImg("picker", None)
+            self.__oneColor = "$00"
+
+            self.__colorButton = Button(
+                self.__cBoxFrame2, width=9999999,
+                bg="#000000",
+                image = self.__imgColor,
+                command = self.__getColor,
+                )
+            self.__colorButton.pack_propagate(False)
+            self.__colorButton.pack(side=RIGHT, fill=BOTH)
+
 
             self.__EntryFrame = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"))
             self.__EntryFrame.config(
@@ -836,6 +952,16 @@ class PictureToCode:
         self.__imageFrame2.pack(side=LEFT, anchor=W, fill=Y)
 
         self.blackAndWhite()
+
+    def __getColor(self):
+        from tkinter import colorchooser
+
+        color_code = colorchooser.askcolor(title="Choose color")
+        self.__colorButton.config(bg=color_code[1].replace("$", "#"))
+
+        self.__oneColor = self.__loader.colorDict.getClosestTIAColor(int(color_code[0][0]), int(color_code[0][2]), int(color_code[0][1]))
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def testingThread(self):
         from threading import Thread
