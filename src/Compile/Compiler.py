@@ -40,6 +40,7 @@ class Compiler:
                                                                                                  .replace("DSPHEIGHT", str(self.__h))
                                                                                                  .replace("DSPINDEX", "0"))
 
+
         self.__kernelText = (self.__kernelText.replace("!!!OVERSCAN_BANK2!!!", self.__overScan).replace("!!!ENTER_BANK2!!!", self.__init)
                             .replace("!!!SCREENTOP_BANK2!!!", self.__engine).replace("!!!USER_DATA_BANK2!!!", self.__pictureData)
                              .replace("!!!TV!!!", "NTSC")
@@ -232,8 +233,12 @@ class Compiler:
         self.changePointerToZero(self.__banks[0])
 
         if self.__musicMode != "overflow":
-            self.doSave("temp/")
-            assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+            self.doSave(self.__pathToSave)
+            if self.__pathToSave!="temp/":
+                delete = True
+            else:
+                delete = False
+            assembler = Assembler(self.__loader, self.__pathToSave, True, "NTSC", delete)
         else:
             self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
 

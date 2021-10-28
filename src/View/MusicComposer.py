@@ -420,7 +420,18 @@ class MusicComposer:
 
         self.__setBankLabelText([0,0])
 
+        self.__musicROM = IntVar()
+        self.__musicROM.set(0)
 
+        self.__saveItAsMusicRom =  Checkbutton(self.__bottomFrame1, variable=self.__musicROM,
+                text=self.__dictionaries.getWordFromCurrentLanguage("generateMusicRom")+"   ",
+                bg=self.__colors.getColor("window"),
+                fg=self.__colors.getColor("font"),
+                font=self.__smallFont, justify=LEFT,
+                activebackground=self.__colors.getColor("highLight"))
+
+        self.__saveItAsMusicRom.pack_propagate(False)
+        self.__saveItAsMusicRom.pack(side=RIGHT, fill=BOTH, anchor=N)
 
         self.__bottomFrame2 = Frame(self.__bottomFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5),
@@ -473,7 +484,7 @@ class MusicComposer:
 
         from os import walk
 
-        self.__listItems = ["*Fortari logo*"]
+        self.__listItems = ["*Fortari Logo*"]
         for root, dirs, filenames in walk(self.__loader.mainWindow.projectPath + "/64px/"):
             for filename in filenames:
                 self.__listItems.append(".".join(filename.split(".")[:-1]).split("/")[-1])
@@ -998,11 +1009,27 @@ class MusicComposer:
             int(self.__removePercuss.get()), self.__maxChannels, "NTSC")
         #self.testPrinting(extracted)
 
+        if self.__listItems[self.__listBox.curselection()[0]] == "*Fortari Logo*":
+            self.__picturePath = None
+        else:
+            self.__picturePath = (self.__loader.mainWindow.projectPath
+                                  +"/64px/"+self.__listItems[self.__listBox.curselection()[0]]
+                                  +".asm")
+
         if self.__picturePath == None:
             pictureData = [27, 27, 0]
+        else:
+            textLoaded = open(self.__picturePath, "r").read().split("pic64px")[2]
+            lines = textLoaded.count("BYTE")
+            pictureData = [lines, lines, 0]
+
+        if self.__musicROM.get() == 0:
+            path = "temp/"
+        else:
+            path = "generatedMusicROMs/"
 
         from Compiler import Compiler
-        C = Compiler(self.__loader, "common", "music", [self.__picturePath, "temp/", True, self.__artistName.get(),
+        C = Compiler(self.__loader, "common", "music", [self.__picturePath, path, True, self.__artistName.get(),
                                                         self.__songTitle.get(), extracted, self.__banks,
                                                         self.__variables, self.__colorConstans, pictureData])
 

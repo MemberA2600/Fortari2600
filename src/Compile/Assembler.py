@@ -584,7 +584,6 @@ class Assembler():
             newNum = hex(baseNumber+int(num)).replace("0x", "$")
             raw = raw.replace(base, newNum).replace(num, "")
         else:
-            #print(raw)
             base = re.findall(r'\d+[+|-]]', raw)[0]
             baseNumber = int(base[:-1])
             newNum = str(baseNumber+int(num))
@@ -667,6 +666,15 @@ class Assembler():
         import os
         base = self.projectPath.split("/")[-2]
         counter = 1
+        name = self.generateName(base, counter)
+
+        while os.path.exists(self.projectPath+"bin/"+name+".bin"):
+            counter+=1
+            name = self.generateName(base, counter)
+
+        return(name)
+
+        """
         for root, dirs, files in os.walk(self.projectPath+"bin/"):
             for file in files:
                 num = ""
@@ -679,6 +687,15 @@ class Assembler():
                 else:
                     return(base+"_"+self.__tv+"_"+num)
             return(base+"_"+self.__tv+"_0001")
+        """
+
+    def generateName(self, base, counter):
+        if (len(str(counter))) < 4:
+            num = (4 - len(str(counter))) * "0" + str(counter)
+        else:
+            num = str(counter)
+
+        return(base+"_"+self.__tv+"_"+num)
 
     def compile(self, path):
         import re

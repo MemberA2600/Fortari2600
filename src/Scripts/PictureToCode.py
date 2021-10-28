@@ -273,7 +273,7 @@ class PictureToCode:
             pic64px_PFColor += ("\tBYTE\t#" + pfColors + "\n")
 
             if canCutBG<24 and self.__cutBG.get()==1:
-                pic64px_BGColor += ("\tBYTE\t#"+self.__oneColor+"\n")
+                pic64px_BGColor += ("\tBYTE\t#"+self.__oneColor.get()+"\n")
             else:
                 pic64px_BGColor += ("\tBYTE\t#" + bg + "\n")
 
@@ -783,7 +783,7 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("invertPF"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
-                                       font=self.__smallFont,
+                                       font=self.__smallFont2,
                                        variable=self.__mirrorPF
                                        )
             self.__mirrorPFCheck.pack(side=LEFT, anchor=E, fill=X)
@@ -795,7 +795,7 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("invertColors"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
-                                       font=self.__smallFont,
+                                       font=self.__smallFont2,
                                        variable=self.__invertPFBG
                                        )
             self.__invertPFBGCheck.pack(side=RIGHT, anchor=E, fill=X)
@@ -821,14 +821,26 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("oneColorBG"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
-                                       font=self.__smallFont,
+                                       font=self.__smallFont2,
                                        variable=self.__cutBG
                                        )
             self.__cutBGCheck.pack(side=LEFT, anchor=E, fill=X)
 
 
             self.__imgColor = self.__loader.io.getImg("picker", None)
-            self.__oneColor = "$00"
+            self.__oneColor = StringVar()
+            self.__oneColor.set("$00")
+
+            self.__oneColorEntry = Entry(self.__cBoxFrame2,
+                  bg="#000000",
+                  fg="#646464",
+                  textvariable=self.__oneColor, width=3,
+                  font=self.__smallFont
+                  )
+
+            self.__oneColorEntry.pack(side=LEFT, fill=Y)
+            self.__oneColorEntry.bind("<KeyRelease>", self.__checkHEX)
+
 
             self.__colorButton = Button(
                 self.__cBoxFrame2, width=9999999,
@@ -953,13 +965,39 @@ class PictureToCode:
 
         self.blackAndWhite()
 
+    def __checkHEX(self, event):
+        if len(self.__oneColor.get()) > 3:
+            self.__oneColor.set(self.__oneColor.get()[:3])
+
+        try:
+            self.setEntryColor()
+        except:
+            self.__oneColorEntry.config(
+                bg = self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+
+    def setEntryColor(self):
+        color1 = self.__oneColor.get()
+        bg = self.__loader.colorDict.getHEXValueFromTIA(color1)
+        if int("0x" + color1[2], 16) > 8:
+            color2 = color1[:2] + hex(int("0x" + color1[2], 16) - 4).replace("0x", "")
+        else:
+            color2 = color1[:2] + hex(int("0x" + color1[2], 16) + 4).replace("0x", "")
+        self.__oneColorEntry.config(
+            bg=bg,
+            fg=self.__loader.colorDict.getHEXValueFromTIA(color2)
+        )
+
     def __getColor(self):
         from tkinter import colorchooser
 
         color_code = colorchooser.askcolor(title="Choose color")
         self.__colorButton.config(bg=color_code[1].replace("$", "#"))
 
-        self.__oneColor = self.__loader.colorDict.getClosestTIAColor(int(color_code[0][0]), int(color_code[0][2]), int(color_code[0][1]))
+        self.__oneColor.set(self.__loader.colorDict.getClosestTIAColor(int(color_code[0][0]), int(color_code[0][2]), int(color_code[0][1])))
+        self.setEntryColor()
+
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 

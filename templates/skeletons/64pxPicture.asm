@@ -40,6 +40,8 @@ pic64px_KernelStart
 	sleep	3		;   (34)	
 	STA	RESP1		; 3 (37) Set the X pozition of sprites.
 
+	DEY
+
 	LDA	counter		; 3 (6)
 	AND	#%00000001	; 2 (8)
 	CMP	#%00000001	; 2 (10)
@@ -52,7 +54,7 @@ pic64px_OddFrameJMP
 
 pic64px_OddFrame
 	_sleep	42
-	sleep	2
+*	sleep	2
 
 	LDA	#0
 	STA	GRP0
@@ -129,7 +131,7 @@ pic64px_OddFrame_Line2
 
 pic64px_EvenFrame
 	_sleep	30
-	sleep	5
+	sleep	3
 
 	LDA	#0
 	STA	GRP0
