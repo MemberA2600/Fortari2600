@@ -44,9 +44,18 @@ class TiaScreens:
 
         self.allData = []
 
+        self.screenBuffer = None
         screen = [deepcopy(self.__screen)]
         for n in range(0, 4):
             self.allData.append(deepcopy(screen))
+
+    def copyScreen(self):
+        from copy import deepcopy
+        self.screenBuffer = deepcopy(self.allData[self.currentChannel-1][self.currentScreen])
+
+    def pasteScreen(self):
+        from copy import deepcopy
+        self.allData[self.currentChannel-1][self.currentScreen] = deepcopy(self.screenBuffer)
 
     def insertBefore(self):
         self.__insert(self.currentScreen)
@@ -825,3 +834,11 @@ class TiaScreens:
                         return(True)
 
         return(False)
+
+    def isThisScreenEmpty(self):
+        for X in range(0,48):
+            note = self.allData[self.currentChannel-1][self.currentScreen]["Y"][X]
+            if note != -1:
+               return(False)
+
+        return(True)

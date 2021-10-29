@@ -1,5 +1,6 @@
 from tkinter.filedialog import *
 from tkinter import messagebox
+from tkinter.simpledialog import *
 
 class FileDialogs:
 
@@ -7,6 +8,11 @@ class FileDialogs:
         self.__dicts = dict
         self.__config = config
         self.__loader = loader
+
+    def askForInteger(self, title, p):
+
+        return askinteger(self.__dicts.getWordFromCurrentLanguage(title), self.__dicts.getWordFromCurrentLanguage(p))
+
 
     def askYesOrNo(self, title, text):
         mbox = messagebox.askyesno(self.__dicts.getWordFromCurrentLanguage(title),

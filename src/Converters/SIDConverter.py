@@ -15,10 +15,24 @@ class SIDConverter:
         sid = SID()
         midi = MIDI()
 
+        from random import randint
+
+        r = randint(0, 1000)
+        if r < 995:
+            self.__loader.soundPlayer.playSound("Ask")
+        else:
+            self.__loader.soundPlayer.playSound("Probe")
+
+        sid.set_options(seconds=self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds"))
         chirp = sid.to_rchirp(path)
+        try:
+            from os import remove
+            remove("temp/temp.mid")
+        except:
+            pass
 
         midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
-        midiConverter = MidiConverter("temp/temp.mid", self.__loader, removePercuss, maxChannels, 7)
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, removePercuss, maxChannels, 8)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 
         self.__loader.collector.restoreSystemPath()

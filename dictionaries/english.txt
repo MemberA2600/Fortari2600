@@ -193,3 +193,5 @@ invertColors=Invert PF/BG colors
 reduceBG=Reduce BG Colors
 oneColorBG=Possible one color BG reduction
 generateMusicRom=Save It to MusicROM folder
+askForSomething=Value Needed
+askForSeconds=Enter the desired recording length in seconds!

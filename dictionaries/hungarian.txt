@@ -191,3 +191,5 @@ invertColors=PF/BG színek felcserélése
 reduceBG=Háttér koncentrálása
 oneColorBG=Lehetséges BG redukálás egy színre
 generateMusicRom=Mentése a Zenei ROM mappába
+askForSomething=Értékmegadás Szükséges
+askForSeconds=Add meg a rögzítendõ hosszt másodpercben!

@@ -126,7 +126,7 @@ class MusicComposer:
                     self.__fadeOutSetter.enable()
                     self.__frameLenSetter.enable()
                     self.__correctorSetter.enable()
-                    self.__maxChannelsSetter.enable()
+                    #self.__maxChannelsSetter.enable()
 
                     self.__IOButtons()
                     if self.reset == True:
@@ -159,7 +159,16 @@ class MusicComposer:
         self.__saveButton.changeState(False)
         self.__testingButton.changeState(False)
         self.__summaButton.changeState(False)
+        self.__copyButton.changeState(False)
+        self.__pasteButton.changeState(False)
+        self.__eraseButton.changeState(False)
 
+        if self.__tiaScreens.isThisScreenEmpty() == False:
+            self.__eraseButton.changeState(True)
+            self.__copyButton.changeState(True)
+
+        if self.__tiaScreens.screenBuffer != None:
+            self.__pasteButton.changeState(True)
 
         if (self.__io.checkIfValidFileName(self.__songTitle.get()) == True and
             self.__io.checkIfValidFileName(self.__artistName.get())) and self.__errorSum() == 0:
@@ -426,7 +435,25 @@ class MusicComposer:
         self.__musicROM = IntVar()
         self.__musicROM.set(0)
 
-        self.__saveItAsMusicRom =  Checkbutton(self.__bottomFrame1, variable=self.__musicROM,
+        self.__buttonFrame2 = Frame(self.__bottomFrame1,
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                    width=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__buttonFrame2.pack_propagate(False)
+        self.__buttonFrame2.pack(side=TOP, fill=X)
+
+        self.__eraseButton = MCButton(self.__loader, self.__buttonFrame2, "erase", w, self.__eraseScreen)
+        self.__pasteButton = MCButton(self.__loader, self.__buttonFrame2, "paste", w, self.__pasteScreen)
+        self.__copyButton = MCButton(self.__loader, self.__buttonFrame2, "copy", w, self.__copyScreen)
+
+        self.__buttonFrame3 = Frame(self.__bottomFrame1,
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                    width=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__buttonFrame3.pack_propagate(False)
+        self.__buttonFrame3.pack(side=TOP, fill=X)
+
+        self.__saveItAsMusicRom =  Checkbutton(self.__buttonFrame3, variable=self.__musicROM,
                 text=self.__dictionaries.getWordFromCurrentLanguage("generateMusicRom")+"   ",
                 bg=self.__colors.getColor("window"),
                 fg=self.__colors.getColor("font"),
@@ -535,74 +562,6 @@ class MusicComposer:
                                            self.__bankEntries, [self.__artistName, self.__songTitle]
                                            )
 
-        """
-        self.__bank3 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
-                                           self.__banks, 2, self.focusIn, self.focusOut,
-                                           self.__normalFont, self.__errorCounters,
-                                           self.__bankEntries, [self.__artistName, self.__songTitle]
-                                           )
-
-        self.__bank4 = MusicBankFrameEntry(self.__loader, self.__theTwoBanksFrame, self.__topLevel,
-                                           self.__banks, 3, self.focusIn, self.focusOut,
-                                           self.__normalFont, self.__errorCounters,
-                                           self.__bankEntries, [self.__artistName, self.__songTitle]
-                                           )
-        """
-        """
-        self.__theTwoBanksFrame1 = Frame(self.__theTwoBanksFrame,
-                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
-                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.03),
-                                   bg=self.__colors.getColor("window"))
-        self.__theTwoBanksFrame1.pack_propagate(False)
-        self.__theTwoBanksFrame1.pack(side=LEFT, fill=Y)
-
-        self.__theTwoBanksFrame2 = Frame(self.__theTwoBanksFrame,
-                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
-                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.02),
-                                   bg=self.__colors.getColor("window"))
-        self.__theTwoBanksFrame2.pack_propagate(False)
-        self.__theTwoBanksFrame2.pack(side=LEFT, fill=Y)
-
-        self.__bankEntry1 = StringVar()
-        self.__bankEntry1.set(str(self.__banks[0]))
-
-        self.__theTwoBanksEntry1 = Entry(self.__theTwoBanksFrame1, name="bank1",
-                                        bg=self.__colors.getColor("boxBackNormal"),
-                                        fg=self.__colors.getColor("boxFontNormal"),
-                                        width=9999999,
-                                        textvariable=self.__bankEntry1,
-                                        justify=CENTER,
-                                        font=self.__normalFont
-                                        )
-
-        self.__theTwoBanksEntry1.pack_propagate(False)
-        self.__theTwoBanksEntry1.pack(fill=BOTH)
-
-        self.__theTwoBanksEntry1.bind("<FocusIn>", self.focusIn)
-        self.__theTwoBanksEntry1.bind("<FocusOut>", self.__checkBank)
-        self.__theTwoBanksEntry1.bind("<KeyRelease>", self.__checkBank)
-
-        self.__bankEntry2 = StringVar()
-        self.__bankEntry2.set(str(self.__banks[1]))
-
-        self.__theTwoBanksEntry2 = Entry(self.__theTwoBanksFrame2, name="bank2",
-                                        bg=self.__colors.getColor("boxBackNormal"),
-                                        fg=self.__colors.getColor("boxFontNormal"),
-                                        width=9999999,
-                                        textvariable=self.__bankEntry2,
-                                        justify=CENTER,
-                                        font=self.__normalFont
-                                        )
-
-        self.__theTwoBanksEntry2.pack_propagate(False)
-        self.__theTwoBanksEntry2.pack(fill=BOTH)
-
-        self.__theTwoBanksEntry2.bind("<FocusIn>", self.focusIn)
-        self.__theTwoBanksEntry2.bind("<FocusOut>", self.__checkBank)
-        self.__theTwoBanksEntry2.bind("<KeyRelease>", self.__checkBank)
-        """
-
-
         self.__colorTitle = Label(self.__bottomFrame2Third2,
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
@@ -637,10 +596,10 @@ class MusicComposer:
         from HexEntry import HexEntry
 
         self.__frontColor = HexEntry(self.__loader, self.__theTwoColorsFrame1, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 0)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 0, self.focusIn, self.focusOut)
 
         self.__backColor = HexEntry(self.__loader, self.__theTwoColorsFrame2, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 1)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 1, self.focusIn, self.focusOut)
 
         self.__colorTitle = Label(self.__bottomFrame2Third2,
                               bg=self.__colors.getColor("window"),
@@ -660,7 +619,7 @@ class MusicComposer:
         self.__frameColorFrame.pack(side=LEFT, fill=Y)
 
         self.__frameColor = HexEntry(self.__loader, self.__frameColorFrame, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 2)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 2, self.focusIn, self.focusOut)
 
 
         self.__runningThreads -= 1
@@ -711,13 +670,13 @@ class MusicComposer:
         self.__visualizerColorsFrame3.pack(side=LEFT, fill=Y)
 
         self.__visualColor1 = HexEntry(self.__loader, self.__visualizerColorsFrame1, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 3)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 3, self.focusIn, self.focusOut)
 
         self.__visualColor2 = HexEntry(self.__loader, self.__visualizerColorsFrame2, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 4)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 4, self.focusIn, self.focusOut)
 
         self.__visualColor3 = HexEntry(self.__loader, self.__visualizerColorsFrame3, self.__colors,
-                              self.__colorDict, self.__normalFont, self.__colorConstans, 5)
+                              self.__colorDict, self.__normalFont, self.__colorConstans, 5, self.focusIn, self.focusOut)
 
         self.__importMediaTitle = Label(self.__bottomFrame2Third3,
                               bg=self.__colors.getColor("window"),
@@ -755,41 +714,40 @@ class MusicComposer:
         self.__veryBottomFrame.pack_propagate(False)
         self.__veryBottomFrame.pack(side=TOP, fill=BOTH)
 
-        self.__veryBottomFrame1 = Frame(self.__veryBottomFrame,
-                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
-                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
-                                   bg=self.__colors.getColor("window"))
-        self.__veryBottomFrame1.pack_propagate(False)
-        self.__veryBottomFrame1.pack(side=LEFT, fill=Y)
 
-        self.__veryBottomFrame2 = Frame(self.__veryBottomFrame,
-                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.16),
-                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
-                                   bg=self.__colors.getColor("window"))
-        self.__veryBottomFrame2.pack_propagate(False)
-        self.__veryBottomFrame2.pack(side=LEFT, fill=Y)
-
-
-        self.__removerPercussBox =  Checkbutton(self.__veryBottomFrame2, variable=self.__removePercuss,
+        self.__removerPercussBox =  Checkbutton(self.__veryBottomFrame, variable=self.__removePercuss,
                 text=self.__dictionaries.getWordFromCurrentLanguage("cutPerc"),
                 bg=self.__colors.getColor("window"),
                 fg=self.__colors.getColor("font"),
-                font=self.__tinyFont2, justify=LEFT,
+                font=self.__smallFont, justify=LEFT,
                 command=self.changedSetToYes,
                 activebackground=self.__colors.getColor("highLight"))
 
 
         self.__removerPercussBox.pack_propagate(False)
-        self.__removerPercussBox.pack(side=TOP, fill=X, anchor=E)
+        self.__removerPercussBox.pack(side=TOP, fill=BOTH, anchor=E)
 
-        from FrameLabelEntryUpDown import FrameLabelEntryUpDown
+        #from FrameLabelEntryUpDown import FrameLabelEntryUpDown
 
-        self.__maxChannelsSetter = FrameLabelEntryUpDown(self.__loader, self.__veryBottomFrame1,
-                                                     round(self.__topLevel.getTopLevelDimensions()[0] * 0.15),
-                                                     round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
-                                                     "maxChannels", 1, 999, self.__tinyFont3, self.setFrameLen, self.__maxChannels, self.__normalFont,
-                                                     "maxChannels", self.__errorCounters, self.focusIn, self.focusOut
-                                                     )
+        #self.__maxChannelsSetter = FrameLabelEntryUpDown(self.__loader, self.__veryBottomFrame1,
+        #                                             round(self.__topLevel.getTopLevelDimensions()[0] * 0.15),
+        #                                             round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
+        #                                             "maxChannels", 1, 999, self.__tinyFont3, self.setFrameLen, self.__maxChannels, self.__normalFont,
+        #                                             "maxChannels", self.__errorCounters, self.focusIn, self.focusOut
+        #)
+
+    def __eraseScreen(self):
+        for X in range(0,self.__tiaScreens.numOfFieldsW):
+            self.eraseRow(X)
+
+    def __copyScreen(self):
+        self.__tiaScreens.copyScreen()
+
+    def __pasteScreen(self):
+        self.__tiaScreens.pasteScreen()
+        self.forceShit = True
+        self.reColorAll()
+
     def setMaxChannels(self, value):
         self.__maxChannels = int(value)
 
@@ -894,7 +852,7 @@ class MusicComposer:
             try:
                 converted, songTitle = functions[extension](fileName)
             except Exception as e:
-                errorText = str(e)
+               errorText = str(e)
         else:
             for func in functions.keys():
                 try:
@@ -939,7 +897,7 @@ class MusicComposer:
             self.__soundPlayer.playSound("Success")
 
 
-        self.changed = True
+        self.changed = False
         self.forceShit = True
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
@@ -1091,7 +1049,7 @@ class MusicComposer:
 
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
-
+        self.changed = False
         self.__setBankLabelText(numOfBanks.bytes)
         self.__soundPlayer.playSound("Success")
 
@@ -1145,7 +1103,7 @@ class MusicComposer:
         self.__frameLenSetter.setValue(numbers[6])
         self.__removePercuss.set(int(numbers[7]))
         self.__maxChannels = int(numbers[8])
-        self.__maxChannelsSetter.setValue(numbers[8])
+        #self.__maxChannelsSetter.setValue(numbers[8])
 
         self.__artistName.set(lines[0])
         self.__songTitle.set(lines[1])

@@ -19,6 +19,7 @@ MusicIndicator8 = $ce
 	STA	WSYNC		; (76)
 	STA	HMCLR		; 3
 	STA	COLUBK		; 3 (6)
+	STA	COLUP0
 	LDA	#0		; 2 (8)
 	STA	PF0		; 3 (11)
 	STA	PF1		; 3 (14)
@@ -27,7 +28,7 @@ MusicIndicator8 = $ce
 	STA	GRP1		; 3 (23)
 	STA	VDELP0		; 3 (26)
 	STA	VDELP1		; 3 (29)
-	STA	COLUP0
+
 
 	LDA	#%00010000
 	STA	NUSIZ0

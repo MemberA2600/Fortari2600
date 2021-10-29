@@ -718,6 +718,13 @@ class Assembler():
 
         name = self.getNextName()
 
+        import os
+        try:
+           os.makedirs(self.projectPath + "/asm_log")
+           os.makedirs(self.projectPath + "/bin")
+        except:
+            pass
+
         file = open(self.projectPath+"asm_log/"+name+".txt", "w")
         fileBin = open(self.projectPath+"bin/"+name+".bin", "wb")
 

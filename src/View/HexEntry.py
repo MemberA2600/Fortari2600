@@ -2,7 +2,7 @@ from tkinter import *
 
 class HexEntry:
 
-    def __init__(self, loader, frame, colors, colorDict, font, colorConstans, num):
+    def __init__(self, loader, frame, colors, colorDict, font, colorConstans, num, focusIn, focusOut):
 
         self.__textVar = StringVar()
         self.__textVar.set(colorConstans[num])
@@ -28,6 +28,9 @@ class HexEntry:
 
         self.__entry.bind("<FocusOut>", self.__checkColorEntry)
         self.__entry.bind("<KeyRelease>", self.__checkColorEntry)
+
+        self.__entry.bind("<FocusIn>", focusIn)
+        self.__entry.bind("<FocusOut>", focusOut)
 
         self.setColorOfEntry()
 

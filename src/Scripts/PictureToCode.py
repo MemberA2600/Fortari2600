@@ -268,8 +268,9 @@ class PictureToCode:
                                                 spriteData[pixelNum:(pixelNum+8)]
                                                 +"\n"
                                                 )
-            pic64px_Color += ("\tBYTE\t#"+ spriteColor+"\n")
             pic64px_PF += ("\tBYTE\t#%"+ pfData+"\n")
+
+            pic64px_Color += ("\tBYTE\t#"+ spriteColor+"\n")
             pic64px_PFColor += ("\tBYTE\t#" + pfColors + "\n")
 
             if canCutBG<24 and self.__cutBG.get()==1:
@@ -354,7 +355,7 @@ class PictureToCode:
 
 
             if (sums[item]["domiTIA"]) == None:
-                (sums[item]["domiTIA"]) = "$00"
+                (sums[item]["domiTIA"]) = self.__oneColor.get()
 
             pfError = 0
             for X in range(0,64,4):
@@ -389,7 +390,7 @@ class PictureToCode:
                 notUsed.remove(key)
                 hasPF = False
 
-                lineStructure["playfield"]["color"] = "$00"
+                lineStructure["playfield"]["color"] = self.__oneColor.get()
                 lineStructure["playfield"]["pixels1"] = "0"*32
                 lineStructure["playfield"]["pixels2"] = "0"*32
                 assign["playfield"] = key
@@ -553,11 +554,11 @@ class PictureToCode:
             lineStructure["playfield"]["pixels"] = newPF2
 
             while ((lineStructure["playfield"]["color"] == lineStructure["sprites"]["color"] and
-                    lineStructure["sprites"]["color"] != "$00") or
+                    lineStructure["sprites"]["color"] != self.__oneColor.get()) or
                    (lineStructure["playfield"]["color"] == lineStructure["background"] and lineStructure[
-                       "background"] != "$00") or
+                       "background"] != self.__oneColor.get()) or
                    (lineStructure["sprites"]["color"] == lineStructure["background"] and lineStructure[
-                       "background"] != "$00")):
+                       "background"] != self.__oneColor.get())):
 
                 lineStructure["playfield"]["color"], lineStructure["sprites"]["color"] = self.colorNoEqual(
                     lineStructure["playfield"]["color"], lineStructure["sprites"]["color"],
@@ -575,7 +576,7 @@ class PictureToCode:
 
     def colorNoEqual(self, color1, color2, assignVal1, assignVal2):
         while (
-                color1 == color2 and color1 != "$00"
+                color1 == color2 and color1 != self.__oneColor.get()
         ):
 
             currentVal1 = int("0x" + color1[2], 16)
@@ -670,7 +671,7 @@ class PictureToCode:
                     try:
                         pfC = self.bgColors[-1]
                     except:
-                        pfC="$00"
+                        pfC = self.__oneColor.get()
 
                 pfNum = int(pfC.replace("$", "0x"), 16)
 
@@ -681,7 +682,7 @@ class PictureToCode:
                     try:
                         bgC = self.pfColors[-1]
                     except:
-                        bgC="$00"
+                        bgC = self.__oneColor.get()
 
                 bgNum = int(bgC.replace("$", "0x"), 16)
 

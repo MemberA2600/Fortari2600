@@ -37,68 +37,36 @@ pic64px_KernelStart
 	sleep 3
 
 	STA	RESP0		; 3 (32)
-	sleep	3		;   (35)	
-	STA	RESP1		; 3 (38) Set the X pozition of sprites.
+	sleep	3		;   (34)	
+	STA	RESP1		; 3 (37) Set the X pozition of sprites.
 
-	DEY			; 2 (40)
+	DEY
 
-	LDA	counter		; 3 (43)
-	AND	#%00000001	; 2 (45)
-	CMP	#%00000001	; 2 (47)
-	BNE	pic64px_OddFrameJMP  ; 2 (49)
-	JMP	pic64px_EvenFrame ; 3 (52)	
+	LDA	counter		; 3 (6)
+	AND	#%00000001	; 2 (8)
+	CMP	#%00000001	; 2 (10)
+	BNE	pic64px_OddFrameJMP  ; 2 (12)
+	JMP	pic64px_EvenFrame ; 3 (15)	
 pic64px_OddFrameJMP
-	JMP	pic64px_OddFrame  ; 3 (52)
+	JMP	pic64px_OddFrame  ; 3 (15)
 
 	align	256
 
 pic64px_OddFrame
-	STA	WSYNC
-	STA	WSYNC
+	_sleep	42
+*	sleep	2
 
-	LDA	#0				; 2
-	STA	GRP0				; 3 (5)
-	STA	GRP1				; 3 (8)
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
 
-	LAX	pic64px_06,y			; 4 (12)
-		
-	LDA	#$00				; 2 (14)
-	STA 	HMP0				; 3 (17) 
-	LDA	#$20				; 2 (19)
-	STA 	HMP1				; 3 (22)
-	LDA	pic64px_00,y			; 4 (26)
-	STA	GRP0				; 3 (29)
-	LDA	pic64px_02,y			; 4 (33)
-	STA	GRP1				; 3 (36)
+	LAX	pic64px_06,y
 
-	STA	WSYNC
-pic64px_OddFrame_LineDummy
-	STA	HMOVE				; 3 
-
-	sleep	7
-						; 3 (10)	
-	LDA	pic64px_PF,y			; 4 (14)
-	STA	PF2				; 3 (17)
-	LDA	frameColor
-	sleep	2
-	STA	COLUPF				; 3 (24)
-	STA	COLUP0				; 3 (31)
-	STA	COLUP1				; 3 (34)
-	
-	LDA	pic64px_00,y			; 4 (38)
-	STA	GRP0				; 3 (41)
-	LDA	pic64px_02,y			; 4 (45)
-	STA	GRP1				; 3 (48)
-
-	LDA	pic64px_04,y			; 4 (52)
-	STA	GRP0				; 3 (55)
-
-	STX	GRP1				; 3 (58)
-
-	LDA	#$80				; 2 (67)
-	STA 	HMP0				; 3 (70)
-	STA 	HMP1				; 3 (73)
-	JMP	pic64px_OddFrame_Line2
+	LDA	#$00				; 2
+	STA 	HMP0				; 3 
+	LDA	#$20				; 2
+	STA 	HMP1				; 3 
+	STA 	WSYNC				; 76
 
 pic64px_OddFrame_Line1
 	STA	HMOVE				; 3 
@@ -124,6 +92,8 @@ pic64px_OddFrame_Line1
 
 	STX	GRP1				; 3 (58)
 
+
+						; (65)
 	LDA	#$80				; 2 (67)
 	STA 	HMP0				; 3 (70)
 	STA 	HMP1				; 3 (73)
@@ -139,7 +109,6 @@ pic64px_OddFrame_Line2
 
 	DEY
 	LAX	pic64px_06,y			; 4
-
 	INY
 
 	sleep	12
@@ -168,28 +137,17 @@ pic64px_EvenFrame
 	STA	GRP0
 	STA	GRP1
 
+	LDA	pic64px_PFColor,y		
+	STA	COLUPF				
+
 	LAX	pic64px_07,y
 	TXS
 	LAX	pic64px_05,y
 
-	LDA	#$00				
+	LDA	#$80				
 	STA 	HMP0				
-	LDA	#$20				
-	STA 	HMP1
-
-pic64px_EvenFrame_LineDummy	
-	STA 	WSYNC
-	STA	HMOVE
-	_sleep	50
-	sleep	3
-
-	LDA	pic64px_PFColor,y		
-	STA	COLUPF	
-
-	LDA	#$00				; 2 
-	STA 	HMP0				; 3 
-	STA 	HMP1				; 3 
-	JMP	pic64px_EvenFrame_Line2
+	LDA	#$A0				
+	STA 	HMP1	
 
 pic64px_EvenFrame_Line1			
 	STA 	WSYNC				; 76
