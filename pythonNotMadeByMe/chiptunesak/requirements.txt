@@ -1,0 +1,10 @@
+matplotlib
+mido
+more-itertools
+numpy
+parameterized
+
+# Purely for developing
+flake8
+sphinx
+twine

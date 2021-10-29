@@ -1,0 +1,17 @@
+.env
+*.doctree
+*.code-workspace
+venv/
+.vscode/
+.idea/
+!.vscode/settings.json
+__pycache__/
+/htmlcov/*
+/docs/_build/
+/examples/sid/
+/examples/data/
+/tests/sid/
+/tests/data/
+/tests/temp/
+/chiptunesak.egg-info/
+

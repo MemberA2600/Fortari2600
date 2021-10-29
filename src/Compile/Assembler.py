@@ -10,14 +10,16 @@ class Assembler():
         self.projectPath = projectPath
         self.__tv = tv
 
+        self.__testIt = testIt
+
         self.compile(projectPath+"source.asm")
 
         for num in self.freeBytes:
             if self.freeBytes[num] < 0:
-                testIt = False
+                self.__testIt = False
                 break
 
-        if testIt == True:
+        if self.__testIt == True:
             path = "emulator/32-bit/Stella.exe"
             if __loader.config.getOSbits() == "64bit":
                 path.replace("32", "64")
@@ -742,6 +744,7 @@ class Assembler():
                     " ".join(codeline.raw)+" ("+str(codeline.getAddressInHex())
                 )"""
                 print(" ".join(codeline.raw))
+                self.__testIt = False
 
             for section in sections:
                 if sections[section][1:] == codeline.getAddressInHex():

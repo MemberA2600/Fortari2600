@@ -2,21 +2,947 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/applications/SID2MIDI/sid2midi.exe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/logs/2021-10-29_130043.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/64px/Monkey.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_Main_Title_Theme_bank0_double.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_Main_Title_Theme_bank1_double.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_bank0_overflow.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_bank1_overflow.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/NAAA_-_Commando.a26" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/NAAA_-_Commando_bank0_overflow.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/projects/zerg/musics/NAAA_-_Commando_bank1_overflow.asm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/.dockerignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/Makefile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/_________setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/activate.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/byte_util.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/c128_basic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/chirp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/constants.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/emulator_6502.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/errors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/gen_prg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/goat_tracker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/key.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/lilypond.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/mchirp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/midi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/ml64.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/one_pass_compress.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/rchirp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/sid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/testing_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/thin_c64_emulator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/deactivate.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/GT_To_MIDI.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/c128_2_Voice_From_Manual.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/c128_3_Voice_Example.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/lechuck.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/lilypondClipExample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/lilypondExample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/masterOfTheLamps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/mercantile.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/temp/.gitkeep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/tripletExample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/ultima.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/examples/waltzExample.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/GeneralMidi.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/downloadTestResources.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/BDBass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/BDHiHat.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/BDSnare.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Bass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Bass2.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Bass3.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/BassGuitar.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Accordion.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Calliope.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Drum.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Flute.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Guitar.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Harpsichord.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Organ.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Piano.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Trumpet.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/C128Xylophone.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Chords.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Drum1.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/ElecFlute.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/ElecPiano.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/FastKoto.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/FilterLong.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/FiterFastAttack.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Flute.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/FluteVibro.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/HarpsiSolo.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Harpsichord.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/HatPlusRing.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/HeavyBass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Klapy.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Koto.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/LeChuckBass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/LeChuckLead.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Lead.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Lead2.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/LongGuitar.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/LongLead.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/LoudKoto.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/MajorChord.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/MinorChord.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/MixedChord.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/MuteGuitar.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Ocarina.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/PanPipes.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Piew.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/PlukViolin.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/PulseLead.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/PulseMajorArp.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/PulseMinorArp.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/RhythmGuitar.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Sawtooth.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SawtoothLead.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SawtoothLegato.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SimplePulse.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SimpleSawtooth.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SimpleTriangle.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SlepBass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Snare.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SnareDrum.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SnareFilter.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SoftBass.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/SpaceySound.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/StarArp.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Stopa.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Synchro.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Tom.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/WeirdFlute.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/WeirdFlute2.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/WeirdSound.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/WeirdSound2.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Werbel.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/gtInstruments/Whistle.ins" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/logoLarge.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/logoSmall.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/res/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/sandbox/PlotTempo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/sandbox/musicForHappel.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/sandbox/sidFreqs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/sandbox/sidImportDevTester.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/scripts/BWV_784_buggy.prg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/scripts/demo.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/scripts/pronounce_Hasse_Axəlsson-Svala.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/setup.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/explodeTrack.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/fitPPQ.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/gtToMidi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/hvscHistograms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/midiDump.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/midiToC128Basic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/midiToLilypond.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/midiTransform.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/reorderTracks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tools/trackEdit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Converters/SIDConverter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Handlers/Executor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler-0.11.0.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/cycler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/_common.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/_version.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/easter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/parser/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/parser/_parser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/parser/isoparser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/relativedelta.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/rrule.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tz/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tz/_common.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tz/_factories.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tz/tz.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tz/win.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/tzwin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/zoneinfo/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/zoneinfo/dateutil-zoneinfo.tar.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/dateutil/zoneinfo/rebuild.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver-1.3.2.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/kiwisolver.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3-py3.7-nspkg.pth" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_AMSFONTS" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_BAKOMA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_CARLOGO" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_COLORBREWER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_JSXTOOLS_RESIZE_OBSERVER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_QHULL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_QT4_EDITOR" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_SOLARIZED" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_STIX" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/LICENSE_YORICK" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/namespace_packages.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib-3.4.3.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_animation_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_api/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_api/deprecation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_c_internal_utils.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_cm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_cm_listed.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_color_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_constrained_layout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_contour.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_enums.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_image.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_internal_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_layoutgrid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_mathtext.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_mathtext_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_path.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_pylab_helpers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_qhull.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_text_layout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_tri.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_ttconv.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/_version.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/afm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/animation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/artist.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axes/_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axes/_base.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axes/_secondary_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axes/_subplots.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/axis.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backend_bases.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backend_managers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backend_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/_backend_agg.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/_backend_pdf_ps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/_backend_tk.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/_tkagg.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_agg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_cairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_gtk3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_gtk3agg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_gtk3cairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_macosx.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_mixed.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_nbagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_pdf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_pgf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_ps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt4.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt4agg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt4cairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt5.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt5agg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_qt5cairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_svg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_template.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_tkagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_tkcairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_webagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_webagg_core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_wx.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_wxagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/backend_wxcairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_compat.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_editor/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_editor/_formlayout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_editor/_formsubplottool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_editor/figureoptions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/qt_editor/formsubplottool.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/.eslintrc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/.prettierignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/all_figures.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/css/boilerplate.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/css/fbm.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/css/mpl.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/css/page.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/ipython_inline_figure.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/js/mpl.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/js/mpl_tornado.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/js/nbagg_mpl.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/nbagg_uat.ipynb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/backends/web_backend/single_figure.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/bezier.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/blocking_input.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/category.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/cbook/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/cbook/deprecation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/cm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/collections.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/colorbar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/colors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/compat/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/container.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/contour.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/dates.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/docstring.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/dviread.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/figure.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/font_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/fontconfig_pattern.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/ft2font.cp37-win_amd64.pyd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/gridspec.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/hatch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/legend.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/legend_handler.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/lines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/markers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mathtext.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mlab.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/cmex10.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/cmmi10.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/cmr10.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/cmsy10.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/cmtt10.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pagd8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pagdo8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pagk8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pagko8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pbkd8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pbkdi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pbkl8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pbkli8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pcrb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pcrbo8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pcrr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pcrro8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvb8an.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvbo8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvbo8an.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvl8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvlo8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvr8an.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvro8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/phvro8an.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pncb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pncbi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pncr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pncri8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pplb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pplbi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pplr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pplri8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/psyr.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/ptmb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/ptmbi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/ptmr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/ptmri8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/putb8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/putbi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/putr8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/putri8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pzcmi8a.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/afm/pzdr.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Courier-Bold.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Courier-BoldOblique.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Courier-Oblique.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Courier.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Helvetica-Bold.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Helvetica-BoldOblique.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Helvetica-Oblique.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Helvetica.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Symbol.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Times-Bold.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Times-BoldItalic.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Times-Italic.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/Times-Roman.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/ZapfDingbats.afm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/pdfcorefonts/readme.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-BoldOblique.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans-Oblique.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSans.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansDisplay.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-BoldOblique.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono-Oblique.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSansMono.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Bold.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-BoldItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif-Italic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerif.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/DejaVuSerifDisplay.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/LICENSE_DEJAVU" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/LICENSE_STIX" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneral.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralBolIta.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXGeneralItalic.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUni.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniBolIta.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXNonUniIta.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFiveSymReg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizFourSymReg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizOneSymReg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizThreeSymReg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymBol.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/STIXSizTwoSymReg.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmb10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmex10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmmi10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmr10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmss10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmsy10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/fonts/ttf/cmtt10.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/back-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/back.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/back.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/back.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/back_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/filesave-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/filesave.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/filesave.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/filesave.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/filesave_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/forward-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/forward.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/forward.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/forward.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/forward_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/hand.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/hand.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/hand.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/help-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/help.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/help.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/help.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/help_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/home-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/home.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/home.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/home.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/home_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/matplotlib.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/matplotlib.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/matplotlib.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/matplotlib_128.ppm" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/matplotlib_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/move-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/move.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/move.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/move.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/move_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/qt4_editor_options.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/qt4_editor_options.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/qt4_editor_options.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/qt4_editor_options_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/subplots-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/subplots.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/subplots.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/subplots.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/subplots_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/zoom_to_rect-symbolic.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/zoom_to_rect.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/zoom_to_rect.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/zoom_to_rect.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/images/zoom_to_rect_large.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/matplotlibrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/plot_directive/plot_directive.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/Minduka_Present_Blue_Pack.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/README.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/axes_grid/bivariate_normal.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/eeg.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/embedding_in_wx3.xrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/goog.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/grace_hopper.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/jacksboro_fault_dem.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/logo2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/membrane.dat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/msft.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/percent_bachelors_degrees_women_usa.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/s1045.ima.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/sample_data/topobathy.npz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/Solarize_Light2.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/_classic_test_patch.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/bmh.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/classic.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/dark_background.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/fast.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/fivethirtyeight.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/ggplot.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/grayscale.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-bright.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-colorblind.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-dark-palette.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-dark.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-darkgrid.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-deep.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-muted.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-notebook.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-paper.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-pastel.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-poster.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-talk.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-ticks.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-white.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn-whitegrid.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/seaborn.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/mpl-data/stylelib/tableau-colorblind10.mplstyle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/offsetbox.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/patches.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/patheffects.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/projections/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/projections/geo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/projections/polar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/pylab.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/pyplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/quiver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/rcsetup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/sankey.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/scale.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/sphinxext/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/sphinxext/mathmpl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/sphinxext/plot_directive.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/spines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/stackplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/streamplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/style/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/style/core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/table.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/compare.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/conftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/decorators.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/exceptions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/Duration.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/Epoch.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/EpochConverter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/StrConverter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/UnitDbl.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/UnitDblConverter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/UnitDblFormatter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/jpl_units/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/testing/widgets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/conftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_afm.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_agg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_agg_filter.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_animation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_api.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_arrow_patches.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_artist.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_bases.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_cairo.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_gtk3.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_nbagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_pdf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_pgf.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_ps.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_qt.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_svg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_tk.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_tools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backend_webagg.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_backends_interactive.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_basic.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_bbox_tight.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_category.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_cbook.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_collections.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_colorbar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_colors.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_compare_images.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_constrainedlayout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_container.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_contour.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_cycles.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_dates.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_determinism.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_dviread.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_figure.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_font_manager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_fontconfig_pattern.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_gridspec.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_image.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_legend.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_lines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_marker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_mathtext.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_matplotlib.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_mlab.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_offsetbox.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_patches.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_patheffects.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_pickle.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_png.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_polar.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_preprocess_data.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_pyplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_quiver.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_rcparams.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_sankey.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_scale.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_simplification.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_skew.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_sphinxext.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_spines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_streamplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_style.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_subplots.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_table.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_testing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_texmanager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_text.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_ticker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_tightlayout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_transforms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_triangulation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_ttconv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_type1font.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_units.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_usetex.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tests/test_widgets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/texmanager.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/text.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/textpath.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/ticker.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tight_bbox.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tight_layout.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/transforms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/triangulation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/tricontour.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/trifinder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/triinterpolate.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/tripcolor.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/triplot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/trirefine.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/tri/tritools.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/ttconv.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/type1font.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/units.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/matplotlib/widgets.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools-8.10.0.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/__init__.pyi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/more.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/more.pyi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/py.typed" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/recipes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/more_itertools/recipes.pyi" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/anchored_artists.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/angle_helper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axes_divider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axes_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axes_rgb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axes_size.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axis_artist.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axisline_style.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/axislines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/clip_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/floating_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/grid_finder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/grid_helper_curvelinear.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/inset_locator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid/parasite_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/anchored_artists.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/axes_divider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/axes_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/axes_rgb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/axes_size.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/inset_locator.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/mpl_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axes_grid1/parasite_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/angle_helper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axes_divider.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axes_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axes_rgb.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axis_artist.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axisline_style.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/axislines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/clip_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/floating_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/grid_finder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/grid_helper_curvelinear.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/axisartist/parasite_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/mplot3d/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/mplot3d/art3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/mplot3d/axes3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/mplot3d/axis3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/mplot3d/proj3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/conftest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axes_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axes_grid1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_angle_helper.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_axis_artist.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_axislines.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_clip_path.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_floating_axes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_grid_finder.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_axisartist_grid_helper_curvelinear.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/mpl_toolkits/tests/test_mplot3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/nose_parameterized/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/nose_parameterized/compat.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/nose_parameterized/parameterized.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/nose_parameterized/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/pbr.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized-0.8.1.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized/parameterized.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/parameterized/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pylab.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing-3.0.3.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/actions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/common.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/core.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/diagram/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/diagram/template.jinja2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/exceptions.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/helpers.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/results.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/testing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/unicode.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/pyparsing/util.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/python_dateutil-2.8.2.dist-info/zip-safe" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/INSTALLER" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/METADATA" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/RECORD" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/WHEEL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six-1.16.0.dist-info/top_level.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/six.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Fortari2600.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fortari2600.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-10-26_133144.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Dragon_Catcher.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Dragon_Catcher.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Forgive_me.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Forgive_me.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_My_Hope.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_My_Hope.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Our_Simple_Plan.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Elzevir_-_Our_Simple_Plan.a26" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0002.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0003.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0004.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0005.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0006.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/01 - Elzevir - We Must Win.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/02 - Elzevir - Firebirth.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/03 - Elzevir - Mind Eclipse.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/04 - Elzevir - Insanity.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/05 - Elzevir - Red Twenty.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/07 - Elzevir -  Forgive Me.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/08 - Elzevir - Like Immortal.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/09 - Elzevir - Our Simple Plan.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/10 - Elzevir - Dragon Catcher.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/11 - Elzevir - My Hope.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-10-27_220048.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND.a26" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_Main_Title_Theme.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Michael_Land_-_THE_SECRET_OF_MONKEY_ISLAND_Main_Title_Theme.a26" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Converters/MidiConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/MidiConverter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/Loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scripts/Collector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scripts/Collector.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scripts/PictureToCode.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scripts/PictureToCode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/LoadingScreen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LoadingScreen.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/64pxPicture.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/64pxPicture.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/testCodes/64pxPictureOverScan.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/testCodes/64pxPictureOverScan.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/SongInput.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SongInput.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest/data.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest/enter.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest/overscan.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest2/data.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest2/empty.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest2/enter.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest2/overscan.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/data.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/enter.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/overscan.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/screenTop másolata (2).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/screenTop másolata (3).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/screenTop másolata (4).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/screenTop másolata.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest3/screenTop.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/data.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/enter.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/overscan.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop másolata (2).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop másolata (3).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop másolata (4).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop másolata (5).asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop másolata.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest4/screenTop.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest5/empty.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest5/majdnem.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest5/megen.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest5/source.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest5/temp_NTSC_0001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest6/empty.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest6/source.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Duke Nukem 3D - Duke Nukem Theme___WWW.MIDISFREE.COM.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/01 - Elzevir — We Must Win [MIDISTOCK.RU] (1).mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/02 - Elzevir — Firebirth [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/03 - Elzevir — Mind Eclipce [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/04 - Elzevir — Insanity [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/05 - Elzevir — Red Twenty [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/06 - Elzevir — Rain of That Day [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/07 - Elzevir — Forgive Me [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/08 - Elzevir — Like Immortal [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/09 - Elzevir — Our Simple Plan [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/10 - Elzevir — Dragon Catcher [MIDISTOCK.RU].mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/Elzevir/11 - Elzevir — My Hope [MIDISTOCK.RU] (1).mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/SUPREMACY.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/empty.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/fos.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/song.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/song2.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/songNoShit.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/songShit.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/source.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/ssss.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest7/theme.mid" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/000.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/0000060329_10.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/014.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/03e4c3682735ce571d45123dec7efb9a.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/149-1491812_classic-sonic-front-sonic-the-hedgehog-front.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/2-iron-maiden-eddie-slv-design.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/20317-the-last-ninja-commodore-64-front-cover.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/22058-bugs-bunny.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/261-2619555_download-png-image-report-anime-nichijou.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/A2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Blossom_Powerpuff_Girl.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Buttercup_PPG_(1).png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/E.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/E3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Eddie.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Facepaint.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Frieza.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Frieza2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/MZP2.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/N.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Rakk2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/S.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Untitled.avi.sfl" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Untitled.veg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/Untitled.veg.bak" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/W.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/W2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/b.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/clipart1509912.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/d4b8d974-f619-4952-bf6f-087b10c884bd.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/d5pworj-b5dc5694-5101-4524-bb6e-344549658927.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/deu7er-c33e791f-8ea8-4da8-b260-65f3a16c8764.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/doc-sunday-plaguedoctor2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/doc.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/doctor.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/edd.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/empty.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/fr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/frieza.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/friezaFace.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/fuu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/goku.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/haibane-renmei-59ffcb6da421b.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/images.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/joker.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/kk.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/l-intro-1626711887.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/meowth.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/meowth.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/monkey.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/mzp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/nafdqevsvu841.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plag4.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plag6.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plag7.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plague-doctor-4k-se-1440x2560.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plague.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plague2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plague3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/plg5.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/png-clipart-warioware-smooth-moves-warioware-inc-mega-microgames-game-wario-wii-u-games-nintendo-video-game.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/png-transparent-starcraft-ii-legacy-of-the-void-protoss-sotet-templomosok-internet-meme-protoss-fictional-character-starcraft-ii-legacy-of-the-void-mythical-creature.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/pngegg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/pppp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/pr.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/protoss.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/protoss2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/qD1ogaA.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/rakka.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/rekki.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/rocket.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/source.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/templar.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/terrible-doctor-portrait-plague-scythe-medieval-europe-halloween-60130896.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/tests.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest8/tree.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/01 - Elzevir - We Must Win.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/02 - Elzevir- Firebirth.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/03 - Elzevir - Mind Eclipse.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/04 - Elzevir- Instanity.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/07 - Elzevir- Forgive Me.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/08 - Elzevir- Like Immortal.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/09 - Elzevir- Our Simple Plan.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/10 - Elzevir- Dragon Catcher.avi" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/3540329176_logo.bmp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/3540329176_logo.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/logo.kra" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/logo2.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/toDelete/forTest9/logo3.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,6 +954,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$eee.coverage" NAME="eee Coverage Results" MODIFIED="1627010801377" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$MusicComposer.coverage" NAME="MusicComposer Coverage Results" MODIFIED="1629735494333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LockFrame.coverage" NAME="LockFrame Coverage Results" MODIFIED="1626496617534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
+    <SUITE FILE_PATH="coverage/Fortari2600$setup.coverage" NAME="setup Coverage Results" MODIFIED="1635491998672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak" />
     <SUITE FILE_PATH="coverage/Fortari2600$PlayfieldEditor.coverage" NAME="PlayfieldEditor Coverage Results" MODIFIED="1627069290081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreen__1_.coverage" NAME="LoadingScreen (1) Coverage Results" MODIFIED="1618074466389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$MenuLabel.coverage" NAME="MenuLabel Coverage Results" MODIFIED="1618296702708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
@@ -41,6 +968,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrame.coverage" NAME="RightFrame Coverage Results" MODIFIED="1619675289357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$6507Compiler.coverage" NAME="6507Compiler Coverage Results" MODIFIED="1628274705135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../6507Compiler" />
     <SUITE FILE_PATH="coverage/Fortari2600$stocks3.coverage" NAME="stocks3 Coverage Results" MODIFIED="1629907172311" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects" />
+    <SUITE FILE_PATH="coverage/Fortari2600$PyTari2600_005.coverage" NAME="PyTari2600.005 Coverage Results" MODIFIED="1635440508327" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/PyTari" />
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrameEditor.coverage" NAME="RightFrameEditor Coverage Results" MODIFIED="1626523268148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$NewProjectWindow.coverage" NAME="NewProjectWindow Coverage Results" MODIFIED="1618585493596" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaScreens.coverage" NAME="TiaScreens Coverage Results" MODIFIED="1631807640668" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/DataHolders" />
@@ -48,15 +976,17 @@
     <SUITE FILE_PATH="coverage/Fortari2600$MainWindowHandler.coverage" NAME="MainWindowHandler Coverage Results" MODIFIED="1618141912041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$KernelChanger.coverage" NAME="KernelChanger Coverage Results" MODIFIED="1626515069782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LibCaller.coverage" NAME="LibCaller Coverage Results" MODIFIED="1629529829538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Libs" />
+    <SUITE FILE_PATH="coverage/Fortari2600$AllToTIAv0_05.coverage" NAME="AllToTIAv0.05 Coverage Results" MODIFIED="1635440534815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/Fortari2600" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreenHandler.coverage" NAME="LoadingScreenHandler Coverage Results" MODIFIED="1618069748048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1635364846754" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1635505697862" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
+    <SUITE FILE_PATH="coverage/Fortari2600$gui.coverage" NAME="gui Coverage Results" MODIFIED="1635484243727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/lsrsidmodules" />
     <SUITE FILE_PATH="coverage/Fortari2600$Config.coverage" NAME="Config Coverage Results" MODIFIED="1618064003932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Miditari_0_14.coverage" NAME="Miditari 0.14 Coverage Results" MODIFIED="1634620434803" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/Miditari" />
     <SUITE FILE_PATH="coverage/Fortari2600$Boo_T.coverage" NAME="Boo-T Coverage Results" MODIFIED="1618080702573" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../Boo-T/Boo-T" />
@@ -68,22 +998,22 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="266" />
-          <entry key="project.open.time.0" value="5" />
-          <entry key="project.open.time.3" value="78" />
-          <entry key="project.open.time.4" value="218" />
+          <entry key="project.closed" value="271" />
+          <entry key="project.open.time.0" value="6" />
+          <entry key="project.open.time.3" value="80" />
+          <entry key="project.open.time.4" value="221" />
           <entry key="project.open.time.5" value="15" />
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="321" />
+          <entry key="project.opened" value="327" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="1594" />
+          <entry key="py" value="1645" />
           <entry key="txt" value="5" />
           <entry key="wav" value="1" />
         </counts>
@@ -92,20 +1022,20 @@
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="1594" />
+          <entry key="Python" value="1645" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="321451" />
+          <entry key="py" value="324550" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="321451" />
+          <entry key="Python" value="324550" />
         </counts>
       </usages-collector>
     </session>
@@ -115,44 +1045,93 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="725">
-              <caret line="492" column="75" selection-start-line="492" selection-start-column="75" selection-end-line="492" selection-end-column="75" />
-              <folding>
-                <marker date="1635060365522" expanded="true" signature="21219:21366" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="1030" selection-start-line="1030" selection-end-line="1030" />
+            <state relative-caret-position="244">
+              <caret line="992" column="40" lean-forward="true" selection-start-line="992" selection-start-column="40" selection-end-line="992" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+        <entry file="file://$PROJECT_DIR$/src/View/SongInput.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="404">
-              <caret line="240" column="88" selection-start-line="240" selection-start-column="88" selection-end-line="240" selection-end-column="88" />
+            <state relative-caret-position="-43">
+              <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="320">
+              <caret line="20" column="99" selection-start-line="20" selection-start-column="99" selection-end-line="20" selection-end-column="99" />
+              <folding>
+                <marker date="1635504875596" expanded="true" signature="196:202" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="480">
+              <caret line="45" selection-start-line="45" selection-end-line="45" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="670" column="53" selection-start-line="670" selection-start-column="53" selection-end-line="670" selection-end-column="53" />
-              <folding>
-                <marker date="1635356522969" expanded="true" signature="22347:22396" ph="..." />
-              </folding>
+            <state relative-caret-position="382">
+              <caret line="746" column="37" selection-start-line="746" selection-start-column="37" selection-end-line="746" selection-end-column="37" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/ColorPalettes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="288">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/sid.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="304">
+              <caret line="1439" column="16" lean-forward="true" selection-start-line="1439" selection-start-column="16" selection-end-line="1439" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../ChiptuneSAK-master/tools/gtToMidi.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret line="29" column="54" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="54" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/chirp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-2832" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/rchirp.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1771">
+              <caret line="411" column="17" selection-start-line="411" selection-start-column="8" selection-end-line="411" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -168,36 +1147,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
+      <find>import</find>
+      <find>SID</find>
+      <find>compress</find>
+      <find>midi</find>
+      <find>__channels</find>
+      <find>__getMonotones</find>
+      <find>convertMidi</find>
+      <find>ChiptuneSAKBase</find>
+      <find>chirp</find>
+      <find>rc</find>
+      <find>to_</find>
+      <find>cts_type</find>
+      <find>Dump</find>
+      <find>rchirp</find>
+      <find>SidImport</find>
+      <find>number</find>
+      <find>songTi</find>
+      <find>focusIn</find>
+      <find>getChannelData</find>
+      <find>temp</find>
+      <find>test</find>
+      <find>tempo</find>
+      <find>divid</find>
+      <find>multi</find>
+      <find>if &quot;set_tempo&quot; in message:</find>
+      <find>midiCon</find>
+      <find>__defaultTempo</find>
+      <find>RCh</find>
       <find>print</find>
-      <find>::-1</find>
-      <find>__chec</find>
-      <find>Entry</find>
-      <find>__cutBG</find>
-      <find>saveButton</find>
-      <find>picker</find>
-      <find>__reduceBG</find>
-      <find>getClosestTIAColor</find>
-      <find>icon</find>
-      <find>__reduceB</find>
-      <find>getHEXValue</find>
-      <find>__oneColor</find>
-      <find>oneColor</find>
-      <find>Compiler</find>
-      <find>pictureData</find>
-      <find>saveB</find>
-      <find>ListB</find>
-      <find>Lis</find>
-      <find>listBox</find>
-      <find>Fortari Logo</find>
-      <find>Fortari</find>
-      <find>__listBox</find>
-      <find>picture</find>
-      <find>__picturePath</find>
-      <find>__saveItAsMusicRom</find>
-      <find>__musicROM</find>
-      <find>compile</find>
-      <find>__pathToSave</find>
-      <find>getNextName</find>
+      <find>SidFile</find>
     </findStrings>
     <replaceStrings>
       <replace>array</replace>
@@ -238,11 +1217,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/ConvertFromImageFrame.py" />
-        <option value="$PROJECT_DIR$/src/View/VisualLoaderFrame.py" />
-        <option value="$PROJECT_DIR$/src/View/SubMenu.py" />
-        <option value="$PROJECT_DIR$/src/Handlers/FontManager.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/src/Scripts/Logger.py" />
         <option value="$PROJECT_DIR$/src/View/NewProjectWindow.py" />
         <option value="$PROJECT_DIR$/venv/blyat.py" />
@@ -256,15 +1230,12 @@
         <option value="$PROJECT_DIR$/src/View/LockFrame.py" />
         <option value="$PROJECT_DIR$/src/Scripts/TiaTone.py" />
         <option value="$PROJECT_DIR$/../projects/stocks3.py" />
-        <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
-        <option value="$PROJECT_DIR$/src/View/LoadingScreen.py" />
         <option value="$PROJECT_DIR$/src/View/PlayfieldEditor.py" />
         <option value="$PROJECT_DIR$/venv/getPairs.py" />
         <option value="$PROJECT_DIR$/venv/toneCalc.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/NoteTable.py" />
         <option value="$PROJECT_DIR$/src/View/PianoButton.py" />
         <option value="$PROJECT_DIR$/src/View/ChannelChangerButton.py" />
-        <option value="$PROJECT_DIR$/src/View/SongInput.py" />
         <option value="$PROJECT_DIR$/src/View/MCButton.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTester.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTesterLoaderFrame.py" />
@@ -283,12 +1254,20 @@
         <option value="$PROJECT_DIR$/src/View/MusicBankFrameEntry.py" />
         <option value="$PROJECT_DIR$/src/View/FileDialogs.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
-        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
         <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
-        <option value="$PROJECT_DIR$/src/Scripts/PictureToCode.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+        <option value="$PROJECT_DIR$/src/View/LoadingScreen.py" />
+        <option value="$PROJECT_DIR$/src/Handlers/Executor.py" />
+        <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
+        <option value="$PROJECT_DIR$/src/Scripts/Collector.py" />
+        <option value="$PROJECT_DIR$/src/Scripts/PictureToCode.py" />
+        <option value="$PROJECT_DIR$/src/View/SongInput.py" />
         <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
+        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
+        <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
+        <option value="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/sid.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
       </list>
     </option>
   </component>
@@ -298,9 +1277,9 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="223" />
-    <option name="y" value="474" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="-4" />
+    <option name="y" value="-4" />
     <option name="width" value="1032" />
     <option name="height" value="732" />
   </component>
@@ -312,6 +1291,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -346,19 +1326,45 @@
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Handlers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;file://E:/PyCharm/P/Fortari2600/venv/eee.py" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Boo-T/Boo-T/Boo-T.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/venvP3.9" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -388,7 +1394,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="Assembler" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="AllToTIAv0.05" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -396,56 +1402,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Compile" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Compile/Assembler.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Compiler" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Compile" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Compile/Compiler.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Miditari 0.14" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects/jetbrains/Miditari" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects/jetbrains/Fortari2600" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/jetbrains/Fortari2600/AllToTIAv0.05.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -454,7 +1416,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="doIt" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="PyTari2600.005" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -462,12 +1424,34 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv/get8Lines" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects/jetbrains/PyTari" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/jetbrains/PyTari/PyTari2600.005.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="gui" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/lsrsidmodules" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/get8Lines/doIt.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/lsrsidmodules/gui.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -498,20 +1482,42 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/setup.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.Compiler" />
-      <item itemvalue="Python.doIt" />
-      <item itemvalue="Python.Assembler" />
-      <item itemvalue="Python.Miditari 0.14" />
+      <item itemvalue="Python.PyTari2600.005" />
+      <item itemvalue="Python.AllToTIAv0.05" />
+      <item itemvalue="Python.gui" />
+      <item itemvalue="Python.setup" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.Miditari 0.14" />
-        <item itemvalue="Python.doIt" />
-        <item itemvalue="Python.Assembler" />
-        <item itemvalue="Python.Compiler" />
+        <item itemvalue="Python.setup" />
+        <item itemvalue="Python.gui" />
+        <item itemvalue="Python.AllToTIAv0.05" />
+        <item itemvalue="Python.PyTari2600.005" />
       </list>
     </recent_temporary>
   </component>
@@ -538,15 +1544,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1608" height="1164" extended-state="7" />
+    <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.14377406" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21052632" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49935815" weight="0.23135756" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49935815" visible="true" weight="0.23135756" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -564,6 +1570,30 @@
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21052632" />
+      <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
+      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49935815" visible="true" weight="0.23135756" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3298279" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5006418" side_tool="true" weight="0.28393883" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.3298279" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -582,185 +1612,19 @@
           <url>file://$PROJECT_DIR$/src/View/FileDialogs.py</url>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/__init__.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/copy.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="239" selection-start-line="239" selection-end-line="239" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/PianoButton.py" />
-    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/MusicComposer (2).py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="226">
-          <caret line="360" column="32" selection-start-line="360" selection-end-line="361" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="2142" selection-start-line="2142" selection-end-line="2142" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ChannelChangerButton.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="19" column="30" lean-forward="true" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BankSwitchButton.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SongInput.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="36" column="46" selection-start-line="36" selection-start-column="46" selection-end-line="36" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/ButtonMaker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="16" column="10" lean-forward="true" selection-start-line="16" selection-start-column="10" selection-end-line="16" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FrameContent.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/KernelTesterLoaderFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1264">
-          <caret line="79" selection-start-line="79" selection-end-line="100" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MenuButton.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="24" selection-start-line="23" selection-end-line="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/KernelTester.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="967">
-          <caret line="160" selection-start-line="160" selection-end-line="160" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/TiaTone.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="20" column="14" lean-forward="true" selection-start-line="20" selection-start-column="14" selection-end-line="20" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaNote.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="30" selection-start-line="8" selection-start-column="30" selection-end-line="8" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/szar.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LockFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-16">
-          <caret line="74" column="15" selection-start-line="74" selection-start-column="12" selection-end-line="74" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SwitchFrame.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LockManagerWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="36" column="37" selection-start-line="36" selection-start-column="37" selection-end-line="36" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="725">
-          <caret line="457" column="23" selection-start-line="457" selection-start-column="8" selection-end-line="457" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SideFrameListBoxWithButtonAndLabel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="46" column="23" selection-start-line="46" selection-end-line="47" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/Switch.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Lock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="3" column="29" selection-start-line="3" selection-start-column="29" selection-end-line="3" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="509" column="25" selection-start-line="509" selection-start-column="25" selection-end-line="509" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/toneCalc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-46">
-          <caret line="26" column="11" selection-start-line="26" selection-start-column="4" selection-end-line="26" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/HexEntryButLowNibbleFixed.py" />
-    <entry file="file://$PROJECT_DIR$/venv/get8Lines/doIt.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="823">
-          <caret line="57" column="60" selection-start-line="57" selection-start-column="60" selection-end-line="57" selection-end-column="60" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="592">
-          <caret line="37" column="11" selection-start-line="37" selection-start-column="11" selection-end-line="37" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="71">
           <caret line="7" column="19" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="25" column="21" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -783,11 +1647,6 @@
         <state relative-caret-position="252">
           <caret line="916" selection-start-line="916" selection-end-line="916" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../projects/jetbrains/Fortari2600/AllToTIAv0.05.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2976" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py">
@@ -815,13 +1674,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1056">
           <caret line="66" column="34" selection-start-line="66" selection-start-column="34" selection-end-line="66" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="159" column="35" selection-start-line="159" selection-start-column="35" selection-end-line="159" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -870,9 +1722,68 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../projects/jetbrains/PyTari/PyTari2600.005.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="26" lean-forward="true" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../projects/jetbrains/Fortari2600/AllToTIAv0.05.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="134" selection-start-line="134" selection-end-line="141" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/lsrsidmodules/playsid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2043">
+          <caret line="64" column="4" lean-forward="true" selection-start-line="64" selection-start-column="4" selection-end-line="64" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/templates/toDelete/forTest10/lsr.SID-0.3.tar/lsr.SID-0.3/lsrsidmodules/gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1168">
+          <caret line="114" selection-start-line="114" selection-end-line="114" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/LoadingScreen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="79" column="26" selection-start-line="79" selection-start-column="26" selection-end-line="79" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" column="62" selection-start-line="20" selection-start-column="62" selection-end-line="20" selection-end-column="62" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../ChiptuneSAK-master/chiptunesak/sid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3040">
+          <caret line="67" column="21" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="725">
+        <state relative-caret-position="252">
           <caret line="492" column="75" selection-start-line="492" selection-start-column="75" selection-end-line="492" selection-end-column="75" />
           <folding>
             <marker date="1635060365522" expanded="true" signature="21219:21366" ph="..." />
@@ -880,18 +1791,154 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/rchirp.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/thin_c64_emulator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4069">
+          <caret line="370" lean-forward="true" selection-start-line="370" selection-end-line="370" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/encodings/cp1250.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/configparser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="252">
-          <caret line="999" selection-start-line="999" selection-end-line="999" />
+          <caret line="695" selection-start-line="695" selection-end-line="695" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="19" column="25" lean-forward="true" selection-start-line="17" selection-start-column="9" selection-end-line="17" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/AppSearcher.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/tests/baseTest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
           <folding>
-            <element signature="e#0#37#0" expanded="true" />
-            <marker date="1635262939109" expanded="true" signature="6229:6341" ph="..." />
-            <marker date="1635262939109" expanded="true" signature="10483:10492" ph="..." />
-            <marker date="1635262939109" expanded="true" signature="21702:22413" ph="..." />
-            <marker date="1635262939109" expanded="true" signature="41285:41291" ph="..." />
-            <marker date="1635262939109" expanded="true" signature="41742:41747" ph="..." />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/sid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="661">
+          <caret line="1847" lean-forward="true" selection-start-line="1847" selection-end-line="1847" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/_________setup.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#1#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="38" column="21" selection-start-line="38" selection-start-column="6" selection-end-line="38" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/Collector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="432">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <marker date="1635493849189" expanded="true" signature="657:715" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="26" selection-start-line="7" selection-start-column="26" selection-end-line="7" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/midi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3461">
+          <caret line="361" column="98" selection-start-line="361" selection-start-column="98" selection-end-line="361" selection-end-column="98" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="348">
+          <caret line="1049" selection-start-line="1049" selection-end-line="1049" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/rchirp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1771">
+          <caret line="411" column="17" selection-start-line="411" selection-start-column="8" selection-end-line="411" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="746" column="37" selection-start-line="746" selection-start-column="37" selection-end-line="746" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SongInput.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-43">
+          <caret line="6" column="30" selection-start-line="6" selection-start-column="30" selection-end-line="6" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="45" selection-start-line="45" selection-end-line="45" />
         </state>
       </provider>
     </entry>
@@ -902,27 +1949,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../ChiptuneSAK-master/tools/gtToMidi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="416">
+          <caret line="29" column="54" selection-start-line="29" selection-start-column="41" selection-end-line="29" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="320">
+          <caret line="20" column="99" selection-start-line="20" selection-start-column="99" selection-end-line="20" selection-end-column="99" />
+          <folding>
+            <marker date="1635504875596" expanded="true" signature="196:202" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/chirp.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2832" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/sid.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="304">
+          <caret line="1439" column="16" lean-forward="true" selection-start-line="1439" selection-start-column="16" selection-end-line="1439" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="1030" selection-start-line="1030" selection-end-line="1030" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="404">
-          <caret line="240" column="88" selection-start-line="240" selection-start-column="88" selection-end-line="240" selection-end-column="88" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="670" column="53" selection-start-line="670" selection-start-column="53" selection-end-line="670" selection-end-column="53" />
-          <folding>
-            <marker date="1635356522969" expanded="true" signature="22347:22396" ph="..." />
-          </folding>
+        <state relative-caret-position="244">
+          <caret line="992" column="40" lean-forward="true" selection-start-line="992" selection-start-column="40" selection-end-line="992" selection-end-column="40" />
         </state>
       </provider>
     </entry>

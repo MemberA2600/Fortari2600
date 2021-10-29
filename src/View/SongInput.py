@@ -2,7 +2,7 @@ from tkinter import *
 
 class SongInput:
 
-    def __init__(self, loader, mother, w, h, text, input, font):
+    def __init__(self, loader, mother, w, h, text, input, font, focusIn, focusOut):
 
         self.__loader = loader
         self.__dictionaries = self.__loader.dictionaries
@@ -49,3 +49,6 @@ class SongInput:
         )
         self.__entry.pack_propagate(False)
         self.__entry.pack(fill=BOTH)
+
+        self.__entry.bind("<FocusIn>", focusIn)
+        self.__entry.bind("<FocusOut>", focusOut)

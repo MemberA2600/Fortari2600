@@ -8,12 +8,13 @@ from math import sqrt
 
 class MidiConverter:
 
-    def __init__(self, path, loader, removeDrums, maxChannels):
+    def __init__(self, path, loader, removeDrums, maxChannels, multi):
 
         #This is the one the main program accesses. The process was
         #successful if it is not None.
         self.result = None
         self.songName = ""
+        self.__multi = multi
 
         self.__piaNotes = loader.piaNotes
 
@@ -40,6 +41,17 @@ class MidiConverter:
                            }
 
         self.__seperatedNotes = deepcopy(self.__channels)
+        self.__defaultTempo = 50 * 1.1 * self.__multi
+
+        for message in self.__midiFile:
+            message = str(message)
+            if "MetaMessage" in message:
+                if "set_tempo" in message:
+                    self.__defaultTempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
+                    break
+
+
+
 
         from threading import Thread
 
@@ -147,7 +159,6 @@ class MidiConverter:
             self.__tempResult[4].pop(0)
 
 
-
         self.result = deepcopy(self.__tempResult)
 
         """
@@ -168,6 +179,9 @@ class MidiConverter:
                 volume = midiNote.velocity//10
             if volume == 0:
                 continue
+
+            if midiNote.note>88:
+                midiNote.note = 88
 
             saveNum = None
             for channelNum in range(1,5):
@@ -337,18 +351,27 @@ class MidiConverter:
 
         for item in source:
             if item.note>0:
+
                 note = self.__piaNotes.getTiaValue(item.note, None)
                 notes.append(item.note)
-                #print(item.note)
+
+                if note == None:
+                    continue
 
                 for n in note:
                     if n not in channels.keys():
                         channels[n] = 0
                     channels[n]+=1
-        maxi = max(channels, key=channels.get)
-        mono = int(maxi) / len(source)
+        if len(channels)>0:
+            maxi = max(channels, key=channels.get)
+            mono = int(maxi) / len(source)
 
-        variety = len(set(notes)) / len(source)
+            variety = len(set(notes)) / len(source)
+        else:
+            maxi = "0"
+            mono = 0
+            variety = 0
+
 
         return(maxi, mono, channels, variety)
     """
@@ -415,7 +438,7 @@ class MidiConverter:
 
     def getChannelData(self, channelNum):
         self.__threadNum+=1
-        tempo = 50
+        tempo = self.__defaultTempo
         duration = 0
         remainder = 0
 
@@ -424,8 +447,9 @@ class MidiConverter:
         for message in self.__midiFile:
             message = str(message)
             if "MetaMessage" in message:
+
                 if "set_tempo" in message:
-                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000)
+                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
             else:
                 if "channel=" in message:
                     d = {}
@@ -448,6 +472,9 @@ class MidiConverter:
                     else:
 
                         d["note"]-=20
+                        #if d["note"]>88:
+                        #    d["note"] = 88
+
                         if d["Note_On"] == True:
                             self.__channels[channelNum].append(MidiNote(d["velocity"], d["note"], 0))
                         else:

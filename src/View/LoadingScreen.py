@@ -93,6 +93,8 @@ class LoadingScreen():
         from PiaNotes import PiaNotes
         self.__loader.piaNotes = PiaNotes(self.__loader)
 
+        from Executor import Executor
+        self.__loader.executor = Executor(self.__loader)
 
         self.__Loading_Window.after(1000, self.__Loading_Window.destroy)
 

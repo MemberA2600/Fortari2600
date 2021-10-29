@@ -434,7 +434,7 @@ class Compiler:
         if self.__musicMode != "mono":
             Channels[1] = re.sub("\n+", "\n", Channels[1])
 
-        Channels[0], bytes[0] = self.compress(Channels[0], "CoolSong", 0, dataBytesNotes[0])
+        Channels[0], bytes[0] = self.compress(Channels[0], "CoolSong", 0, dataBytesNotes[0], False)
         Channels[0] += "\tBYTE\t#240\n"
         bytes[0] += 1
 
@@ -444,7 +444,7 @@ class Compiler:
             self.__musicMode = "overflow"
 
         if self.__musicMode != "mono" and self.__musicMode != "overflow":
-            Channels[1], bytes[1] = self.compress(Channels[1], "CoolSong", 1, dataBytesNotes[1])
+            Channels[1], bytes[1] = self.compress(Channels[1], "CoolSong", 1, dataBytesNotes[1], False)
             bytes[1] += 1
             Channels[1] += "\tBYTE\t#240\n"
 
@@ -460,22 +460,23 @@ class Compiler:
 
         return(Channels, bytes)
 
-    def compress(self, data, sectonName, channelNum, dataArrayNotes):
+    def compress(self, data, sectonName, channelNum, dataArrayNotes, generateNotes):
         patterns = {}
-        patternsWithKeys = {"00010000": "",
-                            "00100000": "",
-                            "00110000": "",
-                            "01000000": "",
-                            "01010000": "",
-                            "01100000": "",
-                            "01110000": "",
-                            "10000000": "",
-                            "10010000": "",
-                            "10100000": "",
-                            "10110000": "",
-                            "11000000": ""
 
-        }
+        if generateNotes == False:
+            patternsWithKeys = {"00010000": "",
+                                "00100000": "",
+                                "00110000": "",
+                                "01000000": "",
+                                "01010000": "",
+                                "01100000": "",
+                                "01110000": "",
+                                "10000000": "",
+                                "10010000": "",
+                                "10100000": "",
+                                "10110000": "",
+                                "11000000": ""
+            }
 
 
 

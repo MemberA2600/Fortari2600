@@ -382,46 +382,59 @@ class PictureToCode:
             sums[item]["pfError"] = pfError
 
         notUsed = [0, 127, 255]
+        hasPF = True
+        for key in notUsed:
+            if ((sums[key]["pixels"] == "0"*64)
+                or (sums[key]["pixels"] == "1"*64)) and hasPF == True:
+                notUsed.remove(key)
+                hasPF = False
 
-        #playfield
-        temp={}
-        for item in notUsed:
-            temp[item] = sums[item]["pfError"]
-        sorted(temp, key=temp.get)
-        if sums[notUsed[0]]["pfError"] == sums[notUsed[1]]["pfError"] and sums[notUsed[1]]["pfError"] == sums[notUsed[2]]["pfError"]:
-            grrr = {}
+                lineStructure["playfield"]["color"] = "$00"
+                lineStructure["playfield"]["pixels1"] = "0"*32
+                lineStructure["playfield"]["pixels2"] = "0"*32
+                assign["playfield"] = key
+
+
+        if hasPF == True:
+            #playfield
+            temp={}
             for item in notUsed:
-                grrr[item] = sums[item]["allSet"]
-                sorted(grrr, key=grrr.get, reverse=True)
-            if grrr[list(grrr.keys())[0]] == grrr[list(grrr.keys())[1]]:
+                temp[item] = sums[item]["pfError"]
+            sorted(temp, key=temp.get)
+            if sums[notUsed[0]]["pfError"] == sums[notUsed[1]]["pfError"] and sums[notUsed[1]]["pfError"] == sums[notUsed[2]]["pfError"]:
                 grrr = {}
                 for item in notUsed:
-                    grrr[item] = int("0x"+sums[item]["domiTIA"][2], 16)
-                    sorted(grrr, key=grrr.get)
-
-            key = list(grrr.keys())[0]
-        else:
-            if sums[list(temp.keys())[0]]["pfError"] == sums[list(temp.keys())[1]]["pfError"]:
-                grrr = {}
-                grrr[list(temp.keys())[0]] = sums[list(temp.keys())[0]]["allSet"]
-                grrr[list(temp.keys())[1]] = sums[list(temp.keys())[1]]["allSet"]
+                    grrr[item] = sums[item]["allSet"]
+                    sorted(grrr, key=grrr.get, reverse=True)
                 if grrr[list(grrr.keys())[0]] == grrr[list(grrr.keys())[1]]:
                     grrr = {}
                     for item in notUsed:
-                        grrr[item] = int("0x" + sums[item]["domiTIA"][2], 16)
+                        grrr[item] = int("0x"+sums[item]["domiTIA"][2], 16)
                         sorted(grrr, key=grrr.get)
 
-                sorted(grrr, key=grrr.get, reverse=True)
                 key = list(grrr.keys())[0]
             else:
-                key = list(temp.keys())[0]
+                if sums[list(temp.keys())[0]]["pfError"] == sums[list(temp.keys())[1]]["pfError"]:
+                    grrr = {}
+                    grrr[list(temp.keys())[0]] = sums[list(temp.keys())[0]]["allSet"]
+                    grrr[list(temp.keys())[1]] = sums[list(temp.keys())[1]]["allSet"]
+                    if grrr[list(grrr.keys())[0]] == grrr[list(grrr.keys())[1]]:
+                        grrr = {}
+                        for item in notUsed:
+                            grrr[item] = int("0x" + sums[item]["domiTIA"][2], 16)
+                            sorted(grrr, key=grrr.get)
 
-        notUsed.remove(key)
+                    sorted(grrr, key=grrr.get, reverse=True)
+                    key = list(grrr.keys())[0]
+                else:
+                    key = list(temp.keys())[0]
 
-        lineStructure["playfield"]["color"] = sums[key]["domiTIA"]
-        lineStructure["playfield"]["pixels1"] = sums[key]["pixels"][:32]+sums[key]["pixels"][:32][::-1]
-        lineStructure["playfield"]["pixels2"] = sums[key]["pixels"][32:][::-1]+sums[key]["pixels"][32:]
-        assign["playfield"] = key
+            notUsed.remove(key)
+
+            lineStructure["playfield"]["color"] = sums[key]["domiTIA"]
+            lineStructure["playfield"]["pixels1"] = sums[key]["pixels"][:32]+sums[key]["pixels"][:32][::-1]
+            lineStructure["playfield"]["pixels2"] = sums[key]["pixels"][32:][::-1]+sums[key]["pixels"][32:]
+            assign["playfield"] = key
 
         #background
         temp={}
@@ -1028,7 +1041,7 @@ class PictureToCode:
         except:
             self.__number.config(
                 bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                fg=self.__loader.colorPalettes.getColor("boxFontSaved")
+                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
             )
         self.__number.config(
             bg=self.__loader.colorPalettes.getColor("boxBackNormal"),

@@ -384,14 +384,17 @@ class MusicComposer:
         self.__artistEntry = SongInput(self.__loader, self.__bottomFrame1,
                                        round(self.__topLevel.getTopLevelDimensions()[0] * 0.5),
                                        round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
-                                       "artist", self.__artistName, self.__smallFont
+                                       "artist", self.__artistName, self.__smallFont,
+                                       self.focusIn, self.focusOut
                                        )
 
         self.__songEntry = SongInput(self.__loader, self.__bottomFrame1,
                                        round(self.__topLevel.getTopLevelDimensions()[0] * 0.5),
                                        round(self.__topLevel.getTopLevelDimensions()[1] * 0.03),
-                                       "title", self.__songTitle, self.__smallFont
-                                       )
+                                       "title", self.__songTitle, self.__smallFont,
+                                     self.focusIn, self.focusOut
+                                     )
+
 
         self.__buttonFrame = Frame(self.__bottomFrame1,
                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
@@ -878,7 +881,7 @@ class MusicComposer:
 
         functions = {
             "mid": self.convertMidi,
-            "sid": None,
+            "sid": self.convertSID,
             "vgm": None,
             "mod": None
         }
@@ -896,7 +899,6 @@ class MusicComposer:
             for func in functions.keys():
                 try:
                     converted, songTitle = function[func](fileName)
-                    break
                 except Exception as e:
                     errorText += str(e)
 
@@ -907,41 +909,6 @@ class MusicComposer:
             theLen = 0
 
 
-            """
-            possibleDividers = [2, 4, 8, 16, 32, 64, 128]
-            maxDivider = 1
-            for divider in possibleDividers:
-                noMax = False
-
-                for channelNum in converted:
-                    duration = 0
-                    volume = None
-                    channel = None
-                    freq = None
-                    for note in converted[channelNum]:
-                        if note["volume"] == None:
-                            volume = note["volume"]
-                            channel = note["channel"]
-                            freq = note["freq"]
-                            duration = 0
-                        elif note["volume"] != volume or note["channel"] != channel or note["freq"] != freq:
-                            if duration % divider != 0:
-                                noMax = True
-                                break
-                            volume = note["volume"]
-                            channel = note["channel"]
-                            freq = note["freq"]
-                            duration = 0
-                        else:
-                            duration+=1
-
-                if noMax == False:
-                   maxDivider = divider
-                else:
-                   break
-
-            print(maxDivider)
-            """
             # Did not found any midis that had all notes corresponding a divider and also it won't improve
             # storage, so I commented this out.
 
@@ -962,17 +929,6 @@ class MusicComposer:
             self.reset = True
             self.reColorAll()
 
-            """
-            self.__buzz = 1
-            self.__buzzer.set(1)
-            self.__vibratio = 1
-            self.__vibrator.set(1)
-
-            self.__correctNotes = int(3)
-            self.__correctorSetter.setValue("3")
-            self.__fadeOutLen = int(4)
-            self.__fadeOutSetter.setValue("4")
-            """
             self.__frameLen = int(1)
             self.__frameLenSetter.setValue("1")
 
@@ -988,11 +944,19 @@ class MusicComposer:
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
+    def convertSID(self, path):
+        from SIDConverter import SIDConverter
+
+        sidConverter = SIDConverter(self.__loader, path, int(self.__removePercuss.get()), self.__maxChannels)
+
+        return (sidConverter.result, sidConverter.songName)
+
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
-        midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()), self.__maxChannels)
+        midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()), self.__maxChannels, 1)
 
         return (midiConverter.result, midiConverter.songName)
+
 
 
     def __testingCurrent(self):
@@ -1027,6 +991,11 @@ class MusicComposer:
             path = "temp/"
         else:
             path = "generatedMusicROMs/"
+            try:
+                import os
+                os.mkdir("generatedMusicROMs")
+            except:
+                pass
 
         from Compiler import Compiler
         C = Compiler(self.__loader, "common", "music", [self.__picturePath, path, True, self.__artistName.get(),

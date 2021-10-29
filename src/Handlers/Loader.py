@@ -2,6 +2,7 @@ from tkinter import *
 
 class Loader:
     def __init__(self):
+        self.collector = None
         self.tk = None
         self.dataReader = None
         self.config = None
@@ -25,6 +26,7 @@ class Loader:
         self.colorDict = None
         self.tiaTone = None
         self.piaNotes = None
+        self.executor = None
 
         self.frames = {}
         self.menuButtons = {}

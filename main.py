@@ -14,7 +14,7 @@ if __name__ == "__main__":
     nope = False
     systemPath.insert(1, "src/Scripts/")
     from Collector import Collector
-    Collector(systemPath)
+    collector = Collector(systemPath)
     from Loader import Loader
     __loader = Loader()
 
@@ -24,8 +24,8 @@ if __name__ == "__main__":
     tk.resizable(False, False)
     tk.geometry("%dx%d+%d+%d" % (1,1,1,1))
 
-
     __loader.tk = tk
+    __loader.collector = collector
 
     from Monitor import Monitor
     __screenSize = Monitor().get_screensize()
