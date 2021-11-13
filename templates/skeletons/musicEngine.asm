@@ -43,7 +43,7 @@ CoolSong_NoRestart@@
 	lsr
 	lsr
 	lsr
-	CMP	#%00001011
+	CMP	#%00001110
 	BNE	CoolSong_NoRestorePointer@@
 	LDA	CoolSong_PointerBackUp@@
 	STA	CoolSong_Pointer@@

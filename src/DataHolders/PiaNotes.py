@@ -37,9 +37,21 @@ class PiaNotes:
                 self.__piaNotes[line[0]][channel] = notes
 
     def getTiaValue(self, note, channel):
+        drums =        {89: (15, 20),
+                        90: (8, 0),
+                        91: (15, 2),
+                        92: (8, 8),
+                        93: (2, 0),
+                        94: (3, 0),
+                        95: (3, 1)
+                        }
+
         try:
             if channel == None:
-                return(self.__piaNotes[str(note)])
+                if (int(note) > 88):
+                    return (drums[int(note)])
+                else:
+                    return(self.__piaNotes[str(note)])
             else:
                 return(self.__piaNotes[str(note)][str(channel)])
         except:

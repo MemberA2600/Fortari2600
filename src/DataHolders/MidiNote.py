@@ -4,3 +4,7 @@ class MidiNote:
         self.velocity = v
         self.note = n
         self.duration = d
+
+    def returnData(self):
+        return(self.velocity, self.note, self.duration)
+

@@ -8,14 +8,16 @@ from math import sqrt
 
 class MidiConverter:
 
-    def __init__(self, path, loader, removeDrums, maxChannels, multi):
+    def __init__(self, path, loader, removeDrums, maxChannels, removeOutside, multi):
 
         #This is the one the main program accesses. The process was
         #successful if it is not None.
         self.result = None
         self.songName = ""
         self.__multi = multi
-
+        self.__removeOutside = removeOutside
+        self.__loader = loader
+        self.__executor = loader.executor
         self.__piaNotes = loader.piaNotes
 
         self.__midiFile = MidiFile(path)
@@ -40,47 +42,122 @@ class MidiConverter:
                            16: []
                            }
 
+        self.__rawData = {0: "",
+                           1: "",
+                           2: "",
+                           3: "",
+                           4: "",
+                           5: "",
+                           6: "",
+                           7: "",
+                           8: "",
+                           9: "",
+                           10: "",
+                           11: "",
+                           12: "",
+                           13: "",
+                           14: "",
+                           15: "",
+                           16: ""
+                           }
+
         self.__seperatedNotes = deepcopy(self.__channels)
+        self.__channelList = deepcopy(self.__channels)
         self.__defaultTempo = 50 * 1.1 * self.__multi
 
+        textToSend = ""
+        tempo = None
         for message in self.__midiFile:
             message = str(message)
             if "MetaMessage" in message:
-                if "set_tempo" in message:
-                    self.__defaultTempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
-                    break
+                if ("set_tempo" in message):
+                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
+                    if self.__defaultTempo == None:
+                        self.__defaultTempo = tempo
+
+                elif "MetaMessage" in message:
+                    if "track_name" in message:
+                        try:
+                            self.songName += re.findall(r"name=\'.+\'", message)[0].replace("name='", "")[:-1]
+                        except:
+                            pass
+
+            else:
+                message = message.split(" ")
+                if message[0] == "note_off":
+                    noteOn = "0"
+                elif message[0] == "note_on":
+                    noteOn = "1"
+                else:
+                    continue
+
+                channel = message[1].split("=")[1]
+                note = message[2].split("=")[1]
+
+                c = int(channel)+1
+
+                if noteOn == "0":
+                    velocity = "0"
+                else:
+                    velocity = message[3].split("=")[1]
 
 
+                time = str(float(message[4].split("=")[1])*tempo)
+                #print(message[4], tempo)
+                textToSend+=noteOn+" "+channel+" "+note+" "+velocity+" "+time+"\n"
 
 
-        from threading import Thread
+        self.songName = re.sub(r'\s+', " ", self.songName)
 
-        titleGetter = Thread(target=self.getTitle)
-        titleGetter.daemon=True
-        titleGetter.start()
+        #import time as TIME
+        #start_time = TIME.time()
 
-        for num in self.__channels.keys():
-            getChannel = Thread(target=self.getChannelData, args=[num])
-            getChannel.daemon = True
-            getChannel.start()
+        getChannelsData = self.__executor.callFortran("MidiConverter","ExtractChannels", textToSend, None, True, True)
+        for key in getChannelsData.keys():
 
-        while self.__threadNum > 0:
-            sleep(0.00001)
+            if len(getChannelsData[key]) > 2:
+                realKey = int(key) - 1
 
-        """
-        for midiNote in self.__channels[9]:
-            if midiNote.note!=0:
-                print(midiNote.note)
-        """
+                self.__rawData[realKey] = {
+                    "seperated": "",
+                    "joined": ""
+                }
 
-        self.equalLen()
+                for item in getChannelsData[key]:
+                    raw = item.replace("\r", "").replace(".","")
+                    self.__rawData[realKey]["joined"] += raw+"\n"
+                    bigyok = raw.split(" ")
+                    if len(bigyok) == 3:
+                        bigyok[0] = int(bigyok[0])
+                        bigyok[1] = int(bigyok[1])
+                        bigyok[2] = int(bigyok[2])
+
+                        tempLen = bigyok[2]
+                        midiNote = MidiNote(bigyok[0], bigyok[1], 0)
+                        for num in range(0, bigyok[2]):
+                            tempNote = deepcopy(midiNote)
+                            tempNote.duration = 1
+                            self.__seperatedNotes[realKey].append(deepcopy(tempNote))
+                            self.__rawData[realKey]["seperated"] += str(tempNote.returnData()[0]) \
+                                                        + " " + str(tempNote.returnData()[1]) + "\n"
+
+                            if tempLen>0:
+                                while tempLen > 255:
+                                    tempNote = deepcopy(midiNote)
+                                    tempNote.duration = 255
+                                    tempLen -= 255
+                                    self.__channels[realKey].append(deepcopy(tempNote))
+
+                                tempNote = deepcopy(midiNote)
+                                tempNote.duration = tempLen
+                                self.__channels[realKey].append(deepcopy(tempNote))
+                                tempLen = 0
+
 
         onesToLookAt = []
-
         for num in range(0,len(self.__channels)):
             if len(self.__channels[num]) > 1 and num!=9:
                 onesToLookAt.append(num)
-
 
         __channelAttributes = {
             "priority": 0,
@@ -95,17 +172,16 @@ class MidiConverter:
         self.__channelAttributes = {}
         for num in onesToLookAt:
             self.__channelAttributes[num] = deepcopy(__channelAttributes)
-            setAttr = Thread(target=self.setAttr, args=[num])
-            setAttr.daemon = True
-            setAttr.start()
+            self.setAttr(num)
 
-
-        while self.__threadNum > 0:
-            sleep(0.00001)
-
-        #print(self.__channelAttributes)
-        #for num in onesToLookAt:
-        #    print(self.__channelAttributes[num])
+        """
+        file = open("pacal.txt", "w")
+        for key in self.__channelAttributes:
+            file.write("---"+str(key)+"---"+"\n")
+            for subKey in self.__channelAttributes[key].keys():
+                file.write(str(subKey)+": "+str(self.__channelAttributes[key][subKey])+"\n")
+        file.close()
+        """
 
         sorter = {}
 
@@ -113,6 +189,12 @@ class MidiConverter:
             sorter[num] = self.__channelAttributes[num]["priority"]
 
         sorter = sorted(sorter.items(), key=lambda x: x[1], reverse=True)
+
+        #for key in sorter:
+            
+        #    print(key)
+
+
         newSorter = []
         for item in sorter:
             newSorter.append(item[0])
@@ -130,24 +212,57 @@ class MidiConverter:
             "Y": 0
         }
 
-
         for num in range(0, len(self.__seperatedNotes[onesToLookAt[0]])):
             self.__tempResult[1].append(deepcopy(__tiaNote))
             self.__tempResult[2].append(deepcopy(__tiaNote))
             self.__tempResult[3].append(deepcopy(__tiaNote))
             self.__tempResult[4].append(deepcopy(__tiaNote))
 
-        if removeDrums == 0:
-            self.__createDrums()
+        if removeDrums == 0 and self.__channels[9] != []:
+            setDrums = self.__executor.callFortran("MidiConverter","SetDrums", self.__rawData[9]["joined"], None, True, True)
+            setDrums = setDrums.replace("\r", "").split("\n")
+            num = 0
+
+            for line in setDrums:
+                if line == "":
+                    continue
+                line = line.split(" ")
+                volume = int(line[0])
+                time = int(line[2])
+
+                if volume>0:
+                    Y = int(line[1])
+                    channel = int(line[3])
+                    freq = int(line[4])
+
+                    for n in range(num, time+num):
+                        if (n-num)<2:
+                            c = 1
+                        else:
+                            c = 4
+
+                        self.__tempResult[c][n]["volume"] = volume
+                        self.__tempResult[c][n]["channel"] = channel
+                        self.__tempResult[c][n]["freq"] = freq
+                        self.__tempResult[c][n]["Y"] = Y
+                        self.__tempResult[c][n]["enabled"] = 1
+
+                num = num+time
+
 
         if maxChannels<len(newSorter):
             newSorter = newSorter[0:maxChannels]
 
+        from threading import Thread
+
+
         self.__threadNum = 0
         for channel in newSorter:
             getChannel = Thread(target=self.__convertChannelData, args=[channel])
+            #getChannel = Process(target=self.__convertChannelData, args=[channel])
             getChannel.daemon = True
             getChannel.start()
+
 
         while self.__threadNum > 0:
             sleep(0.00001)
@@ -158,30 +273,32 @@ class MidiConverter:
             self.__tempResult[3].pop(0)
             self.__tempResult[4].pop(0)
 
+        while(self.__tempResult[1][-1]["enabled"] == 0):
+            self.__tempResult[1].pop()
+            self.__tempResult[2].pop()
+            self.__tempResult[3].pop()
+            self.__tempResult[4].pop()
+
 
         self.result = deepcopy(self.__tempResult)
 
-        """
-        for channel in self.result:
-            print(str(channel)+"\n------")
-            for note in self.result[channel]:
-                print(note["Y"], note["enabled"])
-        """
+
+
+        #print("--- %s seconds ---" % (TIME.time() - start_time))
+
 
     def __convertChannelData(self, c):
         self.__threadNum+=1
 
         for num in range(0, len(self.__seperatedNotes[c])):
             midiNote = self.__seperatedNotes[c][num]
-            if midiNote.note<32:
-                volume = midiNote.velocity//24
-            else:
-                volume = midiNote.velocity//10
+            volume = midiNote.velocity
             if volume == 0:
                 continue
 
-            if midiNote.note>88:
-                midiNote.note = 88
+            if self.__removeOutside == 1:
+                if (midiNote.note<3 or midiNote.note>68 or midiNote.note in [30,31]):
+                    continue
 
             saveNum = None
             for channelNum in range(1,5):
@@ -196,7 +313,7 @@ class MidiConverter:
             self.__tempResult[saveNum][num]["Y"] = midiNote.note
             self.__tempResult[saveNum][num]["enabled"] = 1
 
-            filler1, filler2, channelsToSort, filler3 = self.__getMonotones(self.__channels[c])
+            channelsToSort = self.__channelList[c]
             channelsToSort = sorted(channelsToSort.items(), key=lambda x: x[1], reverse=True)
 
             for item in channelsToSort:
@@ -216,87 +333,6 @@ class MidiConverter:
         self.__threadNum-=1
 
 
-
-    def __createDrums(self):
-        #"15,20" 89 (drum), "8,0" 90 (hi-hat), "15,2" 91(hi-hat),
-        #"8,8" 92 (snare), "2,0" 93(horn), "3,0" 94(buzz), "3,1" 95(buzz)
-
-        drumsDict = {
-            89: [35, 36, 41, 43, 45, 47, 48, 50, 64, 65, 66, 78, 79],
-            90: [42, 44, 51, 73, 76],
-            91: [46, 52, 55, 74, 77],
-            92: [38, 54, 56, 57, 69, 70, 75],
-            93: [37, 53, 59],
-            94: [39, 48, 57, 60, 62, 67, 71, 80],
-            95: [40, 49, 61, 63, 68, 72, 81]
-        }
-
-        channelCodes = {89: (15, 20),
-                        90: (8, 0),
-                        91: (15, 2),
-                        92: (8, 8),
-                        93: (2, 0),
-                        94: (3, 0),
-                        95: (3, 1)
-                        }
-
-        counter = 0
-        last = -1
-        for num in range(0, len(self.__seperatedNotes[9])):
-            midiNote = self.__seperatedNotes[9][num]
-            if midiNote.note != 0:
-                Y = self.__getDrumY(midiNote.note, drumsDict)
-                velocity = midiNote.velocity//19
-                if velocity == 0:
-                    last = 0
-                    continue
-
-                if last == Y:
-                    counter+=1
-                else:
-                    counter=0
-                last = Y
-
-                if counter<2:
-                    saveNum = 1
-                else:
-                    saveNum = 4
-
-                self.__tempResult[saveNum][num]["volume"] = velocity
-                self.__tempResult[saveNum][num]["Y"] = Y
-                self.__tempResult[saveNum][num]["freq"] = channelCodes[Y][1]
-                self.__tempResult[saveNum][num]["channel"] = channelCodes[Y][0]
-                self.__tempResult[saveNum][num]["enabled"] = 1
-
-            else:
-                counter = 0
-
-    def __getDrumY(self, note, drumsDict):
-        for drumKey in drumsDict:
-            for n in drumsDict[drumKey]:
-                if n == note+20:
-                    return(drumKey)
-
-    def equalLen(self):
-        lens = []
-        M = 0
-
-        for channel in range(0,16):
-            FFF = 0
-            for item in self.__channels[channel]:
-                FFF+=item.duration
-
-            lens.append(FFF)
-
-            if FFF > M:
-                M = FFF
-
-        for channel in range(0, 16):
-            if lens[channel] < M:
-                self.__channels[channel].append(MidiNote(0,0,M-lens[channel]))
-                for num in range(0, M-lens[channel]):
-                    self.__seperatedNotes[channel].append(MidiNote(0,0,1))
-
     def setAttr(self, num):
         self.__threadNum+=1
 
@@ -312,27 +348,54 @@ class MidiConverter:
                                 8: 0.0,
                                 -8: 0.0}
 
-        clonePlus8 = self.__createClone(deepcopy(self.__channels[num]), 8)
-        cloneMinus8 = self.__createClone(deepcopy(self.__channels[num]), -8)
-
-        correctNotesPercents[0] = self.__getPercentOfCorrectNotes(self.__channels[num])
-        correctNotesPercents[8] = self.__getPercentOfCorrectNotes(clonePlus8)
-        correctNotesPercents[-8] = self.__getPercentOfCorrectNotes(cloneMinus8)
-
         monoTones = {0: [0.0, 0.0, 0.0],
                     8: [0.0, 0.0, 0.0],
                     -8: [0.0, 0.0, 0.0]}
 
-        monoTones[0][0], monoTones[0][1], filler, monoTones[0][2] = self.__getMonotones(self.__channels[num])
-        monoTones[8][0], monoTones[8][1], filler, monoTones[8][2] = self.__getMonotones(clonePlus8)
-        monoTones[-8][0], monoTones[-8][1], filler, monoTones[-8][2] = self.__getMonotones(cloneMinus8)
+        correctNotesPercentsExecutor = self.__executor.callFortran("MidiConverter","GetCorrectNotesPercent", self.__rawData[num]["joined"], None, True, True)
+        correctNotesPercentsExecutor = correctNotesPercentsExecutor.replace("\r", "").split("\n")
+
+        __channelList = {
+            0: {}, 8: {}, -8: {}
+        }
+
+        for lineNum in range(0,6,2):
+            if lineNum == 0:
+                key = 0
+            elif lineNum == 2:
+                key = 8
+            else:
+                key = -8
+
+            channelData = correctNotesPercentsExecutor[lineNum].split(" ")
+            channels = correctNotesPercentsExecutor[lineNum+1].split(" ")
+
+            for cNum in range(0,10,2):
+                if channels[cNum] != "" and channels[cNum] != "0":
+                    __channelList[key][int(channels[cNum])] = int(channels[cNum+1])
+
+            if channelData[0].startswith("."):
+                channelData[0] = "0"+channelData[0]
+
+            correctNotesPercents[key] = float(channelData[0])
+            monoTones[key][0] = int(channelData[1])
+
+            if channelData[2].startswith("."):
+                channelData[2] = "0"+channelData[2]
+            monoTones[key][1] = float(channelData[2])
+
+            if channelData[3].startswith("."):
+                channelData[3] = "0"+channelData[3]
+            monoTones[key][2] = float(channelData[3])
 
         largest = max(correctNotesPercents, key = correctNotesPercents.get)
 
         if largest == 8 and (monoTones[8] > monoTones[0]):
-            self.__channels[num] = clonePlus8
+            self.__channels[num] = self.__createClone(deepcopy(self.__channels[num]), 8)
         elif largest == -8 and (monoTones[-8] > monoTones[0]):
-            self.__channels[num] = cloneMinus8
+            self.__channels[num] = self.__createClone(deepcopy(self.__channels[num]), -8)
+
+        self.__channelList[num] = __channelList[largest]
 
         self.__channelAttributes[num]["dominantTiaChannel"] = monoTones[largest][0]
         self.__channelAttributes[num]["monotony"] = monoTones[largest][1]
@@ -344,67 +407,6 @@ class MidiConverter:
                                                       * self.__channelAttributes[num]["monotony"] * self.__channelAttributes[num]["variety"])
 
         self.__threadNum -= 1
-
-    def __getMonotones(self, source):
-        channels = {}
-        notes = []
-
-        for item in source:
-            if item.note>0:
-
-                note = self.__piaNotes.getTiaValue(item.note, None)
-                notes.append(item.note)
-
-                if note == None:
-                    continue
-
-                for n in note:
-                    if n not in channels.keys():
-                        channels[n] = 0
-                    channels[n]+=1
-        if len(channels)>0:
-            maxi = max(channels, key=channels.get)
-            mono = int(maxi) / len(source)
-
-            variety = len(set(notes)) / len(source)
-        else:
-            maxi = "0"
-            mono = 0
-            variety = 0
-
-
-        return(maxi, mono, channels, variety)
-    """
-    def __getDominantChannel(self, source):
-        channels = {}
-        for item in source:
-            if item.note>0:
-                note = self.__piaNotes.getTiaValue(item.note, None)
-                for n in note:
-                    if n not in channels.keys():
-                        channels[n] = 0
-                    channels[n]+=1
-        return(max(channels, key=channels.get))
-    """
-
-
-    def __getPercentOfCorrectNotes(self, source):
-        good = 0
-        all = 0
-        for item in source:
-            #if len(self.__piaNotes.getTiaValue(item.note), None)>1:
-            if item.note>0:
-                all+=1
-                data = self.__piaNotes.getTiaValue(item.note, None)
-                if data != None:
-                    firstKey = list(data.keys())[0]
-                    if type(data[firstKey])!=list:
-                        good+=1
-
-        if all == 0:
-            return(0.0)
-        else:
-            return(good/all)
 
 
     def __createClone(self, source, add):
@@ -419,87 +421,6 @@ class MidiConverter:
             for item in self.__channels[channel]:
                 print(item.velocity, item.note, item.duration)
             print("\n")
-
-    def getTitle(self):
-        self.__threadNum+=1
-
-        for track in self.__midiFile.tracks:
-            for message in track:
-                message = str(message)
-                if "MetaMessage" in message:
-                    if "track_name" in message:
-                        try:
-                            self.songName += re.findall(r"name=\'.+\'", message)[0].replace("name='", "")[:-1]
-                        except:
-                            pass
-        self.songName = re.sub(r'\s+', " ", self.songName)
-
-        self.__threadNum-=1
-
-    def getChannelData(self, channelNum):
-        self.__threadNum+=1
-        tempo = self.__defaultTempo
-        duration = 0
-        remainder = 0
-
-        self.__channels[channelNum] = [MidiNote(0, 0, 0)]
-
-        for message in self.__midiFile:
-            message = str(message)
-            if "MetaMessage" in message:
-
-                if "set_tempo" in message:
-                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
-            else:
-                if "channel=" in message:
-                    d = {}
-                    for item in message.split(" "):
-                        if "=" in item:
-                            item = item.split("=")
-                            if "." in item[1]:
-                                d[item[0]] = float(item[1])
-                            else:
-                                d[item[0]] = int(item[1])
-                        else:
-                            if item == "note_off":
-                                d["Note_On"] = False
-                            elif item == "note_on":
-                                d["Note_On"] = True
-
-                    duration += d["time"]
-                    if d["channel"] != channelNum or ("Note_On" not in d.keys()):
-                        continue
-                    else:
-
-                        d["note"]-=20
-                        #if d["note"]>88:
-                        #    d["note"] = 88
-
-                        if d["Note_On"] == True:
-                            self.__channels[channelNum].append(MidiNote(d["velocity"], d["note"], 0))
-                        else:
-                            self.__channels[channelNum].append(MidiNote(0, 0, 0))
-
-                        tempoDuration = (duration * tempo) + remainder
-                        remainder = tempoDuration - int(tempoDuration)
-                        duration = 0
-                        self.__channels[channelNum][-2].duration = int(tempoDuration)
-                        for xyz in range(0, int(tempoDuration)):
-                            self.__seperatedNotes[channelNum].append(MidiNote(self.__channels[channelNum][-2].velocity,
-                                                                              self.__channels[channelNum][-2].note,
-                                                                              1))
-        #Remove the ones with 0 duration.
-        __temp = []
-        for item in self.__channels[channelNum]:
-            if item.duration>0:
-                if item.velocity == 0:
-                    item.note = 0
-                elif item.note == 0:
-                    item.velocity = 0
-                __temp.append(deepcopy(item))
-        self.__channels[channelNum] = deepcopy(__temp)
-
-        self.__threadNum-=1
 
 
 

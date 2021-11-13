@@ -39,16 +39,31 @@ class FileDialogs:
 
         for t in fileTypes:
 
-
             if isinstance(t, list):
                 rrr = []
                 for item in t:
                     rrr.append("*."+item)
                 typesString=", ".join(rrr)
 
+                tempWord = None
+                for item in t:
+                    try:
+                        testing = self.__dicts.getWordFromCurrentLanguage(item)
+                    except:
+                        word = self.__dicts.getWordFromCurrentLanguage("multiple")
+                        break
+
+                    if tempWord == None:
+                        word = self.__dicts.getWordFromCurrentLanguage(item)
+                        tempWord = word
+                    elif tempWord != self.__dicts.getWordFromCurrentLanguage(item):
+                        word = self.__dicts.getWordFromCurrentLanguage("multiple")
+                        break
+
                 for item in t:
                     temp = []
-                    temp.append(self.__dicts.getWordFromCurrentLanguage("multiple") + " (*." + typesString + ")")
+
+                    temp.append(word + " (" + typesString + ")")
                     temp.append("*." + item)
                     types.append(tuple(temp))
 

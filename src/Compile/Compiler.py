@@ -546,7 +546,7 @@ class Compiler:
 
         for name in patternsWithKeys.keys():
             if patternsWithKeys[name] != "":
-                stringData+="\n"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"+patternsWithKeys[name]+"\n\tBYTE\t#%10110000\n\n"
+                stringData+="\n"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"+patternsWithKeys[name]+"\n\tBYTE\t#%11100000\n\n"
 
         bytesO = 0
         for line in data.split("\n"):

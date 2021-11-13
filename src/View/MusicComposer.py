@@ -28,6 +28,7 @@ class MusicComposer:
         self.__screenMax = 0
         self.__maxChannels = 999
 
+        self.__calculatingThread = None
         self.__frames = {}
 
         self.__bankEntries = {
@@ -77,7 +78,6 @@ class MusicComposer:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.10), False, False, False)
         self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.35), False, False, False)
         self.__tinyFont2 = self.__fontManager.getFont(int(self.__fontSize*0.50), False, False, False)
-        self.__tinyFont3 = self.__fontManager.getFont(int(self.__fontSize*0.35), False, False, False)
 
 
         if tiaScreens == None:
@@ -707,6 +707,9 @@ class MusicComposer:
         self.__removePercuss = IntVar()
         self.__removePercuss.set(0)
 
+        self.__removeOutside = IntVar()
+        self.__removeOutside.set(1)
+
         self.__veryBottomFrame = Frame(self.__bottomFrame2Third3,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5*0.33),
                                     height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
@@ -727,14 +730,17 @@ class MusicComposer:
         self.__removerPercussBox.pack_propagate(False)
         self.__removerPercussBox.pack(side=TOP, fill=BOTH, anchor=E)
 
-        #from FrameLabelEntryUpDown import FrameLabelEntryUpDown
+        self.__removeOutsideBox =  Checkbutton(self.__veryBottomFrame, variable=self.__removeOutside,
+                text=self.__dictionaries.getWordFromCurrentLanguage("cutNoneSeen"),
+                bg=self.__colors.getColor("window"),
+                fg=self.__colors.getColor("font"),
+                font=self.__tinyFont2, justify=LEFT,
+                command=self.changedSetToYes,
+                activebackground=self.__colors.getColor("highLight"))
 
-        #self.__maxChannelsSetter = FrameLabelEntryUpDown(self.__loader, self.__veryBottomFrame1,
-        #                                             round(self.__topLevel.getTopLevelDimensions()[0] * 0.15),
-        #                                             round(self.__topLevel.getTopLevelDimensions()[1] * 0.05),
-        #                                             "maxChannels", 1, 999, self.__tinyFont3, self.setFrameLen, self.__maxChannels, self.__normalFont,
-        #                                             "maxChannels", self.__errorCounters, self.focusIn, self.focusOut
-        #)
+
+        self.__removeOutsideBox.pack_propagate(False)
+        self.__removeOutsideBox.pack(side=TOP, fill=BOTH, anchor=E)
 
     def __eraseScreen(self):
         for X in range(0,self.__tiaScreens.numOfFieldsW):
@@ -757,10 +763,12 @@ class MusicComposer:
     def __justBytesThread(self):
         from threading import Thread
 
-        t = Thread(target=self.__justBytes, args=[True])
-        t.daemon = True
-        t.start()
-
+        if self.__calculatingThread == None:
+            self.__bankLabelText.set(self.__dictionaries.getWordFromCurrentLanguage("calculating"))
+            t = Thread(target=self.__justBytes, args=[True])
+            t.daemon = True
+            t.start()
+            self.__calculatingThread = True
 
     def __justBytes(self, playSound):
         from Compiler import Compiler
@@ -775,7 +783,27 @@ class MusicComposer:
                                                               self.__vibratio2,
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
+                                                              int(self.__removeOutside.get()),
                                                               "NTSC")])
+
+        if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
+            try:
+                self.__banks[0] = int(self.__bank1.getValue())
+                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
+            except:
+                pass
+        elif numOfBanks.musicMode == "double":
+            try:
+                self.__banks[0] = int(self.__bank1.getValue())
+                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
+            except:
+                pass
+
+            try:
+                self.__banks[1] = int(self.__bank2.getValue())
+                self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
+            except:
+                pass
 
         self.__setBankLabelText(numOfBanks.bytes)
         if playSound == True:
@@ -785,7 +813,7 @@ class MusicComposer:
                 self.__loader.soundPlayer.playSound("OK")
             else:
                 self.__loader.soundPlayer.playSound("Probe")
-
+        self.__calculatingThread = None
 
 
     def __setBankLabelText(self, data):
@@ -834,13 +862,14 @@ class MusicComposer:
                 self.__saveDataToFile()
 
         fileName = self.__fileDialogs.askForFileName("openFile", False,
-                                                     ["mid", "sid", "vgm", "mod", "*"],
+                                                     ["mid", "sid", ["vgm", "vgz"], "mod", "*"],
                                                   self.__loader.mainWindow.projectPath)
 
         functions = {
             "mid": self.convertMidi,
             "sid": self.convertSID,
-            "vgm": None,
+            "vgm": self.convertVGM,
+            "vgz": self.convertVGM,
             "mod": None
         }
 
@@ -849,10 +878,10 @@ class MusicComposer:
 
         extension = fileName.split(".")[-1]
         if extension in functions.keys():
-            try:
+            #try:
                 converted, songTitle = functions[extension](fileName)
-            except Exception as e:
-               errorText = str(e)
+            #except Exception as e:
+                #errorText = str(e)
         else:
             for func in functions.keys():
                 try:
@@ -870,6 +899,7 @@ class MusicComposer:
             # Did not found any midis that had all notes corresponding a divider and also it won't improve
             # storage, so I commented this out.
 
+            #if self.__fortran == False:
             for num in range(0, 16):
                 try:
                     if (len(converted[num]) > 0):
@@ -879,11 +909,16 @@ class MusicComposer:
                     pass
 
             screenMaxNum = theLen // self.__tiaScreens.numOfFieldsW
+            self.__tiaScreens.initWithGivenNumberOfScreens(screenMaxNum)
+            self.__tiaScreens.insertDataFromConverted(converted, theLen, screenMaxNum)
+
+            #else:
+            #    self.__tiaScreens.insertDataFromFortranConverted(converted)
 
             #print(theLen, screenMaxNum)
 
-            self.__tiaScreens.initWithGivenNumberOfScreens(screenMaxNum)
-            self.__tiaScreens.insertDataFromConverted(converted, theLen, screenMaxNum)
+            #self.__justBytesThread()
+
             self.reset = True
             self.reColorAll()
 
@@ -893,7 +928,6 @@ class MusicComposer:
             self.__artistName.set("")
             self.__songTitle.set(songTitle)
             #print(self.__tiaScreens.screenMax, self.__screenMax)
-            self.__justBytes(False)
             self.__soundPlayer.playSound("Success")
 
 
@@ -902,16 +936,27 @@ class MusicComposer:
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
+    def convertVGM(self, path):
+        from VGMConverter import VGMConverter
+
+        vgmConverter = VGMConverter(self.__loader, path, int(self.__removePercuss.get()),
+                                    self.__maxChannels, int(self.__removeOutside.get()))
+
+        return (vgmConverter.result, vgmConverter.songName)
+
     def convertSID(self, path):
         from SIDConverter import SIDConverter
 
-        sidConverter = SIDConverter(self.__loader, path, int(self.__removePercuss.get()), self.__maxChannels)
+        sidConverter = SIDConverter(self.__loader, path, int(self.__removePercuss.get()),
+                                    self.__maxChannels, int(self.__removeOutside.get()))
 
         return (sidConverter.result, sidConverter.songName)
 
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
-        midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()), self.__maxChannels, 1)
+
+        midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
+                                      self.__maxChannels, int(self.__removeOutside.get()), 1)
 
         return (midiConverter.result, midiConverter.songName)
 
@@ -928,7 +973,7 @@ class MusicComposer:
     def __testingCurrentThread(self):
         extracted = self.__tiaScreens.composeData(
             self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, self.__vibratio2,
-            int(self.__removePercuss.get()), self.__maxChannels, "NTSC")
+            int(self.__removePercuss.get()), self.__maxChannels, int(self.__removeOutside.get()), "NTSC")
         #self.testPrinting(extracted)
 
         if self.__listItems[self.__listBox.curselection()[0]] == "*Fortari Logo*":
@@ -989,9 +1034,42 @@ class MusicComposer:
 
         text+=(str(self.__buzz)+","+str(self.__correctNotes)+","+str(self.__fadeOutLen)+","+
                 str(self.__dividerLen)+","+str(self.__vibratio)+","+str(self.__vibratio2)+
-                ","+str(self.__frameLen)+","+str(self.__removePercuss.get())+","+str(self.__maxChannels)+"\n"
+                ","+str(self.__frameLen)+","+str(self.__removePercuss.get())+
+               ","+str(self.__maxChannels)+","+str(self.__removeOutside.get())+"\n"
                )
 
+
+        #text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
+        text += str(self.__banks[0])+","+str(self.__banks[1])+"\n"
+
+        self.__saveASMThread(fileName)
+
+        data = "\n".join([
+            self.__tiaScreens.getWholeChannelDate(1),
+            self.__tiaScreens.getWholeChannelDate(2),
+            self.__tiaScreens.getWholeChannelDate(3),
+            self.__tiaScreens.getWholeChannelDate(4)
+        ])
+
+        text += data
+        file = open(fileName, "w")
+        file.write(text)
+        file.close()
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+        self.changed = False
+        self.__setBankLabelText(numOfBanks.bytes)
+        self.__soundPlayer.playSound("Success")
+
+    def __saveASMThread(self, fileName):
+        from threading import Thread
+
+        t = Thread(target=self.__saveASMThread, args=[fileName])
+        t.daemon = True
+        t.start()
+
+    def __saveASM(self, fileName):
         from Compiler import Compiler
         numOfBanks = Compiler(self.__loader, "common",
                               "getMusicBytes", [
@@ -1003,6 +1081,7 @@ class MusicComposer:
                                                               self.__vibratio2,
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
+                                                              self.__removeOutside.get(),
                                                               "NTSC")])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
@@ -1031,27 +1110,6 @@ class MusicComposer:
             except:
                 pass
 
-        #text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
-        text += str(self.__banks[0])+","+str(self.__banks[1])+"\n"
-
-
-        data = "\n".join([
-            self.__tiaScreens.getWholeChannelDate(1),
-            self.__tiaScreens.getWholeChannelDate(2),
-            self.__tiaScreens.getWholeChannelDate(3),
-            self.__tiaScreens.getWholeChannelDate(4)
-        ])
-
-        text += data
-        file = open(fileName, "w")
-        file.write(text)
-        file.close()
-
-        self.__topLevelWindow.deiconify()
-        self.__topLevelWindow.focus()
-        self.changed = False
-        self.__setBankLabelText(numOfBanks.bytes)
-        self.__soundPlayer.playSound("Success")
 
     def __openFile(self):
         if self.changed == True:
@@ -1080,11 +1138,8 @@ class MusicComposer:
         file.close()
 
         lines = text.replace("\r", "").split("\n")
-
-
         numbers = lines[2].split(",")
 
-        self.__tiaScreens.getLoadedInputAndSetData(self, lines[4:])
         self.__buzz = int(numbers[0])
         self.__buzzer.set(int(numbers[0]))
         self.__vibratio = int(numbers[4])
@@ -1103,6 +1158,8 @@ class MusicComposer:
         self.__frameLenSetter.setValue(numbers[6])
         self.__removePercuss.set(int(numbers[7]))
         self.__maxChannels = int(numbers[8])
+        self.__removeOutside.set(int(numbers[9]))
+
         #self.__maxChannelsSetter.setValue(numbers[8])
 
         self.__artistName.set(lines[0])
@@ -1118,46 +1175,17 @@ class MusicComposer:
         self.__banks = [int(bbb[0]), int(bbb[1])]
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
-
-
-        from Compiler import Compiler
-        numOfBanks = Compiler(self.__loader, "common",
-                              "getMusicBytes", [
-                                self.__tiaScreens.composeData(self.__correctNotes,
-                                                              self.__buzz,
-                                                              self.__fadeOutLen,
-                                                              self.__frameLen,
-                                                              self.__vibratio,
-                                                              self.__vibratio2,
-                                                              int(self.__removePercuss.get()),
-                                                              self.__maxChannels,
-                                                              "NTSC")])
-
-        if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
-            try:
-                self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
-            except:
-                pass
-        elif numOfBanks.musicMode == "double":
-            try:
-                self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
-            except:
-                pass
-
-            try:
-                self.__banks[1] = int(self.__bank2.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
-            except:
-                pass
+        self.__tiaScreens.getLoadedInputAndSetData(self, lines[4:])
 
         self.__soundPlayer.playSound("Success")
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
-        self.__setBankLabelText(numOfBanks.bytes)
+        self.__justBytesThread()
+
         self.changed = False
+
+
 
     def drawAllTheOthers(self):
 

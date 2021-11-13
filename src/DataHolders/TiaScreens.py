@@ -111,20 +111,134 @@ class TiaScreens:
         while self.__bruhuhuThreads > 0:
             sleep(0.000000001)
 
+        """
+        __counter = 0
+        for num in range(0, theLen):
+            isEmpty = True
+            for key in data.keys():
+                if data[key][num]["volume"] > 0:
+                    isEmpty = False
+                    break
+            if isEmpty:
+                __counter+=1
+        print(__counter)
+        """
+
         self.screenMax = screenMax
         self.currentChannel = 1
         self.currentScreen = 0
+
+    def insertDataFromFortranConverted(self, data):
+        cLen = len(data[list(data.keys())[0]])
+        screenMax = cLen // self.numOfFieldsW
+        self.initWithGivenNumberOfScreens(screenMax)
+
+        from threading import Thread
+        from time import sleep
+
+        self.__bruhuhuThreads = 0
+        for num in range(0,4):
+            key = "0" + str(num+1)
+            t = Thread(target=self.__setChannelDataFromFortranConverted, args=(data[key], cLen, num))
+            t.daemon = True
+            t.start()
+
+        while self.__bruhuhuThreads > 0:
+            sleep(0.000000001)
+
+        self.screenMax = screenMax
+        self.currentChannel = 1
+        self.currentScreen = 0
+
+    def __setChannelDataFromFortranConverted(self, data, theLen, channelNum):
+        self.__bruhuhuThreads+=1
+
+        pairs = {
+            4: 12, 12: 4, 1: 6, 6: 1
+        }
+
+        X = 0
+        screen = 0
+
+        for num in range(0, theLen):
+            item = data[num].split(" ")
+            if item[0] == "":
+                continue
+            elif item[0] == "0":
+                self.allData[channelNum][screen]["Y"][X] = -1
+                if item[1] != "0" or item[2]!= "0":
+                    print("WHAT?!", item)
+            else:
+                Y = int(item[1])
+                self.allData[channelNum][screen]["Y"][X] = Y
+                note = self.allData[channelNum][screen]["screen"][Y][X]
+                note["enabled"] = 1
+                note["volume"] = int(item[0])
+
+                if int(item[1]) > 88:
+                    n = self.__piaNotes.getTiaValue(item[1], None)
+                    note["channel"] = n[0]
+                    note["freq"] = n[1]
+                else:
+
+                    n = self.__piaNotes.getTiaValue(item[1], item[2])
+                    if n == None:
+                       n =  self.__piaNotes.getTiaValue(item[1], None)
+
+                    if type(n) == str:
+                        note["channel"] = int(item[2])
+                        note["freq"] = int(n)
+                    elif type(n) == list:
+                        note["channel"] = int(item[2])
+
+                        temp = 0
+                        for i in item:
+                            temp+=int(i)
+
+                        note["freq"] = temp//len(item)
+                    elif len(n) > 1:
+                       if int(item[2]) in n.keys():
+                          note["channel"] = int(item[2])
+                       elif pairs[int(item[2])] in n.keys():
+                          note["channel"] = pairs[int(item[2])]
+                       else:
+                           note["channel"] = int(list(n.keys())[0])
+
+                       note["freq"] = int(n[str(note["channel"])])
+                    else:
+                        note["channel"] = int(list(n.keys())[0])
+                        item = n[str(note["channel"])]
+                        if type(item) == list:
+                            temp = 0
+                            for i in item:
+                                temp += int(i)
+
+                            note["freq"] = temp // len(item)
+                        else:
+                            note["freq"] = int(item)
+
+            X += 1
+            if (X > self.numOfFieldsW - 1):
+                screen += 1
+                X = 0
+
+        self.__bruhuhuThreads-=1
 
 
     def __setChannelDataFromConverted(self, data, channelNum, theLen):
         self.__bruhuhuThreads+=1
         X = 0
         screen = 0
+
+        #file = open("temp/Fuck0"+str(channelNum)+".txt", "w")
+
         for num in range(0, theLen):
             #print(channelNum, screen, X)
 
             if int(data[channelNum+1][num]["enabled"]) == 0:
                 self.allData[channelNum][screen]["Y"][X] = -1
+                #file.write("0 -1 0 \n")
+
             else:
                 Y = int(data[channelNum+1][num]["Y"])
                 self.allData[channelNum][screen]["Y"][X] = Y
@@ -133,13 +247,17 @@ class TiaScreens:
                 note["volume"] = int(data[channelNum+1][num]["volume"])
                 note["channel"] = int(data[channelNum+1][num]["channel"])
                 note["freq"] = int(data[channelNum+1][num]["freq"])
+                #file.write(str(note["volume"]) + " " + str(Y) + " " + str(note["channel"]) + "\n")
+
             X+=1
+
             if (X > self.numOfFieldsW-1):
                 #if channelNum == 0:
                 #    print(self.allData[0][screen]["Y"])
                 screen+=1
                 X = 0
 
+        #file.close()
         self.__bruhuhuThreads-=1
 
     def deleteCurrent(self):
@@ -354,10 +472,11 @@ class TiaScreens:
         return(sendBack)
 
 
-    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, tv):
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, removeOutside, tv):
         from TiaNote import TiaNote
         #compress the 4 channels into two
         from copy import deepcopy
+
 
         data1 = [
             [],
@@ -377,10 +496,11 @@ class TiaScreens:
                 ]
                 for channelNum in range(0, 4):
                     if self.allData[channelNum][screenNum]["Y"][noteNum] != -1:
-
                         Y = self.allData[channelNum][screenNum]["Y"][noteNum]
                         note = self.allData[channelNum][screenNum]["screen"][Y][noteNum]
                         if noPercuss == 1 and (note["channel"] in [15, 8, 2, 3]):
+                            pass
+                        elif (removeOutside == 1 and (Y<3 or Y>68 or Y in [30,31])):
                             pass
                         else:
                             nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
@@ -789,7 +909,6 @@ class TiaScreens:
             data3.pop(1)
 
         return(data3)
-
 
     def getNextNote(self, tiaNote, mini, maxi, prev):
         from TiaNote import TiaNote

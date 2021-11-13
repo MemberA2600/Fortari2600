@@ -4,7 +4,7 @@
 
 class SIDConverter:
 
-    def __init__(self, loader, path, removePercuss, maxChannels):
+    def __init__(self, loader, path, removePercuss, maxChannels, removeOutside):
 
         self.__loader = loader
         self.__loader.collector.manuallyRegisterPackage("chiptunesak")
@@ -24,6 +24,15 @@ class SIDConverter:
             self.__loader.soundPlayer.playSound("Probe")
 
         sid.set_options(seconds=self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds"))
+
+        r = randint(0, 1000)
+        if r < 995:
+            self.__loader.soundPlayer.playSound("Ask")
+        else:
+            self.__loader.soundPlayer.playSound("Probe")
+
+        sid.set_options(subtune=self.__loader.fileDialogs.askForInteger("askForSomething", "askForSubTune"))
+
         chirp = sid.to_rchirp(path)
         try:
             from os import remove
@@ -32,7 +41,7 @@ class SIDConverter:
             pass
 
         midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
-        midiConverter = MidiConverter("temp/temp.mid", self.__loader, removePercuss, maxChannels, 8)
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 
         self.__loader.collector.restoreSystemPath()

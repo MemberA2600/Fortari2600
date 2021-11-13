@@ -11,6 +11,7 @@ from threading import Thread
 from sys import path as systemPath
 
 if __name__ == "__main__":
+
     nope = False
     systemPath.insert(1, "src/Scripts/")
     from Collector import Collector
