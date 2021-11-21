@@ -61,7 +61,7 @@ class Executor:
         elif type(input) == dict:
             for key in input:
                 if type(key) == int:
-                    outKey = str(int)
+                    outKey = str(key)
                     if len(outKey) == 1:
                         outKey = "0" + outKey
                 else:

@@ -174,15 +174,6 @@ class MidiConverter:
             self.__channelAttributes[num] = deepcopy(__channelAttributes)
             self.setAttr(num)
 
-        """
-        file = open("pacal.txt", "w")
-        for key in self.__channelAttributes:
-            file.write("---"+str(key)+"---"+"\n")
-            for subKey in self.__channelAttributes[key].keys():
-                file.write(str(subKey)+": "+str(self.__channelAttributes[key][subKey])+"\n")
-        file.close()
-        """
-
         sorter = {}
 
         for num in onesToLookAt:

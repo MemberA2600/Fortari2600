@@ -917,7 +917,7 @@ class MusicComposer:
 
             #print(theLen, screenMaxNum)
 
-            #self.__justBytesThread()
+            self.__justBytesThread()
 
             self.reset = True
             self.reColorAll()
@@ -1056,10 +1056,10 @@ class MusicComposer:
         file.write(text)
         file.close()
 
+        self.__justBytes(False)
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
         self.changed = False
-        self.__setBankLabelText(numOfBanks.bytes)
         self.__soundPlayer.playSound("Success")
 
     def __saveASMThread(self, fileName):

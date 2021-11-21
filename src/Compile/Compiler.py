@@ -9,6 +9,7 @@ class Compiler:
         self.__kernel = kernel
         self.__mode = mode
         self.__data = data
+        self.__executor = self.__loader.executor
         self.__openEmulator = False
         self.__io = self.__loader.io
 
@@ -283,24 +284,6 @@ class Compiler:
 
         return(__music)
 
-    """
-    def multiList(self, L):
-        from copy import deepcopy
-        from math import sqrt
-
-        multi = 1
-        L2 = deepcopy(L)
-
-        for item in L:
-            if sqrt(item) in L2:
-                L2.remove(sqrt(item))
-
-        for item in L2:
-            multi*=item
-
-        return(multi)
-    """
-
     def __getLargestDividerChannel(self, channelNum, tiaData, tv):
         from copy import deepcopy
 
@@ -338,21 +321,6 @@ class Compiler:
         Channels = ["", ""]
         tempDur = 0
         bytes = [0,0]
-
-        """
-        foundDividersC0 = []
-        foundDividersC1 = []
-
-        foundDividersC0 = self.__getLargestDividerChannel(0, tiaData)
-        if len(tiaData) == 2:
-            foundDividersC1 = self.__getLargestDividerChannel(1, tiaData)
-
-        from functools import reduce
-        self.__largestDividerC0 = self.multiList(foundDividersC0)
-
-        if len(foundDividersC1)>0:
-            self.__largestDividerC1 = self.multiList(foundDividersC1)
-        """
 
         if len(tiaData) == 1:
             Channels.pop(1)
@@ -426,17 +394,11 @@ class Compiler:
                     bytes[num] += 3
                 dataBytesNotes[num].append(noteText.replace("\n\n", "\n"))
 
-
-
-
-
         Channels[0] = re.sub("\n+", "\n", Channels[0])
         if self.__musicMode != "mono":
             Channels[1] = re.sub("\n+", "\n", Channels[1])
 
         Channels[0], bytes[0] = self.compress(Channels[0], "CoolSong", 0, dataBytesNotes[0], False)
-        Channels[0] += "\tBYTE\t#240\n"
-        bytes[0] += 1
 
         self.bytes = bytes
 
@@ -445,8 +407,6 @@ class Compiler:
 
         if self.__musicMode != "mono" and self.__musicMode != "overflow":
             Channels[1], bytes[1] = self.compress(Channels[1], "CoolSong", 1, dataBytesNotes[1], False)
-            bytes[1] += 1
-            Channels[1] += "\tBYTE\t#240\n"
 
             if (bytes[0] + bytes[1]) > 3600:
                 self.__musicMode = "double"
@@ -456,120 +416,92 @@ class Compiler:
             else:
                 self.__musicMode = "stereo"
 
-        #print(bytes[0], bytes[1], self.__musicMode)
-
         return(Channels, bytes)
+
+
+
 
     def compress(self, data, sectonName, channelNum, dataArrayNotes, generateNotes):
         patterns = {}
 
+        import time as TIME
+        start_time = TIME.time()
+
+        data = data.replace("\n\n", "\n")
+
+        args = str(channelNum)+ " " + str(int(generateNotes)) + " " + sectonName
+        dataToSend = {"00": data, "01": "---\n".join(dataArrayNotes)}
+
+        dataPatterns = self.__executor.callFortran("Compress","GetPatterns", dataToSend, args, True, True)
+        dataOccurences = self.__executor.callFortran("Compress","GetOccurences",
+                                                     {"00": dataPatterns, "01": dataToSend["01"]},
+                                                     args, True, True)
+
+        dataSorted =  self.__executor.callFortran("Compress","SortWeights", dataOccurences, None, True, True)
+
+
+        dataFinal = self.__executor.callFortran("Compress","Finalizing",
+                                                     {"00": dataPatterns, "01": dataToSend["01"], "02": dataSorted},
+                                                     args, True, True)
+
         if generateNotes == False:
-            patternsWithKeys = {"00010000": "",
-                                "00100000": "",
-                                "00110000": "",
-                                "01000000": "",
-                                "01010000": "",
-                                "01100000": "",
-                                "01110000": "",
-                                "10000000": "",
-                                "10010000": "",
-                                "10100000": "",
-                                "10110000": "",
-                                "11000000": ""
+            patternsWithKeys = {"00010000": ["", False],
+                                "00100000": ["", False],
+                                "00110000": ["", False],
+                                "01000000": ["", False],
+                                "01010000": ["", False],
+                                "01100000": ["", False],
+                                "01110000": ["", False],
+                                "10000000": ["", False],
+                                "10010000": ["", False],
+                                "10100000": ["", False],
+                                "10110000": ["", False],
+                                "11000000": ["", False],
+                                "11010000": ["", False]
             }
 
 
+        keys = list(patternsWithKeys.keys())
 
-        sizes = []
-        data = data.replace("\n\n", "\n")
+        bigData = dataToSend["01"]
 
-        """
-        dataArrayX = data.split("\n")
+        usedOnes = ""
 
-        dataArray = []
-        for item in dataArrayX:
-            if "BYTE" in item.upper():
-                dataArray.append(item)
+        for num in range(0, 13):
+            key = str(num+1)
+            if len(key) == 1:
+                key = "0" + key
 
-        dataArrayNotes = []
+            patternsWithKeys[keys[num]][0] = ("\n".join(dataFinal[key]))
+            bigData = bigData.replace(patternsWithKeys[keys[num]][0], "\tBYTE\t#%" + keys[num] + "\t; This was changed!\n")
 
-
-
-        index = 0
-        while index<len(dataArray):
-            if "#%00000000" in dataArray[0]:
-                dataArrayNotes.append(dataArray[index]+"\n"+dataArray[index+1])
-                index+=2
-            else:
-                number = dataArray[index+1].split("%")[1]
-                if number[:3] == "000":
-                    dataArrayNotes.append(dataArray[index] + "\n" + dataArray[index + 1]+"\n"+dataArray[index + 2]+"\n"+dataArray[index + 3])
-                    index += 4
-                else:
-                    dataArrayNotes.append(dataArray[index] + "\n" + dataArray[index + 1]+"\n"+dataArray[index + 2])
-                    index += 3
-        """
+            if (keys[num] in bigData):
+                patternsWithKeys[keys[num]][1] = True
+                usedOnes += sectonName+"_Channel"+str(channelNum)+"_"+keys[num]+"\n"+patternsWithKeys[keys[num]][0]+"\tBYTE\t#%11100000\n\n"
 
 
-        for piecesToJoin in range(0, 256):
-            for index in range(0, len(dataArrayNotes)-piecesToJoin):
-                pattern = "\n".join(dataArrayNotes[index:index+piecesToJoin])
-                patterns[pattern] = [data.count(pattern), len(pattern), data.count(pattern) * len(pattern)]
-
-        try:
-            del patterns['']
-        except:
-            pass
-
-        for key in patterns:
-            if patterns[key][0]>1:
-                sizes.append(patterns[key][2])
-
-        sizes.sort(reverse=True)
-
-        num = 0
-        for size in sizes:
-            for P in patterns:
-                if patterns[P][2] == size:
-                    patternsWithKeys[list(patternsWithKeys.keys())[num]] = P
-                    num+=1
-                    if num == 10:
-                        break
-            if num == 10:
-                break
+        bigData += "\t"+"BYTE"+"\t"+"#%11110000\n"
 
         stringData = sectonName+"_Data"+ str(channelNum)+"_CompressedPointerTable\n\tBYTE\t#0\n\tBYTE\t#0\n"
         for name in patternsWithKeys.keys():
             if patternsWithKeys[name] != "":
-                stringData+="\tBYTE\t#<"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
-                stringData+="\tBYTE\t#>"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
-
-        for name in patternsWithKeys.keys():
-            if patternsWithKeys[name] != "":
-                stringData+="\n"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"+patternsWithKeys[name]+"\n\tBYTE\t#%11100000\n\n"
-
-        bytesO = 0
-        for line in data.split("\n"):
-            if "BYTE" in line.upper():
-                bytesO+=1
-
-        for name in patternsWithKeys.keys():
-            if patternsWithKeys[name] != "":
-                data = data.replace(patternsWithKeys[name], "\tBYTE\t#%"+name+"\t; This was changed\n****"+patternsWithKeys[name].replace("\n", "\n****")+"\n\n")
-
-        stringData+=sectonName+"_Data"+str(channelNum)+"\n"+data+"\n"
-
-        stringData = stringData.replace("\n\n", "\n")
-
-        lines = stringData.split("\n")
-        bytes = 0
-        for line in lines:
-            if ("BYTE" in line.upper()) and ("*" not in line):
-                bytes+=1
+                if patternsWithKeys[name][1] == True:
+                    stringData+="\tBYTE\t#<"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
+                    stringData+="\tBYTE\t#>"+sectonName+"_Channel"+str(channelNum)+"_"+name+"\n"
+                else:
+                    stringData+="\tBYTE\t#0\n"
+                    stringData+="\tBYTE\t#0\n"
 
 
-        #print(stringData)
-        return(stringData, bytes)
+        stringData += "\n" + usedOnes +"\n" + sectonName+"_Data"+str(channelNum)+"\n"+bigData
+        stringData = stringData.replace("---\n", "")
+
+        numberOfBytes = 0
+        for line in stringData.split("\n"):
+            if "BYTE" in line:
+                numberOfBytes+=1
+
+        return(stringData, numberOfBytes)
 
 
     def createBits(self, num, l):

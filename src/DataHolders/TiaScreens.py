@@ -477,6 +477,8 @@ class TiaScreens:
         #compress the 4 channels into two
         from copy import deepcopy
 
+        #import time as TIME
+        #start_time = TIME.time()
 
         data1 = [
             [],
@@ -907,6 +909,9 @@ class TiaScreens:
 
         if deleteChannel1 == True:
             data3.pop(1)
+
+        #print("--- %s seconds ---" % (TIME.time() - start_time))
+
 
         return(data3)
 

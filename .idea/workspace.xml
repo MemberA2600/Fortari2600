@@ -2,37 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Converters/VGMConverter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/applications/SID2MIDI/sid2midi.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ffff.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0001.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0002.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0003.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0004.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/asm_log/generatedMusicROMs_NTSC_0005.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/Commando.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/Garfield.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/Hyperthrust.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/Karate.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/OneManAndHisDroid.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/R-Type.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatedMusicROMs/bin/generatedMusicROMs_NTSC_0001.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-10-29_215431.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-11-13_211520.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Converters/MidiConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/MidiConverter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Converters/SIDConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/SIDConverter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/MidiNote.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/MidiNote.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Handlers/Executor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Executor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/FileDialogs.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/FileDialogs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/musicEngine.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/musicEngine.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/Input.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp.mid" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,7 +60,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1636834520269" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1637510207057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
@@ -90,22 +76,22 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="291" />
+          <entry key="project.closed" value="296" />
           <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.3" value="80" />
-          <entry key="project.open.time.4" value="251" />
+          <entry key="project.open.time.4" value="258" />
           <entry key="project.open.time.5" value="18" />
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="360" />
+          <entry key="project.opened" value="367" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="1721" />
+          <entry key="py" value="1728" />
           <entry key="txt" value="5" />
           <entry key="wav" value="1" />
         </counts>
@@ -114,20 +100,20 @@
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="1721" />
+          <entry key="Python" value="1728" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="341827" />
+          <entry key="py" value="345227" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="341827" />
+          <entry key="Python" value="345227" />
         </counts>
       </usages-collector>
     </session>
@@ -137,56 +123,43 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-999">
-              <caret line="927" column="37" selection-start-line="927" selection-start-column="37" selection-end-line="927" selection-end-column="37" />
+            <state relative-caret-position="393">
+              <caret line="1066" selection-start-line="1066" selection-end-line="1066" />
               <folding>
-                <marker date="1636827716638" expanded="true" signature="34930:35101" ph="..." />
-                <marker date="1636827716638" expanded="true" signature="41780:42073" ph="..." />
-                <marker date="1636827716638" expanded="true" signature="46752:48819" ph="..." />
+                <marker date="1637499208164" expanded="true" signature="34930:35101" ph="..." />
+                <marker date="1637499208164" expanded="true" signature="41779:42072" ph="..." />
+                <marker date="1637499208164" expanded="true" signature="46733:48800" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+        <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-              <folding>
-                <marker date="1636749620003" expanded="true" signature="1365:1499" ph="..." />
-                <marker date="1636749620003" expanded="true" signature="3640:3644" ph="..." />
-              </folding>
+            <state relative-caret-position="1137">
+              <caret line="1140" selection-start-line="1140" selection-end-line="1140" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="479" column="139" selection-start-line="479" selection-start-column="139" selection-end-line="479" selection-end-column="139" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
-              <caret line="225" column="33" lean-forward="true" selection-start-line="225" selection-start-column="33" selection-end-line="225" selection-end-column="33" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="688">
-              <caret line="43" column="71" selection-start-line="43" selection-start-column="71" selection-end-line="43" selection-end-column="71" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/MidiNote.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="5424">
+              <caret line="345" column="50" selection-start-line="345" selection-start-column="46" selection-end-line="345" selection-end-column="50" />
             </state>
           </provider>
         </entry>
@@ -194,8 +167,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1185">
-              <caret line="145" column="8" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
+            <state relative-caret-position="1456">
+              <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
             </state>
           </provider>
         </entry>
@@ -203,7 +176,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="788">
+            <state relative-caret-position="960">
               <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
               <folding>
                 <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
@@ -223,16 +196,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>midiCon</find>
-      <find>counter</find>
-      <find>Fuck</find>
-      <find>__fortr</find>
-      <find>ren</find>
-      <find>fortran</find>
-      <find>midi</find>
-      <find>channelNum</find>
-      <find>getChannelData</find>
-      <find>= 9</find>
       <find>__createDrums</find>
       <find>1.1</find>
       <find>temp</find>
@@ -250,9 +213,19 @@
       <find>Fortran</find>
       <find>_fortran</find>
       <find>print</find>
-      <find>__fortran</find>
       <find>time</find>
       <find>1.05</find>
+      <find>__fortran</find>
+      <find>drum</find>
+      <find>com</find>
+      <find>repl</find>
+      <find>execut</find>
+      <find>TIME</find>
+      <find>just</find>
+      <find>justBytes</find>
+      <find>exec</find>
+      <find>o</find>
+      <find>__justBytes</find>
     </findStrings>
     <replaceStrings>
       <replace>array</replace>
@@ -329,21 +302,21 @@
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/src/View/FileDialogs.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VGMByteString.py" />
-        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VMGByteDict.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VGMByteDict.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VGMBytes.py" />
         <option value="$PROJECT_DIR$/src/Converters/VGMConverter.py" />
         <option value="$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/ctypes/__init__.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/MidiNote.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterHybrid.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterOld.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
-        <option value="$PROJECT_DIR$/src/Handlers/Executor.py" />
         <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
+        <option value="$PROJECT_DIR$/src/Handlers/Executor.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
       </list>
     </option>
   </component>
@@ -367,7 +340,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -416,6 +388,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -604,12 +577,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.1957638" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21373557" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.4884467" visible="true" weight="0.17112811" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48587933" weight="0.17112811" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -617,7 +590,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5115533" side_tool="true" visible="true" weight="0.17112811" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.51412064" side_tool="true" visible="true" weight="0.17112811" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -654,7 +627,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/sid.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/_________setup.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -743,13 +715,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1972">
           <caret line="212" column="29" selection-start-line="212" selection-start-column="22" selection-end-line="212" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="268" column="17" selection-start-line="268" selection-start-column="17" selection-end-line="268" selection-end-column="17" />
         </state>
       </provider>
     </entry>
@@ -884,22 +849,7 @@
     <entry file="file://$PROJECT_DIR$/src/View/SubMenu.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="788">
-          <caret line="362" selection-start-line="362" selection-end-line="362" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterHybdrid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterHybdrid.py" />
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/subprocess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -907,47 +857,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterOld.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="441">
-          <caret line="411" selection-start-line="411" selection-end-line="411" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterHybrid.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="177" selection-start-line="177" selection-end-line="183" />
-          <folding>
-            <element signature="e#0#11#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="788">
-          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
-          <folding>
-            <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="25" column="17" selection-start-line="25" selection-start-column="17" selection-end-line="25" selection-end-column="17" />
-          <folding>
-            <marker date="1636749620003" expanded="true" signature="1365:1499" ph="..." />
-            <marker date="1636749620003" expanded="true" signature="3640:3644" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterOld.py" />
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverterHybrid.py" />
     <entry file="file://$PROJECT_DIR$/src/DataHolders/MidiNote.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -955,36 +866,68 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-999">
-          <caret line="927" column="37" selection-start-line="927" selection-start-column="37" selection-end-line="927" selection-end-column="37" />
-          <folding>
-            <marker date="1636827716638" expanded="true" signature="34930:35101" ph="..." />
-            <marker date="1636827716638" expanded="true" signature="41780:42073" ph="..." />
-            <marker date="1636827716638" expanded="true" signature="46752:48819" ph="..." />
-          </folding>
+        <state relative-caret-position="-460">
+          <caret line="480" column="9" selection-start-line="480" selection-start-column="9" selection-end-line="480" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/CompilerOld.py" />
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5424">
+          <caret line="345" column="50" selection-start-line="345" selection-start-column="46" selection-end-line="345" selection-end-column="50" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1185">
-          <caret line="145" column="8" selection-start-line="145" selection-start-column="8" selection-end-line="145" selection-end-column="8" />
+        <state relative-caret-position="1456">
+          <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="960">
+          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+          <folding>
+            <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1137">
+          <caret line="1140" selection-start-line="1140" selection-end-line="1140" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="479" column="139" selection-start-line="479" selection-start-column="139" selection-end-line="479" selection-end-column="139" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="43" column="71" selection-start-line="43" selection-start-column="71" selection-end-line="43" selection-end-column="71" />
+        <state relative-caret-position="532">
+          <caret line="34" lean-forward="true" selection-start-line="34" selection-end-line="34" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
-          <caret line="225" column="33" lean-forward="true" selection-start-line="225" selection-start-column="33" selection-end-line="225" selection-end-column="33" />
+        <state relative-caret-position="393">
+          <caret line="1066" selection-start-line="1066" selection-end-line="1066" />
+          <folding>
+            <marker date="1637499208164" expanded="true" signature="34930:35101" ph="..." />
+            <marker date="1637499208164" expanded="true" signature="41779:42072" ph="..." />
+            <marker date="1637499208164" expanded="true" signature="46733:48800" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
