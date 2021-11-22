@@ -3,22 +3,30 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-11-13_211520.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/GetOccurences.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/GetOccurences.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/GetPatterns.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/GetPatterns.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/GetOccurences.depend" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/GetOccurences.depend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/GetOccurences.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/GetOccurences.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/bin/Release/GetOccurences.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/bin/Release/GetOccurences.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/main.f90" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/main.f90" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/obj/Release/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/obj/Release/main.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/temp/Output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetOccurences/temp/Output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/GetPatterns.depend" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/GetPatterns.depend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/GetPatterns.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/GetPatterns.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/bin/Release/GetPatterns.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/bin/Release/GetPatterns.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/fasz.f90" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/main.f90" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/main.f90" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/obj/Release/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/obj/Release/main.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/obj/Release/patternmodule.mod" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/obj/Release/patternmodule.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/SortWeights/SortWeights.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/SortWeights/SortWeights.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/Compress/src/SortWeights/bin/Release/SortWeights.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/Compress/src/SortWeights/bin/Release/SortWeights.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/MidiConverter/src/ExtractChannels/ExtractChannels.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/MidiConverter/src/ExtractChannels/ExtractChannels.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/MidiConverter/src/SetDrums/SetDrums.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/MidiConverter/src/SetDrums/SetDrums.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-11-21_165647.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Amorphis_-_Silver_Bride.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Amorphis_-_Silver_Bride.a26" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Converters/MidiConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/MidiConverter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/Executor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Executor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/Input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/temp.mid" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,7 +68,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1637510207057" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1637582002288" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
@@ -76,44 +84,44 @@
     <session id="1144292388">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="296" />
+          <entry key="project.closed" value="297" />
           <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.3" value="80" />
-          <entry key="project.open.time.4" value="258" />
+          <entry key="project.open.time.4" value="260" />
           <entry key="project.open.time.5" value="18" />
           <entry key="project.open.time.6" value="3" />
           <entry key="project.open.time.7" value="1" />
           <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="367" />
+          <entry key="project.opened" value="369" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="a26" value="1" />
           <entry key="pstat" value="2" />
-          <entry key="py" value="1728" />
-          <entry key="txt" value="5" />
+          <entry key="py" value="1731" />
+          <entry key="txt" value="16" />
           <entry key="wav" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="7" />
+          <entry key="PLAIN_TEXT" value="18" />
           <entry key="Profiler Session" value="2" />
-          <entry key="Python" value="1728" />
+          <entry key="Python" value="1731" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="a26" value="19" />
-          <entry key="py" value="345227" />
+          <entry key="py" value="346129" />
           <entry key="txt" value="109" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="128" />
-          <entry key="Python" value="345227" />
+          <entry key="Python" value="346129" />
         </counts>
       </usages-collector>
     </session>
@@ -126,8 +134,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="1066" selection-start-line="1066" selection-end-line="1066" />
+            <state relative-caret-position="504">
+              <caret line="846" column="59" selection-start-line="846" selection-start-column="59" selection-end-line="846" selection-end-column="59" />
               <folding>
                 <marker date="1637499208164" expanded="true" signature="34930:35101" ph="..." />
                 <marker date="1637499208164" expanded="true" signature="41779:42072" ph="..." />
@@ -140,7 +148,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1137">
+            <state relative-caret-position="1026">
               <caret line="1140" selection-start-line="1140" selection-end-line="1140" />
             </state>
           </provider>
@@ -149,38 +157,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="479" column="139" selection-start-line="479" selection-start-column="139" selection-end-line="479" selection-end-column="139" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5424">
-              <caret line="345" column="50" selection-start-line="345" selection-start-column="46" selection-end-line="345" selection-end-column="50" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1456">
-              <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="960">
-              <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
-              <folding>
-                <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
-              </folding>
+            <state relative-caret-position="344">
+              <caret line="412" column="31" selection-start-line="412" selection-start-column="31" selection-end-line="412" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -196,16 +174,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__createDrums</find>
-      <find>1.1</find>
-      <find>temp</find>
-      <find>tempo</find>
-      <find>setA</find>
-      <find>createD</find>
-      <find>midiNo</find>
-      <find>setAttr</find>
-      <find>onest</find>
-      <find>equalLen</find>
       <find>__channelAttributes</find>
       <find>createClose</find>
       <find>monotony</find>
@@ -217,7 +185,6 @@
       <find>1.05</find>
       <find>__fortran</find>
       <find>drum</find>
-      <find>com</find>
       <find>repl</find>
       <find>execut</find>
       <find>TIME</find>
@@ -226,6 +193,17 @@
       <find>exec</find>
       <find>o</find>
       <find>__justBytes</find>
+      <find>BYTE	#%00011011</find>
+      <find>BYTE	#%</find>
+      <find>com</find>
+      <find>generateSongBytes</find>
+      <find>removeOutside</find>
+      <find>drums</find>
+      <find>range</find>
+      <find>compo</find>
+      <find>3600</find>
+      <find>3500</find>
+      <find>overflow</find>
     </findStrings>
     <replaceStrings>
       <replace>array</replace>
@@ -266,8 +244,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Scripts/TIATone.py" />
-        <option value="$PROJECT_DIR$/src/Libs/LibCaller.py" />
         <option value="$PROJECT_DIR$/src/View/LockFrame.py" />
         <option value="$PROJECT_DIR$/src/Scripts/TiaTone.py" />
         <option value="$PROJECT_DIR$/../projects/stocks3.py" />
@@ -312,11 +288,13 @@
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterHybrid.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterOld.py" />
         <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
-        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
         <option value="$PROJECT_DIR$/src/Handlers/Executor.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+        <option value="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Input00.txt" />
+        <option value="$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Input01.txt" />
+        <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
+        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
       </list>
     </option>
   </component>
@@ -340,12 +318,31 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="fortranApps" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="fortranApps" type="462c0819:PsiDirectoryNode" />
+              <item name="Compress" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="fortranApps" type="462c0819:PsiDirectoryNode" />
+              <item name="Compress" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
@@ -388,7 +385,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -575,14 +571,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21373557" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21887034" />
       <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
       <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.48587933" weight="0.17112811" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.48459563" visible="true" weight="0.31070745" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -590,7 +585,7 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.51412064" side_tool="true" visible="true" weight="0.17112811" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.51540434" side_tool="true" weight="0.31070745" />
       <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -600,6 +595,30 @@
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
+    <layout-to-restore>
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.21887034" />
+      <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
+      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.48459563" visible="true" weight="0.31070745" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" weight="0.3298279" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
+      <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.51540434" side_tool="true" weight="0.31070745" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
+      <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49935815" weight="0.3298279" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="SciView" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -627,19 +646,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/_________setup.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#1#29#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/chiptunesak/base.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/base.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -866,52 +872,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-460">
-          <caret line="480" column="9" selection-start-line="480" selection-start-column="9" selection-end-line="480" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/CompilerOld.py" />
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5424">
-          <caret line="345" column="50" selection-start-line="345" selection-start-column="46" selection-end-line="345" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1456">
-          <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="960">
-          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
-          <folding>
-            <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1137">
-          <caret line="1140" selection-start-line="1140" selection-end-line="1140" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="479" column="139" selection-start-line="479" selection-start-column="139" selection-end-line="479" selection-end-column="139" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="532">
@@ -919,10 +880,76 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Input00.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Output.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="397">
+          <caret line="102" column="8" lean-forward="true" selection-start-line="102" selection-start-column="8" selection-end-line="102" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fortranApps/Compress/src/GetPatterns/temp/Input01.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="16">
+          <caret line="2" column="14" selection-start-line="2" selection-end-line="2" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="642">
+          <caret line="60" column="38" selection-start-line="60" selection-start-column="38" selection-end-line="60" selection-end-column="38" />
+          <folding>
+            <marker date="1636287722347" expanded="true" signature="1800:1805" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="642">
+          <caret line="91" column="27" selection-start-line="91" selection-start-column="27" selection-end-line="91" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-72">
+          <caret line="474" column="13" selection-start-line="474" selection-start-column="8" selection-end-line="474" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1026">
+          <caret line="1140" selection-start-line="1140" selection-end-line="1140" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="448">
+          <caret line="229" column="36" selection-start-line="229" selection-start-column="36" selection-end-line="229" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="344">
+          <caret line="412" column="31" selection-start-line="412" selection-start-column="31" selection-end-line="412" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="1066" selection-start-line="1066" selection-end-line="1066" />
+        <state relative-caret-position="504">
+          <caret line="846" column="59" selection-start-line="846" selection-start-column="59" selection-end-line="846" selection-end-column="59" />
           <folding>
             <marker date="1637499208164" expanded="true" signature="34930:35101" ph="..." />
             <marker date="1637499208164" expanded="true" signature="41779:42072" ph="..." />

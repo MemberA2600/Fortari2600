@@ -2,196 +2,158 @@
 module PatternModule
 
     type Pattern
-        integer :: length, occurence, weight
         character(8), dimension(512) :: bytes
+        integer :: length
 
     end type
 
-end module
+    type Note
+        character(8), dimension(3) :: bytes
+        integer :: length
 
-module KeyWeightModule
-
-    type keyWeight
-        integer :: key, weight
     end type
-
 
 end module
 
 
 program GetPatterns
     use PatternModule
-    use KeyWeightModule
+
     implicit none
 
-    character(8), dimension(:), allocatable :: bytes
-    character(:), allocatable :: tempPath, title
-    character(1) :: dummy
-    character(30) :: readHere
-    character(4) :: nibble
-    character(8), dimension(13) :: keyList
+    integer :: num, num2, num3, num4, io, alloc, fileLen, numOfNotes, last
+    integer :: num5, num6
 
-    integer :: alloc, alloc2, alloc3
+    character :: dummy
+    character(:), allocatable :: tempPath
 
-    integer :: io, fileLen, numOfBytes, numOfNotes
-    integer :: channelNum, generateNotes, maximum, temp
-    integer :: first, last, byteCount, lastPattern
-    integer :: tempMax, tempKey, counter
+    character(16) :: readHere
 
-    real :: constant
-    integer :: num, num2, num3, num4, starting, ending, num5
-
-    logical :: existing
-
+    type(Note), dimension(:), allocatable :: notes
     type(Pattern), dimension(:), allocatable :: patterns
-    type(Pattern) :: tempPattern
-    type(keyWeight), dimension(:), allocatable :: keyWeights
-    type(keyWeight) :: tempKeyWeight
 
+    integer, parameter :: constant = 48
+
+    logical :: unique
 
     tempPath = "temp/"
+
     fileLen = 0
-    numOfBytes = 0
     numOfNotes = 1
-
-    open(unit = 11, file = tempPath // "Args.txt")
-    read(11, *) channelNum, generateNotes, readHere
-
-    title = trim(readHere)
-
-    close(11)
-
-
-    do num = 1, 13, 1
-        write(nibble, "(b4)") num
-        do num2 = 1, 4, 1
-            if (nibble(num2:num2) == " ") nibble(num2:num2) = "0"
-        end do
-        keyList(num) = nibble // "0000"
-    end do
-
-    open(unit = 11, file = tempPath // "Input01.txt")
-
+    open(12, file = tempPath // "Input01.txt")
     do
-        read(11, *, iostat=io) dummy
+        read(12, *, iostat = io) dummy
         if (io /= 0) exit
-        fileLen = fileLen + 1
-    end do
-    rewind(11)
 
-    allocate(bytes(fileLen), stat = alloc)
+        fileLen = fileLen + 1
+        if (dummy == "-") numOfNotes = numOfNotes + 1
+
+    end do
+
+    rewind(12)
+
+    allocate(notes(numOfNotes), stat = alloc)
+    allocate(patterns(constant ** 2), stat = alloc)
+
+    num2 = 1
+    num3 = 1
+
+    notes(1)%length = 0
+    notes(1)%bytes = "        "
+
 
     do num = 1, fileLen, 1
-       read(11, "(A)") readHere
+       read(12, "(A)") readHere
 
        if (readHere(1:3) == "---") then
-            bytes(num) = "---     "
-            numOfNotes = numOfNotes + 1
+           num2 = num2 + 1
+           num3 = 1
+
+           notes(num2)%length = 0
+           notes(num2)%bytes = "        "
        else
-            bytes(num) = readHere(9:16)
-            numOfBytes = numOfBytes + 1
+           notes(num2)%bytes(num3) = readHere(9:16)
+           notes(num2)%length      = num3
+           num3                    = num3 + 1
+
        end if
 
     end do
 
-    close(11)
+    close(12)
 
-    constant = floor(real(numOfNotes) / 16)
-    if (constant < 16) constant = 16
-    if (constant > 64) constant = 64
-
-    maximum = (constant ** 2)
-
-    allocate(patterns(maximum), stat = alloc2)
-
-    ! currentPattern
+    ! actual pattern
     num = 1
 
-    do num2 = 1, maximum, 1
-        patterns(num2)%bytes = "        "
-        patterns(num2)%length = 0
-        patterns(num2)%weight = 0
-        patterns(num2)%occurence = 0
+    ! byte position
+    num5 = 1
 
-    end do
-
-    ! number of notes in pattern
+    ! Number of notes joined
     do num2 = 2, constant, 1
 
-       ! get starting position
-       do num3 = 1, numOfNotes - num2, 1
+       ! Number of Note at index 1
+       do num3 = 1, size(notes)-num2, 1
 
-          starting = num3 - 1
-          ending   = num3 + num2 - 1
 
-          if (ending > numOfBytes - 1) ending = numOfBytes - 1
+          ! byte position
+          num5 = 1
 
-          ! current tempPattern byte
+          patterns(num)%length = 0
+          patterns(num)%bytes = "        "
 
-          tempPattern%bytes = "        "
-          tempPattern%length = 0
-          counter = 0
+          ! Actual note
+          do num4 = 1, num2, 1
 
-          do num4 = 1, fileLen, 1
+             do num6 = 1, notes(num4)%length, 1
+                if (notes(num4+num3)%bytes(num6) == "        ") exit
 
-             if (counter >=starting .AND. counter < ending) then
-                 tempPattern%length = tempPattern%length + 1
-                 tempPattern%bytes(tempPattern%length) = bytes(num4)
-             end if
+                patterns(num)%bytes(num5) = notes(num4+num3)%bytes(num6)
+                num5 = num5 + 1
+                patterns(num)%length = num5-1
+             end do
 
-             if (bytes(num4)(1:3) == "---") counter = counter + 1
+             if (num4 == num2) exit
+             patterns(num)%bytes(num5) = "---     "
+             num5 = num5 + 1
+             patterns(num)%length = num5-1
 
           end do
 
-          if (tempPattern%bytes(tempPattern%length) == "---     ") tempPattern%length = tempPattern%length - 1
-          existing = .FALSE.
+          ! check if unique
+          unique = .TRUE.
 
           if (num > 1) then
               do num4 = 1, num-1, 1
-                 if (patterns(num4)%length /= tempPattern%length) cycle
+                 if (patterns(num4)%length /= patterns(num)%length) exit
 
-                 do num5 = 1, tempPattern%length, 1
-                    if (patterns(num4)%bytes(num5) /= tempPattern%bytes(num5)) then
-                        !write(*,"(I0, 1x, A8, 1x, A8)") num5, patterns(num4)%bytes(num5), tempPattern%bytes(num5)
-                        exit
-                    end if
-
-                    if (num5 == tempPattern%length) existing = .TRUE.
+                 do num5 = 1, patterns(num4)%length, 1
+                    if (patterns(num4)%bytes(num5) /= patterns(num)%bytes(num5)) exit
+                    if (num5 == patterns(num4)%length) unique = .FALSE.
                  end do
+
               end do
           end if
 
-          if (existing .EQV. .FALSE.) then
+          if (unique .EQV. .TRUE.) num = num + 1
 
-              patterns(num)%length = tempPattern%length
-              patterns(num)%bytes  = tempPattern%bytes
-
-              if (patterns(num)%bytes(patterns(num)%length) == "---     ") patterns(num)%length = patterns(num)%length - 1
-
-              num = num + 1
-          end if
-
-          if (num > maximum) exit
+          if (num > size(patterns)) exit
        end do
 
-       if (num > maximum) exit
-
+    if (num > size(patterns)) exit
     end do
 
-    lastPattern = num - 1
+    last = num - 1
 
-    open(unit=17, file = tempPath // "Output.txt")
-    do num = 1, lastPattern, 1
-       write(17,"(A, 1x, I0)") "***", patterns(num)%length
+    open(unit=13, file=tempPath // "Output.txt")
 
+    do num = 1, last, 1
+       write(13, "(A, 1x, I0)") "***", patterns(num)%length
        do num2 = 1, patterns(num)%length, 1
-          write(17,"(A, 1x, I0)") patterns(num)%bytes(num2)
-
+          write(13, "(A)") patterns(num)%bytes(num2)
        end do
 
     end do
 
-
-    close(17)
+    close(13)
 
 end program

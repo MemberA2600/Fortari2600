@@ -502,7 +502,7 @@ class TiaScreens:
                         note = self.allData[channelNum][screenNum]["screen"][Y][noteNum]
                         if noPercuss == 1 and (note["channel"] in [15, 8, 2, 3]):
                             pass
-                        elif (removeOutside == 1 and (Y<3 or Y>68 or Y in [30,31])):
+                        elif (removeOutside == 1 and (Y<3 or Y>68 or Y in [30,31]) and (Y not in range(89,96))):
                             pass
                         else:
                             nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)
@@ -911,7 +911,6 @@ class TiaScreens:
             data3.pop(1)
 
         #print("--- %s seconds ---" % (TIME.time() - start_time))
-
 
         return(data3)
 

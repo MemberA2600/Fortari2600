@@ -444,6 +444,8 @@ class Compiler:
                                                      {"00": dataPatterns, "01": dataToSend["01"], "02": dataSorted},
                                                      args, True, True)
 
+        savers = self.__executor.callFortran("Compress","SingleNoteOccurs", dataToSend["01"], None, True, True)
+
         if generateNotes == False:
             patternsWithKeys = {"00010000": ["", False],
                                 "00100000": ["", False],
@@ -467,18 +469,41 @@ class Compiler:
 
         usedOnes = ""
 
+        for key in savers.keys():
+            savers[key] = "---\n" + "\n".join(savers[key]).replace("\r","")+"---\n"
+        saverNum = 1
+
         for num in range(0, 13):
             key = str(num+1)
             if len(key) == 1:
                 key = "0" + key
 
-            patternsWithKeys[keys[num]][0] = ("\n".join(dataFinal[key]))
-            bigData = bigData.replace(patternsWithKeys[keys[num]][0], "\tBYTE\t#%" + keys[num] + "\t; This was changed!\n")
+            patternsWithKeys[keys[num]][0] = "---\n" + "\n".join(dataFinal[key])+"---\n"
 
-            if (keys[num] in bigData):
+            if (patternsWithKeys[keys[num]][0] in bigData) and patternsWithKeys[keys[num]][0] != "":
                 patternsWithKeys[keys[num]][1] = True
-                usedOnes += sectonName+"_Channel"+str(channelNum)+"_"+keys[num]+"\n"+patternsWithKeys[keys[num]][0]+"\tBYTE\t#%11100000\n\n"
+            else:
+                saverKey = str(saverNum)
+                if (len(saverKey) == 1):
+                    saverKey = "0" + saverKey
 
+                if saverKey in savers:
+                    if ((savers[saverKey] in bigData) and savers[saverKey] != ""):
+                        patternsWithKeys[keys[num]][0] = savers[saverKey]
+
+                        patternsWithKeys[keys[num]][1] = True
+                        saverNum += 1
+
+            if patternsWithKeys[keys[num]][1] == True:
+
+                bigData = bigData.replace(patternsWithKeys[keys[num]][0],
+                                          "---\n" + "\tBYTE\t#%" + keys[num] + "\t; This was changed!\n") + "---\n"
+                usedOnes += sectonName + "_Channel" + str(channelNum) + "_" + keys[num] + "\n" + \
+                            patternsWithKeys[keys[num]][0] + "\tBYTE\t#%11100000\n\n"
+
+        #f = open("fasz"+str(channelNum)+".txt", "w")
+        #f.write(nincs)
+        #f.close()
 
         bigData += "\t"+"BYTE"+"\t"+"#%11110000\n"
 
