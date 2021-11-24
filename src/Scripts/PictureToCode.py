@@ -21,6 +21,9 @@ class PictureToCode:
         self.__mainWindow = self.__loader.mainWindow
         self.dead = False
         self.doThings = False
+        self.__ctrl = False
+
+        self.__editPicture = False
 
         self.__loader.stopThreads.append(self)
 
@@ -35,6 +38,7 @@ class PictureToCode:
         self.__colorDict = self.__loader.colorDict
 
         self.__screenSize = self.__loader.screenSize
+
 
         formats = [
             "bmp", "dds", "eps", "gif", "dib", "ico", "jpg", "jpeg", "pcx", "png", "tga", "tiff", "pdf"
@@ -53,6 +57,8 @@ class PictureToCode:
             self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
             self.__smallFont = self.__fontManager.getFont(int(self.__fontSize * 0.80), False, False, False)
             self.__smallFont2 = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
+            self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize * 0.45), False, False, False)
+
 
             if self.__mode == "playfield":
                 self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
@@ -137,6 +143,530 @@ class PictureToCode:
             self.generateASM(w, h, imgColorData, imgPixelData, testing)
 
 
+    def __addElementsEditor(self, top):
+        self.__topLevel = top
+        self.__topLevelWindow = top.getTopLevel()
+
+        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.ctrlON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.ctrlOff)
+        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.ctrlON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.ctrlOff)
+
+        self.__canvasFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
+                                    width=round(self.__topLevel.getTopLevelDimensions()[0]),
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 30))
+
+
+        self.__canvasFrame.pack_propagate(False)
+        self.__canvasFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__editorFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 70))
+
+        self.__editorFrame.pack_propagate(False)
+        self.__editorFrame.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__editorButtonsFrame = Frame(self.__editorFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.80),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 70))
+
+        self.__editorButtonsFrame.pack_propagate(False)
+        self.__editorButtonsFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__editorColorButtonsFrame = Frame(self.__editorFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 70))
+
+        self.__editorColorButtonsFrame.pack_propagate(False)
+        self.__editorColorButtonsFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__canvas = Canvas(self.__canvasFrame, bg="black", bd=0,
+                               width=round(self.__topLevel.getTopLevelDimensions()[0]*0.80),
+                               height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 30)
+                               )
+
+        self.__canvas.pack_propagate(False)
+        self.__canvas.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__menuFrame = Frame(self.__canvasFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 30))
+
+        self.__menuFrame.pack_propagate(False)
+        self.__menuFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__controllerFrame = Frame(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__controllerFrame.pack_propagate(False)
+        self.__controllerFrame.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__subFrame1 = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0] * 0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__subFrame1.pack_propagate(False)
+        self.__subFrame1.pack(side=LEFT, anchor=E)
+
+        self.__subFrame2 = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0] * 0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__subFrame2.pack_propagate(False)
+        self.__subFrame2.pack(side=LEFT, anchor=E)
+
+        self.__subFrame3 = Frame(self.__controllerFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0] * 0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__subFrame3.pack_propagate(False)
+        self.__subFrame3.pack(side=LEFT, anchor=E)
+
+        self.__button1 = Button(self.__subFrame1, bg=self.__loader.colorPalettes.getColor("window"),
+                                font = self.__normalFont, text = "<<",
+                                width=9999, height=9999, state = DISABLED, command = self.pozMinus
+                                )
+
+        self.__button1.pack_propagate(False)
+        self.__button1.pack(side=LEFT, anchor = E, fill=BOTH)
+
+        self.__yPoz = StringVar()
+        self.__yPoz.set("0")
+
+        self.__yEntry = Entry(self.__subFrame2,
+              bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+              fg=self.__loader.colorPalettes.getColor("boxFontNormal"), justify="center",
+              textvariable=self.__yPoz, width=99,
+              font=self.__normalFont, state = DISABLED
+              )
+
+        self.__yEntry.bind("<KeyRelease>", self.checkYEntry)
+        self.__yEntry.bind("<FocusOut>", self.checkYEntry)
+
+        self.__yEntry.pack_propagate(False)
+        self.__yEntry.pack(side=LEFT, fill=BOTH, anchor=CENTER)
+
+        self.__button2 = Button(self.__subFrame3, bg=self.__loader.colorPalettes.getColor("window"),
+                                font = self.__normalFont, text = ">>",
+                                width=9999, height=9999, state = DISABLED, command = self.pozPlus
+                                )
+
+        self.__button2.pack_propagate(False)
+        self.__button2.pack(side=LEFT, anchor = E, fill=BOTH)
+
+        self.__previewButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"),
+                                   font = self.__normalFont,
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
+                                   command = self.testingEditor
+                                      )
+
+        self.__previewButton.pack_propagate(False)
+        self.__previewButton.pack(side=TOP, anchor=N, fill=X)
+
+        self.__saveButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"),
+                                   font = self.__normalFont,
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("ok"),
+                                   command = self.setAndKill
+                                      )
+
+        self.__saveButton.pack_propagate(False)
+        self.__saveButton.pack(side=TOP, anchor=N, fill=X)
+
+        self.__cancelButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"),
+                                   font = self.__normalFont,
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("cancel"),
+                                   command = self.killMe
+                                      )
+
+        self.__cancelButton.pack_propagate(False)
+        self.__cancelButton.pack(side=TOP, anchor=N, fill=X)
+
+        self.generateEditorButtons()
+        self.__redrawCanvas()
+
+        if self.__dataForEditor["h"] > 24:
+           self.__yEntry.config(state = NORMAL)
+           from threading import Thread
+           t = Thread(target=self.__stateButtons)
+           t.daemon = True
+           t.start()
+
+    def __stateButtons(self):
+        from time import sleep
+        while self.dead == False:
+            if self.__currentY > 0:
+                self.__button1.config(state = NORMAL)
+            else:
+                self.__button1.config(state = DISABLED)
+
+            if self.__currentY < self.__dataForEditor["h"]-24:
+                self.__button2.config(state = NORMAL)
+            else:
+                self.__button2.config(state = DISABLED)
+
+    def pozMinus(self):
+        self.__changeState(self.__currentY-1)
+
+    def pozPlus(self):
+        self.__changeState(self.__currentY+1)
+
+    def checkYEntry(self, event):
+        num = 0
+
+        while len(self.__yPoz.get()) > 3:
+            self.__yPoz.set(self.__yPoz.get()[:-1])
+
+        while True:
+            try:
+                if self.__yPoz.get() == "":
+                    break
+                num = int(self.__yPoz.get())
+                break
+            except:
+                self.__yPoz.set(self.__yPoz.get()[:-1])
+
+        if self.__yPoz.get() != "":
+           if num > self.__dataForEditor["h"]-24:
+              num = self.__dataForEditor["h"]-24
+           elif num < 0:
+               num = 0
+
+           self.__changeState(num)
+
+    def __changeState(self, val):
+        self.__yPoz.set(str(val))
+        self.__currentY = val
+
+        for buttonName in self.__editorButtons:
+            #print(buttonName)
+
+            typ = buttonName.split("_")[0]
+            X = int(buttonName.split("_")[1])
+            Y = int(buttonName.split("_")[2])
+
+            if self.__dataForEditor["lines"][Y+self.__currentY][typ]["pixels"][X] == "0":
+                self.__editorButtons[buttonName].config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+            else:
+                if typ == "playfield":
+                    self.__editorButtons[buttonName].config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
+                else:
+                    self.__editorButtons[buttonName].config(bg=self.__loader.colorPalettes.getColor("font"))
+
+        for entryName in self.__colorEntries:
+            typ = entryName.split("_")[0]
+            Y = int(entryName.split("_")[1])
+
+            if typ == "background":
+                self.__colorEntries[entryName].setValue(self.__dataForEditor["lines"][Y+self.__currentY]["background"])
+            else:
+                self.__colorEntries[entryName].setValue(self.__dataForEditor["lines"][Y+self.__currentY][typ]["color"])
+
+        self.__redrawCanvas()
+
+    def generateEditorButtons(self):
+        self.__editorButtons = {}
+        self.__colorEntries = {}
+
+        self.__currentY = 0
+
+        w = round((self.__topLevel.getTopLevelDimensions()[0]*0.80)/64)
+        h = round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 70 / 52)
+
+        for theY in range(0, self.__dataForEditor["h"]):
+            if self.__mirrorPF.get() == 1:
+                self.__dataForEditor["lines"][theY]["playfield"]["pixels"] = \
+                self.__dataForEditor["lines"][theY]["playfield"]["pixels"][::-1]
+
+            if self.__invertPFBG.get() == 1:
+               temp =  self.__dataForEditor["lines"][theY]["playfield"]["color"]
+               self.__dataForEditor["lines"][theY]["playfield"]["color"] = self.__dataForEditor["lines"][theY]["background"]
+               self.__dataForEditor["lines"][theY]["background"] = temp
+
+
+        for theY in range(0, 24):
+            self.__soundPlayer.playSound("Pong")
+
+            for theX in range(0,8):
+                frame = Frame(self.__editorButtonsFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                        width=w*8, height=h*2)
+                frame.pack_propagate(False)
+                frame.place(x =  (theX*w*8), y = (theY*h*2))
+
+                framePX1 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX1.pack_propagate(False)
+                framePX1.place(x = 0, y = 0)
+
+                framePX2 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX2.pack_propagate(False)
+                framePX2.place(x = w, y = 0)
+
+                framePX3 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX3.pack_propagate(False)
+                framePX3.place(x = w*2, y = 0)
+
+                framePX4 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX4.pack_propagate(False)
+                framePX4.place(x = w*3, y = 0)
+
+                framePX5 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX5.pack_propagate(False)
+                framePX5.place(x = w*4, y = 0)
+
+                framePX6 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX6.pack_propagate(False)
+                framePX6.place(x = w*5, y = 0)
+
+                framePX7 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX7.pack_propagate(False)
+                framePX7.place(x = w*6, y = 0)
+
+                framePX8 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w, height=h)
+                framePX8.pack_propagate(False)
+                framePX8.place(x = w*7, y = 0)
+
+                framePF1 = Frame(frame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=w*8, height=h)
+                framePF1.pack_propagate(False)
+                framePF1.place(x = 0, y = h)
+
+                buttonPX1 = Button(framePX1, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)) + "_" + str(theY))
+
+                buttonPX2 = Button(framePX2, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+1) + "_" + str(theY))
+
+                buttonPX3 = Button(framePX3, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+2) + "_" + str(theY))
+
+                buttonPX4 = Button(framePX4, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+3) + "_" + str(theY))
+
+                buttonPX5 = Button(framePX5, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+4) + "_" + str(theY))
+
+                buttonPX6 = Button(framePX6, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+5) + "_" + str(theY))
+
+                buttonPX7 = Button(framePX7, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+6) + "_" + str(theY))
+
+                buttonPX8 = Button(framePX8, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "sprites_" + str((theX*8)+7) + "_" + str(theY))
+
+                buttonPF1 = Button(framePF1, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
+                                   name = "playfield_" + str((theX)) + "_" + str(theY))
+
+                self.buttonSetter(buttonPX1, theY, (theX*8),   "sprites_" + str((theX*8))   + "_" + str(theY))
+                self.buttonSetter(buttonPX2, theY, (theX*8)+1, "sprites_" + str((theX*8)+1) + "_" + str(theY))
+                self.buttonSetter(buttonPX3, theY, (theX*8)+2, "sprites_" + str((theX*8)+2) + "_" + str(theY))
+                self.buttonSetter(buttonPX4, theY, (theX*8)+3, "sprites_" + str((theX*8)+3) + "_" + str(theY))
+                self.buttonSetter(buttonPX5, theY, (theX*8)+4, "sprites_" + str((theX*8)+4) + "_" + str(theY))
+                self.buttonSetter(buttonPX6, theY, (theX*8)+5, "sprites_" + str((theX*8)+5) + "_" + str(theY))
+                self.buttonSetter(buttonPX7, theY, (theX*8)+6, "sprites_" + str((theX*8)+6) + "_" + str(theY))
+                self.buttonSetter(buttonPX8, theY, (theX*8)+7, "sprites_" + str((theX*8)+7) + "_" + str(theY))
+                self.buttonSetter(buttonPF1, theY, (theX),     "playfield_" + str((theX))   + "_" + str(theY))
+
+            from HexEntry import HexEntry
+
+            colorFrame = Frame(self.__editorColorButtonsFrame,
+                                   bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=h*2)
+
+            colorFrame.pack_propagate(False)
+            colorFrame.pack(side=TOP, fill=X)
+
+            cfW = round((self.__topLevel.getTopLevelDimensions()[0] * 0.20) / 3)
+
+            colorFrame1 = Frame(colorFrame,
+                                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                width=cfW, height=h*2)
+            colorFrame1.pack_propagate(False)
+            colorFrame1.pack(side=LEFT, fill=Y)
+
+            colorFrame2 = Frame(colorFrame,
+                                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                width=cfW, height=h*2)
+            colorFrame2.pack_propagate(False)
+            colorFrame2.pack(side=LEFT, fill=Y)
+
+            colorFrame3 = Frame(colorFrame,
+                                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                width=cfW, height=h*2)
+            colorFrame3.pack_propagate(False)
+            colorFrame3.pack(side=LEFT, fill=Y)
+
+            colorEntry1 = HexEntry(self.__loader, colorFrame1, self.__colors, self.__colorDict, self.__smallFont2,
+                                   None, None, None, self.hexFocusOut)
+            colorEntry2 = HexEntry(self.__loader, colorFrame2, self.__colors, self.__colorDict, self.__smallFont2,
+                                   None, None, None, self.hexFocusOut)
+            colorEntry3 = HexEntry(self.__loader, colorFrame3, self.__colors, self.__colorDict, self.__smallFont2,
+                                   None, None, None, self.hexFocusOut)
+
+            colorEntry1.setValue(self.__dataForEditor["lines"][theY]["sprites"]["color"])
+            colorEntry2.setValue(self.__dataForEditor["lines"][theY]["playfield"]["color"])
+            colorEntry3.setValue(self.__dataForEditor["lines"][theY]["background"])
+
+            self.colorEntrySetter(colorEntry1, "sprites", theY)
+            self.colorEntrySetter(colorEntry2, "playfield", theY)
+            self.colorEntrySetter(colorEntry3, "background", theY)
+
+        self.__invertPFBG.set(0)
+        self.__mirrorPF.set(0)
+        self.__cutBG.set(0)
+
+    def colorEntrySetter(self, entry, typ, Y):
+        self.__colorEntries[typ+"_"+str(Y)] = entry
+        if Y-1 > self.__dataForEditor["h"]:
+            entry.changeState(DISABLED)
+
+
+    def buttonSetter(self, button, Y, X, name):
+        button.pack_propagate(False)
+        button.pack(fill=BOTH)
+
+        button.bind("<Button-1>", self.clicked)
+        button.bind("<Button-3>", self.clicked)
+
+        self.__editorButtons[name] = button
+
+        if Y-1 > self.__dataForEditor["h"]:
+            button.config(state=DISABLED)
+            button.config(bg=self.__loader.colorPalettes.getColor("fontDisabled"))
+        else:
+            if ("playfield" in name):
+                if self.__dataForEditor["lines"][Y+self.__currentY]["playfield"]["pixels"][X] == "1":
+                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
+            else:
+                if self.__dataForEditor["lines"][Y+self.__currentY]["sprites"]["pixels"][X] == "1":
+                    button.config(bg=self.__loader.colorPalettes.getColor("font"))
+
+    def getButtonName(self, event, getXY):
+
+        name = str(event.widget).split(".")[-1]
+
+        if getXY == False:
+            return(name)
+        else:
+            bType = name.split("_")[0]
+            X = int(name.split("_")[1])
+            Y = int(name.split("_")[2])
+
+            return(name, bType, X, Y)
+
+    def hexFocusOut(self, event):
+
+        name = None
+        widget = None
+
+        for entryName in self.__colorEntries.keys():
+            if self.__colorEntries[entryName].getEntry() == event.widget:
+                widget = self.__colorEntries[entryName]
+                name = entryName
+                break
+
+        typ = name.split("_")[0]
+        Y = int(name.split("_")[1])
+
+        if typ == "background":
+            self.__dataForEditor["lines"][Y+self.__currentY][typ] = widget.getValue()
+        else:
+            self.__dataForEditor["lines"][Y+self.__currentY][typ]["color"] = widget.getValue()
+
+        self.__redrawCanvas()
+
+    def clicked(self, event):
+        name, bType, X, Y = self.getButtonName(event, True)
+        button = int(str(event).split(" ")[3].split("=")[1])
+
+        if self.__ctrl == True:
+           if button == 1:
+               self.setPixel(Y, bType, X, 1, event.widget)
+           else:
+               self.setPixel(Y, bType, X, 0, event.widget)
+
+        else:
+            self.setPixel(Y, bType, X,
+                          1-int(self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X]), event.widget)
+
+        self.__redrawCanvas()
+
+    def __redrawCanvas(self):
+        w = round((self.__topLevel.getTopLevelDimensions()[0]*0.8)/64)
+        h = round((self.__topLevel.getTopLevelDimensions()[1] / 100 * 30)/24)
+
+        self.__canvas.clipboard_clear()
+        self.__canvas.delete("all")
+
+        for Y in range(self.__currentY, self.__currentY+24, 1):
+            drawY = Y - self.__currentY
+            colorBG = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["background"])
+            colorPF = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["playfield"]["color"])
+            colorSprites = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["sprites"]["color"])
+
+            self.__canvas.create_rectangle((0, drawY*h, w*64, (drawY+1)*h),  outline="", fill=colorBG)
+
+            for X in range(0,16,1):
+                if X < 8:
+                    if self.__dataForEditor["lines"][Y]["playfield"]["pixels"][X] == "1":
+                        self.__canvas.create_rectangle((X*w*4, drawY*h, (X+1)*w*4, (drawY+1)*h), outline = "", fill=colorPF)
+                else:
+                    if self.__dataForEditor["lines"][Y]["playfield"]["pixels"][15-X] == "1":
+                        self.__canvas.create_rectangle((X*w*4, drawY*h, (X+1)*w*4, (drawY+1)*h), outline = "", fill=colorPF)
+
+            for X in range(0,64,1):
+                if self.__dataForEditor["lines"][Y]["sprites"]["pixels"][X] == "1":
+                    self.__canvas.create_rectangle((X * w, drawY * h, (X + 1) * w, (drawY + 1) * h), outline="",
+                                                   fill=colorSprites)
+
+
+
+
+    def setPixel(self, Y, bType, X, value, button):
+        if X == 0:
+            self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"] = \
+            str(value) + self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X+1:]
+        elif X == len(self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"]):
+            self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"] = \
+            self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][:X] + str(value)
+        else:
+            self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"] = \
+            self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][:X] + \
+            str(value) + self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X+1:]
+
+        if value == 0:
+            button.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        else:
+            if bType == "playfield":
+                button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
+            else:
+                button.config(bg=self.__loader.colorPalettes.getColor("font"))
+
+
     def generateASM(self, w, h, imgColorData, imgPixelData, testing):
         #mergedImageData = {}
         mergedByLines = []
@@ -159,17 +689,40 @@ class PictureToCode:
             lineStruct = self.decideLineColors(tempLine)
             mergedByLines.append(lineStruct)
 
-        asm = self.getASM(mergedByLines, h)
-        if testing == True:
-            from threading import Thread
-            t = Thread(target=self.compileThread, args=[asm, h])
-            t.daemon=True
-            t.start()
-        else:
-            file = open(self.__loader.mainWindow.projectPath+"/64px/"+self.__name+".asm", "w")
-            file.write(asm)
-            file.close()
-            self.__loader.soundPlayer.playSound("Success")
+        if self.__editPicture == True:
+            self.dead = False
+            self.doThings = False
+            self.__dataForEditor = {
+                "lines":  mergedByLines, "h": h}
+            self.__window = SubMenu(self.__loader, "editPicture", self.__screenSize[0] / 1.5,
+                                    self.__screenSize[1] / 1.35 - 25, None, self.__addElementsEditor, 2)
+            self.dead = True
+
+
+        if self.doThings == True or self.__editPicture == False:
+            asm = self.getASM(mergedByLines, h)
+            if testing == True:
+                from threading import Thread
+                t = Thread(target=self.compileThread, args=[asm, h])
+                t.daemon=True
+                t.start()
+            else:
+                file = open(self.__loader.mainWindow.projectPath+"/64px/"+self.__name+".asm", "w")
+                file.write(asm)
+                file.close()
+                self.__loader.soundPlayer.playSound("Success")
+
+    def testingEditor(self):
+        from threading import Thread
+
+        t = Thread(target=self.testingEditorThread)
+        t.daemon = True
+        t.start()
+
+    def testingEditorThread(self):
+        asm = self.getASM(self.__dataForEditor["lines"], self.__dataForEditor["h"])
+        self.compileThread(asm, self.__dataForEditor["h"])
+
 
     def compileThread(self, asm, h):
         from Compiler import Compiler
@@ -574,6 +1127,12 @@ class PictureToCode:
 
         return (lineStructure)
 
+    def ctrlON(self, event):
+        self.__ctrl = True
+
+    def ctrlOff(self, event):
+        self.__ctrl = False
+
     def colorNoEqual(self, color1, color2, assignVal1, assignVal2):
         while (
                 color1 == color2 and color1 != self.__oneColor.get()
@@ -947,14 +1506,43 @@ class PictureToCode:
 
         if self.__mode == "64pxPicture":
             self.__okButton.config(text=self.__dictionaries.getWordFromCurrentLanguage("savePicture"))
-            self.__testButton = Button(self.__buttonFrame2,
+
+            self.__bothButtonsFrame = Frame(self.__buttonFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                            width=round(self.__topLevel.getTopLevelDimensions()[0] / 2),
+                                            height = round(self.__topLevel.getTopLevelDimensions()[1] / 8))
+            self.__bothButtonsFrame.pack_propagate(False)
+            self.__bothButtonsFrame.pack(side=TOP, anchor=E, fill=X)
+
+            self.__bothButtonsFrame1 = Frame(self.__bothButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                            width=round(self.__topLevel.getTopLevelDimensions()[0] / 6),
+                                            height = round(self.__topLevel.getTopLevelDimensions()[1] / 8))
+            self.__bothButtonsFrame1.pack_propagate(False)
+            self.__bothButtonsFrame1.pack(side=LEFT, anchor=E, fill=Y)
+
+            self.__bothButtonsFrame2 = Frame(self.__bothButtonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                            width=round(self.__topLevel.getTopLevelDimensions()[0] / 6),
+                                            height = round(self.__topLevel.getTopLevelDimensions()[1] / 8))
+            self.__bothButtonsFrame2.pack_propagate(False)
+            self.__bothButtonsFrame2.pack(side=LEFT, anchor=E, fill=Y)
+
+
+            self.__testButton = Button(self.__bothButtonsFrame1,
                                         bg=self.__loader.colorPalettes.getColor("window"),
-                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                        fg=self.__loader.colorPalettes.getColor("font"), width=99999999,
                                         text=self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                         font=self.__smallFont, command=self.testingThread
                                         )
             self.__testButton.pack_propagate(False)
-            self.__testButton.pack(side=TOP, anchor=E, fill=X)
+            self.__testButton.pack(side=LEFT, anchor=W, fill=BOTH)
+
+            self.__editButton = Button(self.__bothButtonsFrame2,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        fg=self.__loader.colorPalettes.getColor("font"), width=99999999,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("editPicture"),
+                                        font=self.__smallFont2, command=self.setEditAndKill
+                                        )
+            self.__editButton.pack_propagate(False)
+            self.__editButton.pack(side=LEFT, anchor=W, fill=BOTH)
 
 
         self.__cancelButton = Button(self.__buttonFrame2,
@@ -1028,6 +1616,10 @@ class PictureToCode:
     def killMe(self):
         self.__topLevelWindow.destroy()
         self.dead=True
+
+    def setEditAndKill(self):
+        self.__editPicture = True
+        self.setAndKill()
 
     def setAndKill(self):
         self.doThings = True

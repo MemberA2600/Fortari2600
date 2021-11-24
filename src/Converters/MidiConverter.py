@@ -8,7 +8,7 @@ from math import sqrt
 
 class MidiConverter:
 
-    def __init__(self, path, loader, removeDrums, maxChannels, removeOutside, multi):
+    def __init__(self, path, loader, removeDrums, maxChannels, removeOutside, multi, cutOut):
 
         #This is the one the main program accesses. The process was
         #successful if it is not None.
@@ -112,7 +112,17 @@ class MidiConverter:
         #import time as TIME
         #start_time = TIME.time()
 
-        getChannelsData = self.__executor.callFortran("MidiConverter","ExtractChannels", textToSend, None, True, True)
+        if cutOut == None:
+            cutOut = []
+
+        while len(cutOut) < 100:
+           cutOut.append(0)
+
+        strCutOut = []
+        for num in cutOut:
+            strCutOut.append(str(num))
+
+        getChannelsData = self.__executor.callFortran("MidiConverter","ExtractChannels", textToSend, " ".join(strCutOut), True, True)
         for key in getChannelsData.keys():
 
             if len(getChannelsData[key]) > 2:

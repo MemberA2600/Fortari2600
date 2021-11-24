@@ -446,6 +446,60 @@ class MusicComposer:
         self.__pasteButton = MCButton(self.__loader, self.__buttonFrame2, "paste", w, self.__pasteScreen)
         self.__copyButton = MCButton(self.__loader, self.__buttonFrame2, "copy", w, self.__copyScreen)
 
+        self.__ignoreFrame = Frame(self.__buttonFrame2,
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
+                                    width=9999,
+                                   bg=self.__colors.getColor("window"))
+        self.__ignoreFrame.pack_propagate(False)
+        self.__ignoreFrame.pack(side=LEFT, fill=BOTH)
+
+        self.__ignore1 = StringVar()
+        self.__ignore2 = StringVar()
+
+        self.__ignoreEntry2 = Entry(self.__ignoreFrame,
+                                    bg = self.__colors.getColor("boxBackNormal"), textvariable = self.__ignore2,
+                                    fg = self.__colors.getColor("boxFontNormal"),
+                                    font = self.__smallFont, width=2)
+        self.__ignoreEntry2.pack_propagate(False)
+
+        self.__signLabel = Label(self.__ignoreFrame, text = " - ",
+                                 font = self.__smallFont,
+                                 bg = self.__colors.getColor("window"),
+                                 fg = self.__colors.getColor("font"))
+
+        self.__signLabel.pack_propagate(False)
+
+        self.__ignoreEntry1 = Entry(self.__ignoreFrame,
+                                    bg = self.__colors.getColor("boxBackNormal"), textvariable = self.__ignore1,
+                                    fg = self.__colors.getColor("boxFontNormal"),
+                                    font = self.__smallFont, width=2)
+        self.__ignoreEntry1.pack_propagate(False)
+
+        self.__ignoreEntry1.bind("<FocusIn>", self.focusIn)
+        self.__ignoreEntry1.bind("<FocusOut>", self.__checkIgnoreEntries)
+        self.__ignoreEntry1.bind("<KeyRelease>", self.__checkIgnoreEntries)
+
+        self.__ignoreEntry2.bind("<FocusIn>", self.focusIn)
+        self.__ignoreEntry2.bind("<FocusOut>", self.__checkIgnoreEntries)
+        self.__ignoreEntry2.bind("<KeyRelease>", self.__checkIgnoreEntries)
+
+        self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
+        self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
+        self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
+
+
+        self.__ignoreLabel = Label(self.__ignoreFrame, text = " "*5 + self.__dictionaries.getWordFromCurrentLanguage("ignoreNotes")+" "*2,
+                                 font = self.__smallFont,
+                                 bg = self.__colors.getColor("window"),
+                                 fg = self.__colors.getColor("font"))
+
+        self.__ignoreLabel.pack_propagate(False)
+        self.__ignoreLabel.pack(side=LEFT)
+        self.__ignoreEntry1.pack(side=LEFT)
+        self.__signLabel.pack(side=LEFT)
+        self.__ignoreEntry2.pack(side=LEFT)
+
+
         self.__buttonFrame3 = Frame(self.__bottomFrame1,
                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
                                     width=9999,
@@ -742,6 +796,51 @@ class MusicComposer:
         self.__removeOutsideBox.pack_propagate(False)
         self.__removeOutsideBox.pack(side=TOP, fill=BOTH, anchor=E)
 
+    def __checkIgnoreEntries(self, event):
+        if len(self.__ignore1.get()) > 2:
+            self.__ignore1.set(self.__ignore1.get()[:2])
+        if len(self.__ignore2.get()) > 2:
+            self.__ignore2.set(self.__ignore2.get()[:2])
+
+        num1 = 0
+        num2 = 0
+
+        if self.__ignore1.get() != "" :
+            while True:
+                try:
+                    if self.__ignore1.get() == "":
+                        break
+                    num1 = int(self.__ignore1.get())
+                    break
+                except:
+                    self.__ignore1.set(self.__ignore1.get()[:-1])
+
+            if num1 < 0:
+                self.__ignore1.set("0")
+
+        if self.__ignore2.get() != "" :
+            while True:
+                try:
+                    if self.__ignore2.get() == "":
+                        break
+                    num2 = int(self.__ignore2.get())
+                    break
+                except:
+                    self.__ignore2.set(self.__ignore2.get()[:-1])
+
+            if num2 < 0:
+                self.__ignore2.set("0")
+
+
+        if self.__ignore1.get() != "" and self.__ignore2.get() != "":
+            if num1 > num2:
+                temp = self.__ignore1.get()
+
+                self.__ignore1.set(self.__ignore2.get())
+                self.__ignore2.set(temp)
+
+
+
     def __eraseScreen(self):
         for X in range(0,self.__tiaScreens.numOfFieldsW):
             self.eraseRow(X)
@@ -784,7 +883,7 @@ class MusicComposer:
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
                                                               int(self.__removeOutside.get()),
-                                                              "NTSC")])
+                                                              "NTSC", self.getRangeToCut())])
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
@@ -940,7 +1039,7 @@ class MusicComposer:
         from VGMConverter import VGMConverter
 
         vgmConverter = VGMConverter(self.__loader, path, int(self.__removePercuss.get()),
-                                    self.__maxChannels, int(self.__removeOutside.get()))
+                                    self.__maxChannels, int(self.__removeOutside.get()), self.getRangeToCut())
 
         return (vgmConverter.result, vgmConverter.songName)
 
@@ -948,7 +1047,7 @@ class MusicComposer:
         from SIDConverter import SIDConverter
 
         sidConverter = SIDConverter(self.__loader, path, int(self.__removePercuss.get()),
-                                    self.__maxChannels, int(self.__removeOutside.get()))
+                                    self.__maxChannels, int(self.__removeOutside.get()), self.getRangeToCut())
 
         return (sidConverter.result, sidConverter.songName)
 
@@ -956,7 +1055,7 @@ class MusicComposer:
         from MidiConverter import MidiConverter
 
         midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
-                                      self.__maxChannels, int(self.__removeOutside.get()), 1)
+                                      self.__maxChannels, int(self.__removeOutside.get()), 1, self.getRangeToCut())
 
         return (midiConverter.result, midiConverter.songName)
 
@@ -970,10 +1069,37 @@ class MusicComposer:
         t.start()
 
 
+    def getRangeToCut(self):
+        if self.__ignore1.get() == "" and self.__ignore2.get() == "":
+            return(None)
+
+        if self.__ignore1.get() == "":
+            smallest = 0
+        else:
+            smallest = int(self.__ignore1.get())
+
+        if self.__ignore2.get() == "":
+            largest = 100
+        else:
+            largest = int(self.__ignore2.get())
+
+        numbers = range(smallest, largest + 1, 1)
+        if (self.__removePercuss.get()) == 0:
+            new = []
+            for number in numbers:
+                if number not in range(89, 96, 1):
+                    new.append(number)
+
+            numbers = new
+
+        return(numbers)
+
     def __testingCurrentThread(self):
+
+
         extracted = self.__tiaScreens.composeData(
             self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, self.__vibratio2,
-            int(self.__removePercuss.get()), self.__maxChannels, int(self.__removeOutside.get()), "NTSC")
+            int(self.__removePercuss.get()), self.__maxChannels, int(self.__removeOutside.get()), "NTSC", self.getRangeToCut())
         #self.testPrinting(extracted)
 
         if self.__listItems[self.__listBox.curselection()[0]] == "*Fortari Logo*":
@@ -1082,7 +1208,7 @@ class MusicComposer:
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
                                                               self.__removeOutside.get(),
-                                                              "NTSC")])
+                                                              "NTSC", self.getRangeToCut())])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 

@@ -5,7 +5,11 @@ class HexEntry:
     def __init__(self, loader, frame, colors, colorDict, font, colorConstans, num, focusIn, focusOut):
 
         self.__textVar = StringVar()
-        self.__textVar.set(colorConstans[num])
+
+        if colorConstans != None:
+            self.__textVar.set(colorConstans[num])
+        else:
+            self.__textVar.set("$00")
 
         self.__num = num
 
@@ -29,10 +33,20 @@ class HexEntry:
         self.__entry.bind("<FocusOut>", self.__checkColorEntry)
         self.__entry.bind("<KeyRelease>", self.__checkColorEntry)
 
-        self.__entry.bind("<FocusIn>", focusIn)
-        self.__entry.bind("<FocusOut>", focusOut)
+        self.__secondaryOut = None
+
+        if focusIn != None:
+            self.__entry.bind("<FocusIn>", focusIn)
+        if focusOut != None:
+            self.__secondaryOut = focusOut
 
         self.setColorOfEntry()
+
+    def changeState(self, state):
+        self.__entry.config(state = state)
+
+    def getEntry(self):
+        return self.__entry
 
     def setColorOfEntry(self):
 
@@ -48,7 +62,6 @@ class HexEntry:
         self.__entry.config(bg=color1, fg=color2)
 
     def __checkColorEntry(self, event):
-
 
         if (len(self.__textVar.get()))<3:
             self.setInValid()
@@ -67,7 +80,10 @@ class HexEntry:
             return
 
         self.setColorOfEntry()
-        self.__colorConstans[self.__num] = self.__textVar.get()
+        if  self.__colorConstans!=None:
+            self.__colorConstans[self.__num] = self.__textVar.get()
+        if self.__secondaryOut != None:
+            self.__secondaryOut(event)
 
     def setInValid(self):
         self.__entry.config(
@@ -77,6 +93,7 @@ class HexEntry:
 
     def setValue(self, val):
         self.__textVar.set(val)
+        self.setColorOfEntry()
 
     def getValue(self):
         return(self.__textVar.get())

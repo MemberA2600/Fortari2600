@@ -74,7 +74,6 @@ class Compiler:
         self.__colors = self.__data[8]
         self.__pictureData = self.__data[9]
 
-
         CoolSong = (self.__data[3] + " - "+self.__data[4]).replace(" ", "_")
         CoolSong = "".join(re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', CoolSong))
 
@@ -105,8 +104,26 @@ class Compiler:
         self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
             self.__music1 = self.createMusicEngine(1, CoolSong)
+            self.__music0 = self.__music0.replace("!!!Song_Restart!!!",
+                                                  self.__loader.io.loadWholeText("templates/skeletons/musicRestart.asm")
+                                                  .replace("@@", "0") +
+                                                  self.__loader.io.loadWholeText("templates/skeletons/musicRestart.asm")
+                                                  .replace("@@", "1")
+                                                  )
+
+            self.__music1 = self.__music1.replace("!!!Song_Restart!!!",
+                                                  self.__loader.io.loadWholeText("templates/skeletons/musicRestart.asm")
+                                                  .replace("@@", "0") +
+                                                  self.__loader.io.loadWholeText("templates/skeletons/musicRestart.asm")
+                                                  .replace("@@", "1")
+                                                  )
+
         else:
             self.__music1 = None
+            self.__music0 = self.__music0.replace("!!!Song_Restart!!!",
+                                                  self.__loader.io.loadWholeText("templates/skeletons/musicRestart.asm")
+                                                  .replace("@@", "0"))
+
 
         if self.__musicMode == "mono":
             self.__music0 = self.__music0.replace("!!!JumpOrReturn!!!",

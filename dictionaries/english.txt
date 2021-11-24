@@ -199,3 +199,5 @@ askForSeconds=Enter the desired recording length in seconds!
 askForSubTune=Enter number of subtone!
 cutNoneSeen=Skip Notes Outside The Panel
 calculating=Calculating...
+editPicture=Edit Picture
+ignoreNotes=Ignore notes betweeen:

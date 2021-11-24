@@ -472,7 +472,7 @@ class TiaScreens:
         return(sendBack)
 
 
-    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, removeOutside, tv):
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, removeOutside, tv, cutRange):
         from TiaNote import TiaNote
         #compress the 4 channels into two
         from copy import deepcopy
@@ -503,6 +503,8 @@ class TiaScreens:
                         if noPercuss == 1 and (note["channel"] in [15, 8, 2, 3]):
                             pass
                         elif (removeOutside == 1 and (Y<3 or Y>68 or Y in [30,31]) and (Y not in range(89,96))):
+                            pass
+                        elif cutRange != None and (Y in cutRange):
                             pass
                         else:
                             nums[channelNum] = TiaNote(note["volume"], note["channel"], note["freq"], 1, Y)

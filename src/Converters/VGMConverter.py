@@ -7,7 +7,7 @@ from io import BytesIO as ByteBuffer
 
 class VGMConverter:
 
-    def __init__(self, loader, path, removePercuss, maxChannels, removeOutside):
+    def __init__(self, loader, path, removePercuss, maxChannels, removeOutside, cutOut):
 
         self.__loader = loader
         self.__loader.collector.manuallyRegisterPackage("vgmparse")

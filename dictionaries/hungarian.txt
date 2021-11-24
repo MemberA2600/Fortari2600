@@ -197,3 +197,5 @@ askForSeconds=Add meg a rögzítendõ hosszt másodpercben!
 askForSubTune=Add meg az aldal számát!
 cutNoneSeen=Nem látható hangok kivágása
 calculating=Számlálás...
+editPicture=Kép Szerkesztése
+ignoreNotes=Hangjegyek kihagyása:

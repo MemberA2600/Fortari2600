@@ -23,7 +23,7 @@ program ExtractChannels
     implicit none
 
     type(midiNote), dimension(:), allocatable :: midiNotes
-    integer :: fileLen, io, lineNum, alloc, realIndex, theIndex, maxTime
+    integer :: fileLen, io, lineNum, alloc, realIndex, theIndex, maxTime, num
     integer :: starter, ender
     real :: remainder, tempLen
     type(midiChannel), dimension(16) :: midiChannels
@@ -31,12 +31,20 @@ program ExtractChannels
     character(:), allocatable :: tempPath
     character(len=1) :: dummy
     character(len=12) :: fileName
-    logical :: doStuff
+    logical :: doStuff, cutIt, secondZero
+
+    integer, dimension(100) :: cutOut
 
     numOfNotes = 0
     fileLen = 0
 
     tempPath = "temp/"
+
+    open(unit=11, file=tempPath // "Args.txt")
+
+    read(11, *) cutOut
+
+    close(11)
 
     open(unit=11, file=tempPath // "Input.txt")
     do
@@ -145,8 +153,32 @@ program ExtractChannels
           open(unit=12, file=tempPath // fileName)
              do lineNum=1, midiChannels(theIndex)%noteIndex, 1
                 if (midiChannels(theIndex)%theNotes(lineNum)%time > 0) then
-                    if (midiChannels(theIndex)%theNotes(lineNum)%velocity == 0 .OR.&
-                    & midiChannels(theIndex)%theNotes(lineNum)%note == 0) then
+                    cutIt = .FALSE.
+                    secondZero = .FALSE.
+
+                    do num = 1, 100, 1
+                       if (cutOut(num) == midiChannels(theIndex)%theNotes(lineNum)%note) then
+                           cutIt = .TRUE.
+                           exit
+
+                       end if
+
+                       if (cutOut(num) == 0) then
+                           if (secondZero .EQV. .FALSE.) then
+                               secondZero = .TRUE.
+                           else
+                               exit
+
+                           end if
+
+                       end if
+
+                    end do
+
+
+                    if (midiChannels(theIndex)%theNotes(lineNum)%velocity == 0 .OR. &
+                    & midiChannels(theIndex)%theNotes(lineNum)%note == 0 .OR. &
+                    & cutIt .EQV. .TRUE. ) then
                         write(12, "(I0, 1x, I0, 1x, f0.0)") 0, 0, midiChannels(theIndex)%theNotes(lineNum)%time
                     else
                         write(12, "(I0, 1x, I0, 1x, f0.0)") midiChannels(theIndex)%theNotes(lineNum)%velocity&

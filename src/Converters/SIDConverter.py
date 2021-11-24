@@ -4,7 +4,7 @@
 
 class SIDConverter:
 
-    def __init__(self, loader, path, removePercuss, maxChannels, removeOutside):
+    def __init__(self, loader, path, removePercuss, maxChannels, removeOutside, rangeToCut):
 
         self.__loader = loader
         self.__loader.collector.manuallyRegisterPackage("chiptunesak")
@@ -41,7 +41,7 @@ class SIDConverter:
             pass
 
         midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
-        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5)
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5, rangeToCut)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 
         self.__loader.collector.restoreSystemPath()
