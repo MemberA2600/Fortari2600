@@ -977,10 +977,10 @@ class MusicComposer:
 
         extension = fileName.split(".")[-1]
         if extension in functions.keys():
-            #try:
+            try:
                 converted, songTitle = functions[extension](fileName)
-            #except Exception as e:
-                #errorText = str(e)
+            except Exception as e:
+                errorText = str(e)
         else:
             for func in functions.keys():
                 try:

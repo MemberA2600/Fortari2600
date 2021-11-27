@@ -199,3 +199,4 @@ cutNoneSeen=Nem látható hangok kivágása
 calculating=Számlálás...
 editPicture=Kép Szerkesztése
 ignoreNotes=Hangjegyek kihagyása:
+sprite=Sprite:

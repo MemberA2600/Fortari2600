@@ -258,9 +258,16 @@ class PictureToCode:
         self.__button2.pack_propagate(False)
         self.__button2.pack(side=LEFT, anchor = E, fill=BOTH)
 
+        self.__cBoxFrame = Frame(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 10))
+
+        self.__cBoxFrame.pack_propagate(False)
+        self.__cBoxFrame.pack(side=TOP, anchor=N, fill=X)
+
         self.__previewButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
-                                   font = self.__normalFont,
+                                   font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                    command = self.testingEditor
                                       )
@@ -270,7 +277,7 @@ class PictureToCode:
 
         self.__saveButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
-                                   font = self.__normalFont,
+                                   font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("ok"),
                                    command = self.setAndKill
                                       )
@@ -280,13 +287,105 @@ class PictureToCode:
 
         self.__cancelButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
-                                   font = self.__normalFont,
+                                   font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("cancel"),
                                    command = self.killMe
                                       )
 
         self.__cancelButton.pack_propagate(False)
         self.__cancelButton.pack(side=TOP, anchor=N, fill=X)
+
+        self.__mirrorPF.set(0)
+        self.__invertPFBG.set(0)
+        self.__reduceBG.set(0)
+
+        self.__temp1 = self.__invertPFBG.get()
+        self.__temp2 = self.__mirrorPF.get()
+
+
+        self.__checker02 = Checkbutton(self.__cBoxFrame,
+                                             text=self.__dictionaries.getWordFromCurrentLanguage("invertColors"),
+                                             bg=self.__loader.colorPalettes.getColor("window"),
+                                             fg=self.__loader.colorPalettes.getColor("font"),
+                                             font=self.__tinyFont, name = "invertPFBG",
+                                             variable=self.__invertPFBG
+                                             )
+        self.__checker02.pack(side=TOP, anchor=W)
+
+        self.__checker03 = Checkbutton(self.__cBoxFrame,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("oneColorBG"),
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                        font=self.__tinyFont,
+                                        variable=self.__cutBG
+                                        )
+        self.__checker03.pack(side=TOP, anchor=W)
+
+        self.__mirrorButton = Button(self.__cBoxFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"),
+                                   font = self.__smallFont2,
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("invertPF"),
+                                   command = self.mirrorPFGoGo
+                                      )
+
+        self.__mirrorButton.pack_propagate(False)
+        self.__mirrorButton.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__labelFrame = Frame(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round(self.__topLevel.getTopLevelDimensions()[0]*0.20),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__labelFrame.pack_propagate(False)
+        self.__labelFrame.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__labelFrame1 = Frame(self.__labelFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0]*0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__labelFrame1.pack_propagate(False)
+        self.__labelFrame1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__labelFrame2 = Frame(self.__labelFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0]*0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__labelFrame2.pack_propagate(False)
+        self.__labelFrame2.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__labelFrame3 = Frame(self.__labelFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=round((self.__topLevel.getTopLevelDimensions()[0]*0.20)/3),
+                                   height=round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 4))
+
+        self.__labelFrame3.pack_propagate(False)
+        self.__labelFrame3.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__label1 = Label(self.__labelFrame1, bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"),
+                                   font = self.__tinyFont,
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("sprite"),
+                                      )
+        self.__label2 = Label(self.__labelFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                              fg=self.__loader.colorPalettes.getColor("font"),
+                              font=self.__tinyFont,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("playfield")[:-1],
+                              )
+        self.__label3 = Label(self.__labelFrame3, bg=self.__loader.colorPalettes.getColor("window"),
+                              fg=self.__loader.colorPalettes.getColor("font"),
+                              font=self.__tinyFont,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("background")[:-1],
+                              )
+        self.__label1.pack_propagate(False)
+        self.__label2.pack_propagate(False)
+        self.__label3.pack_propagate(False)
+
+        self.__label1.pack(side=BOTTOM, fill=BOTH, anchor=CENTER)
+        self.__label2.pack(side=BOTTOM, fill=BOTH, anchor=CENTER)
+        self.__label3.pack(side=BOTTOM, fill=BOTH, anchor=CENTER)
+
+        #self.__checker01.bind("<Button-1>", self.redraw)
+        #self.__checker02.bind("<Button-1>", self.redraw)
+
 
         self.generateEditorButtons()
         self.__redrawCanvas()
@@ -298,18 +397,86 @@ class PictureToCode:
            t.daemon = True
            t.start()
 
+    def mirrorPFGoGo(self):
+        """
+        for Y in range(0, self.__dataForEditor["h"]):
+            for X in range(0, 8):
+                self.__dataForEditor["lines"][Y]["playfield"]["pixels"] = self.__dataForEditor["lines"][Y]["playfield"]["pixels"][::-1]
+
+        for Y in range(0, 24):
+            for X in range(0, 8):
+                name = "playfield_" + str((X)) + "_" + str(Y)
+                button = self.__editorButtons[name]
+
+                if self.__dataForEditor["lines"][Y+self.__currentY]["playfield"]["pixels"][X] == "1":
+                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
+                else:
+                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        """
+        backUp = self.__currentY
+
+        for Y in range(0, self.__dataForEditor["h"]-24):
+            self.__currentY = Y
+            pfData = self.__dataForEditor["lines"][self.__currentY]["playfield"]["pixels"]
+
+            for X in range(0, 8):
+                name = "playfield_" + str((X)) + "_0"
+                button = self.__editorButtons[name]
+
+                self.setPixel(0, "playfield", X,
+                              int(pfData[7-X]), button, False
+                              )
+
+        self.__currentY = self.__dataForEditor["h"]-24
+        for Y in range(0, 24):
+            pfData = self.__dataForEditor["lines"][self.__currentY+Y]["playfield"]["pixels"]
+
+            for X in range(0, 8):
+                name = "playfield_" + str((X)) + "_" + str(Y)
+                button = self.__editorButtons[name]
+
+                self.setPixel(Y, "playfield", X,
+                              int(pfData[7-X]), button, False
+                              )
+
+        self.__currentY = backUp
+
+        for Y in range(0, 24):
+            for X in range(0, 8):
+                name = "playfield_" + str((X)) + "_" + str(Y)
+                button = self.__editorButtons[name]
+
+                if self.__dataForEditor["lines"][self.__currentY+Y]["playfield"]["pixels"][X] == "1":
+                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
+                else:
+                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+
+        self.__redrawCanvas()
+
+    def redraw(self, event):
+        self.__redrawCanvas()
+
     def __stateButtons(self):
         from time import sleep
-        while self.dead == False:
-            if self.__currentY > 0:
-                self.__button1.config(state = NORMAL)
-            else:
-                self.__button1.config(state = DISABLED)
 
-            if self.__currentY < self.__dataForEditor["h"]-24:
-                self.__button2.config(state = NORMAL)
-            else:
-                self.__button2.config(state = DISABLED)
+        while self.dead == False:
+            if self.__temp1 != self.__invertPFBG.get() or self.__temp2 != self.__mirrorPF.get():
+                self.__temp1 = self.__invertPFBG.get()
+                self.__redrawCanvas()
+
+            try:
+                if self.__currentY > 0:
+                    self.__button1.config(state = NORMAL)
+                else:
+                    self.__button1.config(state = DISABLED)
+
+                if self.__currentY < self.__dataForEditor["h"]-24:
+                    self.__button2.config(state = NORMAL)
+                else:
+                    self.__button2.config(state = DISABLED)
+            except:
+                pass
+            sleep(0.00005)
 
     def pozMinus(self):
         self.__changeState(self.__currentY-1)
@@ -379,6 +546,7 @@ class PictureToCode:
         w = round((self.__topLevel.getTopLevelDimensions()[0]*0.80)/64)
         h = round(self.__topLevel.getTopLevelDimensions()[1] / 100 * 70 / 52)
 
+        """
         for theY in range(0, self.__dataForEditor["h"]):
             if self.__mirrorPF.get() == 1:
                 self.__dataForEditor["lines"][theY]["playfield"]["pixels"] = \
@@ -388,7 +556,7 @@ class PictureToCode:
                temp =  self.__dataForEditor["lines"][theY]["playfield"]["color"]
                self.__dataForEditor["lines"][theY]["playfield"]["color"] = self.__dataForEditor["lines"][theY]["background"]
                self.__dataForEditor["lines"][theY]["background"] = temp
-
+        """
 
         for theY in range(0, 24):
             self.__soundPlayer.playSound("Pong")
@@ -478,7 +646,7 @@ class PictureToCode:
 
                 buttonPF1 = Button(framePF1, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                    relief=GROOVE, activebackground=self.__colors.getColor("highLight"),
-                                   name = "playfield_" + str((theX)) + "_" + str(theY))
+                                   name = "playfield_" + str((7-theX)) + "_" + str(theY))
 
                 self.buttonSetter(buttonPX1, theY, (theX*8),   "sprites_" + str((theX*8))   + "_" + str(theY))
                 self.buttonSetter(buttonPX2, theY, (theX*8)+1, "sprites_" + str((theX*8)+1) + "_" + str(theY))
@@ -488,7 +656,7 @@ class PictureToCode:
                 self.buttonSetter(buttonPX6, theY, (theX*8)+5, "sprites_" + str((theX*8)+5) + "_" + str(theY))
                 self.buttonSetter(buttonPX7, theY, (theX*8)+6, "sprites_" + str((theX*8)+6) + "_" + str(theY))
                 self.buttonSetter(buttonPX8, theY, (theX*8)+7, "sprites_" + str((theX*8)+7) + "_" + str(theY))
-                self.buttonSetter(buttonPF1, theY, (theX),     "playfield_" + str((theX))   + "_" + str(theY))
+                self.buttonSetter(buttonPF1, theY, (7-theX),     "playfield_" + str((7-theX))   + "_" + str(theY))
 
             from HexEntry import HexEntry
 
@@ -535,9 +703,6 @@ class PictureToCode:
             self.colorEntrySetter(colorEntry2, "playfield", theY)
             self.colorEntrySetter(colorEntry3, "background", theY)
 
-        self.__invertPFBG.set(0)
-        self.__mirrorPF.set(0)
-        self.__cutBG.set(0)
 
     def colorEntrySetter(self, entry, typ, Y):
         self.__colorEntries[typ+"_"+str(Y)] = entry
@@ -605,15 +770,15 @@ class PictureToCode:
 
         if self.__ctrl == True:
            if button == 1:
-               self.setPixel(Y, bType, X, 1, event.widget)
+               self.setPixel(Y, bType, X, 1, event.widget, True)
            else:
-               self.setPixel(Y, bType, X, 0, event.widget)
+               self.setPixel(Y, bType, X, 0, event.widget, True)
 
         else:
             self.setPixel(Y, bType, X,
-                          1-int(self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X]), event.widget)
+                          1-int(self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X]),
+                          event.widget, True)
 
-        self.__redrawCanvas()
 
     def __redrawCanvas(self):
         w = round((self.__topLevel.getTopLevelDimensions()[0]*0.8)/64)
@@ -624,18 +789,27 @@ class PictureToCode:
 
         for Y in range(self.__currentY, self.__currentY+24, 1):
             drawY = Y - self.__currentY
-            colorBG = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["background"])
-            colorPF = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["playfield"]["color"])
+            if self.__invertPFBG.get() == 1:
+                colorPF = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["background"])
+                colorBG = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["playfield"]["color"])
+            else:
+                colorBG = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["background"])
+                colorPF = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["playfield"]["color"])
             colorSprites = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["sprites"]["color"])
 
             self.__canvas.create_rectangle((0, drawY*h, w*64, (drawY+1)*h),  outline="", fill=colorBG)
 
             for X in range(0,16,1):
+                if self.__mirrorPF.get() == 0:
+                    pf = self.__dataForEditor["lines"][Y]["playfield"]["pixels"][::-1]
+                else:
+                    pf = self.__dataForEditor["lines"][Y]["playfield"]["pixels"]
+
                 if X < 8:
-                    if self.__dataForEditor["lines"][Y]["playfield"]["pixels"][X] == "1":
+                    if pf[X] == "1":
                         self.__canvas.create_rectangle((X*w*4, drawY*h, (X+1)*w*4, (drawY+1)*h), outline = "", fill=colorPF)
                 else:
-                    if self.__dataForEditor["lines"][Y]["playfield"]["pixels"][15-X] == "1":
+                    if pf[15-X] == "1":
                         self.__canvas.create_rectangle((X*w*4, drawY*h, (X+1)*w*4, (drawY+1)*h), outline = "", fill=colorPF)
 
             for X in range(0,64,1):
@@ -644,9 +818,7 @@ class PictureToCode:
                                                    fill=colorSprites)
 
 
-
-
-    def setPixel(self, Y, bType, X, value, button):
+    def setPixel(self, Y, bType, X, value, button, redraw):
         if X == 0:
             self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"] = \
             str(value) + self.__dataForEditor["lines"][Y+self.__currentY][bType]["pixels"][X+1:]
@@ -666,6 +838,8 @@ class PictureToCode:
             else:
                 button.config(bg=self.__loader.colorPalettes.getColor("font"))
 
+        if redraw == True:
+            self.__redrawCanvas()
 
     def generateASM(self, w, h, imgColorData, imgPixelData, testing):
         #mergedImageData = {}
@@ -714,6 +888,9 @@ class PictureToCode:
 
     def testingEditor(self):
         from threading import Thread
+        from copy import deepcopy
+
+        self.__backUp = deepcopy(self.__dataForEditor["lines"])
 
         t = Thread(target=self.testingEditorThread)
         t.daemon = True
@@ -721,8 +898,9 @@ class PictureToCode:
 
     def testingEditorThread(self):
         asm = self.getASM(self.__dataForEditor["lines"], self.__dataForEditor["h"])
-        self.compileThread(asm, self.__dataForEditor["h"])
+        self.__dataForEditor["lines"] = self.__backUp
 
+        self.compileThread(asm, self.__dataForEditor["h"])
 
     def compileThread(self, asm, h):
         from Compiler import Compiler
@@ -761,30 +939,31 @@ class PictureToCode:
             else:
                 bgColors[bg]=1
 
+            spriteData = data[Y]["sprites"]["pixels"]
+
             if self.__mirrorPF.get() == 1:
                 pfData = data[Y]["playfield"]["pixels"][::-1]
+                spData = spriteData[::-1]
             else:
                 pfData = data[Y]["playfield"]["pixels"]
+                spData = spriteData
 
             pf = []
             for P in pfData:
                 pf.append(P)
 
-            spriteData = data[Y]["sprites"]["pixels"]
             for pixelNum in range(0,32,4):
-                sprite1 = spriteData[pixelNum:(pixelNum+4)]
-                sprite2 = spriteData[(63-pixelNum-4):(63-pixelNum)][::-1]
+                sprite1 = spData[pixelNum:(pixelNum+4)]
+                sprite2 = spData[(63-pixelNum-4):(63-pixelNum)][::-1]
 
                 if sprite1 == "1111" and sprite2 == "1111":
                     pf[pixelNum//4] = "0"
-            data[Y]["playfield"]["pixels"]="".join(pf)
 
             lineOfPF = ""
             for P in pf:
                 lineOfPF+=P*4
 
             lineOfPF += lineOfPF[::-1]
-
 
             for pixelNum in range(0,64):
                 if spriteData[pixelNum]=="0" and lineOfPF[pixelNum]=="0":
@@ -830,7 +1009,6 @@ class PictureToCode:
                 pic64px_BGColor += ("\tBYTE\t#"+self.__oneColor.get()+"\n")
             else:
                 pic64px_BGColor += ("\tBYTE\t#" + bg + "\n")
-
 
         allData = [
             pic64px_Sprite[0], pic64px_Sprite[1], pic64px_Sprite[2], pic64px_Sprite[3], pic64px_Sprite[4],
