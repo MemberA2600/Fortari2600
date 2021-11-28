@@ -4,8 +4,10 @@ class SubMenu:
 
     def __init__(self, loader, name, w, h, checker, addElements, maxNum):
         self.__loader = loader
-        self.__subMenu = self
         self.__loader.subMenus.append(self)
+        self.__loader.subMenuDict[name] = self
+        self.__name = name
+
         if len(self.__loader.subMenus)>maxNum:
             from threading import Thread
             t = Thread(target=self.killOther)
@@ -26,7 +28,6 @@ class SubMenu:
 
         self.__topLevel.config(bg=self.__loader.colorPalettes.getColor("window"))
         #self.__topLevel.protocol('WM_DELETE_WINDOW', self.__closeWindow)
-
 
         try:
             self.__topLevel.iconbitmap("others/img/"+name+".ico")
@@ -57,7 +58,17 @@ class SubMenu:
         except Exception as e:
             self.__loader.logger.errorLog(e)
 
+        from threading import Thread
 
+        t = Thread(target=self.__killIfKilled)
+        t.daemon = True
+        t.start()
+
+    def __killIfKilled(self):
+        from time import sleep
+        while self.__topLevel.winfo_exists():
+            sleep(0.00005)
+        del self.__loader.subMenuDict[self.__name]
 
     def killOther(self):
         self.__loader.subMenus[-2].dead = True

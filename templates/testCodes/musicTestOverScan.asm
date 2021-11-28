@@ -49,7 +49,7 @@ CoolSong_Text_Create_Loop
 	JMP	CoolSong_Text_Create_Loop
 
 CoolSong_Text_Create_End
-	LDA	#65
+	LDA	#56
 	CMP	picDisplayHeight
 	BCS	CoolSong_DontCutHeight
 	STA	picDisplayHeight

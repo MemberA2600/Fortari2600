@@ -101,7 +101,6 @@ class MusicComposer:
 
         self.dead = True
 
-
     def __errorSum(self):
         s = 0
 
@@ -214,11 +213,15 @@ class MusicComposer:
                 self.__ButtonNext.config(state=DISABLED)
                 self.__deleteCurrentButton.config(state=DISABLED)
 
-
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
 
     def __addElementsCommon(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
+
 
         self.__editorFrame = Frame(self.__topLevelWindow,
                                    height=round(self.__topLevel.getTopLevelDimensions()[1]),

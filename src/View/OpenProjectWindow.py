@@ -29,15 +29,18 @@ class OpenProjectWindow:
 
         self.__screenSize = self.__loader.screenSize
 
-
-
         self.__window = SubMenu(self.__loader, "open", self.__screenSize[0] / 3, self.__screenSize[1] / 3 - 45,
                            None, self.__addElements, 1)
         self.dead = True
 
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
+
     def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.75), False, False, False)

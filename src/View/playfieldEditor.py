@@ -76,9 +76,14 @@ class PlayfieldEditor:
 
             sleep(0.4)
 
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
+
     def __addElementsCommon(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__piff = 1
         self.__puff = 0.55

@@ -15,6 +15,11 @@ from MenuLabel import MenuLabel
 from ButtonMaker import ButtonMaker
 from SubMenu import SubMenu
 
+from tkinter.simpledialog import *
+from tkinter.filedialog import *
+from tkinter import messagebox
+
+
 class MainWindow:
 
     def __init__(self, loader):
@@ -28,6 +33,10 @@ class MainWindow:
         self.__soundPlayer = self.__loader.soundPlayer
         self.__fileDialogs = self.__loader.fileDialogs
 
+        self.__mainFocus = None
+        self.__subMenu = None
+
+        self.__subMenuOpened = False
         self.__setProjectPath(None)
 
         self.focused = None
@@ -103,15 +112,35 @@ class MainWindow:
 
     def __scales(self):
         from time import sleep
-        while self.dead==False:
-            if (self.__lastW==self.getWindowSize()[0] and self.__lastH==self.getWindowSize()[1]):
-                sleep(0.05)
-                continue
-            self.__lastW = self.getWindowSize()[0]
-            self.__lastH = self.getWindowSize()[1]
-            self.__scaleX = self.__lastW / self.__originalW
-            self.__scaleY = self.__lastH / self.__originalH
+        while self.dead == False:
+
+            if self.__mainFocus == None:
+               self.__mainFocus = self.editor.focus_get()
+
+            if self.editor.focus_get() == self.__mainFocus:
+                if self.__loader.subMenuDict == {} and self.__subMenuOpened == True:
+                    self.__subMenuOpened = False
+                    self.__killRemaining()
+                else:
+                    self.__subMenuOpened = True
+
+                if (self.__lastW==self.getWindowSize()[0] and self.__lastH==self.getWindowSize()[1]):
+                    sleep(0.05)
+                    continue
+                self.__lastW = self.getWindowSize()[0]
+                self.__lastH = self.getWindowSize()[1]
+                self.__scaleX = self.__lastW / self.__originalW
+                self.__scaleY = self.__lastH / self.__originalH
             sleep(0.02)
+
+    def __killRemaining(self):
+        import gc
+        self.__subMenu = None
+        self.__loader.subMenus = []
+
+        for item in gc.get_objects():
+            if "filedialog" in str(type(item)):
+                print(str(type(item)))
 
     def getScales(self):
         return([self.__scaleX, self.__scaleY])
@@ -264,7 +293,7 @@ class MainWindow:
 
     def __newButtonFunction(self):
         from NewProjectWindow import NewProjectWindow
-        w = NewProjectWindow(self.__loader)
+        self.__subMenu = NewProjectWindow(self.__loader)
 
 
     def projectOpenedWantToSave(self):
@@ -479,29 +508,29 @@ class MainWindow:
 
         from OpenProjectWindow import OpenProjectWindow
 
-        open = OpenProjectWindow(self.__loader, self, self.openProject)
+        self.__subMenu = OpenProjectWindow(self.__loader, self, self.openProject)
 
 
     def __openMusicComposer(self):
         from MusicComposer import MusicComposer
 
-        Music = MusicComposer(self.__loader, self, None)
+        self.__subMenu = MusicComposer(self.__loader, self, None)
 
     def __openPictureConverter(self):
         from PictureToCode import PictureToCode
 
-        pictureToCode = PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
+        self.__subMenu = PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
 
 
     def __openPFEditor(self):
         from PlayfieldEditor import PlayfieldEditor
 
-        PF = PlayfieldEditor(self.__loader, self)
+        self.__subMenu = PlayfieldEditor(self.__loader, self)
 
     def __openSpriteEditor(self):
         from SpriteEditor import SpriteEditor
 
-        _7up = SpriteEditor(self.__loader, self)
+        self.__subMenu = SpriteEditor(self.__loader, self)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])

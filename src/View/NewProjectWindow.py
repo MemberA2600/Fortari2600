@@ -30,11 +30,17 @@ class NewProjectWindow:
     def getDimensions(self):
         return(self.__window.getTopLevelDimensions())
 
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
+
     def __addElements(self, top):
         from SubMenuLabel import SubMenuLabel
 
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
+
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.9), False, False, False)
 

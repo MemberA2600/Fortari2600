@@ -142,10 +142,15 @@ class PictureToCode:
         elif mode == "64pxPicture":
             self.generateASM(w, h, imgColorData, imgPixelData, testing)
 
+    def __closeWindow(self):
+        self.dead = True
+
+        self.__topLevelWindow.destroy()
 
     def __addElementsEditor(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__topLevelWindow.bind("<KeyPress-Control_L>", self.ctrlON)
         self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.ctrlOff)
@@ -265,8 +270,8 @@ class PictureToCode:
         self.__cBoxFrame.pack_propagate(False)
         self.__cBoxFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__previewButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                   fg = self.__loader.colorPalettes.getColor("font"),
+        self.__previewButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("font"),
+                                   fg = self.__loader.colorPalettes.getColor("window"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                    command = self.testingEditor
@@ -462,6 +467,13 @@ class PictureToCode:
         while self.dead == False:
             if self.__temp1 != self.__invertPFBG.get() or self.__temp2 != self.__mirrorPF.get():
                 self.__temp1 = self.__invertPFBG.get()
+                if self.__temp1 == 1:
+                    self.__label2.config(text=self.__dictionaries.getWordFromCurrentLanguage("playfield")[:-1])
+                    self.__label3.config(text=self.__dictionaries.getWordFromCurrentLanguage("background")[:-1])
+                else:
+                    self.__label3.config(text=self.__dictionaries.getWordFromCurrentLanguage("playfield")[:-1])
+                    self.__label2.config(text=self.__dictionaries.getWordFromCurrentLanguage("background")[:-1])
+
                 self.__redrawCanvas()
 
             try:
@@ -874,7 +886,12 @@ class PictureToCode:
 
 
         if self.doThings == True or self.__editPicture == False:
-            asm = self.getASM(mergedByLines, h)
+            if self.__editPicture == True:
+                asm = self.getASM(self.__dataForEditor["lines"], h)
+            else:
+                asm = self.getASM(mergedByLines, h)
+
+
             if testing == True:
                 from threading import Thread
                 t = Thread(target=self.compileThread, args=[asm, h])
@@ -1705,8 +1722,8 @@ class PictureToCode:
 
 
             self.__testButton = Button(self.__bothButtonsFrame1,
-                                        bg=self.__loader.colorPalettes.getColor("window"),
-                                        fg=self.__loader.colorPalettes.getColor("font"), width=99999999,
+                                        bg=self.__loader.colorPalettes.getColor("font"),
+                                        fg=self.__loader.colorPalettes.getColor("window"), width=99999999,
                                         text=self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                         font=self.__smallFont, command=self.testingThread
                                         )

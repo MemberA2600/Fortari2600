@@ -35,6 +35,7 @@ class Loader:
 
         self.destroyable = []
         self.subMenus = []
+        self.subMenuDict = {}
         self.stopThreads = []
 
         self.sections = []

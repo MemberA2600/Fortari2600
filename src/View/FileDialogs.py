@@ -9,12 +9,13 @@ class FileDialogs:
         self.__config = config
         self.__loader = loader
 
-    def askForInteger(self, title, p):
 
+    def askForInteger(self, title, p):
         return askinteger(self.__dicts.getWordFromCurrentLanguage(title), self.__dicts.getWordFromCurrentLanguage(p))
 
 
     def askYesOrNo(self, title, text):
+
         mbox = messagebox.askyesno(self.__dicts.getWordFromCurrentLanguage(title),
                                    self.__dicts.getWordFromCurrentLanguage(text))
 
@@ -24,6 +25,7 @@ class FileDialogs:
             return("No")
 
     def askYesNoCancel(self, title, text):
+
         mbox = messagebox.askyesnocancel(self.__dicts.getWordFromCurrentLanguage(title),
                                    self.__dicts.getWordFromCurrentLanguage(text))
 
@@ -35,6 +37,7 @@ class FileDialogs:
             return("Cancel")
 
     def askForFileName(self, title, save, fileTypes, initdir):
+
         types = []
 
         for t in fileTypes:
@@ -94,12 +97,14 @@ class FileDialogs:
 
 
     def askForDir(self, init):
+
         openname = askdirectory(initialdir=init,
                                        title=self.__dicts.getWordFromCurrentLanguage("openFolder"),
                                        )
         return(openname)
 
     def displayError(self, title, message, data, systemText):
+
         message = self.__dicts.getWordFromCurrentLanguage(message)
         if data!=None:
             for item in data.keys():
@@ -118,3 +123,4 @@ class FileDialogs:
             message += str("\n"+self.__dicts.getWordFromCurrentLanguage("errorSystemText")+"\n"+systemText)
         messagebox.showerror(self.__dicts.getWordFromCurrentLanguage(title),
                              message)
+

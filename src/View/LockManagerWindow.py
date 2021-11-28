@@ -29,9 +29,14 @@ class LockManagerWindow:
     def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         from Switch import Switch
         self.__banks = []
         for num in range(3,9):
             testbank = Switch(self.__loader, self.__topLevel, self.__topLevelWindow, num, self.__banks)
             self.__banks.append(testbank)
+
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()

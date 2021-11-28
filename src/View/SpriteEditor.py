@@ -128,9 +128,14 @@ class SpriteEditor:
         else:
             self.__draw = 1
 
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
+
     def __addElementsCommon(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__puff = 0.50
         self.__height = 8
@@ -874,9 +879,6 @@ class SpriteEditor:
 
             self.__canvas.clipboard_clear()
             self.__canvas.delete("all")
-
-
-
 
             for Y in range(0, self.__height):
                 # canvas.create_rectangle(x1, y1, x2, y2, **kwargs)

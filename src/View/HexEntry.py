@@ -50,16 +50,24 @@ class HexEntry:
 
     def setColorOfEntry(self):
 
-        color1 = self.__colorDict.getHEXValueFromTIA(self.__textVar.get())
+        try:
+            t = int("0x"+self.__textVar.get()[-1], 16)
+            if t % 2 == 1:
+                t = t-1
+                self.__textVar.set(self.__textVar.get()[:-1]+hex(t).replace("0x",""))
 
-        num = int("0x"+self.__textVar.get()[2], 16)
-        if num>8:
-            num = self.__textVar.get()[:2]+hex(num-6).replace("0x","")
-        else:
-            num = self.__textVar.get()[:2]+hex(num+6).replace("0x","")
+            color1 = self.__colorDict.getHEXValueFromTIA(self.__textVar.get())
 
-        color2 = self.__colorDict.getHEXValueFromTIA(num)
-        self.__entry.config(bg=color1, fg=color2)
+            num = int("0x"+self.__textVar.get()[2], 16)
+            if num>8:
+                num = self.__textVar.get()[:2]+hex(num-6).replace("0x","")
+            else:
+                num = self.__textVar.get()[:2]+hex(num+6).replace("0x","")
+
+            color2 = self.__colorDict.getHEXValueFromTIA(num)
+            self.__entry.config(bg=color1, fg=color2)
+        except:
+            pass
 
     def __checkColorEntry(self, event):
 
