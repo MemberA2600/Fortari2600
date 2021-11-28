@@ -40,3 +40,5 @@ class LockManagerWindow:
     def __closeWindow(self):
         self.dead = True
         self.__topLevelWindow.destroy()
+
+        self.__loader.topLevels.remove(self.__topLevelWindow)

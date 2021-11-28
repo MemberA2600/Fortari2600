@@ -10,14 +10,25 @@ class FileDialogs:
         self.__loader = loader
 
 
-    def askForInteger(self, title, p):
-        return askinteger(self.__dicts.getWordFromCurrentLanguage(title), self.__dicts.getWordFromCurrentLanguage(p))
+    def changeWindowState(self, state):
+        self.__loader.mainWindow.editor.attributes('-disabled', state)
+        for top in self.__loader.topLevels:
+            top.attributes('-disabled', state)
 
+    def askForInteger(self, title, p):
+        self.changeWindowState(True)
+        i = askinteger(self.__dicts.getWordFromCurrentLanguage(title), self.__dicts.getWordFromCurrentLanguage(p))
+        self.changeWindowState(False)
+
+        return i
 
     def askYesOrNo(self, title, text):
 
+        self.changeWindowState(True)
+
         mbox = messagebox.askyesno(self.__dicts.getWordFromCurrentLanguage(title),
                                    self.__dicts.getWordFromCurrentLanguage(text))
+        self.changeWindowState(False)
 
         if mbox==True:
             return("Yes")
@@ -25,9 +36,11 @@ class FileDialogs:
             return("No")
 
     def askYesNoCancel(self, title, text):
+        self.changeWindowState(True)
 
         mbox = messagebox.askyesnocancel(self.__dicts.getWordFromCurrentLanguage(title),
                                    self.__dicts.getWordFromCurrentLanguage(text))
+        self.changeWindowState(False)
 
         if mbox==True:
             return("Yes")
@@ -85,6 +98,9 @@ class FileDialogs:
             else:
                 initdir = test
 
+
+        self.changeWindowState(True)
+
         if save == True:
             openname = asksaveasfilename(initialdir=initdir,
                                        title=self.__dicts.getWordFromCurrentLanguage(title),
@@ -93,14 +109,21 @@ class FileDialogs:
             openname = askopenfilename(initialdir=initdir,
                                        title=self.__dicts.getWordFromCurrentLanguage(title),
                                        filetypes=types)
+
+        self.changeWindowState(False)
+
         return(openname)
 
 
     def askForDir(self, init):
 
+        self.changeWindowState(True)
+
         openname = askdirectory(initialdir=init,
                                        title=self.__dicts.getWordFromCurrentLanguage("openFolder"),
                                        )
+        self.changeWindowState(False)
+
         return(openname)
 
     def displayError(self, title, message, data, systemText):
@@ -121,6 +144,9 @@ class FileDialogs:
             self.__loader.soundPlayer.playSound("Error")
         if systemText != None:
             message += str("\n"+self.__dicts.getWordFromCurrentLanguage("errorSystemText")+"\n"+systemText)
+
+        self.changeWindowState(True)
         messagebox.showerror(self.__dicts.getWordFromCurrentLanguage(title),
                              message)
 
+        self.changeWindowState(False)

@@ -34,6 +34,7 @@ class SubMenu:
         except:
             self.__topLevel.iconbitmap("others/img/icon.ico")
 
+        self.__loader.topLevels.append(self.__topLevel)
         self.__topLevel.deiconify()
         self.__topLevel.focus()
 

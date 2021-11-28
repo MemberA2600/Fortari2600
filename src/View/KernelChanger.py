@@ -31,9 +31,17 @@ class KernelChanger:
                            None, self.__addElements, 1)
         self.dead = True
 
-    def __addElements(self, top):
+    def __closeWindow(self):
+        self.dead = True
+        self.__topLevelWindow.destroy()
+
+        self.__loader.topLevels.remove(self.__topLevelWindow)
+
+
+def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__frameChooser = Frame(self.__topLevelWindow)
         self.__frameChooser.config(bg=self.__loader.colorPalettes.getColor("window"))

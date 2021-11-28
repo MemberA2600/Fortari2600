@@ -217,6 +217,9 @@ class MusicComposer:
         self.dead = True
         self.__topLevelWindow.destroy()
 
+        self.__loader.topLevels.remove(self.__topLevelWindow)
+
+
     def __addElementsCommon(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()

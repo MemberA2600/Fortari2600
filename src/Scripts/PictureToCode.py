@@ -144,8 +144,9 @@ class PictureToCode:
 
     def __closeWindow(self):
         self.dead = True
-
         self.__topLevelWindow.destroy()
+
+        self.__loader.topLevels.remove(self.__topLevelWindow)
 
     def __addElementsEditor(self, top):
         self.__topLevel = top
@@ -294,7 +295,7 @@ class PictureToCode:
                                    fg = self.__loader.colorPalettes.getColor("font"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("cancel"),
-                                   command = self.killMe
+                                   command = self.__closeWindow
                                       )
 
         self.__cancelButton.pack_propagate(False)
@@ -1416,8 +1417,6 @@ class PictureToCode:
             PF = self.__colorDict.getDominantColor(pfList)
             BG = self.__colorDict.getDominantColor(bgList)
 
-
-
             for m in range(0, self.__multiH):
                 if PF != None:
                     pfC = self.__colorDict.getClosestTIAColor(PF[0], PF[1], PF[2])
@@ -1425,7 +1424,10 @@ class PictureToCode:
                     try:
                         pfC = self.bgColors[-1]
                     except:
-                        pfC = self.__oneColor.get()
+                        try:
+                            pfC = self.__oneColor.get()
+                        except:
+                            pfC = "$00"
 
                 pfNum = int(pfC.replace("$", "0x"), 16)
 
@@ -1436,7 +1438,11 @@ class PictureToCode:
                     try:
                         bgC = self.pfColors[-1]
                     except:
-                        bgC = self.__oneColor.get()
+                        try:
+                            pfC = self.__oneColor.get()
+                        except:
+                            pfC = "$00"
+
 
                 bgNum = int(bgC.replace("$", "0x"), 16)
 
@@ -1451,12 +1457,10 @@ class PictureToCode:
                 self.pfColors.append( bgC )
                 self.bgColors.append( pfC )
 
-
-
-
     def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
+        self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
         self.__imageFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"))
         self.__imageFrame.config(
@@ -1744,7 +1748,7 @@ class PictureToCode:
                                     bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("font"),
                                     text=self.__dictionaries.getWordFromCurrentLanguage("cancel"),
-                                    font=self.__smallFont, command=self.killMe
+                                    font=self.__smallFont, command=self.__closeWindow
                                     )
         self.__cancelButton.pack_propagate(False)
         self.__cancelButton.pack(side=TOP, anchor=E, fill=X)
@@ -1808,10 +1812,6 @@ class PictureToCode:
     def testing(self):
         self.generateImage(self.__mode, self.__image, True)
 
-    def killMe(self):
-        self.__topLevelWindow.destroy()
-        self.dead=True
-
     def setEditAndKill(self):
         self.__editPicture = True
         self.setAndKill()
@@ -1820,7 +1820,7 @@ class PictureToCode:
         self.doThings = True
         if self.__mode == "64pxPicture":
             self.__name = self.__thisVar.get()
-        self.killMe()
+        self.__closeWindow()
 
     def __checkNumber(self, event):
         num = 0

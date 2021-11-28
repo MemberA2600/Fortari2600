@@ -34,6 +34,9 @@ class NewProjectWindow:
         self.dead = True
         self.__topLevelWindow.destroy()
 
+        self.__loader.topLevels.remove(self.__topLevelWindow)
+
+
     def __addElements(self, top):
         from SubMenuLabel import SubMenuLabel
 
@@ -139,7 +142,7 @@ class NewProjectWindow:
                 bank1_config.close()
 
                 self.__loader.mainWindow.openProject(self.__getPath())
-                self.__topLevel.getTopLevel().destroy()
+                self.__closeWindow()
 
             except Exception as e:
                 self.__fileDialogs.displayError("projectNewError", "projectNewErrorText",
@@ -151,4 +154,4 @@ class NewProjectWindow:
                 self.__loader.io.removeDirWithFiles(self.__getPath())
                 self.__focus()
         else:
-            self.__topLevel.getTopLevel().destroy()
+            self.__closeWindow()

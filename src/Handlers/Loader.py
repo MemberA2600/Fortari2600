@@ -33,6 +33,7 @@ class Loader:
         self.bindedVariables = {}
         self.listBoxes = {}
 
+        self.topLevels = []
         self.destroyable = []
         self.subMenus = []
         self.subMenuDict = {}

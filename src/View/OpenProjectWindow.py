@@ -37,6 +37,9 @@ class OpenProjectWindow:
         self.dead = True
         self.__topLevelWindow.destroy()
 
+        self.__loader.topLevels.remove(self.__topLevelWindow)
+
+
     def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
@@ -105,7 +108,7 @@ class OpenProjectWindow:
                 path += "/"
             self.__opener(path)
         self.dead = True
-        self.__topLevelWindow.destroy()
+        self.__closeWindow()
 
     def __getAndSelect(self):
         self.__selected = self.__listBox.getSelectedName()
