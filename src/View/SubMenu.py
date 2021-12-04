@@ -51,7 +51,9 @@ class SubMenu:
             add.daemon=True
             add.start()
 
+        self.changeWindowState(True, maxNum-1)
         self.__topLevel.wait_window()
+        self.changeWindowState(False, maxNum-1)
 
         try:
             self.__loader.subMenus.pop(-1)
@@ -64,6 +66,21 @@ class SubMenu:
         t = Thread(target=self.__killIfKilled)
         t.daemon = True
         t.start()
+
+    def changeWindowState(self, state, last):
+        self.__loader.mainWindow.editor.attributes('-disabled', state)
+        if last > 0:
+            for num in range(last):
+                self.__loader.topLevels[num].attributes('-disabled', state)
+
+        if state == False:
+            if last == 0:
+                self.__loader.mainWindow.editor.deiconify()
+                self.__loader.mainWindow.editor.focus()
+            else:
+                self.__loader.topLevels[last-1].deiconify()
+                self.__loader.topLevels[last-1].focus()
+
 
     def __killIfKilled(self):
         from time import sleep

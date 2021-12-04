@@ -26,6 +26,7 @@ class SpriteEditorListBox:
         self.__listBox.pack_propagate(False)
         self.__listBox.pack(side=LEFT, anchor=SW, fill=BOTH)
 
+        self.__scrollBar.config(command=self.__listBox.yview)
 
 
     def getListBox(self):
@@ -33,3 +34,6 @@ class SpriteEditorListBox:
 
     def getSelected(self):
         return self.__listBox.get(self.__listBox.curselection())
+
+    def disableBox(self):
+        self.__listBox.config(state=DISABLED)

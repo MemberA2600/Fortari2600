@@ -983,10 +983,10 @@ class MusicComposer:
 
         extension = fileName.split(".")[-1]
         if extension in functions.keys():
-            try:
+            #try:
                 converted, songTitle = functions[extension](fileName)
-            except Exception as e:
-                errorText = str(e)
+            #except Exception as e:
+            #    errorText = str(e)
         else:
             for func in functions.keys():
                 try:
@@ -1061,7 +1061,7 @@ class MusicComposer:
         from MidiConverter import MidiConverter
 
         midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
-                                      self.__maxChannels, int(self.__removeOutside.get()), 1, self.getRangeToCut())
+                                      self.__maxChannels, int(self.__removeOutside.get()), 1, self.getRangeToCut(), True)
 
         return (midiConverter.result, midiConverter.songName)
 

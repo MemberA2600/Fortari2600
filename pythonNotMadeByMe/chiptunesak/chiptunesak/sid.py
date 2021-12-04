@@ -1837,6 +1837,8 @@ class SidImport:
             else:
                 print("zero page usage: %s" %
                       ', '.join(str(loc) for loc in sorted(zero_page_usage)))
+
+
         if sid_dump.first_row_with_note > 0:
             sid_dump.trim_leading_rows(sid_dump.first_row_with_note)
 

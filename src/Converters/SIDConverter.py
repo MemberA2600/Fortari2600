@@ -41,7 +41,7 @@ class SIDConverter:
             pass
 
         midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
-        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5, rangeToCut)
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5, rangeToCut, True)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 
         self.__loader.collector.restoreSystemPath()

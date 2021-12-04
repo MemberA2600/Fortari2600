@@ -8,7 +8,7 @@ from math import sqrt
 
 class MidiConverter:
 
-    def __init__(self, path, loader, removeDrums, maxChannels, removeOutside, multi, cutOut):
+    def __init__(self, path, loader, removeDrums, maxChannels, removeOutside, multi, cutOut, changeDrumOrder):
 
         #This is the one the main program accesses. The process was
         #successful if it is not None.
@@ -184,6 +184,7 @@ class MidiConverter:
             self.__channelAttributes[num] = deepcopy(__channelAttributes)
             self.setAttr(num)
 
+
         sorter = {}
 
         for num in onesToLookAt:
@@ -195,6 +196,13 @@ class MidiConverter:
             
         #    print(key)
 
+        if changeDrumOrder == True:
+            from ChangeDrumsAndOrder import ChangeDrumsAndOrder
+
+            changeDrumsAndOrder = ChangeDrumsAndOrder(self.__loader, self.__loader.mainWindow,
+                                                      self.__channelAttributes, sorter,
+                                                      self.__rawData, removeDrums
+                                                      )
 
         newSorter = []
         for item in sorter:

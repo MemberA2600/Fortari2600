@@ -280,7 +280,7 @@ class MainWindow:
                 self.__menuLabel.changePlace(0)
             elif name in ["copy", "paste", "undo", "redo"]:
                 self.__menuLabel.changePlace(5.5)
-            elif name in ["spriteEditor", "playfieldEditor", "colorPalette"]:
+            elif name in ["spriteEditor", "playfieldEditor", "colorPalette","music","64pxPicture"]:
                 self.__menuLabel.changePlace(10)
         except:
             self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)

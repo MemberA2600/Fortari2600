@@ -38,7 +38,7 @@ class KernelChanger:
         self.__loader.topLevels.remove(self.__topLevelWindow)
 
 
-def __addElements(self, top):
+    def __addElements(self, top):
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
         self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)

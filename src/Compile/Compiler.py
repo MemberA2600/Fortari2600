@@ -425,7 +425,7 @@ class Compiler:
         if self.__musicMode != "mono" and self.__musicMode != "overflow":
             Channels[1], bytes[1] = self.compress(Channels[1], "CoolSong", 1, dataBytesNotes[1], False)
 
-            if (bytes[0] + bytes[1]) > 3600:
+            if (bytes[0] + bytes[1]) > 3500:
                 self.__musicMode = "double"
                 if (bytes[0]>3600) or (bytes[1]>3600):
                     self.__musicMode = "overflow"
