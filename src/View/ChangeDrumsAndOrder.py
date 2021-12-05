@@ -411,49 +411,52 @@ class ChangeDrumsAndOrder:
         from time import sleep
 
         while self.dead == False:
-            if self.__selectedOrderList != self.__orderListBox.getSelected():
-                self.__selectedOrderList = self.__orderListBox.getSelected()
-                key = int(self.__selectedOrderList.split(":")[0])
-                for item in self.__display:
-                    if item["channelNum"] == key or item["channelNum"] == str(key):
-                        self.__currentPoz = self.__display.index(item)
-                        break
-                self.__moveUpButton.config(state=NORMAL)
-                self.__moveDownButton.config(state=NORMAL)
-                if self.__currentPoz == 0:
-                   self.__moveUpButton.config(state = DISABLED)
-                if self.__currentPoz == len(self.__display)-1:
-                    self.__moveDownButton.config(state=DISABLED)
-            if self.__drums == True:
-                if self.__selectedDrumList != self.__drumListBox.getSelected():
-                    self.__selectedDrumList = self.__drumListBox.getSelected()
+            try:
+                if self.__selectedOrderList != self.__orderListBox.getSelected():
+                    self.__selectedOrderList = self.__orderListBox.getSelected()
+                    key = int(self.__selectedOrderList.split(":")[0])
+                    for item in self.__display:
+                        if item["channelNum"] == key or item["channelNum"] == str(key):
+                            self.__currentPoz = self.__display.index(item)
+                            break
+                    self.__moveUpButton.config(state=NORMAL)
+                    self.__moveDownButton.config(state=NORMAL)
+                    if self.__currentPoz == 0:
+                       self.__moveUpButton.config(state = DISABLED)
+                    if self.__currentPoz == len(self.__display)-1:
+                        self.__moveDownButton.config(state=DISABLED)
+                if self.__drums == True:
+                    if self.__selectedDrumList != self.__drumListBox.getSelected():
+                        self.__selectedDrumList = self.__drumListBox.getSelected()
 
-                    key = self.__selectedDrumList.split(" ")[0]
-                    try:
-                        self.__instrumentName.set(self.__instruments[key])
-                    except:
-                        self.__instrumentName.set("???")
+                        key = self.__selectedDrumList.split(" ")[0]
+                        try:
+                            self.__instrumentName.set(self.__instruments[key])
+                        except:
+                            self.__instrumentName.set("???")
 
-                    fuck = None
-                    try:
-                        fuck = self.__drumValues[key]
-                    except:
-                        for d in self.__drumDict.keys():
-                            if int(key) in self.__drumDict[d][1]:
-                                fuck = self.__drumDict[d][0]
-                                break
+                        fuck = None
+                        try:
+                            fuck = self.__drumValues[key]
+                        except:
+                            for d in self.__drumDict.keys():
+                                if int(key) in self.__drumDict[d][1]:
+                                    fuck = self.__drumDict[d][0]
+                                    break
 
-                    if fuck != None:
-                        for num in range(0, len(self.__drumDict)):
-                            self.__optionBox.selection_clear(0, END)
-                            self.__optionBox.selection_set(num)
-                            if self.__optionBox.get(self.__optionBox.curselection()) == fuck:
-                                break
-    
-                if self.__optionSelected != self.__optionBox.get(self.__optionBox.curselection()):
-                    self.__optionSelected = self.__optionBox.get(self.__optionBox.curselection())
-                    drumNote = self.__selectedDrumList.split(" ")[0]
-                    self.__drumValues[drumNote] = self.__optionSelected
+                        if fuck != None:
+                            for num in range(0, len(self.__drumDict)):
+                                self.__optionBox.selection_clear(0, END)
+                                self.__optionBox.selection_set(num)
+                                if self.__optionBox.get(self.__optionBox.curselection()) == fuck:
+                                    break
+
+                    if self.__optionSelected != self.__optionBox.get(self.__optionBox.curselection()):
+                        self.__optionSelected = self.__optionBox.get(self.__optionBox.curselection())
+                        drumNote = self.__selectedDrumList.split(" ")[0]
+                        self.__drumValues[drumNote] = self.__optionSelected
+            except:
+                pass
 
     def __fillOrderListBox(self, select):
         listBox = self.__orderListBox.getListBox()

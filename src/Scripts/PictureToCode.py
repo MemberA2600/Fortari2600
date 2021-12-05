@@ -65,7 +65,7 @@ class PictureToCode:
                                     self.__screenSize[1] / 4 - 45, None, self.__addElements, 2)
             else:
                 self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
-                                    self.__screenSize[1] / 3 - 45, None, self.__addElements, 2)
+                                    self.__screenSize[1] / 3 - 45, None, self.__addElements, 1)
 
             self.dead = True
 
@@ -882,7 +882,7 @@ class PictureToCode:
             self.__dataForEditor = {
                 "lines":  mergedByLines, "h": h}
             self.__window = SubMenu(self.__loader, "editPicture", self.__screenSize[0] / 1.5,
-                                    self.__screenSize[1] / 1.35 - 25, None, self.__addElementsEditor, 2)
+                                    self.__screenSize[1] / 1.35 - 25, None, self.__addElementsEditor, 1)
             self.dead = True
 
 

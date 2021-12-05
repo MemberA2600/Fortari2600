@@ -23,7 +23,8 @@ class SIDConverter:
         else:
             self.__loader.soundPlayer.playSound("Probe")
 
-        sid.set_options(seconds=self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds"))
+        seconds = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds")
+        sid.set_options(seconds=seconds)
 
         r = randint(0, 1000)
         if r < 995:
@@ -31,16 +32,66 @@ class SIDConverter:
         else:
             self.__loader.soundPlayer.playSound("Probe")
 
-        sid.set_options(subtune=self.__loader.fileDialogs.askForInteger("askForSomething", "askForSubTune"))
+        subtune = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSubTune")
+        sid.set_options(subtune=subtune)
 
-        chirp = sid.to_rchirp(path)
+        chirp = None
         try:
-            from os import remove
-            remove("temp/temp.mid")
+            chirp = sid.to_rchirp(path)
         except:
-            pass
+            number = 0
+            while True:
+                try:
+                    sid.set_options(subtune=number)
+                    chirp = sid.to_rchirp(path)
+                    break
+                except:
+                    number = number + 1
+                    if number == subtune:
+                        number = number + 1
+                    if number<2:
+                        continue
+                    else:
+                        try:
+                            import os
+                            os.remove("temp/temp.mid")
+                        except:
+                            pass
+                        try:
+                            import os
+                            self.__loader.executor.execute("sid2midi",
+                                ("-o"+str(subtune), "-t"+str(seconds),
+                                '"'+path+'"', '"' + os.getcwd()+"/temp/temp.mid" + '"'),
+                                True)
 
-        midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
+                        except:
+                            print(str(e))
+                            while True:
+                                number = 0
+                                try:
+                                    import os
+                                    self.__loader.executor.execute("sid2midi",
+                                                                   ("-o" + str(number), "-t" + str(seconds)),
+                                                                   '"' + path + '"', '"' + os.getcwd()+"/temp/temp.mid" + '"',
+                                                                   True)
+                                except:
+                                    number = number + 1
+                                    if number == subtune:
+                                        number = number + 1
+                                    if number < 2:
+                                        continue
+                                    else:
+                                        break
+                    break
+
+        if chirp != None:
+            try:
+                from os import remove
+                remove("temp/temp.mid")
+            except:
+                pass
+            midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
+
         midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5, rangeToCut, True)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 

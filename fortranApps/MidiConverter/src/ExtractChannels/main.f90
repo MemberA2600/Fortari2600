@@ -77,6 +77,7 @@ program ExtractChannels
         remainder = 0
 
         do lineNum=1, fileLen, 1
+
             tempLen = tempLen + midiNotes(lineNum)%time
 
             if (midiNotes(lineNum)%channel /= theIndex-1) cycle
@@ -87,7 +88,9 @@ program ExtractChannels
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%note = 0
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%channel = theIndex-1
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%noteOn = 0
+
             else
+
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%channel = theIndex-1
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%noteOn = 1
                 midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%velocity = &
@@ -116,6 +119,7 @@ program ExtractChannels
 
                 end if
             end if
+
             midiChannels(theIndex)%theNotes(midiChannels(theIndex)%noteIndex)%channel = theIndex-1
             midiChannels(theIndex)%theNotes((midiChannels(theIndex)%noteIndex)-1)%time = &
             &floor(tempLen+remainder)
@@ -125,6 +129,8 @@ program ExtractChannels
             remainder = (tempLen+remainder)-floor(tempLen+remainder)
             tempLen = 0
             midiChannels(theIndex)%noteIndex = midiChannels(theIndex)%noteIndex + 1
+
+            if ( midiChannels(theIndex)%noteIndex > size(midiChannels(theIndex)%theNotes)) exit
 
         end do
     end do
@@ -174,7 +180,6 @@ program ExtractChannels
                        end if
 
                     end do
-
 
                     if (midiChannels(theIndex)%theNotes(lineNum)%velocity == 0 .OR. &
                     & midiChannels(theIndex)%theNotes(lineNum)%note == 0 .OR. &

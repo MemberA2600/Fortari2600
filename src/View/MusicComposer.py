@@ -169,15 +169,15 @@ class MusicComposer:
         if self.__tiaScreens.screenBuffer != None:
             self.__pasteButton.changeState(True)
 
-        if (self.__io.checkIfValidFileName(self.__songTitle.get()) == True and
-            self.__io.checkIfValidFileName(self.__artistName.get())) and self.__errorSum() == 0:
+        if (self.__io.checkIfValidFileName(self.__songTitle.get().replace("?","")) == True and
+            self.__io.checkIfValidFileName(self.__artistName.get().replace("?",""))) and self.__errorSum() == 0:
                 self.__testingButton.changeState(self.__tiaScreens.isThereAnyNote())
                 self.__summaButton.changeState(self.__tiaScreens.isThereAnyNote())
 
 
         if self.changed == True:
-            if (self.__io.checkIfValidFileName(self.__songTitle.get()) == True and
-                    self.__io.checkIfValidFileName(self.__artistName.get())) and self.__errorSum() == 0:
+            if (self.__io.checkIfValidFileName(self.__songTitle.get().replace("?", "")) == True and
+                    self.__io.checkIfValidFileName(self.__artistName.get().replace("?", ""))) and self.__errorSum() == 0:
                 self.__saveButton.changeState(True)
 
 
@@ -441,6 +441,9 @@ class MusicComposer:
         self.__musicROM = IntVar()
         self.__musicROM.set(0)
 
+        self.__reAlign = IntVar()
+        self.__reAlign.set(1)
+
         self.__buttonFrame2 = Frame(self.__bottomFrame1,
                                    height=round(self.__topLevel.getTopLevelDimensions()[1]*0.05),
                                     width=9999,
@@ -521,7 +524,18 @@ class MusicComposer:
                 activebackground=self.__colors.getColor("highLight"))
 
         self.__saveItAsMusicRom.pack_propagate(False)
-        self.__saveItAsMusicRom.pack(side=RIGHT, fill=BOTH, anchor=N)
+        self.__saveItAsMusicRom.pack(side=RIGHT, fill=Y, anchor=W)
+
+        self.__reAlignData =  Checkbutton(self.__buttonFrame3, variable=self.__reAlign,
+                text=self.__dictionaries.getWordFromCurrentLanguage("reAlign"),
+                bg=self.__colors.getColor("window"),
+                fg=self.__colors.getColor("font"),
+                font=self.__smallFont, justify=LEFT,
+                activebackground=self.__colors.getColor("highLight"))
+
+        self.__reAlignData.pack_propagate(False)
+        self.__reAlignData.pack(side=RIGHT, fill=BOTH, anchor=W)
+
 
         self.__bottomFrame2 = Frame(self.__bottomFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.5),
@@ -889,7 +903,10 @@ class MusicComposer:
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
                                                               int(self.__removeOutside.get()),
-                                                              "NTSC", self.getRangeToCut())])
+                                                              "NTSC", self.getRangeToCut(),
+                                                              self.__reAlign.get())])
+
+        name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
@@ -1055,13 +1072,18 @@ class MusicComposer:
         sidConverter = SIDConverter(self.__loader, path, int(self.__removePercuss.get()),
                                     self.__maxChannels, int(self.__removeOutside.get()), self.getRangeToCut())
 
+        self.__correctorSetter.setValue("0")
+        self.__fadeOutSetter.setValue("0")
+        self.__vibrator.set(0)
+        self.__vibrator2.set(0)
+
         return (sidConverter.result, sidConverter.songName)
 
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
 
         midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
-                                      self.__maxChannels, int(self.__removeOutside.get()), 1, self.getRangeToCut(), True)
+                                      self.__maxChannels, int(self.__removeOutside.get()), 1.1, self.getRangeToCut(), True)
 
         return (midiConverter.result, midiConverter.songName)
 
@@ -1105,7 +1127,7 @@ class MusicComposer:
 
         extracted = self.__tiaScreens.composeData(
             self.__correctNotes, self.__buzz, self.__fadeOutLen, self.__frameLen, self.__vibratio, self.__vibratio2,
-            int(self.__removePercuss.get()), self.__maxChannels, int(self.__removeOutside.get()), "NTSC", self.getRangeToCut())
+            int(self.__removePercuss.get()), self.__maxChannels, int(self.__removeOutside.get()), "NTSC", self.getRangeToCut(), self.__reAlign.get())
         #self.testPrinting(extracted)
 
         if self.__listItems[self.__listBox.curselection()[0]] == "*Fortari Logo*":
@@ -1151,7 +1173,7 @@ class MusicComposer:
     def __saveDataToFile(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath+"musics/"+self.__artistName.get().replace(" ", "_")+"_-_"+self.__songTitle.get().replace(" ", "_")+".a26"
+        fileName = self.__loader.mainWindow.projectPath+"musics/"+self.__artistName.get().replace(" ", "_").replace("?", "")+"_-_"+self.__songTitle.get().replace(" ", "_").replace("?", "")+".a26"
 
         if os.path.exists(fileName):
             answer = self.__fileDialogs.askYesOrNo("musicExists", "musicExistsMessage")
@@ -1214,7 +1236,8 @@ class MusicComposer:
                                                               int(self.__removePercuss.get()),
                                                               self.__maxChannels,
                                                               self.__removeOutside.get(),
-                                                              "NTSC", self.getRangeToCut())])
+                                                              "NTSC", self.getRangeToCut(),
+                                                              self.__reAlign.get())])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
@@ -1636,9 +1659,9 @@ class MusicComposer:
         if number<1:
             number = 1
             self.__currentSelected.set("1")
-        elif number > self.__tiaScreens.screenMax:
-            number = self.__tiaScreens.screenMax
-            self.__currentSelected.set(str(self.__tiaScreens.screenMax))
+        elif number > self.__tiaScreens.screenMax+1:
+            number = self.__tiaScreens.screenMax+1
+            self.__currentSelected.set(str(self.__tiaScreens.screenMax+1))
 
         if number != self.__tiaScreens.currentScreen+1:
             self.__tiaScreens.currentScreen = number-1

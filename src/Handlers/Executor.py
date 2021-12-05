@@ -3,14 +3,18 @@ class Executor:
     def __init__(self, loader):
         self.__loader = loader
 
-    def execute(self, program, args):
+    def execute(self, program, args, hide):
         import subprocess
         from os import getcwd
         programPath = getcwd()+"/applications/"+program.lower()+"/"+program+".exe"
-        print('"' + programPath + '" ' + " ".join(args), "-p 54 45 70")
 
-        subprocess.call('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
 
+        if hide == True:
+            subprocess.call('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
+            #subprocess.Popen('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
+        else:
+            from subprocess import check_output, check_call
+            print(check_output('"'  + programPath + '" ' + " ".join(args)))
 
     def __executeFortran(self, module, program, hide):
         import subprocess

@@ -207,3 +207,4 @@ channelPrio=Change Channel Priority
 drumSettings=Change Drum Settings
 midiInstrument=MIDI Instrument:
 atariInstrument=TIA Instrument:
+reAlign=Realign Data 

@@ -471,8 +471,43 @@ class TiaScreens:
 
         return(sendBack)
 
+    """
+    def reAlign(self, musicEditor):
+        from Compiler import Compiler
 
-    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio, vibratio2, noPercuss, maxChannels, removeOutside, tv, cutRange):
+        numOfBanks = Compiler(self.__loader, "common",
+                              "getMusicBytes", [
+                                self.composeData(musicEditor.__correctNotes,
+                                                 musicEditor.__buzz,
+                                                 musicEditor.__fadeOutLen,
+                                                 musicEditor.__frameLen,
+                                                 musicEditor.__vibratio,
+                                                 musicEditor.__vibratio2,
+                                                 int(musicEditor.__removePercuss.get()),
+                                                 musicEditor.__maxChannels,
+                                                 int(musicEditor.__removeOutside.get()),
+                                                 "NTSC", musicEditor.getRangeToCut())])
+
+        name = (musicEditor.__artistName.get() + "_-_" + musicEditor.__songTitle.get()).replace(" ", "_")
+
+        banks = []
+
+        if numOfBanks.musicMode == "double":
+            try:
+                banks[0] = numOfBanks.bytes[0]
+            except:
+                pass
+
+            try:
+                banks[1] = numOfBanks.bytes[1]
+            except:
+                pass
+
+            print(banks)
+    """
+
+    def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio,
+                    vibratio2, noPercuss, maxChannels, removeOutside, tv, cutRange, reAlign):
         from TiaNote import TiaNote
         #compress the 4 channels into two
         from copy import deepcopy
@@ -848,7 +883,6 @@ class TiaScreens:
 
         #print(data1[0][0].piaNote)
 
-
         data2 = [
             [],
             []
@@ -867,6 +901,37 @@ class TiaScreens:
                         nums[1] = deepcopy(data1[channelNum][noteNum])
             data2[0].append(deepcopy(nums[0]))
             data2[1].append(deepcopy(nums[1]))
+
+        if (reAlign == 1):
+            data3 = [
+                [],
+                []
+            ]
+
+            counter = 0
+            invert = False
+
+            for num in range(0, len(data2[0])):
+                if counter == 96:
+                   counter = 0
+                   if invert == True:
+                      invert = False
+                   else:
+                      invert = True
+                else:
+                    counter += 1
+
+                if invert == False:
+                    data3[0].append(data2[0][num])
+                    data3[1].append(data2[1][num])
+                else:
+                    data3[1].append(data2[0][num])
+                    data3[0].append(data2[1][num])
+
+            if len(data2[0]) < len(data2[1]):
+               data3[1].extend(data2[1][len(data2[0]):len(data2[1])])
+
+            data2 = data3
 
         data3 = [
             [],

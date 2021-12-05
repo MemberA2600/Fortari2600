@@ -495,6 +495,9 @@ class Compiler:
             if len(key) == 1:
                 key = "0" + key
 
+            if key not in dataFinal:
+                continue
+
             patternsWithKeys[keys[num]][0] = "---\n" + "\n".join(dataFinal[key])+"---\n"
 
             if (patternsWithKeys[keys[num]][0] in bigData) and patternsWithKeys[keys[num]][0] != "":

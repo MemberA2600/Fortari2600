@@ -205,3 +205,4 @@ channelPrio=Csatornaprioritás Módosítása
 drumSettings=Dobeszközök Módosítása
 midiInstrument=MIDI Hangszer:
 atariInstrument=TIA Hangszer:
+reAlign=Adat-újrarendezés
