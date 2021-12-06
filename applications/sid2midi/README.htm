@@ -1,0 +1,268 @@
+<html>
+
+<head>
+<title>SID2MIDI Documentation</title>
+</head>
+
+<body bgcolor="#C0C0C0" text="#000000" link="#0000E8" vlink="#000080" alink="#FF2000"> 
+
+<center>
+<font size="+1">
+[ Main | <a href="OPTIONS.htm">Options</a> | <a href="README.htm#register">How to register?</a> | <a href="WHATSNEW.htm">What's new?</a> ]
+</font>
+</center>
+
+<center>
+<h1><u>SID2MIDI</u></h1>
+<h2>0.17.7</h2>
+<p><a href="http://www.geocities.com/mschwendt/sid2midi.html">http://www.geocities.com/mschwendt/sid2midi.html</a></p>
+</center>
+
+<h3>WHAT'S THIS?</h3>
+
+<p>
+This is an experimental utility that attempts on creating MIDI files
+from SID music files by means of emulation The overall purpose of
+this tool is helping musicians in getting access to the accurate
+note data of SID songs. Depending on the complexity of the sidtune
+file and the selected SID2MIDI options, the MIDI output may require
+a lot of work before it could be used on web pages or as source
+material for a remix. On the other hand, especially with the 0.17
+series of SID2MIDI and the improved instrument mapping mode, many
+generated MIDI songs have sufficient quality already after selecting
+some suitable instruments/patches and disabling redundant MIDI
+channels. 
+</p>
+
+<h3>WHAT THIS IS NOT</h3>
+
+SID2MIDI is <b>not</b> a converter. 
+Sidtunes are not in a uniform format. There are hundreds of
+different music players and data formats. SID2MIDI contains parts of
+SIDPLAY's emulation system and tries to generate usable output by
+capturing important events such as note on/off and effect updates.
+Converting the MIDI files to MOD/S3M/XM
+format (or compatible) directly is <b>not</b> recommended.
+</p>
+
+<p>
+The selected instruments are just a default and are not supposed to
+sound equal to the particular SID sounds which are used. Complex
+sids and wrong or insufficient SID2MIDI options may result in
+bad sounds or missing sounds, respectively.
+</p>
+
+<h3>HOW DOES IT WORK?</h3>
+
+<p>
+SID2MIDI includes portions of SIDPLAY which emulates both the SID
+(MOS-6581) and the CPU (MOS-6510) of the C64. It should be obvious
+that the CPU emulator (actually an interpreter) is used to execute
+C64 code on another processor (e.g. Intel). This is necessary
+because the C64 musics are not in a uniform music format. A
+PlaySID/SIDPLAY data file consists of a C64 machine language player
+and its private data, stored in an unknown format. This means, the
+internal high-level music format is only known to the format
+specific machine code.</p>
+
+<p>To get access to the SID specific low-level
+music data (notes, waveforms, etc.), SIDPLAY executes the C64
+sidtune player by pretending a memory environment like a real C64
+and intercepting any data written to the SID, e.g. the frequency,
+waveform and ADSR parameters of a note. Based on these low-level
+SID parameters, SID2MIDI tries to create MIDI events.
+</p>
+
+<h3>THE CONSOLE FRONT-END</h3>
+
+<p>This version is a Win32 console application that is made for
+Windows 9x, Windows NT, Windows Me, or Windows 2000. If you
+double-click it from Windows Explorer and it exits and closes the
+console windows immediately, you are recommended to run it from a
+Shell or Command Prompt and execute
+<tt><b>SID2MIDI.EXE</b></tt> from a custom batch file that contains
+your default settings and takes a file name as argument (%1, for
+instance). Note that you can use multiple batch files as well.
+Example file <tt><b>CUSTOM.BAT</b></tt>:
+</p>
+
+<dir><tt><b> sid2midi -v -p2n2 -env -t360 %1</b></tt></dir>
+
+<p>There is no universal set of SID2MIDI command-line settings that can
+be used in conjunction with all available sidtunes. For a particular
+sidtune, it is necessary to find a particular combination of
+settings (especially the speed!) that results in the best output.
+</p>
+
+<h3>IMPORTANT</h3>
+
+<p>
+If your soundcard cannot handle a pitch range of 8 octaves,
+it is impossible to convert SID portamento slides correctly.
+</p>
+
+<p>
+The least you can do is to tell SID2MIDI to use a different
+pitch range, e.g. -ps24 (2*12 semitones = 2 octaves).
+Any pitch wheel commands that exceed that range will be omitted.
+The default is 8 octaves, which is the range of the SID chip.
+The SB AWE32 soundcard can do pitch slides in this full range.
+A lot of other soundcards default to or can only do 2 octaves.
+</p>
+
+<p>
+Correcting the pitch sensitivity can be crucial. Disable
+creation of pitch wheel commands if you can't seem to get
+good results. Also notice that sometimes this may be a
+requirement of a particular sidtune.
+</p>
+
+<h3>SOME NOTES</h3>
+
+<p>
+Version 0.3 introduced generation of pitch wheel controller commands.
+At the beginning of each track, there are three controller commands
+that set the pitchbend sensitivity to 8 octaves (12*8 half-tones) to
+allow pitch sliding in the full range of the SID (depending on your
+soundcard). You can specify the used pitchbend sensitivity. SID2MIDI
+will convert any vibrato, arpeggio and portamento effects to pitch
+wheel commands as long as they are inside the pitchbend range.
+Pitch wheel commands outside the specified range will be omitted,
+counted, and printed out as a warning. The more pitch wheel commands
+have been omitted, the more likely the MIDI song sounds odd in
+certain parts.
+</p>
+
+<p>
+SID2MIDI tries to match a tone to the closest available half-note.
+In case of strong initial vibrato, note and frequency might differ.
+Here a separate text mode outputs valuable information of the raw
+SID register contents. It is the only way to watch those differences.
+If such a case occurs, there is no way to determine the true note
+automatically.
+</p>
+
+<p> Generation of pitch wheel commands creates a few problems. I
+still don't know a secure way to suppress vibrato,
+quick'n'short-portamento (used to create drum sounds) and arpeggio.
+Since nearly every tune uses vibrato, the generated data grows a lot
+compared to the early versions of SID2MIDI. Option -if suppresses
+any sustaining frequency changes, thereby getting rid of any effects
+like vibrato, arpeggio, and portamento, at once. To disable
+generation of pitch wheel commands, use option -if. Arpeggio often
+sounds annoying in MIDI songs. People tend to replace it with
+chords. Have a look at option -p2n.</p>
+
+<p>
+Mapping drums and percussions (SID noise waveform, for instance) to
+MIDI channel 10: I have stumbled upon a few tunes where there are
+percussive sounds on more than one channel at a time. The redirected
+drum events overleap.
+</p>
+
+<p>
+The newer registered versions are able to access the internal volume
+envelope emulator and determine more accurate note lengths. This can
+be enabled in a registered version by setting option "-env". Without,
+some notes might either get cut off too early or cut off too late.
+</p>
+
+<p> Command line options "-bpm&lt;num&gt;" and "-ppq&lt;num&gt;"
+allow you to set the tempo and timebase of the generated MIDI song.
+The old "-ppq384" has been dropped. If you don't specify a tempo
+value, SID2MIDI attempts on detecting a good one.</p>
+
+<p>
+SID pulse width values get mapped to controller 110. Multiply the
+controller value by 32 to get the SID value (0-4095).
+</p>
+
+<p>
+SID ADSR envelope volume levels get mapped to controller 111.
+SID volume level 0-255 is mapped to controller value 0-127.
+</p>
+
+<p>
+If you think some SID voices are missing in the MIDI file, consider
+increasing the level of noisy sounds being mapped with option -noise1
+or -noise2. However, make sure you mute any disturbing MIDI channels.
+</p>
+
+<h3>THE SONGLENGTH DATABASE</h3>
+
+<p>
+The songlength database is easy to install. Download it
+<a
+href="http://www.geocities.com/mschwendt/sidplay/sldb.html">here</a>
+and extract it. The GUI can load it from any location. The console
+front-end wants it in its home path.
+</p>
+
+<a name="register">
+<h3>REGISTERING</h3>
+</a>
+
+<p>
+You have two options to register and get unrestricted access to all
+features:
+</p>
+
+  <p><center>
+  <table width="90%" bgcolor="white" cellpadding="8" cellspacing="4">
+  <tr>
+  <td>
+  <p><em>Option 1:</em> <b><a href="https://secure.element5.com/shareit/checkout.html?productid=144536&language=English">Secure
+  online ordering here</a></b>. Various payment methods not limited to credit cards,
+  but including cash/cheque order, and bank transfer from various
+  countries are accepted.</p>
+  <p>
+  Or you can go to <a href="http://www.shareit.com">www.shareit.com</a> and
+  enter the program ID number <b>144536</b> in
+  the search window at the bottom left of the screen.</p>
+  <!--
+  http://shareit1.element5.com/programs.html?productid=144536&language=English
+  -->
+  </td>
+  </tr>
+
+  <tr> <td bgcolor="#dddddd"><em>Option 2:</em> <p>The registration
+fee is just <b>10 EUR</b>, if an
+internationally accepted cash/cheque order or direct (inter)national
+transfer is your choice. But check whether your bank charges high
+fees for international transfers. In that case, registering via
+option 1 would be better because they offer local bank accounts in
+several countries. Some people prefer mailing cash,
+which may be illegal in some countries, but works too. <a
+href="http://www.geocities.com/mschwendt/sid2midi.html">Send me an e-mail for
+details</a>, and please provide the following data:</p>
+
+<p>Your full name (last, first):</p>
+<p>Your full snail mail address:</p>
+<p>Street:<br>
+  City/State/Zipcode:<br>
+  Country:</p>
+<p>Your e-mail address:</p>
+  </td>
+  </tr>
+  
+  </table>
+  </center></p>
+
+<h5>DISCLAIMER</h5>
+<font size="-1">
+<p>
+THIS  SOFTWARE  IS  PROVIDED  BY  THE  AUTHOR  ``AS  IS'' AND ANY EXPRESS OR
+IMPLIED WARRANTIES, INCLUDING,  BUT NOT LIMITED  TO, THE IMPLIED  WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.   IN
+NO EVENT SHALL  THE AUTHOR BE  LIABLE FOR ANY  DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY,  OR CONSEQUENTIAL  DAMAGES (INCLUDING,  BUT NOT  LIMITED
+TO,  PROCUREMENT  OF  SUBSTITUTE  GOODS  OR  SERVICES; LOSS OF USE, DATA, OR
+PROFITS;  OR  BUSINESS  INTERRUPTION)  HOWEVER  CAUSED  AND ON ANY THEORY OF
+LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR  TORT  (INCLUDING
+NEGLIGENCE  OR  OTHERWISE)  ARISING  IN  ANY  WAY  OUT  OF  THE  USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+</p>
+</font>
+
+</body>
+</html>

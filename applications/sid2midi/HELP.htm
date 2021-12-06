@@ -1,0 +1,156 @@
+<html>
+
+<head>
+<title>SID2MIDI GUI Documentation</title>
+</head>
+
+<body bgcolor="#C0C0C0" text="#000000" link="#0000E8" vlink="#000080" alink="#FF2000"> 
+
+<!--
+<center>
+<font size="+1">
+[ <a href="README.htm">Main</a> | Options | <a href="README.htm#register">How to register?</a> | <a href="WHATSNEW.htm">What's new?</a> ]
+</font>
+</center>
+-->
+
+<center>
+<h1><u>SID2MIDI</u></h1>
+<h2>0.17.8</h2>
+<p><a href="http://www.geocities.com/mschwendt/sid2midi.html">http://www.geocities.com/mschwendt/sid2midi.html</a></p>
+</center>
+
+<p>
+Only the console version of SID2MIDI comes with more documentation.
+Please consult that package for additional notes. Since quite some
+of the features are experimental and/or suggested by users, it
+doesn't make much sense to provide more documentation than a few
+notes.
+</p>
+
+<h3>The main window</h3>
+
+<img src="main.png" width="296" height="238"><br>
+<p>
+The main window also accepts sidtunes via drag'n'drop. The
+scroll-bar in the middle is the sub-song selector. The field
+labelled "Seconds" is the period SID2MIDI will process the sidtune
+and collect data. If you want a longer period, you can configure it
+via the "General options" dialog. You may need to disable the
+songlengths database. The average sidtune is no longer than 4-5
+minutes, so default of 300 seconds would be reasonable.
+</p>
+
+<h3>The MIDI options dialog</h3>
+
+<img src="midi_options.png" width="346" height="328"><br>
+<p>
+<b>1</b> - The higher the noise level the more 
+noisy SID sounds (e.g. effects or percussions) get mapped
+to MIDI channels. The more of these sounds, the less
+usable the MIDI file sounds. Level 1 is likely to give more pleasing
+results for the average sidtune. Try increasing the level
+if you think some voices are missing.
+</p>
+<p>
+<b>2</b> - 
+Pitch to note conversion: Convert any sufficient change of a SID
+voice's frequency into a new note instead of a pitch wheel
+controller command. Depending on the pitch to note threshold,
+convert any smaller changes of frequency into
+pitch wheel controller commands as usual unless the pitch to
+wheel option is disabled. By default, pitch to note conversion
+is off. <b>Important note</b>: This option is required by Paul
+Norman's and some of Fred Gray's
+sidtunes, for instance. It can also be used as an alternative to
+capture arpeggio. If you get too many notes on a voice which makes
+heavy use of arpeggio, portamento, or strong vibrato, set a
+low value to limit the number of individual notes
+being created, e.g. '4' will create at most four notes.
+</p>
+<p>
+<b>3</b> - Pitch to wheel conversion: This controls how many
+pitch-wheel controller events are created for sustaining frequency
+changes. By default, as many events as necessary are created in
+order to convert effects like vibrato, arpeggio or portamento.
+<b>Important note</b>: Some sids apply heavy Vibrato and/or Portamento
+and trigger new notes with a large frequency offset. If that is the
+case, disabling pitch to wheel conversion completely would cause
+SID2MIDI to catch wrong notes due to lack of subsequent changes in
+frequency.
+</p>
+</p>
+<p>
+<b>4</b> - Tempo: Override the default tempo in beats per minute
+if automatic tempo-detection is disabled.
+</p>
+<p>
+Timebase: Override the used timebase in pulses per quarter note.
+</p>
+<p>Pitchbend sensitivity: Specify the range of your MIDI pitch-wheel
+in number of semitones. The SID chip can do portamento over its
+full-range of 8 octaves (96 semitones). <b>Important note</b>: 
+If your MIDI hardware or
+software can only do two or three octaves, SID2MIDI may not be
+able to convert long-range portamento slides correctly.
+</p>
+<p>
+Scale speed: Fine-tune the speed of the sidtune above or below
+1.0 (normal).
+</p>
+<p>
+Pitch to note threshold: When pitch to note conversion is enabled,
+this value specifies in which range changes in pitch are allowed
+without triggering pitch to note conversion. It defaults to 1
+semitone. For instance, if you want heavy vibrato to be converted
+into pitch-wheel controller events, but much longer portamento
+slides converted into new notes, you can increase this value until
+vibrato doesn't trigger pitch to note conversion anymore.
+</p>
+<p>
+<b>5</b> - Check envelope: Optimize note lengths by means of envelope
+emulation. Uses the ADSR volume envelope emulation to determine the
+duration of each note. Not using this may result in sounds 
+"hanging" eventually.
+</p>
+<p>
+Auto-detect tempo: Disables the "Tempo" field and makes SID2MIDI
+determine a suitable BPM value for the MIDI file.
+</p>
+<p>
+Extra events: Write a SID voice's pulse-width and volume level
+to unused controllers 110 and 111. Note that the Text Output
+mode is better for analyzing what the sidtune does with the
+SID chip.
+</p>
+
+<h3>The general options dialog</h3>
+
+<img src="general_options.png" width="328" height="148"><br>
+<p>
+Use this options dialog to point SID2MIDI to where you keep the
+songlengths database file (usually called Songlengths.txt).
+The "Autosave" feature constructs an output file name for
+the MIDI (or text) file based on where you told SID2MIDI
+to save the last output file the last time.
+</p>
+
+<h3>The other options dialog</h3>
+
+<img src="other_options.png" width="333" height="121"><br>
+<p>
+These are explained on the SIDPLAY Home Page in the documentation
+section. With modern sidtune collections like the HVSC, it should
+not be necessary to enable the PlaySID memory model. That's why this
+feature is disabled. It is recommended that you don't enforce NTSC
+song speed.
+</p>
+
+<!-- -->
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

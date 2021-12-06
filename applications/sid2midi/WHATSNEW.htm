@@ -1,0 +1,176 @@
+<html>
+
+<head>
+<title>SID2MIDI Documentation</title>
+</head>
+
+<body bgcolor="#C0C0C0" text="#000000" link="#0000E8" vlink="#000080" alink="#FF2000"> 
+
+<center>
+<font size="+1">
+[ <a href="README.htm">Main</a> | <a href="OPTIONS.htm">Options</a> | <a href="README.htm#register">How to register?</a> | What's New? ]
+</font>
+</center>
+
+<center>
+<h1><u>SID2MIDI</u></h1>
+<h2>0.17.7</h2>
+<p><a href="http://www.geocities.com/mschwendt/sid2midi.html">http://www.geocities.com/mschwendt/sid2midi.html</a></p>
+</center>
+
+<pre>
+Changes in 0.17:
+
+* Updated song-lengths database support for PSID v2NG files
+  in HVSC 5.0. Updated database file is strictly required.
+
+* Updated to libsidplay 1.36.55 (PSID v2NG support and CIA
+  timer speed rounding correction).
+
+* Even better -noise1 and support for "Future Knight" et al.
+
++ Enhanced -noise mode. Option -noise1 now is different. Old noise
+  level -noise1 becomes -noise2, -noise2 becomes -noise3.
+
++ Experimental auto-detection of tempo.
+
+
+Changes in 0.16:
+
+* Improved support for special sids like "Firefly".
+
++ Stop notes at end of file.
+
++ Default output file name adds subtune prefix like GUI.
+
+* Fixed -ppq option.
+
++ Support for SYNC'ed SID voices.
+
+* Minor improvement of pitch-to-note mode.
+
++ New SID-voice-to-MIDI-channel mapping code.
+
++ New options -noise1 and -noise2 which increase the number of noisy
+  SID sounds being mapped to MIDI channels. Default is -noise0.
+
+* Improved support for multi-speed sids.
+
+- Dropped obsolete options: -multi, -iwave, -psid
+
+
+Changes in 0.15:
+
+* Fixed option -sam<num>, although it is one of the less useful
+  features. See options summary. Please expect this to create real
+  dumb output. ;)
+
+* Program start fixed for Windows 2000.
+
++ New option -pt<num> specifies the pitch-to-note threshold. When
+  using -p2n it is a good addition with sids that apply heavy
+  vibrato. It defaults to 1. (currently registered version only)
+
+* Fixed option -cwd for local input files.
+
+* Some command-line options were not working sometimes.
+
+* Renamed option -a to -psid, because it should hardly ever be
+  necessary with todays sidtune collections.
+
+* In text mode, -an now prints a new note only if the frequency has
+  changed as much as would be necessary for a new semitone.
+
+* Option -ifreq changed to -if1 and -if2.
+
+* Current pulse width mapped to unregistered controller number 110.
+  Current voice volume mapped to unregistered controller number 111.
+  This extra stuff must now be enabled with option -x1.
+
++ New option -m<num> to mute an abitrary selection of SID voices.
+  This is not complete yet.
+
++ New option -cwd to create the output file in the local directory
+  (registered version only).
+
+* Enhanced option -p2n[num] which now accepts an optional (!)
+  integer argument to limit the number of individual notes that
+  are converted from pitch offsets.
+
++ New option -sc<num> to scale the song speed by an arbitrary factor.
+  E.g. -sc2.0 would play the tune 2.0 times slower, -sc0.5 would play
+  it at double speed (1/0.5 = 2).
+
++ Support for the "MD5 songlength database" (registered version
+  only). Use option -t0 -v (-v just to test it, else no -t0) and put
+  the file "Songlengths.txt" into the same directory as
+  sid2midi.exe. The songlength database text file can be downloaded
+  here, at the bottom:
+  http://www.geocities.com/SiliconValley/Lakes/5147/sidplay/
+
+* Internal changes which may affect a couple of sids. There are
+  way too many sids, so some internal changes cannot be tested.
+
+
+Changes in 0.14:
+
++ Added option -p2n ("pitch to note" - registered version only) which
+  maps any change of a SID voice's frequency to a new note. This is
+  required by Paul Norman's sidtunes, for instance.
+
+
+Changes in 0.13:
+
+* Improved text output (option -2txt). Now all write-only SID chip
+  registers are displayed including the filter settings. Current
+  ADSR envelope volume level is displayed additionally.
+
+* Included SIDPLAY emulator engine 1.36.33.
+
+
+Changes in 0.12:
+
++ Mapping SID pulse width to controller 40. Multiply the controller
+  value by 32 to get the SID value (0-4095).
+
++ Mapping SID ADSR envelope volume level to controller 41. SID volume
+  level 0-255 is mapped to controller value 0-127.
+
+* Improved text output (option -2txt).
+
++ Creating default midi file name if none is given.
+
+* Included SIDPLAY emulator engine 1.36.25.
+
+
+Changes in 0.11:
+
++ Argument -bpm extended to floating-point accuracy.
+  You can now enter values like "-bpm115.48" or "-bpm120.5".
+
++ Output file name is no longer required. Default output file name
+  is input file name with extension ".mid". If output file already
+  exists, you will be asked whether to overwrite it.
+  
+
+Changes in 0.10:
+
++ Added most wanted features:
+
+   * Executable in W32 console. GO32 is not needed.
+   * Support for long file names.
+   * Don't update pitch wheel if waveform has changed and voice has been
+     mapped to another MIDI channel.
+
+* Reminder: (Some?) Versions of the SB AWE32 feature a damaged
+  ROM MIDI-instrument #87 (8 Lead Bass) that bugs in octave 5.
+  You can verify this by trying Last Ninja song #11 (by Anthony Lees)
+  with other instruments than #87. It is not SID2MIDI's fault.
+
+* Included SIDPLAY emulator engine 1.36.10.
+
+
+</pre>
+
+</body>
+</html>

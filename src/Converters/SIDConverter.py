@@ -17,6 +17,8 @@ class SIDConverter:
 
         from random import randint
 
+        constant = 8.5
+
         r = randint(0, 1000)
         if r < 995:
             self.__loader.soundPlayer.playSound("Ask")
@@ -24,6 +26,8 @@ class SIDConverter:
             self.__loader.soundPlayer.playSound("Probe")
 
         seconds = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds")
+        if seconds == None:
+           seconds = 15
         sid.set_options(seconds=seconds)
 
         r = randint(0, 1000)
@@ -33,6 +37,8 @@ class SIDConverter:
             self.__loader.soundPlayer.playSound("Probe")
 
         subtune = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSubTune")
+        if subtune == None:
+           subtune = 0
         sid.set_options(subtune=subtune)
 
         chirp = None
@@ -52,6 +58,7 @@ class SIDConverter:
                     if number<2:
                         continue
                     else:
+                        constant = 2.5
                         try:
                             import os
                             os.remove("temp/temp.mid")
@@ -92,7 +99,7 @@ class SIDConverter:
                 pass
             midi.export_chirp_to_midi(chirp.to_chirp(), "temp/temp.mid")
 
-        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, 8.5, rangeToCut, True)
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, 1, maxChannels, removeOutside, constant, rangeToCut, True)
         self.result, self.songName = midiConverter.result, midiConverter.songName
 
         self.__loader.collector.restoreSystemPath()

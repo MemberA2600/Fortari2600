@@ -1,0 +1,296 @@
+<html>
+
+<head>
+<title>SID2MIDI Documentation</title>
+</head>
+
+<body bgcolor="#C0C0C0" text="#000000" link="#0000E8" vlink="#000080" alink="#FF2000"> 
+
+<center>
+<font size="+1">
+[ <a href="README.htm">Main</a> | Options | <a href="README.htm#register">How to register?</a> | <a href="WHATSNEW.htm">What's new?</a> ]
+</font>
+</center>
+
+<center>
+<h1><u>SID2MIDI</u></h1>
+<h2>0.17.7</h2>
+<p><a href="http://www.geocities.com/mschwendt/sid2midi.html">http://www.geocities.com/mschwendt/sid2midi.html</a></p>
+</center>
+
+<table border="1" cellspacing="0" cellpadding="8" width="100%" bgcolor="#C0C0C0">
+<th bgcolor="white">Command line options summary</th>
+
+<tr><td>
+<p><font color="red"><b>R</b></font> = registered version only</p>
+
+<p>
+  Syntax: sid2midi [-&lt;option&gt;] &lt;inputfile&gt; [&lt;outputfile&gt;]
+</p>
+
+<table border="0" cellspacing="2" cellpadding="2" width="100%">
+<th bgcolor="#e8e8e8">Option</th>
+<th bgcolor="#e8e8e8">Description</th>
+<th bgcolor="#d0d0d0">&#160;</th>
+
+<tr><td bgcolor="#d0d0d0">
+-hm
+</td><td bgcolor="#d0d0d0">
+Display the MIDI file output mode options (see below).
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-ht
+</td><td bgcolor="#d0d0d0">
+Display the extra TEXT file output mode options (see below).
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-h
+</td><td bgcolor="#d0d0d0">
+Display Shareware licence information.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-v
+</td><td bgcolor="#d0d0d0">
+Verbose output of sidtune credits, sidtune information, and
+diagnostic messages.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-n
+</td><td bgcolor="#d0d0d0">
+Force/set C64 NTSC clock speed.
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+
+<tr><td bgcolor="#d0d0d0">
+-o&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Set song number. A default song is preset with each sidtune file.
+</td><td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-t&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Set time in seconds to run a song (default: 90). Example: -t180 to
+process three minutes of music data. In the registered version, the
+default is to query the HVSC songlength database.
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-cwd
+</td><td bgcolor="#d0d0d0">
+Create output file in current working directory, and derive its
+name from the name of the input file.
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+
+</tr>
+</table>
+
+<h3>MIDI output only:</h3>
+
+<table border="0" cellspacing="2" cellpadding="2" width="100%">
+<th bgcolor="#e8e8e8">Option</th>
+<th bgcolor="#e8e8e8">Description</th>
+<th bgcolor="#d0d0d0">&#160;</th>
+
+<tr><td bgcolor="#d0d0d0">
+-env
+</td><td bgcolor="#d0d0d0">
+<p>Optimize note lengths by means of envelope emulation. Uses the ADSR
+volume envelope emulation to determine the duration of each note. Not
+using this may result in "hanging" sounds.</p>
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-noise&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+<p>Increase the number of noisy SID sounds being mapped to MIDI
+channels. Available: -noise1, -noise2, and -noise3.
+Default: -noise0, but -noise1 is likely to give more pleasing
+results for the average sidtune.</p>
+</td>
+<th bgcolor="#d0d0d0">&#160;</th>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-if[num]
+</td><td bgcolor="#d0d0d0">
+<p>Inhibit sustaining frequency changes. Once a note has been started,
+don't intercept and convert subsequent frequency changes into pitch
+wheel controller commands. This is good to suppress Vibrato,
+Portamento, Arpeggio, and similar effects.</p>
+<p>Example: -if to not create pitch-wheel commands, -if4 to create
+at most four pitch-wheel commands</p>
+<p><b>Important note</b>: Some sids apply heavy Vibrato and/or Portamento
+and trigger new notes with a large frequency offset. If that is the case,
+enabling this option would cause SID2MIDI to catch wrong notes
+due to lack of subsequent changes in frequency.</p>
+</td>
+</td><td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-ps&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Set pitchbend sensitivity (default: 96 semitones). Specify the
+default pitchbend sensitivity, which is set at the beginning of each
+MIDI track.
+</td><td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-sam&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Capture sample events on channel [0..15]. Since the sample period
+and tone frequency of a played sampled waveform is unknown, this
+only puts MIDI events according to the SID sample events. This
+option is highly experimental and hence available in the registered
+version only.
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-bpm&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Override the default tempo in beats per minute. Example: -bpm120.0
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-ppq&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Set timebase in pulses per quarter. Example: -ppq384.0
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-p2n[num]
+</td><td bgcolor="#d0d0d0">
+<p>Pitch to note. Convert any sufficient change of a SID voice's
+frequency into a new note instead of a pitch wheel controller
+command. Convert any smaller changes in frequency into pitch wheel
+controller commands as usual unless -ifreq is enabled.</p>
+<p>This option is required by Paul Norman's and some of Fred Gray's
+sidtunes, for instance. It can also be used as an alternative to
+capture arpeggio. If you get too many notes on a voice which makes
+heavy use of arpeggio, portamento, or strong vibrato, use the
+optional argument [num] to limit the number of individual notes
+being created, e.g.: -p2n4 will create at most four notes.</p>
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-pt&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+<p>Pitch-to-note threshold.  When
+  using -p2n it is a good addition with sids that apply heavy
+  vibrato. It defaults to 1 semitone.</p>
+</td>
+<td bgcolor="#d0d0d0"><font color="red"><b>R</b></font></td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-sc&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Scale song speed. For example, -sc2.0 would play the tune 2.0 times
+slower, -sc0.5 would play it at double speed (1/0.5 = 2).
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-m&lt;num&gt;
+</td><td bgcolor="#d0d0d0">
+Mute arbitrary SID voices, with &lt;num&gt; being a concatenation of
+x=[1,2,3,4]. Example: -m12 to mute voices 1 and 2.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+</table>
+
+<h3>TEXT output only:</h3>
+
+<table border="0" cellspacing="2" cellpadding="2" width="100%">
+<th bgcolor="#e8e8e8">Option</th>
+<th bgcolor="#e8e8e8">Description</th>
+<th bgcolor="#d0d0d0">&#160;</th>
+
+<tr><td bgcolor="#d0d0d0">
+-2txt
+</td><td bgcolor="#d0d0d0">
+This will create a TEXT based 4-track listing of the sidtune. Else:
+Output MIDI (*.mid) file.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-an
+</td><td bgcolor="#d0d0d0">
+Always show notes. Displays an new semitone for any sufficient change
+in frequency. Good to get a picture of what arpeggio is applied.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-cake
+</td><td bgcolor="#d0d0d0">
+Set SMPTE time format to Cakewalk style: min:sec.frames Else:
+min:sec.hundredths
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-eng
+</td><td bgcolor="#d0d0d0">
+Use English notes: C,Db,D,Eb,E,F,F#,G,G#,A,Bb,B Else:
+C,C#,D,D#,E,F,F#,G,G#,A,A#,H
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+<tr><td bgcolor="#d0d0d0">
+-ifdisp
+</td><td bgcolor="#d0d0d0">
+Inhibit/omit frequency display column. Else, the exact frequency of
+each tone will be printed. SID2MIDI tries to determine the closest
+matching semitone. In case of strong vibrato, note and frequency can
+differ.
+</td>
+<td bgcolor="#d0d0d0">&#160;</td>
+</tr>
+
+</table>
+
+<!-- -->
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>
