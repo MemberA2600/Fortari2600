@@ -206,3 +206,5 @@ drumSettings=Dobeszközök Módosítása
 midiInstrument=MIDI Hangszer:
 atariInstrument=TIA Hangszer:
 reAlign=Adat-újrarendezés
+sid2midi=Sid2Midi Kézi Konverzió
+sid2midiText=Miután az eredeti SID konverzió rutin elhasalt és több, mint 90 másodpercet konvertálnál, kézile g kell az eredmény a 'temp/temp.mid'-be mentened, ezt követõen a konverzió folytatódik.

@@ -250,11 +250,18 @@ class MidiConverter:
                         else:
                             c = 4
 
-                        self.__tempResult[c][n]["volume"] = volume
-                        self.__tempResult[c][n]["channel"] = channel
-                        self.__tempResult[c][n]["freq"] = freq
-                        self.__tempResult[c][n]["Y"] = Y
-                        self.__tempResult[c][n]["enabled"] = 1
+                        if (n-num)<7:
+                            self.__tempResult[c][n]["volume"] = volume
+                            self.__tempResult[c][n]["channel"] = channel
+                            self.__tempResult[c][n]["freq"] = freq
+                            self.__tempResult[c][n]["Y"] = Y
+                            self.__tempResult[c][n]["enabled"] = 1
+                        else:
+                            self.__tempResult[c][n]["volume"] = 0
+                            self.__tempResult[c][n]["channel"] = 0
+                            self.__tempResult[c][n]["freq"] = 0
+                            self.__tempResult[c][n]["Y"] = -1
+                            self.__tempResult[c][n]["enabled"] = 0
 
                 num = num+time
 

@@ -378,36 +378,36 @@ pic64px_PFColor
 	BYTE	#$00	; 128
 
 pic64px_BGColor
-	BYTE	#$40
-	BYTE	#$42
-	BYTE	#$46
-	BYTE	#$44
-	BYTE	#$46
-	BYTE	#$48
-	BYTE	#$16
-	BYTE	#$48
-	BYTE	#$16
-	BYTE	#$18
-	BYTE	#$1a
-	BYTE	#$1c
-	BYTE	#$1e
-	BYTE	#$1c
-	BYTE	#$1a
-	BYTE	#$18
-	BYTE	#$16
-	BYTE	#$14
-	BYTE	#$3a
-	BYTE	#$38
-	BYTE	#$36
-	BYTE	#$38
-	BYTE	#$36
-	BYTE	#$34
-	BYTE	#$32
-	BYTE	#$30
-	BYTE	#$32
-	BYTE	#$30
-	BYTE	#$32
-	BYTE	#$30
+	BYTE	#$80
+	BYTE	#$82
+	BYTE	#$86
+	BYTE	#$84
+	BYTE	#$86
+	BYTE	#$88
+	BYTE	#$a6
+	BYTE	#$88
+	BYTE	#$a6
+	BYTE	#$a8
+	BYTE	#$aa
+	BYTE	#$ac
+	BYTE	#$ae
+	BYTE	#$ac
+	BYTE	#$aa
+	BYTE	#$a8
+	BYTE	#$a6
+	BYTE	#$a4
+	BYTE	#$9a
+	BYTE	#$98
+	BYTE	#$96
+	BYTE	#$98
+	BYTE	#$96
+	BYTE	#$94
+	BYTE	#$92
+	BYTE	#$90
+	BYTE	#$92
+	BYTE	#$90
+	BYTE	#$92
+	BYTE	#$90
 	BYTE	#$00
 	BYTE	#$00	; 160
 

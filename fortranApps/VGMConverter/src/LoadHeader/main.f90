@@ -80,10 +80,15 @@ module HeaderModule
         integer(kind=4) :: ES_CHNS, CD
         integer(kind=8) :: X1_10_Clock, C352_Clock, GA20_Clock
 
-        logical :: T6W28bit
-        integer(kind=8) :: Loop_Offset_REAL
-
+        logical :: T6W28bit, YM2610B_Bit, AY8910_Legacy, AY8910_Single, AY8910_Discrete, AY8910_RAW
+        logical :: FDS_Addon, K054539_Stereo, K054539_NoReverb, K054539_UpdateKeyOn, ES5506bit
+        integer(kind=8) :: Loop_Offset_REAL, VGM_Data_Absolute_Offset, Number_Of_Loops
+        integer(kind=8) :: Extra_Header_Absolute_Offset
+        integer:: OKIM6258_Clock_Divider, OKIM6258_ADPCM, OKIM6258_Output_Bit
         character :: tv_type
+        character(6) :: AY_Type
+        character(30) :: C140_ChipType
+        real :: volume
 
         contains
 
@@ -95,6 +100,7 @@ module HeaderModule
     subroutine validate(this)
         class(Header), intent(inout) :: this
         character(32) :: tempString
+        integer :: num, num2, num3
 
         write(tempString, "(b32)") this%SN76489_Clock
 
@@ -102,6 +108,19 @@ module HeaderModule
         if (tempString(1:1) == "0" .OR. tempString(1:1) == " ") then
             this%T6W28bit = .FALSE.
         end if
+
+        tempString(1:1) = "0"
+        read(tempString, "(b32)") this%SN76489_Clock
+
+        write(tempString, "(b32)") this%YM2610_B_Clock
+
+        this%YM2610B_Bit = .TRUE.
+        if (tempString(1:1) == "0" .OR. tempString(1:1) == " ") then
+            this%YM2610B_Bit = .FALSE.
+        end if
+
+        tempString(1:1) = "0"
+        read(tempString, "(b32)") this%YM2610_B_Clock
 
         if (this%Loop_Offset /= 0) this%Loop_Offset_REAL = this%Loop_Offset + z'1C'
         if (this%Rate == 60) then
@@ -119,15 +138,180 @@ module HeaderModule
 
                 this%YM2612_Clock = this%YM2413_Clock
                 this%YM2151_Clock = this%YM2413_Clock
+                this%YM2612_Clock = this%YM2413_Clock
+                this%YM2151_Clock = this%YM2413_Clock
 
             end if
+        end if
+
+        this%VGM_Data_Absolute_Offset = this%VGM_Data_Offset + 52
+
+        if (this%Version < 150) then
+            this%VGM_Data_Absolute_Offset = z'40'
         end if
 
         if (this%Version <= 151) then
             this%SF = 0
         end if
 
+        if (this%AY8910_Clock /= 0) then
+            select case(this%AYT)
+                case(z'0')
+                    this%AY_Type = "AY8910"
+                case(z'1')
+                    this%AY_Type = "AY8912"
+                case(z'2')
+                    this%AY_Type = "AY8913"
+                case(z'3')
+                    this%AY_Type = "AY8930"
+                case(z'10')
+                    this%AY_Type = "YM2149"
+                case(z'11')
+                    this%AY_Type = "YM3439"
+                case(z'12')
+                    this%AY_Type = "YMZ284"
+                case(z'13')
+                    this%AY_Type = "YMZ294"
+                case default
+                    this%AY_Type = "      "
+            end select
+        else
+            this%AY_Type = "      "
+        end if
 
+        write(tempString, "(b32)") this%AY_Flags
+
+        this%AY8910_Legacy = .FALSE.
+        this%AY8910_Single = .FALSE.
+        this%AY8910_Discrete = .FALSE.
+        this%AY8910_RAW = .FALSE.
+
+        if (tempString(32:32) == "1") then
+            this%AY8910_Legacy = .TRUE.
+        end if
+        if (tempString(31:31) == "1") then
+            this%AY8910_Single = .TRUE.
+        end if
+        if (tempString(30:30) == "1") then
+            this%AY8910_Discrete = .TRUE.
+        end if
+        if (tempString(29:29) == "1") then
+            this%AY8910_RAW = .TRUE.
+        end if
+
+        if (this%Version > 149) then
+            ! Volume = 2^(num / 32)
+            if (this%VM < 193) then
+                num = this%VM
+            else
+                num = (255 - this%VM) * -1
+                if (num == -63) num = -64
+            end if
+
+            num = -64
+            this%volume = real(2)**(floor(real(num)/32.0))
+        end if
+
+        ! Should allow loop overwrite for the converter!
+        this%Number_Of_Loops = 0
+
+        if (this%Version > 150) then
+            if (this%LM == 0) this%LM = 16
+            this%Number_Of_Loops = floor(real(this%LM) / 16.0)
+        end if
+
+        if (this%Version > 160) then
+            if (this%LB > 127) then
+                this%LB = (256-this%LB) * - 1
+            end if
+            this%Number_Of_Loops = this%Number_Of_Loops - this%LB
+        end if
+
+
+        this%FDS_Addon = .FALSE.
+        if (this%NES_APU_Clock /=0) then
+            write(tempString, "(b32)") this%NES_APU_Clock
+
+            if (tempString(1:1) == "1") this%FDS_Addon = .TRUE.
+
+            tempString(1:1) = "0"
+            read(tempString, "(b32)") this%NES_APU_Clock
+
+        end if
+
+        this%OKIM6258_Clock_Divider = 0
+        this%OKIM6258_ADPCM = 0
+        this%OKIM6258_Output_Bit = 0
+
+        if (this%OKIM6258_Clock /= 0) then
+            write(tempString, "(b32)") this%OF
+            read(tempString(31:32), "(b2)") num
+
+            select case(num)
+                case (0)
+                    this%OKIM6258_Clock_Divider = 1024
+                case (1)
+                    this%OKIM6258_Clock_Divider = 768
+                case (2)
+                    this%OKIM6258_Clock_Divider = 512
+                case (3)
+                    this%OKIM6258_Clock_Divider = 512
+            end select
+
+            if (tempString(30:30) == "1") then
+                this%OKIM6258_ADPCM = 4
+            else
+                this%OKIM6258_ADPCM = 3
+            end if
+
+            if (tempString(29:29) == "1") then
+                this%OKIM6258_Output_Bit = 10
+            else
+                this%OKIM6258_Output_Bit = 12
+            end if
+
+        end if
+
+
+        this%K054539_UpdateKeyOn = .FALSE.
+        this%K054539_NoReverb = .FALSE.
+        this%K054539_Stereo = .FALSE.
+
+        if (this%K054539_Clock /= 0) then
+            write(tempString, "(b32)") this%KF
+            if (tempString(32:32) == "1") this%K054539_Stereo = .TRUE.
+            if (tempString(31:31) == "1") this%K054539_Stereo = .TRUE.
+            if (tempString(30:30) == "1") this%K054539_Stereo = .TRUE.
+
+        end if
+
+        this%C140_ChipType = ""
+        if (this%C140_Clock /= 0) then
+
+            select case(this%CF)
+                case(0)
+                    this%C140_ChipType = "C140, Namco System 2"
+                case(1)
+                    this%C140_ChipType = "C140, Namco System 21"
+                case(2)
+                    this%C140_ChipType = "219 ASIC, Namco NA-1/2"
+                case default
+                    this%C140_ChipType = ""
+            end select
+
+        end if
+
+        if (this%Extra_Header_Offset /=0) this%Extra_Header_Absolute_Offset = this%Extra_Header_Offset + z'BC'
+
+        this%ES5506bit = .FALSE.
+        if (this%ES5506_Clock /= 0) then
+            write(tempString, "(b32)") this%ES5506_Clock
+
+            if (tempString(1:1) == "1") this%ES5506bit = .TRUE.
+
+            tempString(1:1) = "0"
+            read(tempString, "(b32)") this%ES5506_Clock
+        end if
 
     end subroutine
 

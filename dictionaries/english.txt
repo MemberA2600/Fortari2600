@@ -207,4 +207,6 @@ channelPrio=Change Channel Priority
 drumSettings=Change Drum Settings
 midiInstrument=MIDI Instrument:
 atariInstrument=TIA Instrument:
-reAlign=Realign Data 
+reAlign=Realign Data
+sid2midi=Sid2Midi Manual Conversion
+sid2midiText=Since the original SID converter failed and you want to convert more than 90 seconds, you have to save you file as 'temp/temp.mid'! The conversion will continue after that.

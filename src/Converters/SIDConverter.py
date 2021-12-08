@@ -59,6 +59,14 @@ class SIDConverter:
                         continue
                     else:
                         constant = 2.5
+
+                        if seconds < 91:
+                            pname = "sid2midi"
+                        else:
+                            pname = "SID2MIDIw"
+                            self.__loader.fileDialogs.displayError(
+                                "sid2midi", "sid2midiText", None, None
+                            )
                         try:
                             import os
                             os.remove("temp/temp.mid")
@@ -66,18 +74,17 @@ class SIDConverter:
                             pass
                         try:
                             import os
-                            self.__loader.executor.execute("sid2midi",
+                            self.__loader.executor.execute(pname,
                                 ("-o"+str(subtune), "-t"+str(seconds),
                                 '"'+path+'"', '"' + os.getcwd()+"/temp/temp.mid" + '"'),
                                 True)
 
                         except:
-                            print(str(e))
                             while True:
                                 number = 0
                                 try:
                                     import os
-                                    self.__loader.executor.execute("sid2midi",
+                                    self.__loader.executor.execute(pname,
                                                                    ("-o" + str(number), "-t" + str(seconds)),
                                                                    '"' + path + '"', '"' + os.getcwd()+"/temp/temp.mid" + '"',
                                                                    True)
