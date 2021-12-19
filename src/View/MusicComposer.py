@@ -205,6 +205,11 @@ class MusicComposer:
                 else:
                     self.__ButtonNext.config(state=DISABLED)
                 self.__deleteCurrentButton.config(state=NORMAL)
+                if self.__tiaScreens.currentScreen < (self.__tiaScreens.screenMax+1):
+                    self.__deleteAllButton.config(state=NORMAL)
+                else:
+                    self.__deleteAllButton.config(state=DISABLED)
+
 
 
             else:
@@ -212,6 +217,8 @@ class MusicComposer:
                 self.__ButtonPrev.config(state=DISABLED)
                 self.__ButtonNext.config(state=DISABLED)
                 self.__deleteCurrentButton.config(state=DISABLED)
+                self.__deleteAllButton.config(state=DISABLED)
+
 
     def __closeWindow(self):
         self.dead = True
@@ -984,7 +991,7 @@ class MusicComposer:
                 self.__saveDataToFile()
 
         fileName = self.__fileDialogs.askForFileName("openFile", False,
-                                                     ["mid", "sid", ["vgm", "vgz"], "mod", "*"],
+                                                     ["mid", "sid", ["vgm", "vgz"], "dro", "raw", ["imf", "wlf"],  "*"],
                                                   self.__loader.mainWindow.projectPath)
 
         functions = {
@@ -992,13 +999,16 @@ class MusicComposer:
             "sid": self.convertSID,
             "vgm": self.convertVGM,
             "vgz": self.convertVGM,
-            "mod": None
+            "dro": self.convertManyDOS,
+            "raw": self.convertManyDOS,
+            "wlf": self.convertManyDOS,
+            "imf": self.convertManyDOS
         }
 
         converted = None
         errorText = ""
 
-        extension = fileName.split(".")[-1]
+        extension = fileName.split(".")[-1].lower()
         if extension in functions.keys():
             #try:
                 converted, songTitle = functions[extension](fileName)
@@ -1039,8 +1049,6 @@ class MusicComposer:
 
             #print(theLen, screenMaxNum)
 
-            self.__justBytesThread()
-
             self.reset = True
             self.reColorAll()
 
@@ -1051,12 +1059,45 @@ class MusicComposer:
             self.__songTitle.set(songTitle)
             #print(self.__tiaScreens.screenMax, self.__screenMax)
             self.__soundPlayer.playSound("Success")
+            self.__justBytesThread()
 
 
         self.changed = False
         self.forceShit = True
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
+
+
+    def convertManyDOS(self, path):
+        from MidiConverter import MidiConverter
+
+        import os
+
+        for root, dirs, files in os.walk(os.getcwd()+"/applications/dro2midi/", topdown=False):
+            if root == os.getcwd()+"/applications/dro2midi/":
+                for f in files:
+                    fileName = f.replace(root, "")
+                    if fileName.endswith("txt"):
+                        textfile = open(root+f, "r")
+                        text = textfile.read()
+                        textfile.close()
+                        textfile2 = open(fileName, "w")
+                        textfile2.write(text)
+                        textfile2.close()
+
+        args = ['"' + path +'"', '"' + "temp/temp.mid" + '"']
+        self.__loader.executor.execute("dro2midi", args, True)
+
+        os.remove("drum.txt")
+        os.remove("inst.txt")
+        os.remove("patch.txt")
+        os.remove("files.txt")
+
+        midiConverter = MidiConverter("temp/temp.mid", self.__loader, int(self.__removePercuss.get()),
+                                      self.__maxChannels, int(self.__removeOutside.get()), 1.1, self.getRangeToCut(), True)
+
+        return (midiConverter.result, midiConverter.songName)
+
 
     def convertVGM(self, path):
         from VGMConverter import VGMConverter
@@ -1173,6 +1214,7 @@ class MusicComposer:
     def __saveDataToFile(self):
         import os
 
+
         fileName = self.__loader.mainWindow.projectPath+"musics/"+self.__artistName.get().replace(" ", "_").replace("?", "")+"_-_"+self.__songTitle.get().replace(" ", "_").replace("?", "")+".a26"
 
         if os.path.exists(fileName):
@@ -1192,11 +1234,11 @@ class MusicComposer:
                ","+str(self.__maxChannels)+","+str(self.__removeOutside.get())+"\n"
                )
 
-
         #text += str(self.__banks[0])+","+str(self.__banks[1])+","+str(self.__banks[2])+","+str(self.__banks[3])+"\n"
         text += str(self.__banks[0])+","+str(self.__banks[1])+"\n"
 
         self.__saveASMThread(fileName)
+
 
         data = "\n".join([
             self.__tiaScreens.getWholeChannelDate(1),
@@ -1219,7 +1261,7 @@ class MusicComposer:
     def __saveASMThread(self, fileName):
         from threading import Thread
 
-        t = Thread(target=self.__saveASMThread, args=[fileName])
+        t = Thread(target=self.__saveASM, args=[fileName])
         t.daemon = True
         t.start()
 
@@ -1461,6 +1503,12 @@ class MusicComposer:
         self.__deleteButtonFrame.pack_propagate(False)
         self.__deleteButtonFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__deleteAllButtonFrame = Frame(self.__screenInsertDeleteFrame,
+                                    height=round(self.__topLevel.getTopLevelDimensions()[1] * 0.016),
+                                    bg=self.__colors.getColor("window"))
+        self.__deleteAllButtonFrame.pack_propagate(False)
+        self.__deleteAllButtonFrame.pack(side=TOP, anchor=N, fill=X)
+
         self.__ButtonInsertBefore = Button(self.__insertButtonFrame1,
                               bg=self.__colors.getColor("window"),
                               fg=self.__colors.getColor("font"),
@@ -1493,6 +1541,16 @@ class MusicComposer:
         self.__deleteCurrentButton.pack_propagate(False)
         self.__deleteCurrentButton.pack(side=TOP, anchor=N, fill=BOTH)
 
+        self.__deleteAllButton = Button(self.__deleteAllButtonFrame,
+                              bg=self.__colors.getColor("window"),
+                              fg=self.__colors.getColor("font"),
+                              text=self.__dictionaries.getWordFromCurrentLanguage("deleteAllAfter"),
+                              font=self.__tinyFont2,
+                              state = DISABLED,
+                              command = self.__deleteAllAfter)
+
+        self.__deleteAllButton.pack_propagate(False)
+        self.__deleteAllButton.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__smallSetterBox = Frame(self.__selectedChannelFrame,
                                    width=round(self.__topLevel.getTopLevelDimensions()[0]*0.12),
@@ -1606,6 +1664,13 @@ class MusicComposer:
         self.__goScreen()
         self.changed = True
 
+    def __deleteAllAfter(self):
+        self.__tiaScreens.deleteAllAfter()
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+        self.changed = True
+        self.__screenMax = self.__tiaScreens.screenMax
+        self.forceShit = True
 
     def setBuzz(self):
         self.__buzz = self.__buzzer.get()

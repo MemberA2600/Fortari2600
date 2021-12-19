@@ -1,0 +1,3 @@
+DRO - DOSBox raw OPL logs (DRO v1 only).
+IMF, WLF - id Music Format.
+RAW (Rdos) - Rdos raw OPL logs.

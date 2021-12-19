@@ -285,6 +285,17 @@ class TiaScreens:
             if self.currentScreen > self.screenMax:
                 self.currentScreen-=1
 
+    def deleteAllAfter(self):
+        answer = self.__fileDialogs.askYesOrNo("warning", "deleteAllMessage")
+        if answer == "Yes":
+            while self.screenMax > self.currentScreen:
+                for num in range(0,4):
+                    self.allData[num].pop(self.screenMax)
+                self.screenMax -= 1
+
+
+
+
     def getWholeChannelDate(self, num):
         from copy import deepcopy
 

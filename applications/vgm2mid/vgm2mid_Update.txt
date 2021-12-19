@@ -1,0 +1,19 @@
+vgm2mid Version 0.5 by Paul Jensen
+-----------------------------------
+Updated by Valley Bell
+
+This update includes the following changes/updates (in no particular order):
+- support for VGM files up to v1.51
+- YM2151 chip support (thanks to NeoLogiX), including new YM2151 options section
+- SegaPCM chip support (currently only Drums for OutRun)
+- YM2203/YM2608/YM2610 chip support (including FM ADPCM Drums)
+- YM3526/YM3812/Y8950/YMF262 chip support
+- reworked delay calculation and adjustable conversion accuracy
+- slightly better support for usual DAC, good support for DAC optimized with optvgm
+- support for dual-chips and full T6W28 support
+- volume-dependent note on/offs for PSG chips
+- conversion of English GD3 Tags
+- Loop Markers "loopStart" and "loopEnd"
+- improved YM2413 Rhythm support
+- full YMF278 (OPL4) support (using external instrument file)
+- option to loop vgms multiple times

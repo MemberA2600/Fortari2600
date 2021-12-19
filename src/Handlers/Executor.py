@@ -2,15 +2,19 @@ class Executor:
 
     def __init__(self, loader):
         self.__loader = loader
+        self.proc = None
+
+    def killByForce(self, program):
+        import subprocess
+        self.proc = subprocess.call('taskkill /IM /F "'+program+'.exe"', creationflags=0x08000000)
 
     def execute(self, program, args, hide):
         import subprocess
         from os import getcwd
         programPath = getcwd()+"/applications/"+program.lower()+"/"+program+".exe"
 
-
         if hide == True:
-            subprocess.call('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
+            self.proc = subprocess.call('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
             #subprocess.Popen('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
         else:
             from subprocess import check_output, check_call
@@ -21,12 +25,11 @@ class Executor:
         import sys
         from os.path import abspath, exists
 
-
         programPath = "fortranApps/"+module+"/"+program+".exe"
         path = abspath(programPath)
 
         if hide == True:
-            subprocess.call('"' + programPath+'"', creationflags=0x08000000)
+            subprocess.call('"' + programPath+'"')
         else:
             from subprocess import check_output, check_call
             print(check_output('"' + programPath+'" '))
