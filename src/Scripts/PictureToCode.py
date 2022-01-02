@@ -434,7 +434,13 @@ class PictureToCode:
                               )
 
         self.__currentY = self.__dataForEditor["h"]-24
-        for Y in range(0, 24):
+
+        if self.__dataForEditor["h"] >= 24:
+            maxY = 24
+        else:
+            maxY = self.__dataForEditor["h"]
+
+        for Y in range(0, maxY):
             pfData = self.__dataForEditor["lines"][self.__currentY+Y]["playfield"]["pixels"]
 
             for X in range(0, 8):
@@ -447,7 +453,7 @@ class PictureToCode:
 
         self.__currentY = backUp
 
-        for Y in range(0, 24):
+        for Y in range(0, maxY):
             for X in range(0, 8):
                 name = "playfield_" + str((X)) + "_" + str(Y)
                 button = self.__editorButtons[name]
@@ -571,7 +577,12 @@ class PictureToCode:
                self.__dataForEditor["lines"][theY]["background"] = temp
         """
 
-        for theY in range(0, 24):
+        if self.__dataForEditor["h"] >= 24:
+            maxY = 24
+        else:
+            maxY = self.__dataForEditor["h"]
+
+        for theY in range(0, maxY):
             self.__soundPlayer.playSound("Pong")
 
             for theX in range(0,8):
@@ -736,6 +747,7 @@ class PictureToCode:
             button.config(state=DISABLED)
             button.config(bg=self.__loader.colorPalettes.getColor("fontDisabled"))
         else:
+
             if ("playfield" in name):
                 if self.__dataForEditor["lines"][Y+self.__currentY]["playfield"]["pixels"][X] == "1":
                     button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
@@ -800,7 +812,11 @@ class PictureToCode:
         self.__canvas.clipboard_clear()
         self.__canvas.delete("all")
 
-        for Y in range(self.__currentY, self.__currentY+24, 1):
+        if self.__dataForEditor["h"] >= 24:
+            maxY = 24
+        else:
+            maxY =  self.__dataForEditor["h"]
+        for Y in range(self.__currentY, self.__currentY+maxY, 1):
             drawY = Y - self.__currentY
             if self.__invertPFBG.get() == 1:
                 colorPF = self.__colorDict.getHEXValueFromTIA(self.__dataForEditor["lines"][Y]["background"])

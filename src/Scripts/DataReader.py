@@ -20,7 +20,11 @@ class DataReader:
         for line in data:
             line = line.replace("\r", "").replace("\n", "")
             if line != "":
-                __dict[line.split("=")[0]] = line.split("=", 2)[1]
+                try:
+                    __dict[line.split("=")[0]] = line.split("=", 2)[1]
+                except:
+                    pass
+
         return(__dict)
 
     def writeDataFile(self, path, keysValues):

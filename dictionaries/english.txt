@@ -216,3 +216,5 @@ dro=DOSBox raw OPL
 imf=Id Music Format
 wlf=Id Music Format
 raw=RDOS raw OPL
+amDisable=Disable AM modulation for Adlib VGM?
+amModulation=AM Modulation

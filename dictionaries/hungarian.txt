@@ -214,3 +214,5 @@ dro=DOSBox nyers OPL
 imf=Id Zenei Formátum
 wlf=Id Zenei Formátum
 raw=RDOS nyers OPL
+amDisable=AM moduláció kikapcsolása az Adlib VGM fájlban?
+amModulation=AM Moduláció

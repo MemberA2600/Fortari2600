@@ -202,7 +202,7 @@ class MidiConverter:
 
             changeDrumsAndOrder = ChangeDrumsAndOrder(self.__loader, self.__loader.mainWindow,
                                                       self.__channelAttributes, sorter,
-                                                      self.__rawData, removeDrums
+                                                      self.__rawData, removeDrums, "midi"
                                                       )
 
         newSorter = []

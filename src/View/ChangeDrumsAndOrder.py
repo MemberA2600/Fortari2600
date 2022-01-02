@@ -2,21 +2,31 @@ from tkinter import *
 
 class ChangeDrumsAndOrder:
 
-    def __init__(self, loader, mainWindow, channelAttributes, sorter, rawData, removeDrums):
+    def __init__(self, loader, mainWindow, channelAttributes, sorter, rawData, removeDrums, format):
         self.__loader = loader
         self.__mainWindow = mainWindow
 
         self.__sorter = sorter
         self.__channelAttributes = channelAttributes
         self.__rawData = rawData
+        self.__format = format
 
         if removeDrums == False:
             try:
-                self.__drumData = self.__rawData[9]["joined"]
-                if self.__drumData != "":
-                    self.__drums = True
-                else:
+                if self.__format == "midi":
+                    self.__drumData = self.__rawData[9]["joined"]
+                    if self.__drumData != "":
+                        self.__drums = True
+                    else:
+                        self.__drums = False
+                elif self.__format == "vgm":
+                    self.__drumData = self.__rawData
                     self.__drums = False
+                    for note in self.__drumData:
+                        if note["enabled"] == 1:
+                            self.__drums = True
+                            break
+
             except Exception as e:
                 self.__drums = False
         else:
@@ -59,9 +69,37 @@ class ChangeDrumsAndOrder:
     def __closeWindow(self):
         self.dead = True
         if self.__drums == True:
-            self.__saveDrums()
+            if self.__format == "midi":
+                self.__saveDrums()
+            elif self.__format == "midi":
+                self.__saveDrumsVGM()
+
         self.__topLevelWindow.destroy()
         self.__loader.topLevels.remove(self.__topLevelWindow)
+
+    def __saveDrumsVGM(self):
+        drumdrum = {
+            89: "Drum",
+            90: "High Hat - 1",
+            91: "High Hat - 2",
+            92: "Snare",
+            93: "Horn",
+            94: "Buzz - 1",
+            95: "Buzz - 2"
+        }
+
+        for note in self.__drumData:
+            if note["note"] != 0:
+               for d in drumdrum.keys():
+                   selected = self.__drumValues[drumdrum[note["note"]]]
+                   if drumdrum[d] == selected:
+                      note["note"] = d
+                      break
+
+               drums = self.__loader.piaNotes.getTiaValue(note["note"], None)
+               note["channel"] = drums[0]
+               note["freq"]    = drums[1]
+
 
     def __saveDrums(self):
         tempDrumData = self.__drumData.split("\n")
@@ -188,16 +226,33 @@ class ChangeDrumsAndOrder:
 
         __drumNotes = {}
         if self.__drumData != None:
-            drumList = self.__drumData.split("\n")
-            for line in drumList:
-                line = line.split(" ")
-                try:
-                    if line[1] not in __drumNotes:
-                        __drumNotes[line[1]] = 1
+            if self.__format == "midi":
+                drumList = self.__drumData.split("\n")
+                for line in drumList:
+                    line = line.split(" ")
+                    try:
+                        if line[1] not in __drumNotes:
+                            __drumNotes[line[1]] = 1
+                        else:
+                            __drumNotes[line[1]]+= 1
+                    except:
+                        pass
+            elif self.__format == "vgm":
+                for note in self.__drumData:
+                    drumdrum = {
+                        89: "Drum",
+                        90: "High Hat - 1",
+                        91: "High Hat - 2",
+                        92: "Snare",
+                        93: "Horn",
+                        94: "Buzz - 1",
+                        95: "Buzz - 2"
+                    }
+
+                    if note["note"] not in __drumNotes:
+                        __drumNotes[drumdrum[note["note"]]] = 1
                     else:
-                        __drumNotes[line[1]]+= 1
-                except:
-                    pass
+                        __drumNotes[drumdrum[note["note"]]] += 1
 
         try:
             del __drumNotes["0"]
@@ -327,12 +382,18 @@ class ChangeDrumsAndOrder:
             __drumNames.append(self.__drumDict[note][0])
 
         self.__drumValues = {}
-        for item in __drumNotes:
-            item = item[0]
-            for num in self.__drumDict.keys():
-                if int(item) in self.__drumDict[num][1]:
-                    self.__drumValues[item] = self.__drumDict[num][0]
-                    break
+        if self.__format == "midi":
+            for item in __drumNotes:
+                item = item[0]
+                for num in self.__drumDict.keys():
+                    if int(item) in self.__drumDict[num][1]:
+                        self.__drumValues[item] = self.__drumDict[num][0]
+                        break
+        elif self.__format == "vgm":
+            for item in __drumNotes:
+                item = item[0]
+                self.__drumValues[item] = item
+
 
         #print(self.__drumNames)
         #print(self.__drumValues)
@@ -429,27 +490,45 @@ class ChangeDrumsAndOrder:
                     if self.__selectedDrumList != self.__drumListBox.getSelected():
                         self.__selectedDrumList = self.__drumListBox.getSelected()
 
-                        key = self.__selectedDrumList.split(" ")[0]
-                        try:
-                            self.__instrumentName.set(self.__instruments[key])
-                        except:
-                            self.__instrumentName.set("???")
+                        if self.__format == "midi":
+                            key = self.__selectedDrumList.split(" ")[0]
+                            if self.__format == "midi":
+                                try:
+                                    self.__instrumentName.set(self.__instruments[key])
+                                except:
+                                    self.__instrumentName.set("???")
 
-                        fuck = None
-                        try:
-                            fuck = self.__drumValues[key]
-                        except:
-                            for d in self.__drumDict.keys():
-                                if int(key) in self.__drumDict[d][1]:
-                                    fuck = self.__drumDict[d][0]
-                                    break
+                            fuck = None
+                            try:
+                                fuck = self.__drumValues[key]
+                            except:
+                                for d in self.__drumDict.keys():
+                                    if int(key) in self.__drumDict[d][1]:
+                                        fuck = self.__drumDict[d][0]
+                                        break
 
-                        if fuck != None:
-                            for num in range(0, len(self.__drumDict)):
-                                self.__optionBox.selection_clear(0, END)
-                                self.__optionBox.selection_set(num)
-                                if self.__optionBox.get(self.__optionBox.curselection()) == fuck:
-                                    break
+                            if fuck != None:
+                                for num in range(0, len(self.__drumDict)):
+                                    self.__optionBox.selection_clear(0, END)
+                                    self.__optionBox.selection_set(num)
+                                    if self.__optionBox.get(self.__optionBox.curselection()) == fuck:
+                                        break
+
+                        elif self.__format == "vgm":
+                            key = self.__selectedDrumList.split(" ")[0]
+                            selected = None
+                            try:
+                                selected = self.__drumValues[key]
+                            except:
+                                selected = key
+
+                            if selected != None:
+                                for num in range(0, len(self.__drumDict)):
+                                    self.__optionBox.selection_clear(0, END)
+                                    self.__optionBox.selection_set(num)
+                                    if self.__optionBox.get(self.__optionBox.curselection()) == selected:
+                                        break
+
 
                     if self.__optionSelected != self.__optionBox.get(self.__optionBox.curselection()):
                         self.__optionSelected = self.__optionBox.get(self.__optionBox.curselection())

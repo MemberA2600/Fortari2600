@@ -4,8 +4,8 @@ class VGMConverter:
 
     def __init__(self, loader, path, removePercuss, maxChannels, removeOutside, cutOut):
 
-        import time
-        start_time = time.time()
+        #import time
+        #start_time = time.time()
 
         self.__loader = loader
         self.__piaNotes = loader.piaNotes
@@ -225,24 +225,98 @@ class VGMConverter:
                              3: [],
                              4: []}
 
-        for note in self.__dataChannels[0][0]:
-            for num in range(0,note["duration"]):
-                self.__tempResult[1].append(deepcopy(__tiaNote))
-                self.__tempResult[2].append(deepcopy(__tiaNote))
-                self.__tempResult[3].append(deepcopy(__tiaNote))
-                self.__tempResult[4].append(deepcopy(__tiaNote))
+        ch = 0
+
+        self.__drumNotes = []
+
+        while True:
+            try:
+                for note in self.__dataChannels[ch][0]:
+                    for num in range(0,note["duration"]):
+                        self.__tempResult[1].append(deepcopy(__tiaNote))
+                        self.__tempResult[2].append(deepcopy(__tiaNote))
+                        self.__tempResult[3].append(deepcopy(__tiaNote))
+                        self.__tempResult[4].append(deepcopy(__tiaNote))
+                        self.__drumNotes.append(deepcopy(__tiaNote))
+                break
+            except:
+                ch += 1
+                if ch == 18:
+                    break
 
         forSort = {}
+
+        if self.__oplData.rythmMode == True and removePercuss == False:
+           for channel in self.__dataChannels.keys():
+               if channel < 6:
+                   continue
+               for slot in self.__dataChannels[channel]:
+                   for note in self.__dataChannels[channel][slot]:
+                       currentPoz = 0
+                       if note["note"] > 89 and note["note"] < 96:
+                          for counter in range(0, note["duration"]):
+                              if counter > 6:
+                                  break
+
+                              savePoz = currentPoz + counter
+
+                              if self.__drumNotes[savePoz]["enabled"] == 0:
+                                  self.__drumNotes[savePoz]["enabled"] = 1
+                                  self.__drumNotes[savePoz]["volume"]  = note["volume"]
+                                  self.__drumNotes[savePoz]["note"]    = note["note"]
+                                  self.__drumNotes[savePoz]["Y"]       = note["note"]
+
+                                  drums = self.__piaNotes.getTiaValue(note["note"],  None)
+                                  self.__drumNotes[savePoz]["channel"] = drums[0]
+                                  self.__drumNotes[savePoz][savePoz]["freq"]    = drums[1]
+
+                          currentPoz += note["duration"]
 
         for key in self.__channelAttributes.keys():
             forSort[key] = self.__channelAttributes[key]["priority"]
 
         f = sorted(forSort.items(), key=lambda x: x[1], reverse=True)
 
+
+        from ChangeDrumsAndOrder import ChangeDrumsAndOrder
+
+        changeDrumsAndOrder = ChangeDrumsAndOrder(self.__loader, self.__loader.mainWindow,
+                                                      self.__channelAttributes, f,
+                                                      self.__drumNotes, removePercuss, "vgm"
+                                                      )
+
+        if self.__oplData.rythmMode == True and removePercuss == False:
+            currentPoz = 0
+            for note in self.__drumNotes:
+                for counter in range(0, note["duration"]):
+                    if counter < 6:
+                        channelPoz = 0
+                    elif counter < 6:
+                        channelPoz = 4
+                    else:
+                        break
+
+                    savePoz = currentPoz + counter
+                    self.__tempResult[channelPoz][savePoz]["enabled"] = self.__drumNotes[savePoz]["enabled"]
+                    self.__tempResult[channelPoz][savePoz]["volume"]  = self.__drumNotes[savePoz]["volume"]
+                    self.__tempResult[channelPoz][savePoz]["note"]    = self.__drumNotes[savePoz]["note"]
+                    self.__tempResult[channelPoz][savePoz]["Y"]       = self.__drumNotes[savePoz]["Y"]
+                    self.__tempResult[channelPoz][savePoz]["channel"] = self.__drumNotes[savePoz]["channel"]
+                    self.__tempResult[channelPoz][savePoz]["freq"]    = self.__drumNotes[savePoz]["freq"]
+                currentPoz += note["duration"]
+
+        am = self.__loader.fileDialogs.askYesOrNo("amModulation", "amDisable")
+        if am == "Yes":
+            slotChange = False
+        else:
+            slotChange = True
+
+
         for item in f:
             currentPoz = 0
             if 1 in self.__dataChannels[item[0]].keys():
-                slot = 1
+                slot    = 1
+                counter = 0
                 fetched = [[],[]]
                 for slot in range(0,2):
                     for note in self.__dataChannels[item[0]][slot]:
@@ -261,9 +335,17 @@ class VGMConverter:
                 #print(len(self.__dataChannels[item[0]][0]), len(self.__dataChannels[item[0]][1]), len(fetched[0]), len(fetched[1]))
 
                 for noteNum in range(0, largest):
-                    slot = 1 - slot
+                    if slotChange == True:
+                        if counter > 1:
+                           slot    = 1 - slot
+                           counter = 0
+                        else:
+                           counter += 1
                     if fetched[0][noteNum]["enabled"] == 1 and fetched[1][noteNum]["enabled"] == 1:
-                        realSlot = slot
+                        if slotChange == True:
+                            realSlot = slot
+                        else:
+                            realSlot = 0
                     elif fetched[0][noteNum]["enabled"] == 1:
                         realSlot = 0
                     elif fetched[1][noteNum]["enabled"] == 1:
@@ -272,25 +354,43 @@ class VGMConverter:
                         continue
 
                     note = fetched[realSlot][noteNum]
+                    if (note["enabled"] == 0 or note["note"] in cutOut or
+                    (removeOutside == True and (note["note"] in [30, 31 ]) or note["note"] > 68 or note["note"] < 3)):
+                        note = fetched[1 - realSlot][noteNum]
+
                     for num in range(1, 5):
-                        if self.__tempResult[num][noteNum]["enabled"] == 0:
-                            self.__tempResult[num][noteNum]["enabled"] = 1
-                            self.__tempResult[num][noteNum]["volume"]  = note["volume"]
-                            self.__tempResult[num][noteNum]["note"]    = note["note"]
-                            self.__tempResult[num][noteNum]["Y"]       = note["note"]
-                            self.__tempResult[num][noteNum]["channel"] = note["channel"]
-                            self.__tempResult[num][noteNum]["freq"]    = note["freq"]
+                        if self.__tempResult[num][noteNum]["enabled"]   == 0:
+                            self.__tempResult[num][noteNum]["enabled"]  = 1
+                            self.__tempResult[num][noteNum]["volume"]   = note["volume"]
+
+                            try:
+                                self.__tempResult[num][noteNum]["note"] = note["note"]
+                                self.__tempResult[num][noteNum]["Y"]    = note["note"]
+
+                            except:
+                                self.__tempResult[num][noteNum]["note"] = note["Y"]
+                                self.__tempResult[num][noteNum]["Y"]    = note["Y"]
+
+                            self.__tempResult[num][noteNum]["channel"]  = note["channel"]
+                            self.__tempResult[num][noteNum]["freq"]     = note["freq"]
                             break
 
             else:
                 for note in self.__dataChannels[item[0]][0]:
                     for poz in range(currentPoz, currentPoz+note["duration"]):
                         for num in range(1,5):
-                            if self.__tempResult[num][poz]["enabled"] == 0 and note["volume"] > 0:
+                            if self.__tempResult[num][poz]["enabled"]    == 0 and note["volume"] > 0:
                                 self.__tempResult[num][poz]["enabled"]   = 1
                                 self.__tempResult[num][poz]["volume"]    = note["volume"]
-                                self.__tempResult[num][poz]["note"]      = note["note"]
-                                self.__tempResult[num][poz]["Y"]         = note["note"]
+
+                                try:
+                                    self.__tempResult[num][poz]["note"]  = note["note"]
+                                    self.__tempResult[num][poz]["Y"]     = note["note"]
+                                except:
+                                    self.__tempResult[num][poz]["note"]  = note["Y"]
+                                    self.__tempResult[num][poz]["Y"]     = note["Y"]
+
+
                                 (self.__tempResult[num][poz]["channel"],
                                  self.__tempResult[num][poz]["freq"])    = self.__getChannelNote(note["note"],
                                                                            self.__channelAttributes[item[0]]["dominantTiaChannel"])
@@ -308,7 +408,7 @@ class VGMConverter:
         #for key in self.result:
         #    print(self.result[key])
 
-        print("--- %s seconds ---" % (time.time() - start_time))
+        #print("--- %s seconds ---" % (time.time() - start_time))
 
     def __getSongMetaData(self, path, offset):
         import gzip
