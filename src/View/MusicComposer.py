@@ -1011,13 +1011,13 @@ class MusicComposer:
         extension = fileName.split(".")[-1].lower()
         if extension in functions.keys():
             #try:
-                converted, songTitle = functions[extension](fileName)
+                converted, songTitle, artistName = functions[extension](fileName)
             #except Exception as e:
             #    errorText = str(e)
         else:
             for func in functions.keys():
                 try:
-                    converted, songTitle = function[func](fileName)
+                    converted, songTitle, artistName = function[func](fileName)
                 except Exception as e:
                     errorText += str(e)
 
@@ -1055,7 +1055,7 @@ class MusicComposer:
             self.__frameLen = int(1)
             self.__frameLenSetter.setValue("1")
 
-            self.__artistName.set("")
+            self.__artistName.set(artistName)
             self.__songTitle.set(songTitle)
             #print(self.__tiaScreens.screenMax, self.__screenMax)
             self.__soundPlayer.playSound("Success")
@@ -1096,7 +1096,7 @@ class MusicComposer:
         midiConverter = MidiConverter("temp/temp.mid", self.__loader, int(self.__removePercuss.get()),
                                       self.__maxChannels, int(self.__removeOutside.get()), 1.1, self.getRangeToCut(), True)
 
-        return (midiConverter.result, midiConverter.songName)
+        return (midiConverter.result, midiConverter.songName, midiConverter.artistName)
 
 
     def convertVGM(self, path):
@@ -1105,7 +1105,12 @@ class MusicComposer:
         vgmConverter = VGMConverter(self.__loader, path, int(self.__removePercuss.get()),
                                     self.__maxChannels, int(self.__removeOutside.get()), self.getRangeToCut())
 
-        return (vgmConverter.result, vgmConverter.songName)
+        self.__correctorSetter.setValue("0")
+        self.__fadeOutSetter.setValue("0")
+        self.__vibrator.set(0)
+        self.__vibrator2.set(0)
+
+        return (vgmConverter.result, vgmConverter.songName, vgmConverter.artistName)
 
     def convertSID(self, path):
         from SIDConverter import SIDConverter
@@ -1118,7 +1123,7 @@ class MusicComposer:
         self.__vibrator.set(0)
         self.__vibrator2.set(0)
 
-        return (sidConverter.result, sidConverter.songName)
+        return (sidConverter.result, sidConverter.songName, sidConverter.artistName)
 
     def convertMidi(self, path):
         from MidiConverter import MidiConverter
@@ -1126,7 +1131,7 @@ class MusicComposer:
         midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
                                       self.__maxChannels, int(self.__removeOutside.get()), 1.1, self.getRangeToCut(), True)
 
-        return (midiConverter.result, midiConverter.songName)
+        return (midiConverter.result, midiConverter.songName, midiConverter.artistName)
 
 
 

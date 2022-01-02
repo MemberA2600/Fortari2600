@@ -2,36 +2,39 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/DataHolders/VGMDataItem.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Scripts/YM3812.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/convertToPiss.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/fuck.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/sine.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Fortari2600.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Fortari2600.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/LoadHeader.cbp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/LoadHeader.depend" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/LoadHeader.layout" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/bin/Release/LoadHeader.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/config/VGMHeaderDict.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/fort.225" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/main.f90" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/obj/Release/headerdictmodule.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/obj/Release/headermodule.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/obj/Release/main.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/temp/Input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/LoadHeader/temp/temp.vgm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2021-12-06_212505.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/musics/Iron_Maiden_-_When_the_wild_wind_blows.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/musics/Iron_Maiden_-_When_the_wild_wind_blows.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonNotMadeByMe/vgmparse/CHANGELOG.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonNotMadeByMe/vgmparse/LICENSE" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonNotMadeByMe/vgmparse/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonNotMadeByMe/vgmparse/setup.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonNotMadeByMe/vgmparse/vgmparse/vgmparse.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/OPL2TIA.depend" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/OPL2TIA.depend" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/OPL2TIA.layout" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/OPL2TIA.layout" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/bin/Release/YM3812.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/bin/Release/YM3812.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/main.f90" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/main.f90" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/attackdecaytablemodule.mod" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/attackdecaytablemodule.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/chipmodule.mod" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/chipmodule.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/VGMConverter/src/OPL2TIA/obj/Release/main.o" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/YM3812.cbp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/YM3812.depend" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/YM3812.layout" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/bin/Release/YM3812.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/main.f90" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/obj/Release/chipmodule.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/obj/Release/main.o" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/obj/Release/pimodule.mod" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/temp/Args.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fortranApps/VGMConverter/src/YM3812/temp/Input.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2021-12-15_195608.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Converters/MidiConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/MidiConverter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Converters/SIDConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/SIDConverter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Converters/VGMConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/VGMConverter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VGMByteDict.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VGMBytes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/Executor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Executor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/Args.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/Input.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,8 +47,8 @@
     <SUITE FILE_PATH="coverage/Fortari2600$MusicComposer.coverage" NAME="MusicComposer Coverage Results" MODIFIED="1629735494333" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$Executor.coverage" NAME="Executor Coverage Results" MODIFIED="1635749536604" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$LockFrame.coverage" NAME="LockFrame Coverage Results" MODIFIED="1626496617534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$setup.coverage" NAME="setup Coverage Results" MODIFIED="1635491998672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak" />
     <SUITE FILE_PATH="coverage/Fortari2600$MidiConverter.coverage" NAME="MidiConverter Coverage Results" MODIFIED="1635749360616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
+    <SUITE FILE_PATH="coverage/Fortari2600$setup.coverage" NAME="setup Coverage Results" MODIFIED="1640547665112" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pythonNotMadeByMe/wavebender" />
     <SUITE FILE_PATH="coverage/Fortari2600$PlayfieldEditor.coverage" NAME="PlayfieldEditor Coverage Results" MODIFIED="1627069290081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreen__1_.coverage" NAME="LoadingScreen (1) Coverage Results" MODIFIED="1618074466389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$MenuLabel.coverage" NAME="MenuLabel Coverage Results" MODIFIED="1618296702708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
@@ -55,6 +58,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$Logger.coverage" NAME="Logger Coverage Results" MODIFIED="1619599026374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$szar.coverage" NAME="szar Coverage Results" MODIFIED="1633456700102" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$PictureToCode.coverage" NAME="PictureToCode Coverage Results" MODIFIED="1637764542757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
+    <SUITE FILE_PATH="coverage/Fortari2600$convertToPiss.coverage" NAME="convertToPiss Coverage Results" MODIFIED="1640362789468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$AutoSetter.coverage" NAME="AutoSetter Coverage Results" MODIFIED="1618118363590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/App" />
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrame.coverage" NAME="RightFrame Coverage Results" MODIFIED="1619675289357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$6507Compiler.coverage" NAME="6507Compiler Coverage Results" MODIFIED="1628274705135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../6507Compiler" />
@@ -69,11 +73,12 @@
     <SUITE FILE_PATH="coverage/Fortari2600$LibCaller.coverage" NAME="LibCaller Coverage Results" MODIFIED="1629529829538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Libs" />
     <SUITE FILE_PATH="coverage/Fortari2600$AllToTIAv0_05.coverage" NAME="AllToTIAv0.05 Coverage Results" MODIFIED="1635440534815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/Fortari2600" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
+    <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1640687837299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreenHandler.coverage" NAME="LoadingScreenHandler Coverage Results" MODIFIED="1618069748048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1639594567686" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1641109844932" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Compiler.coverage" NAME="Compiler Coverage Results" MODIFIED="1633490784734" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
@@ -131,69 +136,111 @@
         </counts>
       </usages-collector>
     </session>
+    <session id="1636815425">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="13" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.open.time.4" value="15" />
+          <entry key="project.open.time.5" value="2" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="19" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="py" value="26745" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Python" value="26745" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="py" value="30" />
+          <entry key="txt" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="Python" value="30" />
+        </counts>
+      </usages-collector>
+    </session>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="Fortari2600" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17440">
-              <caret line="1096" column="40" selection-start-line="1096" selection-start-column="40" selection-end-line="1096" selection-end-column="40" />
-              <folding>
-                <marker date="1639583775558" expanded="true" signature="47333:47340" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="160">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <marker date="1639580796715" expanded="true" signature="268:272" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Converters/VGMConverter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="506">
-              <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+            <state relative-caret-position="-1712">
+              <caret line="127" column="39" selection-start-line="127" selection-start-column="39" selection-end-line="127" selection-end-column="39" />
               <folding>
-                <marker date="1639806652151" expanded="true" signature="3645:4292" ph="..." />
-                <marker date="1639806652151" expanded="true" signature="4323:4332" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="14893:14924" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="14968:15928" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="15964:19969" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="18774:19449" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="19519:19969" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="20031:20040" ph="..." />
+                <marker date="1641109794805" expanded="true" signature="20031:20374" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Scripts/Collector.py">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="400">
-              <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
+            <state relative-caret-position="5536">
+              <caret line="347" selection-start-line="347" selection-end-line="347" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="219">
+              <caret line="1110" column="31" selection-start-line="1110" selection-start-column="31" selection-end-line="1110" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="128">
+              <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Scripts/YM3812.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="4976">
+              <caret line="311" column="40" selection-start-line="311" selection-start-column="29" selection-end-line="311" selection-end-column="40" />
               <folding>
-                <element signature="e#0#9#0" expanded="true" />
+                <marker date="1640779243286" expanded="true" signature="0:2" ph="..." />
+                <marker date="1640779243286" expanded="true" signature="25:1007" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/VGMDataItem.py">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+            <state relative-caret-position="1584">
+              <caret line="99" column="10" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="10" />
               <folding>
-                <marker date="1639294855748" expanded="true" signature="18:19" ph="..." />
-                <marker date="1639294855748" expanded="true" signature="18:24" ph="..." />
+                <marker date="1640688567295" expanded="true" signature="564:790" ph="..." />
               </folding>
             </state>
           </provider>
@@ -210,39 +257,38 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__correctNotes</find>
-      <find>sidC</find>
-      <find>subtune</find>
-      <find>screenMax</find>
-      <find>convertSID</find>
-      <find>dic</find>
-      <find>setD</find>
-      <find>MidiCon</find>
-      <find>justBytes</find>
-      <find>SID</find>
-      <find>__justBytesThread</find>
-      <find>__deleteCurrentButton</find>
-      <find>__deleteAllButton</find>
-      <find>__deleteCurrent</find>
-      <find>__deleteAll</find>
-      <find>delete</find>
-      <find>__screenMax</find>
-      <find>txt</find>
-      <find>ra</find>
-      <find>Rate</find>
+      <find>time.tim</find>
+      <find>sustain</find>
+      <find>self.channels[channel].slots[slot].totalLevel</find>
+      <find>recalc</find>
+      <find>reCal</find>
+      <find>Sustain</find>
+      <find>SustainVolume</find>
+      <find>sustainLevel</find>
+      <find>totalLevel</find>
+      <find>maxVol</find>
       <find>print</find>
-      <find>asm</find>
-      <find>__saveASM</find>
-      <find>__saveASMThread</find>
-      <find>__saveDataToFile</find>
-      <find>coll</find>
-      <find>shit</find>
-      <find>vgm</find>
-      <find>convertManyDOS</find>
-      <find>__removePercuss</find>
+      <find>remaind</find>
+      <find>int((self.timeLeft / 44.1) + self.remainder)</find>
+      <find>remainder</find>
+      <find>stream</find>
+      <find>stream.r</find>
+      <find>channelKey</find>
+      <find>sort</find>
+      <find>sorted</find>
+      <find>255</find>
+      <find>freq</find>
+      <find>song</find>
+      <find>songTitle</find>
+      <find>artistName</find>
+      <find>-9</find>
+      <find>convertMidi</find>
+      <find>vgm2textThread</find>
+      <find>play</find>
+      <find>constant</find>
+      <find>sidC</find>
     </findStrings>
     <replaceStrings>
-      <replace>first</replace>
       <replace>c</replace>
       <replace>hasRocket</replace>
       <replace>__setBuffer</replace>
@@ -272,6 +318,7 @@
       <replace>sprites_</replace>
       <replace>__mainFocus</replace>
       <replace>__closeWindow</replace>
+      <replace>waveform</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -280,10 +327,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/venv/szar.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
-        <option value="$PROJECT_DIR$/venv/get8Lines/doIt.py" />
-        <option value="$PROJECT_DIR$/src/View/HexEntryButLowNibbleFixed.py" />
         <option value="$PROJECT_DIR$/src/Handlers/IO.py" />
         <option value="$PROJECT_DIR$/../projects/jetbrains/Miditari/Miditari 0.14.py" />
         <option value="$PROJECT_DIR$/src/View/FrameLabelEntryUpDown.py" />
@@ -296,7 +339,6 @@
         <option value="$PROJECT_DIR$/src/DataHolders/VMGByteDict.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VGMByteDict.py" />
         <option value="$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/ctypes/__init__.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/MidiNote.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterHybrid.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverterOld.py" />
@@ -323,14 +365,19 @@
         <option value="$PROJECT_DIR$/venv/Lib/site-packages/mido/midifiles/tracks.py" />
         <option value="$PROJECT_DIR$/src/View/ChangeDrumsAndOrder.py" />
         <option value="$PROJECT_DIR$/pythonNotMadeByMe/chiptunesak/chiptunesak/sid.py" />
-        <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
-        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/TiaScreens.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VGMDataItem.py" />
         <option value="$PROJECT_DIR$/src/Converters/Chips/YM3812.py" />
         <option value="$PROJECT_DIR$/src/Handlers/Executor.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
+        <option value="$PROJECT_DIR$/venv/fuck.txt" />
+        <option value="$PROJECT_DIR$/venv/convertToPiss.py" />
+        <option value="$PROJECT_DIR$/venv/sine.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
+        <option value="$PROJECT_DIR$/src/Scripts/YM3812.py" />
+        <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
+        <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
         <option value="$PROJECT_DIR$/src/Converters/VGMConverter.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
       </list>
     </option>
   </component>
@@ -399,12 +446,23 @@
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
               <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -445,50 +503,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="Executor" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Handlers" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Handlers/Executor.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="MidiConverter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Converters" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="PictureToCode" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -503,6 +517,50 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Scripts/PictureToCode.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="YM3812" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Scripts" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Scripts/YM3812.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="convertToPiss" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/convertToPiss.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -541,12 +599,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/pythonNotMadeByMe/wavebender" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$USER_HOME$/AppData/Local/Temp/pycharm-packaging/chiptunesak/setup.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pythonNotMadeByMe/wavebender/setup.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -557,18 +615,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.setup" />
-      <item itemvalue="Python.MidiConverter" />
-      <item itemvalue="Python.Executor" />
       <item itemvalue="Python.PictureToCode" />
+      <item itemvalue="Python.convertToPiss" />
+      <item itemvalue="Python.YM3812" />
+      <item itemvalue="Python.setup" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.PictureToCode" />
-        <item itemvalue="Python.Executor" />
-        <item itemvalue="Python.MidiConverter" />
+        <item itemvalue="Python.YM3812" />
         <item itemvalue="Python.setup" />
+        <item itemvalue="Python.convertToPiss" />
+        <item itemvalue="Python.PictureToCode" />
       </list>
     </recent_temporary>
   </component>
@@ -598,12 +656,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.12451861" />
-      <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
-      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49382716" visible="true" weight="0.15147625" />
+      <window_info id="Structure" order="1" sideWeight="0.50617284" side_tool="true" weight="0.14120668" />
+      <window_info id="Favorites" order="2" sideWeight="0.50617284" side_tool="true" weight="0.14120668" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4762516" weight="0.30305928" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.46662387" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -611,8 +669,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5237484" side_tool="true" visible="true" weight="0.30305928" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5333761" side_tool="true" weight="0.30305928" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -622,12 +680,12 @@
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4952199" visible="true" weight="0.29139924" />
-      <window_info id="Structure" order="1" sideWeight="0.5068182" side_tool="true" weight="0.3292683" />
-      <window_info id="Favorites" order="2" sideWeight="0.5047801" side_tool="true" weight="0.11039794" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49382716" visible="true" weight="0.14569962" />
+      <window_info id="Structure" order="1" sideWeight="0.50617284" side_tool="true" weight="0.14120668" />
+      <window_info id="Favorites" order="2" sideWeight="0.50617284" side_tool="true" weight="0.14120668" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4801027" visible="true" weight="0.31070745" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.46662387" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -635,8 +693,8 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5198973" side_tool="true" weight="0.31070745" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3298279" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5333761" side_tool="true" visible="true" weight="0.30305928" />
+      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="12" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -668,89 +726,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="15" column="32" selection-start-line="15" selection-start-column="32" selection-end-line="15" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ColorPalettes.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="288">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="67" column="33" selection-start-line="67" selection-start-column="33" selection-end-line="67" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ColorDict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="642">
-          <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/PitFallHarry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-25" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LoadingScreen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="45" selection-start-line="45" selection-end-line="46" selection-end-column="112" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/Monitor.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/libpasteurize/fixes/fix_add_all__future__imports.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/PIL/_tkinter_finder.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/future/moves/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/Lib/site-packages/future/moves/tkinter/filedialog.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="15" selection-start-column="5" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="14" column="20" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ConvertFromImageFrame.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/LockManagerWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="626">
-          <caret line="44" lean-forward="true" selection-start-line="44" selection-end-line="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/OpenProjectWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="292">
@@ -799,13 +774,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-2344">
           <caret line="220" selection-start-line="220" selection-end-line="220" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7952">
-          <caret line="498" column="24" selection-start-line="498" selection-start-column="24" selection-end-line="498" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -858,13 +826,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="67" column="66" selection-start-line="67" selection-start-column="66" selection-end-line="67" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -874,20 +835,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="232">
-          <caret line="285" column="36" selection-start-line="285" selection-start-column="36" selection-end-line="285" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="967">
-          <caret line="294" selection-start-line="294" selection-end-line="294" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/subprocess.py">
       <provider selected="true" editor-type-id="text-editor">
@@ -908,33 +855,10 @@
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/nesmdb/nesmdb/convert.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/nesmdb/nesmdb/vgm/nd_txt.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/nesmdb/nesmdb/vgm/vgm_ndr.py" />
-    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17440">
-          <caret line="1096" column="40" selection-start-line="1096" selection-start-column="40" selection-end-line="1096" selection-end-column="40" />
-          <folding>
-            <marker date="1639583775558" expanded="true" signature="47333:47340" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/Executor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <marker date="1639580796715" expanded="true" signature="268:272" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/Collector.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="26" column="42" selection-start-line="26" selection-start-column="42" selection-end-line="26" selection-end-column="42" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -942,20 +866,135 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="23" column="52" selection-start-line="23" selection-start-column="52" selection-end-line="23" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/fuck.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1919">
+          <caret line="5717" lean-forward="true" selection-start-line="5717" selection-end-line="5717" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/convertToPiss.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Desktop/wavebender/wavebender/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/wavebender/setup.py" />
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/wavebender/wavebender/__main__.py" />
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/wavebender/wavebender/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/wavebender/wavebender/wave.py" />
+    <entry file="file://$PROJECT_DIR$/src/Scripts/Collector.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="15" column="30" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/wavebender/wavebender/wavebender.py" />
+    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/wavebender/examples/violin.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/wavebender/examples/binaural.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="112">
+          <caret line="7" column="14" selection-start-line="7" selection-end-line="7" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/wavebender/wavebender/wavebender.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="75" column="28" selection-start-line="75" selection-start-column="20" selection-end-line="75" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/sine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/TiaScreens.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="411">
+          <caret line="550" column="82" selection-start-line="550" selection-start-column="53" selection-end-line="550" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/SIDConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="586">
+          <caret line="111" column="51" lean-forward="true" selection-start-line="111" selection-start-column="51" selection-end-line="111" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../Fortari2600_temp/VGM/VGMConverterOLD.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="18" column="23" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5536">
+          <caret line="347" selection-start-line="347" selection-end-line="347" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/MidiConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="128">
+          <caret line="14" column="26" selection-start-line="14" selection-start-column="26" selection-end-line="14" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/YM3812.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4976">
+          <caret line="311" column="40" selection-start-line="311" selection-start-column="29" selection-end-line="311" selection-end-column="40" />
           <folding>
-            <marker date="1639294855748" expanded="true" signature="18:19" ph="..." />
-            <marker date="1639294855748" expanded="true" signature="18:24" ph="..." />
+            <marker date="1640779243286" expanded="true" signature="0:2" ph="..." />
+            <marker date="1640779243286" expanded="true" signature="25:1007" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/PiaNotes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1584">
+          <caret line="99" column="10" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="10" />
+          <folding>
+            <marker date="1640688567295" expanded="true" signature="564:790" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="1110" column="31" selection-start-line="1110" selection-start-column="31" selection-end-line="1110" selection-end-column="31" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Converters/VGMConverter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="130" lean-forward="true" selection-start-line="130" selection-end-line="130" />
+        <state relative-caret-position="-1712">
+          <caret line="127" column="39" selection-start-line="127" selection-start-column="39" selection-end-line="127" selection-end-column="39" />
           <folding>
-            <marker date="1639806652151" expanded="true" signature="3645:4292" ph="..." />
-            <marker date="1639806652151" expanded="true" signature="4323:4332" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="14893:14924" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="14968:15928" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="15964:19969" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="18774:19449" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="19519:19969" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="20031:20040" ph="..." />
+            <marker date="1641109794805" expanded="true" signature="20031:20374" ph="..." />
           </folding>
         </state>
       </provider>

@@ -4,7 +4,11 @@ class VGMConverter:
 
     def __init__(self, loader, path, removePercuss, maxChannels, removeOutside, cutOut):
 
+        import time
+        start_time = time.time()
+
         self.__loader = loader
+        self.__piaNotes = loader.piaNotes
         from threading import Thread
         import os
 
@@ -57,6 +61,8 @@ class VGMConverter:
         self.__unused = []
         self.__used = []
 
+        self.__GD3offset = None
+
         for line in headerData:
             line = line.replace("\t", " ").split(" ")
             newLine = []
@@ -70,6 +76,9 @@ class VGMConverter:
                     self.__vgmHeader["version"] = float(line[-1][1:-1])
                 if line[0] in self.__unused:
                     continue
+
+                if "GD3" in line:
+                    self.__GD3offset = int(line[3], 16)
 
                 if line[-1] == "unused":
                     self.__unused.append(line[0])
@@ -109,12 +118,446 @@ class VGMConverter:
         if (("YM3812" in self.__used) or ("YM3526" in self.__used) or
             ("YMF262" in self.__used) or ("YMF262A" in self.__used)
             or ("YMF262B" in self.__used)):
-            self.__oplData = self.callVGMExtractor("YM3812", ["OPL2"], ("5A", "5B", "5E", "5F"))
+            #self.__oplData = self.callVGMExtractor("YM3812", ["OPL2"], ("5A", "5B", "5E", "5F"))
+            if cutOut == None:
+               cutOut = []
+            self.__oplData = self.emulateYM3812(removeOutside, removePercuss, cutOut)
 
-        file = open("temp/shit.txt", "w")
-        file.write(data[0])
+
+        NTSC_frameRate  = 29.97 # /seconds
+        constant = NTSC_frameRate / 500
+
+        self.__dataChannels = {}
+
+        for channel in range(0,9):
+            if ((self.__oplData.channels[channel].slots[0].hasNote == True or
+               self.__oplData.channels[channel].slots[1].hasNote == True) and
+               channel not in self.__dataChannels.keys()):
+                    self.__dataChannels[channel] = {}
+
+            for slot in range(0,2):
+                if (self.__oplData.channels[channel].slots[1-slot].hasNote
+                    and slot not in self.__dataChannels[channel].keys()):
+                    self.__dataChannels[channel][slot] = []
+
+                if (self.__oplData.channels[channel].slots[1-slot].hasNote):
+                    for item in self.__oplData.channels[channel].channelData[slot]:
+                        if len(self.__dataChannels[channel][slot]) == 0:
+                            self.__dataChannels[channel][slot].append(
+                                {
+                                    "volume": item[0],
+                                    "note":   item[1],
+                                    "duration": 1
+                                }
+                            )
+                        elif (self.__dataChannels[channel][slot][-1]["volume"] != item[0] or
+                              self.__dataChannels[channel][slot][-1]["note"]   != item[1] ):
+                              self.__dataChannels[channel][slot].append(
+                                {
+                                    "volume": item[0],
+                                    "note":   item[1],
+                                    "duration": 1
+                                }
+                              )
+                        else:
+                              self.__dataChannels[channel][slot][-1]["duration"] += 1
+
+        remainder = 0
+
+        sums = {}
+        largest = 0
+
+        for channel in self.__dataChannels.keys():
+            if channel not in sums.keys():
+               sums[channel] = {}
+
+            for slot in self.__dataChannels[channel].keys():
+                if slot not in sums[channel].keys():
+                    sums[channel][slot] = 0
+
+                for item in self.__dataChannels[channel][slot]:
+
+                    temp = (item["duration"] * constant)+remainder
+                    item["duration"] = int(temp)
+
+                    remainder = temp - item["duration"]
+                    sums[channel][slot] += item["duration"]
+                if sums[channel][slot] > largest: largest = sums[channel][slot]
+
+        for channel in self.__dataChannels.keys():
+            for slot in self.__dataChannels[channel].keys():
+                if sums[channel][slot] < largest:
+                    self.__dataChannels[channel][slot].append(
+                        {"volume"  : 0,
+                         "note"    : 0,
+                         "duration": largest - sums[channel][slot]
+                         })
+
+        self.__channelAttr = {
+            "numberOfNotes": 0,
+            "dominantTiaChannel": 0,
+            "correctNotes": 0,
+            "variety": 0,
+            "monotony": 0,
+            "priority": 0
+
+        }
+
+        from copy import deepcopy
+
+        self.__channelAttributes = {}
+        for channel in self.__dataChannels.keys():
+            if self.__oplData.rythmMode == True and channel > 5:
+                break
+            self.__channelAttributes[channel] = deepcopy(self.__channelAttr)
+            self.__getChannelAttr(channel)
+
+        __tiaNote = {
+            "volume": 0,
+            "channel": 0,
+            "freq": 0,
+            "enabled": 0,
+            "Y": 0
+        }
+
+        self.__tempResult = {1: [],
+                             2: [],
+                             3: [],
+                             4: []}
+
+        for note in self.__dataChannels[0][0]:
+            for num in range(0,note["duration"]):
+                self.__tempResult[1].append(deepcopy(__tiaNote))
+                self.__tempResult[2].append(deepcopy(__tiaNote))
+                self.__tempResult[3].append(deepcopy(__tiaNote))
+                self.__tempResult[4].append(deepcopy(__tiaNote))
+
+        forSort = {}
+
+        for key in self.__channelAttributes.keys():
+            forSort[key] = self.__channelAttributes[key]["priority"]
+
+        f = sorted(forSort.items(), key=lambda x: x[1], reverse=True)
+
+        for item in f:
+            currentPoz = 0
+            if 1 in self.__dataChannels[item[0]].keys():
+                slot = 1
+                fetched = [[],[]]
+                for slot in range(0,2):
+                    for note in self.__dataChannels[item[0]][slot]:
+                        if note["duration"] > 0:
+                            newNote = deepcopy(__tiaNote)
+                            if note["volume"] > 0:
+                                newNote["enabled"] = 1
+                                newNote["volume"] = note["volume"]
+                                newNote["note"] = note["note"]
+                                newNote["Y"] = note["note"]
+                                (newNote["channel"],
+                                 newNote["freq"]) = self.__getChannelNote(note["note"],
+                                                    self.__channelAttributes[item[0]]["dominantTiaChannel"])
+                            for d in range(0, note["duration"]):
+                               fetched[slot].append(deepcopy(newNote))
+                #print(len(self.__dataChannels[item[0]][0]), len(self.__dataChannels[item[0]][1]), len(fetched[0]), len(fetched[1]))
+
+                for noteNum in range(0, largest):
+                    slot = 1 - slot
+                    if fetched[0][noteNum]["enabled"] == 1 and fetched[1][noteNum]["enabled"] == 1:
+                        realSlot = slot
+                    elif fetched[0][noteNum]["enabled"] == 1:
+                        realSlot = 0
+                    elif fetched[1][noteNum]["enabled"] == 1:
+                        realSlot = 1
+                    else:
+                        continue
+
+                    note = fetched[realSlot][noteNum]
+                    for num in range(1, 5):
+                        if self.__tempResult[num][noteNum]["enabled"] == 0:
+                            self.__tempResult[num][noteNum]["enabled"] = 1
+                            self.__tempResult[num][noteNum]["volume"]  = note["volume"]
+                            self.__tempResult[num][noteNum]["note"]    = note["note"]
+                            self.__tempResult[num][noteNum]["Y"]       = note["note"]
+                            self.__tempResult[num][noteNum]["channel"] = note["channel"]
+                            self.__tempResult[num][noteNum]["freq"]    = note["freq"]
+                            break
+
+            else:
+                for note in self.__dataChannels[item[0]][0]:
+                    for poz in range(currentPoz, currentPoz+note["duration"]):
+                        for num in range(1,5):
+                            if self.__tempResult[num][poz]["enabled"] == 0 and note["volume"] > 0:
+                                self.__tempResult[num][poz]["enabled"]   = 1
+                                self.__tempResult[num][poz]["volume"]    = note["volume"]
+                                self.__tempResult[num][poz]["note"]      = note["note"]
+                                self.__tempResult[num][poz]["Y"]         = note["note"]
+                                (self.__tempResult[num][poz]["channel"],
+                                 self.__tempResult[num][poz]["freq"])    = self.__getChannelNote(note["note"],
+                                                                           self.__channelAttributes[item[0]]["dominantTiaChannel"])
+                                break
+                    currentPoz += note["duration"]
+
+
+        self.result = self.__tempResult
+
+        self.artistName = ""
+        self.songName = ""
+        if self.__GD3offset != None:
+            self.artistName, self.songName = self.__getSongMetaData(path, self.__GD3offset)
+
+        #for key in self.result:
+        #    print(self.result[key])
+
+        print("--- %s seconds ---" % (time.time() - start_time))
+
+    def __getSongMetaData(self, path, offset):
+        import gzip
+        from io import BytesIO as ByteBuffer
+
+        artistName = ""
+        songData   = ""
+
+        file = open(path, "rb")
+        data = file.read()
         file.close()
 
+        extension = path.split(".")[-1]
+
+        if extension == "vgz":
+            data = gzip.GzipFile(fileobj=ByteBuffer(data), mode='rb')
+
+        data = data.read()
+        data = data[offset:]
+
+        if (self.__getAscii(data[0])+self.__getAscii(data[1])+self.__getAscii(data[2])) != "Gd3":
+            return (artistName, songData)
+
+        version = self.__getAscii(data[3]) + self.__getAscii(data[4]) + self.__getAscii(data[5]) + self.__getAscii(data[6])
+        #should be 00010000
+
+        lenght = int("0x"+(hex(data[11])+hex(data[10])+hex(data[9])+hex(data[8])).replace("0x", ""), 16)
+
+        data = data[:lenght]
+
+        meta = {
+            "title": ["", ""],
+            "game": ["", ""],
+            "system": ["", ""],
+            "artist": ["", ""]
+        }
+
+        index = 0
+        lang = 0
+        tempString = ""
+
+        for num in range(12, lenght, 2):
+
+            h1 = hex(data[num+1]).replace("0x", "")
+            if len(h1) == 1:
+               h1 = "0" + h1
+            h2 = hex(data[num]).replace("0x", "")
+            if len(h2) == 1:
+               h2 = "0" + h2
+
+            hexa = "0x"+h1+h2
+            #print(hexa)
+            if hexa == "0x0000":
+               key = list(meta.keys())[index]
+               meta[key][lang] = tempString
+
+               tempString = ""
+               if lang == 1:
+                  index+=1
+                  lang = 0
+               else:
+                  lang += 1
+               if index > 3:
+                  break
+            else:
+                tempString += chr(int(hexa, 16))
+
+            if meta["artist"][0] != "":
+                artistName = meta["artist"][0]
+            else:
+                artistName = meta["artist"][1]
+
+            if meta["title"][0] != "":
+                songData = meta["title"][0]
+            else:
+                songData = meta["title"][1]
+
+            bonusInfo = []
+
+            if meta["game"][0] != "":
+                bonusInfo.append(meta["game"][0])
+            elif meta["game"][1] != "":
+                bonusInfo.append(meta["game"][1])
+
+            if meta["system"][0] != "":
+                bonusInfo.append(meta["system"][0])
+            elif meta["system"][1] != "":
+                bonusInfo.append(meta["system"][1])
+
+            if bonusInfo == []:
+                pass
+            elif len(bonusInfo) == 1:
+               songData += " (" + bonusInfo[0] + ")"
+            else:
+               songData += " (" + " :: ".join(bonusInfo) + ")"
+
+        return(artistName, songData)
+
+    def __getAscii(self, hex):
+        return(chr(hex))
+
+    def __getChannelNote(self, input, dominant):
+        notes = self.__loader.piaNotes.getTiaValue(input, dominant)
+
+        if notes != None:
+           if type(notes) == list:
+               szum = 0
+               for num in notes:
+                   szum += int(num)
+               note = szum // len(notes)
+           else:
+               note = int(notes)
+
+           channel = int(dominant)
+        else:
+            notes = self.__loader.piaNotes.getTiaValue(input, None)
+            if notes != None:
+                key = list(notes.keys())[0]
+                if type(notes[key]) == list:
+                    szum = 0
+                    for num in notes[key]:
+                        szum += int(num)
+                    note = szum // len(notes[key])
+                else:
+                    note = int(notes[key])
+
+
+                channel = int(key)
+            else:
+                #print(input)
+                channel = 0
+                note    = 0
+
+        return (channel, note)
+
+
+    def __getChannelAttr(self, channel):
+        channelCount = {
+            1: 0, 4: 0, 6: 0, 12: 0, 14: 0
+        }
+        noteCount = {}
+
+        for num in range(1, 96):
+            noteCount[num] = 0
+
+        from copy import deepcopy
+
+        one = {
+            "channelCount": deepcopy(channelCount),
+            "correctNotes": 0,
+            "noteCount": deepcopy(noteCount),
+            "variety": 0,
+            "monotony": 0,
+            "numberOfNotes": 0,
+            "priority": 0,
+            "dominantTiaChannel": 0
+        }
+
+        allThree = []
+        for n in range(0,3):
+            allThree.append(deepcopy(one))
+
+        for slot in self.__dataChannels[channel].keys():
+            for pair in [[0,0], [1,8], [2,-8]]:
+                for note in self.__dataChannels[channel][slot]:
+                    self.__calculateChannelAttr(note, pair[0], pair[1], allThree, channel)
+
+                allThree[pair[0]]["correctNotes"] = allThree[pair[0]]["correctNotes"] / allThree[pair[0]]["numberOfNotes"]
+
+                temp = 0
+                largest = 0
+                largestKey = 0
+                for key in allThree[pair[0]]["channelCount"].keys():
+                    if allThree[pair[0]]["channelCount"][key] > largest:
+                       largest    =  allThree[pair[0]]["channelCount"][key]
+                       largestKey =  key
+                       temp      += allThree[pair[0]]["channelCount"][key]
+
+                allThree[pair[0]]["monotony"]           = largest / temp
+                allThree[pair[0]]["dominantTiaChannel"] = largestKey
+
+                for key in allThree[pair[0]]["channelCount"].keys():
+                    if allThree[pair[0]]["channelCount"][key] > 0:
+                        allThree[pair[0]]["variety"] += 1
+
+                allThree[pair[0]]["variety"]  = allThree[pair[0]]["variety"] / 95
+                allThree[pair[0]]["priority"] = (allThree[pair[0]]["variety"]*2) + \
+                                                (allThree[pair[0]]["monotony"]*1.5)+\
+                                                (allThree[pair[0]]["correctNotes"]*4)
+
+
+
+        #for item in allThree:
+        #    print(item)
+
+        if (allThree[0]["priority"] > allThree[1]["priority"]) and (allThree[0]["priority"] > allThree[2]["priority"]):
+           add = 0
+           self.__setMainData(channel, 0, allThree)
+
+        elif (allThree[1]["priority"] > allThree[2]["priority"]):
+           add = 8
+           self.__setMainData(channel, 1, allThree)
+
+        else:
+           add = -8
+           self.__setMainData(channel, 2, allThree)
+
+        for slot in self.__dataChannels[channel].keys():
+            for note in self.__dataChannels[channel][slot]:
+                if note["note"] != 0:
+                    note["note"] += add
+
+
+
+    def __setMainData(self, channel, num, allThree):
+        self.__channelAttributes[channel]["numberOfNotes"]      = allThree[num]["numberOfNotes"]
+        self.__channelAttributes[channel]["variety"]            = allThree[num]["variety"]
+        self.__channelAttributes[channel]["monotony"]           = allThree[num]["monotony"]
+        self.__channelAttributes[channel]["priority"]            = allThree[num]["priority"]
+        self.__channelAttributes[channel]["numberOfNotes"]      = allThree[num]["numberOfNotes"]
+        self.__channelAttributes[channel]["dominantTiaChannel"] = allThree[num]["dominantTiaChannel"]
+        self.__channelAttributes[channel]["correctNotes"]       = allThree[num]["correctNotes"]
+
+
+    def __calculateChannelAttr(self, note, place, add, allThree, channel):
+        tiaNotes = self.__piaNotes.getTiaValue(note["note"]+add, None)
+        if tiaNotes != None:
+            allThree[place]["numberOfNotes"] += 1
+
+            for channelKey in tiaNotes:
+                allThree[place]["channelCount"][int(channelKey)] += 1
+
+            if type(tiaNotes[list(tiaNotes.keys())[0]]) == str:
+                allThree[place]["correctNotes"] += 1
+
+            allThree[place]["noteCount"][note["note"]+add] += 1
+
+    def emulateYM3812(self, removeOutside, removePercuss, cutOut):
+        from YM3812 import YM3812
+
+        bytes = []
+        for item in self.__vgmData:
+            if item.dataByteStrings[0] in ("5A", "5B", "5E", "5F", "61"):
+                bytes.append(item.dataByteStrings)
+
+        ym3812Data = YM3812(self.__loader, bytes, removeOutside, removePercuss, cutOut)
+        return ym3812Data.stream
+
+    """
     def callVGMExtractor(self, program, extraData, codeBytes):
         bytes = ""
         for item in self.__vgmData:
@@ -128,8 +571,6 @@ class VGMConverter:
                                                 True, True)
         return(data)
 
-
+    """
     def vgm2textThread(self, path):
         self.__loader.executor.execute("vgm2txt", ['"'+path+'"', '"'+"0"+'"', '"'+"0"+'"'], True)
-
-

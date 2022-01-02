@@ -8,7 +8,7 @@
       <excludeFolder url="file://$MODULE_DIR$/venvThis" />
       <excludeFolder url="file://$MODULE_DIR$/venvThis2" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="Python 3.7 (Fortari2600)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">

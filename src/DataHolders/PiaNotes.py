@@ -5,6 +5,27 @@ class PiaNotes:
         self.__loader = loader
         self.__tiaTone = self.__loader.tiaTone
         self.__loadPiaNotes()
+        self.__loadPianoKeys()
+
+    def __loadPianoKeys(self):
+        self.__pianoKeys = {}
+        file = open("config/pianoKeys.txt", "r")
+        txt  = file.read().replace("\r","").split("\n")
+        file.close()
+
+        for line in txt:
+            line = line.split("=")
+            self.__pianoKeys[int(line[0])] = float(line[1])
+
+    def getClosestPianoKey(self, val):
+        temp = {}
+
+        for key in self.__pianoKeys.keys():
+            temp[key] = abs(self.__pianoKeys[key] - val)
+
+        temp = sorted(temp.items(), key=lambda x: x[1], reverse=False)
+
+        return(temp[0][0])
 
     def __loadPiaNotes(self):
         self.__piaNotes = {}

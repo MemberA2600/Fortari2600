@@ -13,6 +13,7 @@ class MidiConverter:
         #This is the one the main program accesses. The process was
         #successful if it is not None.
         self.result = None
+        self.artistName = ""
         self.songName = ""
         self.__multi = multi
         self.__removeOutside = removeOutside
