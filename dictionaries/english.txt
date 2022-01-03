@@ -218,3 +218,5 @@ wlf=Id Music Format
 raw=RDOS raw OPL
 amDisable=Disable AM modulation for Adlib VGM?
 amModulation=AM Modulation
+vibratioSettings=Vibratio Settings
+vibratioSettingsMessage=Do you wish to turn off YM3812 vibratio globally?

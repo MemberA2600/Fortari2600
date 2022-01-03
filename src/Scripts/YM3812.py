@@ -89,6 +89,7 @@ class ChipStreamSlot:
         self.AMmodulatio   = 0.0
         self.vibratio      = 0.0
         self.vibrBit       = 0
+        self.vibrCount       = 0
         self.sustainOn     = False
 
         self.outputVol     = 0.0
@@ -262,10 +263,14 @@ class ChipStream:
                     if s.state > 0:
                        s.outputVol  = s.currentVolume
                        s.outputFreq = s.freq
-                       if s.vibratio > 0.0:
+                       if s.vibratio > 0.0 and self.__vibrSets == True:
                           if s.vibrBit == 1:
                              s.outputFreq *= (s.vibratio+1)
-                          s.vibrBit = 1 - s.vibrBit
+                          if s.vibrCount > 1:
+                            s.vibrBit = 1 - s.vibrBit
+                            s.vibrCount = 0
+                          else:
+                            s.vibrCount += 1
 
                        s.outputVol += s.AMmodulatio
 
@@ -372,7 +377,7 @@ class ChipChannel:
 
 #THIS IS THE MAIN CLASS
 class YM3812:
-    def __init__(self, loader, data, removeOutside, removePercuss, cutOut):
+    def __init__(self, loader, data, removeOutside, removePercuss, cutOut, vibrSets):
 
         self.__loader   = loader
         self.data       = data
@@ -380,6 +385,7 @@ class YM3812:
         self.ADT        = AttackDecayTable()
 
         self.__specials = (removePercuss, removeOutside, cutOut)
+        self.__vibrSets = vibrSets
 
         self.rythms = \
             {
@@ -490,6 +496,7 @@ class YM3812:
                         self.stream.channels[channel].slots[slot].waveform = self.channels[channel].slots[slot].waveform
 
                         self.stream.channels[channel].slots[slot].vibrBit = 0
+                        self.stream.channels[channel].slots[slot].vibrCount = 0
                         self.stream.channels[channel].slots[slot].state   = 1
                         self.stream.channels[channel].slots[slot].freq    = freq * self.channels[channel].slots[slot].multiplier
 

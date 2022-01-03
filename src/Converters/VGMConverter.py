@@ -19,6 +19,11 @@ class VGMConverter:
         except:
             pass
 
+        try:
+            os.remove(txt2)
+        except:
+            pass
+
         t = Thread(target=self.vgm2textThread, args=[path])
         t.daemon = True
         t.start()
@@ -46,7 +51,7 @@ class VGMConverter:
         data = file.read().replace("\r","").split("VGMData:")
         file.close()
 
-        os.remove(txt2)
+        #os.remove(txt2)
 
         from VGMDataItem import VGMDataItem
 
@@ -115,13 +120,19 @@ class VGMConverter:
 
         # OPL2 is fully compatible with OPL, OPL3 is handled as OPL2
 
+        vibr = self.__loader.fileDialogs.askYesOrNo("vibratioSettings", "vibratioSettingsMessage")
+        if vibr == "Yes":
+            vibrSets = False
+        else:
+            vibrSets = True
+
         if (("YM3812" in self.__used) or ("YM3526" in self.__used) or
             ("YMF262" in self.__used) or ("YMF262A" in self.__used)
             or ("YMF262B" in self.__used)):
             #self.__oplData = self.callVGMExtractor("YM3812", ["OPL2"], ("5A", "5B", "5E", "5F"))
             if cutOut == None:
                cutOut = []
-            self.__oplData = self.emulateYM3812(removeOutside, removePercuss, cutOut)
+            self.__oplData = self.emulateYM3812(removeOutside, removePercuss, cutOut, vibrSets)
 
 
         NTSC_frameRate  = 29.97 # /seconds
@@ -646,15 +657,15 @@ class VGMConverter:
 
             allThree[place]["noteCount"][note["note"]+add] += 1
 
-    def emulateYM3812(self, removeOutside, removePercuss, cutOut):
+    def emulateYM3812(self, removeOutside, removePercuss, cutOut, vibrSets):
         from YM3812 import YM3812
 
         bytes = []
         for item in self.__vgmData:
-            if item.dataByteStrings[0] in ("5A", "5B", "5E", "5F", "61"):
+            if item.dataByteStrings != [] and item.dataByteStrings[0] in ("5A", "5B", "5E", "5F", "61"):
                 bytes.append(item.dataByteStrings)
 
-        ym3812Data = YM3812(self.__loader, bytes, removeOutside, removePercuss, cutOut)
+        ym3812Data = YM3812(self.__loader, bytes, removeOutside, removePercuss, cutOut, vibrSets)
         return ym3812Data.stream
 
     """
