@@ -134,7 +134,6 @@ class VGMConverter:
                cutOut = []
             self.__oplData = self.emulateYM3812(removeOutside, removePercuss, cutOut, vibrSets)
 
-
         NTSC_frameRate  = 29.97 # /seconds
         constant = NTSC_frameRate / 500
 
@@ -217,6 +216,7 @@ class VGMConverter:
         from copy import deepcopy
 
         self.__channelAttributes = {}
+
         for channel in self.__dataChannels.keys():
             if self.__oplData.rythmMode == True and channel > 5:
                 break
@@ -262,32 +262,42 @@ class VGMConverter:
                if channel < 6:
                    continue
                for slot in self.__dataChannels[channel]:
+                   currentPoz = 0
                    for note in self.__dataChannels[channel][slot]:
-                       currentPoz = 0
-                       if note["note"] > 89 and note["note"] < 96:
+
+                       if note["note"] > 88 and note["note"] < 96:
                           for counter in range(0, note["duration"]):
+
                               if counter > 6:
                                   break
 
+                              if counter < 2:
+                                 cPoz = 1
+                              else:
+                                 cPoz = 4
+
                               savePoz = currentPoz + counter
 
-                              if self.__drumNotes[savePoz]["enabled"] == 0:
-                                  self.__drumNotes[savePoz]["enabled"] = 1
-                                  self.__drumNotes[savePoz]["volume"]  = note["volume"]
-                                  self.__drumNotes[savePoz]["note"]    = note["note"]
-                                  self.__drumNotes[savePoz]["Y"]       = note["note"]
+                              if self.__drumNotes[savePoz]["enabled"]  == 0:
+                                  self.__drumNotes[savePoz]["enabled"]  = 1
+                                  self.__drumNotes[savePoz]["volume"]   = note["volume"]
+                                  self.__drumNotes[savePoz]["note"]     = note["note"]
+                                  self.__drumNotes[savePoz]["Y"]        = note["note"]
+                                  self.__drumNotes[savePoz]["cPoz"]     = cPoz
 
                                   drums = self.__piaNotes.getTiaValue(note["note"],  None)
-                                  self.__drumNotes[savePoz]["channel"] = drums[0]
-                                  self.__drumNotes[savePoz][savePoz]["freq"]    = drums[1]
+                                  self.__drumNotes[savePoz]["channel"]  = drums[0]
+                                  self.__drumNotes[savePoz]["freq"]     = drums[1]
 
-                          currentPoz += note["duration"]
+                       currentPoz += note["duration"]
 
         for key in self.__channelAttributes.keys():
             forSort[key] = self.__channelAttributes[key]["priority"]
 
         f = sorted(forSort.items(), key=lambda x: x[1], reverse=True)
 
+#        for note in self.__drumNotes:
+#            print(note)
 
         from ChangeDrumsAndOrder import ChangeDrumsAndOrder
 
@@ -296,25 +306,18 @@ class VGMConverter:
                                                       self.__drumNotes, removePercuss, "vgm"
                                                       )
 
-        if self.__oplData.rythmMode == True and removePercuss == False:
-            currentPoz = 0
-            for note in self.__drumNotes:
-                for counter in range(0, note["duration"]):
-                    if counter < 6:
-                        channelPoz = 0
-                    elif counter < 6:
-                        channelPoz = 4
-                    else:
-                        break
 
-                    savePoz = currentPoz + counter
-                    self.__tempResult[channelPoz][savePoz]["enabled"] = self.__drumNotes[savePoz]["enabled"]
-                    self.__tempResult[channelPoz][savePoz]["volume"]  = self.__drumNotes[savePoz]["volume"]
-                    self.__tempResult[channelPoz][savePoz]["note"]    = self.__drumNotes[savePoz]["note"]
-                    self.__tempResult[channelPoz][savePoz]["Y"]       = self.__drumNotes[savePoz]["Y"]
-                    self.__tempResult[channelPoz][savePoz]["channel"] = self.__drumNotes[savePoz]["channel"]
-                    self.__tempResult[channelPoz][savePoz]["freq"]    = self.__drumNotes[savePoz]["freq"]
-                currentPoz += note["duration"]
+        if self.__oplData.rythmMode == True and removePercuss == False:
+            for noteNum in range(0, len(self.__drumNotes)):
+
+                if self.__drumNotes[noteNum]["enabled"] == 1:
+                    cPoz = self.__drumNotes[noteNum]["cPoz"]
+                    self.__tempResult[cPoz][noteNum]["enabled"]  = 1
+                    self.__tempResult[cPoz][noteNum]["volume"]   = self.__drumNotes[noteNum]["volume"]
+                    self.__tempResult[cPoz][noteNum]["note"]     = self.__drumNotes[noteNum]["note"]
+                    self.__tempResult[cPoz][noteNum]["Y"]        = self.__drumNotes[noteNum]["Y"]
+                    self.__tempResult[cPoz][noteNum]["channel"]  = self.__drumNotes[noteNum]["channel"]
+                    self.__tempResult[cPoz][noteNum]["freq"]     = self.__drumNotes[noteNum]["freq"]
 
         am = self.__loader.fileDialogs.askYesOrNo("amModulation", "amDisable")
         if am == "Yes":
@@ -414,19 +417,18 @@ class VGMConverter:
         self.artistName = ""
         self.songName = ""
         if self.__GD3offset != None:
-            self.artistName, self.songName = self.__getSongMetaData(path, self.__GD3offset)
+            self.artistName, self.songName = self.__getSongMetaData(path, self.__GD3offset, False)
+            if self.artistName == "" or self.songName == "":
+                self.artistName, self.songName = self.__getSongMetaData(path, self.__GD3offset, True)
 
         #for key in self.result:
         #    print(self.result[key])
 
         #print("--- %s seconds ---" % (time.time() - start_time))
 
-    def __getSongMetaData(self, path, offset):
+    def __openVGM(self, path, force):
         import gzip
         from io import BytesIO as ByteBuffer
-
-        artistName = ""
-        songData   = ""
 
         file = open(path, "rb")
         data = file.read()
@@ -434,21 +436,31 @@ class VGMConverter:
 
         extension = path.split(".")[-1]
 
-        if extension == "vgz":
+        if extension == "vgz" or force == True:
             data = gzip.GzipFile(fileobj=ByteBuffer(data), mode='rb')
+            data = data.read()
+        return data
 
-        data = data.read()
+
+    def __getSongMetaData(self, path, offset, force):
+
+        artistName = ""
+        songData   = ""
+
+        data = self.__openVGM(path, force)
         data = data[offset:]
 
-        if (self.__getAscii(data[0])+self.__getAscii(data[1])+self.__getAscii(data[2])) != "Gd3":
+        try:
+            if (self.__getAscii(data[0])+self.__getAscii(data[1])+self.__getAscii(data[2])) != "Gd3":
+                return (artistName, songData)
+        except:
             return (artistName, songData)
 
         version = self.__getAscii(data[3]) + self.__getAscii(data[4]) + self.__getAscii(data[5]) + self.__getAscii(data[6])
         #should be 00010000
 
-        lenght = int("0x"+(hex(data[11])+hex(data[10])+hex(data[9])+hex(data[8])).replace("0x", ""), 16)
-
-        data = data[:lenght]
+        lenght = int("0x"+(hex(data[10])+hex(data[9])+hex(data[8])+hex(data[7])).replace("0x", ""), 16)
+        #data = data[:lenght]
 
         meta = {
             "title": ["", ""],
@@ -535,6 +547,8 @@ class VGMConverter:
 
            channel = int(dominant)
         else:
+            if input > 88:
+               return(0,0)
             notes = self.__loader.piaNotes.getTiaValue(input, None)
             if notes != None:
                 key = list(notes.keys())[0]
@@ -598,7 +612,11 @@ class VGMConverter:
                        largestKey =  key
                        temp      += allThree[pair[0]]["channelCount"][key]
 
-                allThree[pair[0]]["monotony"]           = largest / temp
+                try:
+                    allThree[pair[0]]["monotony"]           = largest / temp
+                except:
+                    allThree[pair[0]]["monotony"]           = 0
+
                 allThree[pair[0]]["dominantTiaChannel"] = largestKey
 
                 for key in allThree[pair[0]]["channelCount"].keys():
@@ -646,8 +664,12 @@ class VGMConverter:
 
     def __calculateChannelAttr(self, note, place, add, allThree, channel):
         tiaNotes = self.__piaNotes.getTiaValue(note["note"]+add, None)
+
+        if note["note"]+add > 88 or note["note"]+add < 1:
+           tiaNotes = None
+
+        allThree[place]["numberOfNotes"] += 1
         if tiaNotes != None:
-            allThree[place]["numberOfNotes"] += 1
 
             for channelKey in tiaNotes:
                 allThree[place]["channelCount"][int(channelKey)] += 1
