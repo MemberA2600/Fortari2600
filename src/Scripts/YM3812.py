@@ -427,7 +427,7 @@ class YM3812:
             #counter+=1
             #print(counter, "/", len(self.data))
 
-            if line[0] != "61":
+            if line[0] not in ("61", "62", "63"):
                register = int("0x"+line[1], 16)
                data     = int("0x"+line[2], 16)
 
@@ -452,7 +452,11 @@ class YM3812:
                elif register >= 0xe0 and register <= 0xf5:
                    self.__setRegisterEX(register, data, [line[1], line[2]])
             else:
-               self.__updateOutput(int("0x"+line[2]+line[1],16))
+               if line[0] == "61":   time = int("0x"+line[2]+line[1],16)
+               elif line[0] == "62": time = 735
+               elif line[0] == "63": time = 882
+
+               self.__updateOutput(time)
                self.stream.playChannels(self.__loader, self.__specials)
 
 

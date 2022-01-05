@@ -218,3 +218,4 @@ amDisable=AM moduláció kikapcsolása az Adlib VGM fájlban?
 amModulation=AM Moduláció
 vibratioSettings=Vibratio Beállítások
 vibratioSettingsMessage=Ki szeretnéd kapcsolni egységesen a YM3812 vibrációt?
+setMidiTempo=Kérlek, add meg a midi tempót! (alapértelmezett: 50)

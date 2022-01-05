@@ -220,3 +220,4 @@ amDisable=Disable AM modulation for Adlib VGM?
 amModulation=AM Modulation
 vibratioSettings=Vibratio Settings
 vibratioSettingsMessage=Do you wish to turn off YM3812 vibratio globally?
+setMidiTempo=Set an integer for midi tempo! (default: 50)

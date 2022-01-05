@@ -328,7 +328,7 @@ class VGMConverter:
 
         for item in f:
             currentPoz = 0
-            if 1 in self.__dataChannels[item[0]].keys():
+            if len(self.__dataChannels[item[0]].keys()) > 1:
                 slot    = 1
                 counter = 0
                 fetched = [[],[]]
@@ -390,7 +390,8 @@ class VGMConverter:
                             break
 
             else:
-                for note in self.__dataChannels[item[0]][0]:
+                key = list(self.__dataChannels[item[0]].keys())[0]
+                for note in self.__dataChannels[item[0]][key]:
                     for poz in range(currentPoz, currentPoz+note["duration"]):
                         for num in range(1,5):
                             if self.__tempResult[num][poz]["enabled"]    == 0 and note["volume"] > 0:
@@ -684,7 +685,7 @@ class VGMConverter:
 
         bytes = []
         for item in self.__vgmData:
-            if item.dataByteStrings != [] and item.dataByteStrings[0] in ("5A", "5B", "5E", "5F", "61"):
+            if item.dataByteStrings != [] and item.dataByteStrings[0] in ("5A", "5B", "5E", "5F", "61", "62", "63"):
                 bytes.append(item.dataByteStrings)
 
         ym3812Data = YM3812(self.__loader, bytes, removeOutside, removePercuss, cutOut, vibrSets)

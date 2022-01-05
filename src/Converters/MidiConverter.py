@@ -64,7 +64,23 @@ class MidiConverter:
 
         self.__seperatedNotes = deepcopy(self.__channels)
         self.__channelList = deepcopy(self.__channels)
-        self.__defaultTempo = 50 * 1.1 * self.__multi
+
+        from random import randint
+        r = randint(0, 1000)
+        if r < 995:
+            self.__loader.soundPlayer.playSound("Ask")
+        else:
+            self.__loader.soundPlayer.playSound("Probe")
+
+        try:
+            constant = self.__loader.fileDialogs.askForInteger("askForSomething", "setMidiTempo")
+        except:
+            constant = 50
+
+        if constant == None:
+           constant = 50
+
+        self.__defaultTempo = constant * 1.1 * self.__multi
 
         textToSend = ""
         tempo = None

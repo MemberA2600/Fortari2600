@@ -115,6 +115,11 @@ class MusicComposer:
         ):
             try:
                 if self.__runningThreads == 0 and len(self.__piaNoteTable) > 0:
+                    if self.__tiaScreens.currentScreen == 0:
+                       self.forceShit = True
+                       self.__currentSelected.set("1")
+                       self.__tiaScreens.currentScreen = 0
+
 
                     self.__ButtonInsertBefore.config(state=NORMAL)
                     self.__ButtonInsertAfter.config(state=NORMAL)
@@ -130,7 +135,7 @@ class MusicComposer:
                     self.__IOButtons()
                     if self.reset == True:
                         self.__channelNum[0] = 1
-                        self.__currentSelected.set(0)
+                        self.__currentSelected.set("1")
                         self.reset = False
 
 

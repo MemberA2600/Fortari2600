@@ -1468,67 +1468,67 @@ TextDir = $ed
 	LDA	#0
 	STA	picIndex
 
-	LDA	#25
+	LDA	#29
 	STA	Letter01
 
-	LDA	#17
+	LDA	#24
 	STA	Letter02
 
-	LDA	#18
+	LDA	#13
 	STA	Letter03
 
-	LDA	#21
+	LDA	#13
 	STA	Letter04
 
-	LDA	#18
+	LDA	#36
 	STA	Letter05
 
-	LDA	#25
+	LDA	#22
 	STA	Letter06
 
-	LDA	#25
+	LDA	#18
 	STA	Letter07
 
-	LDA	#14
+	LDA	#29
 	STA	Letter08
 
-	LDA	#36
+	LDA	#12
 	STA	Letter09
 
-	LDA	#31
+	LDA	#17
 	STA	Letter10
 
-	LDA	#10
+	LDA	#14
 	STA	Letter11
 
-	LDA	#12
+	LDA	#21
 	STA	Letter12
 
 	LDA	#$00
 	STA	frameColor
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0 = $e2
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0 = $e4
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1 = $e5
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1 = $e7
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp0 = $e8
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp1 = $ea
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0 = $e2
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0 = $e4
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1 = $e5
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1 = $e7
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp0 = $e8
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp1 = $ea
 
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Init
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Init
 	LDA	#1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1
 
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
 
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1608,62 +1608,62 @@ OverScanBank2
 * begins.
 *
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Move_text
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Move_text
 
 	LDA	#TextEnd 
 	CMP	#0
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Move_Ended
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Move_Ended
 
 	LDA	counter
 	AND	#%00011111
 	CMP	#%00011111
 
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Move_Ended
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Move_Ended
 
 	LDA	TextDir
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Reversed
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Reversed
 
 	LDA	TextPoz
 	CMP	#TextEnd
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_INCR
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_INCR
 
 	LDA	#1
 	STA	TextDir
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_DECR	
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_INCR
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_DECR	
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_INCR
 	INC	TextPoz
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Move_Ended
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Move_Ended
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Reversed
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Reversed
 	LDA	TextPoz
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_DECR
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_DECR
 	STA	TextDir
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_INCR
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_DECR
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_INCR
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_DECR
 	DEC	TextPoz
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Move_Ended
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Move_Ended
 
 	LDY	TextPoz
 	LDX	#255
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Create_Loop
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Create_Loop
 	INX
 	CPX	#12
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Create_End
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Create_End
 
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReallyNiceText,y
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReallyNiceText,y
 	STA	Letter01,x
 	INY
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Create_Loop
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Create_Loop
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Text_Create_End
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Text_Create_End
 	LDA	#56
 	CMP	picDisplayHeight
-	BCS	Philippe_Vachey_-_Ending_Alone_In_the_Dark_DontCutHeight
+	BCS	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_DontCutHeight
 	STA	picDisplayHeight
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_DontCutHeight
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_DontCutHeight
 	LDA	#2
 	asl
 	asl			; Rol left two bits to save bankNumber
@@ -1674,20 +1674,20 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_DontCutHeight
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#<(Philippe_Vachey_-_Ending_Alone_In_the_Dark_JumpBack-1)
+	lda	#<(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_JumpBack-1)
 	sta	temp01
-   	lda	#>(Philippe_Vachey_-_Ending_Alone_In_the_Dark_JumpBack-1)
+   	lda	#>(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_JumpBack-1)
 	sta	temp02
 
-	lda	#>(Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver0-1)
+	lda	#>(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver0-1)
    	pha
-   	lda	#<(Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver0-1)
+   	lda	#<(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver0-1)
    	pha
    	pha
    	pha
    	ldx	#3
    	jmp	bankSwitchJump
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_JumpBack
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_JumpBack
 
 
 *VSYNC
@@ -2041,7 +2041,7 @@ fortari_EvenFrame_Line2
 	BNE	fortari_EvenFrame_Line1		; 2 (73)
 
 fortari_Reset
-Philippe_Vachey_-_Ending_Alone_In_the_DarkBegin
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainBegin
 	LDA	frameColor
 	STA	WSYNC		; (76)
 	STA	HMCLR		; 3
@@ -2077,7 +2077,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkBegin
 	STA	NUSIZ0		; 3 
 	STA	NUSIZ1		; 3 
 	
-Philippe_Vachey_-_Ending_Alone_In_the_DarkPrepareForDarkness
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainPrepareForDarkness
 	LDA	TextBackColor	
 	STA	WSYNC
 	STA	HMOVE		; 3	
@@ -2087,18 +2087,18 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkPrepareForDarkness
 	LDY	#4		
 	STY	temp02		
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkFillerLine1
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainFillerLine1
 	LDA	counter	
 	AND	#%00000010
 	CMP	#%00000010
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_DarkCalculateDataStart
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_PainCalculateDataStart
 	STA	WSYNC
 	STA	WSYNC
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkCalculateDataStart
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainCalculateDataStart
 	STA	WSYNC
 	LDX	#0
-Philippe_Vachey_-_Ending_Alone_In_the_DarkResetGRP
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainResetGRP
 	STX	GRP0
 	STX	GRP1
 
@@ -2107,14 +2107,14 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkResetGRP
 	LDA	TextBackColor
 	STA	COLUPF
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkCalculateData
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainCalculateData
 	TYA
 	EOR	counter		  	; Seems like the best way to decide
 	AND	#%00000001		; which lines to draw.
 	CMP	#%00000001
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_DarkEvenLine
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_PainEvenLine
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkOddLine
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainOddLine
 	LDA	Letter01
 	TAX
 	LDA	Bank25Table,x		; Got the starting address
@@ -2175,8 +2175,8 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkOddLine
 	AND	#%11110000
 	STA	temp08
 
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_DarkThisLineIsCalculated	
-Philippe_Vachey_-_Ending_Alone_In_the_DarkEvenLine
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_PainThisLineIsCalculated	
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainEvenLine
 	LDA	Letter02
 	TAX
 	LDA	Bank25Table,x		; Got the starting address
@@ -2237,20 +2237,20 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkEvenLine
 	AND	#%00001111
 	STA	temp08
 
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_DarkThisLineIsCalculated
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_PainThisLineIsCalculated
 
 	align 	256
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkThisLineIsCalculated	
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainThisLineIsCalculated	
 	LDA	TextColor
 	ADC	Bank2Colors,y
 	STA	COLUP0
 	STA	COLUP1
 
 	BIT	temp08
-	BPL	Philippe_Vachey_-_Ending_Alone_In_the_DarkNoReColor
+	BPL	Todd_Mitchell_Porter_-_Cant_Remove_the_PainNoReColor
 	STA	COLUPF
-Philippe_Vachey_-_Ending_Alone_In_the_DarkNoReColor
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainNoReColor
 
 	STA	WSYNC
 	LDA	temp03		; 3 (6)
@@ -2277,10 +2277,10 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkNoReColor
 
 	DEC	temp02		; 5
 	LDY	temp02		; 3
-	BMI	Philippe_Vachey_-_Ending_Alone_In_the_DarkFillerLine2	; 2 
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_DarkCalculateDataStart   ; 3
+	BMI	Todd_Mitchell_Porter_-_Cant_Remove_the_PainFillerLine2	; 2 
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_PainCalculateDataStart   ; 3
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkFillerLine2
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainFillerLine2
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -2289,12 +2289,12 @@ Philippe_Vachey_-_Ending_Alone_In_the_DarkFillerLine2
 	LDA	counter	
 	AND	#%00000010
 	CMP	#%00000010
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_DarkReset
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_PainReset
 	STA	WSYNC
 	STA	WSYNC
 
-Philippe_Vachey_-_Ending_Alone_In_the_DarkReset
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals
+Todd_Mitchell_Porter_-_Cant_Remove_the_PainReset
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals
 
 *
 * As it uses the last 8 bytes of the SubMenu kernel, 
@@ -2336,13 +2336,13 @@ MusicIndicator8 = $ce
 
 	AND	#%00000011
 	CMP	#%00000011
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_DECR
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_DECR
 	
 	_sleep	34
 	sleep	3
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoLSR
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoLSR
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_DECR
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_DECR
 	LSR	MusicIndicator1
 	LSR	MusicIndicator2
 	LSR	MusicIndicator3
@@ -2352,7 +2352,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_DECR
 	LSR	MusicIndicator7	
 	LSR	MusicIndicator8
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoLSR
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoLSR
 	LDA	#$10
 	STA	HMM0
 
@@ -2375,13 +2375,13 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoLSR
 	lsr
 	TAY	; Need the double
 
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Pointers,y
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Pointers,y
 	CMP	#0
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel0
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel0
 
 	STA	temp04
 	INY
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Pointers,y
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Pointers,y
 	STA	temp05
 
 	LDA	temp17
@@ -2393,10 +2393,10 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoLSR
 	
 	LDA	temp03
 	CMP	MusicIndicator1,x
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel0
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel0
 	STA	MusicIndicator1,x
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel0
 	STA	WSYNC
 
 	LDA	temp18	
@@ -2410,13 +2410,13 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel0
 	lsr
 	TAY	; Need the double
 
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Pointers,y
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Pointers,y
 	CMP	#0
-	BEQ	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel1
+	BEQ	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel1
 
 	STA	temp04
 	INY
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Pointers,y
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Pointers,y
 	STA	temp05
 
 	LDA	temp19
@@ -2428,49 +2428,49 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel0
 	
 	LDA	temp03
 	CMP	MusicIndicator1,x
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel1
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel1
 	STA	MusicIndicator1,x
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoChangeChannel1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Display
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoChangeChannel1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Display
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Pointers
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Pointers
 	BYTE	#0
 	BYTE	#0				; 0
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_1
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_1	; 1
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 2
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 3	
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_4
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_4	; 4
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 6
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 6
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 7
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 8
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 9
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 10
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 11
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_12
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_12	; 12
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 13
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 14
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6	; 15
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_1
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_1	; 1
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 2
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 3	
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_4
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_4	; 4
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 6
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 6
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 7
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 8
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 9
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 10
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 11
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_12
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_12	; 12
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 13
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 14
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6	; 15
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_1
 	BYTE	#0
 	BYTE	#2
 	BYTE	#4
@@ -2503,7 +2503,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_1
 	BYTE	#7
 	BYTE	#7
 	BYTE	#7
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_4
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_4
 	BYTE	#0
 	BYTE	#0
 	BYTE	#0
@@ -2536,7 +2536,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_4
 	BYTE	#5
 	BYTE	#5
 	BYTE	#5
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_6
 	BYTE	#2
 	BYTE	#5
 	BYTE	#6
@@ -2569,7 +2569,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_6
 	BYTE	#7
 	BYTE	#7
 	BYTE	#7
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_12
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Channel_12
 	BYTE	#0
 	BYTE	#0
 	BYTE	#0
@@ -2603,7 +2603,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Channel_12
 	BYTE	#7
 	BYTE	#7
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Bars
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Bars
 	BYTE	#%00000000
 	BYTE	#%10000000
 	BYTE	#%11000000
@@ -2615,7 +2615,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Bars
 	BYTE	#%11111111
 
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Barcolors
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Barcolors
 	BYTE	#$18
 	BYTE	#$16
 	BYTE	#$14
@@ -2627,15 +2627,15 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Barcolors
 	BYTE	#$44
 
 	align	256
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Display
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Display
 	LDX	#0
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_LineLoop
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_LineLoop
 	STA	WSYNC	; 76
 	LDA	MusicIndicator1,x		; 5
 	lsr					; 2 (7)
 	TAY					; 2 (9)
 	STA	temp04				; 3 (12)
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Bars,y	; 5 (17)
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Bars,y	; 5 (17)
 	STA	PF2				; 3 (20)
 	
 	TXA					; 2 (22) 
@@ -2645,36 +2645,36 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_LineLoop
 	LSR					; 2 (29)
 	
 	CLC					; 2 (31)
-	ADC 	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_Data_Barcolors,y	; 5 (36)
+	ADC 	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_Data_Barcolors,y	; 5 (36)
 	STA	COLUPF				; 3 (39)
 	STA	temp03				; 3 (42)
 
 	LDY	#3	; This is the line num!
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_LineFiller
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_LineFiller
 	STA	WSYNC
 	DEC 	temp03
 
 	LDA	temp03
 	AND	#%00001111
 	CMP	#$04
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoColorDECR
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoColorDECR
 	DEC	temp03
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_NoColorDECR
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_NoColorDECR
 	LDA	temp03
 
 	STA	COLUPF
 
 	DEY
-	BPL	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_LineFiller
+	BPL	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_LineFiller
 	STA	WSYNC
 	LDA	frameColor
 	STA	COLUPF
 
 	INX	
 	CPX	#8
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_LineLoop
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_LineLoop
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Visuals_DisplayEnded
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Visuals_DisplayEnded
 	LDA	#0
 	STA	ENAM0
 	STA	HMCLR
@@ -3490,51 +3490,51 @@ fortari_BGColor
 	BYTE #$1e
 
 	align	256
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReallyNiceText
-	BYTE	#25
-	BYTE	#17
-	BYTE	#18
-	BYTE	#21
-	BYTE	#18
-	BYTE	#25
-	BYTE	#25
-	BYTE	#14
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReallyNiceText
+	BYTE	#29
+	BYTE	#24
+	BYTE	#13
+	BYTE	#13
 	BYTE	#36
-	BYTE	#31
-	BYTE	#10
+	BYTE	#22
+	BYTE	#18
+	BYTE	#29
 	BYTE	#12
 	BYTE	#17
 	BYTE	#14
-	BYTE	#34
+	BYTE	#21
+	BYTE	#21
+	BYTE	#36
+	BYTE	#25
+	BYTE	#24
+	BYTE	#27
+	BYTE	#29
+	BYTE	#14
+	BYTE	#27
 	BYTE	#36
 	BYTE	#40
 	BYTE	#36
-	BYTE	#14
-	BYTE	#23
-	BYTE	#13
-	BYTE	#18
-	BYTE	#23
-	BYTE	#16
-	BYTE	#36
-	BYTE	#37
+	BYTE	#12
 	BYTE	#10
-	BYTE	#21
-	BYTE	#24
 	BYTE	#23
-	BYTE	#14
 	BYTE	#36
-	BYTE	#18
-	BYTE	#23
+	BYTE	#29
+	BYTE	#36
+	BYTE	#27
+	BYTE	#14
+	BYTE	#22
+	BYTE	#24
+	BYTE	#31
+	BYTE	#14
 	BYTE	#36
 	BYTE	#29
 	BYTE	#17
 	BYTE	#14
 	BYTE	#36
-	BYTE	#13
+	BYTE	#25
 	BYTE	#10
-	BYTE	#27
-	BYTE	#20
-	BYTE	#38
+	BYTE	#18
+	BYTE	#23
 	BYTE	#255
 
 
@@ -3587,79 +3587,79 @@ start_bank2
 ***************************
 	Bank 3
 	fill	256
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver0
-	DEC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver0
+	DEC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip0
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst0
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst0
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
 
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_if2400
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_if2400
 
 	STA	AUDV0
 	STA	AUDF0
 	STA	AUDC0
 	STA	temp16
 	STA	temp17
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte0
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_if2400
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_if2400
 	CMP	#240
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestart0
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestart0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Restart0
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Restart0
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
 
 
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst0
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestart0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestart0
 	STA	temp06
 	AND	#%00001111
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote0
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_CommonNote0
 	LDA	temp06
 	lsr
 	lsr
 	lsr
 	lsr
 	CMP	#%00001110
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestorePointer0
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp0+1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst0
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestorePointer0
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestorePointer0
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp0+1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestorePointer0
 	
-	LDY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0	
-	STY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp0	
-	LDY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
-	STY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp0+1	
+	LDY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0	
+	STY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp0	
+	LDY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
+	STY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp0+1	
 
 	ASL
 	TAX
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0_CompressedPointerTable,x
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0_CompressedPointerTable+1,x
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst0
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0_CompressedPointerTable,x
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0_CompressedPointerTable+1,x
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_CommonNote0
 	LDA	temp06
 	STA	AUDV0
 	STA	temp16
@@ -3669,7 +3669,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote0
 	lsr
 	STA	AUDC0
 
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
@@ -3679,7 +3679,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote0
 	STA	AUDF0
 
 	CMP	#32
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte0
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte0
 
 	AND	#%11100000
 	lsr
@@ -3689,3019 +3689,3419 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote0
 	lsr
 
 
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte0
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte0
 	
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
 
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration0
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip0
-	lda	#>(Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver1-1)
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip0
+	lda	#>(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver1-1)
    	pha
-   	lda	#<(Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver1-1)
+   	lda	#<(Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver1-1)
    	pha
    	pha
    	pha
    	ldx	#4
    	jmp	bankSwitchJump
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0_CompressedPointerTable
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0_CompressedPointerTable
 	BYTE	#0
 	BYTE	#0
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11010000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00010000
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%01011010
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00010000
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%11001011
+	BYTE	#%00101101
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00100000
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_00110000
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01000000
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00100000
 	BYTE	#%01001100
-	BYTE	#%01011010
+	BYTE	#%00111000
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%11001011
+	BYTE	#%00101100
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01010000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01100000
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_01110000
-	BYTE	#%01001101
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_00110000
+	BYTE	#%01001011
 	BYTE	#%01011000
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10000000
-	BYTE	#%11001101
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01000000
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01010000
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01100000
+	BYTE	#%01001011
+	BYTE	#%01111010
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_01110000
+	BYTE	#%11001011
 	BYTE	#%00101100
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10010000
-	BYTE	#%11001100
-	BYTE	#%00101101
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10000000
+	BYTE	#%01001011
+	BYTE	#%01011010
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10100000
-	BYTE	#%01001100
-	BYTE	#%01111000
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10010000
+	BYTE	#%01001011
+	BYTE	#%00111000
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_10110000
-	BYTE	#%11001101
-	BYTE	#%00101101
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10100000
+	BYTE	#%01001011
+	BYTE	#%01110101
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11000000
-	BYTE	#%11001100
-	BYTE	#%00101100
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_10110000
+	BYTE	#%01001011
+	BYTE	#%01010101
 	BYTE	#%11100000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel0_11010000
-	BYTE	#%01001101
-	BYTE	#%01110100
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11000000
+	BYTE	#%01001011
+	BYTE	#%01011011
 	BYTE	#%11100000
 
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000101
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel0_11010000
+	BYTE	#%01001011
 	BYTE	#%01010100
-	BYTE	#%00000000
-	BYTE	#%00001111
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01000110
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010011
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%10110000
-	BYTE	#%01001101
-	BYTE	#%00111010
+	BYTE	#%11100000
+
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
 	BYTE	#%01001100
 	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
 	BYTE	#%01100000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000100
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01001100
-	BYTE	#%00110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000101
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%00000000
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%00100011
-	BYTE	#%10000000
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%10110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000100
-	BYTE	#%00111000
-	BYTE	#%01000110
-	BYTE	#%01011000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000001
-	BYTE	#%00101100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000100
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00110111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001011
-	BYTE	#%00101100
-	BYTE	#%11001011
-	BYTE	#%00101101
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%01011000
 	BYTE	#%11001010
-	BYTE	#%00101100
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
 	BYTE	#%11001001
 	BYTE	#%00101101
-	BYTE	#%01001001
-	BYTE	#%01111000
-	BYTE	#%11001000
-	BYTE	#%00101100
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
-	BYTE	#%00111000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%00111010
 	BYTE	#%01000111
-	BYTE	#%01011000
+	BYTE	#%01011010
 	BYTE	#%11000111
-	BYTE	#%00101100
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
 	BYTE	#%11000110
 	BYTE	#%00101101
 	BYTE	#%01000110
-	BYTE	#%01111000
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
 	BYTE	#%11000101
-	BYTE	#%00101100
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
 	BYTE	#%11000101
 	BYTE	#%00101101
-	BYTE	#%01000101
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%01011000
 	BYTE	#%11000100
-	BYTE	#%00101100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%00111010
+	BYTE	#%01000111
+	BYTE	#%01011010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%00111010
+	BYTE	#%01000101
+	BYTE	#%01011010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
 	BYTE	#%11000011
 	BYTE	#%00101101
-	BYTE	#%01000011
-	BYTE	#%01111000
-	BYTE	#%11000010
-	BYTE	#%00101100
 	BYTE	#%11000010
 	BYTE	#%00101101
 	BYTE	#%01000010
-	BYTE	#%00111000
-	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
 	BYTE	#%01001100
-	BYTE	#%01001111
+	BYTE	#%00110100
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%00110100
+	BYTE	#%01001000
+	BYTE	#%01010100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
 	BYTE	#%01000110
-	BYTE	#%00101111
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000011
+	BYTE	#%01110100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110010
+	BYTE	#%01001011
+	BYTE	#%01010010
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%01001011
+	BYTE	#%01110010
+	BYTE	#%01001011
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%01110010
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00110010
+	BYTE	#%01001001
+	BYTE	#%01010010
+	BYTE	#%01001001
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%01110010
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%01110010
+	BYTE	#%01001000
+	BYTE	#%01011101
+	BYTE	#%01001000
+	BYTE	#%00110010
+	BYTE	#%01000111
+	BYTE	#%01010010
+	BYTE	#%01000111
+	BYTE	#%01011101
+	BYTE	#%01000101
+	BYTE	#%01011010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01011010
+	BYTE	#%00000000
+	BYTE	#%00100001
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
 	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%00110101
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%01010101
+	BYTE	#%01001011
+	BYTE	#%00110101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%00110101
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%11000101
+	BYTE	#%00101101
 	BYTE	#%00000000
-	BYTE	#%00000010
+	BYTE	#%01101000
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
 	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01010100
+	BYTE	#%01001000
+	BYTE	#%00110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
 	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
 	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
 	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110000
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%00110100
+	BYTE	#%01000011
+	BYTE	#%01010100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11000001
+	BYTE	#%00101101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
 	BYTE	#%00000000
-	BYTE	#%00011010
+	BYTE	#%00100010
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
 	BYTE	#%01000111
-	BYTE	#%00110000
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%00111010
+	BYTE	#%01000110
+	BYTE	#%00110101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
 	BYTE	#%00000000
 	BYTE	#%00000100
-	BYTE	#%01100000	; This was changed!
-	BYTE	#%01000000	; This was changed!
 	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01000010
+	BYTE	#%00110101
+	BYTE	#%01000110
+	BYTE	#%00110101
+	BYTE	#%00000000
+	BYTE	#%00100110
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%11001010
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01110000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
 	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
+	BYTE	#%00111010
+	BYTE	#%11000111
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%00111010
 	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01011010
+	BYTE	#%00000000
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%00111010
+	BYTE	#%01000111
+	BYTE	#%01011010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%00101101
+	BYTE	#%11000010
+	BYTE	#%00101101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%00101101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%00110100
+	BYTE	#%01001000
+	BYTE	#%01010100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000011
+	BYTE	#%01110100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110010
+	BYTE	#%01001011
+	BYTE	#%01010010
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%01001011
+	BYTE	#%01110010
+	BYTE	#%01001011
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%01110010
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00110010
+	BYTE	#%01001001
+	BYTE	#%01010010
+	BYTE	#%01001001
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%01110010
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%01110010
+	BYTE	#%01001000
+	BYTE	#%01011101
+	BYTE	#%01001000
+	BYTE	#%00110010
+	BYTE	#%01000111
+	BYTE	#%01010010
+	BYTE	#%01000111
+	BYTE	#%01011101
+	BYTE	#%01000111
+	BYTE	#%01110010
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01110010
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%01000110
+	BYTE	#%00110010
+	BYTE	#%01000100
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01011010
+	BYTE	#%00000000
+	BYTE	#%00100001
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%00110101
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%01010101
+	BYTE	#%01001011
+	BYTE	#%00110101
+	BYTE	#%11001011
+	BYTE	#%01001011
 	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%00110101
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
 	BYTE	#%01001100
 	BYTE	#%00111000
-	BYTE	#%11110011
+	BYTE	#%01001010
+	BYTE	#%01010011
+	BYTE	#%01001010
+	BYTE	#%01011111
+	BYTE	#%01001010
+	BYTE	#%01010011
+	BYTE	#%01001001
+	BYTE	#%00110011
+	BYTE	#%01001001
+	BYTE	#%01011111
+	BYTE	#%01001001
+	BYTE	#%01110011
+	BYTE	#%01001001
+	BYTE	#%01011111
+	BYTE	#%01001001
+	BYTE	#%01010011
+	BYTE	#%01001000
+	BYTE	#%00110011
+	BYTE	#%01001000
+	BYTE	#%01011111
+	BYTE	#%01001000
+	BYTE	#%01110011
+	BYTE	#%01001000
+	BYTE	#%01011111
+	BYTE	#%01001000
+	BYTE	#%01010011
+	BYTE	#%01000111
+	BYTE	#%00110011
+	BYTE	#%01000111
+	BYTE	#%01011111
+	BYTE	#%01000111
+	BYTE	#%01110011
+	BYTE	#%01000111
+	BYTE	#%01011111
+	BYTE	#%01000111
+	BYTE	#%01010011
+	BYTE	#%01000110
+	BYTE	#%00110011
+	BYTE	#%01000110
+	BYTE	#%01011111
+	BYTE	#%01000110
+	BYTE	#%01110011
+	BYTE	#%01000110
+	BYTE	#%01011111
+	BYTE	#%01000110
+	BYTE	#%01110011
+	BYTE	#%01000101
+	BYTE	#%01011111
+	BYTE	#%01000101
+	BYTE	#%01110011
+	BYTE	#%01000101
+	BYTE	#%01011111
+	BYTE	#%01000101
+	BYTE	#%01110011
+	BYTE	#%01000100
+	BYTE	#%01011111
+	BYTE	#%01000100
+	BYTE	#%01110011
+	BYTE	#%01000100
+	BYTE	#%01011111
+	BYTE	#%01000100
+	BYTE	#%01110011
+	BYTE	#%01000011
+	BYTE	#%01011111
+	BYTE	#%01000011
+	BYTE	#%01110011
+	BYTE	#%01000011
+	BYTE	#%01011111
+	BYTE	#%01000011
+	BYTE	#%01110011
 	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
+	BYTE	#%01011111
+	BYTE	#%01000010
+	BYTE	#%01110011
+	BYTE	#%01000010
+	BYTE	#%01011111
+	BYTE	#%01000010
+	BYTE	#%01110011
+	BYTE	#%01000001
+	BYTE	#%01011111
+	BYTE	#%01000001
+	BYTE	#%01110011
+	BYTE	#%01000001
+	BYTE	#%01011111
+	BYTE	#%01000001
+	BYTE	#%01110011
+	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101101
 	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
+	BYTE	#%01011000
 	BYTE	#%10010000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01000011
+	BYTE	#%01110001
+	BYTE	#%01000010
+	BYTE	#%01011011
+	BYTE	#%01000010
+	BYTE	#%01110001
+	BYTE	#%01000010
+	BYTE	#%01011011
+	BYTE	#%01000010
+	BYTE	#%01110001
+	BYTE	#%01000001
+	BYTE	#%01011011
+	BYTE	#%01000001
+	BYTE	#%01110001
+	BYTE	#%01000001
+	BYTE	#%01011011
+	BYTE	#%01000001
+	BYTE	#%10010001
 	BYTE	#%00000000
 	BYTE	#%00000110
 	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000100
-	BYTE	#%00101100
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01001100
-	BYTE	#%00110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%10010000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%00100000
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
 	BYTE	#%00111010
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%00000000
-	BYTE	#%00001011
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
 	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
+	BYTE	#%11001011
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01001011
-	BYTE	#%00111000
+	BYTE	#%01100000	; This was changed!
 	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000100
-	BYTE	#%00111000
-	BYTE	#%01000110
-	BYTE	#%01011000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00110101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01001100
-	BYTE	#%00111010
-	BYTE	#%00000000
-	BYTE	#%00010110
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00110111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00000100
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%01011000
 	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%00000000
+	BYTE	#%00110011
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00100010
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%00000000
+	BYTE	#%01011011
+	BYTE	#%01001001
+	BYTE	#%00101100
+	BYTE	#%01001001
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%00101100
+	BYTE	#%01001000
+	BYTE	#%01010100
+	BYTE	#%01001000
+	BYTE	#%00101100
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%01010101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%11001100
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%01010101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001000
+	BYTE	#%01011011
+	BYTE	#%11001000
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%01111011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%00111011
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%00111011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%01111000
+	BYTE	#%11001001
 	BYTE	#%00101100
 	BYTE	#%11001001
 	BYTE	#%00101101
 	BYTE	#%01001001
-	BYTE	#%01111000
+	BYTE	#%01011000
+	BYTE	#%01001000
+	BYTE	#%00111000
 	BYTE	#%11001000
 	BYTE	#%00101100
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
-	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%01011000
+	BYTE	#%01111000
+	BYTE	#%11001000
+	BYTE	#%00101100
 	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%01111000
+	BYTE	#%11000111
+	BYTE	#%00101100
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%00111000
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%11000110
 	BYTE	#%00101100
 	BYTE	#%11000110
 	BYTE	#%00101101
 	BYTE	#%01000110
-	BYTE	#%01111000
+	BYTE	#%01011000
+	BYTE	#%01000101
+	BYTE	#%00111000
 	BYTE	#%11000101
 	BYTE	#%00101100
 	BYTE	#%11000101
 	BYTE	#%00101101
 	BYTE	#%01000101
-	BYTE	#%00111000
+	BYTE	#%01111000
+	BYTE	#%11000101
+	BYTE	#%00101100
+	BYTE	#%11000100
+	BYTE	#%00101101
 	BYTE	#%01000100
-	BYTE	#%01011000
+	BYTE	#%01111000
 	BYTE	#%11000100
 	BYTE	#%00101100
-	BYTE	#%11000011
+	BYTE	#%11000100
 	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%00111000
 	BYTE	#%01000011
 	BYTE	#%01011000
-	BYTE	#%01000010
-	BYTE	#%00111000
-	BYTE	#%11000010
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11000010
+	BYTE	#%11001100
 	BYTE	#%00101101
-	BYTE	#%01000010
+	BYTE	#%01001100
 	BYTE	#%00111000
-	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01010101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%01000110
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00100100
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
 	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
 	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01110000	; This was changed!
 	BYTE	#%01001100
 	BYTE	#%00111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
 	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10100000	; This was changed!
 	BYTE	#%11001100
 	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%11001011
-	BYTE	#%00101100
-	BYTE	#%11001011
+	BYTE	#%11001100
 	BYTE	#%00101101
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%01011000
-	BYTE	#%00000000
-	BYTE	#%00011101
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
 	BYTE	#%01001100
-	BYTE	#%01001111
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
 	BYTE	#%01000110
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01000111
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01010011
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%10010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
+	BYTE	#%00111101
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01001010
 	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
+	BYTE	#%11001100
 	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11110011
-	BYTE	#%00000010
-	BYTE	#%00001000
-	BYTE	#%00000000
-	BYTE	#%00001001
 	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
+	BYTE	#%00101111
+	BYTE	#%01000101
+	BYTE	#%01111101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%00111101
 	BYTE	#%01000100
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
 	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01001100
-	BYTE	#%00110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%10001111
-	BYTE	#%00000000
-	BYTE	#%00100011
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010001
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%00000000
-	BYTE	#%00101000
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%01001100
-	BYTE	#%00111010
-	BYTE	#%01100000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001011
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
 	BYTE	#%11000100
-	BYTE	#%00101100
-	BYTE	#%01000110
-	BYTE	#%01111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%01000011
+	BYTE	#%00111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
 	BYTE	#%11000010
-	BYTE	#%00101100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%01001111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%11001100
+	BYTE	#%00101111
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%01111101
+	BYTE	#%11001011
+	BYTE	#%01001111
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%11000111
+	BYTE	#%00101111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%01111101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%01111101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%01000011
+	BYTE	#%00111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%01001111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00000100
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00110111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010110
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%01000000
 	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01010101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
 	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001011
-	BYTE	#%00101100
-	BYTE	#%11001011
 	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
 	BYTE	#%01001011
 	BYTE	#%01011000
 	BYTE	#%01001010
 	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00111011
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%01111011
+	BYTE	#%11001000
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%01111011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01111011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%00111011
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%00111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%00111011
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%01111011
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%11000111
+	BYTE	#%00101110
+	BYTE	#%01000111
+	BYTE	#%00111011
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%11000111
+	BYTE	#%00101111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%01111101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%00101111
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%11000001
+	BYTE	#%00101111
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%11000111
+	BYTE	#%00101111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%01111101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%01000011
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%00110111
+	BYTE	#%01001011
+	BYTE	#%01010111
+	BYTE	#%01110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110111
+	BYTE	#%01110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110111
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00101100
+	BYTE	#%01001011
+	BYTE	#%00101101
+	BYTE	#%01001011
+	BYTE	#%00101100
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%00101100
+	BYTE	#%01001011
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%01010100
+	BYTE	#%01001010
+	BYTE	#%01001100
+	BYTE	#%01001001
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%00101100
+	BYTE	#%01001001
+	BYTE	#%00110100
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%01010101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%01010101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%01000110
+	BYTE	#%00111011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%00111011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111000
 	BYTE	#%11001010
 	BYTE	#%00101100
 	BYTE	#%11001010
 	BYTE	#%00101101
 	BYTE	#%01001001
 	BYTE	#%01111000
+	BYTE	#%11001001
+	BYTE	#%00101100
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%01011000
+	BYTE	#%01001000
+	BYTE	#%00111000
 	BYTE	#%11001000
 	BYTE	#%00101100
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
-	BYTE	#%00111000
+	BYTE	#%01111000
+	BYTE	#%11001000
+	BYTE	#%00101100
+	BYTE	#%11000111
+	BYTE	#%00101101
 	BYTE	#%01000111
-	BYTE	#%01011000
+	BYTE	#%01111000
 	BYTE	#%11000111
 	BYTE	#%00101100
 	BYTE	#%11000111
 	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%00111000
 	BYTE	#%01000110
-	BYTE	#%01111000
+	BYTE	#%01011000
+	BYTE	#%11000110
+	BYTE	#%00101100
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%01000101
+	BYTE	#%00111000
 	BYTE	#%11000101
 	BYTE	#%00101100
 	BYTE	#%11000101
 	BYTE	#%00101101
 	BYTE	#%01000101
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%01011000
-	BYTE	#%11000100
-	BYTE	#%00101100
-	BYTE	#%11000100
-	BYTE	#%00101101
-	BYTE	#%01000011
 	BYTE	#%01111000
-	BYTE	#%11000010
+	BYTE	#%11000101
 	BYTE	#%00101100
-	BYTE	#%11000010
+	BYTE	#%11000100
 	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111000
+	BYTE	#%11000100
+	BYTE	#%00101100
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%00111000
+	BYTE	#%01000011
+	BYTE	#%01011000
+	BYTE	#%11000011
+	BYTE	#%00101100
+	BYTE	#%11000011
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%01000011
+	BYTE	#%00111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%01001111
 	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%11001100
+	BYTE	#%00101111
+	BYTE	#%01001011
+	BYTE	#%01111101
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%01001011
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%11000111
+	BYTE	#%00101111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%01111101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%01111101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%01000011
+	BYTE	#%00111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%01001111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%11000001
+	BYTE	#%00101111
+	BYTE	#%01000001
+	BYTE	#%01111101
+	BYTE	#%11000001
+	BYTE	#%01001111
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01001000
+	BYTE	#%00110011
+	BYTE	#%01001000
+	BYTE	#%01011111
+	BYTE	#%01001000
+	BYTE	#%00110011
+	BYTE	#%01000111
+	BYTE	#%01010011
+	BYTE	#%01000111
+	BYTE	#%01011111
+	BYTE	#%01000111
+	BYTE	#%01110011
+	BYTE	#%01000111
+	BYTE	#%01011111
+	BYTE	#%01000111
+	BYTE	#%00110011
+	BYTE	#%01000110
+	BYTE	#%01010011
+	BYTE	#%01000110
+	BYTE	#%01011111
+	BYTE	#%01000110
+	BYTE	#%01110011
+	BYTE	#%01000110
+	BYTE	#%01011111
+	BYTE	#%01000110
+	BYTE	#%01010011
+	BYTE	#%01000101
+	BYTE	#%00110011
+	BYTE	#%01000101
+	BYTE	#%01011111
+	BYTE	#%01000101
+	BYTE	#%01110011
+	BYTE	#%01000101
+	BYTE	#%01011111
+	BYTE	#%01000101
+	BYTE	#%01010011
+	BYTE	#%01000100
+	BYTE	#%00110011
+	BYTE	#%01000100
+	BYTE	#%01011111
+	BYTE	#%01000100
+	BYTE	#%01110011
+	BYTE	#%01000100
+	BYTE	#%01011111
+	BYTE	#%01000100
+	BYTE	#%01010011
+	BYTE	#%01000011
+	BYTE	#%00110011
+	BYTE	#%01000011
+	BYTE	#%01011111
+	BYTE	#%01000011
+	BYTE	#%01110011
+	BYTE	#%01000011
+	BYTE	#%01011111
+	BYTE	#%01000011
+	BYTE	#%01010011
+	BYTE	#%01000010
+	BYTE	#%00110011
+	BYTE	#%01000010
+	BYTE	#%01011111
+	BYTE	#%01000010
+	BYTE	#%01110011
+	BYTE	#%01000010
+	BYTE	#%01011111
+	BYTE	#%01000010
+	BYTE	#%01010011
+	BYTE	#%01000001
+	BYTE	#%00110011
+	BYTE	#%01000001
+	BYTE	#%01011111
+	BYTE	#%01000001
+	BYTE	#%01110011
+	BYTE	#%01000001
+	BYTE	#%01011111
+	BYTE	#%01000001
+	BYTE	#%01110011
+	BYTE	#%00000000
+	BYTE	#%00000110
+	BYTE	#%01001100
+	BYTE	#%01010001
+	BYTE	#%01001011
+	BYTE	#%00110001
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01110001
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01010001
+	BYTE	#%01001010
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%01011011
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%01001011
 	BYTE	#%00111000
 	BYTE	#%01000001
-	BYTE	#%01011000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
+	BYTE	#%01010001
 	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
+	BYTE	#%00000110
 	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01000110
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01000111
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00011010
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00001001
 	BYTE	#%01100000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
 	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
 	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
+	BYTE	#%11000101
 	BYTE	#%00101101
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
 	BYTE	#%00000000
-	BYTE	#%00000001
+	BYTE	#%01101000
 	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01000110
-	BYTE	#%00111000
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
 	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000100
-	BYTE	#%00111000
-	BYTE	#%01001101
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
 	BYTE	#%01010100
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
+	BYTE	#%01001000
+	BYTE	#%00110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
 	BYTE	#%11000111
 	BYTE	#%00101010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00111101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%01110010
-	BYTE	#%01001100
-	BYTE	#%01011101
-	BYTE	#%01001100
-	BYTE	#%00110010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00010111
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010001
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001100
-	BYTE	#%01011000
+	BYTE	#%11000111
+	BYTE	#%00101011
 	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001100
-	BYTE	#%01011000
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
 	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
 	BYTE	#%01010100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01000110
-	BYTE	#%00101111
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%00100000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%01100000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%00000000
-	BYTE	#%00001001
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
 	BYTE	#%11000100
-	BYTE	#%00101100
-	BYTE	#%01000110
-	BYTE	#%01111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%00110100
+	BYTE	#%01000011
+	BYTE	#%01011010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
 	BYTE	#%11000010
-	BYTE	#%00101100
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
 	BYTE	#%00000000
-	BYTE	#%00010001
+	BYTE	#%00100010
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%01010000	; This was changed!
 	BYTE	#%11110000
 
 *Routine Section
@@ -6751,79 +7151,79 @@ start_bank3
 ***************************
 	Bank 4
 	fill	256
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Driver1
-	DEC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Driver1
+	DEC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip1
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst1
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst1
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
 
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_if2401
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_if2401
 
 	STA	AUDV1
 	STA	AUDF1
 	STA	AUDC1
 	STA	temp18
 	STA	temp19
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_if2401
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_if2401
 	CMP	#240
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestart1
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestart1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Restart1
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data0
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer0+1
-	LDA	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
-	LDA	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Restart1
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data0
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer0+1
+	LDA	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
+	LDA	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
 
 
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestart1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestart1
 	STA	temp06
 	AND	#%00001111
 	CMP	#0
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote1
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_CommonNote1
 	LDA	temp06
 	lsr
 	lsr
 	lsr
 	lsr
 	CMP	#%00001110
-	BNE	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestorePointer1
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp1+1
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst1
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NoRestorePointer1
+	BNE	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestorePointer1
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp1+1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NoRestorePointer1
 	
-	LDY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1	
-	STY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp1	
-	LDY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
-	STY	Philippe_Vachey_-_Ending_Alone_In_the_Dark_PointerBackUp1+1	
+	LDY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1	
+	STY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp1	
+	LDY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
+	STY	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_PointerBackUp1+1	
 
 	ASL
 	TAX
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1_CompressedPointerTable,x
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
-	LDA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1_CompressedPointerTable+1,x
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1+1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_ReadFirst1
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1_CompressedPointerTable,x
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
+	LDA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1_CompressedPointerTable+1,x
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1+1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_ReadFirst1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_CommonNote1
 	LDA	temp06
 	STA	AUDV1
 	STA	temp18
@@ -6833,7 +7233,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote1
 	lsr
 	STA	AUDC1
 
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
@@ -6843,7 +7243,7 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote1
 	STA	AUDF1
 
 	CMP	#32
-	BCC	Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte1
+	BCC	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte1
 
 	AND	#%11100000
 	lsr
@@ -6853,20 +7253,20 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_CommonNote1
 	lsr
 
 
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1
-	JMP	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1
+	JMP	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_NotSharedByte1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_NotSharedByte1
 	
-	LDX	#Philippe_Vachey_-_Ending_Alone_In_the_Dark_Pointer1
+	LDX	#Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Pointer1
 	LDA	($00,x)
 	INC	0,x
 	BNE	*+4
 	INC	1,x
 
-	STA	Philippe_Vachey_-_Ending_Alone_In_the_Dark_Duration1
+	STA	Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Duration1
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip1
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Skip1
 	lda	bankToJump
 	lsr
 	lsr
@@ -6880,2866 +7280,1808 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Skip1
    	pha
    	pha
 	jmp	bankSwitchJump
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1_CompressedPointerTable
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1_CompressedPointerTable
 	BYTE	#0
 	BYTE	#0
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10010000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10100000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10100000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10110000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10110000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11000000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11000000
-	BYTE	#<Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11010000
-	BYTE	#>Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10010000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10100000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10100000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10110000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10110000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11000000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11000000
+	BYTE	#<Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11010000
+	BYTE	#>Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11010000
 
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00010000
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00100000
-	BYTE	#%01001101
-	BYTE	#%01110000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_00110000
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01000000
-	BYTE	#%01001101
-	BYTE	#%01011000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01010000
-	BYTE	#%01000010
-	BYTE	#%01011000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01100000
-	BYTE	#%01000010
-	BYTE	#%00111000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_01110000
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10000000
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10010000
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10100000
-	BYTE	#%01001100
-	BYTE	#%01011010
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_10110000
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11000000
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%11100000
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Channel1_11010000
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%11100000
-
-
-Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
-	BYTE	#%00000000
-	BYTE	#%00100100
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01000110
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01100010
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00010000
 	BYTE	#%01001100
 	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000101
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010101
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01000111
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00011010
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00100100
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
 	BYTE	#%01001011
 	BYTE	#%01011000
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00100000
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_00110000
+	BYTE	#%01001011
+	BYTE	#%01111000
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01000000
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01010000
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01100000
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_01110000
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10000000
 	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%01001001
-	BYTE	#%01011000
-	BYTE	#%11001001
-	BYTE	#%00101100
-	BYTE	#%11001001
-	BYTE	#%00101101
-	BYTE	#%01001000
-	BYTE	#%01111000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00010111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%10010000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10000000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01000110
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%00100000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00100011
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01000010
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%11110011
-	BYTE	#%01100010
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10010000
 	BYTE	#%01001011
 	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%11001010
-	BYTE	#%00101100
-	BYTE	#%11001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%01001001
-	BYTE	#%01011000
-	BYTE	#%11001001
-	BYTE	#%00101100
-	BYTE	#%11001000
-	BYTE	#%00101101
-	BYTE	#%01001000
-	BYTE	#%01011000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000101
-	BYTE	#%01011000
-	BYTE	#%11000101
-	BYTE	#%00101100
-	BYTE	#%11000100
-	BYTE	#%00101101
-	BYTE	#%01000100
-	BYTE	#%01111000
-	BYTE	#%11000011
-	BYTE	#%00101100
-	BYTE	#%11000011
-	BYTE	#%00101101
-	BYTE	#%01000011
-	BYTE	#%00111000
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10100000
+	BYTE	#%01001011
+	BYTE	#%01011101
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_10110000
+	BYTE	#%01001011
+	BYTE	#%01110101
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11000000
+	BYTE	#%01001011
+	BYTE	#%01111010
+	BYTE	#%11100000
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Channel1_11010000
+	BYTE	#%01001011
+	BYTE	#%01011011
+	BYTE	#%11100000
+
+
+Todd_Mitchell_Porter_-_Cant_Remove_the_Pain_Data1
+	BYTE	#%00000000
+	BYTE	#%01110111
+	BYTE	#%01001100
+	BYTE	#%01011010
+	BYTE	#%01001011
+	BYTE	#%00111010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%11000000	; This was changed!
 	BYTE	#%01010000	; This was changed!
-	BYTE	#%11000010
-	BYTE	#%00101100
-	BYTE	#%11000001
-	BYTE	#%00101101
-	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%00000000
-	BYTE	#%00111100
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%01000110
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%01001100
-	BYTE	#%00111010
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00010100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00100100
-	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010011
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%10110000
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%01001100
-	BYTE	#%00111010
-	BYTE	#%00000000
-	BYTE	#%00011111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000100
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%11001010
-	BYTE	#%00101100
 	BYTE	#%11001010
 	BYTE	#%00101101
 	BYTE	#%01001010
-	BYTE	#%00111000
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%01001011
+	BYTE	#%01010100
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
 	BYTE	#%01001001
-	BYTE	#%01011000
+	BYTE	#%01110100
 	BYTE	#%11001001
-	BYTE	#%00101100
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%00110100
+	BYTE	#%01001000
+	BYTE	#%01010100
 	BYTE	#%11001000
-	BYTE	#%00101101
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
 	BYTE	#%01001000
-	BYTE	#%01111000
+	BYTE	#%01110100
 	BYTE	#%11000111
-	BYTE	#%00101100
+	BYTE	#%00101010
 	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
 	BYTE	#%00101011
-	BYTE	#%01001101
+	BYTE	#%01000111
 	BYTE	#%01110100
-	BYTE	#%11001101
+	BYTE	#%11000111
 	BYTE	#%00101010
-	BYTE	#%11001101
+	BYTE	#%11000111
 	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01001101
-	BYTE	#%00110010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00011100
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10000000
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
 	BYTE	#%01000110
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00101110
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%10010000	; This was changed!
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%00000000
-	BYTE	#%00011000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
+	BYTE	#%01110100
 	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
 	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001011
-	BYTE	#%01011000
-	BYTE	#%11001010
-	BYTE	#%00101100
-	BYTE	#%11001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%01011000
-	BYTE	#%01001001
-	BYTE	#%00111000
-	BYTE	#%11001001
-	BYTE	#%00101100
-	BYTE	#%11001001
-	BYTE	#%00101101
-	BYTE	#%01001000
-	BYTE	#%01111000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000110
-	BYTE	#%00111000
+	BYTE	#%01010100
 	BYTE	#%01000101
-	BYTE	#%00111000
+	BYTE	#%00110100
 	BYTE	#%11000101
-	BYTE	#%00101100
+	BYTE	#%00101010
 	BYTE	#%11000101
-	BYTE	#%00101101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
 	BYTE	#%01000100
-	BYTE	#%01111000
-	BYTE	#%11000011
-	BYTE	#%00101100
-	BYTE	#%11000011
-	BYTE	#%00101101
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
 	BYTE	#%01000011
-	BYTE	#%01011000
-	BYTE	#%01100000	; This was changed!
+	BYTE	#%01110100
 	BYTE	#%11000010
-	BYTE	#%00101100
-	BYTE	#%11000010
-	BYTE	#%00101101
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
 	BYTE	#%01000001
-	BYTE	#%01011000
-	BYTE	#%01110000	; This was changed!
+	BYTE	#%00111010
+	BYTE	#%11000001
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%11001101
-	BYTE	#%01001011
-	BYTE	#%01001101
-	BYTE	#%01110101
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%01000110
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
 	BYTE	#%00000000
 	BYTE	#%00100001
 	BYTE	#%01001100
+	BYTE	#%01011010
+	BYTE	#%01001011
 	BYTE	#%00111010
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
 	BYTE	#%11001011
-	BYTE	#%00101100
-	BYTE	#%11001011
-	BYTE	#%00101101
-	BYTE	#%00000000
-	BYTE	#%00100000
-	BYTE	#%01000001
-	BYTE	#%00111000
 	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00111000
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01110100
-	BYTE	#%11001100
-	BYTE	#%00101010
-	BYTE	#%11001100
-	BYTE	#%00101011
-	BYTE	#%01001100
-	BYTE	#%00110100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01011010
 	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00110111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00000111
+	BYTE	#%01010000	; This was changed!
 	BYTE	#%11001010
-	BYTE	#%00101100
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
 	BYTE	#%11001001
 	BYTE	#%00101101
-	BYTE	#%01001001
-	BYTE	#%01011000
-	BYTE	#%01001000
-	BYTE	#%00111000
-	BYTE	#%11001000
-	BYTE	#%00101100
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
-	BYTE	#%00111000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
 	BYTE	#%01000111
-	BYTE	#%01011000
+	BYTE	#%00111010
 	BYTE	#%11000111
-	BYTE	#%00101100
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%01000111
+	BYTE	#%01110010
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01110010
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%01000110
+	BYTE	#%01010010
+	BYTE	#%01000101
+	BYTE	#%00110010
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000101
+	BYTE	#%01110010
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01110010
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%01001100
+	BYTE	#%00110010
+	BYTE	#%01001011
+	BYTE	#%01010010
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01110010
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%01110010
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00110010
+	BYTE	#%01001001
+	BYTE	#%01010010
+	BYTE	#%01001001
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%01110010
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%01110010
+	BYTE	#%01001000
+	BYTE	#%01011101
+	BYTE	#%01001000
+	BYTE	#%00110010
+	BYTE	#%01000111
+	BYTE	#%01010010
+	BYTE	#%01000111
+	BYTE	#%01011101
+	BYTE	#%01000111
+	BYTE	#%01110010
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01110010
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%01000110
+	BYTE	#%01010010
+	BYTE	#%01000101
+	BYTE	#%00110010
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000101
+	BYTE	#%01110010
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01110010
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01001100
+	BYTE	#%01010101
+	BYTE	#%01001011
+	BYTE	#%00110101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00100010
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%01001011
+	BYTE	#%01011010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
 	BYTE	#%11000110
 	BYTE	#%00101101
 	BYTE	#%01000110
-	BYTE	#%01011000
-	BYTE	#%01000101
-	BYTE	#%00111000
-	BYTE	#%11000101
-	BYTE	#%00101100
-	BYTE	#%11000101
-	BYTE	#%00101101
-	BYTE	#%01000101
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%01011000
-	BYTE	#%11000100
-	BYTE	#%00101100
-	BYTE	#%11000011
-	BYTE	#%00101101
-	BYTE	#%01000011
-	BYTE	#%01011000
-	BYTE	#%01100000	; This was changed!
-	BYTE	#%11000010
-	BYTE	#%00101100
-	BYTE	#%11000010
-	BYTE	#%00101101
-	BYTE	#%01000001
-	BYTE	#%01011000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00011001
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00100100
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%10011000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
+	BYTE	#%01111010
 	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%11110011
-	BYTE	#%01100010
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%00101101
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01010100
+	BYTE	#%01001000
+	BYTE	#%00110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%00110100
+	BYTE	#%01000011
+	BYTE	#%01010100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%01001011
+	BYTE	#%01010101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%00110101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00100010
+	BYTE	#%01001100
+	BYTE	#%00111010
+	BYTE	#%01001011
+	BYTE	#%01011010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%00111010
+	BYTE	#%01000111
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%01010101
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%00110101
+	BYTE	#%01000011
+	BYTE	#%01010101
+	BYTE	#%11000011
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000010
+	BYTE	#%01001011
+	BYTE	#%01000010
+	BYTE	#%01110101
+	BYTE	#%11000010
+	BYTE	#%00101011
+	BYTE	#%11000001
+	BYTE	#%00101011
+	BYTE	#%01000001
+	BYTE	#%01110101
+	BYTE	#%11000001
+	BYTE	#%01001011
+	BYTE	#%01000001
+	BYTE	#%00110101
+	BYTE	#%01001011
+	BYTE	#%01010101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%01010111
+	BYTE	#%01001011
+	BYTE	#%00110111
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110111
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110111
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%01011010
+	BYTE	#%01001011
+	BYTE	#%00111010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%00000000
+	BYTE	#%01101101
+	BYTE	#%01001100
+	BYTE	#%01011010
+	BYTE	#%01001011
+	BYTE	#%00111010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%01001011
+	BYTE	#%01010100
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%00110100
+	BYTE	#%01001000
+	BYTE	#%01010100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%01110100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%00110100
+	BYTE	#%01000011
+	BYTE	#%01010100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%01001011
+	BYTE	#%01010100
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%00000000
+	BYTE	#%00100001
+	BYTE	#%01001100
+	BYTE	#%01011010
+	BYTE	#%01001011
+	BYTE	#%00111010
+	BYTE	#%11001011
+	BYTE	#%01001101
+	BYTE	#%11000000	; This was changed!
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111010
+	BYTE	#%11001010
+	BYTE	#%01001101
+	BYTE	#%01001010
+	BYTE	#%01011010
+	BYTE	#%01001001
+	BYTE	#%00111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000110
+	BYTE	#%00110010
+	BYTE	#%01000101
+	BYTE	#%00110010
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000101
+	BYTE	#%01110010
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01110010
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%01001100
+	BYTE	#%00110010
+	BYTE	#%01001011
+	BYTE	#%01010010
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01110010
+	BYTE	#%01001011
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%01110010
+	BYTE	#%01001010
+	BYTE	#%01011101
+	BYTE	#%01001010
+	BYTE	#%00110010
+	BYTE	#%01001001
+	BYTE	#%01010010
+	BYTE	#%01001001
+	BYTE	#%01011101
+	BYTE	#%01001001
+	BYTE	#%01110010
+	BYTE	#%01001001
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%00111101
+	BYTE	#%01001000
+	BYTE	#%01110010
+	BYTE	#%01001000
+	BYTE	#%01011101
+	BYTE	#%01001000
+	BYTE	#%00110010
+	BYTE	#%01000111
+	BYTE	#%01010010
+	BYTE	#%01000111
+	BYTE	#%01011101
+	BYTE	#%01000111
+	BYTE	#%01110010
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01110010
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%01000110
+	BYTE	#%01010010
+	BYTE	#%01000101
+	BYTE	#%00110010
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000101
+	BYTE	#%01110010
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01110010
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01001100
+	BYTE	#%01010101
+	BYTE	#%01001011
+	BYTE	#%00110101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01011010
+	BYTE	#%00000000
+	BYTE	#%00100001
+	BYTE	#%01001100
+	BYTE	#%01010011
+	BYTE	#%01001011
+	BYTE	#%00110011
+	BYTE	#%01001011
+	BYTE	#%01011111
+	BYTE	#%01001011
+	BYTE	#%01110011
+	BYTE	#%01001011
+	BYTE	#%01011111
+	BYTE	#%01001011
+	BYTE	#%01010011
+	BYTE	#%01001010
+	BYTE	#%00110011
+	BYTE	#%01001010
+	BYTE	#%01011111
+	BYTE	#%01001010
+	BYTE	#%00110011
+	BYTE	#%01110000	; This was changed!
 	BYTE	#%01001011
 	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%00111000
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
 	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%01001001
-	BYTE	#%01011000
-	BYTE	#%11001001
-	BYTE	#%00101100
-	BYTE	#%11001000
-	BYTE	#%00101101
-	BYTE	#%01001000
-	BYTE	#%01011000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%00100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10100000
+	BYTE	#%01100000	; This was changed!
 	BYTE	#%01001100
 	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00010001
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00000101
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%00100011
-	BYTE	#%01000000
 	BYTE	#%10010000	; This was changed!
 	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010010
-	BYTE	#%01000111
-	BYTE	#%00111010
-	BYTE	#%00000000
-	BYTE	#%00100011
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
 	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01000110
-	BYTE	#%00110000
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
 	BYTE	#%01000000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%11000111
+	BYTE	#%11001011
 	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001011
-	BYTE	#%01011000
+	BYTE	#%00110000	; This was changed!
 	BYTE	#%11001010
 	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
 	BYTE	#%11001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%01001001
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
 	BYTE	#%01011000
-	BYTE	#%11001001
-	BYTE	#%00101100
-	BYTE	#%11001000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%00101101
-	BYTE	#%01001000
-	BYTE	#%01111000
-	BYTE	#%11000111
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000101
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
 	BYTE	#%01011000
-	BYTE	#%11000101
-	BYTE	#%00101100
-	BYTE	#%11000101
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%00101101
-	BYTE	#%01000100
-	BYTE	#%01111000
-	BYTE	#%11000011
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11000011
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%00101101
-	BYTE	#%01000011
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%11000010
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
 	BYTE	#%00101100
-	BYTE	#%11000010
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
 	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%01011000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
 	BYTE	#%01000001
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%00000000
-	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00010011
-	BYTE	#%01001100
-	BYTE	#%01010100
-	BYTE	#%01000110
-	BYTE	#%00110100
-	BYTE	#%00100011
-	BYTE	#%10100000
+	BYTE	#%00110011
 	BYTE	#%00000000
 	BYTE	#%00000110
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
 	BYTE	#%01001100
-	BYTE	#%01011010
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00100000
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00100101
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%10101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01010011
-	BYTE	#%01001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00101100
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%10110000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%11000110
-	BYTE	#%00101100
-	BYTE	#%11110011
-	BYTE	#%01100010
+	BYTE	#%00110001
 	BYTE	#%01001011
-	BYTE	#%00111000
+	BYTE	#%01010001
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01110001
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001011
+	BYTE	#%01010001
 	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%11001010
-	BYTE	#%00101100
-	BYTE	#%11001010
-	BYTE	#%00101101
+	BYTE	#%00110001
 	BYTE	#%01001010
-	BYTE	#%00111000
+	BYTE	#%01011011
+	BYTE	#%01001010
+	BYTE	#%01110001
+	BYTE	#%01001010
+	BYTE	#%01011011
+	BYTE	#%01001010
+	BYTE	#%01010001
 	BYTE	#%01001001
-	BYTE	#%01011000
-	BYTE	#%11001001
+	BYTE	#%00110001
+	BYTE	#%01001001
+	BYTE	#%01011011
+	BYTE	#%01001001
+	BYTE	#%01110001
+	BYTE	#%01001001
+	BYTE	#%01011011
+	BYTE	#%01001001
+	BYTE	#%01010001
+	BYTE	#%01001000
+	BYTE	#%00110001
+	BYTE	#%01001000
+	BYTE	#%01011011
+	BYTE	#%01001000
+	BYTE	#%01110001
+	BYTE	#%01001000
+	BYTE	#%01011011
+	BYTE	#%01001000
+	BYTE	#%01010001
+	BYTE	#%01000111
+	BYTE	#%00110001
+	BYTE	#%01000111
+	BYTE	#%01011011
+	BYTE	#%01000111
+	BYTE	#%01110001
+	BYTE	#%01000111
+	BYTE	#%01011011
+	BYTE	#%01000111
+	BYTE	#%01010001
+	BYTE	#%01000110
+	BYTE	#%00110001
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000110
+	BYTE	#%01110001
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000110
+	BYTE	#%01010001
+	BYTE	#%01000101
+	BYTE	#%00110001
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%01110001
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%01110001
+	BYTE	#%01000100
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%01110001
+	BYTE	#%01000100
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%01000011
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
 	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
-	BYTE	#%01011000
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%11000111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
+	BYTE	#%01111010
+	BYTE	#%11001000
 	BYTE	#%01001101
-	BYTE	#%01010100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
+	BYTE	#%01001000
 	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01011010
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
-	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%01011101
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01110010
-	BYTE	#%01001101
-	BYTE	#%00111101
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%01001101
-	BYTE	#%01010010
-	BYTE	#%01000111
-	BYTE	#%00110010
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00011100
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%00000000
-	BYTE	#%00100011
 	BYTE	#%01000111
 	BYTE	#%00111010
+	BYTE	#%11000111
 	BYTE	#%01001101
-	BYTE	#%01010000
 	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%00100011
-	BYTE	#%10100000
-	BYTE	#%00000000
-	BYTE	#%00000100
-	BYTE	#%11000000	; This was changed!
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
 	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%10000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101101
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
+	BYTE	#%01111010
+	BYTE	#%11000110
 	BYTE	#%01001101
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01100000
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%11001101
-	BYTE	#%00101100
-	BYTE	#%10110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%00111000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%01001100
-	BYTE	#%01111000
-	BYTE	#%11001100
-	BYTE	#%00101100
-	BYTE	#%11001100
-	BYTE	#%00101101
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%00010000	; This was changed!
-	BYTE	#%01001101
+	BYTE	#%01000110
 	BYTE	#%01011010
-	BYTE	#%00100000	; This was changed!
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
 	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
 	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
 	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%10100010
+	BYTE	#%01000011
+	BYTE	#%01011010
 	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01000111
-	BYTE	#%00110000
+	BYTE	#%01100001
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
 	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%10100010
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01011010
+	BYTE	#%01000001
+	BYTE	#%00111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
 	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00110100
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00011011
-	BYTE	#%01001101
-	BYTE	#%00110000
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%00101111
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01101111
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01001100
-	BYTE	#%01001111
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01101111
-	BYTE	#%01000000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01001111
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%00110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001101
-	BYTE	#%01010000
-	BYTE	#%01001100
-	BYTE	#%00110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01110000	; This was changed!
-	BYTE	#%01001100
-	BYTE	#%01110000
-	BYTE	#%10100000	; This was changed!
-	BYTE	#%11110011
 	BYTE	#%00100010
-	BYTE	#%00000000
-	BYTE	#%00000001
 	BYTE	#%01001100
-	BYTE	#%01010000
-	BYTE	#%01000110
-	BYTE	#%00110000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10000010
-	BYTE	#%00100011
-	BYTE	#%01000000
-	BYTE	#%00000000
-	BYTE	#%00001000
-	BYTE	#%11000111
 	BYTE	#%00101100
-	BYTE	#%11010000	; This was changed!
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001001
-	BYTE	#%11000111
-	BYTE	#%00101100
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%01011000
-	BYTE	#%01000110
-	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%10100010
-	BYTE	#%00000000
-	BYTE	#%00001010
-	BYTE	#%01001100
-	BYTE	#%00111000
 	BYTE	#%01001011
+	BYTE	#%00101101
+	BYTE	#%01001011
+	BYTE	#%00101100
+	BYTE	#%01001011
+	BYTE	#%01010100
+	BYTE	#%01001011
+	BYTE	#%00101100
+	BYTE	#%01001011
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%01010100
+	BYTE	#%01001010
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%00101100
+	BYTE	#%01001001
+	BYTE	#%01010100
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%01001011
+	BYTE	#%01010101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%01001011
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%00101100
+	BYTE	#%01001000
+	BYTE	#%00110100
+	BYTE	#%01000111
+	BYTE	#%00110100
+	BYTE	#%01000111
+	BYTE	#%00101100
+	BYTE	#%01000111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%00101100
+	BYTE	#%01000111
+	BYTE	#%01010100
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%01011011
+	BYTE	#%01001011
+	BYTE	#%00111011
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%01111011
+	BYTE	#%11001000
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%01111011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%00111011
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%00111011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%01011011
+	BYTE	#%01001011
+	BYTE	#%00111011
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%00111011
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%11000011
+	BYTE	#%00101100
+	BYTE	#%11000011
+	BYTE	#%00101101
+	BYTE	#%01001100
 	BYTE	#%01011000
-	BYTE	#%01110000	; This was changed!
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
 	BYTE	#%11001010
 	BYTE	#%00101100
 	BYTE	#%11001010
 	BYTE	#%00101101
 	BYTE	#%01001010
-	BYTE	#%00111000
+	BYTE	#%01111000
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%01111000
+	BYTE	#%11001001
+	BYTE	#%00101100
+	BYTE	#%11001001
+	BYTE	#%00101101
 	BYTE	#%01001001
 	BYTE	#%01011000
-	BYTE	#%11001001
+	BYTE	#%01001000
+	BYTE	#%00111000
+	BYTE	#%11001000
 	BYTE	#%00101100
 	BYTE	#%11001000
 	BYTE	#%00101101
 	BYTE	#%01001000
+	BYTE	#%01111000
+	BYTE	#%11001000
+	BYTE	#%00101100
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000111
 	BYTE	#%01111000
 	BYTE	#%11000111
 	BYTE	#%00101100
@@ -9747,49 +9089,1447 @@ Philippe_Vachey_-_Ending_Alone_In_the_Dark_Data1
 	BYTE	#%00101101
 	BYTE	#%01000111
 	BYTE	#%00111000
-	BYTE	#%11110011
-	BYTE	#%01100010
-	BYTE	#%01000101
+	BYTE	#%01000110
 	BYTE	#%01011000
+	BYTE	#%11000110
+	BYTE	#%00101100
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%01000101
+	BYTE	#%00111000
 	BYTE	#%11000101
 	BYTE	#%00101100
 	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%01000101
+	BYTE	#%01111000
+	BYTE	#%11000101
+	BYTE	#%00101100
+	BYTE	#%11000100
 	BYTE	#%00101101
 	BYTE	#%01000100
 	BYTE	#%01111000
-	BYTE	#%11000011
+	BYTE	#%11000100
 	BYTE	#%00101100
-	BYTE	#%11000011
+	BYTE	#%11000100
 	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%00111000
 	BYTE	#%01000011
-	BYTE	#%00111000
-	BYTE	#%01010000	; This was changed!
-	BYTE	#%11000010
+	BYTE	#%01011000
+	BYTE	#%11000011
 	BYTE	#%00101100
-	BYTE	#%11000010
+	BYTE	#%11000011
 	BYTE	#%00101101
-	BYTE	#%01000001
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%00101111
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%11000110
+	BYTE	#%00101111
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
 	BYTE	#%00111000
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%01001010
+	BYTE	#%00110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%01001000
+	BYTE	#%00110101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11001000
 	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
+	BYTE	#%11000111
 	BYTE	#%00101011
-	BYTE	#%01001101
-	BYTE	#%01110100
-	BYTE	#%11001101
-	BYTE	#%00101010
-	BYTE	#%11001101
+	BYTE	#%01000111
+	BYTE	#%10010101
+	BYTE	#%11000111
 	BYTE	#%00101011
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%00110101
+	BYTE	#%01000101
+	BYTE	#%01010101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000100
+	BYTE	#%01110101
+	BYTE	#%11000100
+	BYTE	#%01001011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%11001100
+	BYTE	#%00101011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%01001011
+	BYTE	#%01010101
+	BYTE	#%01001010
+	BYTE	#%00110101
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110101
+	BYTE	#%11001001
+	BYTE	#%01001011
+	BYTE	#%01001001
+	BYTE	#%00110101
+	BYTE	#%01001000
+	BYTE	#%01010101
+	BYTE	#%11001000
+	BYTE	#%01001011
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%01001011
+	BYTE	#%01000111
+	BYTE	#%01110101
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110101
+	BYTE	#%11000110
+	BYTE	#%01001011
+	BYTE	#%01000110
+	BYTE	#%00110101
+	BYTE	#%01000101
+	BYTE	#%01010101
+	BYTE	#%11000101
+	BYTE	#%01001011
+	BYTE	#%01000101
+	BYTE	#%01110101
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01000111
+	BYTE	#%01011011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01111011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%00111011
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%00111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%00101111
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%11000111
+	BYTE	#%00101111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%11000100
+	BYTE	#%00101111
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%00101111
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%01001111
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%01000100
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%01001111
+	BYTE	#%01000011
+	BYTE	#%01111101
+	BYTE	#%11000011
+	BYTE	#%00101111
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%01000010
+	BYTE	#%01111101
+	BYTE	#%11000010
+	BYTE	#%00101111
+	BYTE	#%11000001
+	BYTE	#%00101111
+	BYTE	#%01000001
+	BYTE	#%01111101
+	BYTE	#%11000001
+	BYTE	#%01001111
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01001100
+	BYTE	#%00110101
+	BYTE	#%01001011
+	BYTE	#%01010101
+	BYTE	#%11001011
+	BYTE	#%01001011
+	BYTE	#%10110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%01001011
+	BYTE	#%01001010
+	BYTE	#%01110101
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01010101
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000011
+	BYTE	#%01110101
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%01011011
+	BYTE	#%01001011
+	BYTE	#%00111011
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%01111011
+	BYTE	#%11001000
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%01111011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%00111011
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%11000110
+	BYTE	#%01001110
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%00111011
+	BYTE	#%11000101
+	BYTE	#%01001110
+	BYTE	#%01000101
+	BYTE	#%01111011
+	BYTE	#%11000100
+	BYTE	#%01001110
+	BYTE	#%01000100
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%01001110
+	BYTE	#%01000011
+	BYTE	#%01111011
+	BYTE	#%11000011
+	BYTE	#%00101110
+	BYTE	#%11000010
+	BYTE	#%00101110
+	BYTE	#%01000010
+	BYTE	#%01111011
+	BYTE	#%11000010
+	BYTE	#%01001110
+	BYTE	#%01001100
+	BYTE	#%01011011
+	BYTE	#%01001011
+	BYTE	#%00111011
+	BYTE	#%11001011
+	BYTE	#%01001110
+	BYTE	#%11010000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%11001010
+	BYTE	#%01001110
+	BYTE	#%01001010
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%01001110
+	BYTE	#%01001001
+	BYTE	#%01111011
+	BYTE	#%11001001
+	BYTE	#%00101110
+	BYTE	#%11001000
+	BYTE	#%00101110
+	BYTE	#%01001000
+	BYTE	#%01111011
+	BYTE	#%11001000
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%01111011
+	BYTE	#%11000111
+	BYTE	#%01001110
+	BYTE	#%01000111
+	BYTE	#%00111011
+	BYTE	#%01000110
+	BYTE	#%00111011
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%01001100
+	BYTE	#%00111000
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%01111000
+	BYTE	#%10000000	; This was changed!
+	BYTE	#%11001010
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%01111000
+	BYTE	#%11001001
+	BYTE	#%00101100
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%01001001
+	BYTE	#%01011000
+	BYTE	#%01001000
+	BYTE	#%00111000
+	BYTE	#%11001000
+	BYTE	#%00101100
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111000
+	BYTE	#%11001000
+	BYTE	#%00101100
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%01111000
+	BYTE	#%11000111
+	BYTE	#%00101100
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%00111000
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%11000110
+	BYTE	#%00101100
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%01000101
+	BYTE	#%00111000
+	BYTE	#%11000101
+	BYTE	#%00101100
+	BYTE	#%11000101
+	BYTE	#%00101101
+	BYTE	#%01000101
+	BYTE	#%01111000
+	BYTE	#%11000101
+	BYTE	#%00101100
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%01111000
+	BYTE	#%11000100
+	BYTE	#%00101100
+	BYTE	#%11000100
+	BYTE	#%00101101
+	BYTE	#%01000100
+	BYTE	#%00111000
+	BYTE	#%01000011
+	BYTE	#%01011000
+	BYTE	#%11000011
+	BYTE	#%00101100
+	BYTE	#%11000011
+	BYTE	#%00101101
+	BYTE	#%01001100
+	BYTE	#%00111101
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%01001111
+	BYTE	#%10100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%11001010
+	BYTE	#%01001111
+	BYTE	#%01001010
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%01001111
+	BYTE	#%01001001
+	BYTE	#%01111101
+	BYTE	#%11001001
+	BYTE	#%00101111
+	BYTE	#%11001000
+	BYTE	#%00101111
+	BYTE	#%01001000
+	BYTE	#%01111101
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01000111
+	BYTE	#%01111101
+	BYTE	#%11000111
+	BYTE	#%01001111
+	BYTE	#%01000111
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%00111101
+	BYTE	#%01000110
+	BYTE	#%01011101
+	BYTE	#%11000110
+	BYTE	#%01001111
+	BYTE	#%01000110
+	BYTE	#%00111101
+	BYTE	#%01000101
+	BYTE	#%01011101
+	BYTE	#%11000101
+	BYTE	#%01001111
+	BYTE	#%01000101
+	BYTE	#%00111101
+	BYTE	#%01000100
+	BYTE	#%01011101
+	BYTE	#%11000100
+	BYTE	#%01001111
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001100
+	BYTE	#%00101101
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%00110011
+	BYTE	#%01001001
+	BYTE	#%01010011
+	BYTE	#%01001001
+	BYTE	#%01011111
+	BYTE	#%01001001
+	BYTE	#%01110011
+	BYTE	#%01001001
+	BYTE	#%01011111
+	BYTE	#%01001001
+	BYTE	#%00110011
+	BYTE	#%01001000
+	BYTE	#%01010011
+	BYTE	#%01001000
+	BYTE	#%01011111
+	BYTE	#%01001000
+	BYTE	#%01010011
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01000000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00010000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101101
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%01110001
+	BYTE	#%01001010
+	BYTE	#%01011011
+	BYTE	#%01001010
+	BYTE	#%01010001
+	BYTE	#%01001001
+	BYTE	#%00110001
+	BYTE	#%01001001
+	BYTE	#%01011011
+	BYTE	#%01001001
+	BYTE	#%01110001
+	BYTE	#%01001001
+	BYTE	#%01011011
+	BYTE	#%01001001
+	BYTE	#%01010001
+	BYTE	#%01001000
+	BYTE	#%00110001
+	BYTE	#%01001000
+	BYTE	#%01011011
+	BYTE	#%01001000
+	BYTE	#%01110001
+	BYTE	#%01001000
+	BYTE	#%01011011
+	BYTE	#%01001000
+	BYTE	#%01010001
+	BYTE	#%01000111
+	BYTE	#%00110001
+	BYTE	#%01000111
+	BYTE	#%01011011
+	BYTE	#%01000111
+	BYTE	#%01110001
+	BYTE	#%01000111
+	BYTE	#%01011011
+	BYTE	#%01000111
+	BYTE	#%01010001
+	BYTE	#%01000110
+	BYTE	#%00110001
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000110
+	BYTE	#%01110001
+	BYTE	#%01000110
+	BYTE	#%01011011
+	BYTE	#%01000110
+	BYTE	#%01010001
+	BYTE	#%01000101
+	BYTE	#%00110001
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%01110001
+	BYTE	#%01000101
+	BYTE	#%01011011
+	BYTE	#%01000101
+	BYTE	#%01110001
+	BYTE	#%01000100
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%01110001
+	BYTE	#%01000100
+	BYTE	#%01011011
+	BYTE	#%01000100
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%01000011
+	BYTE	#%01110001
+	BYTE	#%01000011
+	BYTE	#%01011011
+	BYTE	#%01000011
+	BYTE	#%01110001
+	BYTE	#%01000010
+	BYTE	#%01011011
+	BYTE	#%01000010
+	BYTE	#%01110001
+	BYTE	#%01000010
+	BYTE	#%01011011
+	BYTE	#%01000010
+	BYTE	#%01110001
+	BYTE	#%01000001
+	BYTE	#%01011011
+	BYTE	#%01000001
+	BYTE	#%01110001
+	BYTE	#%01000001
+	BYTE	#%01011011
+	BYTE	#%01000001
+	BYTE	#%01010001
+	BYTE	#%10010000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01100000	; This was changed!
+	BYTE	#%00110000	; This was changed!
+	BYTE	#%11001011
+	BYTE	#%00101100
+	BYTE	#%01010000	; This was changed!
+	BYTE	#%00100000	; This was changed!
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%11001100
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
 	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%01111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000010
+	BYTE	#%01001101
+	BYTE	#%01000010
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01001101
+	BYTE	#%01000001
+	BYTE	#%01111010
+	BYTE	#%11000001
+	BYTE	#%01101101
+	BYTE	#%00000000
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001001
+	BYTE	#%01011010
+	BYTE	#%11001001
+	BYTE	#%01001101
+	BYTE	#%01001001
+	BYTE	#%01111010
+	BYTE	#%11001001
+	BYTE	#%00101101
+	BYTE	#%11001000
+	BYTE	#%00101101
+	BYTE	#%01001000
+	BYTE	#%01111010
+	BYTE	#%11001000
+	BYTE	#%01001101
+	BYTE	#%01001000
+	BYTE	#%01011010
+	BYTE	#%01000111
+	BYTE	#%00111010
+	BYTE	#%11000111
+	BYTE	#%01001101
+	BYTE	#%01000111
+	BYTE	#%01111010
+	BYTE	#%11000111
+	BYTE	#%00101101
+	BYTE	#%11000110
+	BYTE	#%00101101
+	BYTE	#%01000110
+	BYTE	#%01111010
+	BYTE	#%11000110
+	BYTE	#%01001101
+	BYTE	#%01000110
+	BYTE	#%01011010
+	BYTE	#%01000101
+	BYTE	#%00111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111010
+	BYTE	#%11000101
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01111010
+	BYTE	#%11000100
+	BYTE	#%01001101
+	BYTE	#%01000100
+	BYTE	#%01011010
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%11000011
+	BYTE	#%01001101
+	BYTE	#%01000011
+	BYTE	#%00111010
+	BYTE	#%01000100
 	BYTE	#%01010100
+	BYTE	#%11000100
+	BYTE	#%00101010
+	BYTE	#%11000100
+	BYTE	#%00101011
+	BYTE	#%01000100
+	BYTE	#%00110100
+	BYTE	#%01000011
+	BYTE	#%01010100
+	BYTE	#%11000011
+	BYTE	#%00101010
+	BYTE	#%11000011
+	BYTE	#%00101011
+	BYTE	#%01001100
+	BYTE	#%00110100
+	BYTE	#%01001011
+	BYTE	#%01010100
+	BYTE	#%11001011
+	BYTE	#%00101010
+	BYTE	#%11001011
+	BYTE	#%00101011
+	BYTE	#%01001011
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%01110100
+	BYTE	#%11001010
+	BYTE	#%00101010
+	BYTE	#%11001010
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01110100
+	BYTE	#%11001001
+	BYTE	#%00101010
+	BYTE	#%11001001
+	BYTE	#%00101011
+	BYTE	#%01001001
+	BYTE	#%01010100
+	BYTE	#%01001000
+	BYTE	#%00110100
+	BYTE	#%11001000
+	BYTE	#%00101010
+	BYTE	#%11001000
+	BYTE	#%00101011
+	BYTE	#%01001000
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000111
+	BYTE	#%01110100
+	BYTE	#%11000111
+	BYTE	#%00101010
+	BYTE	#%11000111
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01110100
+	BYTE	#%11000110
+	BYTE	#%00101010
+	BYTE	#%11000110
+	BYTE	#%00101011
+	BYTE	#%01000110
+	BYTE	#%01010100
+	BYTE	#%01000101
+	BYTE	#%00110100
+	BYTE	#%11000101
+	BYTE	#%00101010
+	BYTE	#%11000101
+	BYTE	#%00101011
+	BYTE	#%01000101
+	BYTE	#%01110100
+	BYTE	#%11000101
+	BYTE	#%00101010
 	BYTE	#%11110000
 
 *Routine Section
