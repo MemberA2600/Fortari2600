@@ -22,6 +22,13 @@ class FileDialogs:
 
         return i
 
+    def askForFloat(self, title, p):
+        self.changeWindowState(True)
+        i = askfloat(self.__dicts.getWordFromCurrentLanguage(title), self.__dicts.getWordFromCurrentLanguage(p))
+        self.changeWindowState(False)
+
+        return i
+
     def askYesOrNo(self, title, text):
 
         self.changeWindowState(True)

@@ -51,7 +51,7 @@ class VGMConverter:
         data = file.read().replace("\r","").split("VGMData:")
         file.close()
 
-        #os.remove(txt2)
+        os.remove(txt2)
 
         from VGMDataItem import VGMDataItem
 
@@ -590,7 +590,8 @@ class VGMConverter:
             "monotony": 0,
             "numberOfNotes": 0,
             "priority": 0,
-            "dominantTiaChannel": 0
+            "dominantTiaChannel": 0,
+            "bonus": 0
         }
 
         allThree = []
@@ -611,10 +612,9 @@ class VGMConverter:
                     if allThree[pair[0]]["channelCount"][key] > largest:
                        largest    =  allThree[pair[0]]["channelCount"][key]
                        largestKey =  key
-                       temp      += allThree[pair[0]]["channelCount"][key]
 
                 try:
-                    allThree[pair[0]]["monotony"]           = largest / temp
+                    allThree[pair[0]]["monotony"]           = largest / allThree[pair[0]]["numberOfNotes"]
                 except:
                     allThree[pair[0]]["monotony"]           = 0
 
@@ -625,9 +625,11 @@ class VGMConverter:
                         allThree[pair[0]]["variety"] += 1
 
                 allThree[pair[0]]["variety"]  = allThree[pair[0]]["variety"] / 95
-                allThree[pair[0]]["priority"] = (allThree[pair[0]]["variety"]*2) + \
+                allThree[pair[0]]["bonus"]    = allThree[pair[0]]["bonus"] / allThree[pair[0]]["numberOfNotes"]
+                allThree[pair[0]]["priority"] = ((allThree[pair[0]]["variety"]*2) + \
                                                 (allThree[pair[0]]["monotony"]*1.5)+\
-                                                (allThree[pair[0]]["correctNotes"]*4)
+                                                (allThree[pair[0]]["correctNotes"]*2.5))+\
+                                                 allThree[pair[0]]["bonus"]
 
 
 
@@ -666,10 +668,12 @@ class VGMConverter:
     def __calculateChannelAttr(self, note, place, add, allThree, channel):
         tiaNotes = self.__piaNotes.getTiaValue(note["note"]+add, None)
 
+        if note["note"] < 52 and note["note"] > 16:
+            allThree[place]["bonus"]+=1
+
         if note["note"]+add > 88 or note["note"]+add < 1:
            tiaNotes = None
 
-        allThree[place]["numberOfNotes"] += 1
         if tiaNotes != None:
 
             for channelKey in tiaNotes:
@@ -678,6 +682,7 @@ class VGMConverter:
             if type(tiaNotes[list(tiaNotes.keys())[0]]) == str:
                 allThree[place]["correctNotes"] += 1
 
+            allThree[place]["numberOfNotes"] += 1
             allThree[place]["noteCount"][note["note"]+add] += 1
 
     def emulateYM3812(self, removeOutside, removePercuss, cutOut, vibrSets):

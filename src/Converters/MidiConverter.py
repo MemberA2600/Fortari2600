@@ -75,12 +75,12 @@ class MidiConverter:
         try:
             constant = self.__loader.fileDialogs.askForInteger("askForSomething", "setMidiTempo")
         except:
-            constant = 50
+            constant = 1.0
 
         if constant == None:
-           constant = 50
+           constant = 1.0
 
-        self.__defaultTempo = constant * 1.1 * self.__multi
+        self.__defaultTempo = 50 * 1.1 * self.__multi * constant
 
         textToSend = ""
         tempo = None
@@ -88,7 +88,7 @@ class MidiConverter:
             message = str(message)
             if "MetaMessage" in message:
                 if ("set_tempo" in message):
-                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1
+                    tempo = round(int(re.findall(r"tempo=\d+,", message)[0].replace("tempo=", "")[:-1]) / 10000) * self.__multi * 1.1 * constant
                     if self.__defaultTempo == None:
                         self.__defaultTempo = tempo
 

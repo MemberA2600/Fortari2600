@@ -205,6 +205,10 @@ class MainWindow:
                                           self.__openPictureConverter, "projectPath",
                                             False, None)
 
+        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", 14,
+                                          self.__openSoundPlayer, "projectPath",
+                                            False, None)
+
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
 
@@ -280,7 +284,7 @@ class MainWindow:
                 self.__menuLabel.changePlace(0)
             elif name in ["copy", "paste", "undo", "redo"]:
                 self.__menuLabel.changePlace(5.5)
-            elif name in ["spriteEditor", "playfieldEditor", "colorPalette","music","64pxPicture"]:
+            elif name in ["spriteEditor", "playfieldEditor", "colorPalette","music","64pxPicture","soundPlayer"]:
                 self.__menuLabel.changePlace(10)
         except:
             self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
@@ -521,6 +525,10 @@ class MainWindow:
 
         self.__subMenu = PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
 
+    def __openSoundPlayer(self):
+        from SoundPlayerEditor import SoundPlayerEditor
+
+        self.__subMenu = SoundPlayerEditor(self.__loader, self)
 
     def __openPFEditor(self):
         from PlayfieldEditor import PlayfieldEditor
