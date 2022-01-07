@@ -10,6 +10,12 @@ class SoundPlayer:
             sound = Thread(target=self.playThread)
             sound.start()
 
+    def play(self, path):
+        from threading import Thread
+        self.path = path
+        sound = Thread(target=self.playThread)
+        sound.start()
+
     def playThread(self):
         from playsound import playsound
         playsound(self.path)

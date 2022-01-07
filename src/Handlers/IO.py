@@ -14,6 +14,10 @@ class IO:
             return(ImageTk.PhotoImage(Image.open("others/img/"+name+".png")
                                       .resize((self.__loader.mainWindow.getConstant(),
                                                self.__loader.mainWindow.getConstant()), Image.ANTIALIAS)))
+        elif type(size) == tuple:
+            return(ImageTk.PhotoImage(Image.open("others/img/"+name+".png")
+                                      .resize(size), Image.ANTIALIAS))
+
         else:
             return(ImageTk.PhotoImage(Image.open("others/img/"+name+".png")
                                       .resize((size, size)), Image.ANTIALIAS))

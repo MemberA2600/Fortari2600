@@ -223,3 +223,6 @@ soundPlayer=Hanglejátszó
 openSound=WAV Megnyitása
 recordSound=WAV rögzítése
 generateSpeech=Beszéd Generálása
+wav=Wav Hangfájl
+openWav=Hangfájl Megnyitása
+play=Lejátszás

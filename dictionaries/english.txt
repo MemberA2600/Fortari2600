@@ -225,3 +225,6 @@ soundPlayer=Sound Player
 openSound=Open WAV
 recordSound=Record WAV
 generateSpeech=Generate Speech
+wav=Wav Sound File
+openWav=Open Sound File
+play=Play
