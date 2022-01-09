@@ -20,4 +20,3 @@ class SoundPlayer:
         from playsound import playsound
         playsound(self.path)
 
-

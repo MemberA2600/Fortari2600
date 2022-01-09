@@ -30,10 +30,13 @@ class SoundPlayerEditor:
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
         self.__opened = False
+        self.__mode = None
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
+        self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.45), False, False, False)
+
 
         self.__sizes = {
             "common": [self.__screenSize[0] / 6, self.__screenSize[1]/5  - 25]
@@ -109,7 +112,7 @@ class SoundPlayerEditor:
 
         self.__robotButton = Button(self.__buttonFrame3, bg=self.__loader.colorPalettes.getColor("window"),
                                     name="generateSpeech",
-                                   image=self.__robotImage, width=999999999, command=None)
+                                   image=self.__robotImage, width=999999999, command=self.__robotMenu)
         self.__robotButton.pack_propagate(False)
         self.__robotButton.pack(fill=BOTH)
 
@@ -201,11 +204,19 @@ class SoundPlayerEditor:
     def __plainOpen(self):
         self.__deleteMiddle()
         self.__openWavAndConvertToLO(None)
+        self.__mode = "open"
+
         if self.__opened == True:
             self.__createRainbow()
 
     def __justPlay(self):
-        self.__soundPlayer.play("temp/temp.wav")
+        from datetime import datetime
+        from shutil   import copyfile
+
+        name = ("temp/temp"+str(datetime.now()) + ".wav").replace(" ", "-").replace(":", "-")
+        copyfile("temp/temp.wav", name)
+
+        self.__soundPlayer.play(name)
 
     def __deleteMiddle(self):
         try:
@@ -226,7 +237,15 @@ class SoundPlayerEditor:
         try:
             if path == None:
                 path = self.__fileDialogs.askForFileName("openWav", False, ["wav", "*"], self.__loader.mainWindow.projectPath)
-            waveInput = wave.open(path, "rb")
+
+            try:
+                waveInput = wave.open(path, "rb")
+            except:
+                import soundfile
+
+                data, samplerate = soundfile.read('temp/temp.wav')
+                soundfile.write('temp/temp.wav', data, samplerate, subtype='PCM_16')
+                waveInput = wave.open(path, "rb")
 
             converted = waveInput.readframes(waveInput.getnframes())
 
@@ -258,13 +277,13 @@ class SoundPlayerEditor:
             self.__saveButton.config(state = NORMAL)
             self.__opened = True
 
-
         except Exception as e:
             self.__playButton.config(state=DISABLED)
             self.__previewButton.config(state=DISABLED)
             self.__saveButton.config(state=DISABLED)
             self.__opened = False
-            self.__createRainbow()
+
+            #self.__createRainbow()
 
             self.__fileDialogs.displayError('importError', 'importErrorMessage', None, str(e))
         self.__topLevelWindow.deiconify()
@@ -282,3 +301,271 @@ class SoundPlayerEditor:
 
     def __createMiddleRecording(self):
         self.__deleteMiddle()
+        self.__mode = "record"
+
+        self.__middleF1 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= (self.__topLevel.getTopLevelDimensions()[1]//5) // 2)
+        self.__middleF1.pack_propagate(False)
+        self.__middleF1.pack(side=TOP, anchor=E, fill=X)
+
+        self.__middleF1_1 = Frame(self.__middleF1, bg=self.__loader.colorPalettes.getColor("window"),
+                                width=  (self.__topLevel.getTopLevelDimensions()[0]//3) * 2,
+                                height= (self.__topLevel.getTopLevelDimensions()[1]//5) // 2)
+        self.__middleF1_1.pack_propagate(False)
+        self.__middleF1_1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__timeLabel = Label(self.__middleF1_1, bg=self.__loader.colorPalettes.getColor("window"),
+                                text = self.__dictionaries.getWordFromCurrentLanguage("recordTime"),
+                                 fg=self.__loader.colorPalettes.getColor("font"), font = self.__miniFont)
+        self.__timeLabel.pack_propagate(False)
+        self.__timeLabel.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__timeEntryFrame = Frame(self.__middleF1, bg=self.__loader.colorPalettes.getColor("window"),
+                                width=  (self.__topLevel.getTopLevelDimensions()[0]//3),
+                                height= (self.__topLevel.getTopLevelDimensions()[1]//5) // 2)
+        self.__timeEntryFrame.pack_propagate(False)
+        self.__timeEntryFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__timeString = StringVar()
+        self.__timeString.set("1")
+
+        self.__timeEntry = Entry(self.__timeEntryFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=99,
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable = self.__timeString, name = "timeEntry",
+                                   font=self.__smallFont, justify = CENTER,
+                                   command=None)
+        self.__timeEntry.pack_propagate()
+        self.__timeEntry.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__timeEntry.bind("<KeyRelease>", self.__checkInt)
+        self.__timeEntry.bind("<FocusOut>", self.__checkInt)
+
+        w = self.__topLevel.getTopLevelDimensions()[0]
+        h = self.__topLevel.getTopLevelDimensions()[1]//5*3
+
+        self.__micFrame = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width=  w,
+                                height= h)
+
+        self.__micFrame.pack_propagate(False)
+        self.__micFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__micOff = self.__loader.io.getImg("micOff", (h//2, h//2))
+        self.__micOn = self.__loader.io.getImg("micOn", (h//2, h//2))
+        self.__one = self.__loader.io.getImg("01", (h//2, h//2))
+        self.__two = self.__loader.io.getImg("02", (h//2, h//2))
+        self.__three = self.__loader.io.getImg("03", (h//2, h//2))
+
+        self.__micButton = Button(self.__micFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image= self.__micOff, width=9999, height = 9999, name="record",
+                                   command=self.__recordThread)
+        self.__micButton.pack_propagate(False)
+        self.__micButton.pack(fill=BOTH)
+
+        self.__micButton.bind("<Enter>", self.__mouseEnter)
+        self.__micButton.bind("<Leave>", self.__mouseLeave)
+
+    def __checkInt(self, event):
+
+        name = str(event.widget).split(".")[-1]
+
+        if self.__mode == "record":
+            itemList = {
+                "timeEntry": (self.__timeString, self.__timeEntry, self.__micButton)
+            }
+
+            teszt = self.__checkEntry(itemList[name][0], itemList[name][1], itemList[name][2])
+
+            if teszt != None and teszt < 1:
+               self.__timeString.set('1')
+        else:
+            itemList = {
+                "pitch": (self.__pitchEntry.var, self.__pitchEntry.entry, self.__testButton),
+                "throat": (self.__throatEntry.var, self.__throatEntry.entry, self.__testButton),
+                "mouth": (self.__mouthEntry.var, self.__mouthEntry.entry, self.__testButton),
+                "speed": (self.__speedEntry.var, self.__speedEntry.entry, self.__testButton)
+            }
+
+            __turnOff = False
+
+            for item in itemList.keys():
+                teszt = self.__checkEntry(itemList[item][0], itemList[item][1], itemList[item][2])
+
+                if teszt != None:
+                   if teszt < 0:
+                       itemList[item][0].set('0')
+                   elif teszt > 255:
+                       itemList[item][0].var.set('255')
+                else:
+                    __turnOff = True
+
+            if self.__textEntryVal.get() == "":
+                __turnOff = True
+
+            if __turnOff == True:
+               self.__testButton.config(state = DISABLED)
+            else:
+               self.__testButton.config(state = NORMAL)
+
+    def __checkEntry(self, val, entry, button):
+        while True:
+            try:
+                teszt = int(val.get())
+                break
+            except:
+                val.set(val.get()[:-1])
+                if val.get() == "":
+                    entry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                            fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+                                            )
+
+                    button.config(state=DISABLED)
+                    return None
+
+        entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+                                )
+
+        button.config(state=NORMAL)
+        return teszt
+
+    def __recordThread(self):
+        from threading import Thread
+
+        t = Thread(target = self.__recordSound)
+        t.daemon = True
+        t.start()
+
+    def __recordSound(self):
+
+        import sounddevice as sd
+        from scipy.io.wavfile import write
+
+        self.__micButton.config(image = self.__three)
+        self.__micButton.config(state = DISABLED)
+        self.__openButton.config(state = DISABLED)
+        self.__recordButton.config(state = DISABLED)
+        self.__robotButton.config(state = DISABLED)
+        self.__playButton.config(state = DISABLED)
+        self.__saveButton.config(state = DISABLED)
+        self.__previewButton.config(state = DISABLED)
+        self.__timeEntry.config(state = DISABLED)
+
+        from time import sleep
+
+        sleep(1)
+        self.__micButton.config(image = self.__two)
+        sleep(1)
+        self.__micButton.config(image = self.__one)
+        sleep(1)
+        self.__micButton.config(image = self.__micOn)
+
+        fs = 44100
+        try:
+            seconds = int(self.__timeString.get())
+        except:
+            seconds = 1
+
+        record = sd.rec(int(seconds * fs), samplerate=fs, channels=2)
+        sd.wait()
+
+        write('temp/temp.wav', fs, record)
+
+        self.__micButton.config(image = self.__micOff, state = NORMAL)
+        self.__openButton.config(state = NORMAL)
+        self.__recordButton.config(state = NORMAL)
+        self.__robotButton.config(state = NORMAL)
+        self.__timeEntry.config(state = NORMAL)
+        self.__openWavAndConvertToLO("temp/temp.wav")
+
+    def __robotMenu(self):
+        self.__deleteMiddle()
+        self.__mode = "robot"
+
+        self.__previewButton.config(state = DISABLED)
+        self.__saveButton.config(state = DISABLED)
+        self.__playButton.config(state = DISABLED)
+
+        h = (self.__topLevel.getTopLevelDimensions()[1]//5) //2
+
+        self.__speechImg = self.__loader.io.getImg("speech", (h, h))
+
+
+        self.__robotSpeechFrame1 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= h)
+        self.__robotSpeechFrame1.pack_propagate(False)
+        self.__robotSpeechFrame1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__robotSpeechFrame2 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= h)
+        self.__robotSpeechFrame2.pack_propagate(False)
+        self.__robotSpeechFrame2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__robotSpeechFrame3 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= h)
+        self.__robotSpeechFrame3.pack_propagate(False)
+        self.__robotSpeechFrame3.pack(side=TOP, anchor=N, fill=X)
+
+        self.__robotSpeechFrame4 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= h)
+        self.__robotSpeechFrame4.pack_propagate(False)
+        self.__robotSpeechFrame4.pack(side=TOP, anchor=N, fill=X)
+
+        self.__robotSpeechFrame5 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                width =  self.__topLevel.getTopLevelDimensions()[0],
+                                height= h)
+        self.__robotSpeechFrame5.pack_propagate(False)
+        self.__robotSpeechFrame5.pack(side=TOP, anchor=N, fill=BOTH)
+
+        from RobotFrameLabelEntry import RobotFrameLabelEntry
+
+        self.__speedEntry = RobotFrameLabelEntry(self.__loader, self.__robotSpeechFrame1,
+                                                 self.__topLevel.getTopLevelDimensions()[0] //2, h,
+                                                 self.__smallFont, self.__checkInt, "72", "speed"
+                                                 )
+
+        self.__pitchEntry = RobotFrameLabelEntry(self.__loader, self.__robotSpeechFrame1,
+                                                 self.__topLevel.getTopLevelDimensions()[0] //2, h,
+                                                 self.__smallFont, self.__checkInt, "64", "pitch"
+                                                 )
+
+        self.__throatEntry = RobotFrameLabelEntry(self.__loader, self.__robotSpeechFrame2,
+                                                 self.__topLevel.getTopLevelDimensions()[0] //2, h,
+                                                 self.__smallFont, self.__checkInt, "128", "throat"
+                                                 )
+        self.__mouthEntry = RobotFrameLabelEntry(self.__loader, self.__robotSpeechFrame2,
+                                                 self.__topLevel.getTopLevelDimensions()[0] //2, h,
+                                                 self.__smallFont, self.__checkInt, "128", "mouth"
+                                                 )
+
+        self.__textEntryVal = StringVar()
+        self.__textEntryVal.set("Have you played you Atari today?")
+
+        self.__textEntryVal = Entry(self.__robotSpeechFrame4, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=999999,
+                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                 textvariable=self.__textEntryVal,
+                                 font=self.__tinyFont,
+                                 command=None)
+        self.__textEntryVal.pack_propagate()
+        self.__textEntryVal.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__textEntryVal.bind("<KeyRelease>", self.__checkInt)
+        self.__textEntryVal.bind("<FocusOut>", self.__checkInt)
+
+        self.__testButton = Button(self.__robotSpeechFrame5, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image= self.__speechImg, width=9999, height = 9999, name="speech",
+                                   command=self.__recordThread)
+        self.__testButton.pack_propagate(False)
+        self.__testButton.pack(fill=BOTH)
+
+        self.__testButton.bind("<Enter>", self.__mouseEnter)
+        self.__testButton.bind("<Leave>", self.__mouseLeave)
+
+        from RoboButton import RoboButton
