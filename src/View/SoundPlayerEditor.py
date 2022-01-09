@@ -382,16 +382,16 @@ class SoundPlayerEditor:
                self.__timeString.set('1')
         else:
             itemList = {
-                "pitch": (self.__pitchEntry.var, self.__pitchEntry.entry, self.__testButton),
-                "throat": (self.__throatEntry.var, self.__throatEntry.entry, self.__testButton),
-                "mouth": (self.__mouthEntry.var, self.__mouthEntry.entry, self.__testButton),
-                "speed": (self.__speedEntry.var, self.__speedEntry.entry, self.__testButton)
+                "pitch": (self.__pitchEntry.var, self.__pitchEntry.entry),
+                "throat": (self.__throatEntry.var, self.__throatEntry.entry),
+                "mouth": (self.__mouthEntry.var, self.__mouthEntry.entry),
+                "speed": (self.__speedEntry.var, self.__speedEntry.entry)
             }
 
             __turnOff = False
 
             for item in itemList.keys():
-                teszt = self.__checkEntry(itemList[item][0], itemList[item][1], itemList[item][2])
+                teszt = self.__checkEntry(itemList[item][0], itemList[item][1], None)
 
                 if teszt != None:
                    if teszt < 0:
@@ -405,9 +405,15 @@ class SoundPlayerEditor:
                 __turnOff = True
 
             if __turnOff == True:
-               self.__testButton.config(state = DISABLED)
+               self.__previewButton.config(state = DISABLED)
+               self.__saveButton.config(state = DISABLED)
+               self.__playButton.config(state = DISABLED)
             else:
-               self.__testButton.config(state = NORMAL)
+               self.__previewButton.config(state = NORMAL)
+               self.__saveButton.config(state = NORMAL)
+               self.__playButton.config(state = NORMAL)
+
+               self.__generateRoboSound()
 
     def __checkEntry(self, val, entry, button):
         while True:
@@ -420,15 +426,15 @@ class SoundPlayerEditor:
                     entry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                             fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
                                             )
-
-                    button.config(state=DISABLED)
+                    if button != None:
+                        button.config(state=DISABLED)
                     return None
 
         entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal")
                                 )
-
-        button.config(state=NORMAL)
+        if button != None:
+            button.config(state=NORMAL)
         return teszt
 
     def __recordThread(self):
@@ -507,21 +513,16 @@ class SoundPlayerEditor:
 
         self.__robotSpeechFrame3 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                 width =  self.__topLevel.getTopLevelDimensions()[0],
-                                height= h)
+                                height= h*2)
         self.__robotSpeechFrame3.pack_propagate(False)
         self.__robotSpeechFrame3.pack(side=TOP, anchor=N, fill=X)
+
 
         self.__robotSpeechFrame4 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                 width =  self.__topLevel.getTopLevelDimensions()[0],
                                 height= h)
         self.__robotSpeechFrame4.pack_propagate(False)
-        self.__robotSpeechFrame4.pack(side=TOP, anchor=N, fill=X)
-
-        self.__robotSpeechFrame5 = Frame(self.__middleFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                width =  self.__topLevel.getTopLevelDimensions()[0],
-                                height= h)
-        self.__robotSpeechFrame5.pack_propagate(False)
-        self.__robotSpeechFrame5.pack(side=TOP, anchor=N, fill=BOTH)
+        self.__robotSpeechFrame4.pack(side=TOP, anchor=N, fill=BOTH)
 
         from RobotFrameLabelEntry import RobotFrameLabelEntry
 
@@ -559,13 +560,47 @@ class SoundPlayerEditor:
         self.__textEntryVal.bind("<KeyRelease>", self.__checkInt)
         self.__textEntryVal.bind("<FocusOut>", self.__checkInt)
 
-        self.__testButton = Button(self.__robotSpeechFrame5, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image= self.__speechImg, width=9999, height = 9999, name="speech",
-                                   command=self.__recordThread)
-        self.__testButton.pack_propagate(False)
-        self.__testButton.pack(fill=BOTH)
-
-        self.__testButton.bind("<Enter>", self.__mouseEnter)
-        self.__testButton.bind("<Leave>", self.__mouseLeave)
-
         from RoboButton import RoboButton
+
+        entries = (self.__speedEntry, self.__pitchEntry, self.__throatEntry, self.__mouthEntry)
+
+        self.__defaultRobo = RoboButton(self.__loader, "default", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (72,64,128,128), entries, self.__generateRoboSound)
+
+        self.__elfRobo = RoboButton(self.__loader, "elf", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (72,64,110,160), entries, self.__generateRoboSound)
+
+        self.__roboRobo = RoboButton(self.__loader, "robo", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (92,60,190,190), entries, self.__generateRoboSound)
+
+        self.__guyRobo = RoboButton(self.__loader, "guy", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (82,72,110,105), entries, self.__generateRoboSound)
+
+        self.__ladyRobo = RoboButton(self.__loader, "lady", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (82,32,145,145), entries, self.__generateRoboSound)
+
+        self.__ufoRobo = RoboButton(self.__loader, "ufo", self.__robotSpeechFrame3,
+                                        self.__topLevel.getTopLevelDimensions()[0]//6,
+                                        h*2, (100,64,150,200), entries, self.__generateRoboSound)
+
+        self.__generateRoboSound()
+
+    def __generateRoboSound(self):
+        self.__loader.executor.execute("sam",
+                                       [
+                                            "-wav temp/temp.wav",
+                                            '"'+self.__textEntryVal.get()+'"',
+                                            "-pitch " + self.__pitchEntry.var.get(),
+	                                        "-speed " + self.__speedEntry.var.get(),
+                                            "-throat "+ self.__throatEntry.var.get(),
+	                                        "-mouth " + self.__mouthEntry.var.get(),
+                                       ], True)
+
+        self.__previewButton.config(state=NORMAL)
+        self.__saveButton.config(state=NORMAL)
+        self.__playButton.config(state=NORMAL)
