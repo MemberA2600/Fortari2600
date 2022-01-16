@@ -1097,8 +1097,8 @@ Loop_Odd_Line2
 
 EvenFrame
 
-	_sleep	52		; (74)
-	sleep	5
+	_sleep	50		; (74)
+	sleep	7
 	
 	LDA	#$00
 	STA	HMP0

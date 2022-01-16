@@ -1,6 +1,6 @@
 class WaveConverter:
 
-    def __init__(self, loader, path):
+    def __init__(self, loader, path, tv_type):
         #Accepts 8000 Hz, mono, 16 pit PCM
 
         self.__loader = loader
@@ -17,6 +17,8 @@ class WaveConverter:
         self.result = None
 
         header = {}
+
+        self.__tv = tv_type.upper()
 
         if "".join(byteStrings[0:4]) == "52494646".lower():
            header["valid"] = True
@@ -86,18 +88,117 @@ class WaveConverter:
                                       byteStrings[41] +
                                       byteStrings[40], 16)
 
+        self.mode = ""
+
         if header["valid"] == False:
            self.result = None
+           self.mode = "failed"
         else:
+            self.result = {}
+
             uncompressed = self.__convertTo4Bits(byteStrings[44:])
 
+            keys = self.__loader.executor.callFortran("WaveConverter","GetKeys", "\n".join(uncompressed), None, True, True).split("\n")
 
-            shit = open("fuck.txt", "w")
-            pee = ""
-            for byte in uncompressed:
-                pee += "\tbyte\t#%"+byte+"\n"
-            shit.write(pee)
-            shit.close()
+            keyDict = {}
+            keyDict["EOF"] = keys[0]
+
+            comp = True
+            for num in (0, 16):
+                num = bin(num).replace("0b","")
+                while len(num) < 8: num = "0"+num
+                if num not in keys:
+                   comp = False
+                   break
+
+
+            if comp == False:
+                self.result["SoundBytes"] = ""
+                for byte in uncompressed:
+                    if ("0" in byte) or ("1" in byte):
+                        self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+
+                self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                self.result["EOF"] = keyDict["EOF"]
+                self.mode = "uncompressed"
+
+            else:
+                self.result["SoundBytes"] = ""
+
+                compressed = self.__loader.executor.callFortran("WaveConverter", "Compress", "\n".join(uncompressed), None,
+                                                          True, True).split("\n")
+
+                self.result["SoundBytes"] = ""
+                for byte in uncompressed:
+                    if ("0" in byte) or ("1" in byte):
+                        self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+
+                self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                self.result["EOF"] = keyDict["EOF"]
+                self.mode = "compressed"
+
+            if self.mode != "failed":
+                bytes = self.result["SoundBytes"].split("\n")
+                b = 0
+                for line in bytes:
+                    if "BYTE" in line.upper():
+                        b+=1
+                if b > 3400:
+                   self.mode += "2bit"
+
+                   raw = []
+                   try:
+                        for num in range(0, len(uncompressed), 2):
+                            byte1 = uncompressed[num]
+                            byte2 = uncompressed[num+1]
+
+                            raw.append(
+                                byte2[0:4] + byte1[0:4]
+                            )
+
+                            #raw.append(
+                            #    byte2[0:2] + byte2[4:6] + byte1[0:2] + byte1[4:6]
+                            #)
+                   except:
+                       pass
+
+                   self.result["SoundBytes"] = ""
+                   newKeys = {}
+
+                   if self.mode == "compressed2bit":
+                       newKeys["00000000"] = False
+                       for num in range(0, 16):
+                           num = bin(num).replace("0b", "")+"0000"
+                           while len(num) < 8:
+                               num = "0" + num
+                           newKeys[num] = False
+
+                       raw = self.__loader.executor.callFortran("WaveConverter", "Compress",
+                                                                       "\n".join(raw), None,
+                                                                       True, True).split("\n")
+
+                   else:
+                      for num in range(0, 255):
+                          num = bin(num).replace("0b","")
+                          while len(num) < 8:
+                              num = "0"+num
+                          newKeys[num] = False
+
+                   n = 0
+                   for byte in raw:
+                       if ("0" in byte) or ("1" in byte):
+                           self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+                           newKeys[byte] = True
+                           n = n + 1
+                       if n > 3400 : break
+
+                   for key in newKeys:
+                       if newKeys[key] == False:
+                           self.result["EOF"] = key
+                           break
+
+                   self.result["SoundBytes"] += "\tBYTE\t#%" + self.result["EOF"] + "\n"
+
 
 
     def __convertTo4Bits(self, data):
@@ -116,7 +217,9 @@ class WaveConverter:
 
         return(newData)
 
-
+"""
 
 if __name__ == "__main__":
-    WaveConverter(None, "F:\PyCharm\P\\toDelete\\forTest17\Test.wav")
+    WaveConverter(None, "F:\PyCharm\P\\toDelete\\forTest17\Test.wav", "NTSC")
+
+"""

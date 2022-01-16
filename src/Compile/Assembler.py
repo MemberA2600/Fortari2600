@@ -155,6 +155,7 @@ class Assembler():
 
             if (number<14) or (number-2)%4 != 0:
                 new.append("\tsleep\t"+str(number))
+                print(str(number))
                 continue
 
 
@@ -359,7 +360,14 @@ class Assembler():
                     second = self.checkSARA(second)
                     second = self.doTheMath(second)
                     second = self.lowHighNibble(second)
-                    line.bytes.append(bytes([int(second.replace("#$", "0x"), 16)]))
+                    if "#$" in second:
+                        line.bytes.append(bytes([int(second.replace("#$", "0x"), 16)]))
+                    elif "#%" in second:
+                        line.bytes.append(bytes([int(second.replace("#%", "0b"), 2)]))
+                    else:
+                        line.bytes.append(bytes([int(second.replace("#", ""), 10)]))
+
+
                 continue
 
 

@@ -11,9 +11,12 @@ class FileDialogs:
 
 
     def changeWindowState(self, state):
-        self.__loader.mainWindow.editor.attributes('-disabled', state)
-        for top in self.__loader.topLevels:
-            top.attributes('-disabled', state)
+        try:
+            self.__loader.mainWindow.editor.attributes('-disabled', state)
+            for top in self.__loader.topLevels:
+                top.attributes('-disabled', state)
+        except:
+            pass
 
     def askForInteger(self, title, p):
         self.changeWindowState(True)
@@ -99,7 +102,6 @@ class FileDialogs:
 
         if os.path.exists(initdir) == False or initdir == None:
             test = os.getcwd()+os.sep+initdir
-            print(test)
             if os.path.exists(test) == False:
                 initdir = "*"
             else:

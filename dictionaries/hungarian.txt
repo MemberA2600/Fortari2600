@@ -233,3 +233,5 @@ throat=Torok:
 mouth=Száj:
 speech=Hangpróba
 record=Felvétel
+waveError=Wave Megnyitása Sikertelen
+waveErrorMessage=A hangfájl feldolgozása sikertelen. Próbáld elõször 8000 Hz / 8bit / mono formátumúvá konvertálni!

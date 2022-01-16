@@ -39,7 +39,7 @@ class SoundPlayerEditor:
 
 
         self.__sizes = {
-            "common": [self.__screenSize[0] / 6, self.__screenSize[1]/5  - 25]
+            "common": [self.__screenSize[0] / 6, self.__screenSize[1]/4  - 25]
         }
 
 
@@ -60,6 +60,8 @@ class SoundPlayerEditor:
 
         self.__labelText = StringVar()
 
+        hei = self.__topLevel.getTopLevelDimensions()[1]//6
+
         self.__topLabel = Label(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("font"),
                                 fg=self.__loader.colorPalettes.getColor("window"), font = self.__smallFont,
                                 width = 9999999,
@@ -68,25 +70,25 @@ class SoundPlayerEditor:
         self.__topLabel.pack(side=TOP, anchor=N, fill=X)
 
         self.__topFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__topFrame.pack_propagate(False)
         self.__topFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__buttonFrame1 = Frame(self.__topFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width=  self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame1.pack_propagate(False)
         self.__buttonFrame1.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__buttonFrame2 = Frame(self.__topFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width=  self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame2.pack_propagate(False)
         self.__buttonFrame2.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__buttonFrame3 = Frame(self.__topFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width=  self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame3.pack_propagate(False)
         self.__buttonFrame3.pack(side=LEFT, anchor=E, fill=Y)
 
@@ -128,35 +130,98 @@ class SoundPlayerEditor:
         self.__robotButton.bind("<Leave>", self.__mouseLeave)
 
         self.__middleFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height= round(self.__topLevel.getTopLevelDimensions()[1]/5 * 2.5 ))
+                                 height= round(hei * 3 ))
         self.__middleFrame.pack_propagate(False)
         self.__middleFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__fileFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height= hei//2)
+        self.__fileFrame.pack_propagate(False)
+        self.__fileFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__textFrame = Frame(self.__fileFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=round(self.__topLevel.getTopLevelDimensions()[0]*0.80),
+                                 height= hei//2)
+        self.__textFrame.pack_propagate(False)
+        self.__textFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__lockFrame = Frame(self.__fileFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=round(self.__topLevel.getTopLevelDimensions()[0]*0.2),
+                                 height= hei//2)
+        self.__lockFrame.pack_propagate(False)
+        self.__lockFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__lock = self.__loader.io.getImg("lockClosed", (hei//2, hei//2))
+        self.__lockLabel = Label(self.__lockFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=round(self.__topLevel.getTopLevelDimensions()[0]*0.2*0.55),
+                                 image = self.__lock,
+                                 height= hei//2)
+        self.__lockLabel.pack_propagate(False)
+        self.__lockLabel.pack(side=LEFT, fill=Y, anchor=W)
+
+        self.__lockNum = StringVar()
+
+        self.__lockEntry = Entry(
+                        self.__lockFrame,
+                        width=1,
+                        bg=self.__colors.getColor("boxBackNormal"),
+                        fg=self.__colors.getColor("boxFontNormal"),
+                        font=self.__miniFont, justify = CENTER,
+                        textvariable = self.__lockNum
+        )
+
+        self.__lockEntry.pack_propagate(False)
+        self.__lockEntry.pack(side= LEFT, fill=BOTH, anchor = W)
+
+        self.__lockEntry.bind("<FocusOut>", self.__checkLock)
+        self.__lockEntry.bind("<KeyRelease>", self.__checkLock)
+
+        self.__checkLock(None)
+
+        self.__title = StringVar()
+        self.__title.set("Hamster_Eating_Pickles")
+
+        self.__titleEntry = Entry(
+                        self.__textFrame,
+                        width=9999,
+                        bg=self.__colors.getColor("boxBackNormal"),
+                        fg=self.__colors.getColor("boxFontNormal"),
+                        font=self.__miniFont,
+                        textvariable = self.__title
+        )
+
+        self.__titleEntry.pack_propagate(False)
+        self.__titleEntry.pack(fill=BOTH)
+
+        self.__titleEntry.bind("<FocusOut>", self.__checkFileName)
+        self.__titleEntry.bind("<KeyRelease>", self.__checkFileName)
+
+
         self.__bottomFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__bottomFrame.pack_propagate(False)
-        self.__bottomFrame.pack(side=TOP, anchor=N, fill=X)
+        self.__bottomFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__buttonFrame4 = Frame(self.__bottomFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width=  self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame4.pack_propagate(False)
         self.__buttonFrame4.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__buttonFrame5 = Frame(self.__bottomFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width=  self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame5.pack_propagate(False)
         self.__buttonFrame5.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__buttonFrame6 = Frame(self.__bottomFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  width= self.__topLevel.getTopLevelDimensions()[0]//3,
-                                 height= self.__topLevel.getTopLevelDimensions()[1]//5)
+                                 height= hei)
         self.__buttonFrame6.pack_propagate(False)
         self.__buttonFrame6.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__saveButton = Button(self.__buttonFrame4, bg=self.__loader.colorPalettes.getColor("window"),
-                                   state = DISABLED, name="ok", image=self.__saveImage, width=999999999, command=None)
+                                   state = DISABLED, name="ok", image=self.__saveImage, width=999999999, command=self.__save)
         self.__saveButton.pack_propagate(False)
         self.__saveButton.pack(fill=BOTH)
 
@@ -184,6 +249,43 @@ class SoundPlayerEditor:
         t.daemon = True
         t.start()
 
+    def __checkLock(self, event):
+        teszt = 0
+        try:
+            self.__lockNum.set(self.__lockNum.get()[0])
+            teszt = int(self.__lockNum.get())
+        except:
+            self.__lockNum.set("")
+
+        banks = self.__loader.virtualMemory.getBanksAvailableForLocking()
+        if self.__lockNum.get() == "":
+            try:
+                self.__lockNum.set(str(banks[0]))
+            except:
+                self.__lockNum.set("3")
+        else:
+            if teszt not in banks:
+                try:
+                    self.__lockNum.set(str(banks[0]))
+                except:
+                    self.__lockNum.set("3")
+
+
+    def __checkFileName(self, event):
+        OK = self.__loader.io.checkIfValidFileName(self.__title.get())
+
+        if OK == False:
+           self.__titleEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+                                    )
+           self.__saveButton.config(state = DISABLED)
+        else:
+            self.__titleEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                     fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+                                     )
+            if self.__mode != None: self.__saveButton.config(state = NORMAL)
+
+
     def checker(self):
         from time import sleep
         while(self.dead==False and self.__loader.mainWindow.dead == False):
@@ -191,6 +293,37 @@ class SoundPlayerEditor:
                self.__mouseHoverSave = self.__mouseHover
 
             sleep(0.00005)
+
+    def __convertToASM(self):
+        from WaveConverter import WaveConverter
+
+        wc = WaveConverter(self.__loader, "temp/temp.wav", "NTSC")
+
+        if wc.mode == "failed":
+            return wc.mode, None, None
+        else:
+            initText = "\nPlaySoundXX_EOF_byte = %"+wc.result["EOF"]+"\n"
+            dataText = "\nPlaySoundXX_Table\n" + wc.result["SoundBytes"]
+
+            return wc.mode, initText, dataText
+
+    def __save(self):
+        mode, initText, dataText = self.__convertToASM()
+        if mode == "failed":
+            self.__loader.fileDialogs.displayError("waveError", "waveErrorMessage")
+        else:
+            moduleName = "wavePlayer" + mode[0].upper() + mode[1:]
+            toSave = self.__loader.io.loadSubModule(moduleName)
+            toSave = (toSave.replace("!!!Init_Stuff!!!", initText).replace("!!!Data_Stuff!!!", dataText)
+                     .replace("PlaySoundXX", self.__title.get()))
+
+            file = open(self.__loader.mainWindow.projectPath+"waveforms/"+self.__title.get()+".asm", "w")
+            file.write(toSave)
+            file.close()
+
+            self.__loader.virtualMemory.registerNewLock(self.__lockNum.get(), self.__title.get(), "waveform", 0, "LAST")
+
+            self.__soundPlayer.playSound("Success")
 
     def __mouseLeave(self, event):
         self.__labelText.set("")
@@ -274,7 +407,8 @@ class SoundPlayerEditor:
 
             self.__playButton.config(state = NORMAL)
             self.__previewButton.config(state = NORMAL)
-            self.__saveButton.config(state = NORMAL)
+            if self.__loader.io.checkIfValidFileName(self.__title.get()) == True:
+                self.__saveButton.config(state = NORMAL)
             self.__opened = True
 
         except Exception as e:
@@ -282,10 +416,13 @@ class SoundPlayerEditor:
             self.__previewButton.config(state=DISABLED)
             self.__saveButton.config(state=DISABLED)
             self.__opened = False
+            self.__mode   = None
 
             #self.__createRainbow()
 
             self.__fileDialogs.displayError('importError', 'importErrorMessage', None, str(e))
+            self.__createRainbow()
+
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
@@ -410,7 +547,8 @@ class SoundPlayerEditor:
                self.__playButton.config(state = DISABLED)
             else:
                self.__previewButton.config(state = NORMAL)
-               self.__saveButton.config(state = NORMAL)
+               if self.__loader.io.checkIfValidFileName(self.__title.get()) == True:
+                    self.__saveButton.config(state = NORMAL)
                self.__playButton.config(state = NORMAL)
 
                self.__generateRoboSound()
@@ -548,17 +686,17 @@ class SoundPlayerEditor:
         self.__textEntryVal = StringVar()
         self.__textEntryVal.set("Have you played you Atari today?")
 
-        self.__textEntryVal = Entry(self.__robotSpeechFrame4, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+        self.__textEntry = Entry(self.__robotSpeechFrame4, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                  width=999999,
                                  fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
                                  textvariable=self.__textEntryVal,
                                  font=self.__tinyFont,
                                  command=None)
-        self.__textEntryVal.pack_propagate()
-        self.__textEntryVal.pack(side=TOP, anchor=N, fill=BOTH)
+        self.__textEntry.pack_propagate()
+        self.__textEntry.pack(side=TOP, anchor=N, fill=BOTH)
 
-        self.__textEntryVal.bind("<KeyRelease>", self.__checkInt)
-        self.__textEntryVal.bind("<FocusOut>", self.__checkInt)
+        self.__textEntry.bind("<KeyRelease>", self.__checkInt)
+        self.__textEntry.bind("<FocusOut>", self.__checkInt)
 
         from RoboButton import RoboButton
 
@@ -602,5 +740,6 @@ class SoundPlayerEditor:
                                        ], True)
 
         self.__previewButton.config(state=NORMAL)
-        self.__saveButton.config(state=NORMAL)
+        if self.__loader.io.checkIfValidFileName(self.__title.get()) == True:
+            self.__saveButton.config(state=NORMAL)
         self.__playButton.config(state=NORMAL)

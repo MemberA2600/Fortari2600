@@ -56,6 +56,8 @@ class KernelTesterLoaderFrame:
         self.__entry.pack_propagate(False)
         self.__entry.pack(side=TOP, anchor=N, fill=BOTH)
         self.__entry.bind("<KeyRelease>", self.checkIfValidFileName)
+        self.__entry.bind("<FocusOut>", self.checkIfValidFileName)
+
 
         """
         while self.__entryFrame.winfo_width() == 1 or self.__entryFrame.winfo_height() == 1:
@@ -114,6 +116,11 @@ class KernelTesterLoaderFrame:
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                           fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
                           )
+            import os
+            if os.path.exists(self.__entryVal.get()):
+                widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                              )
 
     def openFileName(self):
 
