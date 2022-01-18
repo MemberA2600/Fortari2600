@@ -2,7 +2,7 @@ program Compress
 
     implicit none
 
-    integer :: num, num2, alloc, io, fileLen, origIndex, newIndex
+    integer :: num, num2, alloc, io, fileLen, origIndex, newIndex, diff, fuck
 
     character(8), dimension(:), allocatable :: bytes, outBytes
     character                               :: dummy
@@ -52,13 +52,25 @@ program Compress
                newIndex = newIndex + 1
             end do
         else
-            outBytes(newIndex) = tempByte
-            write(secondByte, "(B8)") (num-origIndex-1)
-            do num2 = 1, 8, 1
-                if (secondByte(num2:num2) == " ") secondByte(num2:num2) = "0"
+            diff = num-origIndex-1
+            do while (diff > 0)
+               outBytes(newIndex) = tempByte
+               if (diff < 16) then
+                    write(secondByte, "(B8)") diff
+                    do num2 = 1, 8, 1
+                        if (secondByte(num2:num2) == " ") secondByte(num2:num2) = "0"
+                    end do
+                    outBytes(newIndex+1) = secondByte
+                    newIndex = newIndex + 2
+                    diff = 0
+                else
+                    outBytes(newIndex+1) = "11111111"
+                    newIndex = newIndex + 2
+                    diff = diff - 15
+
+               end if
             end do
-            outBytes(newIndex+1) = secondByte
-            newIndex = newIndex + 2
+
         end if
         origIndex = num
 

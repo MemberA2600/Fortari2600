@@ -128,7 +128,6 @@ class WaveConverter:
                 compressed = self.__loader.executor.callFortran("WaveConverter", "Compress", "\n".join(uncompressed), None,
                                                           True, True).split("\n")
 
-                self.result["SoundBytes"] = ""
                 for byte in uncompressed:
                     if ("0" in byte) or ("1" in byte):
                         self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
@@ -136,6 +135,23 @@ class WaveConverter:
                 self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
                 self.result["EOF"] = keyDict["EOF"]
                 self.mode = "compressed"
+
+            if self.mode != "failed":
+               foundThem = True
+               for num in range(0, 16):
+                   num = bin(num).replace("0b", "")
+                   while len(num) < 4: num = "0" + num
+                   num += "0000"
+                   if num not in keys:
+                       foundThem = False
+                       break
+
+               if foundThem == True:
+                   self.result["SoundBytes"] = ""
+                   superCompressed = self.__loader.executor.callFortran("WaveConverter", "SuperCompress", "\n".join(uncompressed),
+                                                                   None, True, True).split("\n")
+
+                   self.mode = "super" + self.mode
 
             if self.mode != "failed":
                 bytes = self.result["SoundBytes"].split("\n")
