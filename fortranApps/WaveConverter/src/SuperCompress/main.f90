@@ -89,6 +89,14 @@ program SuperCompress
 
               end do
           end if
+          if (num2 > 1) then
+              if (bytes(num2 - 1)(1:4) == "0000" ) existing = .TRUE.
+          end if
+
+          if (num2 + num4 < fileLen) then
+              if (bytes(num2 + num4)(1:4) == "0000" ) existing = .TRUE.
+          end if
+
           if (existing .EQV. .FALSE.) then
               num3 = num3 + 1
           end if
@@ -149,13 +157,13 @@ program SuperCompress
 
     end do
 
-    do num = 1, 12, 1
+    do num = 1, 13, 1
        write(fileNum, "(I2)") num-1
        if (fileNum(1:1) == " ") fileNum(1:1) = "0"
 
        open(unit = 13, file = "temp/Output" // fileNum // ".txt")
        do num2 = 1, patterns(pwk(num)%num)%lenght, 1
-          write(13, "(A)") patterns(pwk(num)%num)%bytes(num2)
+          if (pwk(num)%weight > 0) write(13, "(A)") patterns(pwk(num)%num)%bytes(num2)
        end do
 
        close(13)

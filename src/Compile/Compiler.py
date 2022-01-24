@@ -25,6 +25,32 @@ class Compiler:
             self.getMusicBytesSizeOnly()
         elif self.__mode == 'test64px':
             self.test64PX()
+        elif self.__mode == 'testWav':
+            self.testWav()
+
+    def testWav(self):
+        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__pictureData = self.__loader.io.loadWholeText("templates/testCodes/pressFire.asm")
+        self.__h = 83
+
+        self.__init = (self.__loader.io.loadWholeText("templates/testCodes/64pxPictureEnter.asm").replace("FULLHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPINDEX", "0"))
+        self.__engine = self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")
+        self.__overScan = (self.__loader.io.loadWholeText("templates/testCodes/testWavOverscan.asm"))
+        self.__kernelText = (self.__kernelText.replace("!!!OVERSCAN_BANK2!!!", self.__overScan).replace("!!!ENTER_BANK2!!!", self.__init)
+                            .replace("!!!SCREENTOP_BANK2!!!", self.__engine).replace("!!!USER_DATA_BANK2!!!", self.__pictureData)
+                             .replace("!!!TV!!!", "NTSC")
+                             )
+        self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
+                                                          self.__data[0])
+
+        self.__kernelText = self.__kernelText.replace("PlaySoundXX", self.__data[2])
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
+        self.changePointerToZero(self.__data[1])
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
 
     def test64PX(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")

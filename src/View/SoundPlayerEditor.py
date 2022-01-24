@@ -231,7 +231,7 @@ class SoundPlayerEditor:
         self.__playButton.pack(fill=BOTH)
 
         self.__previewButton = Button(self.__buttonFrame6, bg=self.__loader.colorPalettes.getColor("window"),
-                                      state = DISABLED, name="testWithEmulator", image=self.__emulatorButton, width=999999999, command=None)
+                                      state = DISABLED, name="testWithEmulator", image=self.__emulatorButton, width=999999999, command=self.__testThread)
         self.__previewButton.pack_propagate(False)
         self.__previewButton.pack(fill=BOTH)
 
@@ -305,25 +305,65 @@ class SoundPlayerEditor:
             initText = "\nPlaySoundXX_EOF_byte = %"+wc.result["EOF"]+"\n"
             dataText = "\nPlaySoundXX_Table\n" + wc.result["SoundBytes"]
 
+            temp = wc.result["SoundBytes"].split("\n")
+            b = 0
+            for line in temp:
+                if ("0" in line) or ("1" in line):
+                    b+=1
+
+            if b>3400:
+               new = []
+               b = 0
+               for line in temp:
+                  if ("0" in line) or ("1" in line):
+                    b+=1
+                    new.append(line)
+                  if b == 3399:
+                    new.append("\tBYTE\t#%"+wc.result["EOF"]+"\n")
+                    break
+
+               dataText = "\nPlaySoundXX_Table\n" + "\n".join(temp)
+
+
             return wc.mode, initText, dataText
+
+    def __formToData(self, mode, initText, dataText):
+        moduleName = "wavePlayer" + mode[0].upper() + mode[1:]
+        toSave = self.__loader.io.loadSubModule(moduleName)
+        toSave = (toSave.replace("!!!Init_Stuff!!!", initText).replace("!!!Data_Stuff!!!", dataText)
+                  .replace("PlaySoundXX", self.__title.get()))
+
+        return toSave
 
     def __save(self):
         mode, initText, dataText = self.__convertToASM()
         if mode == "failed":
-            self.__loader.fileDialogs.displayError("waveError", "waveErrorMessage")
+            self.__loader.fileDialogs.displayError("waveError", "waveErrorMessage", None, None)
         else:
-            moduleName = "wavePlayer" + mode[0].upper() + mode[1:]
-            toSave = self.__loader.io.loadSubModule(moduleName)
-            toSave = (toSave.replace("!!!Init_Stuff!!!", initText).replace("!!!Data_Stuff!!!", dataText)
-                     .replace("PlaySoundXX", self.__title.get()))
+            toSave = "* Lock="+ self.__lockNum.get()+"\n" + self.__formToData(mode, initText, dataText)
 
             file = open(self.__loader.mainWindow.projectPath+"waveforms/"+self.__title.get()+".asm", "w")
             file.write(toSave)
             file.close()
 
             self.__loader.virtualMemory.registerNewLock(self.__lockNum.get(), self.__title.get(), "waveform", 0, "LAST")
-
             self.__soundPlayer.playSound("Success")
+
+    def __testThread(self):
+        from threading import Thread
+
+        t = Thread(target=self.__test)
+        t.daemon = True
+        t.start()
+
+    def __test(self):
+        mode, initText, dataText = self.__convertToASM()
+        if mode == "failed":
+            self.__loader.fileDialogs.displayError("waveError", "waveErrorMessage", None, None)
+        else:
+            toTest = self.__formToData(mode, initText, dataText)
+            from Compiler import Compiler
+            Compiler(self.__loader, "common", "testWav", [toTest, self.__lockNum.get(), self.__title.get()])
 
     def __mouseLeave(self, event):
         self.__labelText.set("")
@@ -371,37 +411,7 @@ class SoundPlayerEditor:
             if path == None:
                 path = self.__fileDialogs.askForFileName("openWav", False, ["wav", "*"], self.__loader.mainWindow.projectPath)
 
-            try:
-                waveInput = wave.open(path, "rb")
-            except:
-                import soundfile
-
-                data, samplerate = soundfile.read('temp/temp.wav')
-                soundfile.write('temp/temp.wav', data, samplerate, subtype='PCM_16')
-                waveInput = wave.open(path, "rb")
-
-            converted = waveInput.readframes(waveInput.getnframes())
-
-            if waveInput.getframerate() != 8000:
-                converted = audioop.ratecv(converted, waveInput.getsampwidth(), waveInput.getnchannels(),
-                                           waveInput.getframerate(), 8000, None)
-                converted = converted[0]
-
-            if waveInput.getnchannels() == 2:
-                converted = audioop.tomono(converted, waveInput.getsampwidth(), 0.5, 0.5)
-
-            if waveInput.getsampwidth() > 1:
-                converted = audioop.lin2lin(converted, waveInput.getsampwidth(), 1)
-                converted = audioop.bias(converted, 1, 128)
-
-            waveInput.close()
-
-            waveOutput = wave.open("temp/temp.wav", "wb")
-            waveOutput.setnchannels(1)
-            waveOutput.setsampwidth(1)
-            waveOutput.setframerate(8000)
-            waveOutput.writeframes(converted)
-            waveOutput.close()
+            self.openWavAndConvertDown(path)
 
             self.__soundPlayer.playSound("Success")
 
@@ -425,6 +435,42 @@ class SoundPlayerEditor:
 
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
+
+    def openWavAndConvertDown(self, path):
+        import wave
+        import audioop
+
+        try:
+            waveInput = wave.open(path, "rb")
+        except:
+            import soundfile
+
+            data, samplerate = soundfile.read('temp/temp.wav')
+            soundfile.write('temp/temp.wav', data, samplerate, subtype='PCM_16')
+            waveInput = wave.open(path, "rb")
+
+        converted = waveInput.readframes(waveInput.getnframes())
+
+        if waveInput.getframerate() != 8000:
+            converted = audioop.ratecv(converted, waveInput.getsampwidth(), waveInput.getnchannels(),
+                                       waveInput.getframerate(), 8000, None)
+            converted = converted[0]
+
+        if waveInput.getnchannels() == 2:
+            converted = audioop.tomono(converted, waveInput.getsampwidth(), 0.5, 0.5)
+
+        if waveInput.getsampwidth() > 1:
+            converted = audioop.lin2lin(converted, waveInput.getsampwidth(), 1)
+            converted = audioop.bias(converted, 1, 128)
+
+        waveInput.close()
+
+        waveOutput = wave.open("temp/temp.wav", "wb")
+        waveOutput.setnchannels(1)
+        waveOutput.setsampwidth(1)
+        waveOutput.setframerate(8000)
+        waveOutput.writeframes(converted)
+        waveOutput.close()
 
     def __createRainbow(self):
         self.__deleteMiddle()
@@ -738,6 +784,8 @@ class SoundPlayerEditor:
                                             "-throat "+ self.__throatEntry.var.get(),
 	                                        "-mouth " + self.__mouthEntry.var.get(),
                                        ], True)
+
+        self.openWavAndConvertDown("temp/temp.wav")
 
         self.__previewButton.config(state=NORMAL)
         if self.__loader.io.checkIfValidFileName(self.__title.get()) == True:

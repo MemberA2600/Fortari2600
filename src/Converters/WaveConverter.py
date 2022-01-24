@@ -89,6 +89,7 @@ class WaveConverter:
                                       byteStrings[40], 16)
 
         self.mode = ""
+        link = None
 
         if header["valid"] == False:
            self.result = None
@@ -127,31 +128,15 @@ class WaveConverter:
 
                 compressed = self.__loader.executor.callFortran("WaveConverter", "Compress", "\n".join(uncompressed), None,
                                                           True, True).split("\n")
-
-                for byte in uncompressed:
+                for byte in compressed:
                     if ("0" in byte) or ("1" in byte):
                         self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
 
+                link = compressed
                 self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
                 self.result["EOF"] = keyDict["EOF"]
                 self.mode = "compressed"
 
-            if self.mode != "failed":
-               foundThem = True
-               for num in range(0, 16):
-                   num = bin(num).replace("0b", "")
-                   while len(num) < 4: num = "0" + num
-                   num += "0000"
-                   if num not in keys:
-                       foundThem = False
-                       break
-
-               if foundThem == True:
-                   self.result["SoundBytes"] = ""
-                   superCompressed = self.__loader.executor.callFortran("WaveConverter", "SuperCompress", "\n".join(uncompressed),
-                                                                   None, True, True).split("\n")
-
-                   self.mode = "super" + self.mode
 
             if self.mode != "failed":
                 bytes = self.result["SoundBytes"].split("\n")
@@ -159,7 +144,102 @@ class WaveConverter:
                 for line in bytes:
                     if "BYTE" in line.upper():
                         b+=1
-                if b > 3400:
+
+                if b > 3400 and b < 3600:
+                   from copy import deepcopy
+
+                   toCut = (b - 3400) // 2
+                   tempBytes = deepcopy(link[toCut:len(link)-toCut])
+                   if int("0x" + tempBytes[0], 16) != 0 and int("0x" + tempBytes[0], 16) < 16:
+                       tempBytes.pop(0)
+
+                   self.result["SoundBytes"] = ""
+                   for byte in tempBytes:
+                       if ("0" in byte) or ("1" in byte):
+                           self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+
+                   self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                   self.result["EOF"] = keyDict["EOF"]
+                   self.mode = "compressed"
+
+                elif b > 3600:
+                    from copy import deepcopy
+                    eof = (len(uncompressed) // 9) * 9 - 9
+
+                    outBytes = []
+
+                    for starter in range(0, eof, 9):
+                        bytesOf8 = deepcopy(uncompressed[starter:starter+8])
+
+                        for letterNum in range(0, 8):
+                            bytesOf8[letterNum] = bytesOf8[letterNum][:7] + uncompressed[starter+9][letterNum]
+                            #bytesOf8[letterNum] = uncompressed[starter + 9][letterNum] + bytesOf8[letterNum][1:]
+
+                        bytesOf8[7] += "; Merged this: "+uncompressed[starter+9]
+                        outBytes.extend(deepcopy(bytesOf8))
+
+                    for num in range(eof, len(uncompressed), 1):
+                        outBytes.append(uncompressed[num])
+
+                    compressed = self.__loader.executor.callFortran("WaveConverter", "Compress",
+                                                                    "\n".join(outBytes), None,
+                                                                    True, True).split("\n")
+                    self.result["SoundBytes"] = ""
+                    for byte in compressed:
+                        if ("0" in byte) or ("1" in byte):
+                            self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+
+                    self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                    self.result["EOF"] = keyDict["EOF"]
+                    self.mode = "oneBitCompressed"
+
+                   # f = open("output.txt", "w")
+                   # f.write(self.result["SoundBytes"])
+                   # f.close()
+
+                    """
+                    temp = ""
+
+                    for byte in outBytes:
+                        if ("0" in byte) or ("1" in byte):
+                            temp += "\tBYTE\t#%" + byte + "\n"
+                    """
+                    #self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                    #self.result["EOF"] = keyDict["EOF"]
+                    #self.mode = "compressed"
+
+
+
+
+            if self.mode != "failed":
+                bytes = self.result["SoundBytes"].split("\n")
+                b = 0
+                for line in bytes:
+                    if "BYTE" in line.upper():
+                        b+=1
+
+                if b > 3400 and b < 3600:
+                    from copy import deepcopy
+                    toCut = (b - 3400) // 2
+                    tempBytes = []
+
+                    cutFromStart = (toCut // 9) * 9 + 9
+                    tempBytes = deepcopy(link[cutFromStart:len(link) - toCut])
+                    if int("0x" + tempBytes[0], 16) != 0 and int("0x" + tempBytes[0], 16) < 16:
+                        tempBytes.pop(0)
+
+                    self.result["SoundBytes"] = ""
+                    for byte in tempBytes:
+                        if ("0" in byte) or ("1" in byte):
+                            self.result["SoundBytes"] += "\tBYTE\t#%" + byte + "\n"
+
+                    self.result["SoundBytes"] += "\tBYTE\t#%" + keyDict["EOF"] + "\n"
+                    self.result["EOF"] = keyDict["EOF"]
+                    self.mode = "oneBitCompressed"
+
+
+                elif b > 3400:
+                   if self.mode == "oneBitCompressed": self.mode = "compressed"
                    self.mode += "2bit"
 
                    raw = []
@@ -213,9 +293,9 @@ class WaveConverter:
                            self.result["EOF"] = key
                            break
 
+
+
                    self.result["SoundBytes"] += "\tBYTE\t#%" + self.result["EOF"] + "\n"
-
-
 
     def __convertTo4Bits(self, data):
 

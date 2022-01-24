@@ -96,7 +96,7 @@ class KernelTester:
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelFile", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
-        self.__openKernelFrame.setValue("E:/PyCharm/P/Fortari2600/templates/skeletons/common_main_kernel.asm")
+        self.__openKernelFrame.setValue("F:/PyCharm/P/Fortari2600/templates/skeletons/common_main_kernel.asm")
 
         self.__openEnter = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
