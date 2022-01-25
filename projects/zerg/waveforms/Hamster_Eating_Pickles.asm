@@ -1,4 +1,4 @@
-* Lock= 3
+* Lock=3
 Hamster_Eating_Pickles_Initialize
 
 	LDA	#2

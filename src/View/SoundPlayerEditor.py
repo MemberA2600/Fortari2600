@@ -311,20 +311,33 @@ class SoundPlayerEditor:
                 if ("0" in line) or ("1" in line):
                     b+=1
 
-            if b>3400:
+            limits = {
+                "uncompressed": 3600,
+                "compressed": 3575,
+                "uncompressed3bit": 3500,
+                "compressed3bit": 3475,
+                "uncompressed2bit": 3600,
+                "compressed2bit": 3575,
+                "uncompressed1bit": 3600,
+                "compressed1bit": 3575
+            }
+
+            if b>limits[wc.mode.lower()]:
                new = []
                b = 0
                for line in temp:
                   if ("0" in line) or ("1" in line):
                     b+=1
                     new.append(line)
-                  if b == 3399:
+                  if b == limits[wc.mode.lower()] - 1:
                     new.append("\tBYTE\t#%"+wc.result["EOF"]+"\n")
                     break
 
-               dataText = "\nPlaySoundXX_Table\n" + "\n".join(temp)
 
 
+               dataText = "\nPlaySoundXX_Table\n" + "\n".join(new)
+
+            #print(b, wc.mode)
             return wc.mode, initText, dataText
 
     def __formToData(self, mode, initText, dataText):
@@ -730,7 +743,7 @@ class SoundPlayerEditor:
                                                  )
 
         self.__textEntryVal = StringVar()
-        self.__textEntryVal.set("Have you played you Atari today?")
+        self.__textEntryVal.set("Have you played your Atari today?")
 
         self.__textEntry = Entry(self.__robotSpeechFrame4, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                  width=999999,

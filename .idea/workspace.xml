@@ -3,22 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/SuperCompress.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/SuperCompress.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/bin/Release/SuperCompress.exe" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/bin/Release/SuperCompress.exe" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/main.f90" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/main.f90" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/obj/Release/main.o" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/obj/Release/main.o" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output00.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output00.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output01.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output01.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/fortranApps/WaveConverter/src/SuperCompress/temp/Output11.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-01-17_172635.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-01-24_055941.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/zerg/waveforms/Hamster_Eating_Pickles.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/waveforms/Hamster_Eating_Pickles.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Converters/WaveConverter.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Converters/WaveConverter.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/KernelTester.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/KernelTester.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/SoundPlayerEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SoundPlayerEditor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/Input.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/temp.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2022-01-24-06-26-00.515219.wav" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +53,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1643000381213" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1643128180618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -125,22 +115,22 @@
     <session id="1636815425">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="38" />
+          <entry key="project.closed" value="40" />
           <entry key="project.open.time.3" value="2" />
-          <entry key="project.open.time.4" value="44" />
+          <entry key="project.open.time.4" value="47" />
           <entry key="project.open.time.5" value="10" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="58" />
+          <entry key="project.opened" value="61" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="59907" />
+          <entry key="py" value="60625" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="59907" />
+          <entry key="Python" value="60625" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -165,7 +155,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="599">
+            <state relative-caret-position="10000">
               <caret line="641" column="36" selection-start-line="641" selection-start-column="36" selection-end-line="641" selection-end-column="36" />
             </state>
           </provider>
@@ -174,26 +164,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/SoundPlayerEditor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="427">
-              <caret line="364" selection-start-line="364" selection-end-line="364" />
+            <state relative-caret-position="219">
+              <caret line="339" column="13" selection-start-line="339" selection-start-column="13" selection-end-line="339" selection-end-column="13" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
-                <marker date="1643002013485" expanded="true" signature="213:214" ph="..." />
-                <marker date="1643002013485" expanded="true" signature="213:215" ph="..." />
-                <marker date="1643002013485" expanded="true" signature="14675:14991" ph="..." />
-                <marker date="1643002013485" expanded="true" signature="15674:15799" ph="..." />
-                <marker date="1643002013485" expanded="true" signature="15816:16234" ph="..." />
-                <marker date="1643002013485" expanded="true" signature="19756:19762" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="213:214" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="213:215" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="15105:15421" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="16104:16229" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="16246:16664" ph="..." />
+                <marker date="1643128284583" expanded="true" signature="20186:20192" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="739">
-              <caret line="616" column="31" selection-start-line="616" selection-start-column="31" selection-end-line="616" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -201,11 +182,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="39" column="60" selection-start-line="39" selection-start-column="60" selection-end-line="39" selection-end-column="60" />
+            <state relative-caret-position="27">
+              <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
               <folding>
-                <marker date="1642999688937" expanded="true" signature="906:2583" ph="..." />
-                <marker date="1642999688937" expanded="true" signature="2602:2611" ph="..." />
+                <marker date="1643113177830" expanded="true" signature="906:2612" ph="..." />
+                <marker date="1643113177830" expanded="true" signature="2631:2640" ph="..." />
               </folding>
             </state>
           </provider>
@@ -214,8 +195,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Converters/WaveConverter.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="213" column="35" selection-start-line="213" selection-start-column="29" selection-end-line="213" selection-end-column="35" />
+            <state relative-caret-position="602">
+              <caret line="307" selection-start-line="307" selection-end-line="307" />
             </state>
           </provider>
         </entry>
@@ -231,12 +212,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Entry</find>
-      <find>__textEntryVal</find>
-      <find>__textEntry</find>
-      <find>FocusOut</find>
-      <find>KeyRelease</find>
-      <find>mode</find>
       <find>__mode</find>
       <find>__open</find>
       <find>__opened</find>
@@ -261,6 +236,12 @@
       <find>__openWavAndConvertToLO</find>
       <find>changePointerToZero</find>
       <find>failed</find>
+      <find>3600</find>
+      <find>print</find>
+      <find>fuck</find>
+      <find>appendBytes</find>
+      <find>TV</find>
+      <find>Have y</find>
     </findStrings>
     <replaceStrings>
       <replace>SwitchFrame</replace>
@@ -348,9 +329,9 @@
         <option value="$PROJECT_DIR$/venv/f.txt" />
         <option value="$PROJECT_DIR$/venv/fuck.py" />
         <option value="$PROJECT_DIR$/src/View/KernelTester.py" />
-        <option value="$PROJECT_DIR$/src/Converters/WaveConverter.py" />
         <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+        <option value="$PROJECT_DIR$/src/Converters/WaveConverter.py" />
         <option value="$PROJECT_DIR$/src/View/SoundPlayerEditor.py" />
       </list>
     </option>
@@ -636,12 +617,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49245542" visible="true" weight="0.14698331" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49245542" visible="true" weight="0.15275995" />
       <window_info id="Structure" order="1" sideWeight="0.5075446" side_tool="true" weight="0.15917844" />
       <window_info id="Favorites" order="2" sideWeight="0.5075446" side_tool="true" weight="0.13286264" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5327343" weight="0.30305928" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.5327343" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -1000,48 +981,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="599">
+        <state relative-caret-position="10000">
           <caret line="641" column="36" selection-start-line="641" selection-start-column="36" selection-end-line="641" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="739">
-          <caret line="616" column="31" selection-start-line="616" selection-start-column="31" selection-end-line="616" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="39" column="60" selection-start-line="39" selection-start-column="60" selection-end-line="39" selection-end-column="60" />
-          <folding>
-            <marker date="1642999688937" expanded="true" signature="906:2583" ph="..." />
-            <marker date="1642999688937" expanded="true" signature="2602:2611" ph="..." />
-          </folding>
+        <state relative-caret-position="891">
+          <caret line="416" selection-start-line="416" selection-end-line="416" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Converters/WaveConverter.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="213" column="35" selection-start-line="213" selection-start-column="29" selection-end-line="213" selection-end-column="35" />
+        <state relative-caret-position="602">
+          <caret line="307" selection-start-line="307" selection-end-line="307" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="27">
+          <caret line="21" column="36" selection-start-line="21" selection-start-column="36" selection-end-line="21" selection-end-column="36" />
+          <folding>
+            <marker date="1643113177830" expanded="true" signature="906:2612" ph="..." />
+            <marker date="1643113177830" expanded="true" signature="2631:2640" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SoundPlayerEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="427">
-          <caret line="364" selection-start-line="364" selection-end-line="364" />
+        <state relative-caret-position="219">
+          <caret line="339" column="13" selection-start-line="339" selection-start-column="13" selection-end-line="339" selection-end-column="13" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
-            <marker date="1643002013485" expanded="true" signature="213:214" ph="..." />
-            <marker date="1643002013485" expanded="true" signature="213:215" ph="..." />
-            <marker date="1643002013485" expanded="true" signature="14675:14991" ph="..." />
-            <marker date="1643002013485" expanded="true" signature="15674:15799" ph="..." />
-            <marker date="1643002013485" expanded="true" signature="15816:16234" ph="..." />
-            <marker date="1643002013485" expanded="true" signature="19756:19762" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="213:214" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="213:215" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="15105:15421" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="16104:16229" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="16246:16664" ph="..." />
+            <marker date="1643128284583" expanded="true" signature="20186:20192" ph="..." />
           </folding>
         </state>
       </provider>

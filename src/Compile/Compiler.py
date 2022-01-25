@@ -45,7 +45,8 @@ class Compiler:
         self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
                                                           self.__data[0])
 
-        self.__kernelText = self.__kernelText.replace("PlaySoundXX", self.__data[2])
+        self.__kernelText = self.__kernelText.replace("PlaySoundXX", self.__data[2]).replace("!!!TV!!!", "NTSC")
+
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
         self.changePointerToZero(self.__data[1])
         self.doSave("temp/")
