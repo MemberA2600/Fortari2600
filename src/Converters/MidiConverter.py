@@ -73,7 +73,7 @@ class MidiConverter:
             self.__loader.soundPlayer.playSound("Probe")
 
         try:
-            constant = self.__loader.fileDialogs.askForInteger("askForSomething", "setMidiTempo")
+            constant = self.__loader.fileDialogs.askForFloat("askForSomething", "setMidiTempo")
         except:
             constant = 1.0
 

@@ -1206,5 +1206,19 @@ class SpriteEditor:
         self.__soundPlayer.playSound("Success")
         self.changed=False
 
+        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".asm"
+        from Compiler import Compiler
+
+        spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getSpriteASM",
+                     [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
+                      "##NAME##"]).convertedSpite
+
+        file = open(fileName, "w")
+        file.write(
+            "* Height="+str(self.__height)+"\n"+"* Frames="+str(self.__numOfFrames)+"\n"+spriteData
+        )
+        file.close()
+
+
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()

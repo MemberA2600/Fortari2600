@@ -37,7 +37,12 @@ class Assembler():
         import os
         import subprocess
 
-        subprocess.run([path, os.getcwd() + os.sep + self.executeName])
+        #self.__tv = "pal"
+        command = os.getcwd() + os.sep+path + ' "' +  os.getcwd() + os.sep + self.executeName +  '"'
+        print(command)
+
+        os.popen(command)
+
 
     def loadRegisters(self, path):
         temp = {}
@@ -677,6 +682,7 @@ class Assembler():
         import os
         base = self.projectPath.split("/")[-2]
         counter = 1
+
         name = self.generateName(base, counter)
 
         while os.path.exists(self.projectPath+"bin/"+name+".bin"):

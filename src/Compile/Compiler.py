@@ -27,6 +27,11 @@ class Compiler:
             self.test64PX()
         elif self.__mode == 'testWav':
             self.testWav()
+        elif self.__mode == "getPFASM":
+            self.getPFASM()
+        elif self.__mode == "getSpriteASM":
+            self.getSpriteASM()
+
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
@@ -642,6 +647,18 @@ class Compiler:
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
+    def getPFASM(self):
+        self.__pixelData = self.__data[0]
+        self.__colorData = self.__data[1]
+        self.__max = int(self.__data[2])
+        self.__tv = self.__data[3]
+
+        self.__mirrored = [0, 1, 1]
+        self.__name = self.__data[4]
+
+        self.convertedPlayfield =   self.convertPixelsToPlayfield(self.__name) +\
+                                    self.addColors(self.__name)
+
     def pfTest(self):
         self.__openEmulator = True
 
@@ -676,6 +693,16 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
+
+    def getSpriteASM(self):
+        self.__spritePixels = self.__data[0]
+        self.__spriteColors = self.__data[1]
+        self.__height = int(self.__data[2])
+        self.__frameNum = int(self.__data[3])
+        self.__tv = self.__data[4]
+        self.__name = self.__data[5]
+
+        self.convertedSpite = self.convertPixelsToSpriteFrameLine(self.__name)
 
     def spriteTest(self):
         self.__openEmulator = True

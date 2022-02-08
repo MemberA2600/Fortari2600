@@ -1295,7 +1295,7 @@ class MusicComposer:
 
         for bankNum in range(0, len(numOfBanks.banks)):
             F = open(fileName.replace(".a26", "_bank"+str(bankNum)+"_"+numOfBanks.musicMode+".asm"), "w")
-            F.write(numOfBanks.banks[bankNum])
+            F.write("* Lock=" + str(self.__banks[bankNum]) + "\n" + numOfBanks.banks[bankNum])
             F.close()
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":

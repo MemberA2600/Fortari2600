@@ -410,8 +410,30 @@ class PlayfieldEditor:
         self.__caller = 1
         self.changed=False
 
+        fileName = self.__loader.mainWindow.projectPath + "playfields/" + self.__playFieldLoader.getValue() + ".asm"
+
+        asmData = "* Height=" + str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
+        pfData = asmData.split("##NAME##_BG")[0]
+
+        file = open(fileName, "w")
+        file.write(pfData)
+        file.close()
+
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
+
+    def getASMOnly(self, name):
+        from Compiler import Compiler
+
+        PFBGdata = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getPFASM",
+                            [self.__table,
+                             self.__colorTable,
+                             self.__heightSetter.getValue(),
+                             "NTSC",
+                             name
+                             ])
+
+        return(PFBGdata.convertedPlayfield)
 
     def __openBackground(self):
         import os
@@ -488,6 +510,16 @@ class PlayfieldEditor:
         self.__soundPlayer.playSound("Success")
         self.__caller = 2
         self.changed = False
+
+        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".asm"
+
+        asmData = str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
+        bgData = "* Height=" + self.__heightSetter.getValue()+"\n##NAME##_BG"+ asmData.split("##NAME##_BG")[1]
+
+        file = open(fileName, "w")
+        file.write(bgData)
+        file.close()
+
 
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()

@@ -143,12 +143,13 @@ OverLapIndicator = $d1
 
 	; Constants
  
-NTSC_Vblank =	169
+NTSC_Vblank   =	169
 NTSC_Overscan =	163
+NTSC_Display  = 229
 
-PAL_Vblank =	185
+PAL_Vblank   =	169
 PAL_Overscan =	206
-
+PAL_Display  =  244
 
 	; User defined variables
 
@@ -1590,7 +1591,7 @@ VBlankEndBank2
 	LDA 	INTIM
 	BMI 	VBlankEndBank2
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -1915,7 +1916,7 @@ VBlankEndBank3
 	LDA 	INTIM
 	BMI 	VBlankEndBank3
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -2238,7 +2239,7 @@ VBlankEndBank4
 	LDA 	INTIM
 	BMI 	VBlankEndBank4
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -2562,7 +2563,7 @@ VBlankEndBank5
 	LDA 	INTIM
 	BMI 	VBlankEndBank5
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -2885,7 +2886,7 @@ VBlankEndBank6
 	LDA 	INTIM
 	BMI 	VBlankEndBank6
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -3209,7 +3210,7 @@ VBlankEndBank7
 	LDA 	INTIM
 	BMI 	VBlankEndBank7
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -3520,7 +3521,7 @@ VBlankEndBank8
 	LDA 	INTIM
 	BMI 	VBlankEndBank8
 
-    	LDA	#229
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
