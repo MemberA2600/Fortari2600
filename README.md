@@ -15,7 +15,7 @@
 <li>A really "basic Basic"</li>
 <li>One customizable 2 sprites kernel</li>
 <li>One multisprite kernel</li>
-<li>The option to include a mini kernel to place items under the game screen</li>
+<li>The option to include a mini kernel to place items under the game screen and also a partion of vblank</li>
 <li>A really "basic Basic"</li>
 <li>A titlescreen editor (supporting only one screen)</li>
 </ul>
@@ -24,5 +24,15 @@
 <p align="justify">CDFJ is ARM based, supports 32k cartridges with Bus Stuffing and has a clear structure, where you have six banks for C code and 4K for 6507 assembly.
 <p align="justify"><a href = "https://atariage.com/forums/topic/297759-part-1-cdfj-overview/">Access CDFJ project here</a></p>
 </p>
-<h3><u>II. What is Fortari and why another one?</u></h3>
 <img src="https://github.com/MemberA2600/Fortari2600/blob/master/others/img/Loading.png" alt="Fortari Logo" width=75%> 
+<h3><u>II. What is Fortari and why another one?</u></h3>
+<p align="justify">I had a different phylosophy in mind. CDFJ really want to expand the consoles power by adding the arm support in the cartridge, while bB tries to be the Basic you would expect for the console in the early 80s.</p>
+<u><h4>What can be said about Fortari in short:</h4></u>
+<ul>
+<li>It's heavily based on projects. First, you create a new project that has a fixed structure and from the editor, you access parts (the code is also seperated into units) and your resources (sprites, playfield, backgrounds, music data, etc.) are placed in the dedicated folders. (for example, bB is based around single code files)</li> 
+<li>Mostly it works as an engine instead of being an IDE, so it's close to Unity in the way it's implemented. You have tools to manage the memory, create resources, convert files, etc.</li>  
+<li>Mostly it works as an engine instead of being an IDE, so it's close to Unity in the way it's implemented. You have tools to manage the memory, create resources, convert files, etc.</li> 
+<li>Fortari supports the 32k ROM + SARA superchip addon only. That means the code has 8 of 4K banks and 128 extra bytes of RAM. Bank1 has the game engine and the graphics data for the game section. Bank2 to Bank8 you have the same concept, Bank8 is different in the way it has the VBLANK section used by the game engine.</li> 
+<li>The structure how you should design your game is based on the bank structure. One bank can contain a screen (titlescreen, gameover, a kind of level, the shop, etc.) with it's enter and leave section, it's own vblank code (not much, since a lot of calculations happen there to arrange game objects, overscan code (basically your game code) and your screentop and screenbottom elements. These have their data stored in the bank, as well the routines you include in your code.</li>
+<li>Banks can have music or wave data instead of being a screen type. Music can take up to two banks while wave is limited to one. Music can be initialized, stopped and resumed during the gameplay, while the data itself is accessed at the end of overscan. Playing a wave will perform the wave playback, while all the game elements are disabled and returns to the point.</li> 
+</ul>
