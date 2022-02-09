@@ -1,5 +1,5 @@
 <h1><b>Fortari 2600</b></h1><h5><i>A new way to develop your own Atari 2600 games</i></h5>
-<img src="https://www.pngkit.com/png/full/222-2221121_all-things-printed-recorded-atari-2600.png" alt="Atari2600"> 
+<img src="https://www.pngkit.com/png/full/222-2221121_all-things-printed-recorded-atari-2600.png" alt="Atari2600" width=75%> 
  
 <h3><u>I. Introduction</u></h3>
 <p align="justify">The Atari 2600. This is the main reason I left my original life as a social worker and became a developer. It's so simple, yet hard to master. It's bulky, but you have full control and only your skills can define what you can do with it.</p>
@@ -19,5 +19,10 @@
 <li>A really "basic Basic"</li>
 <li>A titlescreen editor (supporting only one screen)</li>
 </ul>
+<p align="justify"><a href = "https://github.com/batari-Basic/batari-Basic">Access batari Basic project here</a></p>
 <p align="justify">The other option is the CDFJ bankswitching + Melody cartridge. This hold a different philosophy, from professionals for professionals.</p>
-<p align="justify">CDFJ is ARM based, (to be continued)</p>
+<p align="justify">CDFJ is ARM based, supports 32k cartridges with Bus Stuffing and has a clear structure, where you have six banks for C code and 4K for 6507 assembly.
+<p align="justify"><a href = "https://atariage.com/forums/topic/297759-part-1-cdfj-overview/">Access CDFJ project here</a></p>
+</p>
+<h3><u>II. What is Fortari and why another one?</u></h3>
+<img src="https://github.com/MemberA2600/Fortari2600/blob/master/others/img/Loading.png" alt="Fortari Logo" width=75%> 
