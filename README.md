@@ -36,5 +36,89 @@
 <li>The structure how you should design your game is based on the bank structure. One bank can contain a screen (titlescreen, gameover, a kind of level, the shop, etc.) with it's enter and leave section, it's own vblank code (not much, since a lot of calculations happen there to arrange game objects, overscan code (basically your game code) and your screentop and screenbottom elements. These have their data stored in the bank, as well the routines you include in your code.</li>
 <li>Banks can have music or wave data instead of being a screen type. Music can take up to two banks while wave is limited to one. Music can be initialized, stopped and resumed during the gameplay, while the data itself is accessed at the end of overscan. Playing a wave will perform the wave playback, while all the game elements are disabled and returns to the point.</li> 
 <li>Fortari has 3 levels of memory handling: Global, Bank and Subroutine. You cannot overwrite a global address with a bank one. Global and Bank memory addresses are handled in the Memory Manager, global variables are assigned to Bank1. There are 4 types of variables: bit, doublebit, nibble and byte. Also, you can create iterable pointer arrays to manage more variables with shorter code.</li> 
+<li>Fortari supports subroutines and functions, they can be accessed from their own banks. This works with imported routines as well.</li> 
+<li>There is no goto. Organize your code into functions and subroutines, believe me, it's a lot better.</li> 
+<li>The environment have some "fake OOP" so you can access the game objects easier (like, playfield%color for setting the color of the pf)</li> 
 </ul>
-(to be continued...)
+<h3><u>III. Development Machine and Utilites</u></h3>
+The program is developed on a B350 + Ryzen5 2600 machine, with 32 GB RAM. I use a Sapphire 2600 XT for display (yeah, a little too much of 2600, you say?), using Windows 7 (in 2022 :D )
+
+<p align="justify">Right now, there is no built version of the application since it is in a very early state. The program is built around Python 3.7 and Fortran 90, the Fortran applications are built since that's the easiest way to use them from Python.</p>
+
+<h5>Applications included (not written by me):</h5>
+<ul>
+<li><a href="https://github.com/Malvineous/dro2midi">dro2midi</a> - Used to convert DosBox dump files to midi.</li> 
+<li><a href="https://github.com/s-macke/SAM">sam</a> - This one is used to generate S.A.M. sound for wave generation</li> 
+<li><a href="https://www.pouet.net/prod.php?which=56322">sid2midi</a> - If the python module fails, this one takes it's place.</li> 
+<li><a href="https://vgmrips.net/wiki/VGM_Tools">vgm2mid</a> - Not used during the process, but you can convert your vgm to midi, then import that one</li> 
+<li><a href="https://github.com/vgmrips/vgmtools/blob/master/vgm2txt.c">vgm2txt</a> - The VGM converter gets the databytes thru this program</li> 
+</ul>
+
+<h3><u>IV. Parts those are ready to go:</u></h3>
+<ul>
+<li><b>Project Manager:</b>
+   <ol>
+     <li>Create Project</li>
+     <li>Open Project</li>
+     <li>Save Project Part</li>
+     <li>Save Whole Project</li>
+   </ol>
+ </li>
+ <li><b>Memory Manager:</b>
+   <ol>
+     <li>Allocate Memory</li>
+     <li>Create Pointer Arrays</li>
+     <li>Manages Memory Locks</li>
+   </ol>
+ </li>
+  <li><b>Playfield Editor:</b>
+   <ol>
+     <li>Draw a 0-255 tall playfield (the 4 pixels on each side are non-mirrored)</li>
+     <li>Background and playfield can be colored line-by-line</li>
+     <li>Converts images to a pf / bg combo</li>
+     <li>Interactive testing</li> 
+   </ol>
+ </li>
+   <li><b>Sprite Editor:</b>
+   <ol>
+     <li>Draw a 0-255 tall sprite, up to 15 frames</li>
+     <li>The limitation is 255 bytes, so sprites taller than 17 points can't have 15 frames</li>
+     <li>Player sprites can be colored line-by-line (submenu icons have gradient based on one color)</li>
+     <li>Can be used for player sprites or for submenu icons</li>
+     <li>Interactive testing (with choosen pf and bg)</li>
+   </ol>
+ </li>
+    <li><b>Music Composer:</b>
+   <ol>
+    <li>Creates a semi-4 channel display</li>
+    <li>Emulated TIA sound playback on keypress</li>
+    <li>Interactive testing + Generating stand alone music ROMs</li>
+    <li>Conversion of the following music formats:</li>
+       <ul>
+       <li>General Midi</li>
+       <li>Commodore 64 SID file (converted to midi first)</li>
+       <li>DRO, RDOS, IMF (converted to midi first)</li> 
+       <li>Adlib VGM files</li> 
+       </ul>
+   </ol>
+ </li>
+  <li><b>64px Editor:</b>
+   <ol>
+     <li>Converts most of the known picture formats</li>
+     <li>Let you edit the picture before saving</li>
+     <li>The format has 64 pixels of sprites and one mirrored pf in the middle</li>
+     <li>3 unique colors for each line</li>
+   </ol>
+ </li>
+   <li><b>Sound Player:</b>
+   <ol>
+     <li>Converts wave to 4bit sample for the VCS</li>
+     <li>You have three methods:</li>
+       <ul>
+       <li>Open Wave File</li>
+       <li>Record your own sound</li>
+       <li>Generate a speech sound with S.A.M.</li> 
+       </ul>
+   </ol>
+ </li>
+</ul>
