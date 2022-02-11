@@ -27,11 +27,14 @@ class MainWindow:
         self.__loader = loader
         self.__loader.mainWindow = self
 
+        self.__loopColor = "#000000"
+
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
         self.__screenSize = self.__loader.screenSize
         self.__soundPlayer = self.__loader.soundPlayer
         self.__fileDialogs = self.__loader.fileDialogs
+        self.__colorDict = self.__loader.colorDict
 
         self.__mainFocus = None
         self.__subMenu = None
@@ -62,7 +65,7 @@ class MainWindow:
         self.editor.focus()
 
         self.editor.overrideredirect(False)
-        self.editor.resizable(True, True)
+        #self.editor.resizable(True, True)
         self.editor.minsize(1000,720)
         self.editor.pack_propagate(False)
         self.editor.grid_propagate(False)
@@ -81,6 +84,8 @@ class MainWindow:
         #self.selectedItem = ["bank1", "global_variables"]
         self.bindThings()
 
+        from threading import Thread
+
         self.__soundPlayer.playSound("Start")
         align = Thread(target=self.__scales)
         align.daemon = True
@@ -89,6 +94,12 @@ class MainWindow:
         self.editor.deiconify()
         self.editor.focus()
 
+        t = Thread(target=self.__loopColorThread)
+        t.daemon = True
+        t.start()
+
+    def getLoopColor(self):
+        return self.__loopColor
 
     def bindThings(self):
         self.__pressedHome = False
@@ -147,71 +158,82 @@ class MainWindow:
 
     def __createFrames(self):
          self.__createMenuFrame()
-         self.__createSelectorFrame()
 
-         from BFG9000 import BFG9000
-         self.__BFG9000 = BFG9000(self.__loader, self.editor, self,
-                                  self.__buttonMenu.getFrameSize()[1]+self.__selectMenu1.getFrameSize()[1]
-                                  )
+         #self.__createSelectorFrame()
+
+         #from BFG9000 import BFG9000
+         #self.__BFG9000 = BFG9000(self.__loader, self.editor, self,
+         #                         self.__buttonMenu.getFrameSize()[1]+self.__selectMenu1.getFrameSize()[1]
+         #                         )
 
     def __createMenuFrame(self):
         self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
                                          self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
                                          99999, 150, 400, 60)
 
+        self.__places = {}
+
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
         self.__newButton = self.__buttonMaker.createButton("new", 0,
                                       self.__newButtonFunction, "projectPath" ,
-                                       True, None)
+                                       True, None, self.__places, 0)
         self.__openButton = self.__buttonMaker.createButton("open", 1,
                                        self.__openButtonFunction, "projectPath",
-                                        True, None)
+                                        True, None, self.__places, 0)
         self.__saveButton = self.__buttonMaker.createButton("save", 2,
                                        self.__saveButtonFunction, "projectPath",
-                                        False, None)
+                                        False, None, self.__places, 0)
         self.__saveAllButton = self.__buttonMaker.createButton("saveAll", 3,
                                           self.__saveAllButtonFunction, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 0)
         self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", 4,
                                           self.__closeProjectButtonFunction, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 0)
         self.__copyButton = self.__buttonMaker.createButton("copy", 5.5,
                                           self.__copyButtonFunction, None,
-                                            False, self.setCopyButton)
+                                            False, self.setCopyButton, self.__places, 5.5)
         self.__pasteButton = self.__buttonMaker.createButton("paste", 6.5,
                                           self.__pasteButtonFunction, None,
-                                            False, self.setPasteButton)
+                                            False, self.setPasteButton, self.__places, 5.5)
         self.__undoButton = self.__buttonMaker.createButton("undo", 7.5,
                                           self.__undoButtonFunction, None,
-                                            False, self.__undoButtonHandler)
+                                            False, self.__undoButtonHandler, self.__places, 5.5)
         self.__redoButton = self.__buttonMaker.createButton("redo", 8.5,
                                           self.__redoButtonFunction, None,
-                                            False, self.__redoButtonHandler)
+                                            False, self.__redoButtonHandler, self.__places, 5.5)
 
         self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 10,
                                           self.__openSpriteEditor, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 10)
 
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
                                           self.__openPFEditor, "projectPath",
-                                            False, self.__pfButtonHander)
+                                            False, None, self.__places, 10)
 
         self.__musicButton = self.__buttonMaker.createButton("music", 12,
                                           self.__openMusicComposer, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 10)
 
         self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", 13,
                                           self.__openPictureConverter, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 10)
 
         self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", 14,
                                           self.__openSoundPlayer, "projectPath",
-                                            False, None)
+                                            False, None, self.__places, 10)
+
+        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 15.5,
+                                          self.__openLockManager, "projectPath",
+                                            False, None, self.__places, 15.5)
+
+        self.__lockManagerButton = self.__buttonMaker.createButton("memoryManager", 16.5,
+                                          self.openMemoryManager, "projectPath",
+                                            False, None, self.__places, 15.5)
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
-
+    """
     def __createSelectorFrame(self):
         self.__selectMenu1 = FrameContent(self.__loader, "bankMenu",
                                          self.getWindowSize()[0] / 7, self.getWindowSize()[1] / 5, 5,
@@ -268,6 +290,19 @@ class MainWindow:
         self.__changedSelection = Thread(target=self.__listBoxChanges)
         self.__changedSelection.daemon = True
         self.__changedSelection.start()
+    """
+
+
+    def __loopColorThread(self):
+        from time import sleep
+        colorNum = 0
+        while self.__loader.mainWindow.dead == False and self.dead == False:
+            colorNum += 1
+            if colorNum == 256: colorNum = 0
+            hexaNum = hex(colorNum-colorNum%2).replace("0x", "$")
+            if len(hexaNum) == 2: hexaNum = "$0"+hexaNum[1]
+            self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
+            sleep(0.025)
 
 
     def __createLabel(self, event):
@@ -280,12 +315,8 @@ class MainWindow:
                 self.__menuLabel.changeColor(self.__loader.colorPalettes.getColor("font"))
 
             self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
-            if name in ["new", "open", "save", "saveAll", "closeProject"]:
-                self.__menuLabel.changePlace(0)
-            elif name in ["copy", "paste", "undo", "redo"]:
-                self.__menuLabel.changePlace(5.5)
-            elif name in ["spriteEditor", "playfieldEditor", "colorPalette","music","64pxPicture","soundPlayer"]:
-                self.__menuLabel.changePlace(10)
+            self.__menuLabel.changePlace(self.__places[name])
+
         except:
             self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
@@ -580,18 +611,6 @@ class MainWindow:
                 pass
             sleep(1)
 
-    def __pfButtonHander(self, button):
-        from time import sleep
-        while self.dead==False:
-            try:
-                # TO DO: write here the pfless kernels!
-                if self.__loader.virtualMemory.kernel not in []:
-                    self.__undoButton.getButton().config(state=NORMAL)
-                else:
-                    self.__undoButton.getButton().config(state=DISABLED)
-            except:
-                pass
-            sleep(1)
 
     def __redoButtonHandler(self, button):
         from time import sleep
@@ -605,7 +624,6 @@ class MainWindow:
             except:
                 pass
             sleep(1)
-
 
     def getConstant(self):
         scalerX = self.getWindowSize()[0]/1300
@@ -631,7 +649,6 @@ class MainWindow:
                 self.__copyButton.getButton().config(state=DISABLED)
             else:
                 self.__copyButton.getButton().config(state=NORMAL)
-
 
             sleep(0.4)
 
@@ -664,9 +681,15 @@ class MainWindow:
         elif key == "Shift_L" or key == "Shift_R":
             self.__pressedShiftL = False
 
-
     def __checkBinded(self):
         from time import sleep
         from threading import Thread
 
+    def __openLockManager(self):
+        from LockManagerWindow import LockManagerWindow
+        self.__subMenu = LockManagerWindow(self.__loader)
 
+    def openMemoryManager(self):
+        from MemoryManagerWindow import MemoryManagerWindow
+
+        self.__subMenu = MemoryManagerWindow(self.__loader)

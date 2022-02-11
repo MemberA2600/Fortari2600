@@ -9,7 +9,8 @@ class ButtonMaker:
         self.__functionEnter = functionEnter
         self.__functionLeave = functionLeave
 
-    def createButton(self, image, XPoz, function, bindedVar, invertedBinding, bindedOut):
+    def createButton(self, image, XPoz, function, bindedVar, invertedBinding, bindedOut, placer, num):
+        placer[image] = num
         return(MenuButton(
             self.__loader, self.__frame, image, XPoz, function,
             self.__functionEnter, self.__functionLeave, bindedVar, invertedBinding,

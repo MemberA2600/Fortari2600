@@ -53,10 +53,10 @@ class VirtualMemory:
 
         self.archieved.append(
             {
-             "viewed": [
-                 self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].curselection()[0],
-                 self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].curselection()[0]
-             ],
+#             "viewed": [
+ #                self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].curselection()[0],
+  #               self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].curselection()[0]
+   #          ],
              "codes": deepcopy(self.codes),
              "locks": deepcopy(self.locks),
              "memory": deepcopy(self.memory),
@@ -152,8 +152,8 @@ class VirtualMemory:
         self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
         self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
 
-        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
-        self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
+        #self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
+        #self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
 
         self.__loader.BFG9000.first = True
 

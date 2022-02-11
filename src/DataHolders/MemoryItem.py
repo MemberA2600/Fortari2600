@@ -42,7 +42,6 @@ class MemoryItem:
         self.freeBits["global"] = self.makeSetRemoveSortGiveBack(self.freeBits["global"], bits)
         self.freeBits[num] = self.makeSetRemoveSortGiveBack(self.freeBits[num], bits)
 
-
     def makeSetRemoveSortGiveBack(self, A, B):
         setA = set(A)
         setB = set(B)
