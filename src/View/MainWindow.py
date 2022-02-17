@@ -142,7 +142,7 @@ class MainWindow:
                 self.__lastH = self.getWindowSize()[1]
                 self.__scaleX = self.__lastW / self.__originalW
                 self.__scaleY = self.__lastH / self.__originalH
-            sleep(0.02)
+            sleep(0.005)
 
     def __killRemaining(self):
         import gc
@@ -402,7 +402,7 @@ class MainWindow:
                     self.__sectionSelected = sectionBox.getSelectedName()
                 except:
                     continue
-            sleep(0.1)
+            sleep(0.005)
 
     def changeAliasInCodes(self):
         for bank in self.__loader.virtualMemory.codes.keys():
@@ -609,7 +609,7 @@ class MainWindow:
                     self.__undoButton.getButton().config(state=DISABLED)
             except:
                 pass
-            sleep(1)
+            sleep(0.0025)
 
 
     def __redoButtonHandler(self, button):
@@ -623,7 +623,7 @@ class MainWindow:
                     self.__redoButton.getButton().config(state=DISABLED)
             except:
                 pass
-            sleep(1)
+            sleep(0.0025)
 
     def getConstant(self):
         scalerX = self.getWindowSize()[0]/1300
@@ -650,7 +650,7 @@ class MainWindow:
             else:
                 self.__copyButton.getButton().config(state=NORMAL)
 
-            sleep(0.4)
+            sleep(0.0025)
 
     def setPasteButton(self, button):
         from time import sleep
@@ -663,7 +663,7 @@ class MainWindow:
                     self.__pasteButton.getButton().config(state=DISABLED)
                 else:
                     self.__pasteButton.getButton().config(state=NORMAL)
-            sleep(0.4)
+            sleep(0.0025)
 
     def pressed(self, event):
         key = event.keysym

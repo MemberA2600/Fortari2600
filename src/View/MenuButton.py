@@ -76,7 +76,7 @@ class MenuButton:
                 except Exception as e:
                     self.__loader.logger.errorLog(e)
 
-            sleep(1)
+            sleep(0.0025)
 
     def getButton(self):
         return(self.__button)
@@ -91,7 +91,7 @@ class MenuButton:
             self.__resizeMe()
             self.__placer()
 
-            sleep(0.02)
+            sleep(0.0025)
 
     def __resizeMe(self):
         self.__button.config(width=self.__loader.mainWindow.getConstant(),

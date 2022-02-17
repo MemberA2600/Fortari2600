@@ -66,4 +66,4 @@ class SubMenuOkCancelButtons:
                     self.__OKButton.config(state=DISABLED)
             except Exception as e:
                 self.__loader.logger.errorLog(e)
-            sleep(1)
+            sleep(0.025)

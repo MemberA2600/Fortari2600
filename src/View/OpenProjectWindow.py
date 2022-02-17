@@ -139,7 +139,7 @@ class OpenProjectWindow:
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
-            sleep(0.05)
+            sleep(0.00005)
 
     def checkIfOK(self):
         from time import sleep
@@ -153,4 +153,4 @@ class OpenProjectWindow:
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
-            sleep(0.05)
+            sleep(0.00005)

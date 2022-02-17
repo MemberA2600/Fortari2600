@@ -237,3 +237,6 @@ speech=Test Speech
 record=Record
 waveError=Open Wave Failed
 waveErrorMessage=Conversion of Wave file failed. Try to convert your file to 8000 Hz / 8bit / mono first!
+saveToFile=Save Memory Settings
+saveToFileBank=Save This Bank Only
+restoreFile=Restore Memory from File

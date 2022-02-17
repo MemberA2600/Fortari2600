@@ -149,13 +149,13 @@ class VirtualMemory:
         self.subs = deepcopy(self.archieved[self.cursor]["subs"])
         self.bankLinks = deepcopy(self.archieved[self.cursor]["bankLinks"])
 
-        self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
-        self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
+        #self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
+        #self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
 
         #self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
         #self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
 
-        self.__loader.BFG9000.first = True
+        #self.__loader.BFG9000.first = True
 
     def emptyArchieved(self):
         self.cursor = 0
@@ -211,8 +211,8 @@ class VirtualMemory:
         for array in self.arrays.keys():
             if name in self.arrays[array]:
                 self.arrays[array].pop(name)
-        if self.__loader.frames["ArrayFrame"].arrName.getEntry()!="":
-            self.__loader.frames["ArrayFrame"].fillListBoxes()
+        #if self.__loader.frames["ArrayFrame"].arrName.getEntry()!="":
+        #    self.__loader.frames["ArrayFrame"].fillListBoxes()
 
     def getAddressOnVariableIsStored(self, name, bank):
         section="local_variables"
