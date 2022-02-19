@@ -13,8 +13,7 @@ class MenuLabel:
         self.stopThread = False
         self.__loader.stopThreads.append(self)
 
-        self.__contentHolder = self.__frame.getFrame()
-        self.__label = Label(self.__contentHolder, text = text)
+        self.__label = Label(self.__frame, text = text)
 
         self.__font = None
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
@@ -24,9 +23,9 @@ class MenuLabel:
 
 
         self.__placer()
-        align = Thread(target=self.dinamicallyAlign)
-        align.daemon = True
-        align.start()
+        #align = Thread(target=self.dinamicallyAlign)
+        #align.daemon = True
+        #align.start()
         self.__setFont()
 
     def dinamicallyAlign(self):
@@ -45,8 +44,7 @@ class MenuLabel:
 
     def __placer(self):
         c = self.__loader.mainWindow.getConstant()
-        self.__label.place(x=(self.__XPoz*c) +
-                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = c*1.04+12)
+        self.__label.place(x=(self.__loader.mainWindow.getConstant()*self.__XPoz*1.5)+ 5, y = c*1.04+12)
 
     def __setFont(self):
         self.__font = self.__fontManager.getFont("normal", False, False, False)

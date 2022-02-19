@@ -19,16 +19,15 @@ class SpaceShip:
 
         self.__extraDelay = 0
 
-        self.__frames = self.__loader.rocketFrames
-        self.__imgBuffer = []
-
+        #self.__frames = self.__loader.rocketFrames
+        self.__imgBuffer = self.__loader.rocketFrames
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
 
         self.__spaceLabel = Label(self.__frame, bg = "black",
                                   height=self.__frame.winfo_height(), width=self.__frame.winfo_width(), borderwidth = 0, highlightthickness=0)
-        self.__setBuffer()
+        #self.__setBuffer()
 
         self.__spaceLabel.pack_propagate(False)
         self.__spaceLabel.pack(fill=BOTH)
@@ -37,17 +36,21 @@ class SpaceShip:
         t.daemon = True
         t.start()
 
-
+    """
     def __setBuffer(self):
         self.__imgBuffer.clear()
-        self.__lastSizeX = self.__frame.winfo_width()
+        #self.__lastSizeX = self.__frame.winfo_width()
 
         for num in range(0,66):
             self.__imgBuffer.append(
                 ImageTk.PhotoImage(self.__frames[num].resize(
                     (self.__frame.winfo_width(), self.__frame.winfo_height()), IMAGE.ANTIALIAS)
                 ))
-
+            if num == 0:
+                self.__spaceLabel.config(
+                    image=self.__imgBuffer[0]
+                )
+    """
 
     def setOther(self, other):
         self.__other = other
@@ -61,6 +64,7 @@ class SpaceShip:
         self.__item1 = None
         while self.__loader.mainWindow.dead == False and self.__frame!=None and self.stopThread==False:
             try:
+                """
 
                 if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
                     self.__lastScaleY != self.__loader.mainWindow.getScales()[1]
@@ -72,6 +76,7 @@ class SpaceShip:
                     self.__spaceLabel.config(width=self.__frame.winfo_width(),
                                               height=self.__frame.winfo_height())
                     self.__setBuffer()
+                """
 
                 if self.__dontDoIt == True:
                     self.__rocketY += 1
@@ -114,8 +119,8 @@ class SpaceShip:
                             self.__dontDoIt = True
                             self.__rocketY = 1
 
-                if self.__lastSizeX != self.__frame.winfo_width():
-                    self.__setBuffer()
+                #if self.__lastSizeX != self.__frame.winfo_width():
+                #    self.__setBuffer()
                 self.__spaceLabel.config(
                     image=self.__imgBuffer[self.__rocketY]
                 )

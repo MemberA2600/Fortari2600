@@ -22,8 +22,8 @@ class AtariLogo:
         self.__spaceShip1.setOther(self.__spaceShip2)
         self.__spaceShip2.setOther(self.__spaceShip1)
 
-        self.__imageBuffer = []
-        self.__createLotsOfImages()
+        self.__imageBuffer = self.__loader.atariFrames
+        #self.__createLotsOfImages()
 
         self.__onlyLabel = Label(self.__main, bd=0, bg="black")
         self.__onlyLabel.pack(padx=0, pady=0, fill=BOTH)
@@ -38,27 +38,29 @@ class AtariLogo:
         t.daemon=True
         t.start()
 
-        s = Thread(target=self.resize)
-        s.daemon=True
-        s.start()
+        #s = Thread(target=self.resize)
+        #s.daemon=True
+        #s.start()
 
 
+    """
     def __createLotsOfImages(self):
         self.__imageBuffer=[]
         self.__sizing = True
-        self.__lastSizeX = self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
+        #self.__lastSizeX = self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
         for num in range(0,19):
             self.__imageBuffer.append(ImageTk.PhotoImage(self.__frames[num].resize((
             self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
             , self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[1])
         ), IMAGE.ANTIALIAS)))
         self.__sizing = False
+    """
 
     def __setCurrentImage(self, num):
         try:
             if self.__onlyLabel in self.__main.pack_slaves():
-                if self.__imageBuffer[num].width() != self.__lastSizeX:
-                    self.__createLotsOfImages()
+                #if self.__imageBuffer[num].width() != self.__lastSizeX:
+                #    self.__createLotsOfImages()
 
                 self.__onlyLabel.config(image=self.__imageBuffer[num])
         except Exception as e:
@@ -74,7 +76,7 @@ class AtariLogo:
             if self.__sizing == False:
                 self.__setCurrentImage(self.__counter)
             sleep(0.02)
-
+    """
     def resize(self):
         from time import sleep
         while(self.__loader.mainWindow.dead==False and self.stopThread == False):
@@ -86,3 +88,4 @@ class AtariLogo:
                 self.__createLotsOfImages()
 
             sleep(0.04)
+    """

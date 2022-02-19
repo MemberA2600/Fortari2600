@@ -1,5 +1,6 @@
 from tkinter import *
-from PIL import Image as IMAGE
+from PIL import Image as IMAGE, ImageTk
+
 
 class LoadingScreen():
     """This class only opens a loading screen image and swaits for 3 seccnds,
@@ -30,9 +31,6 @@ class LoadingScreen():
         #self.__Loading_Window.after(3000, self.destroySelf)
         self.__Loading_Window.after(1, self.loadAndDestroy)
         self.__Loading_Window.wait_window()
-
-
-
 
     def loadAndDestroy(self):
         from Config import Config
@@ -69,11 +67,16 @@ class LoadingScreen():
 
         self.__loader.io.loadSyntax()
 
+        __w = self.__loader.screenSize[0]-150
+        __h = self.__loader.screenSize[1]-200
+        __h = __h - (__h // 11.25) - (__h // 30)*2
+
         for num in range(1, 20):
             num = str(num)
             if len(num) == 1:
                 num = "0" + str(num)
-            self.__loader.atariFrames.append(IMAGE.open("others/img/logo/"+num+".gif"))
+            self.__loader.atariFrames.append(
+                self.returnResized(IMAGE.open("others/img/logo/"+num+".gif"), __w, __h, 0.60))
 
 
         for num in range(1, 67):
@@ -81,8 +84,8 @@ class LoadingScreen():
             if len(num) == 1:
                 num = "0" + num
             self.__loader.rocketFrames.append(
-                IMAGE.open(str("others/img/rocket/r" + num + ".png"))
-            )
+                self.returnResized(IMAGE.open(str("others/img/rocket/r" + num + ".png")), __w, __h, 0.20))
+
 
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)
@@ -98,7 +101,9 @@ class LoadingScreen():
 
         self.__Loading_Window.after(1000, self.__Loading_Window.destroy)
 
+    def returnResized(self, source, w, h, part):
 
+        return ImageTk.PhotoImage(source.resize((round(w*part), round(h))), IMAGE.ANTIALIAS)
 
     def bindThings(self):
         from threading import Thread
@@ -117,3 +122,4 @@ class LoadingScreen():
             return(True, self.__clicked)
         else:
             return(False, self.__clicked)
+

@@ -20,14 +20,14 @@ class MenuButton:
         self.stopThread = False
         #self.__loader.stopThreads.append(self)
 
-        self.__contentHolder = self.__frame.getFrame()
+        #self.__contentHolder = self.__frame.getFrame()
         self.__img = self.__loader.io.getImg(self.__image, None)
         self.__function = function
         self.__functionEnter = functionEnter
         self.__functionLeave = functionLeave
         self.preventRun = False
 
-        self.__button = Button(self.__contentHolder, name=image,
+        self.__button = Button(self.__frame, name=image,
                                width=self.__loader.mainWindow.getConstant(),
                                height=self.__loader.mainWindow.getConstant(),
                                command=self.__function,
@@ -41,8 +41,8 @@ class MenuButton:
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__placer()
 
-        align = Thread(target=self.dinamicallyAlign)
-        align.start()
+        #align = Thread(target=self.dinamicallyAlign)
+        #align.start()
 
         if (self.__bindedVar != None):
             binder = Thread(target=self.checkBinded)
@@ -101,5 +101,4 @@ class MenuButton:
 
 
     def __placer(self):
-        self.__button.place(x=(self.__loader.mainWindow.getConstant()*self.__XPoz)+
-                              (self.__XPoz*10*self.__frame.getFrameSize()[0]/600)+5, y = 5)
+        self.__button.place(x=(self.__loader.mainWindow.getConstant()*self.__XPoz*1.5)+ 5, y = 5)

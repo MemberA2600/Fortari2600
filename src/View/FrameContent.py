@@ -30,12 +30,12 @@ class FrameContent:
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
-        align = Thread(target=self.dinamicallyAlign)
+        #align = Thread(target=self.dinamicallyAlign)
         self.__frame.config(bg=self.__loader.colorPalettes.getColor("window"))
 
         #self.__frame.config(bg="blue") #Only for testing!
-        align.daemon = True
-        align.start()
+        #align.daemon = True
+        #align.start()
 
     def getFrame(self):
         return(self.__frame)
@@ -50,7 +50,7 @@ class FrameContent:
                     and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
                 sleep(0.05)
                 continue
-            self.__changeSize()
+            #self.__changeSize()
             sleep(0.02)
 
     def __changeSize(self):

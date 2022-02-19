@@ -35,6 +35,7 @@ class MainWindow:
         self.__soundPlayer = self.__loader.soundPlayer
         self.__fileDialogs = self.__loader.fileDialogs
         self.__colorDict = self.__loader.colorDict
+        self.__colors = self.__loader.colorPalettes
 
         self.__mainFocus = None
         self.__subMenu = None
@@ -61,8 +62,6 @@ class MainWindow:
         self.editor.config(bg=self.__loader.colorPalettes.getColor("window"))
         #self.editor.attributes('-toolwindow', True)
 
-        self.editor.deiconify()
-        self.editor.focus()
 
         self.editor.overrideredirect(False)
         #self.editor.resizable(True, True)
@@ -71,7 +70,6 @@ class MainWindow:
         self.editor.grid_propagate(False)
         self.editor.iconbitmap("others/img/icon.ico")
 
-
         self.__originalW = self.getWindowSize()[0]
         self.__originalH = self.getWindowSize()[1]
         self.__lastW = self.getWindowSize()[0]
@@ -79,6 +77,14 @@ class MainWindow:
 
         from FontManager import FontManager
         self.__fontManager = FontManager(self.__loader)
+
+        self.__fontSize = int(self.__screenSize[0]/1300 * self.__screenSize[1]/1050*14)
+
+        self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
+        self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
+        self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
+        self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.45), False, False, False)
+        self.__halfFont = self.__fontManager.getFont(int(self.__fontSize*0.57), False, False, False)
 
         self.__createFrames()
         #self.selectedItem = ["bank1", "global_variables"]
@@ -93,10 +99,14 @@ class MainWindow:
 
         self.editor.deiconify()
         self.editor.focus()
+        self.__loader.tk.iconify()
 
         t = Thread(target=self.__loopColorThread)
         t.daemon = True
         t.start()
+
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def getLoopColor(self):
         return self.__loopColor
@@ -157,9 +167,87 @@ class MainWindow:
         return([self.__scaleX, self.__scaleY])
 
     def __createFrames(self):
+         self.__fullEditor = Frame(self.editor, width=self.getWindowSize()[0],
+                                   height=self.getWindowSize()[1],
+                                   bg=self.__colors.getColor("window"))
+         self.__fullEditor.pack_propagate(False)
+         self.__fullEditor.pack(side=TOP, anchor = N, fill=BOTH)
+
+         self.__buttonMenu = Frame(self.__fullEditor, width=self.getWindowSize()[0],
+                                   height=self.getWindowSize()[1]//11.25,
+                                   bg=self.__colors.getColor("window"))
+         self.__buttonMenu.pack_propagate(False)
+         self.__buttonMenu.pack(side=TOP, anchor = N, fill=X)
+
          self.__createMenuFrame()
 
-         #self.__createSelectorFrame()
+         self.__controllerMenu = Frame(self.__fullEditor, width=self.getWindowSize()[0],
+                                   height=self.getWindowSize()[1]//30,
+                                   bg=self.__colors.getColor("window"))
+         self.__controllerMenu.pack_propagate(False)
+         self.__controllerMenu.pack(side=TOP, anchor = N, fill=X)
+
+         self.__changerButtons = []
+
+         for num in range(1,9):
+             f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//8,
+                                   height=self.getWindowSize()[1]//30,
+                                   bg=self.__colors.getColor("window"))
+             f.pack_propagate(False)
+             f.pack(side=LEFT, anchor = E, fill=Y)
+
+             if num == 1:
+               name = "global"
+             else:
+               name = 'bank'+str(num)
+
+             b = Button(f, bg=self.__loader.colorPalettes.getColor("window"),
+                        text = name, name = name,
+                        fg = self.__loader.colorPalettes.getColor("font"),
+                        width=99999, font=self.__normalFont,
+                        state=DISABLED, command = None)
+             b.pack_propagate(False)
+             b.pack(side=LEFT, anchor=E, fill=BOTH)
+
+             self.__changerButtons.append(b)
+
+         __keys = list(self.__loader.virtualMemory.codes["bank2"].keys())
+         __keys.remove('local_variables')
+         __keys.remove('special_read_only')
+         __keys.remove('screen_top')
+         __keys.remove('screen_bottom')
+
+         self.__controllerMenu2 = Frame(self.__fullEditor, width=self.getWindowSize()[0],
+                                   height=self.getWindowSize()[1]//30,
+                                   bg=self.__colors.getColor("window"))
+         self.__controllerMenu2.pack_propagate(False)
+         self.__controllerMenu2.pack(side=TOP, anchor = N, fill=X)
+
+         self.__sectionButtons = []
+
+         for num in range(0, len(__keys)):
+             f = Frame(self.__controllerMenu2, width=self.getWindowSize()[0]//len(__keys),
+                                   height=self.getWindowSize()[1]//30,
+                                   bg=self.__colors.getColor("window"))
+             f.pack_propagate(False)
+             f.pack(side=LEFT, anchor = E, fill=Y)
+
+             b = Button(f, bg=self.__loader.colorPalettes.getColor("window"),
+                        text = __keys[num], name = __keys[num],
+                        fg = self.__loader.colorPalettes.getColor("font"),
+                        width=99999, font=self.__normalFont,
+                        state=DISABLED, command = None)
+             b.pack_propagate(False)
+             b.pack(side=LEFT, anchor=E, fill=BOTH)
+
+             self.__changerButtons.append(b)
+
+         from EditorBigFrame import EditorBigFrame
+
+         self.__bigFrame = EditorBigFrame(self.__loader, self.__fullEditor)
+
+
+#self.__createSelectorFrame()
 
          #from BFG9000 import BFG9000
          #self.__BFG9000 = BFG9000(self.__loader, self.editor, self,
@@ -167,9 +255,9 @@ class MainWindow:
          #                         )
 
     def __createMenuFrame(self):
-        self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
-                                         self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
-                                         99999, 150, 400, 60)
+        #self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
+        #                                 self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
+        #                                 99999, 150, 400, 60)
 
         self.__places = {}
 
