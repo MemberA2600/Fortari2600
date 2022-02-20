@@ -1,0 +1,105 @@
+Metadata-Version: 2.1
+Name: pybcj
+Version: 0.5.0
+Summary: bcj filter library
+Home-page: http://github.com/miurahr/pybcj
+Author: Hiroshi Miura
+Author-email: miurahr@linux.com
+License: LGPL-2.1+
+Keywords: 7zip,bcj
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: importlib-metadata ; python_version < "3.8"
+Provides-Extra: check
+Requires-Dist: mypy ; extra == 'check'
+Requires-Dist: check-manifest ; extra == 'check'
+Requires-Dist: flake8 ; extra == 'check'
+Requires-Dist: readme-renderer ; extra == 'check'
+Requires-Dist: pygments ; extra == 'check'
+Requires-Dist: isort ; extra == 'check'
+Requires-Dist: twine ; extra == 'check'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: hypothesis ; extra == 'test'
+
+=======================================
+BCJ(Branch-Call-Jump) filter for python
+=======================================
+
+.. image:: https://badge.fury.io/py/pybcj.svg
+  :target: https://badge.fury.io/py/pybcj
+
+.. image:: https://github.com/miurahr/pybcj/workflows/Run%20Tox%20tests/badge.svg
+  :target: https://github.com/miurahr/pybcj/actions
+
+.. image:: https://coveralls.io/repos/github/miurahr/pybcj/badge.svg?branch=main
+  :target: https://coveralls.io/github/miurahr/pybcj?branch=main
+
+
+In data compression, BCJ, short for Branch-Call-Jump, refers to a technique that improves the compression of
+machine code of executable binaries by replacing relative branch addresses with absolute ones.
+This allows a LZMA compressor to identify duplicate targets and archive higher compression rate.
+
+BCJ is used in 7-zip compression utility as default filter for executable binaries.
+
+pybcj is a python bindings with BCJ implementation by C language.
+The C codes are derived from p7zip, portable 7-zip implementation.
+pybcj support Intel/Amd x86/x86_64, Arm/Arm64, ArmThumb, Sparc, PPC, and IA64.
+
+
+Development status
+==================
+
+A development status is considered as ``Alpha`` state.
+
+
+Installation
+============
+
+As usual, you can install pybcj using python standard pip command.
+
+.. code-block::
+
+    pip install pybcj
+
+
+License
+=======
+
+* Copyright (C) 2020,2021 Hiroshi Miura
+
+* 7-Zip Copyright (C) 1999-2010 Igor Pavlov
+* LZMA SDK Copyright (C) 1999-2010 Igor Pavlov
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+02110-1301  USA
+
+

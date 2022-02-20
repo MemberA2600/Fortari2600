@@ -86,6 +86,12 @@ class LoadingScreen():
             self.__loader.rocketFrames.append(
                 self.returnResized(IMAGE.open(str("others/img/rocket/r" + num + ".png")), __w, __h, 0.20))
 
+        for num in range(1, 31):
+            num = str(num)
+            if len(num) == 1:
+                num = "0" + num
+            self.__loader.tapeFrames.append(
+                self.returnResized(IMAGE.open(str("others/img/tape/" + num + ".gif")), __w//2.75, __h//2.75, 1))
 
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)

@@ -260,64 +260,80 @@ class MainWindow:
         #                                 99999, 150, 400, 60)
 
         self.__places = {}
+        __vals = [0, 6.5, 11, 17.5]
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
         self.__newButton = self.__buttonMaker.createButton("new", 0,
                                       self.__newButtonFunction, "projectPath" ,
-                                       True, None, self.__places, 0)
+                                       True, None, self.__places, __vals[0])
         self.__openButton = self.__buttonMaker.createButton("open", 1,
                                        self.__openButtonFunction, "projectPath",
-                                        True, None, self.__places, 0)
+                                        True, None, self.__places,  __vals[0])
         self.__saveButton = self.__buttonMaker.createButton("save", 2,
                                        self.__saveButtonFunction, "projectPath",
-                                        False, None, self.__places, 0)
+                                        False, None, self.__places,  __vals[0])
         self.__saveAllButton = self.__buttonMaker.createButton("saveAll", 3,
                                           self.__saveAllButtonFunction, "projectPath",
-                                            False, None, self.__places, 0)
+                                            False, None, self.__places,  __vals[0])
         self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", 4,
                                           self.__closeProjectButtonFunction, "projectPath",
-                                            False, None, self.__places, 0)
-        self.__copyButton = self.__buttonMaker.createButton("copy", 5.5,
+                                            False, None, self.__places,  __vals[0])
+        self.__archiveButton = self.__buttonMaker.createButton("archive", 5,
+                                          self.__achiveButtonFunction, "projectPath",
+                                            False, None, self.__places,  __vals[0])
+
+
+        self.__copyButton = self.__buttonMaker.createButton("copy", 6.5,
                                           self.__copyButtonFunction, None,
-                                            False, self.setCopyButton, self.__places, 5.5)
-        self.__pasteButton = self.__buttonMaker.createButton("paste", 6.5,
+                                            False, self.setCopyButton, self.__places,  __vals[1])
+        self.__pasteButton = self.__buttonMaker.createButton("paste", 7.5,
                                           self.__pasteButtonFunction, None,
-                                            False, self.setPasteButton, self.__places, 5.5)
-        self.__undoButton = self.__buttonMaker.createButton("undo", 7.5,
+                                            False, self.setPasteButton, self.__places, __vals[1])
+        self.__undoButton = self.__buttonMaker.createButton("undo", 8.5,
                                           self.__undoButtonFunction, None,
-                                            False, self.__undoButtonHandler, self.__places, 5.5)
-        self.__redoButton = self.__buttonMaker.createButton("redo", 8.5,
+                                            False, self.__undoButtonHandler, self.__places, __vals[1])
+        self.__redoButton = self.__buttonMaker.createButton("redo", 9.5,
                                           self.__redoButtonFunction, None,
-                                            False, self.__redoButtonHandler, self.__places, 5.5)
+                                            False, self.__redoButtonHandler, self.__places, __vals[1])
 
-        self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 10,
+        self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 11,
                                           self.__openSpriteEditor, "projectPath",
-                                            False, None, self.__places, 10)
+                                            False, None, self.__places, __vals[2])
 
-        self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 11,
+        self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 12,
                                           self.__openPFEditor, "projectPath",
-                                            False, None, self.__places, 10)
+                                            False, None, self.__places, __vals[2])
 
-        self.__musicButton = self.__buttonMaker.createButton("music", 12,
+        self.__musicButton = self.__buttonMaker.createButton("music", 13,
                                           self.__openMusicComposer, "projectPath",
-                                            False, None, self.__places, 10)
+                                            False, None, self.__places, __vals[2])
 
-        self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", 13,
+        self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", 14,
                                           self.__openPictureConverter, "projectPath",
-                                            False, None, self.__places, 10)
+                                            False, None, self.__places, __vals[2])
 
-        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", 14,
+        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", 15,
                                           self.__openSoundPlayer, "projectPath",
-                                            False, None, self.__places, 10)
+                                            False, None, self.__places, __vals[2])
 
-        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 15.5,
+        self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", 16,
+                                          self.__openSoundPlayer, "projectPath",
+                                            False, None, self.__places, __vals[2])
+
+
+
+        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 17.5,
                                           self.__openLockManager, "projectPath",
-                                            False, None, self.__places, 15.5)
+                                            False, None, self.__places, __vals[3])
 
-        self.__lockManagerButton = self.__buttonMaker.createButton("memoryManager", 16.5,
+        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 18.5,
                                           self.openMemoryManager, "projectPath",
-                                            False, None, self.__places, 15.5)
+                                            False, None, self.__places, __vals[3])
+
+        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 19.5,
+                                          self.openMemoryManager, "projectPath",
+                                            False, None, self.__places, __vals[3])
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
@@ -534,7 +550,8 @@ class MainWindow:
                                             )
             try:
                 self.__closeProject()
-            except:
+            except Exception as e:
+                print(str(e))
                 self.projectPath=""
 
 
@@ -667,10 +684,17 @@ class MainWindow:
     def __saveAllButtonFunction(self):
         self.__saveProject()
 
+
     def __closeProjectButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":
             self.saveProject()
         self.closeProject()
+
+    def __achiveButtonFunction(self):
+        from ArchiveWindow import ArchiveWindow
+
+        self.__subMenu = ArchiveWindow(self.__loader)
+
 
     def __copyButtonFunction(self):
         import clipboard

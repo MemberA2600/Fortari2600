@@ -1,0 +1,811 @@
+Metadata-Version: 2.1
+Name: py7zr
+Version: 0.17.4
+Summary: Pure python 7-zip library
+Home-page: https://github.com/miurahr/py7zr
+Author: Hiroshi Miura
+Author-email: miurahr@linux.com
+License: LGPL-2.1+
+Keywords: compression,7zip,lzma,zstandard,ppmd,lzma2,bcj,archive
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v2 or later (LGPLv2+)
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Topic :: System :: Archiving :: Compression
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: texttable
+Requires-Dist: pycryptodomex (>=3.6.6)
+Requires-Dist: pyzstd (>=0.14.4)
+Requires-Dist: pyppmd (>=0.17.0)
+Requires-Dist: multivolumefile (>=0.2.3)
+Requires-Dist: brotli (>=1.0.9) ; platform_python_implementation == "CPython"
+Requires-Dist: pybcj (>=0.5.0) ; platform_python_implementation == "CPython"
+Requires-Dist: brotlicffi (>=1.0.9.2) ; platform_python_implementation == "PyPy"
+Requires-Dist: importlib-metadata ; python_version < "3.8"
+Provides-Extra: check
+Requires-Dist: mypy (>=0.812) ; extra == 'check'
+Requires-Dist: mypy-extensions (>=0.4.1) ; extra == 'check'
+Requires-Dist: check-manifest ; extra == 'check'
+Requires-Dist: flake8 ; extra == 'check'
+Requires-Dist: flake8-black ; extra == 'check'
+Requires-Dist: flake8-deprecated ; extra == 'check'
+Requires-Dist: isort (>=5.0.3) ; extra == 'check'
+Requires-Dist: pygments ; extra == 'check'
+Requires-Dist: readme-renderer ; extra == 'check'
+Requires-Dist: twine ; extra == 'check'
+Provides-Extra: debug
+Requires-Dist: pytest ; extra == 'debug'
+Requires-Dist: pytest-leaks ; extra == 'debug'
+Requires-Dist: pytest-profiling ; extra == 'debug'
+Provides-Extra: docs
+Requires-Dist: sphinx (>=2.3) ; extra == 'docs'
+Requires-Dist: sphinx-py3doc-enhanced-theme ; extra == 'docs'
+Requires-Dist: sphinx-a4doc ; extra == 'docs'
+Requires-Dist: docutils ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: pytest-benchmark ; extra == 'test'
+Requires-Dist: pytest-cov ; extra == 'test'
+Requires-Dist: pytest-remotedata ; extra == 'test'
+Requires-Dist: pytest-timeout ; extra == 'test'
+Requires-Dist: pyannotate ; extra == 'test'
+Requires-Dist: py-cpuinfo ; extra == 'test'
+Requires-Dist: coverage[toml] (>=5.2) ; extra == 'test'
+Requires-Dist: coveralls (>=2.1.1) ; extra == 'test'
+Provides-Extra: test_compat
+Requires-Dist: libarchive-c ; extra == 'test_compat'
+
+======================================
+|logo| py7zr -- a 7z library on python
+======================================
+
+.. |logo| image:: logo.svg
+    :width: 80pt
+    :height: 80pt
+    :target: https://pypi.org/project/py7zr
+
+.. image:: https://readthedocs.org/projects/py7zr/badge/?version=latest
+  :target: https://py7zr.readthedocs.io/en/latest/?badge=latest
+
+.. image:: https://badge.fury.io/py/py7zr.svg
+  :target: https://badge.fury.io/py/py7zr
+
+.. image:: https://img.shields.io/pypi/dd/py7zr
+  :target: https://pypi.org/project/py7zr
+
+.. image:: https://img.shields.io/conda/vn/conda-forge/py7zr
+  :target: https://anaconda.org/conda-forge/py7zr
+
+.. image:: https://github.com/miurahr/py7zr/workflows/Run%20Tox%20tests/badge.svg
+  :target: https://github.com/miurahr/py7zr/actions
+
+.. image:: https://dev.azure.com/miurahr/github/_apis/build/status/miurahr.py7zr?branchName=master
+  :target: https://dev.azure.com/miurahr/github/_build/latest?definitionId=14&branchName=master
+
+.. image:: https://coveralls.io/repos/github/miurahr/py7zr/badge.svg?branch=master
+  :target: https://coveralls.io/github/miurahr/py7zr?branch=master
+
+.. image:: https://img.shields.io/pypi/l/py7zr
+  :target: https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html
+  
+
+py7zr is a library and utility to support 7zip archive compression, decompression,
+encryption and decryption written by Python programming language.
+
+
+Install
+=======
+
+You can install py7zr as usual other libraries using pip.
+
+.. code-block:: shell
+
+    $ pip install py7zr
+
+OR, alternatively using conda:
+
+.. code-block:: shell
+
+    $ conda install -c conda-forge py7zr
+
+Documents
+=========
+
+User manuals
+------------
+
+* `User Guide`_ for latest version.
+
+* `API Guide`_ for latest version.
+
+* `Manual`_ for stable version.
+
+Developer guide
+---------------
+
+* `Contributor guide`_ for one want to contribute the project.
+
+* `7z file specification`_
+
+
+.. _`User Guide`: https://py7zr.readthedocs.io/en/latest/user_guide.html
+
+.. _`API Guide` : https://py7zr.readthedocs.io/en/latest/api.html
+
+.. _`Manual` : https://py7zr.readthedocs.io/en/stable/
+
+.. _`Contributor guide` : https://py7zr.readthedocs.io/en/latest/contribution.html
+
+.. _`7z file specification` : https://py7zr.readthedocs.io/en/latest/archive_format.html
+
+
+CLI Usage
+=========
+
+You can run command script py7zr like as follows;
+
+* List archive contents
+
+.. code-block:: shell
+
+    $ py7zr l test.7z
+
+* Extract archive
+
+.. code-block:: shell
+
+    $ py7zr x test.7z
+
+* Extract archive with password
+
+.. code-block:: shell
+
+    $ py7zr x -P test.7z
+      password?: ****
+
+* Create and compress to archive
+
+.. code-block:: shell
+
+    $ py7zr c target.7z test_dir
+
+* Create multi-volume archive
+
+.. code-block:: shell
+
+    $ py7zr c -v 500k target.7z test_dir
+
+* Test archive
+
+.. code-block:: shell
+
+    $ py7zr t test.7z
+
+* Append files to archive
+
+.. code-block:: shell
+
+    $ py7zr a test.7z test_dir
+
+* Show information
+
+.. code-block:: shell
+
+    $ py7zr i
+
+* Show version
+
+.. code-block:: shell
+
+    $ py7zr --version
+
+
+SevenZipFile Class Usage
+========================
+
+py7zr is a library which can use in your python application.
+
+Decompression/Decryption
+------------------------
+
+Here is a code snippet how to decompress some file in your application.
+
+.. code-block:: python
+
+    import py7zr
+
+    archive = py7zr.SevenZipFile('sample.7z', mode='r')
+    archive.extractall(path="/tmp")
+    archive.close()
+
+
+
+You can also use 'with' block because py7zr provide context manager(v0.6 and later).
+
+.. code-block:: python
+
+    import py7zr
+
+    with py7zr.SevenZipFile('sample.7z', mode='r') as z:
+        z.extractall()
+
+    with py7zr.SevenZipFile('target.7z', 'w') as z:
+        z.writeall('./base_dir')
+
+
+py7zr also supports extraction of single or selected files by 'extract(targets=['file path'])'.
+Note: if you specify only a file but not a parent directory, it will fail.
+
+.. code-block:: python
+
+    import py7zr
+    import re
+
+    filter_pattern = re.compile(r'<your/target/file_and_directories/regex/expression>')
+    with SevenZipFile('archive.7z', 'r') as archive:
+        allfiles = archive.getnames()
+        selective_files = [f if filter_pattern.match(f) for f in allfiles]
+        archive.extract(targets=selective_files)
+
+
+py7zr support an extraction of password protected archive.(v0.6 and later)
+
+.. code-block:: python
+
+    import py7zr
+
+    with py7zr.SevenZipFile('encrypted.7z', mode='r', password='secret') as z:
+        z.extractall()
+
+Compression/Encryption
+----------------------
+
+Here is a code snippet how to produce archive.
+
+.. code-block:: python
+
+    import py7zr
+
+    with py7zr.SevenZipFile('target.7z', 'w') as archive:
+        archive.writeall('/path/to/base_dir', 'base')
+
+
+To create encrypted archive, please pass a password.
+
+.. code-block:: python
+
+    import py7zr
+
+    with py7zr.SevenZipFile('target.7z', 'w', password='secret') as archive:
+        archive.writeall('/path/to/base_dir', 'base')
+
+
+To create archive with algorithms such as zstandard, you can call with custom filter.
+
+.. code-block:: python
+
+    import py7zr
+
+    my_filters = [{"id": py7zr.FILTER_ZSTD}]
+    another_filters = [{"id": py7zr.FILTER_ARM}, {"id": py7zr.FILTER_LZMA2, "preset": 7}]
+    with py7zr.SevenZipFile('target.7z', 'w', filters=my_filter) as archive:
+        archive.writeall('/path/to/base_dir', 'base')
+
+
+shutil helper
+=============
+
+py7zr also support `shutil`  interface.
+
+.. code-block:: python
+
+    from py7zr import pack_7zarchive, unpack_7zarchive
+    import shutil
+
+    # register file format at first.
+    shutil.register_archive_format('7zip', pack_7zarchive, description='7zip archive')
+    shutil.register_unpack_format('7zip', ['.7z'], unpack_7zarchive)
+
+    # extraction
+    shutil.unpack_archive('test.7z', '/tmp')
+
+    # compression
+    shutil.make_archive('target', '7zip', 'src')
+
+
+Requirements
+============
+
+`py7zr` uses a python3 standard `lzma module`_ for extraction and compression.
+The standard lzma module uses `liblzma`_ that support core compression algorithm of 7zip.
+
+Minimum required version is Python 3.6.
+
+``py7zr`` tested on Linux, macOS, Windows and Ubuntu aarch64.
+
+It hopefully works on M1 Mac too.
+
+Recommended versions are:
+
+- CPython 3.7.5, CPython 3.8.0 and later.
+- PyPy3.6-7.3.2 and later.
+
+- CPython 3.10.0 is supported from ``py7zr`` v0.17.0
+
+Following fixes are included in these versions, and it is not fixed on python3.6.
+
+- `BPO-21872`_: LZMA library sometimes fails to decompress a file
+- `PyPy3-3090`_: lzma.LZMADecomporessor.decompress does not respect max_length
+- `PyPy3-3242`_: '_lzma_cffi' has no function named 'lzma_stream_encoder'
+
+Following improvements are included in CPython 3.10
+
+- `BPO-41486`_: Faster bz2/lzma/zlib via new output buffering
+
+.. _`lzma module`: https://docs.python.org/3/library/lzma.html
+.. _`liblzma`: https://tukaani.org/xz/
+.. _`BPO-21872`: https://bugs.python.org/issue21872
+.. _`BPO-41486`: https://bugs.python.org/issue41486
+.. _`PyPy3-3090`: https://foss.heptapod.net/pypy/pypy/-/issues/3090
+.. _`PyPy3-3242`: https://foss.heptapod.net/pypy/pypy/-/issues/3242
+
+Compression Methods supported
+=============================
+
+'py7zr' supports algorithms and filters which `lzma module`_ and `liblzma`_ support.
+It also support BZip2 and Deflate that are implemented in python core libraries,
+and ZStandard with third party libraries.
+
+Supported algorithms are:
+
+* compress
+    * LZMA2
+    * LZMA
+    * Bzip2
+    * Deflate
+    * Copy
+    * PPMd
+    * ZStandard
+    * Brotli
+
+* crypt
+    * 7zAES
+
+* Filters
+    * Delta
+    * BCJ(X86,ARMT,ARM,PPC,SPARC,IA64)
+
+* No support
+    * BCJ2
+    * Deflate64
+
+- A feature handling symbolic link is basically compatible with 'p7zip' implementation,
+  but not work with original 7-zip because the original does not implement the feature.
+
+- ZStandard and Brotli is not default methods of 7-zip, so these archives are considered
+  not to be compatible with original 7-zip on windows/p7zip on linux/mac.
+- liblzma, which Python's standard lzma module depends, does not provide BCJ2 filter.
+- Deflate64 is proprietary algorithm.
+
+
+Dependencies
+============
+
+There are several dependencies to support algorithms and CLI expressions.
+
+================== ================================
+Package            Purpose
+================== ================================
+`Pycryptodomex`_   7zAES encryption
+`PyZstd`_          ZStandard compression
+`PyPPMd`_          PPMd compression
+`Brotli`_          Brotli compression (CPython)
+`BrotliCFFI`_      Brotli compression (PyPy)
+`pybcj`_           BCJ filter
+`multivolumefile`_ Multi-volume archive read/write
+`texttable`_       CLI formatter
+================== ================================
+
+
+.. _`Pycryptodomex` : https://www.pycryptodome.org/en/latest/index.html
+.. _`PyZstd` : https://pypi.org/project/pyzstd
+.. _`PyPPMd` : https://pypi.org/project/pyppmd
+.. _`Brotli` : https://pypi.org/project/brotli
+.. _`BrotliCFFI` : https://pypi.org/project/brotlicffi
+.. _`pybcj` : https://pypi.org/project/pybcj
+.. _`multivolumefile` : https://pypi.org/project/multivolumefile
+.. _`texttable` : https://pypi.org/project/texttable
+
+
+Performance
+===========
+
+You can find a compression and decompression benchmark results at
+[Github issue](https://github.com/miurahr/py7zr/issues/297) and [wiki page](https://github.com/miurahr/py7zr/wiki/Benchmarks)
+
+py7zr works well, but slower than `7-zip` and `p7zip` C/C++ implementation by several reasons.
+When compression/decompression **speed** is important, it is recommended to use these
+alternatives through `subprocess.run` python interface.
+
+Use Cases
+=========
+
+- `aqtinstall`_ Another (unofficial) Qt (aqt) CLI Installer on multi-platforms.
+- PreNLP_ Preprocessing Library for Natural Language Processing
+- mlox_  a tool for sorting and analyzing Morrowind plugin load order
+
+.. _aqtinstall: https://github.com/miurahr/aqtinstall
+.. _PreNLP: https://github.com/lyeoni/prenlp
+.. _mlox: https://github.com/mlox/mlox
+
+License
+=======
+
+* Copyright (C) 2019-2021 Hiroshi Miura
+
+* pylzma Copyright (c) 2004-2015 by Joachim Bauch
+* 7-Zip Copyright (C) 1999-2010 Igor Pavlov
+* LZMA SDK Copyright (C) 1999-2010 Igor Pavlov
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+WARNING
+=======
+
+**Test archive data, which affected a malware,  have been existed from Aug, 2020 - 20, Jan, 2021!**
+
+All the git history is re-writed, so please remove your local and fork copy of the git repository,
+and clone again(if necessary)!
+
+Problematic file is named `issue_218.7z` and `issue_218_2.7z`.
+
+**There is NO affected in library itself.**  and the test execution also does not extract the malware file.
+There is no problem when you install py7zr with `pip` command.
+
+Release that has a clean source:
+
+- v0.11.3 and later
+- v0.10.2
+- v0.9.10
+- v0.9.4 and before
+
+===============
+Py7zr ChangeLog
+===============
+
+All notable changes to this project will be documented in this file.
+
+`Unreleased`_
+=============
+
+`v0.17.4`_
+==========
+
+Fixed
+-----
+* When extracting and target archive compressed with unsupported LZMA2+BCJ2, py7zr raise unexpected exception. Fix to raise better exception message
+
+Changed
+-------
+* docs: Add explanation of empty file specification
+
+`v0.17.3`_
+==========
+
+Security
+--------
+* Check against directory traversal attack by file pathes in archive (#406,#407)
+
+`v0.17.2`_
+==========
+Fixed
+-----
+* writef method detect wrong size of data(#397)
+
+Changed
+-------
+* Improve callback object check and error message(#387)
+
+`v0.17.1`_
+==========
+Fixed
+-----
+* Allow 7zAES+LZMA2+BCJ combination for compression(#392)
+* Argument error when raising UnsupportedCompressionMethodError(#394)
+* Detect memory leak in test and fix some leaks(#388)
+* Fix filename and property decode in UTF-16(#391)
+
+Changed
+-------
+* Azure: use macos@10.15 for test(#389)
+
+`v0.17.0`_
+==========
+
+Fixed
+-----
+* Extraction: overwrite a symbolic link sometimes failed(#383)
+* Allow creation of archive without any write call(#369,#372)
+* Type check configuration update (#384)
+* Adjust for type check errors (#384)
+
+`v0.16.4`_
+==========
+
+Fixed
+-----
+* Win32 file namespace convention doesn't work on Cygwin(#380,#381)
+* Win32 file namespace convention doesn't work for network path(#380)
+
+`v0.16.3`_
+==========
+
+Fixed
+-----
+* Reduce memory consumptions and fix memory_error on 32bit python (#370,#373,#374,#375)
+
+Added
+-----
+* Add CI test for python 3.10 (#371)
+
+`v0.16.2`_
+==========
+
+Added
+-----
+* Bundle type hint data
+* README: Add conda recipe(#342)
+
+Changed
+-------
+* Use PyBCJ instead of bcj-cffi.(#368)
+* Docs: change recommended python versions
+* CI: benchmark on python 3.10
+* Test expectation for python 3.10 change
+* Improve exceptions and error messages
+* Docs: add description of ArchiveInfo class
+* Docs: fix typo on shutil integration(#353)
+* Bump pyzstd@0.15.0
+* Bump pyppmd@0.17.0
+
+Fixed
+-----
+* Docs: specification error of signature header data types.
+* Fix infinite loop in extract(#354)
+
+`v0.16.1`_
+==========
+
+Added
+-----
+* type hint for mypy
+
+`v0.16.0`_
+==========
+
+Added
+-----
+* Add Brotli compression.
+* CI: Test on AArch64.
+
+Changed
+-------
+* CLI: support multi-volume archive without making temporary file(#311)
+* Filter parameter: PPMd: mem is now accept int or "<val>{m|k|b}" as same as 7-zip command line option.
+  int value is recognized as "1 << val" ie. 24 means 4MB.
+* Dependency: PyPPMd v0.14.0+
+* Dependency PyCryptodome to PyCryptodomex
+  that changes package name from PyCrypto to PyCryptodome(#334)
+
+`v0.15.2`_
+==========
+
+Added
+-----
+- CLI: create sub-command(c) has -P or --password option.(#332)
+
+Fixed
+-----
+- Fix not to produce directory when memory extraction mode.(#323)
+
+Changed
+-------
+- Use PyPPMd v0.12.1 or later for ppmd compression instead of ppmd-cffi(#322)
+- Add minimum version requirement for PyCryptodome (#329)
+- Bump setuptools_scm @6.0.1
+
+
+`v0.15.1`_
+==========
+
+Changed
+-------
+- Update release automation script.
+- Bump ppmd-cffi and bcj-cffi versions(#320)
+
+
+`v0.15.0`_
+==========
+
+Added
+-----
+- Add option to specify multiprocessing instead of multi-threading. (#306)
+
+Changed
+-------
+- Change Property Borg class to constant class(#319)
+- Reformat whole code with black.
+- Merge pyzstdfilter into compressor.py.
+- Lint codes by flake8/black.
+
+Fixed
+-----
+- README: description of dependencies.
+- ZStandard decompression on PyPy3
+
+
+`v0.14.1`_
+==========
+
+Fixed
+-----
+
+* Fix of empty file archive(#305,#310)
+
+
+`v0.14.0`_
+==========
+
+Added
+-----
+
+* Introduce writed() method that accept dict[name, BinaryIO](#302)
+
+Changed
+-------
+
+* READ_BLOCKSIZE configurable on constructor(#307)
+* Use pyzstd for zstandard algorithm on CPython(#304)
+* Use bcj-cffi library for lzma+bcj performance(#303)
+* CLI: Fix getting module_name on 3.6.13(#308)
+
+
+
+`v0.13.0`_
+==========
+
+Added
+-----
+
+* Add writestr() and writef() methods in SevenZipFile class.(#290,#293)
+* Add benchmark tests for compression algorithms(#295)
+* Track benchmark results on Github issue(#296)
+
+Changed
+-------
+
+* Refactoring BCF Filter classes, and move to individual module.(#292)
+
+
+`v0.12.0`_
+==========
+
+Changed
+-------
+
+* PPMd and ZStandard is now one of default algorithms(#289)
+* Increment copyright year
+
+Fixed
+-----
+
+* Crash when append files to an empty files archive(#286)
+
+
+`v0.11.3`_
+==========
+
+Fixed
+-----
+
+* Fix test failure when running on pypi source(#279)
+
+Security
+--------
+
+* Drop issue_218.7z test data wihch is reported a blackmoon trojan(#285)
+
+
+`v0.11.1`_
+==========
+
+Changed
+-------
+* Improve BCJ filter performance with LZMA1, ZStd compressions.
+
+Fixed
+-----
+
+* Fix to allow writing encrypted header(#280)
+* Avoid crash when creationtime is wrong or Unix epoch. (#275,#276)
+
+
+`v0.11.0`_
+==========
+
+Changed
+-------
+
+* PPMd: Use stream encoder/decoder instead of buffered one.
+* PPMd: Use ppmd-cffi@v0.3.1 and later.(#268)
+
+Added
+-----
+
+* PPMd compression/decompression support.(#255)
+* New API to set methods to set header encode mode, encode or encrypted.(#259)
+* Support Python 3.9.(#261)
+* Support arm64/aarch64 architecture on Linux.(#262)
+
+Fixed
+-----
+
+* Append mode cause error when target archive use LZMA2+BCJ.(#266)
+* Fix zstandard compression/decompression.(#258)
+
+Deprecated
+----------
+
+* Drop support for python 3.5 which become end-of-line in Sept. 2020.
+
+
+.. History links
+.. _Unreleased: https://github.com/miurahr/py7zr/compare/v0.17.4...HEAD
+.. _v0.17.4: https://github.com/miurahr/py7zr/compare/v0.17.3...v0.17.4
+.. _v0.17.3: https://github.com/miurahr/py7zr/compare/v0.17.2...v0.17.3
+.. _v0.17.2: https://github.com/miurahr/py7zr/compare/v0.17.1...v0.17.2
+.. _v0.17.1: https://github.com/miurahr/py7zr/compare/v0.17.0...v0.17.1
+.. _v0.17.0: https://github.com/miurahr/py7zr/compare/v0.16.4...v0.17.0
+.. _v0.16.4: https://github.com/miurahr/py7zr/compare/v0.16.3...v0.16.4
+.. _v0.16.3: https://github.com/miurahr/py7zr/compare/v0.16.2...v0.16.3
+.. _v0.16.2: https://github.com/miurahr/py7zr/compare/v0.16.1...v0.16.2
+.. _v0.16.1: https://github.com/miurahr/py7zr/compare/v0.16.0...v0.16.1
+.. _v0.16.0: https://github.com/miurahr/py7zr/compare/v0.15.2...v0.16.0
+.. _v0.15.2: https://github.com/miurahr/py7zr/compare/v0.15.1...v0.15.2
+.. _v0.15.1: https://github.com/miurahr/py7zr/compare/v0.15.0...v0.15.1
+.. _v0.15.0: https://github.com/miurahr/py7zr/compare/v0.14.1...v0.15.0
+.. _v0.14.1: https://github.com/miurahr/py7zr/compare/v0.14.0...v0.14.1
+.. _v0.14.0: https://github.com/miurahr/py7zr/compare/v0.13.0...v0.14.0
+.. _v0.13.0: https://github.com/miurahr/py7zr/compare/v0.12.0...v0.13.0
+.. _v0.12.0: https://github.com/miurahr/py7zr/compare/v0.11.3...v0.12.0
+.. _v0.11.3: https://github.com/miurahr/py7zr/compare/v0.11.1...v0.11.3
+.. _v0.11.1: https://github.com/miurahr/py7zr/compare/v0.11.0...v0.11.1
+.. _v0.11.0: https://github.com/miurahr/py7zr/compare/v0.10.1...v0.11.0
+
+

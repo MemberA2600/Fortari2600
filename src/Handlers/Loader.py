@@ -23,6 +23,7 @@ class Loader:
         self.syntaxList = {}
         self.atariFrames = []
         self.rocketFrames = []
+        self.tapeFrames = []
         self.colorDict = None
         self.tiaTone = None
         self.piaNotes = None
