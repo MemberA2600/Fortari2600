@@ -48,6 +48,7 @@ class SpriteEditor:
         self.__ctrl = False
         self.__middle = False
         self.__draw = 0
+        self.__finished = False
 
         self.__sizes = {
             "common": [self.__screenSize[0] / 2, self.__screenSize[1]/1.10  - 40]
@@ -411,6 +412,8 @@ class SpriteEditor:
         t = Thread(target=self.checker)
         t.daemon = True
         t.start()
+
+        self.__finished = True
 
     def checkIfOther1(self, event):
         self.checkIfOther(self.__pfBox.getSelected(), self.__listItems2, self.__bgBox.getListBox())
@@ -1117,108 +1120,111 @@ class SpriteEditor:
     def __openSprite(self):
         import os
 
-        if self.changed == True:
-            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
-            if answer == "Yes":
-                self.__saveSprite()
-            elif answer == "Cancel":
-                return
-
-        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
-                                                  self.__loader.mainWindow.projectPath + "sprites/")
-
-        if fpath == "":
-            return
-
-        try:
-            file = open(fpath, "r")
-            data = file.readlines()
-            file.close()
-
-            compatibles = {
-                "common": ["common"]
-
-            }
-
-            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
-                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+        if self.__finished == True:
+            if self.changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__saveSprite()
+                elif answer == "Cancel":
                     return
 
-            self.__spriteLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "sprites/")
 
-            self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
-            self.__height = int(self.__heightSetter.getValue())
-            self.__indexVal.set("0")
-            self.__index = 0
+            if fpath == "":
+                return
 
-            self.__frameNumSetter.setValue(data[2].replace("\n", "").replace("\r", ""))
-            self.__numOfFrames = int(self.__frameNumSetter.getValue())
+            try:
+                file = open(fpath, "r")
+                data = file.readlines()
+                file.close()
 
-            data.pop(0)
-            data.pop(0)
-            data.pop(0)
+                compatibles = {
+                    "common": ["common"]
 
-            for index in range(0, self.__numOfFrames):
-                for Y in range(index*self.__height, self.__height+(index*self.__height)):
-                    line = data[Y].replace("\n", "").replace("\r", "").split(" ")
+                }
 
-                    relY= Y - (index*self.__height)
+                if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
+                    if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        return
 
-                    self.__colorTable[relY] = line[-1]
-                    for X in range(0, 8):
-                        self.__table[index][relY][X] = line[X]
+                self.__spriteLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
-            self.__soundPlayer.playSound("Success")
-            self.changed = False
+                self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
+                self.__height = int(self.__heightSetter.getValue())
+                self.__indexVal.set("0")
+                self.__index = 0
 
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
-            self.alreadyDone = True
-            self.firstLoad = True
+                self.__frameNumSetter.setValue(data[2].replace("\n", "").replace("\r", ""))
+                self.__numOfFrames = int(self.__frameNumSetter.getValue())
 
-            self.generateTableCommon()
+                data.pop(0)
+                data.pop(0)
+                data.pop(0)
 
-        except Exception as e:
-            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
+                for index in range(0, self.__numOfFrames):
+                    for Y in range(index*self.__height, self.__height+(index*self.__height)):
+                        line = data[Y].replace("\n", "").replace("\r", "").split(" ")
+
+                        relY= Y - (index*self.__height)
+
+                        self.__colorTable[relY] = line[-1]
+                        for X in range(0, 8):
+                            self.__table[index][relY][X] = line[X]
+
+                self.__soundPlayer.playSound("Success")
+                self.changed = False
+
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                self.alreadyDone = True
+                self.firstLoad = True
+
+                self.generateTableCommon()
+
+            except Exception as e:
+                self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
 
     def __saveSprite(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".a26"
-        if os.path.exists(fileName):
-            answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
-            if answer == "No":
-                return
-        fileLines = []
-        fileLines.append(self.__loader.virtualMemory.kernel)
-        fileLines.append(str(self.__height))
-        fileLines.append(str(self.__numOfFrames))
+        if self.__finished == True:
 
-        for index in range(0, self.__numOfFrames):
-            for Y in range(0, int(self.__height)):
-                fileLines.append(" ".join(self.__table[index][Y])+" "+self.__colorTable[Y])
+            fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".a26"
+            if os.path.exists(fileName):
+                answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+                if answer == "No":
+                    return
+            fileLines = []
+            fileLines.append(self.__loader.virtualMemory.kernel)
+            fileLines.append(str(self.__height))
+            fileLines.append(str(self.__numOfFrames))
 
-        file = open(fileName, "w")
-        file.write("\n".join(fileLines))
-        file.close()
-        self.__soundPlayer.playSound("Success")
-        self.changed=False
+            for index in range(0, self.__numOfFrames):
+                for Y in range(0, int(self.__height)):
+                    fileLines.append(" ".join(self.__table[index][Y])+" "+self.__colorTable[Y])
 
-        fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".asm"
-        from Compiler import Compiler
+            file = open(fileName, "w")
+            file.write("\n".join(fileLines))
+            file.close()
+            self.__soundPlayer.playSound("Success")
+            self.changed=False
 
-        spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getSpriteASM",
-                     [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
-                      "##NAME##"]).convertedSpite
+            fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".asm"
+            from Compiler import Compiler
 
-        file = open(fileName, "w")
-        file.write(
-            "* Height="+str(self.__height)+"\n"+"* Frames="+str(self.__numOfFrames)+"\n"+spriteData
-        )
-        file.close()
+            spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getSpriteASM",
+                         [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
+                          "##NAME##"]).convertedSpite
+
+            file = open(fileName, "w")
+            file.write(
+                "* Height="+str(self.__height)+"\n"+"* Frames="+str(self.__numOfFrames)+"\n"+spriteData
+            )
+            file.close()
 
 
-        self.__topLevelWindow.deiconify()
-        self.__topLevelWindow.focus()
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()

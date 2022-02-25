@@ -32,7 +32,7 @@ class VisualLoaderFrame:
         self.__NameFrame.pack_propagate(False)
         self.__NameFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__NameLabel = Label(self.__NameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+        self.__NameLabel = Label(self.__NameFrame, text=self.__dictionaries.getWordFromCurrentLanguage("name")+" "*3,
                                   font=fontSmall,
                                   bg=self.__loader.colorPalettes.getColor("window"),
                                   fg=self.__loader.colorPalettes.getColor("font")

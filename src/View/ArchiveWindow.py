@@ -321,7 +321,12 @@ class ArchiveWindow:
         try:
 
             while self.dead == False and self.__loader.mainWindow.dead == False:
-                if counter > 65:
+                if self.__mode == "<<":
+                    c = 25
+                else:
+                    c = 65
+
+                if counter > c:
                     counter = 0
                     if self.__mode == "<<":
                        self.__imgIndex -= 1

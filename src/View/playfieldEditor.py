@@ -45,6 +45,8 @@ class PlayfieldEditor:
         self.__middle = False
         self.__draw = 0
 
+        self.__finished = False
+
         self.__sizes = {
             "common": [self.__screenSize[0] / 1.20, self.__screenSize[1]/1.10  - 35]
         }
@@ -256,6 +258,8 @@ class PlayfieldEditor:
         t.daemon = True
         t.start()
 
+        self.__finished = True
+
     def decrement(self):
 
         self.__indexSetter.setValue(str(int(self.__indexSetter.getValue())-1))
@@ -329,98 +333,102 @@ class PlayfieldEditor:
     def __openPlayfield(self):
         import os
 
-        if self.changed == True:
-            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
-            if answer == "Yes":
-                self.__savePlayfield()
-            elif answer == "Cancel":
-                return
+        if self.__finished == True:
 
-        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
-                                                  self.__loader.mainWindow.projectPath + "playfields/")
-
-        if fpath == "":
-            return
-
-        try:
-            file = open(fpath, "r")
-            data = file.readlines()
-            file.close()
-
-            compatibles = {
-                "common": ["common"]
-
-            }
-
-            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
-                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+            if self.changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__savePlayfield()
+                elif answer == "Cancel":
                     return
 
-            self.__playFieldLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "playfields/")
 
-            self.__heightSetter.setValue(data[1].replace("\n","").replace("\r",""))
-            self.__indexSetter.setValue("0")
+            if fpath == "":
+                return
 
-            maxY = int(self.__heightSetter.getValue())
-            data.pop(0)
-            data.pop(0)
+            try:
+                file = open(fpath, "r")
+                data = file.readlines()
+                file.close()
 
-            for Y in range(0, maxY):
-                line = data[Y].replace("\n","").replace("\r","").split(" ")
-                self.__colorTable[Y][0] = line[-1]
-                for X in range(0,40):
-                    self.__table[Y][X] = line[X]
+                compatibles = {
+                    "common": ["common"]
 
-            self.__soundPlayer.playSound("Success")
-            self.__caller = 1
-            self.changed=False
+                }
 
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
-            self.alreadyDone = True
-            self.firstLoad = True
+                if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
+                    if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        return
 
-            self.generateTableCommon()
+                self.__playFieldLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
-        except Exception as e:
-            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage",None, str(e))
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
+                self.__heightSetter.setValue(data[1].replace("\n","").replace("\r",""))
+                self.__indexSetter.setValue("0")
+
+                maxY = int(self.__heightSetter.getValue())
+                data.pop(0)
+                data.pop(0)
+
+                for Y in range(0, maxY):
+                    line = data[Y].replace("\n","").replace("\r","").split(" ")
+                    self.__colorTable[Y][0] = line[-1]
+                    for X in range(0,40):
+                        self.__table[Y][X] = line[X]
+
+                self.__soundPlayer.playSound("Success")
+                self.__caller = 1
+                self.changed=False
+
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                self.alreadyDone = True
+                self.firstLoad = True
+
+                self.generateTableCommon()
+
+            except Exception as e:
+                self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage",None, str(e))
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
 
 
 
     def __savePlayfield(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "playfields/"+self.__playFieldLoader.getValue()+".a26"
-        if os.path.exists(fileName):
-            answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
-            if answer == "No":
-                return
-        fileLines = []
-        fileLines.append(self.__loader.virtualMemory.kernel)
-        fileLines.append(self.__heightSetter.getValue())
-        for Y in range(0, int(self.__heightSetter.getValue())):
-            fileLines.append(" ".join(self.__table[Y])+" "+self.__colorTable[Y][0])
+        if self.__finished == True:
 
-        file = open(fileName, "w")
-        file.write("\n".join(fileLines))
-        file.close()
-        self.__soundPlayer.playSound("Success")
-        self.__caller = 1
-        self.changed=False
+            fileName = self.__loader.mainWindow.projectPath + "playfields/"+self.__playFieldLoader.getValue()+".a26"
+            if os.path.exists(fileName):
+                answer=self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+                if answer == "No":
+                    return
+            fileLines = []
+            fileLines.append(self.__loader.virtualMemory.kernel)
+            fileLines.append(self.__heightSetter.getValue())
+            for Y in range(0, int(self.__heightSetter.getValue())):
+                fileLines.append(" ".join(self.__table[Y])+" "+self.__colorTable[Y][0])
 
-        fileName = self.__loader.mainWindow.projectPath + "playfields/" + self.__playFieldLoader.getValue() + ".asm"
+            file = open(fileName, "w")
+            file.write("\n".join(fileLines))
+            file.close()
+            self.__soundPlayer.playSound("Success")
+            self.__caller = 1
+            self.changed=False
 
-        asmData = "* Height=" + str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
-        pfData = asmData.split("##NAME##_BG")[0]
+            fileName = self.__loader.mainWindow.projectPath + "playfields/" + self.__playFieldLoader.getValue() + ".asm"
 
-        file = open(fileName, "w")
-        file.write(pfData)
-        file.close()
+            asmData = "* Height=" + str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
+            pfData = asmData.split("##NAME##_BG")[0]
 
-        self.__topLevelWindow.deiconify()
-        self.__topLevelWindow.focus()
+            file = open(fileName, "w")
+            file.write(pfData)
+            file.close()
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
 
     def getASMOnly(self, name):
         from Compiler import Compiler
@@ -438,91 +446,95 @@ class PlayfieldEditor:
     def __openBackground(self):
         import os
 
-        if self.changed == True:
-            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
-            if answer == "Yes":
-                self.__saveBackground()
-            elif answer == "Cancel":
-                return
+        if self.__finished == True:
 
-        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
-                                                  self.__loader.mainWindow.projectPath + "backgrounds/")
-
-        if fpath == "":
-            return
-
-        try:
-            file = open(fpath, "r")
-            data = file.readlines()
-            file.close()
-
-            if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
-                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+            if self.changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__saveBackground()
+                elif answer == "Cancel":
                     return
 
-            self.__backGroundLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "backgrounds/")
 
-            self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
-            maxY = int(self.__heightSetter.getValue())
+            if fpath == "":
+                return
 
-            line = data[-1].replace("\n", "").replace("\r", "").split(" ")
+            try:
+                file = open(fpath, "r")
+                data = file.readlines()
+                file.close()
 
-            for Y in range(0, maxY):
-                self.__colorTable[Y][1] = line[Y]
+                if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
+                    if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        return
 
-            self.__soundPlayer.playSound("Success")
-            self.__caller = 1
-            self.changed = False
+                self.__backGroundLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
-            self.alreadyDone = True
-            self.firstLoad = True
+                self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
+                maxY = int(self.__heightSetter.getValue())
 
-            self.generateTableCommon()
+                line = data[-1].replace("\n", "").replace("\r", "").split(" ")
 
-        except Exception as e:
-            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
+                for Y in range(0, maxY):
+                    self.__colorTable[Y][1] = line[Y]
+
+                self.__soundPlayer.playSound("Success")
+                self.__caller = 1
+                self.changed = False
+
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                self.alreadyDone = True
+                self.firstLoad = True
+
+                self.generateTableCommon()
+
+            except Exception as e:
+                self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
 
     def __saveBackground(self):
         import os
 
-        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".a26"
-        if os.path.exists(fileName):
-            answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
-            if answer == "No":
-                return
-        fileLines = []
-        fileLines.append(self.__loader.virtualMemory.kernel)
-        fileLines.append(self.__heightSetter.getValue())
+        if self.__finished == True:
 
-        lastLine = ""
+            fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".a26"
+            if os.path.exists(fileName):
+                answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+                if answer == "No":
+                    return
+            fileLines = []
+            fileLines.append(self.__loader.virtualMemory.kernel)
+            fileLines.append(self.__heightSetter.getValue())
 
-        for Y in range(0, int(self.__heightSetter.getValue())):
-            lastLine += " " + self.__colorTable[Y][1]
-        fileLines.append(lastLine[1:])
+            lastLine = ""
 
-        file = open(fileName, "w")
-        file.write("\n".join(fileLines))
-        file.close()
-        self.__soundPlayer.playSound("Success")
-        self.__caller = 2
-        self.changed = False
+            for Y in range(0, int(self.__heightSetter.getValue())):
+                lastLine += " " + self.__colorTable[Y][1]
+            fileLines.append(lastLine[1:])
 
-        fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".asm"
+            file = open(fileName, "w")
+            file.write("\n".join(fileLines))
+            file.close()
+            self.__soundPlayer.playSound("Success")
+            self.__caller = 2
+            self.changed = False
 
-        asmData = str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
-        bgData = "* Height=" + self.__heightSetter.getValue()+"\n##NAME##_BG"+ asmData.split("##NAME##_BG")[1]
+            fileName = self.__loader.mainWindow.projectPath + "backgrounds/" + self.__backGroundLoader.getValue() + ".asm"
 
-        file = open(fileName, "w")
-        file.write(bgData)
-        file.close()
+            asmData = str(self.__heightSetter.getValue()) + "\n" + self.getASMOnly("##NAME##")
+            bgData = "* Height=" + self.__heightSetter.getValue()+"\n##NAME##_BG"+ asmData.split("##NAME##_BG")[1]
+
+            file = open(fileName, "w")
+            file.write(bgData)
+            file.close()
 
 
-        self.__topLevelWindow.deiconify()
-        self.__topLevelWindow.focus()
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
 
     def checkIfValidFileName(self, event):
 

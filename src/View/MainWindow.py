@@ -202,7 +202,7 @@ class MainWindow:
                name = 'bank'+str(num)
 
              b = Button(f, bg=self.__loader.colorPalettes.getColor("window"),
-                        text = name, name = name,
+                        text = name[0].upper()+name[1:], name = name,
                         fg = self.__loader.colorPalettes.getColor("font"),
                         width=99999, font=self.__normalFont,
                         state=DISABLED, command = None)
@@ -232,8 +232,13 @@ class MainWindow:
              f.pack_propagate(False)
              f.pack(side=LEFT, anchor = E, fill=Y)
 
+             try:
+                 text = self.__dictionaries.getWordFromCurrentLanguage(__keys[num])
+             except:
+                 text = __keys[num][0].upper() + __keys[num][1:]
+
              b = Button(f, bg=self.__loader.colorPalettes.getColor("window"),
-                        text = __keys[num], name = __keys[num],
+                        text = text, name = __keys[num],
                         fg = self.__loader.colorPalettes.getColor("font"),
                         width=99999, font=self.__normalFont,
                         state=DISABLED, command = None)
@@ -318,7 +323,7 @@ class MainWindow:
                                             False, None, self.__places, __vals[2])
 
         self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", 16,
-                                          self.__openSoundPlayer, "projectPath",
+                                          self.__openBigSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
 
@@ -675,6 +680,11 @@ class MainWindow:
         from SpriteEditor import SpriteEditor
 
         self.__subMenu = SpriteEditor(self.__loader, self)
+
+    def __openBigSpriteEditor(self):
+        from BigSpriteMaker import BigSpriteMaker
+
+        self.__subMenu = BigSpriteMaker(self.__loader)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
