@@ -72,7 +72,7 @@ class SpriteEditor:
                     self.__backButton.config(state=DISABLED)
                     self.__forButton.config(state=DISABLED)
                     self.__indexEntry.config(state=DISABLED)
-                    self.__isPlaying = False
+                    #self.__isPlaying = False
 
 
 
@@ -271,7 +271,7 @@ class SpriteEditor:
 
         self.__widthSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "1", self.__theController, ten, "testWidth", self.__smallFont,
-            self.checkWidthEntry, None)
+            self.checkWidthEntry, self.checkWidthEntry)
 
         self.__moveHor = BooleanVar()
         self.__moveHor.set(1)
@@ -322,11 +322,11 @@ class SpriteEditor:
 
         self.__testColorSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "", self.__theController, ten, "testColor", self.__smallFont,
-            self.checkColorEntry, None)
+            self.checkColorEntry, self.checkColorEntry)
 
         self.__testSpeedSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "", self.__theController, ten, "testSpeed", self.__smallFont,
-            self.checkSpeedEntry, None)
+            self.checkSpeedEntry, self.checkSpeedEntry)
 
         self.__frameNumSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "1", self.__theController, ten, "frameNum", self.__smallFont,
