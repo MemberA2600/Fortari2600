@@ -182,7 +182,7 @@ class BigSpriteMaker:
                                    command=self.incIndex)
 
         self.__playButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image=self.__playImage,
+                                   image=self.__playImage, state = DISABLED,
                                    width=self.__sizes[0] // 8,
                                    command=self.__playing)
 
@@ -463,6 +463,7 @@ class BigSpriteMaker:
             self.__delay = 0
 
         else:
+
             if self.__speed == 0:
                 self.__delay = round(16 / (self.__numOfFrames * 3))
             else:
@@ -479,43 +480,47 @@ class BigSpriteMaker:
 
                 if self.__moveHor.get() == 1:
                     if self.__direction == 0:
-                        self.__canvasX -= 1
+                        self.__canvasX -= 5
                         if self.__canvasX < 0:
                             self.__canvasX = 0
                             self.__direction = 1
 
                     else:
-                        self.__canvasX += 1
+                        self.__canvasX += 5
                         if self.__canvasX > self.__maxX:
                             self.__canvasX = self.__maxX
                             self.__direction = 0
                 else:
                     self.__canvasX = self.__canvasStartX
 
-
-            """
-            if self.__direction == 0:
-               self.__canvasStartX -= self.__speed
-               if self.__canvasStartX < 0:
-                  self.__canvasStartX = 0
-                  self.__direction    = 1
-
-            else:
-                self.__canvasStartX += self.__speed
-                if self.__canvasStartX > self.__maxX:
-                    self.__canvasStartX = self.__maxX
-                    self.__direction = 0
-            """
-
-        if self.__counter == 0:
+        if True:
             drawY = self.__canvasY
             for theY in range(0, self.__h):
                 #for spriteNum in range(0, self.__numOfFrames):
+                    self.__canvas.create_rectangle(0, drawY,
+                                                   self.__canvas.winfo_width(),
+                                                   drawY + self.__lineHeight * h,
+                                                   outline="",
+                                                   fill=self.__colorDict.getHEXValueFromTIA(
+                                                       self.__dataLines[self.__tempIndex][2][theY + self.__Y][
+                                                           "color"]
+                                                   ))
                     # From 0/1 to 0
                     for colorNum in range(colorMax-1, -1, -1):
                         color = self.__dataLines[self.__tempIndex][colorNum][theY + self.__Y]["color"]
+
                         drawX = self.__canvasX
-                        for bitNum in range(0, numOfBits, 1):
+
+                        if self.__direction == 0:
+                           fromX = 0
+                           toX   = numOfBits
+                           stepX = 1
+                        else:
+                           fromX = numOfBits - 1
+                           toX   = -1
+                           stepX = -1
+
+                        for bitNum in range(fromX, toX, stepX):
                             if self.__dataLines[self.__tempIndex][colorNum][theY + self.__Y]["pixels"][bitNum] == "1":
                                 self.__canvas.create_rectangle(drawX, drawY,
                                                                drawX + self.__width * w,
@@ -836,11 +841,13 @@ class BigSpriteMaker:
         self.__redrawCanvas()
 
     def __createData(self):
+        colors = ["$0e", "$1e", "$00"]
+
         self.__dataLines = []
 
         for num in range(0,self.__frameNumMax):
             self.__dataLines.append([])
-            for num2 in range(0,2):
+            for num2 in range(0,3):
 
                 self.__dataLines[-1].append([])
                 for num3 in range(0,255):
@@ -848,7 +855,7 @@ class BigSpriteMaker:
                     self.__dataLines[-1][-1][-1]["pixels"] = []
                     for num in range(0, 16):
                         self.__dataLines[-1][-1][-1]["pixels"].append("0")
-                    self.__dataLines[-1][-1][-1]["color"] = "$0e"
+                    self.__dataLines[-1][-1][-1]["color"] = colors[num2]
 
 
     def __createEditor(self):
@@ -862,7 +869,7 @@ class BigSpriteMaker:
         for theY in range(0, int(self.__sizes[1] // s)):
             self.__buttons.append([])
             self.__entries.append([])
-            self.__entryVals.append(["$0e", "$0e"])
+            self.__entryVals.append(["$0e", "$1e", "$00"])
             self.__soundPlayer.playSound("Pong")
 
             rowF = Frame(self.__editorFrame,
@@ -900,21 +907,30 @@ class BigSpriteMaker:
                 f0.pack_propagate(False)
                 f0.pack(side=LEFT, anchor=E, fill=BOTH)
 
-            f1 = Frame(f0, height = s, width = f0.winfo_width()//2,
+            f1 = Frame(f0, height = s, width = f0.winfo_width()//3,
                             bg = self.__loader.colorPalettes.getColor("window"))
 
-            while f1.winfo_width() < int(self.__sizes[0]*0.1):
-                f1.config(width = int(self.__sizes[0]*0.1))
+            while f1.winfo_width() < 2:
+                f1.config(width = f0.winfo_width()//3)
                 f1.pack_propagate(False)
                 f1.pack(side=LEFT, anchor=E, fill=Y)
 
-            f2 = Frame(f0, height = s, width = f0.winfo_width()//2,
+            f2 = Frame(f0, height = s, width = f0.winfo_width()//3,
                             bg = self.__loader.colorPalettes.getColor("window"))
 
-            while f2.winfo_width() < int(self.__sizes[0]*0.1):
-                f2.config(width = int(self.__sizes[0]*0.1))
+            while f2.winfo_width() < 2:
+                f2.config(width = f0.winfo_width()//3)
                 f2.pack_propagate(False)
-                f2.pack(side=LEFT, anchor=E, fill=BOTH)
+                f2.pack(side=LEFT, anchor=E, fill=Y)
+
+
+            f3 = Frame(f0, height = s, width = f0.winfo_width()//3,
+                            bg = self.__loader.colorPalettes.getColor("window"))
+
+            while f3.winfo_width() < 2:
+                f3.config(width = f0.winfo_width()//3)
+                f3.pack_propagate(False)
+                f3.pack(side=LEFT, anchor=E, fill=BOTH)
 
             from HexEntry import HexEntry
 
@@ -924,18 +940,25 @@ class BigSpriteMaker:
             sp2Color = HexEntry(self.__loader, f2, self.__colors,
                        self.__colorDict, self.__smallFont, self.__entryVals[-1], 1, None, self.__setColorData)
 
+            sp3Color = HexEntry(self.__loader, f3, self.__colors,
+                       self.__colorDict, self.__smallFont, self.__entryVals[-1], 1, None, self.__setColorData)
+
             self.__entries[-1].append(sp1Color)
             self.__entries[-1].append(sp2Color)
+            self.__entries[-1].append(sp3Color)
 
             sp1Color.setValue("$0e")
-            sp1Color.setValue("$0e")
+            sp2Color.setValue("$1e")
+            sp3Color.setValue("$00")
 
             sp1Color.changeState(DISABLED)
             sp2Color.changeState(DISABLED)
+            sp3Color.changeState(DISABLED)
+
 
     def __setColorData(self, event):
         for yLine in range(0, len(self.__entries)):
-            for colorNum in range(0, 2):
+            for colorNum in range(0, 3):
                 if self.__entries[yLine][colorNum].getEntry() == event.widget:
                     for spriteNum in range(0, 16):
                         val =  self.__entries[yLine][colorNum].getValue()
@@ -943,6 +966,7 @@ class BigSpriteMaker:
                         self.__dataLines[spriteNum][colorNum][yLine + self.__Y]["color"] = val
                         self.__entries[yLine][colorNum].setValue(val)
 
+        self.__redrawCanvas()
 
     def __loop(self):
         from time import sleep
@@ -955,22 +979,28 @@ class BigSpriteMaker:
 
             try:
                 if self.__finished2 == True:
-                   if self.__numOfFrames < 2:
-                      self.__playButton.config(state = DISABLED)
-                      self.__indexEntry.config(state = DISABLED)
-                      self.__forButton.config(state = DISABLED)
-                      self.__backButton.config(state = DISABLED)
-                   else:
-                       self.__playButton.config(state=NORMAL)
-                       self.__indexEntry.config(state=NORMAL)
-                       self.__forButton.config(state=NORMAL)
-                       self.__backButton.config(state=NORMAL)
+                    self.__playButton.config(state=NORMAL)
+                    if self.__numOfFrames < 2:
+                        # self.__playButton.config(state = DISABLED)
+                        self.__indexEntry.config(state=DISABLED)
+                        self.__forButton.config(state=DISABLED)
+                        self.__backButton.config(state=DISABLED)
+                    else:
+                        self.__indexEntry.config(state=NORMAL)
+                        self.__forButton.config(state=NORMAL)
+                        self.__backButton.config(state=NORMAL)
             except:
                 pass
 
+            if self.__play == True:
+               self.__playButton.config(image = self.__stopImage)
+               play = Thread(target=self.__redrawCanvas())
+               play.daemon = True
+               play.start()
+            else:
+               self.__playButton.config(image = self.__playImage)
 
-
-            sleep(0.0005)
+            sleep(0.04)
 
     def __reDesign(self):
         try:
@@ -992,9 +1022,12 @@ class BigSpriteMaker:
                 if theY >= (self.__Y + self.__h):
                     self.__entries[theY][0].changeState(DISABLED)
                     self.__entries[theY][1].changeState(DISABLED)
+                    self.__entries[theY][2].changeState(DISABLED)
+
                 else:
                     self.__entries[theY][0].changeState(NORMAL)
                     self.__entries[theY][1].changeState(NORMAL)
+                    self.__entries[theY][2].changeState(NORMAL)
 
                 if self.__mode != "overlay":
                     self.__entries[theY][1].changeState(DISABLED)

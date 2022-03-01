@@ -3,9 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-02-25_180527.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-02-28_055945.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/BigSpriteMaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/BigSpriteMaker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/SpriteEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SpriteEditor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -50,7 +49,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1646024385324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1646113086114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -115,20 +114,20 @@
           <entry key="project.closed" value="89" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.3" value="4" />
-          <entry key="project.open.time.4" value="89" />
+          <entry key="project.open.time.4" value="90" />
           <entry key="project.open.time.5" value="18" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="120" />
+          <entry key="project.opened" value="121" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="103629" />
+          <entry key="py" value="104089" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="103629" />
+          <entry key="Python" value="104089" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -162,26 +161,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="459">
-              <caret line="970" selection-start-line="970" selection-end-line="970" />
+            <state relative-caret-position="395">
+              <caret line="483" column="46" lean-forward="true" selection-start-line="483" selection-start-column="46" selection-end-line="483" selection-end-column="46" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1646024433850" expanded="true" signature="21223:21259" ph="..." />
-                <marker date="1646024433850" expanded="true" signature="21288:25025" ph="..." />
-                <marker date="1646024433850" expanded="true" signature="25191:25317" ph="..." />
+                <marker date="1646113085999" expanded="true" signature="21241:21277" ph="..." />
+                <marker date="1646113085999" expanded="true" signature="21306:25500" ph="..." />
+                <marker date="1646113085999" expanded="true" signature="25666:25792" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1499">
-              <caret line="867" column="39" selection-start-line="844" selection-start-column="16" selection-end-line="867" selection-end-column="39" />
+            <state relative-caret-position="123">
+              <caret line="840" column="32" selection-start-line="840" selection-start-column="25" selection-end-line="840" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -189,7 +188,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="650">
+            <state relative-caret-position="1488">
               <caret line="93" selection-start-line="93" selection-end-line="93" />
             </state>
           </provider>
@@ -206,21 +205,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>colorNum</find>
-      <find>recta</find>
-      <find>play</find>
-      <find>redrawCanvas</find>
-      <find>__isPlaying</find>
-      <find>__playing</find>
-      <find>__play</find>
-      <find>__colorTile</find>
-      <find>__reDesign</find>
-      <find>fontDisabled</find>
-      <find>NORMAL</find>
-      <find>__buttons</find>
-      <find>clicked</find>
-      <find>DISABLED</find>
-      <find>numOfFrames</find>
       <find>__numOfFrames</find>
       <find>spriteNum</find>
       <find>__checkIndex</find>
@@ -230,12 +214,27 @@
       <find>VisualEditorFrameWithLabelAndEntry</find>
       <find>Visua</find>
       <find>stop</find>
-      <find>playing</find>
+      <find>speed</find>
+      <find>entry</find>
+      <find>__entries</find>
+      <find>__dataLines</find>
+      <find>f</find>
+      <find>redraw</find>
       <find>__redrawCanvas</find>
       <find>__clickedBox</find>
-      <find>__delay</find>
-      <find>speed</find>
+      <find>self.__mirror</find>
+      <find>__setColorData</find>
+      <find>clickedBox</find>
+      <find>playing</find>
+      <find>__playing</find>
+      <find>__playButton</find>
+      <find>__play</find>
+      <find>playB</find>
+      <find>__isPLay</find>
       <find>loop</find>
+      <find>self.__speed</find>
+      <find>__isPlaying</find>
+      <find>__delay</find>
     </findStrings>
     <replaceStrings>
       <replace>__loader.frames[&quot;MemorySetter&quot;].getScales()</replace>
@@ -591,12 +590,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8408779" visible="true" weight="0.18613607" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8408779" visible="true" weight="0.18806162" />
       <window_info id="Structure" order="1" sideWeight="0.15775034" side_tool="true" weight="0.15147625" />
       <window_info id="Favorites" order="2" sideWeight="0.15912208" side_tool="true" weight="0.16688062" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5038511" weight="0.30305928" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.50320923" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -605,7 +604,7 @@
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.4961489" side_tool="true" visible="true" weight="0.30305928" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.49679077" side_tool="true" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4987163" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -936,16 +935,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3008">
-          <caret line="204" column="54" selection-start-line="204" selection-start-column="54" selection-end-line="204" selection-end-column="54" />
-          <folding>
-            <marker date="1645356907245" expanded="true" signature="30283:30393" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/VisualLoaderFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="650">
@@ -960,30 +949,40 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
+    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="93" selection-start-line="93" selection-end-line="93" />
+        <state relative-caret-position="3008">
+          <caret line="204" column="54" selection-start-line="204" selection-start-column="54" selection-end-line="204" selection-end-column="54" />
+          <folding>
+            <marker date="1645356907245" expanded="true" signature="30283:30393" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
+    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="459">
-          <caret line="970" selection-start-line="970" selection-end-line="970" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1646024433850" expanded="true" signature="21223:21259" ph="..." />
-            <marker date="1646024433850" expanded="true" signature="21288:25025" ph="..." />
-            <marker date="1646024433850" expanded="true" signature="25191:25317" ph="..." />
-          </folding>
+        <state relative-caret-position="1488">
+          <caret line="93" selection-start-line="93" selection-end-line="93" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1499">
-          <caret line="867" column="39" selection-start-line="844" selection-start-column="16" selection-end-line="867" selection-end-column="39" />
+        <state relative-caret-position="123">
+          <caret line="840" column="32" selection-start-line="840" selection-start-column="25" selection-end-line="840" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="395">
+          <caret line="483" column="46" lean-forward="true" selection-start-line="483" selection-start-column="46" selection-end-line="483" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1646113085999" expanded="true" signature="21241:21277" ph="..." />
+            <marker date="1646113085999" expanded="true" signature="21306:25500" ph="..." />
+            <marker date="1646113085999" expanded="true" signature="25666:25792" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
