@@ -62,7 +62,7 @@ class SpaceShip:
     def __drawCanvas(self):
         from time import sleep
         self.__item1 = None
-        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.stopThread==False:
+        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.stopThread==False and self.__loader.bigFrame.getMode() == "intro" :
             try:
                 """
 

@@ -141,6 +141,8 @@ class NewProjectWindow:
                 bank1_config.writelines(lines)
                 bank1_config.close()
 
+                self.__loader.mainWindow.setMode("empty")
+
                 self.__loader.mainWindow.openProject(self.__getPath())
                 self.__closeWindow()
 

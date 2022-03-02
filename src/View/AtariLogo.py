@@ -68,7 +68,9 @@ class AtariLogo:
 
     def nextFrame(self):
         from time import sleep
-        while(self.__loader.mainWindow.dead==False and self.stopThread == False):
+        while(self.__loader.mainWindow.dead==False and self.stopThread == False
+              and self.__loader.bigFrame.getMode() == "intro"
+        ):
             if self.__counter<18:
                 self.__counter+=1
             else:

@@ -31,7 +31,8 @@ class Compiler:
             self.getPFASM()
         elif self.__mode == "getSpriteASM":
             self.getSpriteASM()
-
+        elif self.__mode == "getBigSpriteASM":
+            self.getBigSpriteASM()
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
@@ -703,6 +704,20 @@ class Compiler:
         self.__name = self.__data[5]
 
         self.convertedSpite = self.convertPixelsToSpriteFrameLine(self.__name)
+
+    def getBigSpriteASM(self):
+        self.__spriteData = self.__data[0]
+        self.__lineHeight = int(self.__data[1])
+        self.__height     = int(self.__data[2])
+        self.__spriteMode = self.__data[3]
+        self.__frameNum   = int(self.__data[4])
+        self.__tv         = self.__data[5]
+        self.__name       = self.__data[6]
+
+        self.__convertedSpite = self.__convertDataToReallyBigSprite(self.__name)
+
+    def __convertDataToReallyBigSprite(self, name):
+        pass
 
     def spriteTest(self):
         self.__openEmulator = True

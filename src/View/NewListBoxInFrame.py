@@ -7,7 +7,7 @@ class NewListBoxInFrame():
         self.__name = name
         self.__loader = loader
 
-        self.__loader.listBoxes[name] = self
+        #self.__loader.listBoxes[name] = self
 
         self.__container = container
 
@@ -67,10 +67,10 @@ class NewListBoxInFrame():
 
         self.filler(data)
 
-        if name !="bankBox" and name != "sectionBox":
+        #if name !="bankBox" and name != "sectionBox":
             #self.__loader.destroyable.append(self)
-            self.__loader.destroyable.append(self.__listBox)
-            self.__loader.destroyable.append(self.__scrollBar)
+            #self.__loader.destroyable.append(self.__listBox)
+            #self.__loader.destroyable.append(self.__scrollBar)
         if function != None:
             self.__function = function
             f = Thread(target=self.__callCheckFunction)

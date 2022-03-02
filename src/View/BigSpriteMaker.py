@@ -435,6 +435,9 @@ class BigSpriteMaker:
         self.__redrawCanvas()
 
     def __clickedBox(self, w, h):
+        self.__changed = True
+        self.checkIfValidFileName(None)
+
         if self.__mode != "double":
            self.__canvasStartX = self.__canvas.winfo_width() // 2  - (4 * self.__width * self.__width * w)
            self.__maxX         = self.__canvas.winfo_width()  - (8 * self.__width * w)
@@ -593,32 +596,181 @@ class BigSpriteMaker:
             return
 
     def checkIfValidFileName(self, event):
-        name = str(event.widget).split(".")[-1]
+        try:
+            name = str(event.widget).split(".")[-1]
+        except:
+            name = "spriteName"
 
-        if name == "spriteName":
-            widget = self.__spriteLoader.getEntry()
-            value = self.__spriteLoader.getValue()
+        try:
+            if name == "spriteName":
+                widget = self.__spriteLoader.getEntry()
+                value = self.__spriteLoader.getValue()
 
-
-        if self.__loader.io.checkIfValidFileName(value):
-            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                      )
-
-
-        else:
-            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
-                                      )
+            if self.__loader.io.checkIfValidFileName(value):
+                widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                          fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                          )
+                if self.__changed == True and self.__finished == True:
+                    self.__spriteLoader.enableSave()
+            else:
+                widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                          fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                          )
+                self.__spriteLoader.disableSave()
+        except:
+            pass
 
 
     def __openSprite(self):
+        compatibles = {
+            "common": ["common"]
+
+        }
+
         if self.__finished == False or self.__finished2 == False:
             return
+
+        if self.__finished == True:
+            if self.changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__saveSprite()
+                elif answer == "Cancel":
+                    return
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "bigSprites/")
+
+            if fpath == "":
+                return
+
+        try:
+            file = open(fpath, "r")
+            data = file.readlines()
+            file.close()
+
+            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    return
+
+            self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
+            self.__h = int(data[1].replace("\n", "").replace("\r", ""))
+
+            self.__frameNumSetter.setValue(data[2].replace("\n", "").replace("\r", ""))
+            self.__numOfFrames = int(data[2].replace("\n", "").replace("\r", ""))
+
+            self.__lineHeightSetter.setValue(data[3].replace("\n", "").replace("\r", ""))
+            self.__lineHeight = int(data[3].replace("\n", "").replace("\r", ""))
+
+            trueData = data[4:]
+
+            spriteNum = 0
+            colorNum  = 0
+            height    = 0
+
+            for lineNum in range(0, len(trueData)):
+
+                lineData = trueData[lineNum].replace("\n", "").replace("\r", "").split(" ")
+                line = self.__dataLines[spriteNum][colorNum][height]
+
+                for pixelNum in range(0,16):
+                    line["pixels"][pixelNum] = lineData[pixelNum]
+
+                line["color"]  = lineData[16]
+                if lineNum // 3 <= len(self.__entries):
+                   self.__entryVals[height][colorNum] = lineData[16]
+                   self.__entries[height][colorNum].setValue(lineData[16])
+
+
+                height += 1
+                if height == self.__h:
+                   height = 0
+                   colorNum += 1
+
+                if colorNum == 3:
+                   colorNum = 0
+                   spriteNum += 1
+
+            self.__changed = False
+            self.__frameNum = 0
+            self.__indexVal.set("0")
+            self.__Y = 0
+            self.__YNum.set("0")
+
+            try:
+                for spriteNum in range(0, self.__frameNumMax):
+                    if spriteNum != self.__frameNum:
+                        continue
+                    for theY in range(0, len(self.__buttons)):
+
+                        if theY >= self.__h:
+                            self.__entries[theY][0].getEntry().config(state=DISABLED)
+                            self.__entries[theY][1].getEntry().config(state=DISABLED)
+                            self.__entries[theY][2].getEntry().config(state=DISABLED)
+                        else:
+                            self.__entries[theY][0].getEntry().config(state=NORMAL)
+                            self.__entries[theY][1].getEntry().config(state=NORMAL)
+                            self.__entries[theY][2].getEntry().config(state=NORMAL)
+
+                        for theX in range(0, 16):
+                            if (self.__mode != "double" and theX > 7) or (theY >= self.__h):
+                                self.__buttons[theY][theX].config(state=DISABLED,
+                                                                  bg=self.__loader.colorPalettes.getColor(
+                                                                      "fontDisabled"))
+                            else:
+
+                                self.__buttons[theY][theX].config(state=NORMAL)
+                                self.__colorTile(theY, theX, spriteNum)
+
+
+            except Exception as e:
+                print(str(e))
+
+            self.__redrawCanvas()
+
+        except Exception as e:
+
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
 
     def __saveSprite(self):
         if self.__finished == False or self.__finished2 == False:
             return
+
+        name1 = self.__loader.mainWindow.projectPath + "bigSprites/"+self.__spriteLoader.getValue()+".a26"
+        name2 = self.__loader.mainWindow.projectPath + "bigSprites/"+self.__spriteLoader.getValue()+".asm"
+
+        txt = (self.__loader.virtualMemory.kernel + "\n" +
+               str(self.__h) + "\n" + str(self.__numOfFrames) +
+               str(self.__lineHeight) + "\n" + "\n")
+
+        for spriteNum in range(0, self.__numOfFrames):
+            for colorNum in range(0,3):
+                for height in range(0, self.__h):
+                    line = self.__dataLines[spriteNum][colorNum][height]
+                    txt += " ".join(line["pixels"]) + " " + line["color"] + "\n"
+
+        file = open(name1, "w")
+        file.write(txt)
+        file.close()
+
+        from Compiler import Compiler
+
+        spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getBigSpriteASM",
+                              [self.__dataLines, self.__lineHeight, self.__height, self.__activeMode,
+                               self.__numOfFrames, "NTSC", "##NAME##"]).convertedSpite
+
+        file = open(name2, "w")
+        file.write(
+            "* Height=" + str(self.__height) + "\n" + "* Frames=" +\
+            str(self.__numOfFrames) + "\n" + "* LineHeight=" + str(self.__lineHeight) + "\n" + spriteData
+        )
+        file.close()
+
+        self.__changed = False
+
 
     def __changeType(self):
         modes = ["simple", "double", "overlay"]
@@ -957,6 +1109,8 @@ class BigSpriteMaker:
 
 
     def __setColorData(self, event):
+        breaking = False
+
         for yLine in range(0, len(self.__entries)):
             for colorNum in range(0, 3):
                 if self.__entries[yLine][colorNum].getEntry() == event.widget:
@@ -965,6 +1119,10 @@ class BigSpriteMaker:
 
                         self.__dataLines[spriteNum][colorNum][yLine + self.__Y]["color"] = val
                         self.__entries[yLine][colorNum].setValue(val)
+                        breaking = True
+                    if breaking == True: break
+                if breaking == True: break
+            if breaking == True: break
 
         self.__redrawCanvas()
 
@@ -972,35 +1130,38 @@ class BigSpriteMaker:
         from time import sleep
 
         while self.dead == False and self.__mainWindow.dead == False:
-            if self.__mode != self.__activeMode and self.__finished == True:
-
-                self.__activeMode = self.__mode
-                self.__reDesign()
-
             try:
-                if self.__finished2 == True:
-                    self.__playButton.config(state=NORMAL)
-                    if self.__numOfFrames < 2:
-                        # self.__playButton.config(state = DISABLED)
-                        self.__indexEntry.config(state=DISABLED)
-                        self.__forButton.config(state=DISABLED)
-                        self.__backButton.config(state=DISABLED)
-                    else:
-                        self.__indexEntry.config(state=NORMAL)
-                        self.__forButton.config(state=NORMAL)
-                        self.__backButton.config(state=NORMAL)
+                if self.__mode != self.__activeMode and self.__finished == True:
+
+                    self.__activeMode = self.__mode
+                    self.__reDesign()
+
+                try:
+                    if self.__finished2 == True:
+                        self.__playButton.config(state=NORMAL)
+                        if self.__numOfFrames < 2:
+                            # self.__playButton.config(state = DISABLED)
+                            self.__indexEntry.config(state=DISABLED)
+                            self.__forButton.config(state=DISABLED)
+                            self.__backButton.config(state=DISABLED)
+                        else:
+                            self.__indexEntry.config(state=NORMAL)
+                            self.__forButton.config(state=NORMAL)
+                            self.__backButton.config(state=NORMAL)
+                except:
+                    pass
+
+                if self.__play == True:
+                   self.__playButton.config(image = self.__stopImage)
+                   play = Thread(target=self.__redrawCanvas())
+                   play.daemon = True
+                   play.start()
+                else:
+                   self.__playButton.config(image = self.__playImage)
+
+                sleep(0.04)
             except:
                 pass
-
-            if self.__play == True:
-               self.__playButton.config(image = self.__stopImage)
-               play = Thread(target=self.__redrawCanvas())
-               play.daemon = True
-               play.start()
-            else:
-               self.__playButton.config(image = self.__playImage)
-
-            sleep(0.04)
 
     def __reDesign(self):
         try:
@@ -1047,7 +1208,7 @@ class BigSpriteMaker:
                     if theY >= self.__Y + self.__h:
                         break
                     for theX in range(0, 16):
-                        if self.__mode !="double" and theX > 7:
+                        if self.__mode != "double" and theX > 7:
                             break
                         self.__colorTile(theY, theX, spriteNum)
 

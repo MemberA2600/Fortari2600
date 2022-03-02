@@ -85,7 +85,7 @@ class SubMenu:
     def __killIfKilled(self):
         from time import sleep
         while self.__topLevel.winfo_exists():
-            sleep(0.00005)
+            sleep(0.0005)
         del self.__loader.subMenuDict[self.__name]
 
     def killOther(self):

@@ -93,9 +93,9 @@ class MainWindow:
         from threading import Thread
 
         self.__soundPlayer.playSound("Start")
-        align = Thread(target=self.__scales)
-        align.daemon = True
-        align.start()
+        #align = Thread(target=self.__scales)
+        #align.daemon = True
+        #align.start()
 
         self.editor.deiconify()
         self.editor.focus()
@@ -152,7 +152,7 @@ class MainWindow:
                 self.__lastH = self.getWindowSize()[1]
                 self.__scaleX = self.__lastW / self.__originalW
                 self.__scaleY = self.__lastH / self.__originalH
-            sleep(0.005)
+            sleep(0.025)
 
     def __killRemaining(self):
         import gc
@@ -250,7 +250,7 @@ class MainWindow:
          from EditorBigFrame import EditorBigFrame
 
          self.__bigFrame = EditorBigFrame(self.__loader, self.__fullEditor)
-
+         self.__loader.bigFrame = self.__bigFrame
 
 #self.__createSelectorFrame()
 
@@ -406,11 +406,24 @@ class MainWindow:
         from time import sleep
         colorNum = 0
         while self.__loader.mainWindow.dead == False and self.dead == False:
-            colorNum += 1
-            if colorNum == 256: colorNum = 0
-            hexaNum = hex(colorNum-colorNum%2).replace("0x", "$")
-            if len(hexaNum) == 2: hexaNum = "$0"+hexaNum[1]
-            self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
+            try:
+                colorNum += 1
+                if colorNum == 256: colorNum = 0
+                hexaNum = hex(colorNum-colorNum%2).replace("0x", "$")
+                if len(hexaNum) == 2: hexaNum = "$0"+hexaNum[1]
+                self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
+            except:
+                pass
+
+            for item in self.__loader.stopThreads:
+                try:
+                    if item.stopThread == True:
+                       self.__loader.stopThreads.remove(item)
+                       break
+                except:
+                    self.__loader.stopThreads.remove(item)
+                    break
+
             sleep(0.025)
 
 
@@ -428,6 +441,9 @@ class MainWindow:
 
         except:
             self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+
+    def setMode(self, mode):
+        self.__bigFrame.setMode(mode)
 
     def __destroyLabel(self, event):
         try:
@@ -511,7 +527,7 @@ class MainWindow:
                     self.__sectionSelected = sectionBox.getSelectedName()
                 except:
                     continue
-            sleep(0.005)
+            sleep(0.05)
 
     def changeAliasInCodes(self):
         for bank in self.__loader.virtualMemory.codes.keys():
@@ -545,6 +561,7 @@ class MainWindow:
             self.__loader.virtualMemory.setVariablesFromMemory("all")
             self.__loader.virtualMemory.archieve()
             self.__soundPlayer.playSound("Success")
+            self.__bigFrame.setMode("empty")
 
         except Exception as e:
             self.__fileDialogs.displayError("projectOpenError", "projectOpenErrorText",
@@ -641,6 +658,7 @@ class MainWindow:
         self.__loader.virtualMemory.emptyArchieved()
         self.__loader.virtualMemory.resetMemory()
         self.stopThreads()
+        self.__bigFrame.setMode("intro")
 
     def stopThreads(self):
         for item in self.__loader.stopThreads:

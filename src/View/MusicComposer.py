@@ -590,7 +590,7 @@ class MusicComposer:
         self.__scrollBar.pack(side=RIGHT, anchor=SW, fill=Y)
         self.__listBox.pack(side=LEFT, anchor=SW, fill=BOTH)
         self.__listBox.pack_propagate(False)
-        self.__loader.listBoxes["musicComposer"] = self.__listBox
+        # self.__loader.listBoxes["musicComposer"] = self.__listBox
 
         self.__scrollBar.config(command=self.__listBox.yview)
 

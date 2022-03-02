@@ -59,7 +59,7 @@ class EditorBigFrame:
         self.__rightFrame.pack(side=LEFT, anchor = E, fill=Y)
 
         self.activeMode = None
-        # Valid modes: intro, editor, locked
+        # Valid modes: intro, editor, locked, empty
         self.__selectedMode = "intro"
 
         from threading import Thread
@@ -82,13 +82,15 @@ class EditorBigFrame:
 
                if self.__selectedMode == "intro":
                   self.__createIntroScreen()
+               elif  self.__selectedMode == "empty":
+                  pass
 
             sleep(0.0005)
 
     def __removeSlaves(self):
-        self.__mainFrame.config(bg = "window")
-        self.__leftFrame.config(bg = "window")
-        self.__rightFrame.config(bg = "window")
+        self.__mainFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
+        self.__leftFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
+        self.__rightFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
 
         self.__destroyables = {}
 
@@ -111,3 +113,9 @@ class EditorBigFrame:
         atariLogo = AtariLogo(self.__loader, self.__mainFrame, self.__leftFrame, self.__rightFrame)
 
         self.__destroyables["AtariLogo"] = atariLogo
+
+    def setMode(self, mode):
+        self.__selectedMode = mode
+
+    def getMode(self):
+        return self.activeMode

@@ -3,8 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-02-28_055945.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-03-01_063806.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/64px/Best_Picture_Ever.asm" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Handlers/Loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Loader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/AtariLogo.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/AtariLogo.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/BigSpriteMaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/BigSpriteMaker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/EditorBigFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/EditorBigFrame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MusicComposer.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MusicComposer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/NewListBoxInFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/NewListBoxInFrame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/NewProjectWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/NewProjectWindow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/SpaceShip.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SpaceShip.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/SubMenu.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/SubMenu.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +61,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$toneCalc.coverage" NAME="toneCalc Coverage Results" MODIFIED="1630645855676" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1646113086114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1646197760847" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -111,35 +123,35 @@
     <session id="1636815425">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="89" />
+          <entry key="project.closed" value="93" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.3" value="4" />
-          <entry key="project.open.time.4" value="90" />
+          <entry key="project.open.time.4" value="93" />
           <entry key="project.open.time.5" value="18" />
           <entry key="project.open.time.6" value="2" />
-          <entry key="project.opened" value="121" />
+          <entry key="project.opened" value="124" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="104089" />
+          <entry key="py" value="107422" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="104089" />
+          <entry key="Python" value="107422" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="240" />
+          <entry key="py" value="262" />
           <entry key="txt" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="240" />
+          <entry key="Python" value="262" />
         </counts>
       </usages-collector>
     </session>
@@ -152,25 +164,38 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3008">
-              <caret line="204" column="54" selection-start-line="204" selection-start-column="54" selection-end-line="204" selection-end-column="54" />
+            <state relative-caret-position="208">
+              <caret line="424" column="25" selection-start-line="424" selection-start-column="25" selection-end-line="424" selection-end-column="25" />
               <folding>
-                <marker date="1645356907245" expanded="true" signature="30283:30393" ph="..." />
+                <marker date="1646200394912" expanded="true" signature="19304:19310" ph="..." />
+                <marker date="1646200394912" expanded="true" signature="30888:30998" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="475">
+              <caret line="772" lean-forward="true" selection-start-line="772" selection-end-line="772" />
+              <folding>
+                <element signature="e#0#21#0" expanded="true" />
+                <marker date="1646197888291" expanded="true" signature="21241:21277" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="483" column="46" lean-forward="true" selection-start-line="483" selection-start-column="46" selection-end-line="483" selection-end-column="46" />
+            <state relative-caret-position="379">
+              <caret line="719" column="12" selection-start-line="719" selection-start-column="12" selection-end-line="719" selection-end-column="12" />
               <folding>
-                <element signature="e#0#21#0" expanded="true" />
-                <marker date="1646113085999" expanded="true" signature="21241:21277" ph="..." />
-                <marker date="1646113085999" expanded="true" signature="21306:25500" ph="..." />
-                <marker date="1646113085999" expanded="true" signature="25666:25792" ph="..." />
+                <element signature="e#0#9#0" expanded="true" />
+                <marker date="1646200663883" expanded="true" signature="32043:32062" ph="..." />
+                <marker date="1646200663883" expanded="true" signature="32083:32092" ph="..." />
               </folding>
             </state>
           </provider>
@@ -179,17 +204,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="123">
-              <caret line="840" column="32" selection-start-line="840" selection-start-column="25" selection-end-line="840" selection-end-column="32" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1488">
-              <caret line="93" selection-start-line="93" selection-end-line="93" />
+            <state relative-caret-position="433">
+              <caret line="1221" column="1" selection-start-line="1221" selection-start-column="1" selection-end-line="1225" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -205,36 +221,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__numOfFrames</find>
-      <find>spriteNum</find>
-      <find>__checkIndex</find>
-      <find>index</find>
-      <find>frameNum</find>
-      <find>FocusOut</find>
-      <find>VisualEditorFrameWithLabelAndEntry</find>
-      <find>Visua</find>
-      <find>stop</find>
-      <find>speed</find>
-      <find>entry</find>
-      <find>__entries</find>
+      <find>space</find>
+      <find>target</find>
+      <find>logger</find>
+      <find>big</find>
+      <find>__drawCanvas</find>
+      <find>stopThread</find>
+      <find>listBoxes</find>
+      <find>__loader.listBoxes[</find>
+      <find>__loopColorThread</find>
+      <find>__saveSprite</find>
+      <find>checkIf</find>
+      <find>changed</find>
+      <find>save</find>
+      <find>checkIfValidFileName</find>
+      <find>enable</find>
+      <find>kernel</find>
       <find>__dataLines</find>
-      <find>f</find>
-      <find>redraw</find>
-      <find>__redrawCanvas</find>
-      <find>__clickedBox</find>
-      <find>self.__mirror</find>
-      <find>__setColorData</find>
-      <find>clickedBox</find>
-      <find>playing</find>
-      <find>__playing</find>
-      <find>__playButton</find>
-      <find>__play</find>
-      <find>playB</find>
-      <find>__isPLay</find>
-      <find>loop</find>
-      <find>self.__speed</find>
-      <find>__isPlaying</find>
-      <find>__delay</find>
+      <find>__save</find>
+      <find>setter</find>
+      <find>compatibles</find>
+      <find>color</find>
+      <find>index</find>
+      <find>open</find>
+      <find>__colorTile</find>
+      <find>__entries</find>
+      <find>__entryVals</find>
+      <find>__color</find>
+      <find>Compiler</find>
+      <find>getSpriteASM</find>
+      <find>fontdi</find>
     </findStrings>
     <replaceStrings>
       <replace>__loader.frames[&quot;MemorySetter&quot;].getScales()</replace>
@@ -275,9 +291,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/venv/fuck.txt" />
-        <option value="$PROJECT_DIR$/venv/convertToPiss.py" />
-        <option value="$PROJECT_DIR$/venv/sine.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/PiaNotes.py" />
         <option value="$PROJECT_DIR$/src/Converters/SIDConverter.py" />
         <option value="$PROJECT_DIR$/src/Scripts/DataReader.py" />
@@ -298,8 +311,6 @@
         <option value="$PROJECT_DIR$/src/Converters/WaveConverter.py" />
         <option value="$PROJECT_DIR$/src/View/SoundPlayerEditor.py" />
         <option value="$PROJECT_DIR$/src/Converters/MidiConverter.py" />
-        <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
-        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/View/VariableFrameNew.py" />
         <option value="$PROJECT_DIR$/src/View/MemorySetter.py" />
         <option value="$PROJECT_DIR$/src/Handlers/ButtonMaker.py" />
@@ -311,21 +322,26 @@
         <option value="$PROJECT_DIR$/src/View/Haunted.py" />
         <option value="$PROJECT_DIR$/src/View/FrameContent.py" />
         <option value="$PROJECT_DIR$/src/View/MenuButton.py" />
-        <option value="$PROJECT_DIR$/src/View/MenuLabel.py" />
-        <option value="$PROJECT_DIR$/src/View/EditorBigFrame.py" />
         <option value="$PROJECT_DIR$/main.py" />
-        <option value="$PROJECT_DIR$/src/View/AtariLogo.py" />
-        <option value="$PROJECT_DIR$/src/View/SpaceShip.py" />
-        <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
         <option value="$PROJECT_DIR$/src/View/LoadingScreen.py" />
         <option value="$PROJECT_DIR$/src/View/ArchiveWindow.py" />
-        <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
-        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
         <option value="$PROJECT_DIR$/src/View/PlayfieldEditor.py" />
         <option value="$PROJECT_DIR$/src/View/VisualLoaderFrame.py" />
         <option value="$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py" />
+        <option value="$PROJECT_DIR$/src/View/NewProjectWindow.py" />
+        <option value="$PROJECT_DIR$/src/View/SubMenu.py" />
+        <option value="$PROJECT_DIR$/src/View/EditorBigFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/SpaceShip.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
+        <option value="$PROJECT_DIR$/src/View/AtariLogo.py" />
+        <option value="$PROJECT_DIR$/src/View/MenuLabel.py" />
+        <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
+        <option value="$PROJECT_DIR$/src/View/NewListBoxInFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/MusicComposer.py" />
         <option value="$PROJECT_DIR$/src/View/SpriteEditor.py" />
         <option value="$PROJECT_DIR$/src/View/BigSpriteMaker.py" />
+        <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
       </list>
     </option>
   </component>
@@ -349,6 +365,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -401,7 +418,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -590,12 +606,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8408779" visible="true" weight="0.18806162" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.8408779" visible="true" weight="0.1944801" />
       <window_info id="Structure" order="1" sideWeight="0.15775034" side_tool="true" weight="0.15147625" />
       <window_info id="Favorites" order="2" sideWeight="0.15912208" side_tool="true" weight="0.16688062" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.50320923" visible="true" weight="0.30305928" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.5012837" weight="0.30305928" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -604,7 +620,7 @@
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.49679077" side_tool="true" visible="true" weight="0.30305928" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.4987163" side_tool="true" visible="true" weight="0.30305928" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4987163" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -660,23 +676,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/PitFallHarry.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SubMenuOkCancelButtons.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="68" column="23" selection-start-line="68" selection-start-column="23" selection-end-line="68" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Variable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="64">
-          <caret line="4" column="21" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../projects/stocks3.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="227">
@@ -768,13 +767,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MenuLabel.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="481">
-          <caret line="55" column="31" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MenuButton.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -787,11 +779,6 @@
         <state relative-caret-position="459">
           <caret line="211" selection-start-line="211" selection-end-line="214" selection-end-column="65" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SubMenu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-144" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
@@ -844,20 +831,6 @@
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/Desktop/py7zr/py7zr/py7zr.py" />
-    <entry file="file://$PROJECT_DIR$/src/View/SpaceShip.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/AtariLogo.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="24" column="54" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/OpenProjectWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -869,13 +842,6 @@
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/py7zr/py7zr/win32compat.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/py7zr/py7zr/__main__.py" />
     <entry file="file://$PROJECT_DIR$/pythonNotMadeByMe/py7zr/py7zr/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="464">
-          <caret line="29" column="28" selection-start-line="29" selection-start-column="28" selection-end-line="29" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/LoadingScreen.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1472">
@@ -897,20 +863,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="43" column="75" selection-start-line="43" selection-start-column="75" selection-end-line="43" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/NewListBoxInFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="44" selection-start-line="44" selection-end-line="59" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/MainWindowHandler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="218">
@@ -921,24 +873,10 @@
     <entry file="file://$PROJECT_DIR$/src/View/MCButton.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="36240">
-          <caret line="2271" column="46" selection-start-line="2271" selection-start-column="46" selection-end-line="2271" selection-end-column="46" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="427">
           <caret line="108" column="57" selection-start-line="108" selection-start-column="57" selection-end-line="108" selection-end-column="57" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/VisualLoaderFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="82" column="18" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -949,13 +887,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
+    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3008">
-          <caret line="204" column="54" selection-start-line="204" selection-start-column="54" selection-end-line="204" selection-end-column="54" />
-          <folding>
-            <marker date="1645356907245" expanded="true" signature="30283:30393" ph="..." />
-          </folding>
+        <state relative-caret-position="458">
+          <caret line="109" column="45" selection-start-line="109" selection-start-column="45" selection-end-line="109" selection-end-column="45" />
         </state>
       </provider>
     </entry>
@@ -966,22 +901,113 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="555">
+          <caret line="41" column="9" selection-start-line="41" selection-start-column="9" selection-end-line="41" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/NewProjectWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="384">
+          <caret line="51" column="31" selection-start-line="51" selection-start-column="31" selection-end-line="51" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SpaceShip.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="267">
+          <caret line="64" column="150" selection-start-line="64" selection-start-column="103" selection-end-line="64" selection-end-column="150" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/SubMenu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="640">
+          <caret line="61" column="32" selection-start-line="61" selection-start-column="26" selection-end-line="61" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/AtariLogo.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="15" column="23" selection-start-line="15" selection-start-column="13" selection-end-line="15" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MenuLabel.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="13" column="8" selection-start-line="13" selection-start-column="8" selection-end-line="13" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="41" column="21" selection-start-line="41" selection-start-column="21" selection-end-line="41" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MusicComposer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="592" column="33" selection-start-line="592" selection-start-column="24" selection-end-line="592" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/NewListBoxInFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="81" column="47" selection-start-line="81" selection-start-column="47" selection-end-line="81" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/VisualLoaderFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="82" column="18" selection-start-line="82" selection-start-column="8" selection-end-line="82" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="840" column="32" selection-start-line="840" selection-start-column="25" selection-end-line="840" selection-end-column="32" />
+        <state relative-caret-position="433">
+          <caret line="1221" column="1" selection-start-line="1221" selection-start-column="1" selection-end-line="1225" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="424" column="25" selection-start-line="424" selection-start-column="25" selection-end-line="424" selection-end-column="25" />
+          <folding>
+            <marker date="1646200394912" expanded="true" signature="19304:19310" ph="..." />
+            <marker date="1646200394912" expanded="true" signature="30888:30998" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="483" column="46" lean-forward="true" selection-start-line="483" selection-start-column="46" selection-end-line="483" selection-end-column="46" />
+        <state relative-caret-position="475">
+          <caret line="772" lean-forward="true" selection-start-line="772" selection-end-line="772" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1646113085999" expanded="true" signature="21241:21277" ph="..." />
-            <marker date="1646113085999" expanded="true" signature="21306:25500" ph="..." />
-            <marker date="1646113085999" expanded="true" signature="25666:25792" ph="..." />
+            <marker date="1646197888291" expanded="true" signature="21241:21277" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="719" column="12" selection-start-line="719" selection-start-column="12" selection-end-line="719" selection-end-column="12" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+            <marker date="1646200663883" expanded="true" signature="32043:32062" ph="..." />
+            <marker date="1646200663883" expanded="true" signature="32083:32092" ph="..." />
           </folding>
         </state>
       </provider>

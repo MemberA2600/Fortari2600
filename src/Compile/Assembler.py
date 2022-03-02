@@ -39,7 +39,7 @@ class Assembler():
 
         #self.__tv = "pal"
         command = os.getcwd() + os.sep+path + ' "' +  os.getcwd() + os.sep + self.executeName +  '"'
-        print(command)
+        #print(command)
 
         os.popen(command)
 
