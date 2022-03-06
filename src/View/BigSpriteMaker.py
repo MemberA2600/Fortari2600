@@ -592,8 +592,22 @@ class BigSpriteMaker:
                 self.__forYButton.config(state=NORMAL)
 
     def __loadTest(self):
-        if self.__finished == False or self.__finished2 == False:
-            return
+        if self.__finished == True and self.__finished2 == True:
+            from threading import Thread
+
+            test = Thread(target=self.__testThread)
+            test.daemon = True
+            test.start()
+
+    def __testThread(self):
+        from Compiler import Compiler
+
+        Compiler(self.__loader, self.__loader.virtualMemory.kernel, "testBigSprite",
+                              [self.__dataLines, self.__lineHeight, self.__h, self.__activeMode,
+                               self.__numOfFrames, "NTSC", "Test_BigSprite", self.__testColorSetter.getValue(),
+                               ["Tile4_1", "Tile4_2", "Tile4_3"]])
+
+
 
     def checkIfValidFileName(self, event):
         try:
@@ -636,6 +650,8 @@ class BigSpriteMaker:
                 if answer == "Yes":
                     self.__saveSprite()
                 elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
                     return
             fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
                                                       self.__loader.mainWindow.projectPath + "bigSprites/")
@@ -643,6 +659,7 @@ class BigSpriteMaker:
             if fpath == "":
                 return
 
+        #if True:
         try:
             file = open(fpath, "r")
             data = file.readlines()
@@ -650,6 +667,8 @@ class BigSpriteMaker:
 
             if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
                 if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
                     return
 
             self.__heightSetter.setValue(data[1].replace("\n", "").replace("\r", ""))
@@ -659,7 +678,10 @@ class BigSpriteMaker:
             self.__numOfFrames = int(data[2].replace("\n", "").replace("\r", ""))
 
             self.__lineHeightSetter.setValue(data[3].replace("\n", "").replace("\r", ""))
-            self.__lineHeight = int(data[3].replace("\n", "").replace("\r", ""))
+            try:
+                self.__lineHeight = int(data[3].replace("\n", "").replace("\r", ""))
+            except:
+                self.__lineHeight = 1
 
             trueData = data[4:]
 
@@ -696,6 +718,7 @@ class BigSpriteMaker:
             self.__Y = 0
             self.__YNum.set("0")
 
+            #if True:
             try:
                 for spriteNum in range(0, self.__frameNumMax):
                     if spriteNum != self.__frameNum:
@@ -759,12 +782,12 @@ class BigSpriteMaker:
         from Compiler import Compiler
 
         spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getBigSpriteASM",
-                              [self.__dataLines, self.__lineHeight, self.__height, self.__activeMode,
+                              [self.__dataLines, self.__lineHeight, self.__h, self.__activeMode,
                                self.__numOfFrames, "NTSC", "##NAME##"]).convertedSpite
 
         file = open(name2, "w")
         file.write(
-            "* Height=" + str(self.__height) + "\n" + "* Frames=" +\
+            "* Height=" + str(self.__h) + "\n" + "* Frames=" +\
             str(self.__numOfFrames) + "\n" + "* LineHeight=" + str(self.__lineHeight) + "\n" + spriteData
         )
         file.close()

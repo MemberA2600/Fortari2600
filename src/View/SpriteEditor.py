@@ -1120,12 +1120,19 @@ class SpriteEditor:
     def __openSprite(self):
         import os
 
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
+
         if self.__finished == True:
             if self.changed == True:
                 answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
                 if answer == "Yes":
                     self.__saveSprite()
                 elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
                     return
 
             fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
@@ -1146,6 +1153,8 @@ class SpriteEditor:
 
                 if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
                     if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        self.__topLevelWindow.deiconify()
+                        self.__topLevelWindow.focus()
                         return
 
                 self.__spriteLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
@@ -1189,6 +1198,11 @@ class SpriteEditor:
 
     def __saveSprite(self):
         import os
+
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
 
         if self.__finished == True:
 

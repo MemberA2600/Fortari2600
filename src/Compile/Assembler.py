@@ -225,8 +225,6 @@ class Assembler():
             if len(variables[v])>3:
                 threeByters.append(v)
 
-
-
         code = self.checkForTooDistant(code, branchers)
 
         for line in code:
@@ -313,13 +311,9 @@ class Assembler():
                         currentAddress += 2
                         current.byteNum = 2
                     else:
-
-
-
                         line[1] = line[1].replace("*", str(currentAddress))
                         currentAddress += 2
                         current.byteNum = 2
-
 
                         if ("#" not in line[1]) and (line[1].split(",")[0].split("+")[0] in list(sections.keys()) or
                             len(re.findall(r'[a-fA-F0-9]{4}', line[1])) > 0 or
@@ -327,6 +321,9 @@ class Assembler():
                             currentAddress += 1
                             current.byteNum = 3
 
+                        if "JMP" in line[0].upper() and "(" in line[1]:
+                            currentAddress += 1
+                            current.byteNum = 3
 
                     """
                     try:
@@ -372,13 +369,19 @@ class Assembler():
                     else:
                         line.bytes.append(bytes([int(second.replace("#", ""), 10)]))
 
-
                 continue
-
 
             for c in opcodes.keys():
                 counter += 1
 
+                # Fix nullpage jump for Memory-based indirect jump
+                if c == "$6C" and line.raw[0].upper() == "JMP" and "(" in line.raw[1] and \
+                    len(re.findall(r"\$[0-9a-fA-F]{4}", line.raw[1])) == 0:
+
+                   new = self.secondByteToNumeric(line.raw[1], variables, registers, sections)
+                   line.raw[1]  = "("+"$00"+ new[2:4]+")"
+                   self.createBytes(line, c, line.raw[1])
+                   break
 
                 if (line.byteNum == opcodes[c]["bytes"] and (opcodes[c]["opcode"] == line.raw[0].upper())):
 

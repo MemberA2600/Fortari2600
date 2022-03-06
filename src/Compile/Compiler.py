@@ -33,6 +33,9 @@ class Compiler:
             self.getSpriteASM()
         elif self.__mode == "getBigSpriteASM":
             self.getBigSpriteASM()
+        elif self.__mode == "testBigSprite":
+            self.testBigSprite()
+
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
@@ -714,10 +717,257 @@ class Compiler:
         self.__tv         = self.__data[5]
         self.__name       = self.__data[6]
 
-        self.__convertedSpite = self.__convertDataToReallyBigSprite(self.__name)
+        self.convertedSpite = self.__convertDataToReallyBigSprite(self.__name)
+
+    def testBigSprite(self):
+        self.__spriteData = self.__data[0]
+        self.__lineHeight = int(self.__data[1])
+        self.__height     = int(self.__data[2])
+        self.__spriteMode = self.__data[3]
+        self.__frameNum   = int(self.__data[4])
+        self.__tv         = self.__data[5]
+        self.__name       = self.__data[6]
+        self.__frameColor = self.__data[7]
+
+        variables = self.__data[8]
+        constants = [self.__height, self.__lineHeight]
+        originalVars = {
+            "##NAME##_Xpoz":           "##xPoz##",
+            "##NAME##_bgColorMod":     "##bgColorMod##",
+            "##NAME##_spriteSettings": "##spriteSettings##"
+        }
+
+        if self.__frameColor == "": self.__frameColor = "$00"
+
+        changer = self.__contructChanger(variables)
+        self.__pointers = {}
+
+        self.__kernelData = self.__convertDataToReallyBigSprite(self.__name)
+
+        self.__enterCode = self.__io.loadSubModule("bigSpriteEnter") +\
+                           "\n\n" +\
+                           self.__io.loadTestElementPlain("bigSpriteEnter") + "\n"
+
+        for item in changer:
+            self.__enterCode = self.__enterCode.replace(item, changer[item])
+
+        self.__topLevelCode = self.__setPointers(variables, constants, originalVars) + "\n" +\
+                              self.__io.loadSubModule("kernelJump").replace(
+                                  "##KERNEL_NAME##", "BANK2_BigSprite_Kernel_Begin"
+                              )
+
+        #print(self.__topLevelCode)
+        #print(self.__pointers.keys())
+
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__topLevelCode)
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        #self.doSave("temp/")
+        #assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
+
+    def __contructChanger(self, variables):
+        return {
+            "VAR01": variables[0],
+            "VAR02": variables[1],
+            "VAR03": variables[2],
+            "CON01": str(self.__height),
+            "CON02": str(self.__lineHeight)
+        }
+
+    def __setPointers(self, variables, constants, originalVars):
+        listOfVar = []
+        for num in range(3,20):
+            num = str(num)
+            if len(num) == 1:
+               num = "0" + num
+
+            var = "temp"+num
+            if var not in variables:
+                listOfVar.append(var)
+
+        pointerCode = self.__createPointerCode(listOfVar, "##NAME##_BigSprite_0", "##BigSprite_0##")
+        if self.__spriteMode != "simple":
+            pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSprite_1", "##BigSprite_1##")
+
+        pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteColor_0", "##BigSpriteColor_0##")
+        if self.__spriteMode != "simple":
+            pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteColor_1", "##BigSpriteColor_1##")
+
+        pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteBG", "##BigSpriteBG##")
+
+        pointerCode += self.__createConstantCode(listOfVar, constants, 0, "##Height##")
+        pointerCode += self.__createConstantCode(listOfVar, constants, 1, "##LineHeight##")
+
+        for item in originalVars.keys():
+            pointerCode += self.__createVariableCode(listOfVar, item, originalVars[item])
+
+        return "\n" + pointerCode
+
+    def __createVariableCode(self, listOfVar, originalVar, desc):
+        text = "\tLDA\t#" + originalVar +"\n" +\
+               "\tSTA\t"  + listOfVar[0]      +"\n"
+
+        self.__pointers[desc] = listOfVar[0]
+        listOfVar.pop(0)
+
+        return text
+
+    def __createConstantCode(self, listOfVar, constants, num, shortName):
+        text = "\tLDA\t#" + str(constants[num]) +"\n" +\
+              "\tSTA\t"  + listOfVar[0]        +"\n"
+
+        self.__pointers[shortName] = listOfVar[0]
+        listOfVar.pop(0)
+
+        return text
+
+    def __createPointerCode(self, listOfVar, pointerName, shortName):
+        text ="\tLDA\t#<" + pointerName   + "\n" +\
+              "\tSTA\t"   + listOfVar[0]  + "\n" +\
+              "\tLDA\t#>" + pointerName   + "\n" +\
+              "\tSTA\t"   + listOfVar[1]  + "\n\n"
+
+        self.__pointers[shortName] = listOfVar[0]
+        listOfVar.pop(0)
+        listOfVar.pop(0)
+
+        return(text)
 
     def __convertDataToReallyBigSprite(self, name):
-        pass
+        pixelData0      = "\n" + name + "_BigSprite_0"      + "\n"
+        colorData0      = "\n" + name + "_BigSpriteColor_0" + "\n"
+        backGroundData  = "\n" + name + "_BigSpriteBG"      + "\n"
+
+        lineNum = 0
+        isThereASinglePixelinP1 = False
+
+        for spriteNum in range(0, self.__frameNum):
+            line = self.__spriteData[spriteNum][0]
+            bgLine = self.__spriteData[spriteNum][2]
+            for Y in range(0, self.__height):
+                pixels = line[Y]["pixels"]
+                pixelLine = "\tbyte\t#%" + "".join(pixels[0:8])
+                if spriteNum == 0:
+                    colorLine = "\tbyte\t#" + line[Y]["color"] + "\n"
+                    bgLineD = "\tbyte\t#" + bgLine[Y]["color"] + "\n"
+
+                lineNum += 1
+                if lineNum == self.__height:
+                    pixelLine += "\t; (" + str(spriteNum) + ")" + "\n"
+                    lineNum = 0
+                else:
+                    pixelLine += "\n"
+
+                pixelData0 += pixelLine
+                if spriteNum == 0:
+                    colorData0     += colorLine
+                    backGroundData += bgLineD
+
+        pixelData1 = None
+        colorData1 = None
+        lineNum    = 0
+
+        if self.__spriteMode != "simple":
+            stuff = {
+                "double":  [0,8,16],
+                "overlay": [1,0,8]
+            }
+
+            pixelData1 = "\n" + name + "_BigSprite_1" + "\n"
+            if self.__spriteMode == "overlay":
+                colorData1 = "\n" + name + "_BigSpriteColor_1" + "\n"
+
+            for spriteNum in range(0, self.__frameNum):
+                line = self.__spriteData[spriteNum][stuff[self.__spriteMode][0]]
+                for Y in range(0, self.__height):
+                    pixels = line[Y]["pixels"]
+                    if "1" in pixels: isThereASinglePixelinP1 = True
+
+                    pixelLine = "\tbyte\t#%" + "".join(pixels[stuff[self.__spriteMode][1]:stuff[self.__spriteMode][2]])
+                    if spriteNum == 0 and self.__spriteMode == "overlay":
+                        colorLine = "\tbyte\t#" + line[Y]["color"] + "\n"
+
+                    lineNum += 1
+                    if lineNum == self.__height:
+                        pixelLine += "\t; (" + str(spriteNum) + ")" + "\n"
+                        lineNum = 0
+                    else:
+                        pixelLine += "\n"
+
+                    pixelData1 += pixelLine
+                    if self.__spriteMode == "overlay" and spriteNum == 0:
+                        colorData1 += colorLine
+
+
+        if isThereASinglePixelinP1 == False:
+            pixelData1 = None
+            colorData1 = None
+
+        lineNum = 0
+
+        if self.__spriteMode == "overlay":
+           pixelData0 = pixelData0.replace("_BigSprite_0", "_BigSprite_1")
+           colorData0 = colorData0.replace("_BigSpriteColor_0", "_BigSpriteColor_1")
+           if isThereASinglePixelinP1 == True:
+               pixelData1 = pixelData1.replace("_BigSprite_1", "_BigSprite_0")
+               colorData1 = colorData1.replace("_BigSpriteColor_1", "_BigSpriteColor_0")
+
+        text = "\talign\t256\n" + pixelData0 + "\n"
+        lineNum = self.getBytesNum(text)
+
+        if self.setNewLineNum(lineNum, colorData0)[1] == True:
+           text += "\talign\t256\n"
+
+        text += colorData0 + "\n"
+        lineNum = self.setNewLineNum(lineNum, colorData0)[0]
+
+        if isThereASinglePixelinP1 == True:
+            if self.setNewLineNum(lineNum, pixelData1)[1] == True:
+                text += "\talign\t256\n"
+
+            text += pixelData1 + "\n"
+            lineNum = self.setNewLineNum(lineNum, pixelData1)[0]
+
+            if self.__spriteMode == "overlay":
+                if self.setNewLineNum(lineNum, colorData1)[1] == True:
+                    text += "\talign\t256\n"
+
+                text += colorData1 + "\n"
+                lineNum = self.setNewLineNum(lineNum, colorData1)[0]
+
+        if self.setNewLineNum(lineNum, backGroundData)[1] == True:
+            text += "\talign\t256\n"
+
+        text += backGroundData + "\n"
+        return(text)
+
+    def setNewLineNum(self, orig, text):
+        overflow = False
+        new = self.getBytesNum(text)
+
+        num = orig + new
+        if num > 256:
+           num = num - 256
+           overflow = True
+
+        return(num, overflow)
+
+
+    def getBytesNum(self, text):
+        text = text.upper().split("\n")
+        c = 0
+        for line in text:
+            if "BYTE" in line:
+                c+=1
+        return(c)
+
+
+
 
     def spriteTest(self):
         self.__openEmulator = True

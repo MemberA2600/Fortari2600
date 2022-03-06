@@ -291,6 +291,8 @@ class PlayfieldEditor:
             if answer == "Yes":
                 self.__savePlayfield()
             elif answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
                 return
 
         from PictureToCode import PictureToCode
@@ -333,6 +335,11 @@ class PlayfieldEditor:
     def __openPlayfield(self):
         import os
 
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
+
         if self.__finished == True:
 
             if self.changed == True:
@@ -340,6 +347,8 @@ class PlayfieldEditor:
                 if answer == "Yes":
                     self.__savePlayfield()
                 elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
                     return
 
             fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
@@ -360,6 +369,8 @@ class PlayfieldEditor:
 
                 if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
                     if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        self.__topLevelWindow.deiconify()
+                        self.__topLevelWindow.focus()
                         return
 
                 self.__playFieldLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
@@ -397,6 +408,11 @@ class PlayfieldEditor:
 
     def __savePlayfield(self):
         import os
+
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
 
         if self.__finished == True:
 
@@ -446,6 +462,11 @@ class PlayfieldEditor:
     def __openBackground(self):
         import os
 
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
+
         if self.__finished == True:
 
             if self.changed == True:
@@ -453,6 +474,8 @@ class PlayfieldEditor:
                 if answer == "Yes":
                     self.__saveBackground()
                 elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
                     return
 
             fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
@@ -468,6 +491,8 @@ class PlayfieldEditor:
 
                 if self.__loader.virtualMemory.kernel != data[0].replace("\n", "").replace("\r", ""):
                     if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        self.__topLevelWindow.deiconify()
+                        self.__topLevelWindow.focus()
                         return
 
                 self.__backGroundLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
@@ -498,6 +523,11 @@ class PlayfieldEditor:
 
     def __saveBackground(self):
         import os
+
+        if self.alreadyDone == False:
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+            return
 
         if self.__finished == True:
 

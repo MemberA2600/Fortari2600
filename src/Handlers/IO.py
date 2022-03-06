@@ -74,3 +74,6 @@ class IO:
 
     def loadTestElement(self, mode, name, element):
         return(open("templates/testCodes/"+mode+"_"+name+"_"+element+".asm", "r").read())
+
+    def loadTestElementPlain(self, element):
+        return(open("templates/testCodes/"+element+".asm", "r").read())
