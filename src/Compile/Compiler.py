@@ -647,7 +647,6 @@ class Compiler:
         self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", self.__kernelData)
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
-
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
@@ -729,114 +728,83 @@ class Compiler:
         self.__name       = self.__data[6]
         self.__frameColor = self.__data[7]
 
+        if self.__spriteMode == "simple":
+           self.__mono = 1
+        else:
+           self.__mono = 0
+
+        if self.__spriteMode == "double":
+           self.__offset = 8
+        else:
+           self.__offset = 0
+
         variables = self.__data[8]
-        constants = [self.__height, self.__lineHeight]
-        originalVars = {
-            "##NAME##_Xpoz":           "##xPoz##",
-            "##NAME##_bgColorMod":     "##bgColorMod##",
-            "##NAME##_spriteSettings": "##spriteSettings##"
-        }
+        constants = [self.__height, self.__lineHeight, self.__offset, self.__mono, self.__frameNum]
 
-        if self.__frameColor == "": self.__frameColor = "$00"
+        try:
+            teszt = int(self.__frameColor)
+        except:
+            self.__frameColor = 0
 
-        changer = self.__contructChanger(variables)
-        self.__pointers = {}
 
-        self.__kernelData = self.__convertDataToReallyBigSprite(self.__name)
+        self.__convertedSpite = self.__convertDataToReallyBigSprite(self.__name)
+
+        changer = self.__contructChanger(variables, constants)
 
         self.__enterCode = self.__io.loadSubModule("bigSpriteEnter") +\
                            "\n\n" +\
                            self.__io.loadTestElementPlain("bigSpriteEnter") + "\n"
 
-        for item in changer:
-            self.__enterCode = self.__enterCode.replace(item, changer[item])
+        self.__overScanCode = self.__io.loadTestElementPlain("bigSpriteOverScan") + "\n"
 
-        self.__topLevelCode = self.__setPointers(variables, constants, originalVars) + "\n" +\
+        self.__topLevelCode = self.__io.loadSubModule("bigSpriteTopBottom") + "\n" +\
                               self.__io.loadSubModule("kernelJump").replace(
-                                  "##KERNEL_NAME##", "BANK2_BigSprite_Kernel_Begin"
+                                  "##KERNEL_NAME##", "##BANK##_BigSprite_Kernel_Begin"
                               )
+        self.__routineCode  = self.__io.loadSubModule("bigSpriteKernel")
 
-        #print(self.__topLevelCode)
-        #print(self.__pointers.keys())
+        for item in changer:
+            self.__enterCode    = self.__enterCode.replace(item, changer[item])
+            self.__overScanCode = self.__overScanCode.replace(item, changer[item])
+            self.__topLevelCode = self.__topLevelCode.replace(item, changer[item])
+            self.__routineCode  = self.__routineCode.replace(item, changer[item])
+
+        self.__enterCode        = self.__enterCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2").replace("FRAME_COLOR", str(self.__frameColor))
+        self.__overScanCode     = self.__overScanCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__topLevelCode     = self.__topLevelCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__routineCode      = self.__routineCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__convertedSpite   = self.__convertedSpite.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
 
         self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
-
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
         self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__topLevelCode)
+        self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", self.__routineCode)
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__convertedSpite)
 
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
-        #self.doSave("temp/")
-        #assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
-    def __contructChanger(self, variables):
-        return {
-            "VAR01": variables[0],
-            "VAR02": variables[1],
-            "VAR03": variables[2],
-            "CON01": str(self.__height),
-            "CON02": str(self.__lineHeight)
-        }
+    def __contructChanger(self, variables, constants):
+        d = {}
 
-    def __setPointers(self, variables, constants, originalVars):
-        listOfVar = []
-        for num in range(3,20):
-            num = str(num)
-            if len(num) == 1:
-               num = "0" + num
+        for origN in range(1, len(variables)+1):
+            num = str(origN)
+            if len(num) == 1: num = "0" + num
 
-            var = "temp"+num
-            if var not in variables:
-                listOfVar.append(var)
+            d["##VAR"+num+"##"] = str(variables[origN-1])
 
-        pointerCode = self.__createPointerCode(listOfVar, "##NAME##_BigSprite_0", "##BigSprite_0##")
-        if self.__spriteMode != "simple":
-            pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSprite_1", "##BigSprite_1##")
+        for origN in range(1, len(constants)+1):
+            num = str(origN)
+            if len(num) == 1: num = "0" + num
 
-        pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteColor_0", "##BigSpriteColor_0##")
-        if self.__spriteMode != "simple":
-            pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteColor_1", "##BigSpriteColor_1##")
+            d["##CON" + num+"##"] = str(constants[origN-1])
 
-        pointerCode += self.__createPointerCode(listOfVar, "##NAME##_BigSpriteBG", "##BigSpriteBG##")
+        return d
 
-        pointerCode += self.__createConstantCode(listOfVar, constants, 0, "##Height##")
-        pointerCode += self.__createConstantCode(listOfVar, constants, 1, "##LineHeight##")
-
-        for item in originalVars.keys():
-            pointerCode += self.__createVariableCode(listOfVar, item, originalVars[item])
-
-        return "\n" + pointerCode
-
-    def __createVariableCode(self, listOfVar, originalVar, desc):
-        text = "\tLDA\t#" + originalVar +"\n" +\
-               "\tSTA\t"  + listOfVar[0]      +"\n"
-
-        self.__pointers[desc] = listOfVar[0]
-        listOfVar.pop(0)
-
-        return text
-
-    def __createConstantCode(self, listOfVar, constants, num, shortName):
-        text = "\tLDA\t#" + str(constants[num]) +"\n" +\
-              "\tSTA\t"  + listOfVar[0]        +"\n"
-
-        self.__pointers[shortName] = listOfVar[0]
-        listOfVar.pop(0)
-
-        return text
-
-    def __createPointerCode(self, listOfVar, pointerName, shortName):
-        text ="\tLDA\t#<" + pointerName   + "\n" +\
-              "\tSTA\t"   + listOfVar[0]  + "\n" +\
-              "\tLDA\t#>" + pointerName   + "\n" +\
-              "\tSTA\t"   + listOfVar[1]  + "\n\n"
-
-        self.__pointers[shortName] = listOfVar[0]
-        listOfVar.pop(0)
-        listOfVar.pop(0)
-
-        return(text)
 
     def __convertDataToReallyBigSprite(self, name):
         pixelData0      = "\n" + name + "_BigSprite_0"      + "\n"
@@ -849,7 +817,7 @@ class Compiler:
         for spriteNum in range(0, self.__frameNum):
             line = self.__spriteData[spriteNum][0]
             bgLine = self.__spriteData[spriteNum][2]
-            for Y in range(0, self.__height):
+            for Y in range(self.__height-1, -1, -1):
                 pixels = line[Y]["pixels"]
                 pixelLine = "\tbyte\t#%" + "".join(pixels[0:8])
                 if spriteNum == 0:
@@ -884,7 +852,7 @@ class Compiler:
 
             for spriteNum in range(0, self.__frameNum):
                 line = self.__spriteData[spriteNum][stuff[self.__spriteMode][0]]
-                for Y in range(0, self.__height):
+                for Y in range(self.__height-1, -1, -1):
                     pixels = line[Y]["pixels"]
                     if "1" in pixels: isThereASinglePixelinP1 = True
 
@@ -944,6 +912,22 @@ class Compiler:
             text += "\talign\t256\n"
 
         text += backGroundData + "\n"
+
+        text = self.checkIfMissing(name, text)
+
+        return(text)
+
+    def checkIfMissing(self, name, text):
+        parts = [name + "_BigSprite_XXX\n",
+                 name + "_BigSpriteColor_XXX" + "\n"]
+
+        for item in parts:
+            for num in range(0, 2):
+                if item.replace("XXX", str(num)) not in text:
+                   text = text.replace(
+                       item.replace("XXX", str(1 - num)),
+                       item.replace("XXX", str(num))+item.replace("XXX", str(1 - num))
+                   )
         return(text)
 
     def setNewLineNum(self, orig, text):

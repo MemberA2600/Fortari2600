@@ -45,7 +45,7 @@ class BigSpriteMaker:
         self.__numOfFrames = 1
         self.__backColor = "$00"
         self.__speed = 0
-        self.__lineHeight = 1
+        self.__lineHeight = 2
 
         self.__canvasX = 0
         self.__canvasStartX = 0
@@ -231,7 +231,7 @@ class BigSpriteMaker:
                                 self.checkWidthEntry, self.checkWidthEntry)
 
         self.__lineHeightSetter = VisualEditorFrameWithLabelAndEntry(
-                                self.__loader, "1", self.__theSetters, round(self.__sizes[1] // 32), "lineHeight", self.__smallFont,
+                                self.__loader, "2", self.__theSetters, round(self.__sizes[1] // 32), "lineHeight", self.__smallFont,
                                 self.checkLineHeight, self.checkLineHeight)
 
         self.__frameNumSetter.getEntry().config(state = DISABLED)
@@ -439,7 +439,7 @@ class BigSpriteMaker:
         self.checkIfValidFileName(None)
 
         if self.__mode != "double":
-           self.__canvasStartX = self.__canvas.winfo_width() // 2  - (4 * self.__width * self.__width * w)
+           self.__canvasStartX = self.__canvas.winfo_width() // 2  - (4 * self.__width * w)
            self.__maxX         = self.__canvas.winfo_width()  - (8 * self.__width * w)
         else:
             self.__canvasStartX = self.__canvas.winfo_width() // 2 - (8 * self.__width * w)
@@ -605,9 +605,7 @@ class BigSpriteMaker:
         Compiler(self.__loader, self.__loader.virtualMemory.kernel, "testBigSprite",
                               [self.__dataLines, self.__lineHeight, self.__h, self.__activeMode,
                                self.__numOfFrames, "NTSC", "Test_BigSprite", self.__testColorSetter.getValue(),
-                               ["Tile4_1", "Tile4_2", "Tile4_3"]])
-
-
+                               ["Tile1_1", "Tile1_3", "Tile1_5"]])
 
     def checkIfValidFileName(self, event):
         try:
@@ -676,14 +674,22 @@ class BigSpriteMaker:
 
             self.__frameNumSetter.setValue(data[2].replace("\n", "").replace("\r", ""))
             self.__numOfFrames = int(data[2].replace("\n", "").replace("\r", ""))
-
             self.__lineHeightSetter.setValue(data[3].replace("\n", "").replace("\r", ""))
+            self.__mode = data[4].replace("\n", "").replace("\r", "")
+
+            modes = ["simple", "double", "overlay"]
+
+            for num in range(0, len(modes)):
+                if modes[num] == self.__mode:
+                    self.__spriteT.set(num + 1)
+                    self.__activeMode == self.__mode
+
             try:
                 self.__lineHeight = int(data[3].replace("\n", "").replace("\r", ""))
             except:
                 self.__lineHeight = 1
 
-            trueData = data[4:]
+            trueData = data[5:]
 
             spriteNum = 0
             colorNum  = 0
@@ -712,11 +718,19 @@ class BigSpriteMaker:
                    colorNum = 0
                    spriteNum += 1
 
+            for height in range(0,256):
+                for spriteNum in range(0, self.__frameNumMax):
+                    self.__dataLines[spriteNum][0][height]["color"] = self.__dataLines[0][0][height]["color"]
+                    self.__dataLines[spriteNum][1][height]["color"] = self.__dataLines[0][1][height]["color"]
+                    self.__dataLines[spriteNum][2][height]["color"] = self.__dataLines[0][2][height]["color"]
+
+
             self.__changed = False
             self.__frameNum = 0
             self.__indexVal.set("0")
             self.__Y = 0
             self.__YNum.set("0")
+            self.__spriteLoader.setValue(".".join(fpath.replace("\\", "/").split("/")[-1].split(".")[:-1]))
 
             #if True:
             try:
@@ -765,9 +779,19 @@ class BigSpriteMaker:
         name1 = self.__loader.mainWindow.projectPath + "bigSprites/"+self.__spriteLoader.getValue()+".a26"
         name2 = self.__loader.mainWindow.projectPath + "bigSprites/"+self.__spriteLoader.getValue()+".asm"
 
+        import os
+        if os.path.exists(name1):
+            answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "No":
+                return
+
+
         txt = (self.__loader.virtualMemory.kernel + "\n" +
-               str(self.__h) + "\n" + str(self.__numOfFrames) +
-               str(self.__lineHeight) + "\n" + "\n")
+               str(self.__h) + "\n" + str(self.__numOfFrames) + "\n" +
+               str(self.__lineHeight) + "\n"+str(self.__activeMode) + "\n")
 
         for spriteNum in range(0, self.__numOfFrames):
             for colorNum in range(0,3):
@@ -788,7 +812,7 @@ class BigSpriteMaker:
         file = open(name2, "w")
         file.write(
             "* Height=" + str(self.__h) + "\n" + "* Frames=" +\
-            str(self.__numOfFrames) + "\n" + "* LineHeight=" + str(self.__lineHeight) + "\n" + spriteData
+            str(self.__numOfFrames) + "\n" + "* LineHeight=" + str(self.__lineHeight) + "\n* Mode="+str(self.__activeMode + "\n" + spriteData)
         )
         file.close()
 
@@ -957,7 +981,7 @@ class BigSpriteMaker:
 
         h = 1
         while h < 2:
-            h = self.__canvas.winfo_width() // 64
+            h = self.__canvas.winfo_width() // 128
 
         self.__clickedBox(w, h)
 
@@ -1025,7 +1049,7 @@ class BigSpriteMaker:
             for num2 in range(0,3):
 
                 self.__dataLines[-1].append([])
-                for num3 in range(0,255):
+                for num3 in range(0,256):
                     self.__dataLines[-1][-1].append({})
                     self.__dataLines[-1][-1][-1]["pixels"] = []
                     for num in range(0, 16):

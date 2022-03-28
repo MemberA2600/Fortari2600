@@ -17,3 +17,6 @@
 
 ##NAME##_heigth = ##CON01##
 ##NAME##_lineHeigth = ##CON02##
+##NAME##_X2Offset = ##CON03##
+##NAME##_mono = ##CON04##
+##NAME##_frameNum = ##CON05##

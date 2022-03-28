@@ -206,7 +206,6 @@ class Assembler():
         branchers = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
 
         sections = self.getSectionNames(code)
-
         codeLines = []
         freebytes = {}
         currentBank = 1
@@ -693,21 +692,6 @@ class Assembler():
             name = self.generateName(base, counter)
 
         return(name)
-
-        """
-        for root, dirs, files in os.walk(self.projectPath+"bin/"):
-            for file in files:
-                num = ""
-                if (len(str(counter)))<4:
-                    num = (4-len(str(counter)))*"0"+str(counter)
-                else:
-                    num = str(counter)
-                if os.path.exists(self.projectPath+"bin/"+base+"_"+self.__tv+"_"+num):
-                    counter+=1
-                else:
-                    return(base+"_"+self.__tv+"_"+num)
-            return(base+"_"+self.__tv+"_0001")
-        """
 
     def generateName(self, base, counter):
         if (len(str(counter))) < 4:

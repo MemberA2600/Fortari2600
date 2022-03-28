@@ -1,6 +1,7 @@
 * Height=8
 * Frames=3
 * LineHeight=2
+* Mode=overlay
 	align	256
 
 ##NAME##_BigSprite_1
@@ -80,12 +81,12 @@
 
 
 ##NAME##_BigSpriteBG
-	byte	#$00
-	byte	#$00
-	byte	#$00
-	byte	#$00
-	byte	#$00
-	byte	#$00
-	byte	#$00
-	byte	#$00
+	byte	#$d0
+	byte	#$d2
+	byte	#$d4
+	byte	#$d2
+	byte	#$d2
+	byte	#$d4
+	byte	#$d2
+	byte	#$d0
 

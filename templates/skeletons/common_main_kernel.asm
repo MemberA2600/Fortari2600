@@ -216,6 +216,7 @@ EnterKernel
 	JMP 	DoSubMenuKernel	; instead.
 
 StayHere
+
 	LDA	frameColor	
 	sta	WSYNC
 	STA	COLUBK
@@ -1666,7 +1667,7 @@ ScreenBottomBank2
 
 !!!SCREENBOTTOM_BANK2!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -1991,7 +1992,7 @@ ScreenBottomBank3
 
 !!!SCREENBOTTOM_BANK3!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -2314,7 +2315,7 @@ ScreenBottomBank4
 
 !!!SCREENBOTTOM_BANK4!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -2638,7 +2639,7 @@ ScreenBottomBank5
 
 !!!SCREENBOTTOM_BANK5!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -2961,7 +2962,7 @@ ScreenBottomBank6
 
 !!!SCREENBOTTOM_BANK6!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -3285,7 +3286,7 @@ ScreenBottomBank7
 
 !!!SCREENBOTTOM_BANK7!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
@@ -3596,7 +3597,7 @@ ScreenBottomBank8
 
 !!!SCREENBOTTOM_BANK8!!!
 
-	LDA	frameColor
+	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
 	STA	COLUP0
