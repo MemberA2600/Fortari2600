@@ -912,8 +912,18 @@ class Compiler:
             text += "\talign\t256\n"
 
         text += backGroundData + "\n"
+        lineNum = self.setNewLineNum(lineNum, backGroundData)[0]
+
+        emptyness = name + "_Empty"+"\n"+"\tBYTE\t#0\n"*self.__height
+
+        if self.setNewLineNum(lineNum, emptyness)[1] == True:
+            text += "\talign\t256\n"
+
+        text += emptyness + "\n"
+        lineNum = self.setNewLineNum(lineNum, emptyness)[0]
 
         text = self.checkIfMissing(name, text)
+
 
         return(text)
 

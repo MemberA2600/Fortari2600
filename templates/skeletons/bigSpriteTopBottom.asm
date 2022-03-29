@@ -49,3 +49,19 @@
 	LDA	###NAME##_mono
 	STA	temp19
 
+	LDA	temp15
+	CMP	#255
+	BNE	##NAME##_NoTurnOff
+
+	LDA	temp17
+	AND	#%00001111
+	STA	temp17
+	
+	LDA	#<##NAME##_Empty
+	STA	temp03
+	STA	temp05
+	LDA	#>##NAME##_Empty
+	STA	temp04
+	STA	temp06
+
+##NAME##_NoTurnOff

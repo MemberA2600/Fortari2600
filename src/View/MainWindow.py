@@ -265,7 +265,7 @@ class MainWindow:
         #                                 99999, 150, 400, 60)
 
         self.__places = {}
-        __vals = [0, 6.5, 11, 17.5]
+        __vals = [0, 6.5, 11, 18.5]
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
@@ -326,17 +326,19 @@ class MainWindow:
                                           self.__openBigSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
+        self.__landscapeButton = self.__buttonMaker.createButton("landscape", 17,
+                                          self.__openLandScapeEditor, "projectPath",
+                                            False, None, self.__places, __vals[2])
 
-
-        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 17.5,
+        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 18.5,
                                           self.__openLockManager, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 18.5,
+        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 19.5,
                                           self.openMemoryManager, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 19.5,
+        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 20.5,
                                           self.openMemoryManager, "projectPath",
                                             False, None, self.__places, __vals[3])
 
@@ -703,6 +705,11 @@ class MainWindow:
         from BigSpriteMaker import BigSpriteMaker
 
         self.__subMenu = BigSpriteMaker(self.__loader)
+
+    def __openLandScapeEditor(self):
+        from LandScapeEditor import LandScapeEditor
+
+        self.__subMenu = LandScapeEditor(self.__loader)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])

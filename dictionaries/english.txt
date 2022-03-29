@@ -257,3 +257,5 @@ simple=Simple
 double=Double
 overlay=Overlay
 heightIndex=Height Index:
+landscape=Landscape (and Static Text) Editor
+xOffset=X Offset

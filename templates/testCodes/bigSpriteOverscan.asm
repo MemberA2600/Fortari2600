@@ -11,7 +11,15 @@
 * spriteSettings:	temp17
 * X2Offset:		temp18
 * mono:			temp19
-	
+
+	LDA	#$08
+	BIT	SWCHB
+	BNE	Test_NoBW
+	LDA	#255
+	STA	temp15
+
+Test_NoBW	
+
 	BIT	SWCHA
 	BVS	Test_NO_LEFT
 	DEC	temp15	

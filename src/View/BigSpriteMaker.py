@@ -68,6 +68,15 @@ class BigSpriteMaker:
         self.dead = True
 
     def __closeWindow(self):
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__saveSprite()
+            elif answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                return
+
         self.dead = True
         self.__topLevelWindow.destroy()
         self.__loader.topLevels.remove(self.__topLevelWindow)

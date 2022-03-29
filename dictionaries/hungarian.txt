@@ -257,3 +257,5 @@ simple=Egyszerû
 double=Dupla
 overlay=Átfedõ
 heightIndex=Magasság Index:
+landscape=Tájkép (és Statikus Szöveg) Szerkesztõ
+xOffset=X Eltolás

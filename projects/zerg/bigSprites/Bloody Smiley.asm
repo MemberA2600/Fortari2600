@@ -90,3 +90,13 @@
 	byte	#$d2
 	byte	#$d0
 
+##NAME##_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+
