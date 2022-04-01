@@ -259,3 +259,6 @@ overlay=Átfedõ
 heightIndex=Magasság Index:
 landscape=Tájkép (és Statikus Szöveg) Szerkesztõ
 xOffset=X Eltolás
+generateRandom=Véletlenszerû Generálás
+generateText=Szöveggenerálás
+width=Hosszúság

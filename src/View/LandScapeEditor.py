@@ -26,14 +26,23 @@ class LandScapeEditor:
         self.__screenSize = self.__loader.screenSize
         self.__theyAreDisabled = True
 
+        self.__ctrl = False
+        self.__middle = False
+        self.__draw = 0
+        self.__chars = {}
+        self.__play = False
+        self.__counter = 0
+
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
+        self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
 
-        self.__offset = 0
+
+        self.__offset     = 0
         self.__width      = 80      # Two screens
-        self.__maxWidth   = 160     # Has to be recalculated!
+        self.__maxWidth   = 232
         self.__lineHeight = 1
         self.__play = False
 
@@ -68,6 +77,13 @@ class LandScapeEditor:
         self.__editorFrame.pack_propagate(False)
         self.__editorFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__editorControlFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   height = round(self.__sizes[1]//5*0.25)
+                                   )
+        self.__editorControlFrame.pack_propagate(False)
+        self.__editorControlFrame.pack(side=TOP, anchor=N, fill=X)
+
         self.__displayFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    height = self.__sizes[1]//5*2
@@ -77,7 +93,7 @@ class LandScapeEditor:
 
         self.__controlFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//5*2.25)
+                                   height = round(self.__sizes[1]//5*2)
                                    )
         self.__controlFrame.pack_propagate(False)
         self.__controlFrame.pack(side=TOP, anchor=N, fill=BOTH)
@@ -105,7 +121,7 @@ class LandScapeEditor:
 
         from threading import Thread
 
-        self.__finished = [False, False, False]
+        self.__finished = [False, False, False, False, False, False]
 
         t1 = Thread(target=self.__createData)
         t1.daemon = True
@@ -119,9 +135,353 @@ class LandScapeEditor:
         t3.daemon = True
         t3.start()
 
+        t4 = Thread(target=self.__createDataHandler)
+        t4.daemon = True
+        t4.start()
+
+        t5 = Thread(target=self.__createCanvas())
+        t5.daemon = True
+        t5.start()
+
+        t6 = Thread(target=self.__createBottom())
+        t6.daemon = True
+        t6.start()
+
         L = Thread(target=self.__loop)
         L.daemon = True
         L.start()
+
+        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+
+    def __createBottom(self):
+        self.__theFuck = Frame(self.__controlFrame, bg=self.__loader.colorPalettes.getColor("window"), height=9999, width = self.__sizes[0]//5*2)
+        self.__theFuck.pack_propagate(False)
+        self.__theFuck.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__offsetLabel = Label(self.__theFuck,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("xOffset")+":",
+                                    font=self.__bigFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window"), justify = CENTER
+                                    )
+
+        self.__offsetLabel.pack_propagate(False)
+        self.__offsetLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__thePlayer = Frame(self.__theFuck, bg=self.__loader.colorPalettes.getColor("window"), height=99999, width = self.__sizes[0]//5*2)
+        self.__thePlayer.pack_propagate(False)
+        self.__thePlayer.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__offsetVal = StringVar()
+        self.__offsetVal.set("0")
+
+        self.__backImage = self.__loader.io.getImg("backwards", None)
+        self.__forImage = self.__loader.io.getImg("forwards", None)
+        self.__playImage = self.__loader.io.getImg("play", None)
+        self.__stopImage = self.__loader.io.getImg("stop", None)
+
+        self.__backButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__backImage,
+                                   width= self.__thePlayer.winfo_width() // 4,
+                                   state=DISABLED,
+                                   command=self.__decOffSet)
+
+        self.__offsetEntryFrame = Frame(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__thePlayer.winfo_width() - (self.__thePlayer.winfo_width() // 4 * 3))
+
+        self.__entryFrame = Entry(self.__offsetEntryFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=self.__thePlayer.winfo_width() - (self.__thePlayer.winfo_width() // 4 * 3),
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable = self.__offsetVal, name = "offsetEntry",
+                                   state=DISABLED, font=self.__bigFont2, justify = CENTER,
+                                   command=None)
+
+        self.__forButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__forImage,
+                                   width=self.__thePlayer.winfo_width() // 4,
+                                   state=DISABLED,
+                                   command=self.incOffSet)
+
+        self.__playButton = Button(self.__thePlayer, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__playImage, state = DISABLED,
+                                   width=self.__thePlayer.winfo_width() // 4,
+                                   command=self.__moveIt)
+
+        self.__backButton.pack_propagate(False)
+        self.__backButton.pack(side=LEFT, anchor=W, fill=Y)
+        self.__offsetEntryFrame.pack_propagate(False)
+        self.__offsetEntryFrame.pack(side=LEFT, anchor=W, fill=Y)
+        self.__entryFrame.pack_propagate(False)
+        self.__entryFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+        self.__forButton.pack_propagate(False)
+        self.__forButton.pack(side=LEFT, anchor=W, fill=Y)
+        self.__playButton.pack_propagate(False)
+        self.__playButton.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__entryFrame.bind("<KeyRelease>", self.__checkOffEntry)
+        self.__entryFrame.bind("<FocusOut>", self.__checkOffEntry)
+
+        self.__theFuck2 = Frame(self.__controlFrame, bg=self.__loader.colorPalettes.getColor("window"), height=9999, width = self.__sizes[0]//7)
+        self.__theFuck2.pack_propagate(False)
+        self.__theFuck2.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__widthLabel = Label(self.__theFuck2,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("width")+":",
+                                    font=self.__bigFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window"), justify = CENTER
+                                    )
+
+        self.__widthLabel.pack_propagate(False)
+        self.__widthLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__theSetter = Frame(self.__theFuck2, bg=self.__loader.colorPalettes.getColor("window"), height=99999, width = self.__sizes[0]//5*2)
+        self.__theSetter.pack_propagate(False)
+        self.__theSetter.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__theSetter2 = Frame(self.__theSetter, bg=self.__loader.colorPalettes.getColor("window"), height=99999, width = self.__sizes[0]//5*2)
+        self.__theSetter2.pack_propagate(False)
+        self.__theSetter2.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__widthVal = StringVar()
+        self.__widthVal.set("80")
+
+        self.__widthEntry = Entry(self.__theSetter2, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=999999,
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable = self.__widthVal, name = "widthEntry",
+                                   state=DISABLED, font=self.__bigFont2, justify = CENTER,
+                                   command=None)
+        self.__widthEntry.pack_propagate(False)
+        self.__widthEntry.pack(side=LEFT, fill=BOTH)
+
+        self.__widthEntry.bind("<KeyRelease>", self.__checkWidthEntry)
+        self.__widthEntry.bind("<FocusOut>", self.__checkWidthEntry)
+
+        self.__finished[5] = True
+
+    def __decOffSet(self):
+        if self.__offset <= 0:
+           self.__offset = self.__width - 40
+        else:
+           self.__offset -= 1
+
+        self.__offsetVal.set(str(self.__offset))
+        self.redrawAllButtons()
+
+
+    def incOffSet(self):
+        if self.__offset >= self.__width - 40:
+            self.__offset = 0
+        else:
+            self.__offset += 1
+
+        self.__offsetVal.set(str(self.__offset))
+        self.redrawAllButtons()
+
+    def __checkWidthEntry(self, event):
+        if self.__checkIfValid(self.__widthVal.get()) == False:
+            self.__widthEntry.config(
+                bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+        else:
+            self.__widthEntry.config(
+                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+            )
+
+            self.__width = int(self.__widthVal.get())
+            if self.__width < 40:
+                self.__width = 40
+            elif self.__width > self.__maxWidth:
+                self.__width = self.__maxWidth
+
+            self.__widthVal.set(str(self.__width))
+
+        self.__checkOffEntry(event)
+        self.changed = True
+
+
+    def __checkOffEntry(self, event):
+        if self.__checkIfValid(self.__offsetVal.get()) == False:
+            self.__entryFrame.config(
+                bg = self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+        else:
+            self.__entryFrame.config(
+                bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+            )
+
+            self.__offset = int(self.__offsetVal.get())
+            if self.__offset < 0:
+               self.__offset = 0
+            elif self.__offset > self.__width - 40:
+                if self.__play == True:
+                    self.__offset = 0
+                else:
+                    self.__offset = self.__width - 40
+
+            self.__offsetVal.set(str(self.__offset))
+
+        self.redrawAllButtons()
+
+    def __checkIfValid(self, val):
+        try:
+            teszt = int(val)
+            return True
+        except:
+            return False
+
+    def __moveIt(self):
+        self.__play = 1 - self.__play
+
+    def __createCanvas(self):
+        self.__canvas = Canvas(self.__displayFrame, bg="black", bd=0,
+                               width=99999,
+                               height=99999
+                               )
+        while self.__canvas.winfo_width() < 2:
+            self.__canvas.pack_propagate(False)
+            self.__canvas.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__canvasW = self.__canvas.winfo_width() // 39
+        self.__canvasH = self.__canvas.winfo_height() // 8
+
+        self.__redrawCanvas()
+        self.__finished[4] = True
+
+    def __redrawCanvas(self):
+        self.__canvas.clipboard_clear()
+        self.__canvas.delete("all")
+
+        for theY in range(0,8):
+            self.__canvas.create_rectangle(0,
+                                           theY*self.__canvasH,
+                                           self.__canvas.winfo_width(),
+                                           (theY+1) * self.__canvasH,
+                                           outline="",
+                                           fill=self.__colorDict.getHEXValueFromTIA(
+                                               self.__dataLines[theY]["colors"][1]
+                                           ))
+
+            for theX in range(0,40):
+                if self.__dataLines[theY]["pixels"][theX+self.__offset] == 1:
+                    self.__canvas.create_rectangle(theX * self.__canvasW,
+                                                   theY * self.__canvasH,
+                                                   (theX + 1) * self.__canvasW,
+                                                   (theY + 1) * self.__canvasH,
+                                                   outline="",
+                                                   fill=self.__colorDict.getHEXValueFromTIA(
+                                                       self.__dataLines[theY]["colors"][0]
+                                                   ))
+
+
+    def __createDataHandler(self):
+        self.__randomF = Frame(self.__editorControlFrame, width=round(self.__sizes[0]*0.20), height=9999,
+                  bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__randomF.pack_propagate(False)
+        self.__randomF.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__randomB = Button(self.__randomF, height=9999, width=9999,
+                   bg=self.__loader.colorPalettes.getColor("window"),
+                   fg=self.__loader.colorPalettes.getColor("font"),
+                   text = self.__dictionaries.getWordFromCurrentLanguage("generateRandom"),
+                   state=DISABLED, font = self.__smallFont, command = self.__generateRandom
+                   )
+        self.__randomB.pack_propagate(False)
+        self.__randomB.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__textFrame = Frame(self.__editorControlFrame, width=round(self.__sizes[0]*0.60), height=9999,
+                  bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__textFrame.pack_propagate(False)
+        self.__textFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__textToConvert = StringVar()
+        self.__textToConvert.set("...and then i noticed that she was a gargoyle!")
+        self.__textEntry = Entry(self.__textFrame, textvariable=self.__textToConvert, font=self.__smallFont, state=DISABLED)
+        self.__textEntry.pack_propagate(False)
+        self.__textEntry.pack(fill=BOTH)
+
+        self.__finished[3] = True
+
+        self.randomTG = Frame(self.__editorControlFrame, width=round(self.__sizes[0]*0.20), height=9999,
+                  bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.randomTG.pack_propagate(False)
+        self.randomTG.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__generateTB = Button(self.randomTG, height=9999, width=9999,
+                   bg=self.__loader.colorPalettes.getColor("window"),
+                   fg=self.__loader.colorPalettes.getColor("font"),
+                   text = self.__dictionaries.getWordFromCurrentLanguage("generateText"),
+                   state=DISABLED, font = self.__smallFont, command = self.__generateTXT
+                   )
+        self.__generateTB.pack_propagate(False)
+        self.__generateTB.pack(side=LEFT, anchor=E, fill=BOTH)
+
+    def __generateTXT(self):
+        for theY in range(0,8):
+            for theX in range(0,self.__maxWidth):
+                self.__dataLines[theY]["pixels"][theX] = 0
+
+        text = self.__textToConvert.get().upper()
+        index = 0
+
+        for char in text:
+            if index > self.__maxWidth - 6:
+               break
+
+            if char not in self.__chars.keys():
+               char = " "
+
+            for Y in range(0,8):
+                for X in range(0,5):
+                    self.__dataLines[Y]["pixels"][index+X] = int(self.__chars[char][Y][X])
+
+            index+=6
+
+        self.redrawAllButtons()
+        self.changed = True
+
+
+    def __generateRandom(self):
+        from random import randint, seed
+        from datetime import datetime
+
+        seed(int(str(datetime.now()).split(".")[-1]))
+
+        number = randint(1,9)
+        self.setThem(number, 0)
+
+        for theX in range(1, self.__maxWidth):
+            neeeeew = 0
+            while neeeeew == 0:
+                neeeeew = randint(-2,2)
+                if number + neeeeew > 8 or number + neeeeew < 1:
+                   neeeeew *= -1
+
+            number += neeeeew
+            self.setThem(number, theX)
+
+        self.redrawAllButtons()
+        self.changed = True
+
+
+    def setThem(self, num, X):
+        binary = "0"*(8-num) + "1"*num
+        for Y in range(0,8):
+            self.__dataLines[Y]["pixels"][X] = int(binary[Y])
+
+    def redrawAllButtons(self):
+        for theY in range(0,8):
+            for theX in range(self.__offset, self.__offset+40):
+                self.colorTile(theY, theX - self.__offset, self.__dataLines[theY]["pixels"][theX])
+
+        self.__redrawCanvas()
 
     def __createData(self):
         self.__dataLines = []
@@ -133,6 +493,21 @@ class LandScapeEditor:
             )
             for theX in range(0, self.__maxWidth):
                 self.__dataLines[-1]["pixels"].append(0)
+
+
+        f = open("config/letters.txt")
+        txt = f.readlines()
+        f.close()
+
+        lastChar = None
+        for line in txt:
+            line = line.replace("\n", "").replace("\r", "")
+            if line != "":
+               if len(line) == 1:
+                  lastChar = line[0]
+                  self.__chars[lastChar] = []
+               else:
+                  self.__chars[lastChar].append(line)
 
         self.__finished[0] = True
 
@@ -193,7 +568,6 @@ class LandScapeEditor:
         self.__entryVals = []
 
         for theY in range(0,8):
-            self.__buttons.append([])
             self.__entries.append([])
             self.__entryVals.append(["$0e", "$00"])
 
@@ -237,15 +611,73 @@ class LandScapeEditor:
         for item in self.__finished:
             if item == False: return
 
+        button = 0
+        try:
+            button = int(str(event).split(" ")[3].split("=")[1])
+        except:
+            if self.__ctrl:
+                button = 3
+            else:
+                button = 1
+
+        if self.__ctrl == False and button == 3:
+            return
+
+        name = str(event.widget).split(".")[-1]
+
+        Y = int(name.split("_")[0])
+        X = int(name.split("_")[1])
+
+        if self.__draw == False:
+            if self.__ctrl == False:
+                self.__dataLines[Y]["pixels"][X + self.__offset] = 1 - self.__dataLines[Y]["pixels"][X + self.__offset]
+            else:
+                if   button == 1:
+                    self.__dataLines[Y]["pixels"][X + self.__offset] = 1
+                elif button == 3:
+                    self.__dataLines[Y]["pixels"][X + self.__offset] = 3
+        else:
+            if self.__ctrl == False:
+                self.__dataLines[Y]["pixels"][X + self.__offset] = 1
+            else:
+                self.__dataLines[Y]["pixels"][X + self.__offset] = 3
+
+        self.colorTile(Y, X, self.__dataLines[Y]["pixels"][X + self.__offset])
+        self.__redrawCanvas()
+        self.changed = True
+
+
+    def colorTile(self, Y, X, value):
+        button = self.__buttons[Y][X]
+
+        if value == 1:
+           button.config(bg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+        else:
+           button.config(bg = self.__loader.colorPalettes.getColor("boxBackNormal"))
+
     def __enter(self, event):
         for item in self.__finished:
             if item == False: return
+
+        if self.__draw:
+            self.__clicked(event)
 
     def __setColorData(self, event):
         for item in self.__finished:
             if item == False: return
 
         breaking = False
+        for theY in range(0,8):
+            for colorNum in range(0,2):
+                if self.__entries[theY][colorNum].getEntry() == event.widget:
+                    self.__dataLines[theY]["colors"][colorNum] = self.__entries[theY][colorNum].getValue()
+                    breaking = True
+                    break
+            if breaking == True: break
+
+        self.__redrawCanvas()
+        self.changed = True
+
 
     def __loop(self):
         from time import sleep
@@ -266,5 +698,48 @@ class LandScapeEditor:
                         for entry in yLine:
                             entry.changeState(NORMAL)
                     self.__theyAreDisabled = False
+                    self.__randomB.config(state=NORMAL)
+                    self.__textEntry.config(state=NORMAL)
+                    self.__generateTB.config(state=NORMAL)
+                    self.__playButton.config(state=NORMAL)
+                    self.__entryFrame.config(state=NORMAL)
+                    self.__forButton.config(state=NORMAL)
+                    self.__backButton.config(state=NORMAL)
+                    self.__widthEntry.config(state=NORMAL)
+
+                else:
+                    if self.__width == 40:
+                        self.__playButton.config(state=DISABLED)
+                        self.__entryFrame.config(state=DISABLED)
+                        self.__forButton.config(state=DISABLED)
+                        self.__backButton.config(state=DISABLED)
+                        self.__play = False
+                    else:
+                        self.__playButton.config(state=NORMAL)
+                        self.__entryFrame.config(state=NORMAL)
+                        self.__forButton.config(state=NORMAL)
+                        self.__backButton.config(state=NORMAL)
+
+                    if self.__play == False:
+                       self.__playButton.config(image = self.__playImage)
+                       self.__counter = 0
+                    else:
+                        self.__playButton.config(image=self.__stopImage)
+                        if self.__counter > 2:
+                           self.__counter = 0
+
+                           self.__offsetVal.set(str(self.__offset+1))
+                           self.__checkOffEntry(None)
+                        else:
+                           self.__counter+=1
 
             sleep(0.0005)
+
+    def drawMode(self, event):
+        self.__draw = 1 - self.__draw
+
+    def shiftON(self, event):
+        self.__ctrl = True
+
+    def shiftOff(self, event):
+        self.__ctrl = False
