@@ -304,17 +304,24 @@ class LandScapeEditor:
         self.__nameEntry.bind("<FocusOut>", self.checkIfValidFileName)
 
         self.__openFrame = Frame(self.__theFuck5, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
-                                 width = self.__theFuck5.winfo_width() // 2)
+                                 width = self.__theFuck5.winfo_width() // 3)
         self.__openFrame.pack_propagate(False)
         self.__openFrame.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__saveFrame = Frame(self.__theFuck5, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
-                                 width = self.__theFuck5.winfo_width() // 2)
+                                 width = self.__theFuck5.winfo_width() // 3)
         self.__saveFrame.pack_propagate(False)
-        self.__saveFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__saveFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__testFrame = Frame(self.__theFuck5, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
+                                 width = self.__theFuck5.winfo_width() // 3)
+        self.__testFrame.pack_propagate(False)
+        self.__testFrame.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__openImage = self.__loader.io.getImg("open", None)
         self.__saveImage = self.__loader.io.getImg("save", None)
+        self.__testImage = self.__loader.io.getImg("stella", None)
+
 
         self.__openImageButton = Button(self.__openFrame, height=9999, width=9999,
                    bg=self.__loader.colorPalettes.getColor("window"),
@@ -332,10 +339,78 @@ class LandScapeEditor:
         self.__saveImageButton.pack_propagate(False)
         self.__saveImageButton.pack(side=LEFT, anchor=E, fill=BOTH)
 
+        self.__testImageButton = Button(self.__testFrame, height=9999, width=9999,
+                   bg=self.__loader.colorPalettes.getColor("window"),
+                   image = self.__testImage,
+                   state=DISABLED, command = self.__testLS
+                   )
+        self.__testImageButton.pack_propagate(False)
+        self.__testImageButton.pack(side=LEFT, anchor=E, fill=BOTH)
+
         self.__finished[5] = True
 
-    def __openLS(self):
+    def __testLS(self):
         pass
+
+    def __openLS(self):
+        compatibles = {
+            "common": ["common"]
+        }
+
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__saveLS()
+            elif answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                return
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "landscapes/")
+
+        if fpath == "":
+            return
+
+        try:
+        #if True:
+            file = open(fpath, "r")
+            data = file.readlines()
+            file.close()
+
+            if data[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
+                    return
+
+
+            self.__width = int(data[1])
+            self.__widthVal.set(data[1])
+
+            for lineNum in range(2,10):
+                line = data[lineNum].replace("\r", "").replace("\n","").split(" ")
+                trueLineNum = lineNum - 2
+                self.__entries[trueLineNum][0].setValue(line[0])
+                self.__entries[trueLineNum][1].setValue(line[1])
+
+                self.__dataLines[trueLineNum]["colors"][0] = line[0]
+                self.__dataLines[trueLineNum]["colors"][1] = line[1]
+
+
+            for lineNum in range(10, 18):
+                line = data[lineNum].replace("\r", "").replace("\n","").split(" ")
+                trueLineNum = lineNum - 10
+                for X in range(0, len(line)):
+                    self.__dataLines[trueLineNum]["pixels"][X] = int(line[X])
+
+            self.__soundPlayer.playSound("Success")
+            self.redrawAllButtons()
+        except Exception as e:
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
 
     def __saveLS(self):
 
@@ -839,61 +914,67 @@ class LandScapeEditor:
         from time import sleep
 
         while self.dead == False and self.__mainWindow.dead == False:
-            noLoop = False
+            try:
+                noLoop = False
 
-            for item in self.__finished:
-                if item == False: noLoop = True
+                for item in self.__finished:
+                    if item == False: noLoop = True
 
-            if noLoop == False:
-                if self.__theyAreDisabled == True:
-                    for yLine in self.__buttons:
-                        for button in yLine:
-                            button.config(state = NORMAL)
+                if noLoop == False:
+                    if self.__theyAreDisabled == True:
+                        for yLine in self.__buttons:
+                            for button in yLine:
+                                button.config(state = NORMAL)
 
-                    for yLine in self.__entries:
-                        for entry in yLine:
-                            entry.changeState(NORMAL)
-                    self.__theyAreDisabled = False
-                    self.__randomB.config(state=NORMAL)
-                    self.__textEntry.config(state=NORMAL)
-                    self.__generateTB.config(state=NORMAL)
-                    self.__playButton.config(state=NORMAL)
-                    self.__entryFrame.config(state=NORMAL)
-                    self.__forButton.config(state=NORMAL)
-                    self.__backButton.config(state=NORMAL)
-                    self.__widthEntry.config(state=NORMAL)
-                    self.__openImageButton.config(state=NORMAL)
-
-                else:
-                    if self.__width == 40:
-                        self.__playButton.config(state=DISABLED)
-                        self.__entryFrame.config(state=DISABLED)
-                        self.__forButton.config(state=DISABLED)
-                        self.__backButton.config(state=DISABLED)
-                        self.__play = False
-                    else:
+                        for yLine in self.__entries:
+                            for entry in yLine:
+                                entry.changeState(NORMAL)
+                        self.__theyAreDisabled = False
+                        self.__randomB.config(state=NORMAL)
+                        self.__textEntry.config(state=NORMAL)
+                        self.__generateTB.config(state=NORMAL)
                         self.__playButton.config(state=NORMAL)
                         self.__entryFrame.config(state=NORMAL)
                         self.__forButton.config(state=NORMAL)
                         self.__backButton.config(state=NORMAL)
+                        self.__widthEntry.config(state=NORMAL)
+                        self.__openImageButton.config(state=NORMAL)
+                        self.__testImageButton.config(state=NORMAL)
 
-                    if self.__play == False:
-                       self.__playButton.config(image = self.__playImage)
-                       self.__counter = 0
+
                     else:
-                        self.__playButton.config(image=self.__stopImage)
-                        if self.__counter > 2:
-                           self.__counter = 0
-
-                           self.__offsetVal.set(str(self.__offset+1))
-                           self.__checkOffEntry(None)
+                        if self.__width == 40:
+                            self.__playButton.config(state=DISABLED)
+                            self.__entryFrame.config(state=DISABLED)
+                            self.__forButton.config(state=DISABLED)
+                            self.__backButton.config(state=DISABLED)
+                            self.__play = False
                         else:
-                           self.__counter+=1
+                            self.__playButton.config(state=NORMAL)
+                            self.__entryFrame.config(state=NORMAL)
+                            self.__forButton.config(state=NORMAL)
+                            self.__backButton.config(state=NORMAL)
 
-                    if self.changed == True and self.__validFName == True:
-                       self.__saveImageButton.config(state=NORMAL)
-                    else:
-                       self.__saveImageButton.config(state=DISABLED)
+                        if self.__play == False:
+                           self.__playButton.config(image = self.__playImage)
+                           self.__counter = 0
+                        else:
+                            self.__playButton.config(image=self.__stopImage)
+                            if self.__counter > 2:
+                               self.__counter = 0
+
+                               self.__offsetVal.set(str(self.__offset+1))
+                               self.__checkOffEntry(None)
+                            else:
+                               self.__counter+=1
+
+                        if self.changed == True and self.__validFName == True:
+                           self.__saveImageButton.config(state=NORMAL)
+                        else:
+                           self.__saveImageButton.config(state=DISABLED)
+
+            except:
+                pass
 
             sleep(0.025)
 

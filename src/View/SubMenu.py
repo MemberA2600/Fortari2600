@@ -53,7 +53,10 @@ class SubMenu:
 
         self.changeWindowState(True, maxNum-1)
         self.__topLevel.wait_window()
-        self.changeWindowState(False, maxNum-1)
+        try:
+            self.changeWindowState(False, maxNum-1)
+        except:
+            pass
 
         try:
             self.__loader.subMenus.pop(-1)
