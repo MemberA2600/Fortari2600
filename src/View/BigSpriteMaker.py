@@ -771,6 +771,7 @@ class BigSpriteMaker:
             except Exception as e:
                 print(str(e))
 
+            self.__soundPlayer.playSound("Success")
             self.__redrawCanvas()
 
         except Exception as e:
@@ -825,6 +826,7 @@ class BigSpriteMaker:
         )
         file.close()
 
+        self.__soundPlayer.playSound("Success")
         self.__changed = False
 
 

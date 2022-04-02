@@ -32,6 +32,7 @@ class LandScapeEditor:
         self.__chars = {}
         self.__play = False
         self.__counter = 0
+        self.__validFName = True
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -55,7 +56,7 @@ class LandScapeEditor:
         if self.changed == True:
             answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
             if answer == "Yes":
-                self.__saveSprite()
+                self.__saveLS()
             elif answer == "Cancel":
                 self.__topLevelWindow.deiconify()
                 self.__topLevelWindow.focus()
@@ -260,7 +261,161 @@ class LandScapeEditor:
         self.__widthEntry.bind("<KeyRelease>", self.__checkWidthEntry)
         self.__widthEntry.bind("<FocusOut>", self.__checkWidthEntry)
 
+        self.__theFuck3 = Frame(self.__controlFrame, bg=self.__loader.colorPalettes.getColor("window"), height=9999, width = 999999)
+        self.__theFuck3.pack_propagate(False)
+        self.__theFuck3.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__nameLabel = Label(self.__theFuck3,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("name"),
+                                    font=self.__bigFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window"), justify = CENTER
+                                    )
+
+        self.__nameLabel.pack_propagate(False)
+        self.__nameLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__theFuck4 = Frame(self.__theFuck3, bg=self.__loader.colorPalettes.getColor("window"), height=9999, width = 999999)
+        while self.__theFuck4.winfo_width() < 2:
+            self.__theFuck4.pack_propagate(False)
+            self.__theFuck4.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__nameEntryFrame = Frame(self.__theFuck4, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
+                                      width = round(self.__theFuck4.winfo_width()//1.5))
+        self.__nameEntryFrame.pack_propagate(False)
+        self.__nameEntryFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__nameVal = StringVar()
+        self.__nameVal.set("Fatherland")
+
+        self.__nameEntry = Entry(self.__nameEntryFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=999999,
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable = self.__nameVal, name = "nameEntry",
+                                   font=self.__bigFont)
+        self.__nameEntry.pack_propagate(False)
+        self.__nameEntry.pack(side=LEFT, fill=BOTH)
+
+        self.__theFuck5 = Frame(self.__theFuck4, bg=self.__loader.colorPalettes.getColor("window"), height=9999, width = 999999)
+        while self.__theFuck5.winfo_width() < 2:
+            self.__theFuck5.pack_propagate(False)
+            self.__theFuck5.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__nameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
+        self.__nameEntry.bind("<FocusOut>", self.checkIfValidFileName)
+
+        self.__openFrame = Frame(self.__theFuck5, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
+                                 width = self.__theFuck5.winfo_width() // 2)
+        self.__openFrame.pack_propagate(False)
+        self.__openFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__saveFrame = Frame(self.__theFuck5, bg=self.__loader.colorPalettes.getColor("window"), height=9999,
+                                 width = self.__theFuck5.winfo_width() // 2)
+        self.__saveFrame.pack_propagate(False)
+        self.__saveFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__openImage = self.__loader.io.getImg("open", None)
+        self.__saveImage = self.__loader.io.getImg("save", None)
+
+        self.__openImageButton = Button(self.__openFrame, height=9999, width=9999,
+                   bg=self.__loader.colorPalettes.getColor("window"),
+                   image = self.__openImage,
+                   state=DISABLED, command = self.__openLS
+                   )
+        self.__openImageButton.pack_propagate(False)
+        self.__openImageButton.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__saveImageButton = Button(self.__saveFrame, height=9999, width=9999,
+                   bg=self.__loader.colorPalettes.getColor("window"),
+                   image = self.__saveImage,
+                   state=DISABLED, command = self.__saveLS
+                   )
+        self.__saveImageButton.pack_propagate(False)
+        self.__saveImageButton.pack(side=LEFT, anchor=E, fill=BOTH)
+
         self.__finished[5] = True
+
+    def __openLS(self):
+        pass
+
+    def __saveLS(self):
+
+        name1 = self.__loader.mainWindow.projectPath+"landscapes/"+self.__nameVal.get()+".a26"
+        name2 = self.__loader.mainWindow.projectPath+"landscapes/"+self.__nameVal.get()+".asm"
+
+        import os
+        if os.path.exists(name1):
+            answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "No":
+                return
+
+        txt = (self.__loader.virtualMemory.kernel   + "\n" +
+               str(self.__width)                    + "\n")
+
+        for theY in range(0,8):
+            txt += self.__dataLines[theY]["colors"][0] +\
+                   " " + self.__dataLines[theY]["colors"][1] + "\n"
+
+        for theY in range(0,8):
+            for theX in range(0, self.__maxWidth):
+                txt += str(self.__dataLines[theY]["pixels"][theX])
+                if theX == (self.__maxWidth-1):
+                    txt += "\n"
+                else:
+                    txt += " "
+
+        f = open(name1, "w")
+        f.write(txt)
+        f.close()
+
+        trueWidth = self.__getTrueWidth()
+
+        from Compiler import Compiler
+
+        converted = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getLSASM",
+                              [self.__dataLines, trueWidth, "NTSC", "##NAME##"]).converted
+
+        f = open(name2, "w")
+        f.write(
+            "* Width=" + str(trueWidth+40) + "\n" + converted+ "\n")
+        f.close()
+
+        self.__soundPlayer.playSound("Success")
+        self.changed = False
+
+    def __getTrueWidth(self):
+        for startX in range(self.__width-6, 0, -6):
+            allZero = True
+            for X in range(startX, startX+5, 1):
+                for Y in range(0,8):
+                    if self.__dataLines[Y]["pixels"][X] == 1:
+                        allZero = False
+                        break
+
+                if allZero == False:
+                   return X+6
+
+
+    def checkIfValidFileName(self, event):
+        try:
+            name = str(event.widget).split(".")[-1]
+        except:
+            name = "landscape"
+
+        if self.__loader.io.checkIfValidFileName(self.__nameVal.get()) == False:
+           self.__nameEntry.config(
+               bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+               fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+           )
+           self.__validFName = False
+        else:
+            self.__nameEntry.config(
+                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+            )
+            self.__validFName = True
 
     def __decOffSet(self):
         if self.__offset <= 0:
@@ -477,6 +632,7 @@ class LandScapeEditor:
             self.__dataLines[Y]["pixels"][X] = int(binary[Y])
 
     def redrawAllButtons(self):
+
         for theY in range(0,8):
             for theX in range(self.__offset, self.__offset+40):
                 self.colorTile(theY, theX - self.__offset, self.__dataLines[theY]["pixels"][theX])
@@ -706,6 +862,7 @@ class LandScapeEditor:
                     self.__forButton.config(state=NORMAL)
                     self.__backButton.config(state=NORMAL)
                     self.__widthEntry.config(state=NORMAL)
+                    self.__openImageButton.config(state=NORMAL)
 
                 else:
                     if self.__width == 40:
@@ -733,7 +890,12 @@ class LandScapeEditor:
                         else:
                            self.__counter+=1
 
-            sleep(0.0005)
+                    if self.changed == True and self.__validFName == True:
+                       self.__saveImageButton.config(state=NORMAL)
+                    else:
+                       self.__saveImageButton.config(state=DISABLED)
+
+            sleep(0.025)
 
     def drawMode(self, event):
         self.__draw = 1 - self.__draw

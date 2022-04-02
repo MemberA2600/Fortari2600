@@ -35,7 +35,76 @@ class Compiler:
             self.getBigSpriteASM()
         elif self.__mode == "testBigSprite":
             self.testBigSprite()
+        elif self.__mode == "getLSASM":
+            self.getLSASM()
 
+    def getLSASM(self):
+        self.__lineData = self.__data[0]
+        self.__width = int(self.__data[1])
+        self.__tv         = self.__data[2]
+        self.__name       = self.__data[3]
+
+        self.converted = self.__convertLandScapeToFun()
+
+    def __convertLandScapeToFun(self):
+        all = "\talign\t256\n"
+
+        datalines = []
+
+        colorTextFG = "\n" + self.__name + "_LandScape_Color_FG"+"\n"
+        colorTextBG = "\n" + self.__name + "_LandScape_Color_BG"+"\n"
+
+        for Y in range(0,8):
+            datalines.append(
+                "\n" + self.__name + "_LandScape_Data" + str(7-Y) + "\n"
+            )
+
+            colorTextFG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][0] + "\n"
+            colorTextBG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][1] + "\n"
+
+            for startX in range(0, self.__width, 8):
+                line = "\tBYTE\t#%"
+
+                for X in range(startX, startX+8):
+                    try:
+                        line += str(self.__lineData[Y]["pixels"][X])
+                    except:
+                        line += "0"
+
+                datalines[-1] += line + "\n"
+
+        #repeat first bytes
+        for lineNum in range(0,8):
+            data = datalines[lineNum].split("\n")
+            while "BYTE" not in data[-1]:
+                data.pop()
+            while "BYTE" not in data[0]:
+                data.pop(0)
+
+            extender = "\n".join(data[0:5])+"\n"
+            datalines[lineNum]+=extender
+
+        byteCounter = 0
+        for lineNum in range(0, 8):
+            if self.setNewLineNum(byteCounter, datalines[7 - lineNum])[1] == True:
+                all += "\n\talign\t256\n"
+
+            all += datalines[7 - lineNum]
+            byteCounter = self.setNewLineNum(byteCounter, datalines[7 - lineNum])[0]
+
+        if self.setNewLineNum(byteCounter, colorTextFG) == True:
+            all += "\n\talign\t256\n"
+
+        all += colorTextFG
+        byteCounter = self.setNewLineNum(byteCounter, colorTextFG)[0]
+
+        if self.setNewLineNum(byteCounter, colorTextBG) == True:
+            all += "\n\talign\t256\n"
+
+        all += colorTextBG
+        byteCounter = self.setNewLineNum(byteCounter, colorTextBG)[0]
+
+        return (all)
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
