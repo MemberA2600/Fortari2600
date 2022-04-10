@@ -326,8 +326,8 @@ class MainWindow:
                                           self.__openBigSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__landscapeButton = self.__buttonMaker.createButton("landscape", 17,
-                                          self.__openLandScapeEditor, "projectPath",
+        self.__menuMaker = self.__buttonMaker.createButton("menuMaker", 17,
+                                          self.__openMenuMaker, "projectPath",
                                             False, None, self.__places, __vals[2])
 
         self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 18.5,
@@ -669,7 +669,7 @@ class MainWindow:
 
     def __openButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":
-            self.saveProject()
+            self.__saveProject()
 
         from OpenProjectWindow import OpenProjectWindow
 
@@ -706,10 +706,10 @@ class MainWindow:
 
         self.__subMenu = BigSpriteMaker(self.__loader)
 
-    def __openLandScapeEditor(self):
-        from LandScapeEditor import LandScapeEditor
+    def __openMenuMaker(self):
+        from MenuMaker import MenuMaker
 
-        self.__subMenu = LandScapeEditor(self.__loader)
+        self.__subMenu = MenuMaker(self.__loader)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
@@ -722,7 +722,7 @@ class MainWindow:
 
     def __closeProjectButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":
-            self.saveProject()
+            self.__saveProject()
         self.closeProject()
 
     def __achiveButtonFunction(self):

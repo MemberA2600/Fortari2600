@@ -392,6 +392,7 @@ class Assembler():
                     elif line.raw[0].upper() in branchers:
                         c = bytes([int(c.replace("$", "0x"), 16)])
                         line.bytes.append(c)
+                        #print(line.raw)
 
                         second = self.checkIfSectionName(line.raw[1], sections)
                         second = self.starToAddress(line.address, second)
@@ -601,7 +602,7 @@ class Assembler():
             newNum = hex(baseNumber+int(num)).replace("0x", "$")
             raw = raw.replace(base, newNum).replace(num, "")
         else:
-            print(raw)
+            #print(raw)
             base = re.findall(r'\d+[+|-]]', raw)[0]
             baseNumber = int(base[:-1])
             newNum = str(baseNumber+int(num))
@@ -617,7 +618,7 @@ class Assembler():
         if ("<" not in raw) and (">" not in raw):
             return(raw)
 
-
+        #print(raw)
         try:
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
         except:

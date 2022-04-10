@@ -44,34 +44,43 @@ class PictureToCode:
             "bmp", "dds", "eps", "gif", "dib", "ico", "jpg", "jpeg", "pcx", "png", "tga", "tiff", "pdf"
         ]
 
-        self.answer = self.__fileDialogs.askForFileName("loadPicture",
+        if self.__mode == "playfield":
+            self.answer = self.__fileDialogs.askForFileName("loadPicture",
                                                    False, [formats, "*"], self.__mainWindow.projectPath)
+        else:
+            self.answer = self.__fileDialogs.askForFileName("loadPicture",
+                                                   False, [formats, "a26", "*"], self.__mainWindow.projectPath+"64px/")
         if self.answer !="":
-            image = IMG.open(self.answer, "r")
-            if image.mode != "RGB":
-                image = image.convert("RGB")
-
-            self.__image = image
-
             self.__func = None
             self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
             self.__smallFont = self.__fontManager.getFont(int(self.__fontSize * 0.80), False, False, False)
             self.__smallFont2 = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
             self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize * 0.45), False, False, False)
 
-
-            if self.__mode == "playfield":
-                self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
-                                    self.__screenSize[1] / 4 - 45, None, self.__addElements, 2)
+            if self.answer.endswith("a26"):
+                f = open(self.answer, "r")
+                data = f.read()
+                f.close()
+                self.generateASM(None, None, None, data, False, True)
             else:
-                self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
-                                    self.__screenSize[1] / 3 - 45, None, self.__addElements, 1)
+                image = IMG.open(self.answer, "r")
+                if image.mode != "RGB":
+                    image = image.convert("RGB")
+
+                self.__image = image
+                if self.__mode == "playfield":
+                    self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
+                                        self.__screenSize[1] / 4 - 45, None, self.__addElements, 2)
+                else:
+                    self.__window = SubMenu(self.__loader, "loadPicture", self.__screenSize[0] / 1.5,
+                                        self.__screenSize[1] / 3 - 45, None, self.__addElements, 1)
 
             self.dead = True
 
             # Window is dead.
             if self.doThings == True:
                 self.generateImage(mode, image, None)
+
 
     def generateImage(self, mode, image, testing):
         width, height = image.size
@@ -140,7 +149,7 @@ class PictureToCode:
             self.getPFData(w, h, imgPixelData)
 
         elif mode == "64pxPicture":
-            self.generateASM(w, h, imgColorData, imgPixelData, testing)
+            self.generateASM(w, h, imgColorData, imgPixelData, testing, False)
 
     def __closeWindow(self):
         self.dead = True
@@ -870,40 +879,68 @@ class PictureToCode:
         if redraw == True:
             self.__redrawCanvas()
 
-    def generateASM(self, w, h, imgColorData, imgPixelData, testing):
+    def generateASM(self, w, h, imgColorData, imgPixelData, testing, openedDraft):
         #mergedImageData = {}
         mergedByLines = []
 
-        for Y in range(0, h):
-            tempLine = []
-            """
-            lineValues = {
-                0: [], 127: [], 255: []
-            }
-            """
-            for X in range(0, w):
-                lineDict = {}
-                lineDict["pixel"] = imgPixelData[X,Y]
-                lineDict["color"] = imgColorData[X,Y]
-                #mergedImageData[str(X)+","+str(Y)] = lineDict
-                tempLine.append(lineDict)
-                #lineValues[lineDict["pixel"][0]].append(lineDict["color"])
+        if openedDraft == False:
+            for Y in range(0, h):
+                tempLine = []
+                """
+                lineValues = {
+                    0: [], 127: [], 255: []
+                }
+                """
+                for X in range(0, w):
+                    lineDict = {}
+                    lineDict["pixel"] = imgPixelData[X,Y]
+                    lineDict["color"] = imgColorData[X,Y]
+                    #mergedImageData[str(X)+","+str(Y)] = lineDict
+                    tempLine.append(lineDict)
+                    #lineValues[lineDict["pixel"][0]].append(lineDict["color"])
 
-            lineStruct = self.decideLineColors(tempLine)
-            mergedByLines.append(lineStruct)
+                lineStruct = self.decideLineColors(tempLine)
+                mergedByLines.append(lineStruct)
+        else:
+            self.__editPicture = True
+            data = imgPixelData.replace("\r","").split("\n")
+            h = int(data[0])
+
+            for line in data[1:]:
+                line = line.split(" ")
+                if line != [""]:
+                    mergedByLines.append({})
+                    mergedByLines[-1]["background"] = line[0]
+                    mergedByLines[-1]["playfield"]  = {}
+                    mergedByLines[-1]["sprites"]    = {}
+
+                    mergedByLines[-1]["playfield"]["pixels1"] = line[1]
+                    mergedByLines[-1]["playfield"]["color"]   = line[2]
+                    mergedByLines[-1]["playfield"]["pixels2"] = line[3]
+                    mergedByLines[-1]["playfield"]["pixels"]  = line[4]
+                    mergedByLines[-1]["sprites"]["pixels"]    = line[5]
+                    mergedByLines[-1]["sprites"]["color"]     = line[6]
+
+                    self.__mirrorPF     = IntVar()
+                    self.__invertPFBG   = IntVar()
+                    self.__reduceBG     = IntVar()
+                    self.__cutBG        = IntVar()
+                    self.__mirrorPFGoGo = IntVar()
 
         if self.__editPicture == True:
             self.dead = False
             self.doThings = False
             self.__dataForEditor = {
                 "lines":  mergedByLines, "h": h}
+
             self.__window = SubMenu(self.__loader, "editPicture", self.__screenSize[0] / 1.5,
                                     self.__screenSize[1] / 1.35 - 25, None, self.__addElementsEditor, 1)
-            self.dead = True
 
+            self.dead = True
 
         if self.doThings == True or self.__editPicture == False:
             if self.__editPicture == True:
+                self.__saveItAsDraft(self.__dataForEditor["lines"], h)
                 asm = self.getASM(self.__dataForEditor["lines"], h)
             else:
                 asm = self.getASM(mergedByLines, h)
@@ -919,6 +956,22 @@ class PictureToCode:
                 file.write(asm)
                 file.close()
                 self.__loader.soundPlayer.playSound("Success")
+
+    def __saveItAsDraft(self, imageData, h):
+        textToWrite = str(h)+"\n"
+        for lineNum in range(0, h):
+            line = imageData[lineNum]
+
+            lineText =  line["background"]+" "+ line["playfield"]["pixels1"] + " " + line["playfield"]["color"] + " "+\
+                        line["playfield"]["pixels2"] + " "+ line["playfield"]["pixels"] + " " +\
+                        line["sprites"]["pixels"] + " " + line["sprites"]["color"] + "\n"
+
+            textToWrite += lineText
+
+        file = open(self.__loader.mainWindow.projectPath + "/64px/" + self.__name + ".a26", "w")
+        file.write(textToWrite)
+        file.close()
+
 
     def testingEditor(self):
         from threading import Thread

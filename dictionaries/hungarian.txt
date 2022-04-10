@@ -262,3 +262,6 @@ xOffset=X Eltolás
 generateRandom=Véletlenszerû Generálás
 generateText=Szöveggenerálás
 width=Hosszúság
+scrollingText=Fényújság Generátor
+menuMaker=Menu Fejlesztõ
+numItem=Elemek száma

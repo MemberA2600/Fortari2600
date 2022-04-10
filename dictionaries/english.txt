@@ -262,3 +262,6 @@ xOffset=X Offset
 generateRandom=Generate Random
 generateText=Generate Text
 width=Width
+scrollingText=Scrolling Text Generator
+menuMaker=Menu Maker
+numItem=Number of Items

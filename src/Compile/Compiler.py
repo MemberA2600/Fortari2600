@@ -37,60 +37,129 @@ class Compiler:
             self.testBigSprite()
         elif self.__mode == "getLSASM":
             self.getLSASM()
+        elif self.__mode == "testLandScape":
+            self.testLandScape()
 
-    def getLSASM(self):
-        self.__lineData = self.__data[0]
+    def testLandScape(self):
+        from copy import deepcopy
+
+        self.__lineData = deepcopy(self.__data[0])
         self.__width = int(self.__data[1])
         self.__tv         = self.__data[2]
         self.__name       = self.__data[3]
+        self.__monoMode   = self.__data[5]
+        self.__removeBackGround = self.__data[6]
 
-        self.converted = self.__convertLandScapeToFun()
+        variables  = self.__data[4]
+        #constants  = [self.__width-40, self.__lineData[0]["colors"][1]]
+        constants  = [self.__width+41]
+
+        XXX = self.__convertLandScapeToFun()
+
+        self.__convertedSpite = XXX[0]
+        #pontertable = self.generateJumpTable(XXX[1])
+
+        changer = self.__contructChanger(variables, constants)
+
+#        self.__enterCode = self.__io.loadSubModule("scrollingTextEnter") +\
+#                           "\n\n" +\
+#                           self.__io.loadTestElementPlain("scrollingTextEnter") + "\n"
+
+        self.__enterCode =  self.__io.loadSubModule("scrollingTextEnter") + "\n" + \
+                            self.__io.loadTestElementPlain("enterTestCommon")
+
+        #self.__overScanCode = self.__io.loadTestElementPlain("scrollingTextOverScan") + "\n"
+
+        self.__topLevelCode = self.__io.loadSubModule("scrollingTextTopBottom").replace("###KERNEL_JUMP###",
+                              self.__io.loadSubModule("kernelJump").replace(
+                                  "##KERNEL_NAME##", "##BANK##_ScrollingText_Kernel_Begin"
+                              ))
+        #                      )).replace("###JUMPTABLE###", pontertable)
+        self.__routineCode  = self.__io.loadSubModule("scrollingTextKernel") + self.__io.loadSubModule("inverted").replace("##BANK##", "BANK2")
+
+        for item in changer:
+            self.__enterCode    = self.__enterCode.replace(item, changer[item])
+            # self.__overScanCode = self.__overScanCode.replace(item, changer[item])
+            self.__topLevelCode = self.__topLevelCode.replace(item, changer[item])
+            self.__routineCode  = self.__routineCode.replace(item, changer[item])
+
+        if self.__monoMode == True:
+            if self.__removeBackGround == True:
+               self.__topLevelCode = self.__topLevelCode.replace("###NAME##_backGround", "frameColor")
+            elif type(self.__removeBackGround) == str:
+               self.__topLevelCode = self.__topLevelCode.replace("###NAME##_backGround", self.__removeBackGround)
+
+        self.__enterCode = self.__enterCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__topLevelCode = self.__topLevelCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__routineCode = self.__routineCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__convertedSpite = self.__convertedSpite.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__topLevelCode)
+        self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", self.__routineCode)
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__convertedSpite)
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def getLSASM(self):
+        from copy import deepcopy
+
+        self.__lineData = deepcopy(self.__data[0])
+        self.__width = int(self.__data[1])
+        self.__tv         = self.__data[2]
+        self.__name       = self.__data[3]
+        self.__monoMode   = self.__data[4]
+
+        self.converted = self.__convertLandScapeToFun()[0]
 
     def __convertLandScapeToFun(self):
         all = "\talign\t256\n"
 
         datalines = []
 
-        colorTextFG = "\n" + self.__name + "_LandScape_Color_FG"+"\n"
-        colorTextBG = "\n" + self.__name + "_LandScape_Color_BG"+"\n"
+        colorTextFG = "\n" + self.__name + "_ScrollingText_Color_FG"+"\n"
+        if self.__monoMode == False: colorTextBG = "\n" + self.__name + "_ScrollingText_Color_BG"+"\n"
 
         for Y in range(0,8):
-            datalines.append(
-                "\n" + self.__name + "_LandScape_Data" + str(7-Y) + "\n"
-            )
 
             colorTextFG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][0] + "\n"
-            colorTextBG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][1] + "\n"
+            if self.__monoMode == False: colorTextBG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][1] + "\n"
 
-            for startX in range(0, self.__width, 8):
+
+        # repeat first bytes
+
+        for Y in range(0,8):
+            self.__lineData[Y]["pixels"] += self.__lineData[Y]["pixels"][0:32]
+
+        #Create 8 long coloums.
+        counter = 0
+        for startX in range(0, self.__width, 8):
+            datalines.append(
+                "\n" + self.__name + "_ScrollingText_Data" + str(counter) + "\n"
+            )
+
+            for Y in range(7,-1,-1):
                 line = "\tBYTE\t#%"
-
-                for X in range(startX, startX+8):
+                for X in range(startX, startX + 8):
                     try:
                         line += str(self.__lineData[Y]["pixels"][X])
                     except:
                         line += "0"
-
                 datalines[-1] += line + "\n"
-
-        #repeat first bytes
-        for lineNum in range(0,8):
-            data = datalines[lineNum].split("\n")
-            while "BYTE" not in data[-1]:
-                data.pop()
-            while "BYTE" not in data[0]:
-                data.pop(0)
-
-            extender = "\n".join(data[0:5])+"\n"
-            datalines[lineNum]+=extender
+            counter+=1
 
         byteCounter = 0
-        for lineNum in range(0, 8):
-            if self.setNewLineNum(byteCounter, datalines[7 - lineNum])[1] == True:
+        for offset in range(0, len(datalines)):
+            if self.setNewLineNum(byteCounter, datalines[offset])[1] == True:
                 all += "\n\talign\t256\n"
 
-            all += datalines[7 - lineNum]
-            byteCounter = self.setNewLineNum(byteCounter, datalines[7 - lineNum])[0]
+            all += datalines[offset]
+            byteCounter = self.setNewLineNum(byteCounter, datalines[offset])[0]
 
         if self.setNewLineNum(byteCounter, colorTextFG) == True:
             all += "\n\talign\t256\n"
@@ -98,13 +167,15 @@ class Compiler:
         all += colorTextFG
         byteCounter = self.setNewLineNum(byteCounter, colorTextFG)[0]
 
-        if self.setNewLineNum(byteCounter, colorTextBG) == True:
-            all += "\n\talign\t256\n"
+        if self.__monoMode == False:
+            if self.setNewLineNum(byteCounter, colorTextBG) == True:
+                all += "\n\talign\t256\n"
 
-        all += colorTextBG
-        byteCounter = self.setNewLineNum(byteCounter, colorTextBG)[0]
+            all += colorTextBG
+            byteCounter = self.setNewLineNum(byteCounter, colorTextBG)[0]
 
-        return (all)
+        #print(all)
+        return (all, counter-1)
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
