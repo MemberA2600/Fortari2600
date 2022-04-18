@@ -130,6 +130,24 @@ The program is developed on a B350 + Ryzen5 2600 machine, with 32 GB RAM. I use 
        <li>Double (P0 and P1 side-by-side, giving a 16 pixels sprite)</li>
        <li>Overlay (P0 is over P1, so you have 2 colors in a line)</li> 
        </ul>
+    <li>Needs three variables to operate:</li>
+       <ul>
+       <li>X position</li>
+       <li>Color changer for the background</li>
+       <li>Sprite settings (mirroring, NUSIZ, sprite number)</li> 
+       </ul>
+   </ol>
+ </li>
+    <li><b>Menu Editor:</b>
+   <ol>
+     <li>On this screen you can create scrollable, selectable menus up to 32 items and 6 segments, you can create a lot of layouts.</li>
+     <li>It calculates every attributes on-fly and can simulate a more advanced menu with submenus as well.</li>
+       <ul>
+       <li>Can have 6 segments, with max. 32 items total</li>
+       <li>Has unselected and selected font colors, also selected background colors</li>
+       <li>Uses constant data only for display, you can generate text easily</li>
+       <li>Needs only one byte to operate</li>
+       </ul>
    </ol>
  </li>
 </ul>
