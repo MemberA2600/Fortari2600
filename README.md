@@ -121,4 +121,15 @@ The program is developed on a B350 + Ryzen5 2600 machine, with 32 GB RAM. I use 
        </ul>
    </ol>
  </li>
+   <li><b>Big Sprite Editor:</b>
+   <ol>
+     <li>Lets you create more detailed sprites those are not part of the game area, but can be "affecting" the gameplay. (like a dragon flying by, dropping fireballs, a plane dropping soldiers, etc.) These sprites does not have a vertical offset, they can have 16 sprites and you can't swap it on the fly! (but you can turn them off by setting X to 255)</li>
+     <li>You have three appearance:</li>
+       <ul>
+       <li>Simple (same as a normal sprite)</li>
+       <li>Double (P0 and P1 side-by-side, giving a 16 pixels sprite)</li>
+       <li>Overlay (P0 is over P1, so you have 2 colors in a line)</li> 
+       </ul>
+   </ol>
+ </li>
 </ul>
