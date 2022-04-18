@@ -265,3 +265,4 @@ width=Width
 scrollingText=Scrolling Text Generator
 menuMaker=Menu Maker
 numItem=Number of Items
+segments=Segments:

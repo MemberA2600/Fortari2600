@@ -9,12 +9,33 @@ class FontManager:
         self.__lastScaleX = 1
         self.__lastScaleY = 1
 
+        self.__chars = {}
+        lastChar = None
+
+        f = open("config/letters.txt")
+        txt = f.readlines()
+        f.close()
+
+        for line in txt:
+            line = line.replace("\n", "").replace("\r", "")
+            if line != "":
+                if len(line) == 1:
+                    lastChar = line[0]
+                    self.__chars[lastChar] = []
+                else:
+                    self.__chars[lastChar].append(line)
 
         PyFont.add_file('others/font/HammerFat.ttf')
         self.__normalSize = 22
         self.__sizing()
         sizes= Thread(target=self.autoSizes)
         sizes.start()
+
+    def getAtariChar(self, char):
+        if char in self.__chars.keys():
+           return(self.__chars[char])
+        else:
+           return(None)
 
     def autoSizes(self):
         from time import sleep

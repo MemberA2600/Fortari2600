@@ -26,7 +26,6 @@ class MenuMaker:
         self.__screenSize = self.__loader.screenSize
         self.__theyAreDisabled = True
 
-        self.__chars = {}
         self.__validFName = True
 
         self.__ctrl = False
@@ -34,6 +33,7 @@ class MenuMaker:
         self.__draw = 0
         self.__selected = 0
         self.__current  = 0
+        self.__selectedSegment = 0
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -42,9 +42,13 @@ class MenuMaker:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
 
         self.__maxWidth = 48
-        self.__maxNumberOfItems = 16
+        self.__maxNumberOfItems = 31
+
+        self.__invalids = {}
 
         self.__items = 1
+
+        self.__segments = [[0, self.__items-1]]
         self.__lineHeight = 1
 
         self.__colorValues = [
@@ -54,7 +58,7 @@ class MenuMaker:
         ]
 
 
-        self.__sizes = [self.__screenSize[0] / 2, self.__screenSize[1] //1.5 - 55]
+        self.__sizes = [self.__screenSize[0] / 2, self.__screenSize[1] //1.25 - 55]
         self.__window = SubMenu(self.__loader, "menuMaker", self.__sizes[0], self.__sizes[1], None, self.__addElements,
                                 1)
         self.dead = True
@@ -82,7 +86,7 @@ class MenuMaker:
 
         self.__canvasFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//1.75)
+                                   height = round(self.__sizes[1]//2)
                                    )
         self.__canvasFrame.pack_propagate(False)
         self.__canvasFrame.pack(side=TOP, anchor=N, fill=X)
@@ -95,16 +99,18 @@ class MenuMaker:
             self.__canvas.pack_propagate(False)
             self.__canvas.pack(side=TOP, anchor=N, fill=BOTH)
 
+        divider = 6
+
         self.__editorFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//5)
+                                   height = round(self.__sizes[1]//divider*1.5)
                                    )
         self.__editorFrame.pack_propagate(False)
         self.__editorFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__editorPixelsFrame = Frame(self.__editorFrame, width=round(self.__sizes[0]*0.8),
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//5)
+                                   height = round(self.__sizes[1]//divider)
                                    )
 
         while self.__editorPixelsFrame.winfo_width() < 2:
@@ -113,7 +119,7 @@ class MenuMaker:
 
         self.__editorColorsFrame = Frame(self.__editorFrame, width=round(self.__sizes[0]*0.8),
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//5)
+                                   height = round(self.__sizes[1]//divider)
                                    )
         while self.__editorColorsFrame.winfo_width() < 2:
             self.__editorColorsFrame.pack_propagate(False)
@@ -145,15 +151,26 @@ class MenuMaker:
         t3.start()
         """
 
+        divider2 = 14
         self.createSetterMenu()
 
         self.__bottomFrame = Frame(self.__topLevelWindow, width=round(self.__sizes[0]),
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = round(self.__sizes[1]//14)
+                                   height = round(self.__sizes[1]//(divider2+2))
                                    )
         while self.__bottomFrame.winfo_width() < 2:
             self.__bottomFrame.pack_propagate(False)
             self.__bottomFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__segmentsFrame = Frame(self.__topLevelWindow, width=round(self.__sizes[0]),
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   height = round(self.__sizes[1]//divider2//2)
+                                   )
+        while self.__segmentsFrame.winfo_width() < 2:
+            self.__segmentsFrame.pack_propagate(False)
+            self.__segmentsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__createSegmentsFrame()
 
         """
         t4 = Thread(target=self.createBottomElements)
@@ -200,10 +217,134 @@ class MenuMaker:
         self.__redrawCanvas()
 
 
+    def __createSegmentsFrame(self):
+        self.__segmentsLabel = Label(self.__segmentsFrame,
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("segments") + " ",
+                                     font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                     bg=self.__colors.getColor("window"), justify=CENTER
+                                     )
+
+        self.__segmentsLabel.pack_propagate(False)
+        self.__segmentsLabel.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__segmentsText = StringVar()
+        self.__segmentsText.set("0-0;")
+
+        self.__segmentsEntry = Entry(self.__segmentsFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                 width=999999,
+                                 fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                 textvariable=self.__segmentsText, name="segmentEntry",
+                                 font=self.__smallFont)
+        self.__segmentsEntry.pack_propagate(False)
+        self.__segmentsEntry.pack(side=LEFT, fill=BOTH)
+
+        self.__segmentsEntry.bind("<KeyRelease>", self.checkIfBullShit)
+        self.__segmentsEntry.bind("<FocusOut>", self.checkIfBullShit)
+        self.__invalids[self.__segmentsEntry] = False
+
+    def checkIfBullShit(self, event):
+        import re
+        regex1 = r";{0,1}[0-9]{1,2}\-[0-9]{1,2};{0,1}"
+        regex2 = r"[0-9]{1,2}\-[0-9]{1,2}"
+        regex3 = r"[a-zA-Z]"
+
+        self.__segmentsText.set(self.__segmentsText.get().replace(" ", ""))
+        self.__segmentsText.set(re.sub(regex3, "", self.__segmentsText.get()))
+
+        all = re.findall(regex1, self.__segmentsText.get())
+        if len(all) == 0:
+            self.setSegmentsInvalid()
+            return
+
+        all = self.__segmentsText.get().split(";")
+        number = 0
+        temp = []
+        for item in all:
+            if item != "" :
+                if len(re.findall(regex2, item)) == 0:
+                    self.setSegmentsInvalid()
+                    return
+                else:
+                    item = item.split("-")
+                    temp.append([int(item[0]), int(item[1])])
+                    number+=1
+
+        if number > 6:
+           self.setSegmentsInvalid()
+           return
+
+        if "FocusOut" in str(event) or event == False or event == None:
+            counter = -1
+            for item in temp:
+                counter += 1
+                if len(temp) == 1:
+                    item[0] = 0
+                    item[1] = self.__items-1
+                elif item == temp[0]:
+                    item[0] = 0
+                elif item == temp[-1]:
+                    item[-1] = self.__items-1
+                    if item[0] != temp[-2][1] + 1:
+                       item[0] = temp[-2][1] + 1
+
+                else:
+                    if item[0] != temp[counter-1][1] + 1:
+                       item[0] =  temp[counter-1][1] + 1
+
+                    if item[1] != temp[counter+1][0] - 1:
+                       item[1] =  temp[counter+1][0] - 1
+
+        if temp[0][0] != 0:
+            self.setSegmentsInvalid()
+            return
+        elif temp[-1][1] != self.__items - 1:
+            self.setSegmentsInvalid()
+            return
+
+        counter = 0
+        for item in temp[1:-1]:
+            counter+=1
+            if item[0] != temp[counter-1][1] + 1 or item[1] != temp[counter+1][0] - 1:
+                self.setSegmentsInvalid()
+                return
+
+            if item[0] < 1 or item[1] > self.__items - 2:
+                self.setSegmentsInvalid()
+                return
+
+        self.__segmentsEntry.config(
+            bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+            fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+        )
+
+        from copy import deepcopy
+
+        self.__segments = deepcopy(temp)
+        txtTemp = []
+
+        for item in temp:
+            txtTemp.append(str(item[0])+"-"+str(item[1]))
+
+        txt = ';'.join(txtTemp)
+        if len(temp) == 1:
+           txt+=";"
+
+        self.__segmentsText.set(txt)
+        if event != False:
+            self.__redrawCanvas()
+            if event != None:
+                self.changed = True
+
+    def setSegmentsInvalid(self):
+        self.__segmentsEntry.config(
+            bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+            fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+        )
+
     def createBottomButtons(self):
         self.__topFrame = Frame(self.__buttonFrame, width=round(self.__sizes[0]),
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = self.__buttonFrame.winfo_height() // 2)
+                                   height = self.__buttonFrame.winfo_height() // 3)
 
         while self.__topFrame.winfo_width() < 2:
             self.__topFrame.pack_propagate(False)
@@ -211,7 +352,7 @@ class MenuMaker:
 
         self.__botFrame = Frame(self.__buttonFrame, width=round(self.__sizes[0]),
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = self.__buttonFrame.winfo_height() // 2)
+                                   height = self.__buttonFrame.winfo_height() // 3 * 2)
 
         while self.__botFrame.winfo_width() < 2:
             self.__botFrame.pack_propagate(False)
@@ -292,6 +433,8 @@ class MenuMaker:
 
         self.__nameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
         self.__nameEntry.bind("<FocusOut>", self.checkIfValidFileName)
+        self.__invalids[self.__nameEntry] = False
+
 
     def checkIfValidFileName(self, event):
         try:
@@ -346,7 +489,7 @@ class MenuMaker:
 
 
             self.__items = int(lines[1])
-            self.__itemNum.set(int(lines[1]))
+            self.__frameNum.set(lines[1])
 
             self.__lineHeight = int(lines[2])
             self.__lineHeightNum.set(lines[2])
@@ -354,15 +497,25 @@ class MenuMaker:
             self.__backColor[0] = lines[3]
             self.__backColorEntry.setValue(lines[3])
 
+            self.__itemNum.set("0")
+
+            self.__segmentsText.set(lines[4])
+            segmentSource = lines[4].split(";")
+            self.__segments = []
+            for item in segmentSource:
+                if item != '':
+                   item = item.replace("\r","").split("-")
+                   self.__segments.append([int(item[0]), int(item[1])])
+
             from copy import deepcopy
 
-            for lineNum in range(4, 7):
+            for lineNum in range(5, 8):
                 line = lines[lineNum].split(" ")
-                self.__colorValues[lineNum-4] = deepcopy(line)
+                self.__colorValues[lineNum-5] = deepcopy(line)
 
-            for lineNum in range(7, 7 + self.__maxNumberOfItems*8):
+            for lineNum in range(8, 8 + self.__maxNumberOfItems*8):
                 line = lines[lineNum]
-                trueLineNum = lineNum - 7
+                trueLineNum = lineNum - 8
                 itemNum = trueLineNum // 8
                 lineNumInItem = trueLineNum%8
                 for charNum in range(0, len(line)):
@@ -371,6 +524,9 @@ class MenuMaker:
             self.__soundPlayer.playSound("Success")
             self.redrawAllButtons()
             self.changed = False
+            self.checkIfBullShit(None)
+
+            self.__nameVal.set(".".join(fpath.split("/")[-1].split(".")[:-1]))
 
         except Exception as e:
             self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
@@ -387,15 +543,21 @@ class MenuMaker:
                 str(self.__lineHeight)              + "\n" +\
                 str(self.__backColor[0])            + "\n"
 
+        for item in self.__segments:
+            text += str(item[0])+"-"+str(item[1])+";"
+
+        text = text[:-1]+"\n"
         for line in self.__colorValues:
             text += " ".join(line) + "\n"
 
+        bigText = ""
         for YLine in self.__dataLines:
             for Xline in YLine:
                 for item in Xline:
-                    text += str(item)
-                text+="\n"
-
+                    text    += str(item)
+                    bigText += str(item)
+                text    += "\n"
+                bigText += "\n"
         f = open(name1, "w")
         f.write(text)
         f.close()
@@ -403,14 +565,68 @@ class MenuMaker:
         self.__topLevelWindow.deiconify()
         self.__topLevelWindow.focus()
 
+        largest = 0
+        for item in self.__segments:
+            diff = item[1] - item[0]
+            if diff > largest: largest = diff
+
+        #comments = "* Items="+str(self.__items)+"\n* Largest="+str(largest)+"\n* LineHeight=" + str(self.__lineHeight)+"\n"
+        comments = "* Items=" + str(self.__items) + "\n* Largest=" + str(largest) + "\n"
+
+        from Compiler import Compiler
+
+        f = open(name2, "w")
+        f.write(
+            comments +\
+            Compiler(
+                self.__loader, self.__loader.virtualMemory.kernel, "menuASM", [
+                    bigText,
+                    self.__colorValues,
+                    self.__items,
+                    self.__segmentsText.get(),
+                    self.__segments,
+                    "NTSC", "##NAME##"
+                ]
+            ).converted
+        )
+        f.close()
+
         self.__soundPlayer.playSound("Success")
         self.changed = False
 
     def __testMenu(self):
-        pass
+        t = Thread(target=self.__testThread)
+        t.daemon = True
+        t.start()
+
+    def __testThread(self):
+        from Compiler import Compiler
+
+        bigText = ""
+        for YLine in self.__dataLines:
+            for Xline in YLine:
+                for item in Xline:
+                    bigText += str(item)
+                bigText += "\n"
+
+        largest = 0
+        for item in self.__segments:
+            diff = item[1] - item[0]
+            if diff > largest: largest = diff
+
+        Compiler(
+            self.__loader, self.__loader.virtualMemory.kernel, "testMenu", [
+                bigText,
+                self.__colorValues,
+                self.__items,
+                self.__segmentsText.get(),
+                self.__segments,
+                "NTSC", "TestMenu", ["Tile1_1"],
+                [self.__items, largest]
+            ])
 
     def createBottomElements(self):
-        self.theFirstEntryFrame = Frame(self.__bottomFrame, width=round(self.__sizes[0]*0.3),
+        self.theFirstEntryFrame = Frame(self.__bottomFrame, width=round(self.__sizes[0]*0.5),
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    height = self.__bottomFrame.winfo_height())
 
@@ -441,8 +657,10 @@ class MenuMaker:
 
         self.__frameNumEntry.bind("<KeyRelease>", self.__frameEntryCheck)
         self.__frameNumEntry.bind("<FocusOut>", self.__frameEntryCheck)
+        self.__invalids[self.__frameNumEntry] = False
 
-        self.theSecondEntryFrame = Frame(self.__bottomFrame, width=round(self.__sizes[0]*0.3),
+
+        self.theSecondEntryFrame = Frame(self.__bottomFrame, width=round(self.__sizes[0]*0.5),
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    height = self.__bottomFrame.winfo_height())
 
@@ -470,9 +688,14 @@ class MenuMaker:
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    height = self.__bottomFrame.winfo_height())
 
+        self.__invalids[self.__backColorEntry.getEntry()] = False
+
+
+        """
         while self.theThirdEntryFrame.winfo_width() < 2:
             self.theThirdEntryFrame.pack_propagate(False)
             self.theThirdEntryFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+        """
 
         self.__lineHeightLabel = Label(self.theThirdEntryFrame,
                                    text=self.__dictionaries.getWordFromCurrentLanguage("lineHeight")+" ",
@@ -729,19 +952,6 @@ class MenuMaker:
         self.__finishedThem[1] = True
 
     def createSetterMenu(self):
-        f = open("config/letters.txt")
-        txt = f.readlines()
-        f.close()
-
-        lastChar = None
-        for line in txt:
-            line = line.replace("\n", "").replace("\r", "")
-            if line != "":
-                if len(line) == 1:
-                    lastChar = line[0]
-                    self.__chars[lastChar] = []
-                else:
-                    self.__chars[lastChar].append(line)
 
         self.__editorItemSetterFirstFrame = Frame(self.__editorItemSetterFrame, width=round(self.__sizes[0]*0.3),
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -854,16 +1064,21 @@ class MenuMaker:
 
         self.__finishedThem[2] = True
 
-    def checkTXT(self, even):
+    def checkTXT(self, event):
         txt = self.__text.get()
-        while txt[0] == " ":
-            txt = txt[1:]
-        while txt[-1] == " ":
-            txt = txt[-1]
+
+        if "FocusOut" in str(event):
+            while txt[0] == " ":
+                print("fuck")
+                txt = txt[1:]
+            while txt[-1] == " ":
+                txt = txt[:-1]
 
         if len(txt) > self.__maxWidth // 6:
            newLen = self.__maxWidth // 6
-           self.__text.set(txt[:newLen])
+           txt = txt[:newLen]
+
+        self.__text.set(txt)
 
     def __generateTXT(self):
         for theY in range(0,8):
@@ -880,12 +1095,14 @@ class MenuMaker:
 
         index = 0
         for char in txt:
-            if char not in self.__chars.keys():
-               char = " "
+
+            charData = self.__fontManager.getAtariChar(char)
+            if charData == None:
+               charData = self.__fontManager.getAtariChar(" ")
 
             for Y in range(0,8):
                 for X in range(0,5):
-                    tempData[Y][index+X] = int(self.__chars[char][Y][X])
+                    tempData[Y][index+X] = int(charData[Y][X])
             index+=6
 
         lastOne = self.__maxWidth
@@ -1040,6 +1257,7 @@ class MenuMaker:
     def __redrawCanvas(self):
         self.__canvas.clipboard_clear()
         self.__canvas.delete("all")
+        self.checkIfBullShit(False)
 
         backColor = self.__colorDict.getHEXValueFromTIA(self.__backColor[0])
         self.__canvas.config(bg = backColor)
@@ -1048,13 +1266,27 @@ class MenuMaker:
 
         whyNot = self.__canvas.winfo_height()
 
-        startY = (whyNot // 2) -(self.__items * h * 8) // 2
-        startX = self.__canvas.winfo_width() // 2 -(4 * self.__maxWidth // 2)
-
         if self.__selected > self.__items - 1:
            self.__selected = self.__items - 1
 
-        for itemNum in range(0, self.__items):
+        counter = -1
+        for item in self.__segments:
+            counter += 1
+            if self.__selected >= item[0] and self.__selected <= item[1]:
+               self.__selectedSegment = counter
+               break
+
+        if self.__segments[self.__selectedSegment][1] > self.__items:
+           subtract = self.__items
+        else:
+           subtract = self.__segments[self.__selectedSegment][1]
+
+        numOfItem = subtract-self.__segments[self.__selectedSegment][0]
+
+        startY = (whyNot // 2) -(numOfItem * h * 8) // 2
+        startX = self.__canvas.winfo_width() // 2 -(4 * self.__maxWidth // 2)
+
+        for itemNum in range(self.__segments[self.__selectedSegment][0], self.__segments[self.__selectedSegment][1]+1):
             for theY in range(0,8):
 
                 if self.__selected == itemNum:

@@ -265,3 +265,4 @@ width=Hosszúság
 scrollingText=Fényújság Generátor
 menuMaker=Menu Fejlesztõ
 numItem=Elemek száma
+segments=Szegmensek:

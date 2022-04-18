@@ -160,7 +160,7 @@ class Assembler():
 
             if (number<14) or (number-2)%4 != 0:
                 new.append("\tsleep\t"+str(number))
-                print(str(number))
+                #print(str(number))
                 continue
 
 
@@ -702,6 +702,32 @@ class Assembler():
 
         return(base+"_"+self.__tv+"_"+num)
 
+    def simplify(self, variables):
+        simple_ones = {}
+        for var in variables.keys():
+            try:
+                isItInt = False
+                teszt   = int(variables[var])
+                isItInt = True
+            except:
+                pass
+
+            if variables[var].startswith("$") == True or isItInt == True:
+                simple_ones[var] = variables[var]
+
+        for var in variables:
+            try:
+                isItInt = False
+                teszt   = int(variables[var])
+                isItInt = True
+            except:
+                pass
+
+            if variables[var].startswith("$") == False and isItInt == False:
+                variables[var] = simple_ones[variables[var]]
+
+        return variables
+
     def compile(self, path):
         import re
 
@@ -712,7 +738,8 @@ class Assembler():
         file.close()
 
         source = self.normalize(source)
-        variables = self.collectVariables(source)
+        variables = self.simplify(self.collectVariables(source))
+
 
         source = self.compactSleep(source)
         source = self.sleepToCode(source)

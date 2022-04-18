@@ -35,10 +35,186 @@ class Compiler:
             self.getBigSpriteASM()
         elif self.__mode == "testBigSprite":
             self.testBigSprite()
-        elif self.__mode == "getLSASM":
-            self.getLSASM()
-        elif self.__mode == "testLandScape":
-            self.testLandScape()
+        elif self.__mode == "menuASM":
+            self.menuASM()
+        elif self.__mode == "testMenu":
+            self.testMenu()
+
+    def __reAlignDataSection(self, text):
+        text = text.split("\n")
+
+        temp = []
+        for line in text:
+            if line != "" and ("align" not in line.lower()):
+                temp.append(line)
+
+        byteCounter = 0
+
+        last        = []
+        tempCounter = 0
+        for line in temp:
+            if "byte" in line.lower():
+                byteCounter += 1
+                last[-1].append(line)
+            else:
+                last.append([])
+                last[-1].append("\n"+line)
+
+                if byteCounter > 256:
+                   last[-2].insert(0, "\n\talign\t256\n")
+                   bytes1 = 0
+                   bytes2 = 0
+
+                   for line in last[-2]:
+                       if "byte" in line.lower():
+                           bytes1 += 1
+
+                   for line in last[-1]:
+                       if "byte" in line.lower():
+                           bytes2 += 1
+
+                   byteCounter = bytes1 + bytes2
+
+        last[0].insert(0, "\n\talign\t256\n")
+
+        txt = ""
+        for item in last:
+            for subItem in item:
+                txt += subItem + "\n"
+
+        return txt
+
+    def testMenu(self):
+        from copy import deepcopy
+
+        self.__lineData     = deepcopy(self.__data[0])
+        self.__colorData    = deepcopy(self.__data[1])
+        self.__lineNum      = self.__data[2]
+        self.__segmentsText = self.__data[3]
+        self.__segments     = self.__data[4]
+        self.__tv           = self.__data[5]
+        self.__name         = self.__data[6]
+        self.__variables    = self.__data[7]
+        self.__constants    = self.__data[8]
+
+        converted      = self.getMenuASM()
+        changer = self.__contructChanger(self.__variables, self.__constants)
+
+        self.__enterCode =  self.__io.loadSubModule("menuEnter") + "\n" + \
+                            self.__io.loadTestElementPlain("enterTestCommon")
+
+        self.__topLevelCode = self.__io.loadSubModule("menuTopBottom")
+        self.__overScanCode = self.__io.loadTestElementPlain("menuTestOverScan")
+
+        for item in changer:
+            self.__enterCode    = self.__enterCode.replace(item, changer[item])
+            self.__topLevelCode = self.__topLevelCode.replace(item, changer[item])
+
+        self.__enterCode = self.__enterCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__topLevelCode = self.__topLevelCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        self.__overScanCode = self.__overScanCode.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+
+        converted = converted.replace("##NAME##", self.__name).replace("##BANK##", "BANK2")
+        converted = self.__reAlignDataSection(converted)
+
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__topLevelCode)
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", converted)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def menuASM(self):
+        from copy import deepcopy
+
+        self.__lineData     = deepcopy(self.__data[0])
+        self.__colorData    = deepcopy(self.__data[1])
+        self.__lineNum      = self.__data[2]
+        self.__segmentsText = self.__data[3]
+        self.__segments     = self.__data[4]
+        self.__tv           = self.__data[5]
+        self.__name         = self.__data[6]
+
+        self.converted      = self.getMenuASM()
+        self.converted      = self.__reAlignDataSection(self.converted)
+
+    def getMenuASM(self):
+        byteCounter = 0
+
+        segmenttxt = "\n\talign\t256\n" + self.__name + "_segmentBorders\n"
+        for item in self.__segments:
+            segmenttxt +=  "\tBYTE\t#" + str(item[0]) + "\n" + \
+                           "\tBYTE\t#" + str(item[1]) + "\n"
+
+        segmenttxt += "\tBYTE\t#255\n" + \
+                      "\n"
+
+
+        self.__lineData = self.__lineData.split("\n")
+        self.__lineData = self.__lineData[:(self.__segments[-1][1]+1)*8]
+        for startNum in range(0, len(self.__lineData), 8):
+            from copy import deepcopy
+
+            temp = deepcopy(self.__lineData[startNum:startNum+8])
+            for fuckNum in range(0,8):
+                self.__lineData[startNum+fuckNum] = temp[7-fuckNum]
+
+        spriteDatas = []
+        startIndex = -8
+        for num in range(0,6):
+
+            startIndex += 8
+            spriteDatas.append("\n"+self.__name+"__spriteData_" + str(num) + "\n")
+
+            counter = 0
+            nnn = 0
+            for line in self.__lineData:
+                if line != "":
+                    if counter == 7:
+                        spriteDatas[-1] += "\tBYTE\t#%" + line[startIndex:startIndex+8] + "\t; ("+str(nnn)+")\n"
+                        counter = 0
+                        nnn += 1
+                    else:
+                        spriteDatas[-1] += "\tBYTE\t#%" + line[startIndex:startIndex+8] + "\n"
+                        counter += 1
+
+
+            spriteDatas[-1] += "\n"
+
+        colorDatas = []
+        colorNames = ["UNSELECTED", "SELECTED_FG", "SELECTED_BG"]
+
+        for num in range(0,3):
+            colorDatas.append("\n" + self.__name +"_Color_"+colorNames[num]+"\n")
+            for num2 in range(7, -1, -1) :
+                colorDatas[-1] += "\tBYTE\t#"+self.__colorData[num][num2] +"\n"
+
+
+        txt = segmenttxt
+        byteCounter, overflow = self.setNewLineNum(byteCounter, txt)
+
+        for item in spriteDatas:
+            byteCounter, overflow = self.setNewLineNum(byteCounter, item)
+            if overflow == True:
+                txt += "\n\talign\t256\n"
+            txt += item
+
+        for item in colorDatas:
+            byteCounter, overflow = self.setNewLineNum(byteCounter, item)
+            if overflow == True:
+                txt += "\n\talign\t256\n"
+            txt += item
+
+        return(txt)
+
+        #for sprite in spriteDatas:
+        #    print(sprite)
+
 
     def testLandScape(self):
         from copy import deepcopy
@@ -106,76 +282,6 @@ class Compiler:
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
-    def getLSASM(self):
-        from copy import deepcopy
-
-        self.__lineData = deepcopy(self.__data[0])
-        self.__width = int(self.__data[1])
-        self.__tv         = self.__data[2]
-        self.__name       = self.__data[3]
-        self.__monoMode   = self.__data[4]
-
-        self.converted = self.__convertLandScapeToFun()[0]
-
-    def __convertLandScapeToFun(self):
-        all = "\talign\t256\n"
-
-        datalines = []
-
-        colorTextFG = "\n" + self.__name + "_ScrollingText_Color_FG"+"\n"
-        if self.__monoMode == False: colorTextBG = "\n" + self.__name + "_ScrollingText_Color_BG"+"\n"
-
-        for Y in range(0,8):
-
-            colorTextFG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][0] + "\n"
-            if self.__monoMode == False: colorTextBG += "\tBYTE\t#" + self.__lineData[7-Y]["colors"][1] + "\n"
-
-
-        # repeat first bytes
-
-        for Y in range(0,8):
-            self.__lineData[Y]["pixels"] += self.__lineData[Y]["pixels"][0:32]
-
-        #Create 8 long coloums.
-        counter = 0
-        for startX in range(0, self.__width, 8):
-            datalines.append(
-                "\n" + self.__name + "_ScrollingText_Data" + str(counter) + "\n"
-            )
-
-            for Y in range(7,-1,-1):
-                line = "\tBYTE\t#%"
-                for X in range(startX, startX + 8):
-                    try:
-                        line += str(self.__lineData[Y]["pixels"][X])
-                    except:
-                        line += "0"
-                datalines[-1] += line + "\n"
-            counter+=1
-
-        byteCounter = 0
-        for offset in range(0, len(datalines)):
-            if self.setNewLineNum(byteCounter, datalines[offset])[1] == True:
-                all += "\n\talign\t256\n"
-
-            all += datalines[offset]
-            byteCounter = self.setNewLineNum(byteCounter, datalines[offset])[0]
-
-        if self.setNewLineNum(byteCounter, colorTextFG) == True:
-            all += "\n\talign\t256\n"
-
-        all += colorTextFG
-        byteCounter = self.setNewLineNum(byteCounter, colorTextFG)[0]
-
-        if self.__monoMode == False:
-            if self.setNewLineNum(byteCounter, colorTextBG) == True:
-                all += "\n\talign\t256\n"
-
-            all += colorTextBG
-            byteCounter = self.setNewLineNum(byteCounter, colorTextBG)[0]
-
-        #print(all)
-        return (all, counter-1)
 
     def testWav(self):
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
@@ -802,6 +908,7 @@ class Compiler:
         self.convertedPlayfield =   self.convertPixelsToPlayfield(self.__name) +\
                                     self.addColors(self.__name)
 
+
     def pfTest(self):
         self.__openEmulator = True
 
@@ -1089,6 +1196,7 @@ class Compiler:
            num = num - 256
            overflow = True
 
+        #(orig, new, num, overflow)
         return(num, overflow)
 
 
@@ -1211,6 +1319,8 @@ class Compiler:
             spriteData+="\talign\t256"
 
         spriteData += "\n"+name+"_SpriteColor"+'\n'+("\n".join(spriteColorLines))+"\n"
+
+        spriteData = self.__reAlignDataSection(spriteData)
 
         return spriteData
 
