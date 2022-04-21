@@ -339,7 +339,7 @@ class MainWindow:
                                             False, None, self.__places, __vals[3])
 
         self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 20.5,
-                                          self.openMemoryManager, "projectPath",
+                                          self.__openScreenTopBottom, "projectPath",
                                             False, None, self.__places, __vals[3])
 
         self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
@@ -705,6 +705,11 @@ class MainWindow:
         from BigSpriteMaker import BigSpriteMaker
 
         self.__subMenu = BigSpriteMaker(self.__loader)
+
+    def __openScreenTopBottom(self):
+        from TopBottomEditor import TopBottomEditor
+
+        self.__subMenu = TopBottomEditor(self.__loader)
 
     def __openMenuMaker(self):
         from MenuMaker import MenuMaker
