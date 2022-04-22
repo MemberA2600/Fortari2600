@@ -238,6 +238,9 @@ class TopBottomEditor:
                    num += 1
                    if num == len(self.__loader.centipedeFrames): num = 0
                    self.__onlyLabel.config(image = self.__loader.centipedeFrames[num])
+                   self.__lockedLabel.config(
+                       fg = self.__mainWindow.getLoopColor()
+                   )
                except:
                    pass
             elif self.__activeMode == "locked":
@@ -245,6 +248,9 @@ class TopBottomEditor:
                     num += 1
                     if num == len(self.__loader.lockedFramesTopLevel)*10: num = 0
                     self.__onlyLabel.config(image=self.__loader.lockedFramesTopLevel[num//10])
+                    self.__lockedLabel.config(
+                        fg=self.__mainWindow.getLoopColor()
+                    )
                 except:
                     pass
             else:
@@ -273,8 +279,27 @@ class TopBottomEditor:
         self.__activeMode = mode
 
         if   self.__activeMode == "blank":
-            self.__onlyLabel = Label(self.__allTheFunStuff, bd=0, bg="black")
+            self.__pictureFrame = Frame(self.__allTheFunStuff, bd=0, bg="black",
+                                        height = round(self.__allTheFunStuff.winfo_height()*0.90)
+                                        )
+
+            self.__pictureFrame.pack_propagate(False)
+            self.__pictureFrame.pack(padx=0, pady=0, fill=X, side = TOP, anchor = N)
+            self.__onlyLabel = Label(self.__pictureFrame, bd=0, bg="black")
             self.__onlyLabel.pack(padx=0, pady=0, fill=BOTH)
+
+            self.__lockedLabel = Label(self.__allTheFunStuff, bd=0, bg="black",
+                                       fg = "orangered",
+                                       height = 10, font = self.__bigFont,
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("emptyBank")
+                                       .replace("#bank#", self.__activeBank)
+                                       .replace("#level#",
+                                                self.__dictionaries.getWordFromCurrentLanguage(
+                                                    self.__activePart.lower())))
+
+            self.__lockedLabel.pack(padx=0, pady=0, fill=BOTH, side=BOTTOM)
+
+
         elif self.__activeMode == "locked":
             self.__pictureFrame = Frame(self.__allTheFunStuff, bd=0, bg="black",
                                         height = round(self.__allTheFunStuff.winfo_height()*0.90)
@@ -287,7 +312,7 @@ class TopBottomEditor:
 
             self.__lockedLabel = Label(self.__allTheFunStuff, bd=0, bg="black",
                                        fg = "orangered",
-                                       height = 10, font = self.__normalFont,
+                                       height = 10, font = self.__bigFont,
                                        text = self.__dictionaries.getWordFromCurrentLanguage("lockNChase")
                                        .replace("#bank#", self.__activeBank)
                                        .replace("#lockname#",

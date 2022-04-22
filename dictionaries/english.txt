@@ -268,3 +268,6 @@ screenTop=Screen Top
 screenBottom=Screen Bottom
 addNew=Add New
 testScreen=Test Screen
+emptyBank=#bank# #level# seems to be empty
+top=Top
+bottom=Bottom

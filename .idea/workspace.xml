@@ -3,78 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-04-21_062832.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r01.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r02.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r03.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r04.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r05.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r06.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r07.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r08.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r09.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r10.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r11.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r12.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r13.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r14.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r15.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r16.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r17.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r18.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r19.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r21.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r22.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r23.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r24.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r25.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r26.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r27.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r28.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r29.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r30.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r31.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r32.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r33.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r34.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r35.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r36.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r37.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r38.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r39.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r40.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r41.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r42.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r43.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r44.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r45.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r46.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r47.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r48.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r49.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r50.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r51.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r52.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r53.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r54.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r55.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r56.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r57.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r58.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r59.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r60.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r61.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r62.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r63.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r64.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r65.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/others/img/rocket/r66.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/Loader.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/Loader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/LoadingScreen.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/LoadingScreen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-04-22_071310.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/TopBottomEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/TopBottomEditor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/venv/pip-selfcheck.json" beforeDir="false" afterPath="$PROJECT_DIR$/venv/pip-selfcheck.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -103,7 +35,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1650604389300" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1650605944556" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
     <SUITE FILE_PATH="coverage/Fortari2600$Collector.coverage" NAME="Collector Coverage Results" MODIFIED="1618066164670" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
@@ -185,36 +117,36 @@
     <session id="1636815425">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="152" />
+          <entry key="project.closed" value="153" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.12" value="1" />
-          <entry key="project.open.time.3" value="9" />
+          <entry key="project.open.time.3" value="10" />
           <entry key="project.open.time.4" value="156" />
           <entry key="project.open.time.5" value="28" />
           <entry key="project.open.time.6" value="3" />
-          <entry key="project.opened" value="204" />
+          <entry key="project.opened" value="205" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="155090" />
+          <entry key="py" value="155231" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="155090" />
+          <entry key="Python" value="155231" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="353" />
+          <entry key="py" value="354" />
           <entry key="txt" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="353" />
+          <entry key="Python" value="354" />
         </counts>
       </usages-collector>
     </session>
@@ -227,26 +159,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="19" column="35" lean-forward="true" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+            <state relative-caret-position="603">
+              <caret line="314" column="73" selection-start-line="314" selection-start-column="73" selection-end-line="314" selection-end-column="73" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1650604389182" expanded="true" signature="185:186" ph="..." />
-                <marker date="1650604389182" expanded="true" signature="185:194" ph="..." />
-                <marker date="1650604389182" expanded="true" signature="2924:3864" ph="..." />
-                <marker date="1650604389182" expanded="true" signature="10003:12151" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/LoadingScreen.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
-              <caret line="101" column="47" selection-start-line="101" selection-start-column="47" selection-end-line="101" selection-end-column="47" />
-              <folding>
-                <marker date="1650602819334" expanded="true" signature="4418:4698" ph="..." />
+                <marker date="1650605944440" expanded="true" signature="185:186" ph="..." />
+                <marker date="1650605944440" expanded="true" signature="185:194" ph="..." />
+                <marker date="1650605944440" expanded="true" signature="2924:3864" ph="..." />
+                <marker date="1650605944440" expanded="true" signature="10260:13475" ph="..." />
               </folding>
             </state>
           </provider>
@@ -263,8 +183,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>openMenu</find>
-      <find>setNewLineNum</find>
       <find>__itemNum</find>
       <find>realign</find>
       <find>getBigSpriteASM</find>
@@ -293,6 +211,8 @@
       <find>fg=</find>
       <find>centipedeFrames</find>
       <find>locked</find>
+      <find>onlyLabel</find>
+      <find>__lockedLabel</find>
     </findStrings>
     <replaceStrings>
       <replace>LockNChase</replace>
@@ -418,12 +338,6 @@
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataHolders" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
@@ -633,7 +547,7 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81344306" visible="true" weight="0.20410784" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.81344306" visible="true" weight="0.20667523" />
       <window_info id="Structure" order="1" sideWeight="0.18655692" side_tool="true" weight="0.20154044" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -955,13 +869,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="61" selection-start-line="61" selection-end-line="61" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="458">
@@ -1001,9 +908,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="287">
           <caret line="24" column="54" lean-forward="true" selection-start-line="24" selection-start-column="54" selection-end-line="24" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1011,9 +915,16 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
           <caret line="63" column="67" selection-start-line="63" selection-start-column="64" selection-end-line="63" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/Lock.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="110" column="20" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="20" />
         </state>
       </provider>
     </entry>
@@ -1027,19 +938,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Lock.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="19" column="35" lean-forward="true" selection-start-line="19" selection-start-column="35" selection-end-line="19" selection-end-column="35" />
+        <state relative-caret-position="603">
+          <caret line="314" column="73" selection-start-line="314" selection-start-column="73" selection-end-line="314" selection-end-column="73" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1650604389182" expanded="true" signature="185:186" ph="..." />
-            <marker date="1650604389182" expanded="true" signature="185:194" ph="..." />
-            <marker date="1650604389182" expanded="true" signature="2924:3864" ph="..." />
-            <marker date="1650604389182" expanded="true" signature="10003:12151" ph="..." />
+            <marker date="1650605944440" expanded="true" signature="185:186" ph="..." />
+            <marker date="1650605944440" expanded="true" signature="185:194" ph="..." />
+            <marker date="1650605944440" expanded="true" signature="2924:3864" ph="..." />
+            <marker date="1650605944440" expanded="true" signature="10260:13475" ph="..." />
           </folding>
         </state>
       </provider>

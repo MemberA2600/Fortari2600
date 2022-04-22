@@ -268,3 +268,6 @@ screenTop=Képernyõ Teteje
 screenBottom=Képernyõ Alja
 addNew=Új Hozzáadása
 testScreen=Képernyõteszt
+emptyBank=#bank# #level# szintje üres
+top=Felsõ
+bottom=Alsó
