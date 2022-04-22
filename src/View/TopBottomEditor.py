@@ -2,6 +2,8 @@ from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
 from copy import deepcopy
+from time import sleep
+
 
 class TopBottomEditor:
 
@@ -13,24 +15,25 @@ class TopBottomEditor:
 
         self.__activeBank = "Bank2"
         self.__activePart = "Top"
-
+        self.__activeMode = "blank"
 
         # 0: The cose in str format
         # 1: State if it has been changed
         # 2: The code in lines, readable for the editor
         item = ["", False, []]
 
-        self.__codeDataTop = [
+        self.__codeData = {
+            "Top": [
             deepcopy(item), deepcopy(item), deepcopy(item),
             deepcopy(item), deepcopy(item), deepcopy(item),
             deepcopy(item)
-        ]
-
-        self.__codeDataBottom = [
-            deepcopy(item), deepcopy(item), deepcopy(item),
-            deepcopy(item), deepcopy(item), deepcopy(item),
-            deepcopy(item)
-        ]
+            ],
+            "Bottom": [
+                deepcopy(item), deepcopy(item), deepcopy(item),
+                deepcopy(item), deepcopy(item), deepcopy(item),
+                deepcopy(item)
+            ]
+        }
 
         self.__loader.stopThreads.append(self)
 
@@ -68,23 +71,34 @@ class TopBottomEditor:
     def importData(self):
         for num in range(2,9):
             f = open(self.__mainWindow.projectPath+"bank"+str(num)+"/screen_top.a26", "r")
-            self.__codeDataTop[num-2][0] = f.read()
+            self.__codeData["Top"][num-2][0] = f.read()
             f.close()
 
             f = open(self.__mainWindow.projectPath+"bank"+str(num)+"/screen_bottom.a26", "r")
-            self.__codeDataBottom[num-2][0] = f.read()
+            self.__codeData["Bottom"][num-2][0] = f.read()
             f.close()
+
+            for line in self.__codeData["Top"][num-2][0].split("\n"):
+                line = line.replace("\r", "")
+                if line.startswith("*") or line.startswith("#"):
+                   continue
+
+                self.__codeData["Top"][num - 2][2].append(line)
+
+            for line in self.__codeData["Bottom"][num-2][0].split("\n"):
+                line = line.replace("\r", "")
+                if line.startswith("*") or line.startswith("#"):
+                   continue
+
+                self.__codeData["Bottom"][num - 2][2].append(line)
+
+
 
     def __closeWindow(self):
         isThereChange = False
 
-        for item in self.__codeDataTop:
-            if item[1] == True:
-                isThereChange = True
-                break
-
-        if isThereChange == False:
-            for item in self.__codeDataBottom:
+        for screen in self.__codeData.keys():
+            for item in self.__codeData[screen]:
                 if item[1] == True:
                     isThereChange = True
                     break
@@ -199,6 +213,88 @@ class TopBottomEditor:
         t3 = Thread(target=self.__createBottomButtons)
         t3.daemon = True
         t3.start()
+
+        loop = Thread(target=self.loop)
+        loop.daemon = True
+        loop.start()
+
+    def loop(self):
+        num = 0
+
+        while self.dead == False and self.__mainWindow.dead == False:
+            if False not in self.__finishedThem:
+               if self.__theyAreDisabled == True:
+                  for button in self.__bankButtons:
+                      button.config(state = NORMAL)
+
+                  self.__topButton.config(state = NORMAL)
+                  self.__bottomButton.config(state = NORMAL)
+
+                  self.setEditorFrame()
+                  self.__theyAreDisabled = False
+
+            if self.__activeMode == "blank":
+               try:
+                   num += 1
+                   if num == len(self.__loader.centipedeFrames): num = 0
+                   self.__onlyLabel.config(image = self.__loader.centipedeFrames[num])
+               except:
+                   pass
+            elif self.__activeMode == "locked":
+                try:
+                    num += 1
+                    if num == len(self.__loader.lockedFramesTopLevel)*10: num = 0
+                    self.__onlyLabel.config(image=self.__loader.lockedFramesTopLevel[num//10])
+                except:
+                    pass
+            else:
+                num = 0
+
+            sleep(0.025)
+
+    def setEditorFrame(self):
+        for item in self.__allTheFunStuff.pack_slaves():
+            item.destroy()
+
+        locked = False
+        if self.__loader.virtualMemory.locks[self.__activeBank.lower()] != None:
+           locked = True
+
+        bankNum = int(self.__activeBank[4]) - 2
+        if locked == True:
+           self.blankAnimation("locked")
+
+        elif len(self.__codeData[self.__activePart][bankNum][2]) == 0:
+           self.blankAnimation("blank")
+
+
+    def blankAnimation(self, mode):
+        self.__allTheFunStuff.config(bg="black")
+        self.__activeMode = mode
+
+        if   self.__activeMode == "blank":
+            self.__onlyLabel = Label(self.__allTheFunStuff, bd=0, bg="black")
+            self.__onlyLabel.pack(padx=0, pady=0, fill=BOTH)
+        elif self.__activeMode == "locked":
+            self.__pictureFrame = Frame(self.__allTheFunStuff, bd=0, bg="black",
+                                        height = round(self.__allTheFunStuff.winfo_height()*0.90)
+                                        )
+
+            self.__pictureFrame.pack_propagate(False)
+            self.__pictureFrame.pack(padx=0, pady=0, fill=X, side = TOP, anchor = N)
+            self.__onlyLabel = Label(self.__pictureFrame, bd=0, bg="black")
+            self.__onlyLabel.pack(padx=0, pady=0, fill=BOTH)
+
+            self.__lockedLabel = Label(self.__allTheFunStuff, bd=0, bg="black",
+                                       fg = "orangered",
+                                       height = 10, font = self.__normalFont,
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("lockNChase")
+                                       .replace("#bank#", self.__activeBank)
+                                       .replace("#lockname#",
+                                                self.__loader.virtualMemory.locks[self.__activeBank.lower()].name + " (" +
+                                                self.__loader.virtualMemory.locks[self.__activeBank.lower()].type + ")" )
+                                       )
+            self.__lockedLabel.pack(padx=0, pady=0, fill=BOTH, side=BOTTOM)
 
     def __createAddButtons(self):
 
@@ -423,6 +519,7 @@ class TopBottomEditor:
             b.pack(side=LEFT, anchor=E, fill=BOTH)
 
             b.bind("<Button-1>", self.__changeSlot)
+            self.__bankButtons.append(b)
 
         self.__topButton = Button(f1, height=9999, width=9999,
                    bg=self.__loader.colorPalettes.getColor("window"),

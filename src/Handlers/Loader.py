@@ -25,6 +25,8 @@ class Loader:
         self.atariFrames = []
         self.rocketFrames = []
         self.tapeFrames = []
+        self.centipedeFrames = []
+        self.lockedFramesTopLevel = []
         self.colorDict = None
         self.tiaTone = None
         self.piaNotes = None
