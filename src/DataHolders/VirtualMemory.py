@@ -16,6 +16,7 @@ class VirtualMemory:
         self.bankLinks = {}
         self.kernel_types = []
         self.kernel = "common"
+        self.changedCodes = {}
 
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
@@ -27,12 +28,18 @@ class VirtualMemory:
             bankNum = "bank"+str(num)
             self.locks[bankNum] = None
             self.codes[bankNum] = {}
+            self.changedCodes[bankNum] = {}
             if (num == 1):
                 self.codes[bankNum]["bank_configurations"] = DataItem()
                 self.codes[bankNum]["global_variables"] = DataItem()
+
+                self.changedCodes[bankNum]["bank_configurations"] = False
+                self.changedCodes[bankNum]["global_variables"] = False
+
             else:
                 for section in self.__loader.sections:
                     self.codes[bankNum][section] = DataItem()
+                    self.changedCodes[bankNum][section] = False
 
         self.types = {
             "bit": 1,
@@ -91,14 +98,6 @@ class VirtualMemory:
         self.addSystemMemory()
 
         self.success = False
-        """
-        for item in tempItems:
-            for name in memoryItem.variables.keys():
-                item = memoryItem.variables[item]
-                self.success = self.addVariable(self, name, item.type, item.validity)
-                if self.success == False:
-                    break
-        """
 
         for num in range(0, len(tempItems)):
             name = names[num]
@@ -149,17 +148,21 @@ class VirtualMemory:
         self.subs = deepcopy(self.archieved[self.cursor]["subs"])
         self.bankLinks = deepcopy(self.archieved[self.cursor]["bankLinks"])
 
-        #self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
-        #self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_clear(0, END)
-
-        #self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][0])
-        #self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].select_set(self.archieved[self.cursor]["viewed"][1])
-
-        #self.__loader.BFG9000.first = True
 
     def emptyArchieved(self):
         self.cursor = 0
         self.archieved = []
+
+        for num in range(1,9):
+            bankNum = "bank"+str(num)
+            self.changedCodes[bankNum] = {}
+            if (num == 1):
+                self.changedCodes[bankNum]["bank_configurations"] = False
+                self.changedCodes[bankNum]["global_variables"] = False
+
+            else:
+                for section in self.__loader.sections:
+                    self.changedCodes[bankNum][section] = False
 
     def testPrintMemory(self):
         from time import sleep
@@ -176,8 +179,7 @@ class VirtualMemory:
                         string+=self.memory[address].variables[valiable].validity+os.linesep
                         string+=str(self.memory[address].variables[valiable].usedBits)+os.linesep
 
-                        #for XXX in self.memory[address].freeBits:
-                        #    string += XXX + ":" + str(self.memory[address].freeBits[XXX]) +  os.linesep
+
                     string +="------------------------------"+os.linesep
             for array in self.arrays.keys():
                 string += array + ": " +self.getArrayValidity(array)+", "+ str(list(self.arrays[array].keys()))+os.linesep
@@ -211,8 +213,6 @@ class VirtualMemory:
         for array in self.arrays.keys():
             if name in self.arrays[array]:
                 self.arrays[array].pop(name)
-        #if self.__loader.frames["ArrayFrame"].arrName.getEntry()!="":
-        #    self.__loader.frames["ArrayFrame"].fillListBoxes()
 
     def getAddressOnVariableIsStored(self, name, bank):
         section="local_variables"
@@ -409,6 +409,7 @@ class VirtualMemory:
                 string+=array + "=array(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
         #print(string)
         self.codes[bank][section].code = string
+        self.changedCodes[bank][section] = True
 
     def getArrayValidity(self,arrayname):
         try:

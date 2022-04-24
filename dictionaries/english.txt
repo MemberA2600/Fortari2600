@@ -271,3 +271,5 @@ testScreen=Test Screen
 emptyBank=#bank# #level# seems to be empty
 top=Top
 bottom=Bottom
+screenItem=Add Screen Item
+availableScreenElements=Available Screen Elements

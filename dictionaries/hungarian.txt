@@ -271,3 +271,5 @@ testScreen=Képernyõteszt
 emptyBank=#bank# #level# szintje üres
 top=Felsõ
 bottom=Alsó
+screenItem=Képernyõelem Hozzáadása
+availableScreenElements=Elérhetõ Képernyõelemek

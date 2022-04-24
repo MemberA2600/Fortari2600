@@ -92,15 +92,24 @@ class LoadingScreen():
         s = (round(self.__loader.screenSize[0] // 1.15 // 7 * 6),
              round((self.__loader.screenSize[1] // 1.25 - 55) // 20 * 19))
 
+        """
         self.loadAnimationFrames("centipede", 19,
                                  self.__loader.centipedeFrames, "png",
                                  (s[0], s[1], 1)
                                  )
+        """
+
+        self.loadAnimationFrames("plasma", 65,
+                                 self.__loader.rainbowFrames, "gif",
+                                 (s[0], s[1], 1)
+                                 )
+
 
         self.loadAnimationFrames("lock", 4,
                                  self.__loader.lockedFramesTopLevel, "png",
                                  (s[0], s[1], 1)
                                  )
+
 
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)

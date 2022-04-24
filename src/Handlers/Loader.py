@@ -27,6 +27,7 @@ class Loader:
         self.tapeFrames = []
         self.centipedeFrames = []
         self.lockedFramesTopLevel = []
+        self.rainbowFrames = []
         self.colorDict = None
         self.tiaTone = None
         self.piaNotes = None

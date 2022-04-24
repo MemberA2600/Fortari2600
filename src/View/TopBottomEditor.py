@@ -12,12 +12,15 @@ class TopBottomEditor:
         self.__mainWindow = self.__loader.mainWindow
 
         self.dead = False
+        self.__listBoxItems = []
+        self.__lastSelected = None
+        self.__lastBank     = None
 
         self.__activeBank = "Bank2"
         self.__activePart = "Top"
         self.__activeMode = "blank"
 
-        # 0: The cose in str format
+        # 0: The code in str format
         # 1: State if it has been changed
         # 2: The code in lines, readable for the editor
         item = ["", False, []]
@@ -35,6 +38,7 @@ class TopBottomEditor:
             ]
         }
 
+        self.importData()
         self.__loader.stopThreads.append(self)
 
         self.__topComment = "*** This section contains the screen elements appearing over the main display section (or can be appear standalone if the display\n" +\
@@ -68,31 +72,39 @@ class TopBottomEditor:
                                 1)
         self.dead = True
 
+    def setArrowButtons(self):
+        self.__moveUpButton.config(state   = DISABLED)
+        self.__moveDownButton.config(state = DISABLED)
+
+        if len(self.__listBoxItems) > 1:
+           if self.__itemListBox.curselection()[0] > 0:
+               self.__moveUpButton.config(state=NORMAL)
+           if self.__itemListBox.curselection()[0] < len(self.__listBoxItems) - 1:
+               self.__moveDownButton.config(state=NORMAL)
+
+
+
     def importData(self):
+        codes = self.__loader.virtualMemory.codes
         for num in range(2,9):
-            f = open(self.__mainWindow.projectPath+"bank"+str(num)+"/screen_top.a26", "r")
-            self.__codeData["Top"][num-2][0] = f.read()
-            f.close()
+            bankNum = "bank"+str(num)
+            for key in codes.keys():
+                if   key == "screen_top":
+                   self.__codeData["Top"][num - 2][0] = codes[bankNum][key]
+                   for line in self.__codeData["Top"][num - 2][0].split("\n"):
+                       line = line.replace("\r", "")
+                       if line.startswith("*") or line.startswith("#"):
+                           continue
 
-            f = open(self.__mainWindow.projectPath+"bank"+str(num)+"/screen_bottom.a26", "r")
-            self.__codeData["Bottom"][num-2][0] = f.read()
-            f.close()
+                       self.__codeData["Top"][num - 2][2].append(line)
+                elif key == "screen_bottom":
+                    self.__codeData["Bottom"][num - 2][0] = codes[bankNum][key]
+                    for line in self.__codeData["Bottom"][num - 2][0].split("\n"):
+                        line = line.replace("\r", "")
+                        if line.startswith("*") or line.startswith("#"):
+                            continue
 
-            for line in self.__codeData["Top"][num-2][0].split("\n"):
-                line = line.replace("\r", "")
-                if line.startswith("*") or line.startswith("#"):
-                   continue
-
-                self.__codeData["Top"][num - 2][2].append(line)
-
-            for line in self.__codeData["Bottom"][num-2][0].split("\n"):
-                line = line.replace("\r", "")
-                if line.startswith("*") or line.startswith("#"):
-                   continue
-
-                self.__codeData["Bottom"][num - 2][2].append(line)
-
-
+                        self.__codeData["Bottom"][num - 2][2].append(line)
 
     def __closeWindow(self):
         isThereChange = False
@@ -130,14 +142,6 @@ class TopBottomEditor:
                                    height = h)
         self.__bankFrame.pack_propagate(False)
         self.__bankFrame.pack(side=TOP, anchor=N, fill=X)
-
-        """
-        self.__topBottomFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
-                                   bg = self.__loader.colorPalettes.getColor("window"),
-                                   height = h)
-        self.__topBottomFrame.pack_propagate(False)
-        self.__topBottomFrame.pack(side=TOP, anchor=N, fill=X)
-        """
 
         self.__allOtherFrame = Frame(self.__topLevelWindow, width=self.__sizes[0],
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -218,8 +222,13 @@ class TopBottomEditor:
         loop.daemon = True
         loop.start()
 
+    def clickedListBox(self, event):
+        if False not in self.__finishedThem:
+           self.setArrowButtons()
+
     def loop(self):
-        num = 0
+        num  = 0
+        num2 = 0
 
         while self.dead == False and self.__mainWindow.dead == False:
             if False not in self.__finishedThem:
@@ -235,9 +244,9 @@ class TopBottomEditor:
 
             if self.__activeMode == "blank":
                try:
-                   num += 1
-                   if num == len(self.__loader.centipedeFrames): num = 0
-                   self.__onlyLabel.config(image = self.__loader.centipedeFrames[num])
+                   num2 += 1
+                   if num2 == len(self.__loader.rainbowFrames) * 2: num2 = 0
+                   self.__onlyLabel.config(image = self.__loader.rainbowFrames[num2 // 2])
                    self.__lockedLabel.config(
                        fg = self.__mainWindow.getLoopColor()
                    )
@@ -259,6 +268,7 @@ class TopBottomEditor:
             sleep(0.025)
 
     def setEditorFrame(self):
+
         for item in self.__allTheFunStuff.pack_slaves():
             item.destroy()
 
@@ -266,13 +276,59 @@ class TopBottomEditor:
         if self.__loader.virtualMemory.locks[self.__activeBank.lower()] != None:
            locked = True
 
-        bankNum = int(self.__activeBank[4]) - 2
+        bankNum = self.getBankNum()
+        self.__topButton.config(state=NORMAL)
+        self.__bottomButton.config(state=NORMAL)
+        self.__addNewButton.config(state=NORMAL)
+        self.__deleteButton.config(state=DISABLED)
+        self.__moveUpButton.config(state=DISABLED)
+        self.__moveDownButton.config(state=DISABLED)
+        self.__testAllButton.config(state=DISABLED)
+
         if locked == True:
            self.blankAnimation("locked")
+           self.__topButton.config(state = DISABLED)
+           self.__bottomButton.config(state = DISABLED)
+           self.__addNewButton.config(state = DISABLED)
 
         elif len(self.__codeData[self.__activePart][bankNum][2]) == 0:
            self.blankAnimation("blank")
 
+        else:
+            self.__activeMode = "common"
+            self.__allTheFunStuff.config(bg = self.__loader.colorPalettes.getColor("window"))
+            if self.__lastBank != self.getBankNum():
+               self.__lastBank = self.getBankNum()
+               self.fillListBox()
+
+            if len(self.__codeData[self.__activePart][self.getBankNum()][2]) > 0:
+                self.__deleteButton.config(state=NORMAL)
+                self.__testAllButton.config(state=NORMAL)
+
+                if len(self.__codeData[self.__activePart][self.getBankNum()][2]) > 1:
+                    self.__moveUpButton.config(state=NORMAL)
+                    self.__moveDownButton.config(state=NORMAL)
+
+    def fillListBox(self):
+        self.__listBoxItems = []
+
+        bank = self.getBankNum()
+
+        for item in self.__codeData[self.__activePart][bank][2]:
+            name = item.split(" ")[0]
+            self.__listBoxItems.append(name)
+
+        self.__itemListBox.select_clear(0, END)
+        self.__itemListBox.delete(0, END)
+
+        for item in self.__listBoxItems:
+            self.__itemListBox.insert(END, item)
+
+        if len(self.__listBoxItems) > 0:
+            self.__itemListBox.select_set(0)
+            item = self.__codeData[self.__activePart][bank][2][0]
+
+            self.setTheSetter(item.split(" ")[0], item.split(" ")[1])
 
     def blankAnimation(self, mode):
         self.__allTheFunStuff.config(bg="black")
@@ -435,26 +491,21 @@ class TopBottomEditor:
         frame1.pack_propagate(False)
         frame1.pack(side=LEFT, anchor=E, fill=Y)
 
+        frame3 = Frame( f5, width = w*2,
+                        bg=self.__loader.colorPalettes.getColor("window"),
+                        height=self.__sizes[1])
+        frame3.pack_propagate(False)
+        frame3.pack(side=LEFT, anchor=E, fill=Y)
+
         frame2 = Frame( f5, width = w,
                         bg=self.__loader.colorPalettes.getColor("window"),
                         height=self.__sizes[1])
         frame2.pack_propagate(False)
         frame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        frame3 = Frame( f5, width = w,
-                        bg=self.__loader.colorPalettes.getColor("window"),
-                        height=self.__sizes[1])
-        frame3.pack_propagate(False)
-        frame3.pack(side=LEFT, anchor=E, fill=Y)
 
-        frame4 = Frame( f5, width = w,
-                        bg=self.__loader.colorPalettes.getColor("window"),
-                        height=self.__sizes[1])
-        frame4.pack_propagate(False)
-        frame4.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__saveImage    = self.__loader.io.getImg("save", None)
-        self.__saveAllImage = self.__loader.io.getImg("saveAll", None)
+        #self.__saveImage    = self.__loader.io.getImg("save", None)
+        #self.__saveAllImage = self.__loader.io.getImg("saveAll", None)
         self.__undoImage    = self.__loader.io.getImg("undo", None)
         self.__redoImage    = self.__loader.io.getImg("redo", None)
 
@@ -477,6 +528,7 @@ class TopBottomEditor:
         self.__redoButton.pack_propagate(False)
         self.__redoButton.pack(fill=BOTH, side = TOP, anchor = N)
 
+        """
         self.__saveButton = Button(frame3, bg=self.__loader.colorPalettes.getColor("window"),
                                    image=self.__saveImage,
                                    width= frame1.winfo_width(), height = frame1.winfo_height(),
@@ -494,6 +546,17 @@ class TopBottomEditor:
 
         self.__saveAllButton.pack_propagate(False)
         self.__saveAllButton.pack(fill=BOTH, side = TOP, anchor = N)
+        """
+
+        self.__okButton = Button(   frame3, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("font"),
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
+                                    width= frame1.winfo_width(), height = frame1.winfo_height(),
+                                    state=DISABLED, font = self.__normalFont,
+                                    command=self.__saveAllChanges)
+
+        self.__okButton.pack_propagate(False)
+        self.__okButton.pack(fill=BOTH, side = TOP, anchor = N)
 
         self.__finishedThem[2] = True
 
@@ -503,17 +566,105 @@ class TopBottomEditor:
     def __redoChanges(self):
         pass
 
-    def __saveChanges(self):
-        pass
-
     def __saveAllChanges(self):
         pass
 
     def __addNew(self):
-        pass
+        from ScreenTopFrame import ScreenTopFrame
+
+        self.answer = None
+        self.__subMenu = ScreenTopFrame(self.__loader, self)
+
+        name = self.answer
+        if self.answer != None:
+            counter = 0
+            while name in self.__listBoxItems:
+                name = self.answer+"_"+str(counter)
+
+            self.__listBoxItems.append(name)
+            self.__itemListBox.insert(END, name)
+
+            self.__itemListBox.select_set(0)
+
+            bank = self.getBankNum()
+
+            if self.answer == "ChangeFrameColor":
+               defaultData = name + " " + "ChangeFrameColor $00"
+               self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
+               self.__codeData[self.__activePart][bank][1] = True
+
+            self.checkForChanges()
+            self.setTheSetter(name, self.answer)
+
+    def setTheSetter(self, name, typ):
+        if name != self.__listBoxItems[self.__itemListBox.curselection()[0]]:
+           self.__itemListBox.select_clear(0, END)
+           self.__itemListBox.select_set(self.__listBoxItems.index(name))
+
+        if name != self.__lastSelected:
+
+           self.__lastSelected = name
+           bank = self.getBankNum()
+
+           if typ == "ChangeFrameColor":
+              from ChangeFrameColor import ChangeFrameColor
+
+              self.__setterFrame = ChangeFrameColor(self.__loader, self.__allTheFunStuff,
+                                                    self.__codeData[self.__activePart][bank][2][
+                                                    self.__itemListBox.curselection()[0]])
+
+    def checkForChanges(self):
+        for button in self.__bankButtons:
+            button.config(bg = self.__loader.colorPalettes.getColor("window"))
+
+        self.__topButton.config(bg=self.__loader.colorPalettes.getColor("window"))
+        self.__bottomButton.config(bg=self.__loader.colorPalettes.getColor("window"))
+
+        for screenType in ("Top", "Bottom"):
+            for num in range(2, 9):
+                bankNum = "Bank"+str(num)
+                if self.__codeData[screenType][num-2][1] == True:
+                   self.__bankButtons[num-2].config(bg=self.__loader.colorPalettes.getColor("highLight"))
+                   if self.__activePart == screenType and self.__activeBank == bankNum:
+                      if screenType == "Top":
+                          self.__topButton.config(bg=self.__loader.colorPalettes.getColor("highLight"))
+                      else:
+                          self.__bottomButton.config(bg=self.__loader.colorPalettes.getColor("highLight"))
+
+        self.setEditorFrame()
+        self.setArrowButtons()
 
     def __delete(self):
-        pass
+        selected = self.__itemListBox.curselection()[0]
+        self.__itemListBox.select_clear(0, END)
+        self.__itemListBox.delete(selected)
+        self.__listBoxItems.pop(selected)
+
+
+        while True:
+            try:
+                if len(self.__listBoxItems) > 0:
+                    self.__itemListBox.select_set(selected)
+                break
+
+            except:
+                selected-=1
+
+        bank = self.getBankNum()
+        self.__codeData[self.__activePart][bank][1] = True
+
+
+        self.checkForChanges()
+        if len(self.__listBoxItems) > 0:
+            item = self.__codeData[self.__activePart][self.getBankNum()][2][selected]
+            name = item.split(" ")[0]
+            typ  = item.split(" ")[1]
+
+            self.setTheSetter(name, typ)
+
+
+    def getBankNum(self):
+        return int(self.__activeBank[-1]) - 2
 
     def __moveUp(self):
         pass
@@ -584,7 +735,8 @@ class TopBottomEditor:
                                         yscrollcommand=self.__itemListScrollBar.set,
                                         selectmode=BROWSE,
                                         exportselection = False,
-                                        font = self.__smallFont
+                                        font = self.__miniFont,
+                                        justify = CENTER
                                     )
 
         self.__itemListBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
@@ -597,6 +749,7 @@ class TopBottomEditor:
         self.__itemListScrollBar.config(command=self.__itemListBox.yview)
 
         self.__finishedThem[1] = True
+        self.__itemListBox.bind("<Button-1>", self.clickedListBox)
 
 
     def __changeSlot(self, event):
@@ -607,6 +760,8 @@ class TopBottomEditor:
             return
 
         name = str(str(event.widget)).split(".")[-1]
+        self.__activeBank = name[0].upper() + name[1:]
+        self.setEditorFrame()
 
     def __changeScreenPart(self, event):
         if False in self.__finishedThem:
@@ -616,6 +771,8 @@ class TopBottomEditor:
             return
 
         name = str(str(event.widget)).split(".")[-1]
+        self.__activePart = name[0].upper() + name[1:]
+        self.setEditorFrame()
 
     def __saveAll(self):
         pass
