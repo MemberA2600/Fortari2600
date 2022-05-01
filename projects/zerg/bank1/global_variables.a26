@@ -1,19 +1,6 @@
-*** This is where you set the variables for the whole project, so the ones shouldn't
-*** be overwritten anywhere.
-rand=byte
-counter=byte
-temp1=byte
-temp2=byte
-temp3=byte
-temp4=byte
-temp5=byte
-temp6=byte
-temp7=byte
-temp8=byte
-temp9=byte
-item=byte
-zerg=nibble
-terran=nibble
-protoss=byte
-races=array(zerg,protoss)
-WarCraft=array(protoss,temp4)
+*** This is where you set the variables for the whole project, so the ones shouldn't*** be overwritten anywhere.
+zerg=nibble
+terran=nibble
+protoss=byte
+races=array(zerg,protoss)
+WarCraft=array(protoss,temp04)

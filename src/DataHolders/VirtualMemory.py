@@ -321,7 +321,6 @@ class VirtualMemory:
             self.memory["$F0"+I] = MemoryItem()
         self.addSystemMemory()
 
-
     def getHex(self, i):
         return(hex(i)[2:])
 
@@ -331,7 +330,7 @@ class VirtualMemory:
         return(num)
 
     def getSARAWriteAddressFromReadAddress(self, num):
-        num = "$F0"+hex(int(num[3:], 16)+128)[2:]
+        num = "$F0"+hex(int(num[3:], 16)-128)[2:]
 
         return(num)
 
