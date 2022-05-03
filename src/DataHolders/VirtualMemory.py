@@ -334,6 +334,11 @@ class VirtualMemory:
 
         return(num)
 
+    def getVariableByName2(self, name):
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                return self.memory[address].variables[variable]
+
     def setLocksAfterLoading(self):
         lines = self.codes["bank1"]["bank_configurations"].code.split("\n")
         for line in lines:

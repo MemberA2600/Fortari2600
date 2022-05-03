@@ -279,3 +279,4 @@ variable=Változó
 mustBeVar=Konstansnak vagy teljes 8bit széles változónak kell lennie!
 segmentName=A szegmensnevek betûvel kezdõdnek, betûket, számokat és alsóvonást tartalmazhatnak!
 nameAlready=A címkenév a #bank# #section# szekciójában már használva van!
+mustBeVar2=Konstansnak vagy változónak kell lennie!

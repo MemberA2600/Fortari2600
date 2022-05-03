@@ -39,6 +39,97 @@ class Compiler:
             self.menuASM()
         elif self.__mode == "testMenu":
             self.testMenu()
+        elif self.__mode == "testScreenElements":
+            self.testScreenElements()
+
+    def testScreenElements(self):
+        self.__screenElements  = self.__data[0]
+        self.__tv              = self.__data[1]
+        self.__bank            = self.__data[2]
+
+        self.__bankData = []
+        # In this case, there is no top or bottom, all tested goes to top.
+        self.__routines = {}
+
+        for item in self.__screenElements:
+            item = item.split(" ")
+            name = item[0]
+            typ  = item[1]
+            data = item[2:]
+
+            fullName = self.__bank + "_" + name + "_" + typ
+            if   typ == "ChangeFrameColor":
+               self.__bankData.append(
+                   self.generate_ChangeFrameColor(fullName, data)
+               )
+            elif typ == "EmptyLines":
+                self.__bankData.append(
+                    self.generate_EmptyLines(fullName, data)
+                )
+
+    def generate_EmptyLines(self, name, data):
+        from copy import deepcopy
+
+        text = "\n" + name + "_" + "\n\tLDA\t"
+
+        varType = None
+        try:
+            num = int(data)
+            varType = "constant"
+        except:
+            variable = self.__loader.virtualMemory.getVariableByName2(data)
+            varType  = variable.type
+            #varBits  = deepcopy(variable.usedBits)[::-1]
+            varBits  = variable.usedBits
+
+        if   varType == "constant":
+           text += "#"+data+"\n"
+        else:
+           text += data + "\n" +\
+                   self.shiftAndTruncateCode(varBits)
+        text += "\tTAY\n"
+        text += name + "_Loop\n"
+        text += "\tCPY  #0\n\tBEQ\t" + name + "_LoopEnd\n\tDEY\n"
+        text += "\tSTA\tWSYNC\n\tJMP\t" + name + "_Loop\n"
+        text += name + "_LoopEnd\n"
+
+        return text
+
+    def shiftAndTruncateCode(self, bits):
+        if len(bits) == 8: return ""
+
+        txt = ""
+        minNum = min(bits)
+        maxNum = max(bits)
+
+        numForROL = len(bits)+(7-maxNum)
+
+        if minNum <= numForROL:
+           counter = minNum
+           shift   = "LSR"
+        else:
+           counter = numForROL
+           shift   = "ROL"
+
+        while counter > 0:
+           txt     += "\t" + shift + "\n"
+           counter -= 1
+
+        num = "0" * (8-len(bits))
+        while len(num) < 8:
+            num += "1"
+
+        txt += "\tAND\t#%"+num+"\n"
+        return txt
+
+    def generate_ChangeFrameColor(self, name, data):
+        text = "\n" + name + "_" + "\n" + "\tLDA\t"
+
+        if data[0][0] == "$":
+           text += "#"
+
+        text+= data[0] +"\n"+"\tSTA\tframeColor\n"
+        return(text)
 
     def __reAlignDataSection(self, text):
         text = text.split("\n")
@@ -51,7 +142,6 @@ class Compiler:
         byteCounter = 0
 
         last        = []
-        tempCounter = 0
         for line in temp:
             if "byte" in line.lower():
                 byteCounter += 1
@@ -1453,4 +1543,7 @@ class Compiler:
             pfText += pf4 + "\n"
 
         return(pfText)
+
+
+
 

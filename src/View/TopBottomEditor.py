@@ -175,38 +175,44 @@ class TopBottomEditor:
         f1 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=h)
-        f1.pack_propagate(False)
-        f1.pack(side=TOP, anchor=N, fill=X)
+        while f1.winfo_width() < 2:
+            f1.pack_propagate(False)
+            f1.pack(side=TOP, anchor=N, fill=X)
 
         f2 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=h)
-        f2.pack_propagate(False)
-        f2.pack(side=TOP, anchor=N, fill=X)
+        while f2.winfo_width() < 2:
+            f2.pack_propagate(False)
+            f2.pack(side=TOP, anchor=N, fill=X)
 
         f3 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=h)
-        f3.pack_propagate(False)
-        f3.pack(side=TOP, anchor=N, fill=X)
+        while f3.winfo_width() < 2:
+            f3.pack_propagate(False)
+            f3.pack(side=TOP, anchor=N, fill=X)
 
         f4 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=h * 11)
-        f4.pack_propagate(False)
-        f4.pack(side=TOP, anchor=N, fill=X)
+        while f4.winfo_width() < 2:
+            f4.pack_propagate(False)
+            f4.pack(side=TOP, anchor=N, fill=X)
 
         f6 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=h * 4)
-        f6.pack_propagate(False)
-        f6.pack(side=TOP, anchor=N, fill=X)
+        while f6.winfo_width() < 2:
+            f6.pack_propagate(False)
+            f6.pack(side=TOP, anchor=N, fill=X)
 
         f5 = Frame(self.__listBoxAndManyOtherFrame, width=self.__sizes[0],
                   bg=self.__loader.colorPalettes.getColor("window"),
                   height=self.__sizes[1])
-        f5.pack_propagate(False)
-        f5.pack(side=TOP, anchor=N, fill=BOTH)
+        while f5.winfo_width() < 2:
+            f5.pack_propagate(False)
+            f5.pack(side=TOP, anchor=N, fill=BOTH)
 
         t1 = Thread(target=self.__createBankButtons, args=(f1, f2, h))
         t1.daemon = True
@@ -679,6 +685,10 @@ class TopBottomEditor:
                defaultData = name + " " + "ChangeFrameColor $00"
                self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
                self.__codeData[self.__activePart][bank][1] = True
+            elif self.answer == "EmptyLines":
+                defaultData = name + " " + "EmptyLines 1"
+                self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
+                self.__codeData[self.__activePart][bank][1] = True
 
             self.checkForChanges()
             self.setTheSetter(name, self.answer)
@@ -703,6 +713,15 @@ class TopBottomEditor:
                                                     self.__changeName, self.__changeData, self.__uW, self.__uH,
                                                     self.__activeBank.lower()
                                                     )
+           elif typ == "EmptyLines":
+              from EmptyLines import EmptyLines
+              self.__setterFrame = EmptyLines(  self.__loader, self.__allTheFunStuff,
+                                                self.__codeData[self.__activePart][bank][2][
+                                                self.__itemListBox.curselection()[0]],
+                                                self.__changeName, self.__changeData, self.__uW, self.__uH,
+                                                self.__activeBank.lower()
+                                                )
+
     def __changeData(self, data):
         section = self.__codeData[self.__activePart][self.getBankNum()]
         section[1] = True
@@ -715,7 +734,7 @@ class TopBottomEditor:
                section[2][itemNum] = " ".join(data)
                break
 
-        self.checkForChanges()
+        #self.checkForChanges()
 
 
     def __changeName(self, old, new):
@@ -740,7 +759,6 @@ class TopBottomEditor:
         self.checkForChanges()
 
     def __saveBuffer(self):
-        self.__poz += 1
 
         while len(self.__buffer) > self.__poz+1:
            self.__buffer.pop(-1)
@@ -751,7 +769,7 @@ class TopBottomEditor:
         self.__buffer.append(
             deepcopy(self.__codeData)
         )
-
+        self.__poz = len(self.__buffer)-1
         self.__undoButton.config(state = NORMAL)
 
     def checkForChanges(self):
@@ -843,7 +861,19 @@ class TopBottomEditor:
         self.setTheSetter(name, typ)
 
     def __testAll(self):
-        pass
+        t = Thread(target=self.__testAllThread)
+        t.daemon = True
+        t.start()
+
+    def __testAllThread(self):
+        from Compiler import Compiler
+
+        Compiler(self.__loader, self.__loader.virtualMemory.kernel,
+                 "testScreenElements", [self.__codeData[self.__activePart][self.getBankNum()][2],
+                                        "NTSC", self.__activeBank
+                                        ]
+                 )
+
 
     def __createBankButtons(self, f1, f2, h):
 

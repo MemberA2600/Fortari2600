@@ -92,12 +92,21 @@ class SubMenu:
         del self.__loader.subMenuDict[self.__name]
 
     def killOther(self):
-        self.__loader.subMenus[-2].dead = True
-        from time import sleep
-        sleep(1)
+        num = 10
 
-        self.__loader.subMenus[-2].getTopLevel().destroy()
-        self.__loader.subMenus.pop(-2)
+        from time import sleep
+
+        while num > 0:
+            sleep(1)
+
+            try:
+                self.__loader.subMenus[-2].dead = True
+                self.__loader.subMenus[-2].getTopLevel().destroy()
+                self.__loader.subMenus.pop(-2)
+                num = 0
+            except:
+                num -= 1
+
 
     def getTopLevel(self):
         return(self.__topLevel)

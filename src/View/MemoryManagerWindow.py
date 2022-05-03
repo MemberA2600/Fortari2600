@@ -866,6 +866,7 @@ class MemoryManagerWindow:
         self.__changedBanks.remove(self.__selectedSlot)
         if len(self.__changedBanks) == 0:
             self.__changed = False
+        self.__memory.archieve()
 
     def saveAllBank(self):
         for num in range(1,9):
@@ -873,7 +874,7 @@ class MemoryManagerWindow:
 
         self.__changed = False
         self.__changedBanks.clear()
-
+        self.__memory.archieve()
 
     def __removeSelect(self, event):
         other = {
