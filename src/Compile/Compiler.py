@@ -50,6 +50,9 @@ class Compiler:
         self.__bankData = []
         # In this case, there is no top or bottom, all tested goes to top.
         self.__routines = {}
+        self.__userData = {}
+
+        self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon")
 
         for item in self.__screenElements:
             item = item.split(" ")
@@ -67,30 +70,47 @@ class Compiler:
                     self.generate_EmptyLines(fullName, data)
                 )
 
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", "\n".join(self.__bankData))
+        self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", "\n".join(self.__routines.values()))
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", "\n".join(self.__userData.values()))
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+
     def generate_EmptyLines(self, name, data):
         from copy import deepcopy
 
-        text = "\n" + name + "_" + "\n\tLDA\t"
+        text = "\n" + name + "\n\tLDA\t"
 
         varType = None
+
         try:
-            num = int(data)
+            num = int(data[0])
             varType = "constant"
-        except:
-            variable = self.__loader.virtualMemory.getVariableByName2(data)
+        except Exception as e:
+            variable = self.__loader.virtualMemory.getVariableByName2(data[0])
             varType  = variable.type
             #varBits  = deepcopy(variable.usedBits)[::-1]
             varBits  = variable.usedBits
 
         if   varType == "constant":
-           text += "#"+data+"\n"
+           text += "#"+ data[0] +"\n"
         else:
-           text += data + "\n" +\
+           text += data[0] + "\n" +\
                    self.shiftAndTruncateCode(varBits)
         text += "\tTAY\n"
         text += name + "_Loop\n"
         text += "\tCPY  #0\n\tBEQ\t" + name + "_LoopEnd\n\tDEY\n"
-        text += "\tSTA\tWSYNC\n\tJMP\t" + name + "_Loop\n"
+        text += "\tLDA\tframeColor\n"
+        text += "\tSTA\tWSYNC\n"
+        text += "\tSTA\tCOLUBK\n"
+        text += "\tJMP\t" + name + "_Loop\n"
         text += name + "_LoopEnd\n"
 
         return text
@@ -123,7 +143,7 @@ class Compiler:
         return txt
 
     def generate_ChangeFrameColor(self, name, data):
-        text = "\n" + name + "_" + "\n" + "\tLDA\t"
+        text = "\n" + name + "\n" + "\tLDA\t"
 
         if data[0][0] == "$":
            text += "#"
