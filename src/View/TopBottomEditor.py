@@ -689,6 +689,10 @@ class TopBottomEditor:
                 defaultData = name + " " + "EmptyLines 1"
                 self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
                 self.__codeData[self.__activePart][bank][1] = True
+            elif self.answer == "Picture64px":
+                defaultData = name + " " + "Picture64px # #"
+                self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
+                self.__codeData[self.__activePart][bank][1] = True
 
             self.checkForChanges()
             self.setTheSetter(name, self.answer)
@@ -721,6 +725,15 @@ class TopBottomEditor:
                                                 self.__changeName, self.__changeData, self.__uW, self.__uH,
                                                 self.__activeBank.lower()
                                                 )
+           elif typ == "Picture64px":
+              from Picture64px import Picture64px
+              self.__setterFrame = Picture64px(  self.__loader, self.__allTheFunStuff,
+                                                self.__codeData[self.__activePart][bank][2][
+                                                self.__itemListBox.curselection()[0]],
+                                                self.__changeName, self.__changeData, self.__uW, self.__uH,
+                                                self.__activeBank.lower()
+                                                )
+
 
     def __changeData(self, data):
         section = self.__codeData[self.__activePart][self.getBankNum()]

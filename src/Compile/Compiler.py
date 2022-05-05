@@ -53,6 +53,9 @@ class Compiler:
         self.__userData = {}
 
         self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon")
+        self.__inits    = []
+
+        testLine = self.__io.loadTestElementPlain("testLine")
 
         for item in self.__screenElements:
             item = item.split(" ")
@@ -70,12 +73,15 @@ class Compiler:
                     self.generate_EmptyLines(fullName, data)
                 )
 
+        self.__bankData.insert(0, testLine)
+        self.__bankData.append(testLine)
+
         self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
-        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode + "\n".join(self.__inits))
         self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", "\n".join(self.__bankData))
         self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", "\n".join(self.__routines.values()))
-        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", "\n".join(self.__userData.values()))
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection("\n".join(self.__userData.values())))
 
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 

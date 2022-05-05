@@ -116,6 +116,8 @@ class ChangeFrameColor:
                 ):
                    self.__varList.append(address + " - " + variable)
 
+        self.__varList.sort()
+
         self.__varListScrollBar = Scrollbar(self.__variableFrame)
         self.__varListBox = Listbox(   self.__variableFrame, width=100000,
                                         height=1000,

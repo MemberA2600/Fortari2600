@@ -1723,7 +1723,7 @@ class PictureToCode:
                   )
 
             self.__thisEntry.pack(side=TOP, fill=BOTH)
-            self.__thisEntry.bind("<KeyRelease>", self.__checkNumber)
+            self.__thisEntry.bind("<KeyRelease>", self.checkFileName)
 
 
 
@@ -1891,6 +1891,24 @@ class PictureToCode:
             self.__name = self.__thisVar.get()
         self.__closeWindow()
 
+    def checkFileName(self, event):
+        if self.__loader.io.checkIfValidFileName(self.__thisVar.get()) == False:
+            self.__thisEntry.config(
+                bg = self.__colors.getColor("boxBackUnSaved"),
+                fg=self.__colors.getColor("boxFontUnSaved")
+            )
+            self.__okButton.config(state = DISABLED)
+            self.__editButton.config(state = DISABLED)
+
+        else:
+            self.__thisEntry.config(
+                bg = self.__colors.getColor("boxBackNormal"),
+                fg=self.__colors.getColor("boxFontNormal")
+            )
+            self.__checkNumber(event)
+            self.__okButton.config(state = NORMAL)
+            self.__editButton.config(state = NORMAL)
+
     def __checkNumber(self, event):
         num = 0
         try:
@@ -1900,10 +1918,16 @@ class PictureToCode:
                 bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                 fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
             )
+            self.__okButton.config(state = DISABLED)
+            self.__editButton.config(state = DISABLED)
+            return
+
         self.__number.config(
             bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
             fg=self.__loader.colorPalettes.getColor("boxFontNormal")
             )
+        self.__okButton.config(state=NORMAL)
+        self.__editButton.config(state=NORMAL)
 
         if num<0:
             num = self.__tres.set("0")
