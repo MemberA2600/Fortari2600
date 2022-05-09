@@ -282,3 +282,4 @@ nameAlready=A címkenév a #bank# #section# szekciójában már használva van!
 mustBeVar2=Konstansnak vagy változónak kell lennie!
 Picture64px=64 Pixel Széles Kép
 no64px=Nem található 64 pixeles kép!
+displayedHeight=Megjelenített Magasság:

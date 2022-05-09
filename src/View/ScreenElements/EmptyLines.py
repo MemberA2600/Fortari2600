@@ -110,9 +110,10 @@ class EmptyLines:
                         (var.validity == "global" or
                         var.validity == self.__currentBank) and
                         (var.system == False or
-                        var.iterable == True)
+                        var.iterable == True or
+                        var.linkable == True)
                 ):
-                   self.__varList.append(address + " - " + variable)
+                   self.__varList.append(address + "::" + variable)
 
         self.__varList.sort()
 
@@ -138,6 +139,9 @@ class EmptyLines:
             self.__varListBox.insert(END, var)
 
         self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+
         self.__tempSet = self.__varList[0]
 
         self.__entryVar = StringVar()
@@ -172,6 +176,7 @@ class EmptyLines:
         self.setIt(None)
 
     def setIt(self, data):
+        #print(data)
         if self.__option.get() == 1:
            self.__entry.config(state = DISABLED)
            self.__varListBox.config(state=NORMAL)
@@ -199,7 +204,7 @@ class EmptyLines:
                self.__entryVar.set(str(self.__value))
             else:
                self.__value  = int(self.__entryVar.get())
-               if self.__data != str(self.__value):
+               if data != str(self.__data[2]):
                    self.__data[2]   = str(self.__value)
                    self.__changeData(self.__data)
 
@@ -213,6 +218,7 @@ class EmptyLines:
             return
 
         if self.__checkIfConstIsRight(event) == True: self.setIt(self.__entryVar.get())
+        self.__changeData(self.__data)
 
     def __checkIfConstIsRight(self, event):
         try:

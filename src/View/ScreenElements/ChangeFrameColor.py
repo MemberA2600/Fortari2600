@@ -112,9 +112,10 @@ class ChangeFrameColor:
                         (var.validity == "global" or
                         var.validity == self.__currentBank) and
                         (var.system == False or
-                        var.iterable == True)
+                        var.iterable == True or
+                        var.linkable == True)
                 ):
-                   self.__varList.append(address + " - " + variable)
+                   self.__varList.append(address + "::" + variable)
 
         self.__varList.sort()
 
@@ -140,6 +141,10 @@ class ChangeFrameColor:
             self.__varListBox.insert(END, var)
 
         self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+
+
         self.__tempSet = self.__varList[0]
 
         from HexEntry import HexEntry
@@ -181,7 +186,7 @@ class ChangeFrameColor:
                self.__constEntry.setValue(self.__color[0])
             else:
                self.__color[0]  = self.__constEntry.getValue()
-               if self.__data != self.__color[0]:
+               if data != self.__data[2]:
                    self.__data[2]   = self.__color[0]
                    self.__changeData(self.__data)
 

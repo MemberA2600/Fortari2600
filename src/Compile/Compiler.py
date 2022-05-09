@@ -1,46 +1,71 @@
 import re
 from Assembler import Assembler
 
+class Block:
+
+    def __init__(self):
+        self.bytes = 0
+        self.segments = []
+
+    def addSegment(self, segment):
+        if segment.bytes + self.bytes > 255:
+           return False
+        self.segments.append(segment)
+        self.bytes+=segment.bytes
+        return True
+
+class Segment:
+
+    def __init__(self, text):
+        self.bytes = 0
+        self.text  = text
+
+        t = text.split("\n")
+        for line in t:
+            if "byte" in line.lower():
+                self.bytes+=1
+
 class Compiler:
 
     def __init__(self, loader, kernel, mode, data):
 
-        self.__loader = loader
-        self.__kernel = kernel
-        self.__mode = mode
-        self.__data = data
-        self.__executor = self.__loader.executor
-        self.__openEmulator = False
-        self.__io = self.__loader.io
+        if mode != "dummy":
+            self.__loader = loader
+            self.__kernel = kernel
+            self.__mode = mode
+            self.__data = data
+            self.__executor = self.__loader.executor
+            self.__openEmulator = False
+            self.__io = self.__loader.io
 
-        if self.__mode == "pfTest":
-            self.pfTest()
-        elif self.__mode == "spriteTest" or self.__mode == "tileSetTest":
-            self.spriteTest()
-        elif self.__mode == "kernelTest":
-            self.kernelTest()
-        elif self.__mode == 'music':
-            self.generateMusicROM()
-        elif self.__mode == 'getMusicBytes':
-            self.getMusicBytesSizeOnly()
-        elif self.__mode == 'test64px':
-            self.test64PX()
-        elif self.__mode == 'testWav':
-            self.testWav()
-        elif self.__mode == "getPFASM":
-            self.getPFASM()
-        elif self.__mode == "getSpriteASM":
-            self.getSpriteASM()
-        elif self.__mode == "getBigSpriteASM":
-            self.getBigSpriteASM()
-        elif self.__mode == "testBigSprite":
-            self.testBigSprite()
-        elif self.__mode == "menuASM":
-            self.menuASM()
-        elif self.__mode == "testMenu":
-            self.testMenu()
-        elif self.__mode == "testScreenElements":
-            self.testScreenElements()
+            if self.__mode == "pfTest":
+                self.pfTest()
+            elif self.__mode == "spriteTest" or self.__mode == "tileSetTest":
+                self.spriteTest()
+            elif self.__mode == "kernelTest":
+                self.kernelTest()
+            elif self.__mode == 'music':
+                self.generateMusicROM()
+            elif self.__mode == 'getMusicBytes':
+                self.getMusicBytesSizeOnly()
+            elif self.__mode == 'test64px':
+                self.test64PX()
+            elif self.__mode == 'testWav':
+                self.testWav()
+            elif self.__mode == "getPFASM":
+                self.getPFASM()
+            elif self.__mode == "getSpriteASM":
+                self.getSpriteASM()
+            elif self.__mode == "getBigSpriteASM":
+                self.getBigSpriteASM()
+            elif self.__mode == "testBigSprite":
+                self.testBigSprite()
+            elif self.__mode == "menuASM":
+                self.menuASM()
+            elif self.__mode == "testMenu":
+                self.testMenu()
+            elif self.__mode == "testScreenElements":
+                self.testScreenElements()
 
     def testScreenElements(self):
         self.__screenElements  = self.__data[0]
@@ -63,7 +88,7 @@ class Compiler:
             typ  = item[1]
             data = item[2:]
 
-            fullName = self.__bank + "_" + name + "_" + typ
+            fullName = self.__bank + "_" + name + "_" + typ + "_"
             if   typ == "ChangeFrameColor":
                self.__bankData.append(
                    self.generate_ChangeFrameColor(fullName, data)
@@ -72,6 +97,12 @@ class Compiler:
                 self.__bankData.append(
                     self.generate_EmptyLines(fullName, data)
                 )
+            elif typ == "Picture64px":
+                fullName += data[0]
+                those = self.generate_64px(fullName, data, data[0])
+                self.__bankData.append(those[0])
+                self.__userData[fullName] = those[1]
+                self.__inits.append(those[2])
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -87,6 +118,76 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_64px(self, name, data, fileName):
+        text = "\n" + name
+        height = data[1]
+        varTypes = ["", ""]
+        varNames = {
+            "VAR01": "", "VAR02": ""
+        }
+        aliasNames = {}
+
+        preSetCodes = []
+
+        for num in range(0, 2):
+            vName = "VAR0"+str(num+1)
+
+            try:
+                teszt = int(data[num+2])
+                varTypes[num] = "constant"
+                varNames[vName] = "#"+data[num+2]
+            except:
+                realName = data[num+2].split("::")[1]
+
+                variable = self.__loader.virtualMemory.getVariableByName2(realName)
+                varTypes[num] = variable.type
+                if varTypes[num] == "byte":
+                   varNames[vName] = realName
+                else:
+                   varNames[vName] = "temp0"+ str(num+3)
+                   code =   "\tLDA\t" + realName + "\n"                 + \
+                            self.convertAnyTo8Bits(variable.usedBits)   + \
+                            "\tSTA\t" + varNames[num]                   + "\n"
+                   preSetCodes.append(code)
+
+        #print(varNames)
+        if len(preSetCodes) > 0:
+           text += "_PreSet\n"              + \
+                  "\n".join(preSetCodes)    + "\n" + text
+
+        text += "\n" + self.__loader.io.loadSubModule("64pxPicture") + "\n"
+        topLevelCode = text.replace("pic64px", name)\
+                           .replace("picHeight", name + "_picHeight")\
+                           .replace("picIndex", name + "_picIndex")\
+                           .replace("picDisplayHeight", name+"_picDisplayHeight")
+
+        f = open(self.__loader.mainWindow.projectPath+"64px/"+fileName+".asm", "r")
+        d = f.read()
+        f.close()
+
+        userData = d.replace("pic64px", name)
+
+        enterCode = self.__loader.io.loadSubModule("64pxPictureEnter")
+        ddd = enterCode.replace("\r", "").split("\n")
+        for line in ddd:
+            if "#VAR" in line:
+                line = line.split("=")
+                aliasNames[line[1].replace(" ","")] = line[0].replace(" ","")
+
+        for item in varNames.keys():
+            enterCode = enterCode.replace("#"+item+"#", varNames[item])
+            if varNames[item].startswith("#"):
+               enterCode = enterCode.replace("STA\t"+aliasNames["#"+item+"#"], "")
+
+
+        enterCode = enterCode.replace("pic64px", name)\
+                             .replace("picHeight", name + "_picHeight")\
+                             .replace("picIndex", name + "_picIndex")\
+                             .replace("picDisplayHeight", name+"_picDisplayHeight")\
+                             .replace("FULLHEIGHT", height)
+
+        return topLevelCode, userData, enterCode
 
 
     def generate_EmptyLines(self, name, data):
@@ -108,8 +209,11 @@ class Compiler:
         if   varType == "constant":
            text += "#"+ data[0] +"\n"
         else:
+           if self.isItSARA(data[0]):
+                self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
+
            text += data[0] + "\n" +\
-                   self.shiftAndTruncateCode(varBits)
+                   self.convertAnyTo8Bits(varBits)
         text += "\tTAY\n"
         text += name + "_Loop\n"
         text += "\tCPY  #0\n\tBEQ\t" + name + "_LoopEnd\n\tDEY\n"
@@ -121,7 +225,7 @@ class Compiler:
 
         return text
 
-    def shiftAndTruncateCode(self, bits):
+    def convertAnyTo8Bits(self, bits):
         if len(bits) == 8: return ""
 
         txt = ""
@@ -148,16 +252,76 @@ class Compiler:
         txt += "\tAND\t#%"+num+"\n"
         return txt
 
+    def isItSARA(self, num):
+        if   len(num) != 5  : return False
+        elif num[0]   != '$': return False
+
+        try:
+            teszt = int(num[1:])
+            return True
+        except:
+            return False
+
     def generate_ChangeFrameColor(self, name, data):
         text = "\n" + name + "\n" + "\tLDA\t"
 
         if data[0][0] == "$":
            text += "#"
 
+        if self.isItSARA(data[0]):
+           self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
+
         text+= data[0] +"\n"+"\tSTA\tframeColor\n"
         return(text)
 
+    def preAlign(self, text):
+        text = text.split("\n")
+        tempText = "\n"
+        blocks = []
+        segments = {}
+        blocks.append(Block())
+
+        for line in text:
+            if line == "":
+                continue
+            elif line[0].isalnum() == True or line.startswith("##NAME##"):
+                if "byte" in tempText.lower():
+                    seg = Segment(tempText)
+                    tempText = "\n" + line + "\n"
+                    segments[seg] = seg.bytes
+                else:
+                    tempText += "\n" + line + "\n"
+
+            elif "byte" in line.lower():
+               tempText += line + "\n"
+
+        seg = Segment(tempText)
+        segments[seg] = seg.bytes
+
+        segmentKeys = sorted(segments, key = segments.get, reverse=True)
+        for segment in segmentKeys:
+            putIn = False
+            for block in blocks:
+                answer = block.addSegment(segment)
+                if answer == True:
+                   putIn = True
+                   break
+            if putIn == False:
+               blocks.append(Block())
+               blocks[-1].addSegment(segment)
+
+        text = ""
+        for block in blocks:
+            for segment in block.segments:
+                text += segment.text
+
+        return text
+
     def __reAlignDataSection(self, text):
+        if text == "": return ""
+
+        text = self.preAlign(text)
+
         text = text.split("\n")
 
         temp = []
@@ -169,6 +333,7 @@ class Compiler:
 
         last        = []
         for line in temp:
+
             if "byte" in line.lower():
                 byteCounter += 1
                 last[-1].append(line)
@@ -1571,5 +1736,6 @@ class Compiler:
         return(pfText)
 
 
-
-
+#if __name__ == "__main__":
+#   c = Compiler(None, None, "dummy" ,None)
+#   c.preAlign(open("F:\PyCharm\P\Fortari2600\projects\zerg\\bigSprites\Bird.asm", "r").read())

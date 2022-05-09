@@ -192,10 +192,13 @@ class VirtualMemory:
     def addSystemMemory(self):
         d = self.__loader.dataReader.readDataFile("templates"+os.sep+self.kernel+"_system_variables.a26")
         for key in d:
+            #print(key, d[key])
             self.addVariable(key, d[key].split(",")[0], "global")
             self.getVariableByName(key, "bank1").system=True
             if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
                 self.getVariableByName(key, "bank1").iterable = False
+            if d[key].split(",")[2].replace(" ","").replace("\t", "") == "non-link":
+                self.getVariableByName(key, "bank1").linkable = False
 
     def addArray(self, name):
         self.arrays[name] = {}

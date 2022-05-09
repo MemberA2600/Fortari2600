@@ -302,11 +302,13 @@ class TopBottomEditor:
             sleep(0.025)
 
     def __addView(self):
-
-        self.__views.append(
-            self.__activeBank + "|" + self.__activePart + "|" + self.__activeMode + "|" +
-            self.__codeData[self.__activePart][self.getBankNum()][2][self.__itemListBox.curselection()[0]]
-        )
+        if len(self.__listBoxItems) > 0:
+            self.__views.append(
+                self.__activeBank + "|" + self.__activePart + "|" + self.__activeMode + "|" +
+                self.__codeData[self.__activePart][self.getBankNum()][2][self.__itemListBox.curselection()[0]]
+            )
+        else:
+            self.__views.append("blank")
 
     def setEditorFrame(self):
 
@@ -690,7 +692,7 @@ class TopBottomEditor:
                 self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
                 self.__codeData[self.__activePart][bank][1] = True
             elif self.answer == "Picture64px":
-                defaultData = name + " " + "Picture64px # #"
+                defaultData = name + " " + "Picture64px # 0 0 0"
                 self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
                 self.__codeData[self.__activePart][bank][1] = True
 
@@ -698,9 +700,22 @@ class TopBottomEditor:
             self.setTheSetter(name, self.answer)
 
     def setTheSetter(self, name, typ):
-        if name != self.__listBoxItems[self.__itemListBox.curselection()[0]]:
-           self.__itemListBox.select_clear(0, END)
-           self.__itemListBox.select_set(self.__listBoxItems.index(name))
+
+        try:
+            if name != self.__listBoxItems[self.__itemListBox.curselection()[0]]:
+                self.__itemListBox.select_clear(0, END)
+                self.__itemListBox.select_set(self.__listBoxItems.index(name))
+        except:
+            try:
+                self.__itemListBox.select_clear(0, END)
+                self.__itemListBox.select_set(len(self.__listBoxItems)-1)
+            except:
+                self.__activeMode = "blank"
+                for item in self.__allTheFunStuff.pack_slaves():
+                    item.destroy()
+                self.__lastBank = None
+                self.__lastSelected = None
+                self.setEditorFrame()
 
         if name != self.__lastSelected:
            self.__lastSelected = name
@@ -744,11 +759,14 @@ class TopBottomEditor:
             item = section[2][itemNum].split(" ")
 
             if item[0] == data[0]:
-               section[2][itemNum] = " ".join(data)
+               if  section[2][itemNum] != " ".join(data):
+                   section[2][itemNum] = " ".join(data)
+                   self.__saveBuffer()
+                   print(data)
+
                break
 
         #self.checkForChanges()
-
 
     def __changeName(self, old, new):
         section = self.__codeData[self.__activePart][self.getBankNum()]
@@ -806,7 +824,9 @@ class TopBottomEditor:
                       else:
                           self.__bottomButton.config(bg=self.__loader.colorPalettes.getColor("highLight"))
 
-        self.setEditorFrame()
+        if len(self.__listBoxItems) > 0:
+            self.setEditorFrame()
+
         if wasChange == True:
            self.__okButton.config(state = NORMAL)
            self.__saveBuffer()
@@ -832,13 +852,19 @@ class TopBottomEditor:
 
         bank = self.getBankNum()
         self.__codeData[self.__activePart][bank][1] = True
-
+        self.__codeData[self.__activePart][bank][2].pop(selected)
 
         self.checkForChanges()
         if len(self.__listBoxItems) > 0:
             name, typ = self.getItemAndType()
             self.setTheSetter(name, typ)
-
+        else:
+            self.__activeMode = "blank"
+            for item in self.__allTheFunStuff.pack_slaves():
+                item.destroy()
+            self.__lastBank = None
+            self.__lastSelected = None
+            self.setEditorFrame()
 
     def getBankNum(self):
         return int(self.__activeBank[-1]) - 2

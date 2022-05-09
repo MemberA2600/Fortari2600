@@ -198,9 +198,17 @@ class Assembler():
 
         return (sections)
 
+    def changeOnesWithHashTag(self, variables, code):
+        for key in variables:
+            if variables[key][0] == "#":
+               code = code.replace(key, variables[key])
+               print(key)
+        return code
+
     def createSquence(self, code, opcodes, variables, registers):
         import re
         from copy import deepcopy
+
         code = code.split("\n")
 
         branchers = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
@@ -707,7 +715,7 @@ class Assembler():
         for var in variables.keys():
             try:
                 isItInt = False
-                teszt   = int(variables[var])
+                teszt   = int(variables[var].replace("#", ""))
                 isItInt = True
             except:
                 pass
@@ -718,11 +726,12 @@ class Assembler():
         for var in variables:
             try:
                 isItInt = False
-                teszt   = int(variables[var])
+                teszt   = int(variables[var].replace("#", ""))
                 isItInt = True
             except:
                 pass
 
+            #print(var)
             if variables[var].startswith("$") == False and isItInt == False:
                 variables[var] = simple_ones[variables[var]]
 

@@ -2,8 +2,8 @@
 **************************
 *Picture Data*
 **************
-picIndex = #VAR01#
-picDisplayHeight = #VAR02#
+picIndex = #VAR02#
+picDisplayHeight = #VAR01#
 picHeight = FULLHEIGHT
 **************************
 
