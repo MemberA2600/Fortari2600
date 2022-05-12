@@ -683,18 +683,15 @@ class TopBottomEditor:
 
             bank = self.getBankNum()
 
-            if self.answer == "ChangeFrameColor":
-               defaultData = name + " " + "ChangeFrameColor $00"
-               self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
-               self.__codeData[self.__activePart][bank][1] = True
-            elif self.answer == "EmptyLines":
-                defaultData = name + " " + "EmptyLines 1"
-                self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
-                self.__codeData[self.__activePart][bank][1] = True
-            elif self.answer == "Picture64px":
-                defaultData = name + " " + "Picture64px # 0 0 0"
-                self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultData))
-                self.__codeData[self.__activePart][bank][1] = True
+            defaultDatas = {
+                "ChangeFrameColor"  : name + " " + "ChangeFrameColor $00",
+                "EmptyLines"        : name + " " + "EmptyLines 1",
+                "Picture64px"       : name + " " + "Picture64px # 0 0 0",
+                "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #"
+            }
+
+            self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
+            self.__codeData[self.__activePart][bank][1] = True
 
             self.checkForChanges()
             self.setTheSetter(name, self.answer)
@@ -724,30 +721,24 @@ class TopBottomEditor:
            for item in self.__allTheFunStuff.pack_slaves():
                item.destroy()
 
-           if typ == "ChangeFrameColor":
-              from ChangeFrameColor import ChangeFrameColor
-              self.__setterFrame = ChangeFrameColor(self.__loader, self.__allTheFunStuff,
-                                                    self.__codeData[self.__activePart][bank][2][
-                                                    self.__itemListBox.curselection()[0]],
-                                                    self.__changeName, self.__changeData, self.__uW, self.__uH,
-                                                    self.__activeBank.lower()
-                                                    )
-           elif typ == "EmptyLines":
-              from EmptyLines import EmptyLines
-              self.__setterFrame = EmptyLines(  self.__loader, self.__allTheFunStuff,
-                                                self.__codeData[self.__activePart][bank][2][
-                                                self.__itemListBox.curselection()[0]],
-                                                self.__changeName, self.__changeData, self.__uW, self.__uH,
-                                                self.__activeBank.lower()
-                                                )
-           elif typ == "Picture64px":
-              from Picture64px import Picture64px
-              self.__setterFrame = Picture64px(  self.__loader, self.__allTheFunStuff,
-                                                self.__codeData[self.__activePart][bank][2][
-                                                self.__itemListBox.curselection()[0]],
-                                                self.__changeName, self.__changeData, self.__uW, self.__uH,
-                                                self.__activeBank.lower()
-                                                )
+           from ChangeFrameColor    import ChangeFrameColor
+           from EmptyLines          import EmptyLines
+           from Picture64px         import Picture64px
+           from Indicator           import Indicator
+
+           typs = {
+               "ChangeFrameColor"   : ChangeFrameColor,
+               "EmptyLines"         : EmptyLines,
+               "Picture64px"        : Picture64px,
+               "Indicator"          : Indicator
+           }
+
+           self.__setterFrame = typs[typ](  self.__loader, self.__allTheFunStuff,
+                                            self.__codeData[self.__activePart][bank][2][
+                                            self.__itemListBox.curselection()[0]],
+                                            self.__changeName, self.__changeData, self.__uW, self.__uH,
+                                            self.__activeBank.lower()
+                                            )
 
 
     def __changeData(self, data):
