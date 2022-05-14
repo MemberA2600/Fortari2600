@@ -88,7 +88,7 @@ class Compiler:
             typ  = item[1]
             data = item[2:]
 
-            fullName = self.__bank + "_" + name + "_" + typ + "_"
+            fullName = self.__bank + "_" + name + "_" + typ
             if   typ == "ChangeFrameColor":
                self.__bankData.append(
                    self.generate_ChangeFrameColor(fullName, data)
@@ -98,11 +98,23 @@ class Compiler:
                     self.generate_EmptyLines(fullName, data)
                 )
             elif typ == "Picture64px":
-                fullName += data[0]
+                fullName += "_" + data[0]
                 those = self.generate_64px(fullName, data, data[0])
                 self.__bankData.append(those[0])
                 self.__userData[fullName] = those[1]
                 self.__inits.append(those[2])
+            elif typ == "Indicator":
+                subtyp = item[2]
+                fullName += "_" + subtyp
+                data   = item[3:]
+                if subtyp == "FullBar":
+                    those  = self.generate_FullBar(fullName, data, self.__bank)
+                    self.__bankData.append(those[0])
+                    self.__userData[fullName] = those[1]
+                    for item in those:
+                        print(item)
+
+
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -118,6 +130,98 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_FullBar(self, name, data, bank):
+
+        topLevelText           = "\n" + name + "\n"
+
+        dataVarName            = data[0].split("::")[1]
+        dataVar                = self.__loader.virtualMemory.getVariableByName2(dataVarName)
+
+        maxValue               = int(data[1])
+
+        colorVarName           = data[2]
+        colorVar               = self.__loader.virtualMemory.getVariableByName2(colorVarName)
+
+        pattern                = self.generate_fadeOutPattern(2)
+        patternIndex           = int(data[3])
+
+        topLevelText +=        "\tLDA\t" + dataVarName + "\n"
+        if dataVar.type        != "byte":
+           topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
+        topLevelText        += "\tSTA\ttemp03\n"
+
+        topLevelText           +=  "\tLDA\t#" + str(256 // maxValue) + "\n\tSTA\ttemp04\n"
+
+        topLevelText           += '\tLDA\t'
+        if colorVar            == False:
+           topLevelText        += "#" + colorVarName + "\n"
+        else:
+           topLevelText        += colorVarName + "\n"
+           if colorVar.type    == "nibble":
+              topLevelText     += self.moveVarToTheRight(colorVar.usedBits)
+           topLevelText        += "\tAND\t#%11110000\n"
+
+        topLevelText           += "\tSTA\ttemp05\n"
+
+        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData             = xxx[0]
+
+        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
+        topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                  "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText           += "\tJMP\t" + bank + "_FullBar_Kernel" + "\n"
+        topLevelText           += name + "_Back" + "\n"
+
+        return (topLevelText, patternData)
+
+    def generateBarColors(self, pattern, index, bank):
+
+        name = bank+"_Gradient_"+ str(len(pattern)) + "_" + str(index)
+        text = name + "\n"
+
+        for item in pattern:
+            item = hex(item).replace("0x", "")
+            while len(item) < 2:
+                item = "0" + item
+
+            text += "\tBYTE\t#$"+item+"\n"
+        return(text, name)
+
+    def moveVarToTheRight(self, bits):
+        numForASL = 7 - max(bits)
+        return numForASL * "\tASL\n"
+
+
+    def getPixelStep(self, numOfPix, maxValue):
+        return 256 // 32 // (256)
+
+    def getClosestPowerOf2Minus1(self, v):
+        from math import pow
+
+        c = bin(v)[2:]
+        goodOnes = []
+
+        for num in range(1, 9):
+            b = bin(int(pow(2, num))-1)[2:]
+            while len(b) < 8: b = "0" + b
+            goodOnes.append(b)
+
+        while True:
+            c = bin(v)[2:]
+            while len(c) < 8: c = "0" + c
+            if c in goodOnes: break
+            v = v-1
+
+        return(int("0b"+c, 2))
+
+    def generate_fadeOutPattern(self, step):
+        return  {
+            1: [step * 4, step * 4, step * 3, step * 3, step * 2, step * 2, step * 1, step * 1],
+            2: [step * 1, step * 1, step * 2, step * 2, step * 3, step * 3, step * 4, step * 4],
+            3: [step * 1, step * 2, step * 3, step * 4, step * 4, step * 3, step * 2, step * 1],
+            4: [step * 4, step * 3, step * 2, step * 1, step * 1, step * 2, step * 3, step * 4]
+        }
 
     def generate_64px(self, name, data, fileName):
         text = "\n" + name
@@ -1739,3 +1843,5 @@ class Compiler:
 #if __name__ == "__main__":
 #   c = Compiler(None, None, "dummy" ,None)
 #   c.preAlign(open("F:\PyCharm\P\Fortari2600\projects\zerg\\bigSprites\Bird.asm", "r").read())
+#   for num in range(1, 32):
+#        print(num, "-",c.getClosestPowerOf2Minus1(num))

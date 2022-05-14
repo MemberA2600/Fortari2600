@@ -49,11 +49,13 @@ class Picture64px:
             except:
                 self.__tempSaved[num] = self.__data[4+num]
 
-
+        wasHash = False
+        if self.__data[2] == "#":
+           wasHash = True
         self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
-        self.__addElements()
+        self.__addElements(wasHash)
 
-    def __addElements(self):
+    def __addElements(self, wasHash):
         self.__uniqueFrame = Frame(self.__baseFrame, width=self.__w,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
@@ -406,12 +408,20 @@ class Picture64px:
         self.__varListBox2.bind("<KeyRelease-Down>", self.clickedListBox1)
 
 
-
         self.__heightEntry.bind("<FocusOut>", self.heightConstStuff)
         self.__heightEntry.bind("<KeyRelease>", self.heightConstStuff)
 
         self.setIt1(None, 0)
         self.setIt1(None, 1)
+
+        if wasHash == True:
+           self.__heightVar.set(str(self.__maxH))
+           self.__heightIndexVar.set(str(self.__maxH))
+           self.__data[3] = str(self.__maxH)
+           self.__data[4] = str(self.__maxH)
+           self.__values[0] = self.__data[4]
+           self.__lastData = None
+           self.setIt(0)
 
     def isItNum(self, num):
         try:
@@ -442,7 +452,7 @@ class Picture64px:
                self.__tempSaved[num] = self.__varList1[data]
                if self.__data[4+num] != self.__tempSaved[num]:
                     self.__data[4+num] = self.__tempSaved[num]
-                    self.__changeData(self.__data)
+                    if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
 
            #print(self.__loader.virtualMemory.getVariableByName2(self.__tempSet).usedBits)
         else:
@@ -456,7 +466,7 @@ class Picture64px:
                self.__values[num]  = int(self.__vars[num]["value"].get())
                if data != str(self.__values[num]):
                    self.__data[4+num]   = str(self.__values[num])
-                   self.__changeData(self.__data)
+                   if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
 
         self.__checkMaxHeight()
 
@@ -554,7 +564,7 @@ class Picture64px:
 
             self.__varListBox.select_clear(0, END)
             self.__varListBox.select_set(num)
-            self.__changeData(self.__data)
+            if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
             self.__maxH = self.getMaxHeight()
             self.__forceMaxHeight()
 
@@ -574,7 +584,7 @@ class Picture64px:
                 self.__data[5] = self.__indexVar.get()
             if self.__varConst1 == 1:
                 self.__data[4] = self.__heightIndexVar.get()
-            self.__changeData(self.__data)
+            if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
 
         except Exception as e:
             #print(str(e))
@@ -589,7 +599,7 @@ class Picture64px:
             self.__data[5] = self.__indexVar.get()
             self.__data[4] = self.__heightIndexVar.get()
 
-            self.__changeData(self.__data)
+            if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
         except Exception as e:
             #print(str(e))
             pass

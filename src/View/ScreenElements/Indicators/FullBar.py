@@ -33,7 +33,13 @@ class FullBar:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
         self.dead = dead
+
+        itWasHash = False
+        if data[3] == "#":
+           itWasHash = True
+
         self.__addElements()
+        if itWasHash == True: self.__changeData(data)
 
     def __addElements(self):
         self.__uniqueFrame = Frame(self.__baseFrame, width=self.__w,
@@ -277,6 +283,7 @@ class FullBar:
         except:
             self.__lastConst = "$00"
 
+
     def __chamgeConst(self, event):
         if self.__constEntry.getValue() != self.__data[5]:
            temp = self.__constEntry.getValue()
@@ -348,7 +355,7 @@ class FullBar:
             if self.__maxVar.get() != self.__data[4]:
                temp = self.__maxVar.get()
                if   int(temp) > 255: temp = "255"
-               elif int(temp) < 0  : temp = "0"
+               elif int(temp) < 1  : temp = "1"
                self.__maxVar.set(temp)
                self.__data[4] = self.__maxVar.get()
                self.__changeData(self.__data)

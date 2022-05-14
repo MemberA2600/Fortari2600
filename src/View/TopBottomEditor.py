@@ -308,7 +308,7 @@ class TopBottomEditor:
                 self.__codeData[self.__activePart][self.getBankNum()][2][self.__itemListBox.curselection()[0]]
             )
         else:
-            self.__views.append("blank")
+            self.__views.append(self.__activeBank + "|" + self.__activePart + "|" + "blank")
 
     def setEditorFrame(self):
 
@@ -628,9 +628,7 @@ class TopBottomEditor:
         self.__codeData = deepcopy(self.__buffer[self.__poz])
         if self.__poz == border: button.config(state = DISABLED)
 
-
     def __setView(self):
-
         viewData = self.__views[self.__poz].split("|")
         if len(viewData) == 3:
            self.__activeBank = viewData[0]
@@ -753,6 +751,7 @@ class TopBottomEditor:
                if  section[2][itemNum] != " ".join(data):
                    section[2][itemNum] = " ".join(data)
                    self.__saveBuffer()
+                   self.__addView()
                    print(data)
 
                break

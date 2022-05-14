@@ -1,8 +1,4 @@
 from DataLine import DataLine
-from tkinter import *
-from SubMenu import SubMenu
-from tkinter import scrolledtext
-
 
 class Assembler():
 
