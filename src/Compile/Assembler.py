@@ -249,6 +249,11 @@ class Assembler():
 
                 line = new
                 if line[0].upper()=="ALIGN":
+                    try:
+                        t = int(line[1])
+                    except:
+                        line[1] = "256"
+
                     while(currentAddress%int(line[1])>0):
                         codeLines.append(DataLine())
                         current = codeLines[-1]
@@ -258,6 +263,29 @@ class Assembler():
                         currentSEQNumber+=1
                         current.raw = deepcopy(line)
                         current.bytes.append(bytes([0]))
+
+                elif line[0].upper()== "_ALIGN":
+                    try:
+                        t = int(line[1])
+                    except:
+                        line[1] = "256"
+
+                    temp = hex(currentAddress).replace("0x", "")
+                    while len(temp) < 4:
+                        temp = "0" + temp
+
+                    lastTwo = temp[-2:]
+
+                    if int(lastTwo, 16) + int(line[1]) > 255:
+                        while (currentAddress % 256 > 0):
+                            codeLines.append(DataLine())
+                            current = codeLines[-1]
+                            current.address = currentAddress
+                            currentAddress += 1
+                            current.seq = currentSEQNumber
+                            currentSEQNumber += 1
+                            current.raw = deepcopy(line)
+                            current.bytes.append(bytes([0]))
 
                 elif line[0].upper()=="FILL":
                     counter = int(line[1])
@@ -318,9 +346,17 @@ class Assembler():
                         currentAddress += 2
                         current.byteNum = 2
 
+                        thisIsAForcedConstant = False
+                        try:
+                            if variables[line[1]][0] == "#": thisIsAForcedConstant = True
+                        except:
+                            pass
+
+
                         if ("#" not in line[1]) and (line[1].split(",")[0].split("+")[0] in list(sections.keys()) or
                             len(re.findall(r'[a-fA-F0-9]{4}', line[1])) > 0 or
-                            line[1] in threeByters):
+                            line[1] in threeByters
+                        ) and (thisIsAForcedConstant == False):
                             currentAddress += 1
                             current.byteNum = 3
 

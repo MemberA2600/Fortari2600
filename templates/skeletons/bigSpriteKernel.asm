@@ -1,4 +1,3 @@
-	align 256
 
 ##BANK##_BigSprite_Kernel_Begin
 
@@ -64,7 +63,6 @@
 	CMP	#0		; 2 (5)
 	BEQ	##BANK##_BigSprite_Kernel_Offset_Done	; 2 (7)
 	JMP	##BANK##_BigSprite_Kernel_Color_0_To_1  ; 3 (10)
-
 
 ##BANK##_BigSprite_Kernel_Offset_Done
 
@@ -362,6 +360,7 @@
 * X2Offset:		temp18
 * mono:			temp19
 
+	_align	45
 
 ##BANK##_BigSprite_MainLoop	
 	STA	WSYNC			; 3 (76)

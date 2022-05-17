@@ -81,7 +81,7 @@
 
 	JMP	#BANK#_FullBar_Kernel_Loop 	; 3 (73)
 	
-	align	256
+	_align	35
 
 #BANK#_FullBar_Kernel_Loop
 	STA	WSYNC			; 3 (76)

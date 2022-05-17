@@ -50,7 +50,8 @@ pic64px_KernelStart
 pic64px_OddFrameJMP
 	JMP	pic64px_OddFrame  ; 3 (52)
 
-	align	256
+******	align	256
+	_align	80
 
 pic64px_OddFrame
 	STA	WSYNC

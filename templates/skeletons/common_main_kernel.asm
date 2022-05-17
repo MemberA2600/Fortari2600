@@ -1007,6 +1007,8 @@ LoadedShit
 JumpOddFrame
 	JMP	OddFrame
 
+!!!213bytesOfUserData!!!
+
 	align	256
 
 OddFrame
@@ -1234,7 +1236,7 @@ DoExtraWSYNC
 NoMoreLiiiiines
 	JMP	DoItAgainPlease
 
-
+!!!191bytesOfUserData!!!
 
 	align	256
 FineAdjustTable256
