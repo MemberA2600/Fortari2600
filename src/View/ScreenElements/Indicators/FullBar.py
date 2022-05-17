@@ -149,7 +149,7 @@ class FullBar:
 
         self.__dataVarListBox.select_clear(0)
         if self.__data[3] == "#":
-           self.__data[3] = self.__dataVars[0]
+           self.__data[3] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox.select_set(0)
         else:
            for itemNum in range(0, len(self.__dataVars)):

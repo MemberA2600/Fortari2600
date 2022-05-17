@@ -111,8 +111,11 @@ class Compiler:
                     those  = self.generate_FullBar(fullName, data, self.__bank)
                     self.__bankData.append(those[0])
                     self.__userData[fullName] = those[1]
-                    for item in those:
-                        print(item)
+                    self.__userData[self.__bank+"_Bar_Normal"] =\
+                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+                    #for item in those:
+                    #    print(item)
+                    self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
 
 
 
@@ -135,7 +138,8 @@ class Compiler:
 
         topLevelText           = "\n" + name + "\n"
 
-        dataVarName            = data[0].split("::")[1]
+
+        dataVarName            = data[0]
         dataVar                = self.__loader.virtualMemory.getVariableByName2(dataVarName)
 
         maxValue               = int(data[1])
@@ -151,7 +155,7 @@ class Compiler:
            topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
         topLevelText        += "\tSTA\ttemp03\n"
 
-        topLevelText           +=  "\tLDA\t#" + str(256 // maxValue) + "\n\tSTA\ttemp04\n"
+        #topLevelText           +=  "\tLDA\t#" + str(32 // maxValue) + "\n\tSTA\ttemp04\n"
 
         topLevelText           += '\tLDA\t'
         if colorVar            == False:
@@ -163,6 +167,22 @@ class Compiler:
            topLevelText        += "\tAND\t#%11110000\n"
 
         topLevelText           += "\tSTA\ttemp05\n"
+
+        topLevelText           += "\n\tLDA\t#"+data[1]+"\n\tCMP\ttemp03\n"       +\
+                                  "\tBCS\t"+name+"_NO_STA\n\tSTA\ttemp03\n"      +\
+                                  name+"_NO_STA\n"
+
+        topLevelText            += "\tLDA\ttemp03\n"
+        if   maxValue > 127:   topLevelText += "\tLSR\n" * 3
+        elif maxValue > 63:    topLevelText += "\tLSR\n" * 2
+        elif maxValue > 31:    topLevelText += "\tLSR\n"
+        elif maxValue > 15:    pass
+        elif maxValue > 7:     topLevelText += "\tASL\n"
+        elif maxValue > 3:     topLevelText += "\tASL\n" * 2
+        elif maxValue > 1:     topLevelText += "\tASL\n" * 3
+        else:                  topLevelText += "\tASL\n" * 4
+
+        topLevelText            += "\tSTA\ttemp03\n"
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
         patternData             = xxx[0]
