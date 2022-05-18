@@ -36,6 +36,8 @@ class Indicator:
 
         self.__name = StringVar()
         self.__name.set(self.__data[0])
+        self.__lastSelected = None
+
         self.dead = [False]
 
         self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
@@ -101,9 +103,11 @@ class Indicator:
         self.__indicatorListBox.select_clear(0, END)
 
         from FullBar import FullBar
+        from OnePicOneBar import OnePicOneBar
 
         self.screenSubs = {
-             "FullBar": [FullBar, ["#", "255", "$40", "1"]]
+             "FullBar": [FullBar, ["#", "255", "$40", "1"]],
+             "OnePicOneBar": [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000", "65"]]
         }
 
         if self.__data[2]  == "#":
@@ -116,7 +120,28 @@ class Indicator:
                if self.__indicators[itemNum] == self.__data[2]:
                   self.__indicatorListBox.select_set(itemNum)
 
+        self.__lastSelected = self.__indicatorListBox.curselection()[0]
+
         self.__subFrame = self.screenSubs[self.__data[2]][0](
             self.__loader, self.__uniqueFrame, self.__data, self.__changeData,
             self.__w, self.__h - round(self.__h // 10 * 2.5), self.__currentBank, self.dead
         )
+
+        self.__indicatorListBox.bind("<ButtonRelease-1>", self.__changedType)
+        self.__indicatorListBox.bind("<KeyRelease-Up>", self.__changedType)
+        self.__indicatorListBox.bind("<KeyRelease-Down>", self.__changedType)
+
+    def __changedType(self, evenz):
+        if self.__lastSelected != self.__indicatorListBox.curselection()[0]:
+            self.__subFrame.killAll()
+            self.__data[2] = self.__indicators[self.__indicatorListBox.curselection()[0]]
+            for num in range(0, len(self.screenSubs[self.__indicators[0]][1])):
+                self.__data[3 + num] = self.screenSubs[self.__indicators[0]][1][num]
+
+            self.__lastSelected = self.__indicatorListBox.curselection()[0]
+            self.__changeData(self.__data)
+
+            self.__subFrame = self.screenSubs[self.__data[2]][0](
+                self.__loader, self.__uniqueFrame, self.__data, self.__changeData,
+                self.__w, self.__h - round(self.__h // 10 * 2.5), self.__currentBank, self.dead
+            )

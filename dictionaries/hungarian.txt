@@ -292,3 +292,5 @@ gradient1=Világosból Sötét
 gradient2=Sötétbõl Világos
 gradient3=Középen Világos
 gradient4=Középen Sötét
+spriteName=Sprite Neve
+spriteVar=Sprite Változó

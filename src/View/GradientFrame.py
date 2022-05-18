@@ -6,7 +6,7 @@ import re
 
 class GradientFrame:
 
-    def __init__(self, loader, frame, changeData, h, data, dead, height):
+    def __init__(self, loader, frame, changeData, h, data, dead, height, fontSize, dataNum):
         self.__loader        = loader
         self.__mainFrame     = frame
         self.__changeData    = changeData
@@ -14,6 +14,7 @@ class GradientFrame:
         self.__data          = data
         self.dead            = dead
         self.height          = height
+        self.__dataNum       = dataNum
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -31,6 +32,9 @@ class GradientFrame:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize * 1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
+        self.__fontSize = fontSize
+        self.__fonts = { "normal": self.__smallFont, "small": self.__miniFont}
+
         self.__optionsFrame  = Frame(self.__mainFrame, width=999999,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h // 3)
@@ -47,7 +51,7 @@ class GradientFrame:
 
         self.__option = IntVar()
         try:
-            num = int(self.__data[6])
+            num = int(self.__data[self.__dataNum])
             self.__option.set(num)
         except:
             self.__option.set(1)
@@ -60,7 +64,6 @@ class GradientFrame:
     def addElements(self):
         while self.__optionsFrame.winfo_width() < 2:
             sleep(0.05)
-
         newH = self.__optionsFrame.winfo_height() // 4
 
         self.__frame1  = Frame(self.__optionsFrame, width=999999,
@@ -95,7 +98,7 @@ class GradientFrame:
                                              text=self.__dictionaries.getWordFromCurrentLanguage("gradient1"),
                                              bg=self.__colors.getColor("window"),
                                              fg=self.__colors.getColor("font"),
-                                             justify=LEFT, font=self.__smallFont,
+                                             justify=LEFT, font=self.__fonts[self.__fontSize],
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
                                              value = 1, name = "grad1"
@@ -108,7 +111,7 @@ class GradientFrame:
                                              text=self.__dictionaries.getWordFromCurrentLanguage("gradient2"),
                                              bg=self.__colors.getColor("window"),
                                              fg=self.__colors.getColor("font"),
-                                             justify=LEFT, font=self.__smallFont,
+                                             justify=LEFT, font=self.__fonts[self.__fontSize],
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
                                              value = 2, name = "grad2"
@@ -121,7 +124,7 @@ class GradientFrame:
                                              text=self.__dictionaries.getWordFromCurrentLanguage("gradient3"),
                                              bg=self.__colors.getColor("window"),
                                              fg=self.__colors.getColor("font"),
-                                             justify=LEFT, font=self.__smallFont,
+                                             justify=LEFT, font=self.__fonts[self.__fontSize],
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
                                              value = 3, name = "grad3"
@@ -134,7 +137,7 @@ class GradientFrame:
                                              text=self.__dictionaries.getWordFromCurrentLanguage("gradient4"),
                                              bg=self.__colors.getColor("window"),
                                              fg=self.__colors.getColor("font"),
-                                             justify=LEFT, font=self.__smallFont,
+                                             justify=LEFT, font=self.__fonts[self.__fontSize],
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
                                              value = 4, name = "grad4"
@@ -201,4 +204,5 @@ class GradientFrame:
         self.__option.set(name)
 
         self.reDrawCanvas()
+        self.__data[self.__dataNum] = str(self.__option.get())
         self.__changeData(self.__data)

@@ -292,3 +292,5 @@ gradient1=Light to Dark
 gradient2=Dark to Light
 gradient3=Light in the Middle
 gradient4=Dark in the Middle
+spriteName=Sprite Name
+spriteVar=Sprite Variable

@@ -41,6 +41,13 @@ class FullBar:
         self.__addElements()
         if itWasHash == True: self.__changeData(data)
 
+    def killAll(self):
+        for item in self.__uniqueFrame.pack_slaves():
+            item.destroy()
+        self.__uniqueFrame.destroy()
+        self.__gradientFrame = None
+
+
     def __addElements(self):
         self.__uniqueFrame = Frame(self.__baseFrame, width=self.__w,
                                    bg=self.__loader.colorPalettes.getColor("window"),
@@ -158,6 +165,9 @@ class FullBar:
                   break
 
         self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
+        self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
+        self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changedDataVar)
+
 
         self.__maxVar = StringVar()
 
@@ -267,11 +277,14 @@ class FullBar:
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
-                                             self.__changeData, self.__h, self.__data, self.dead, 8)
+                                             self.__changeData, self.__h, self.__data, self.dead, 8, "normal", 6)
 
         self.__maxVarEntry.bind("<KeyRelease>", self.__changeMaxEntry)
         self.__maxVarEntry.bind("<FocusOut>", self.__changeMaxEntry)
         self.__colorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar)
+        self.__colorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar)
+        self.__colorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar)
+
 
         try:
             self.__lastSet   = self.__colorVars[self.__colorVarListBox.curselection()[0]]
