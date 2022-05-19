@@ -107,7 +107,7 @@ class Indicator:
 
         self.screenSubs = {
              "FullBar": [FullBar, ["#", "255", "$40", "1"]],
-             "OnePicOneBar": [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000", "65"]]
+             "OnePicOneBar": [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]]
         }
 
         if self.__data[2]  == "#":
@@ -135,8 +135,8 @@ class Indicator:
         if self.__lastSelected != self.__indicatorListBox.curselection()[0]:
             self.__subFrame.killAll()
             self.__data[2] = self.__indicators[self.__indicatorListBox.curselection()[0]]
-            for num in range(0, len(self.screenSubs[self.__indicators[0]][1])):
-                self.__data[3 + num] = self.screenSubs[self.__indicators[0]][1][num]
+            for num in range(0, len(self.screenSubs[self.__indicators[self.__indicatorListBox.curselection()[0]]][1])):
+                self.__data[3 + num] = self.screenSubs[self.__indicators[self.__indicatorListBox.curselection()[0]]][1][num]
 
             self.__lastSelected = self.__indicatorListBox.curselection()[0]
             self.__changeData(self.__data)

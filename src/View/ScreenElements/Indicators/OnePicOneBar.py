@@ -56,42 +56,42 @@ class OnePicOneBar:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame1.pack_propagate(False)
         self.__frame1.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame2.pack_propagate(False)
         self.__frame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame3.pack_propagate(False)
         self.__frame3.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame4.pack_propagate(False)
-        self.__frame4.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__frame4.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame5.pack_propagate(False)
-        self.__frame5.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__frame5.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame6 = Frame(self.__uniqueFrame, width=self.__w // 6,
+        self.__frame6 = Frame(self.__uniqueFrame, width=(self.__w // 7) * 2,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
@@ -388,6 +388,124 @@ class OnePicOneBar:
 
         self.__label6.pack_propagate(False)
         self.__label6.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__picOption = IntVar()
+
+        self.__constButton2 = Radiobutton(self.__frame6, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__colorOption,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.XXX2
+                                         )
+
+        self.__constButton2.pack_propagate(False)
+        self.__constButton2.pack(fill=X, side=TOP, anchor=N)
+
+        w = ((self.__w // 7) * 2 ) // 3
+        h = self.__h // 6
+
+        self.__frame6C = Frame(self.__frame6, width= (self.__w // 7) * 2,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=h)
+
+        self.__frame6C.pack_propagate(False)
+        self.__frame6C.pack(side=TOP, anchor=N, fill=Y)
+
+        self.__frame6_1 = Frame(self.__frame6C, width=w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=h)
+
+        self.__frame6_1.pack_propagate(False)
+        self.__frame6_1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__frame6_2 = Frame(self.__frame6C, width=w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=h)
+
+        self.__frame6_2.pack_propagate(False)
+        self.__frame6_2.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__frame6_3 = Frame(self.__frame6C, width=w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=h)
+
+        self.__frame6_3.pack_propagate(False)
+        self.__frame6_3.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__varButton2 = Radiobutton(self.__frame6, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__colorOption,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       value=2, command=self.XXX2
+                                       )
+
+        self.__varButton2.pack_propagate(False)
+        self.__varButton2.pack(fill=X, side=TOP, anchor=N)
+
+        self.__mirrorLabel = Label(self.__frame6_1,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("mirrored") + ":",
+                              font=self.__miniFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__mirrorLabel.pack_propagate(False)
+        self.__mirrorLabel.pack(side=TOP, anchor=CENTER, fill=X)
+
+        self.__nusizLabel = Label(self.__frame6_2,
+                              text="NUSIZ:",
+                              font=self.__miniFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__nusizLabel.pack_propagate(False)
+        self.__nusizLabel.pack(side=TOP, anchor=CENTER, fill=X)
+
+        self.__indexLabel = Label(self.__frame6_3,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("index"),
+                              font=self.__miniFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__indexLabel.pack_propagate(False)
+        self.__indexLabel.pack(side=TOP, anchor=CENTER, fill=X)
+
+        self.__mirrored = IntVar()
+
+        self.__mirroredButton = Checkbutton(self.__frame6_1, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("mirrored"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__mirrored,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__mirroredChanged
+                                       )
+
+        self.__mirroredButton.pack_propagate(False)
+        self.__mirroredButton.pack(fill=X, side=TOP, anchor=N)
+
+        from NUSIZFrame import NUSIZFrame
+
+        self.__nusizFrame = NUSIZFrame(self.__loader, self.__frame6_2, self.__changeData,
+                                       h, self.__data, self.dead, "small", 8, w)
+
+        if self.__data[8][0] == "%":
+           self.__picOption.set(1)
+        else:
+           self.__picOption.set(2)
+
+    def __mirroredChanged(self):
+        pass
+
+
+    def XXX2(self):
+        pass
 
     def __changedPicture(self, event):
         if self.__listOfPictures[self.__picVarListBox.curselection()[0]] != self.__data[7]:

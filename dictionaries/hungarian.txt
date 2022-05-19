@@ -294,3 +294,4 @@ gradient3=Középen Világos
 gradient4=Középen Sötét
 spriteName=Sprite Neve
 spriteVar=Sprite Változó
+mirrored=Tükrözött

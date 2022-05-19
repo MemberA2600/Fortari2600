@@ -294,3 +294,4 @@ gradient3=Light in the Middle
 gradient4=Dark in the Middle
 spriteName=Sprite Name
 spriteVar=Sprite Variable
+mirrored=Mirrored
