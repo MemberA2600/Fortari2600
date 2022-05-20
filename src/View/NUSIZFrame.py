@@ -51,14 +51,13 @@ class NUSIZFrame:
                                height=self.__h // 3)
 
         self.__canvas.pack_propagate(False)
-        self.__canvas.pack(side=TOP, anchor=N, fill=Y)
 
         self.__entryFrame  = Frame(self.__mainFrame, width=999999,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   height=self.__h)
+                                   height=self.__h // 3)
 
         self.__entryFrame.pack_propagate(False)
-        self.__entryFrame.pack(side=TOP, anchor=N, fill=BOTH)
+        self.__entryFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__value = StringVar()
         self.__entry = Entry(self.__entryFrame,
@@ -71,7 +70,9 @@ class NUSIZFrame:
 
         self.__entry.pack_propagate(False)
         self.__entry.pack(fill=X, side=TOP, anchor=N)
+        self.__canvas.pack(side=TOP, anchor=N, fill=X)
 
+        print(self.__data)
         self.__value.set(str(int("0b" + self.__data[self.__dataNum][-3:], 2)))
 
         self.__setCanvas()
@@ -117,7 +118,19 @@ class NUSIZFrame:
             if   num > 7: num = 7
             elif num < 0: num = 0
 
-            self.__value.set(str(num))
-            self.__data[self.__dataNum] = self.__data[self.__dataNum][:5] + bin(int(self.__value.get())).replace("0b", "")
-            self.__changeData(self.__data)
-            self.__setCanvas()
+            d = bin(int(self.__value.get())).replace("0b", "")
+            while len(d) < 3:
+                d = "0" + d
+
+            if d != self.__data[self.__dataNum][6:]:
+                self.__value.set(str(num))
+
+                self.__data[self.__dataNum] = self.__data[self.__dataNum][:6] + d
+                self.__changeData(self.__data)
+                self.__setCanvas()
+
+    def getValue(self):
+        return(self.__value.get())
+
+    def setValue(self, val):
+        self.__value.set(str(val))

@@ -577,7 +577,7 @@ class PlayfieldEditor:
             widget = self.__backGroundLoader.getEntry()
             value = self.__backGroundLoader.getValue()
 
-        if self.__loader.io.checkIfValidFileName(value):
+        if self.__loader.io.checkIfValidFileName(value) and (" " not in value):
             self.setValid(widget)
 
         else:

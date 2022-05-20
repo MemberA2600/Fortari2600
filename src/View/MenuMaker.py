@@ -442,7 +442,7 @@ class MenuMaker:
         except:
             name = "landscape"
 
-        if self.__loader.io.checkIfValidFileName(self.__nameVal.get()) == False:
+        if self.__loader.io.checkIfValidFileName(self.__nameVal.get()) == False or (" " in self.__nameVal.get()):
            self.__nameEntry.config(
                bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")

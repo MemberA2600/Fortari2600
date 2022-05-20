@@ -298,7 +298,6 @@ class OnePicOneBar:
         self.__colorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar)
         self.__colorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar)
 
-
         try:
             self.__lastSet = self.__colorVars[self.__colorVarListBox.curselection()[0]]
         except:
@@ -396,7 +395,7 @@ class OnePicOneBar:
                                          bg=self.__colors.getColor("window"),
                                          fg=self.__colors.getColor("font"),
                                          justify=LEFT, font=self.__smallFont,
-                                         variable=self.__colorOption,
+                                         variable=self.__picOption,
                                          activebackground=self.__colors.getColor("highLight"),
                                          value=1, command=self.XXX2
                                          )
@@ -440,7 +439,7 @@ class OnePicOneBar:
                                        bg=self.__colors.getColor("window"),
                                        fg=self.__colors.getColor("font"),
                                        justify=LEFT, font=self.__smallFont,
-                                       variable=self.__colorOption,
+                                       variable=self.__picOption,
                                        activebackground=self.__colors.getColor("highLight"),
                                        value=2, command=self.XXX2
                                        )
@@ -489,23 +488,180 @@ class OnePicOneBar:
 
         self.__mirroredButton.pack_propagate(False)
         self.__mirroredButton.pack(fill=X, side=TOP, anchor=N)
+        if self.__data[8][4] == "1" and self.__data[8][0] == "%":
+           self.__mirrored.set(1)
+        else:
+           self.__mirrored.set(0)
 
         from NUSIZFrame import NUSIZFrame
 
         self.__nusizFrame = NUSIZFrame(self.__loader, self.__frame6_2, self.__changeData,
                                        h, self.__data, self.dead, "small", 8, w)
 
+        self.__frameNumVar = StringVar()
+
+        self.__frameNumEntry = Entry(self.__frame6_3,
+                                   bg=self.__colors.getColor("boxBackNormal"),
+                                   fg=self.__colors.getColor("boxFontNormal"),
+                                   width=9999, justify=CENTER,
+                                   textvariable=self.__frameNumVar,
+                                   font=self.__smallFont
+                                   )
+
+        self.__frameNumEntry.pack_propagate(False)
+        self.__frameNumEntry.pack(fill=X, side=TOP, anchor=N)
+
+        try:
+            self.__frameNumVar.set(
+                str(
+                    int(
+                        "0b"+self.__data[8][:4],
+                        2
+                    )
+                )
+            )
+        except:
+            self.__frameNumVar.set("0")
+
+
+        self.__frameNumEntry.bind("<KeyRelease>", self.__frameNumChanged)
+        self.__frameNumEntry.bind("<FocusOut>", self.__frameNumChanged)
+
+
+        self.__frame6B = Frame(self.__frame6, width=(self.__w // 7) * 2,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h)
+
+        self.__frame6B.pack_propagate(False)
+        self.__frame6B.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__picVarListScrollBar = Scrollbar(self.__frame6B)
+        self.__picVarListBox = Listbox(self.__frame6B, width=100000,
+                                        height=1000,
+                                        yscrollcommand=self.__picVarListScrollBar.set,
+                                        selectmode=BROWSE,
+                                        exportselection=False,
+                                        font=self.__smallFont,
+                                        justify=LEFT
+                                        )
+
+        self.__picVarListBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__picVarListBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__picVarListBox.pack_propagate(False)
+
+        self.__picVarListScrollBar.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__picVarListBox.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__byteVars = []
+        for address in self.__loader.virtualMemory.memory.keys():
+            for variable in self.__loader.virtualMemory.memory[address].variables.keys():
+                var = self.__loader.virtualMemory.memory[address].variables[variable]
+                if ((var.validity == "global" or
+                     var.validity == self.__currentBank) and
+                     var.type     == "byte" and
+                        (var.system == False or
+                         var.iterable == True or
+                         var.linkable == True)
+                ):
+                    self.__byteVars.append(address + "::" + variable)
+
+        for item in self.__byteVars:
+            self.__picVarListBox.insert(END, item)
+
         if self.__data[8][0] == "%":
-           self.__picOption.set(1)
+           self.__lastSetPic = 0
         else:
-           self.__picOption.set(2)
+           for itemNum in range(0, len(self.__byteVars)):
+               if self.__byteVars[itemNum].split("::")[1] == self.__data[8][0]:
+                  self.__lastSetPic = itemNum
+                  self.__picVarListBox.select_set(0, self.__lastSetPic)
+                  break
+
+        if self.__data[8][0] == "%":
+            self.__picOption.set(1)
+            self.__picVarListBox.config(state = DISABLED)
+        else:
+            self.__picOption.set(2)
+            self.__mirroredButton.config(state=DISABLED)
+            self.__frameNumEntry.config(state=DISABLED)
+            self.__nusizFrame.changeState(DISABLED)
+
+        self.__picVarListBox.bind("<ButtonRelease-1>", self.__changedPicVar)
+        self.__picVarListBox.bind("<KeyRelease-Up>", self.__changedPicVar)
+        self.__picVarListBox.bind("<KeyRelease-Down>", self.__changedPicVar)
+
+
+    def __changedPicVar(self, event):
+        if self.__lastSetPic != self.__picVarListBox.curselection()[0]:
+            self.__lastSetPic = self.__picVarListBox.curselection()[0]
+            self.__data[8]    = self.__data[8] = self.__byteVars[self.__lastSetPic].split("::")[1]
+            self.__changeData(self.__data)
 
     def __mirroredChanged(self):
-        pass
+        if self.__picOption.get() == 1:
+           self.__data[8] = self.__data[8][:5] + str(self.__mirrored.get()) +  self.__data[8][6:]
+           self.__changeData(self.__data)
 
+    def __frameNumChanged(self, event):
+        if self.__picOption.get() == 1:
+           try:
+               num = int(self.__frameNumVar.get())
+           except:
+               self.__frameNumEntry.config(bg = self.__colors.getColor("boxBackUnSaved"),
+                                           fg = self.__colors.getColor("boxFontUnSaved")
+                                           )
+           self.__frameNumEntry.config(bg = self.__colors.getColor("boxBackNormal"),
+                                        fg = self.__colors.getColor("boxFontNormal")
+                                        )
+
+           if   num > 15:
+                num = 15
+           elif num < 0:
+                num = 0
+
+           self.__frameNumVar.set(str(num))
+           d = bin(int(self.__frameNumVar.get())).replace("0b", "")
+           while len(d) < 4:
+               d = "0" + d
+
+           if self.__data[8][1:5] != d:
+              self.__data[8] = "%" + d + self.__data[8][5:]
+              self.__changeData(self.__data)
 
     def XXX2(self):
-        pass
+        if self.__picOption.get() == 1:
+           self.__lastSetPic = self.__picVarListBox.curselection()[0]
+           self.__picVarListBox.select_clear(0, END)
+           self.__picVarListBox.config(state = DISABLED)
+
+           self.__mirroredButton.config(state = NORMAL)
+           self.__frameNumEntry.config(state = NORMAL)
+           self.__nusizFrame.changeState(NORMAL)
+
+           d1 = bin(int(self.__nusizFrame.getValue())).replace("0b", "")
+           d2 = bin(int(self.__mirrored.get())).replace("0b", "")
+           d3 = bin(int(self.__frameNumVar.get())).replace("0b", "")
+
+           while len(d1) < 4:
+              d1 = "0" + d1
+
+           while len(d3) < 3:
+              d3 = "0" + d3
+
+           self.__data[8] = "%" + d1 + d2 + d3
+
+        else:
+           self.__mirroredButton.config(state=DISABLED)
+           self.__frameNumEntry.config(state=DISABLED)
+           self.__nusizFrame.changeState(DISABLED)
+
+           self.__picVarListBox.config(state = NORMAL)
+           self.__picVarListBox.select_set(self.__lastSetPic)
+
+           self.__data[8] = self.__byteVars[self.__lastSetPic].split("::")[1]
+
+        self.__changeData(self.__data)
+
 
     def __changedPicture(self, event):
         if self.__listOfPictures[self.__picVarListBox.curselection()[0]] != self.__data[7]:

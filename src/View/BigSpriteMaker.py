@@ -627,7 +627,7 @@ class BigSpriteMaker:
                 widget = self.__spriteLoader.getEntry()
                 value = self.__spriteLoader.getValue()
 
-            if self.__loader.io.checkIfValidFileName(value):
+            if self.__loader.io.checkIfValidFileName(value) and (" " not in value):
                 widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                           fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
                                           )

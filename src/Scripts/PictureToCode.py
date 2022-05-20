@@ -1892,7 +1892,7 @@ class PictureToCode:
         self.__closeWindow()
 
     def checkFileName(self, event):
-        if self.__loader.io.checkIfValidFileName(self.__thisVar.get()) == False:
+        if self.__loader.io.checkIfValidFileName(self.__thisVar.get()) == False or (" " in self.__thisVar.get()):
             self.__thisEntry.config(
                 bg = self.__colors.getColor("boxBackUnSaved"),
                 fg=self.__colors.getColor("boxFontUnSaved")

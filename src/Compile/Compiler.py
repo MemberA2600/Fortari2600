@@ -107,16 +107,25 @@ class Compiler:
                 subtyp = item[2]
                 fullName += "_" + subtyp
                 data   = item[3:]
-                if subtyp == "FullBar":
-                    those  = self.generate_FullBar(fullName, data, self.__bank)
-                    self.__bankData.append(those[0])
-                    self.__userData[fullName] = those[1]
-                    self.__userData[self.__bank+"_Bar_Normal"] =\
+                if   subtyp == "FullBar":
+                     those  = self.generate_FullBar(fullName, data, self.__bank)
+                     self.__bankData.append(those[0])
+                     self.__userData[fullName] = those[1]
+                     self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
                     #for item in those:
                     #    print(item)
-                    self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
-
+                     self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
+                elif subtyp == "OnePicOneBar":
+                     those  = self.generate_OnePicOneBar(fullName, data, self.__bank)
+                     self.__bankData.append(those[0])
+                     self.__userData[fullName] = those[1]
+                     self.__userData[self.__data[4]] = those[2]
+                     self.__userData[self.__bank+"_Bar_Normal"] =\
+                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+                    #for item in those:
+                    #    print(item)
+                     self.__routines["OnePicOneBar"] = self.__io.loadSubModule("OnePicOneBar_Kernel").replace("#BANK#", self.__bank)
 
 
         self.__bankData.insert(0, testLine)
@@ -133,6 +142,90 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_OnePicOneBar(self, name, data, bank):
+
+        topLevelText           = "\n" + name + "\n"
+
+
+        dataVarName            = data[0]
+        dataVar                = self.__loader.virtualMemory.getVariableByName2(dataVarName)
+
+        maxValue               = int(data[1])
+
+        colorVarName           = data[2]
+        colorVar               = self.__loader.virtualMemory.getVariableByName2(colorVarName)
+
+        pattern                = self.generate_fadeOutPattern(2)
+        patternIndex           = int(data[3])
+
+        topLevelText +=        "\tLDA\t" + dataVarName + "\n"
+        if dataVar.type        != "byte":
+           topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
+        topLevelText        += "\tSTA\ttemp03\n"
+
+        #topLevelText           +=  "\tLDA\t#" + str(32 // maxValue) + "\n\tSTA\ttemp04\n"
+
+        topLevelText           += '\tLDA\t'
+        if colorVar            == False:
+           topLevelText        += "#" + colorVarName + "\n"
+        else:
+           topLevelText        += colorVarName + "\n"
+           if colorVar.type    == "nibble":
+              topLevelText     += self.moveVarToTheRight(colorVar.usedBits)
+           topLevelText        += "\tAND\t#%11110000\n"
+
+        topLevelText           += "\tSTA\ttemp05\n"
+
+        topLevelText           += "\n\tLDA\t#"+data[1]+"\n\tCMP\ttemp03\n"       +\
+                                  "\tBCS\t"+name+"_NO_STA\n\tSTA\ttemp03\n"      +\
+                                  name+"_NO_STA\n"
+
+        topLevelText            += "\tLDA\ttemp03\n"
+        if   maxValue > 127:   topLevelText += "\tLSR\n" * 4
+        elif maxValue > 63:    topLevelText += "\tLSR\n" * 3
+        elif maxValue > 31:    topLevelText += "\tLSR\n" * 2
+        elif maxValue > 15:    topLevelText += "\tLSR\n"
+        elif maxValue > 7:     pass
+        elif maxValue > 3:     topLevelText += "\tASL\n"
+        elif maxValue > 1:     topLevelText += "\tASL\n" * 2
+        else:                  topLevelText += "\tASL\n" * 3
+
+        topLevelText            += "\tSTA\ttemp03\n"
+
+        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData             = xxx[0]
+
+        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
+        # From here comes the special part
+        # Start with temp10
+
+        topLevelText           += "\tLDA\t#<" + data[4] + "_BigSprite_0" + "\n\tSTA\ttemp10\n"
+        topLevelText           += "\tLDA\t#>" + data[4] + "_BigSprite_0" + "\n\tSTA\ttemp11\n"
+        topLevelText           += "\tLDA\t#<" + data[4] + "_BigSprite_1" + "\n\tSTA\ttemp12\n"
+        topLevelText           += "\tLDA\t#>" + data[4] + "_BigSprite_1" + "\n\tSTA\ttemp13\n"
+        topLevelText           += "\tLDA\t#<" + data[4] + "_BigSpriteColor_0" + "\n\tSTA\ttemp14\n"
+        topLevelText           += "\tLDA\t#>" + data[4] + "_BigSpriteColor_0" + "\n\tSTA\ttemp15\n"
+        topLevelText           += "\tLDA\t#<" + data[4] + "_BigSpriteColor_1" + "\n\tSTA\ttemp16\n"
+        topLevelText           += "\tLDA\t#>" + data[4] + "_BigSpriteColor_1" + "\n\tSTA\ttemp17\n"
+
+        if data[5].startswith("%"):
+           topLevelText += "\tLDA\t#" + data[5] + "\n\tSTA\ttemp18\n"
+        else:
+           topLevelText += "\tLDA\t"  + data[5] + "\n\tSTA\ttemp18\n"
+
+        path = self.__loader.mainWindow.projectPath+"bidSprites/"+data[4]+".asm"
+        f = open(path, "r")
+        picData = f.read().replace("##NAME##", data[4])
+
+        # Jumpback!
+
+        topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                  "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText           += "\tJMP\t" + bank + "_FullBar_Kernel" + "\n"
+        topLevelText           += name + "_Back" + "\n"
+
+        return (topLevelText, patternData, picData)
 
     def generate_FullBar(self, name, data, bank):
 
