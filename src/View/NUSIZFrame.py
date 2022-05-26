@@ -6,7 +6,7 @@ import re
 
 class NUSIZFrame:
 
-    def __init__(self, loader, frame, changeData, h, data, dead, fontSize, dataNum, w):
+    def __init__(self, loader, frame, changeData, h, data, dead, fontSize, dataNum, w, stretch):
         self.__loader        = loader
         self.__mainFrame     = frame
         self.__changeData    = changeData
@@ -15,6 +15,8 @@ class NUSIZFrame:
         self.dead            = dead
         self.__dataNum       = dataNum
         self.__w             = w
+        self.__stretchOnly   = stretch
+
 
         self.__nusizArrange = [
             "100000000",
@@ -117,6 +119,10 @@ class NUSIZFrame:
 
             if   num > 7: num = 7
             elif num < 0: num = 0
+
+            if self.__stretchOnly == True:
+               if   num == 6: num = 5
+               elif num not in (0, 5, 7): num = 0
 
             d = bin(int(self.__value.get())).replace("0b", "")
             while len(d) < 3:

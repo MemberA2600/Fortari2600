@@ -103,11 +103,13 @@ class Indicator:
         self.__indicatorListBox.select_clear(0, END)
 
         from FullBar import FullBar
-        from OnePicOneBar import OnePicOneBar
+        #from OnePicOneBar import OnePicOneBar
+        from HalfBarWithText import HalfBarWithText
 
         self.screenSubs = {
-             "FullBar": [FullBar, ["#", "255", "$40", "1"]],
-             "OnePicOneBar": [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]]
+             "FullBar"          : [FullBar, ["#", "255", "$40|$30|$10", "1"]],
+        #     "OnePicOneBar"     : [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]],
+            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:"]]
         }
 
         if self.__data[2]  == "#":

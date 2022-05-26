@@ -32,8 +32,8 @@ class FontManager:
         sizes.start()
 
     def getAtariChar(self, char):
-        if char in self.__chars.keys():
-           return(self.__chars[char])
+        if char.upper() in self.__chars.keys():
+           return(self.__chars[char.upper()])
         else:
            return(None)
 

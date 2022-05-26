@@ -56,28 +56,28 @@ class FullBar:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 4,
+        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 5,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
 
         self.__frame1.pack_propagate(False)
         self.__frame1.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 4,
+        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 5,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
 
         self.__frame2.pack_propagate(False)
         self.__frame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 4,
+        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 5 * 2,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
 
         self.__frame3.pack_propagate(False)
         self.__frame3.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 4,
+        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 5,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
 
@@ -204,10 +204,50 @@ class FullBar:
         self.__constButton.pack(fill=X, side=TOP, anchor=N)
 
         from HexEntry import HexEntry
-        self.__color = [self.__data[5]]
+        if "|" in self.__data[5]:
+            self.__color = self.__data[5].split("|")
+        else:
+            self.__color = ["$40", "$30", "$10"]
 
-        self.__constEntry = HexEntry(self.__loader, self.__frame3, self.__colors, self.__colorDict,
+        self.__constFrames = Frame(self.__frame3, width=self.__w // 5 * 2,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 16)
+
+        self.__constFrames.pack_propagate(False)
+        self.__constFrames.pack(side=TOP, anchor=N, fill=Y)
+
+        self.__constFrame1 = Frame(self.__constFrames, width=(self.__w // 5 * 2) // 3,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 16)
+
+        self.__constFrame1.pack_propagate(False)
+        self.__constFrame1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__constFrame2 = Frame(self.__constFrames, width=(self.__w // 5 * 2) // 3,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 16)
+
+        self.__constFrame2.pack_propagate(False)
+        self.__constFrame2.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__constFrame3 = Frame(self.__constFrames, width=(self.__w // 5 * 2) // 3,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 16)
+
+        self.__constFrame3.pack_propagate(False)
+        self.__constFrame3.pack(side=LEFT, anchor=E, fill=Y)
+
+
+
+        self.__constEntry = HexEntry(self.__loader, self.__constFrame1, self.__colors, self.__colorDict,
                                      self.__normalFont, self.__color, 0, None, self.__chamgeConst)
+
+        self.__constEntry2 = HexEntry(self.__loader, self.__constFrame2, self.__colors, self.__colorDict,
+                                     self.__normalFont, self.__color, 0, None, self.__chamgeConst2)
+
+        self.__constEntry3 = HexEntry(self.__loader, self.__constFrame3, self.__colors, self.__colorDict,
+                                     self.__normalFont, self.__color, 0, None, self.__chamgeConst3)
+
 
         self.__varButton = Radiobutton(self.__frame3, width=99999,
                                          text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
@@ -257,18 +297,28 @@ class FullBar:
         for item in self.__colorVars:
             self.__colorVarListBox.insert(END, item)
 
-        if self.isItHex(self.__data[5]) == True:
+
+        if len(self.__data[5].split("|")) == 3:
            self.__colorOption.set(1)
-           self.__constEntry.setValue(self.__data[5])
-           self.__color[0] = self.__data[5]
+           self.__color = self.__data[5].split("|")
+           self.__constEntry.setValue(self.__color[0])
            self.__constEntry.changeState(NORMAL)
+           self.__constEntry2.setValue(self.__color[1])
+           self.__constEntry2.changeState(NORMAL)
+           self.__constEntry3.setValue(self.__color[2])
+           self.__constEntry3.changeState(NORMAL)
+
            self.__colorVarListBox.select_clear(0, END)
            self.__colorVarListBox.config(state = DISABLED)
         else:
            self.__colorOption.set(2)
-           self.__constEntry.setValue("$40")
-           self.__color[0] = "$40"
+           self.__color = ["$40", "$30", "$f0", "$10"]
+           self.__constEntry.setValue(self.__color[0])
            self.__constEntry.changeState(DISABLED)
+           self.__constEntry2.setValue(self.__color[1])
+           self.__constEntry2.changeState(DISABLED)
+           self.__constEntry3.setValue(self.__color[2])
+           self.__constEntry3.changeState(DISABLED)
            self.__colorVarListBox.config(state = NORMAL)
            for selector in range(0, len(self.__colorVars)):
                if self.__colorVars[selector].split("::")[1] == self.__data[5]:
@@ -291,19 +341,26 @@ class FullBar:
         except:
             self.__lastSet   = self.__colorVars[0]
 
-        try:
-            self.__lastConst = self.__constEntry.getValue()
-        except:
-            self.__lastConst = "$00"
-
+        self.__lastConst = deepcopy(self.__color)
 
     def __chamgeConst(self, event):
-        if self.__constEntry.getValue() != self.__data[5]:
-           temp = self.__constEntry.getValue()
+        self.__grrrrrr(0, self.__constEntry)
+
+    def __chamgeConst2(self, event):
+        self.__grrrrrr(1, self.__constEntry2)
+
+    def __chamgeConst3(self, event):
+        self.__grrrrrr(2, self.__constEntry3)
+
+
+    def __grrrrrr(self, num, entry):
+        if self.__constEntry.getValue() != self.__color[num]:
+           temp = entry.getValue()
            if self.isItHex(temp) == True:
               temp = temp[:2] + "0"
-              self.__data[5] = temp
-              self.__constEntry.setValue(temp)
+              self.__color[num] = temp
+              entry.setValue(temp)
+              self.__data[5] = "|".join(self.__color)
               self.__changeData(self.__data)
 
     def isItHex(self, num):
@@ -329,13 +386,28 @@ class FullBar:
            except:
                 self.__lastSet = self.__colorVars[0]
            self.__colorVarListBox.select_clear(0, END)
-           self.__constEntry.setValue(self.__lastConst)
+           self.__constEntry.setValue(self.__lastConst[0])
+           self.__constEntry2.setValue(self.__lastConst[1])
+           self.__constEntry3.setValue(self.__lastConst[2])
+
            self.__colorVarListBox.config(state = DISABLED)
            self.__constEntry.changeState(NORMAL)
+           self.__constEntry2.changeState(NORMAL)
+           self.__constEntry3.changeState(NORMAL)
+
            self.__chamgeConst(None)
+           self.__chamgeConst2(None)
+           self.__chamgeConst3(None)
+
         else:
-           self.__lastConst = self.__constEntry.getValue()
+           self.__lastConst[0] = self.__constEntry.getValue()
+           self.__lastConst[1] = self.__constEntry2.getValue()
+           self.__lastConst[2] = self.__constEntry3.getValue()
+
            self.__constEntry.changeState(DISABLED)
+           self.__constEntry2.changeState(DISABLED)
+           self.__constEntry3.changeState(DISABLED)
+
            self.__colorVarListBox.config(state = NORMAL)
            for itemNum in range(0, len(self.__colorVars)):
                if self.__colorVars[itemNum] == self.__lastSet:

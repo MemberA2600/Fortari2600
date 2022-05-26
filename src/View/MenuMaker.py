@@ -794,7 +794,7 @@ class MenuMaker:
                     doIt = True
 
                     for item in self.__finishedThem:
-                        if item == False: doIt == False
+                        if item == False: doIt = False
 
                     if doIt == True:
                         for theY in range(0,8):

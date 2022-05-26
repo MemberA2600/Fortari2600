@@ -295,3 +295,4 @@ gradient4=Dark in the Middle
 spriteName=Sprite Name
 spriteVar=Sprite Variable
 mirrored=Mirrored
+text=Text
