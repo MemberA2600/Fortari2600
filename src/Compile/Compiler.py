@@ -297,6 +297,7 @@ class Compiler:
         else:                  topLevelText += "\tASL\n" * 3
 
         topLevelText            += "\tCMP\t#0\n\tBEQ\t" + name + "_NoAddOne\n\tCLC\n\tADC\t#1\n" + name + "_NoAddOne\n"
+        topLevelText            += "\tLDX\t#255\n\tLDY\t#0\n"
         topLevelText            += ("\tSTA\ttemp03\n" + self.__loader.io.loadSubModule("preSetHalfBar")
                                     .replace("#NAME#", name).replace("#BANK#", bank))
 
@@ -307,6 +308,7 @@ class Compiler:
         topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                   "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
 
+        topLevelText           += "\tLDA\t"
         if colorVar2            == False:
            topLevelText        += "#" + colorVarName2 + "\n\tSTA\ttemp05\n"
         else:
@@ -319,7 +321,7 @@ class Compiler:
 
         last = 6
         textData = "\n" + name + "_TextData\n" +\
-                    self.generateAtariLetters(data[5], name, last)
+                    self.generateAtariLetters(data[5], name, last, data[6])
 
         tempStart = 8
         for spriteCounter in range(0,last):
@@ -338,7 +340,7 @@ class Compiler:
 
         return (topLevelText, patternData, textData)
 
-    def generateAtariLetters(self, text, name, maX):
+    def generateAtariLetters(self, text, name, maX, justifyRight):
         lines = ["", "", "", "", "", "", "", ""]
         for letter in text:
             letterData = self.__loader.fontManager.getAtariChar(letter)
@@ -348,6 +350,12 @@ class Compiler:
                 lines[lineNum] += "0"
         for lineNum in range(0, 8):
             lines[lineNum] = lines[lineNum][:-1]
+            while len(lines[lineNum]) < maX * 8:
+                if justifyRight == "0":
+                   lines[lineNum] += "0"
+                else:
+                    lines[lineNum] = "0" + lines[lineNum]
+
 
         spriteCounter = 0
         spriteData    = ""

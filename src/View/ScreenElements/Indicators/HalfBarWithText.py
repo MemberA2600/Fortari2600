@@ -227,6 +227,7 @@ class HalfBarWithText:
         self.__constEntry = HexEntry(self.__loader, self.__frame3, self.__colors, self.__colorDict,
                                      self.__normalFont, self.__color, 0, None, self.__chamgeConst)
 
+
         self.__varButton = Radiobutton(self.__frame3, width=99999,
                                        text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
                                        bg=self.__colors.getColor("window"),
@@ -330,6 +331,25 @@ class HalfBarWithText:
         self.__textEntry.bind("<KeyRelease>", self.textChanged)
         self.__textEntry.bind("<FocusOut>", self.textChanged)
 
+        self.__right = IntVar()
+
+        self.__rightButton = Checkbutton(self.__frame5, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("justifyRight"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__right,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__rightChanged
+                                       )
+
+        self.__rightButton.pack_propagate(False)
+        self.__rightButton.pack(fill=X, side=TOP, anchor=N)
+        if self.__data[9] == "1":
+           self.__right.set(1)
+        else:
+           self.__right.set(0)
+
         self.__textColorOption = IntVar()
         self.__constButton2 = Radiobutton(self.__frame5, width=99999,
                                          text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
@@ -359,7 +379,7 @@ class HalfBarWithText:
                                        bg=self.__colors.getColor("window"),
                                        fg=self.__colors.getColor("font"),
                                        justify=LEFT, font=self.__smallFont,
-                                       variable=self.__colorOption,
+                                       variable=self.__textColorOption,
                                        activebackground=self.__colors.getColor("highLight"),
                                        value=2, command=self.XXX2
                                        )
@@ -415,6 +435,14 @@ class HalfBarWithText:
         except:
             self.__lastSet2 = self.__colorVars[0]
 
+        self.__textColorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar2)
+        self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar2)
+        self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar2)
+
+    def __rightChanged(self):
+        self.__data[9] = str(self.__right.get())
+        self.__changeData(self.__data)
+
     def textChanged(self, event):
         event = str(event).split(" ")[0][1:]
 
@@ -428,24 +456,24 @@ class HalfBarWithText:
         if len(temp) > maxW: temp = temp[:maxW]
         self.__textVar.set(temp)
         self.__data[8] = temp
-        if event == "FocusOut":
-            self.__changeData(self.__data)
+        #if event == "FocusOut":
+        self.__changeData(self.__data)
 
 
     def __chamgeConst(self, event):
-        self.__grrrrrr(0, self.__constEntry, self.__color, "0")
+        self.__grrrrrr(0, self.__constEntry, self.__color, "0", 5)
 
     def __chamgeConst2(self, event):
-        self.__grrrrrr(0, self.__constEntry2, self.__textColor, "6")
+        self.__grrrrrr(0, self.__constEntry2, self.__textColor, "6", 7)
 
-    def __grrrrrr(self, num, entry, l, n):
+    def __grrrrrr(self, num, entry, l, n, m):
         if self.__constEntry.getValue() != l[num]:
             temp = entry.getValue()
             if self.isItHex(temp) == True:
                 temp = temp[:2] + n
                 l[num] = temp
                 entry.setValue(temp)
-                self.__data[5] = l[0]
+                self.__data[m] = l[0]
                 self.__changeData(self.__data)
 
     def isItHex(self, num):
@@ -506,7 +534,7 @@ class HalfBarWithText:
 
         else:
             self.__lastConst2[0] = self.__constEntry2.getValue()
-            self.__constEntry.changeState(DISABLED)
+            self.__constEntry2.changeState(DISABLED)
 
             self.__textColorVarListBox.config(state=NORMAL)
             for itemNum in range(0, len(self.__colorVars)):
@@ -527,8 +555,8 @@ class HalfBarWithText:
             self.__changeData(self.__data)
 
     def __changedColorVar2(self, event):
-        if self.__data[7] != self.__colorVars[self.__colorVarListBox.curselection()[0]].split("::")[1]:
-            self.__data[7] = self.__colorVars[self.__colorVarListBox.curselection()[0]].split("::")[1]
+        if self.__data[7] != self.__colorVars[self.__textColorVarListBox.curselection()[0]].split("::")[1]:
+            self.__data[7] = self.__colorVars[self.__textColorVarListBox.curselection()[0]].split("::")[1]
             self.__changeData(self.__data)
 
     def __changeMaxEntry(self, event):

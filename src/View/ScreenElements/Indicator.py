@@ -109,7 +109,7 @@ class Indicator:
         self.screenSubs = {
              "FullBar"          : [FullBar, ["#", "255", "$40|$30|$10", "1"]],
         #     "OnePicOneBar"     : [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]],
-            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:"]]
+            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:", "0"]]
         }
 
         if self.__data[2]  == "#":

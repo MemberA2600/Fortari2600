@@ -17,14 +17,16 @@
 	LDA	#BANK#_Bar_Inverted,y	; 5 
 	STA	PF1			; 3 
 #NAME#_Values_Done
+
+	LDA	#$0f			; 2
+	CMP	temp03			; 3
+	BCS	#NAME#_NoSTAThat ; 2	
+	STA	temp03			; 3
+#NAME#_NoSTAThat
 	LDA	temp03			; 3
 	LSR				; 2
 	CLC				; 2
 	ADC	temp04			; 3
 	STA	temp04			; 3
 	
-	LDA	temp03			; 3
-	LSR				; 2
-	CLC				; 2
-	ADC	temp05			; 3
-	STA	temp05			; 3
+

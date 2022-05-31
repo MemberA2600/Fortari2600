@@ -149,7 +149,10 @@ class LoadingScreen():
     def pressed(self, event):
 
         self.__clicked +=1
-        self.__loader.soundPlayer.playSound("Click")
+        try:
+            self.__loader.soundPlayer.playSound("Click")
+        except:
+            pass
 
     def getPresses(self):
         if (self.__clicked>2):

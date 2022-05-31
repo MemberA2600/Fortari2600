@@ -23,122 +23,122 @@ temp11 = $8c
 temp12 = $8d
 temp13 = $8e
 temp14 = $8f
-temp15 = $91
-temp16 = $92
-temp17 = $93
-temp18 = $94
-temp19 = $95
+temp15 = $90
+temp16 = $91
+temp17 = $92
+temp18 = $93
+temp19 = $94
 
 
-item = $96
-frameColor = $97
+item = $95
+frameColor = $96
 			
 *** Playfield Elements
-pf0Pointer = $98		; 16 bits
-pf1Pointer = $9a		; 16 bits
-pf2Pointer = $9c		; 16 bits	
-pfColorPointer = $9e		; 16 bits 
-bkColorPointer = $a0		; 16 bits
-bkBaseColor = $a2
-pfBaseColor = $a3
-pfIndex = $a4
+pf0Pointer = $97		; 16 bits
+pf1Pointer = $99		; 16 bits
+pf2Pointer = $9b		; 16 bits	
+pfColorPointer = $9d		; 16 bits 
+bkColorPointer = $9f		; 16 bits
+bkBaseColor = $a1
+pfBaseColor = $a2
+pfIndex = $a3
 
 ************************
-SubMenu = $a5		; 0-1 : SubMenuLines
-NoGameMode = $a5	; 2-4 : BankToJump
-bankToJump = $a5	; 5 : FREE
-SubMenuLines = $a5	; 6 : Go to SubMenu
+SubMenu = $a4		; 0-1 : SubMenuLines
+NoGameMode = $a4	; 2-4 : BankToJump
+bankToJump = $a4	; 5 : FREE
+SubMenuLines = $a4	; 6 : Go to SubMenu
 ************************  7 : No Game Mode
 
 *** Player Settings
-P0SpritePointer = $a6		; 16bit
-P0ColorPointer = $a8		; 16bit
-P1SpritePointer = $aa		; 16bit
-P1ColorPointer = $ac		; 16bit
+P0SpritePointer = $a5		; 16bit
+P0ColorPointer = $a7		; 16bit
+P1SpritePointer = $a9		; 16bit
+P1ColorPointer = $ab		; 16bit
 
 ************
 * Settings *
 ****************************************	
-P0Settings = $ae			; Bits 0-2 are sprite settings, 
-P0Mirrored = $ae			; 3 is reflection, bits 4-5 are missile settings. 
-P0TurnOff  = $ae			; 6: Turn Off Sprite
-P1Settings = $af			; 7: Turn off Missile
-P1Mirrored = $af			; Must be in order!
-P1TurnOff  = $af
+P0Settings = $ad			; Bits 0-2 are sprite settings, 
+P0Mirrored = $ad			; 3 is reflection, bits 4-5 are missile settings. 
+P0TurnOff  = $ad			; 6: Turn Off Sprite
+P1Settings = $ae			; 7: Turn off Missile
+P1Mirrored = $ae			; Must be in order!
+P1TurnOff  = $ae
 ****************************************
-pfSettings = $b0	; Since CTRLPF 0-1 bits are fixed in the screen loop
-pfEdges	= $b0		; 0-1: free
-BallTurnOff = $b0	; 2: Players move behind the pf
+pfSettings = $af	; Since CTRLPF 0-1 bits are fixed in the screen loop
+pfEdges	= $af		; 0-1: free
+BallTurnOff = $af	; 2: Players move behind the pf
 #Has to be here because	; 3: Turn off Ball
 #of the edge check	; 4-5: Ball Settings
 #routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 		;
 ************************
 
-P0Height = $b1
-P1Height = $b2
+P0Height = $b0
+P1Height = $b1
 
 ****************************************
-P0SpriteIndex = $b3			; low nibble is P0 sprite index
-P1SpriteIndex = $b3			; high nibble is P1 sprite index
+P0SpriteIndex = $b2			; low nibble is P0 sprite index
+P1SpriteIndex = $b2			; high nibble is P1 sprite index
 ****************************************
 
 *** Positions (Must be aligned!!)
-P0Y = $b4	
-P1Y = $b5	
-M0Y = $b6
-M1Y = $b7
-BLY = $b8
+P0Y = $b3	
+P1Y = $b4	
+M0Y = $b5
+M1Y = $b6
+BLY = $b7
 
-P0X = $b9
-P1X = $ba
-M0X = $bb
-M1X = $bc
-BLX = $bd
+P0X = $b8
+P1X = $b9
+M0X = $ba
+M1X = $bb
+BLX = $bc
 
 *** Fake Missile Colors
-M0Color = $be
-M1Color = $bf
+M0Color = $bd
+M1Color = $be
 
 *** TileScreen
-TileSetPointer = $c0	; 16 bit
-TileScreenMainColor = $c2
+TileSetPointer = $bf	; 16 bit
+TileScreenMainColor = $c1
 
 *** Matrix 6x4
-Tile1_1 = $c3
-Tile1_2 = $c3
-Tile1_3 = $c4
-Tile1_4 = $c4
-Tile1_5 = $c5
-Tile1_6 = $c5
+Tile1_1 = $c2
+Tile1_2 = $c2
+Tile1_3 = $c3
+Tile1_4 = $c3
+Tile1_5 = $c4
+Tile1_6 = $c4
 
-Tile2_1 = $c6
-Tile2_2 = $c6
-Tile2_3 = $c7
-Tile2_4 = $c7
-Tile2_5 = $c8
-Tile2_6 = $c8
+Tile2_1 = $c5
+Tile2_2 = $c5
+Tile2_3 = $c6
+Tile2_4 = $c6
+Tile2_5 = $c7
+Tile2_6 = $c7
 
-Tile3_1 = $c9
-Tile3_2 = $c9
-Tile3_3 = $ca
-Tile3_4 = $ca
-Tile3_5 = $cb
-Tile3_6 = $cb
+Tile3_1 = $c8
+Tile3_2 = $c8
+Tile3_3 = $c9
+Tile3_4 = $c9
+Tile3_5 = $ca
+Tile3_6 = $ca
 
-Tile4_1 = $cc
-Tile4_2 = $cc
-Tile4_3 = $cd
-Tile4_4 = $cd
-Tile4_5 = $ce
-Tile4_6 = $ce
+Tile4_1 = $cb
+Tile4_2 = $cb
+Tile4_3 = $cc
+Tile4_4 = $cc
+Tile4_5 = $cd
+Tile4_6 = $cd
 
-TileColorPointer = $cf 	; 16 bits
+TileColorPointer = $ce 	; 16 bits
 
 *******************
-TileSelected = $d1  ; 0-4th bit: Selected Tile (5 bits)
-OverlapScreen = $d1 ; 5th bit: Have some part of the other screen
-GrayScale     = $d1 ; 6th bit: GrayScale overlap
-OverLapIndicator = $d1
+TileSelected = $d0  ; 0-4th bit: Selected Tile (5 bits)
+OverlapScreen = $d0 ; 5th bit: Have some part of the other screen
+GrayScale     = $d0 ; 6th bit: GrayScale overlap
+OverLapIndicator = $d0
 *******************
 
 	; Constants

@@ -95,8 +95,9 @@ class KernelTester:
         self.__openKernelFrame = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelFile", round(self.__topLevel.getTopLevelDimensions()[0]), self)
+        import os
 
-        self.__openKernelFrame.setValue("F:/PyCharm/P/Fortari2600/templates/skeletons/common_main_kernel.asm")
+        self.__openKernelFrame.setValue(os.getcwd().replace("\\", "/")+"/templates/skeletons/common_main_kernel.asm")
 
         self.__openEnter = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
@@ -114,6 +115,8 @@ class KernelTester:
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelData", round(self.__topLevel.getTopLevelDimensions()[0]), self)
 
+        for item in (self.__openEnter, self.__openOverscan, self.__openScreenTopData, self.__openKernelData):
+           item.setValue(os.getcwd().replace("\\", "/")+"/templates/empty.asm")
 
         self.__testButton = Button(self.__topLevelWindow, stat=DISABLED,
                                    bg=self.__loader.colorPalettes.getColor("window"),
