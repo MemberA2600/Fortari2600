@@ -126,6 +126,17 @@ class Compiler:
                      self.__routines["HalfBarWithText"] = self.__io.loadSubModule("HalfBarWithText_Kernel").replace("#BANK#", self.__bank)
                      self.__userData[fullName + "_TextData"] = those[2]
 
+                elif subtyp == "TwoIconsTwoLines":
+                     those  = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
+                     self.__bankData.append(those[0])
+                     self.__userData[fullName] = those[1]
+                     self.__userData[self.__bank+"_Bar_Normal"] =\
+                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+                     self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
+                     for key in those[2].keys():
+                         self.__userData[key] = those[2][key]
+
+
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
 
@@ -140,6 +151,58 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_TwoIconsTwoLines(self, name, data, bank):
+        '''
+    *	JumpBack Pointer: temp01 (+ temp02)
+    *	Color1		: temp03
+    *	Color2		: temp04
+    *	SpriteData1	: temp05
+    *  	SpriteData2	: temp06
+    *			0: IsDouble
+    *			3: Mirrored
+    *			4-7: frameNum
+    *
+    *  	GradientPointer : temp07 (+ temp08)
+    *	sprite0_Pixels	: temp09 (+ temp10)
+    *	sprite0_Colors	: temp11 (+ temp12)
+    *	sprite1_Pixels	: temp13 (+ temp14)
+    *	sprite1_Color	: temp15 (+ temp16)
+        '''
+
+        topLevelText           = "\n" + name + "\n"
+        picture1               = data[0]
+        picture2               = data[4]
+
+        pictureData            = {}
+
+        pictureName1           = picture1.split("_(")[0]
+        pictureName2           = picture2.split("_(")[0]
+        pictureType1           = picture1.split("_(")[1][:-1]
+        pictureType2           = picture2.split("_(")[1][:-1]
+
+        pictureData[pictureName1] = self.loadPictureData(pictureName1, pictureType1)
+        pictureData[pictureName2] = self.loadPictureData(pictureName2, pictureType2)
+
+
+
+    def loadPictureData(self, path, pictureName, pictureType):
+        if pictureType.upper() == 'BIG':
+           path = self.__loader.mainWindow.projectPath + "bigSprites/"+pictureName+".asm"
+        else:
+           path = self.__loader.mainWindow.projectPath + "sprites/" + pictureName + ".asm"
+
+        f   = open(path, "r")
+        txt = f.read()
+        f.close()
+
+        if pictureType.upper() == 'BIG': txt = self.convertAnyTo8Bits(txt)
+        return txt.replace("##NAME##", pictureName)
+
+    def convertSpriteToBigSprite(self, txt):
+        return txt.replace("##NAME##_Sprite", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1"
+                          ).replace("##NAME##_SpriteColor",
+                                    "##NAME##_SpriteColor\n##NAME##_BigSpriteColor_0\n##NAME##_BigSpriteColor_1")
 
     def generate_OnePicOneBar(self, name, data, bank):
 

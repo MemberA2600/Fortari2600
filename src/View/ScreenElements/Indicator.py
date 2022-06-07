@@ -105,11 +105,13 @@ class Indicator:
         from FullBar import FullBar
         #from OnePicOneBar import OnePicOneBar
         from HalfBarWithText import HalfBarWithText
+        from TwoIconsTwoLines import TwoIconsTwoLines
 
         self.screenSubs = {
              "FullBar"          : [FullBar, ["#", "255", "$40|$30|$10", "1"]],
         #     "OnePicOneBar"     : [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]],
-            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:", "0"]]
+            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:", "0"]],
+            "TwoIconsTwoLines"  : [TwoIconsTwoLines, ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#"]]
         }
 
         if self.__data[2]  == "#":
@@ -141,6 +143,7 @@ class Indicator:
                 self.__data[3 + num] = self.screenSubs[self.__indicators[self.__indicatorListBox.curselection()[0]]][1][num]
 
             self.__lastSelected = self.__indicatorListBox.curselection()[0]
+
             self.__changeData(self.__data)
 
             self.__subFrame = self.screenSubs[self.__data[2]][0](
