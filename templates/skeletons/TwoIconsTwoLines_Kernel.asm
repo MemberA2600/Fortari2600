@@ -10,6 +10,7 @@
 *	sprite1_Pixels	: temp13 (+ temp14)
 *	sprite1_Color	: temp15 (+ temp16)
 *	BallEnable	: temp17
+*	BallOffset	: temp18
 *
 *	PF1 and PF2 is set in the Toplevel section.
 *	Since we don't have enough memory for both sprites,
@@ -28,7 +29,7 @@
 
 	STA	GRP0			; 3 (12)
 	STA	GRP1			; 3 (15)
-	LDA	#$20			; 2 (17)
+	LDA	temp18			; 2 (17)
 	STA	HMBL			; 3 (20)
 
 *
@@ -44,7 +45,7 @@
 	ORA	#%00000001		; 2
 	STA 	CTRLPF			; 3
 
-	sleep	10
+	sleep	9
 	STA	RESBL			; 3 
 
 	STA	WSYNC			; 76
@@ -61,11 +62,11 @@
 					; 3 (16)
 
 #BANK#_TwoIconsTwoLines_P0_0
-	sleep	2
+	sleep	7
 #BANK#_TwoIconsTwoLines_P0_5
-	sleep	3
+	sleep	9
 #BANK#_TwoIconsTwoLines_P0_7
-	sleep	15
+	sleep	4
 	STA	RESP0			; 3 
 
 	STA	WSYNC			; 76
@@ -89,11 +90,11 @@
 					; 3 (25)
 
 #BANK#_TwoIconsTwoLines_P1_0
-	sleep	2
+	sleep	7
 #BANK#_TwoIconsTwoLines_P1_5
-	sleep	3
+	sleep	9
 #BANK#_TwoIconsTwoLines_P1_7
-	sleep	31
+	sleep	19
 	STA	RESP1			; 3 
 
 
@@ -126,23 +127,33 @@
 	BMI	#BANK#_TwoIconsTwoLines_Ended
 					; 2 (47)
 	STA	COLUPF			; 3 (50)
-	sleep 	4
+	sleep 	3
 
 	TXA				; 2 (56)
-	ADC	temp04			; 3 (59)	
-	STA	COLUPF			; 3 (62)
+	ADC	temp04			; 3 (59)
+	
+	STA	COLUPF			
 
 	LAX	(temp07),y		; 5 
 
 	LDA	frameColor		; 3 
-	STA	COLUPF			; 3 
+
+*
+*	This is a forced byte injection for 
+*	precise timing. Hate this thing... 		
+*
+*	STA	COLUPF			; 3 
+*
+	BYTE	#$8D			; STA $XXXX
+	BYTE	#$08			; Register address of COLUPF
+	BYTE	#$00			; Dummy	
 
 	JMP	#BANK#_TwoIconsTwoLines_Loop_NOSYNC
 
 #BANK#_TwoIconsTwoLines_Ended
 
 	STA	COLUPF			; 3
-	sleep 	3
+	sleep 	2
 
 	TXA				; 2 
 	ADC	temp04			; 3 	

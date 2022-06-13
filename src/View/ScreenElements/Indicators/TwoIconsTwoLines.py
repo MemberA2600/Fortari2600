@@ -1394,12 +1394,12 @@ class TwoIconsTwoLines:
            self.__changeData(self.__data)
 
     def __changedDataVar2(self, event):
-        if self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1] != self.__data[13]:
+        if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[13]:
            self.__data[13] =  self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1]
            self.__changeData(self.__data)
 
     def __changedColorVar1(self, event):
-        if self.__picOption1.get() == 2:
+        if self.__picOption1.get() == 1:
            return
 
         if self.__dataVars[self.__colorVarListBox1.curselection()[0]].split("::")[1] != self.__data[4]:
@@ -1407,7 +1407,7 @@ class TwoIconsTwoLines:
            self.__changeData(self.__data)
 
     def __changedColorVar2(self, event):
-        if self.__picOption2.get() == 2:
+        if self.__picOption2.get() == 1:
            return
 
         if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:

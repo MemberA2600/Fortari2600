@@ -7,8 +7,9 @@
 
 	TAY				; 2 
 	LDA	#BANK#_Bar_Inverted,y	; 5 
-!!!AND0_PF2_Inverted!!!
+
 !!!PF2_REMOVE_LASTBIT!!!
+!!!AND0_PF2_Inverted!!!
 	STA	PF2			; 3 
 
 	LDA	#$0f			; 2

@@ -226,6 +226,9 @@ class Compiler:
             topLevelText +=        self.convertAnyTo8Bits(dataVar1.bits)
 
         maxValue = int(data[3])
+        topLevelText            += "\tCMP\t#" + data[3] +"\n\tBCC\t" + name + "_Not_Larger_Than_Max1\n" +\
+                                   "\tLDA\t#" + data[3] + "\n" + name + "_Not_Larger_Than_Max1\n"
+
         topLevelText            += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
 
         topLevelText +=        "\tSTA\ttemp19\n" +\
@@ -238,6 +241,8 @@ class Compiler:
             topLevelText += self.convertAnyTo8Bits(dataVar2.bits)
 
         maxValue = int(data[7])
+        topLevelText            += "\tCMP\t#" + data[7] +"\n\tBCC\t" + name + "_Not_Larger_Than_Max2\n" +\
+                                   "\tLDA\t#" + data[7] + "\n" + name + "_Not_Larger_Than_Max2\n"
 
         topLevelText += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
 
@@ -282,6 +287,12 @@ class Compiler:
         topLevelText += "\tLDA\ttemp19\n\tLSR\n\tLSR\n\tLSR\n\tLSR\n"
         topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
+        if data[11] == "1":
+           topLevelText = topLevelText + "\tLDA\t#$e0\n\tSTA\ttemp18\n"
+           topLevelText = topLevelText + self.__loader.io.loadSubModule("TwoIconsTwoBar_DotsDots").replace("#NAME#", name)
+        else:
+           topLevelText = topLevelText + "\tLDA\t#$20\n\tSTA\ttemp18\n"
+
         # Jumpback!
 
         topLevelText += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
@@ -291,9 +302,11 @@ class Compiler:
 
         #print(topLevelText)
 
+        inverted = "10101010"
         #print(data)
+
         if data[11] == "1":
-           topLevelText = topLevelText.replace("!!!AND0_PF2_Inverted!!!", "\tAND\t#%10101010")
+           topLevelText = topLevelText.replace("!!!AND0_PF2_Inverted!!!", "\tAND\t#%" + inverted)
 
         topLevelText = topLevelText.replace("!!!PF2_REMOVE_LASTBIT!!!",
                                             self.__io.loadSubModule("TwoIconsTwoBar_RemoveLastBit")
@@ -301,7 +314,7 @@ class Compiler:
                                             .replace("#BANK#", bank))
 
         if data[12] == "1":
-           topLevelText = topLevelText.replace("!!!AND0_PF1_Inverted!!!", "\tAND\t#%10101010")
+           topLevelText = topLevelText.replace("!!!AND0_PF1_Inverted!!!", "\tAND\t#%" + inverted)
 
         return (topLevelText, patternData, pictureData)
 
