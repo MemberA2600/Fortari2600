@@ -297,3 +297,4 @@ spriteVar=Sprite Változó
 mirrored=Tükrözött
 text=Szöveg
 justifyRight=Jobbra Igazított
+dots=Pöttyök (nem Vonal)

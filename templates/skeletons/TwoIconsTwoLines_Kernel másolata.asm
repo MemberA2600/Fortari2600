@@ -9,8 +9,7 @@
 *	sprite0_Colors	: temp11 (+ temp12)
 *	sprite1_Pixels	: temp13 (+ temp14)
 *	sprite1_Color	: temp15 (+ temp16)
-*	BallEnable	: temp17
-*
+*	
 *	PF1 and PF2 is set in the Toplevel section.
 *	Since we don't have enough memory for both sprites,
 *	we have to flicker them. If the spritedata is
@@ -21,34 +20,25 @@
 #BANK#_TwoIconsTwoLines_Kernel
 	LDA	#0			; 2 (64)
 	LDX	frameColor		; 3 (67)
+	STA	HMP0			; 3 (70)
+	STA	HMP1			; 3 (73)
 	STA	WSYNC			; 3 (76)
-	STA	HMCLR			; 3 
+	STA	HMOVE			; 3 
 	STX	COLUBK			; 3 (6)
 	STX	COLUPF			; 3 (9)
 
 	STA	GRP0			; 3 (12)
 	STA	GRP1			; 3 (15)
-	LDA	#$20			; 2 (17)
-	STA	HMBL			; 3 (20)
+	STA	HMCLR			; 3 (18)
 
 *
 *	Set horizontal position. Sprite settings are done
 *	in the Screen Top / Bottom section.
 *
-*	Enable and set ball.
-*
-
-	LDA	temp17			; 3 
-	STA	ENABL			; 3
-	AND	#%00110000		; 2
-	ORA	#%00000001		; 2
-	STA 	CTRLPF			; 3
-
-	sleep	10
-	STA	RESBL			; 3 
+	LDA	#1			; 2 (20)
+	STA	CTRLPF			; 3 (25)	
 
 	STA	WSYNC			; 76
-	STA	HMOVE			; 3
 	LDA	temp05			; 3
 	CMP	#0			; 2 (5)
 	BEQ	#BANK#_TwoIconsTwoLines_P0_0
@@ -65,7 +55,7 @@
 #BANK#_TwoIconsTwoLines_P0_5
 	sleep	3
 #BANK#_TwoIconsTwoLines_P0_7
-	sleep	15
+	sleep	18
 	STA	RESP0			; 3 
 
 	STA	WSYNC			; 76
@@ -93,7 +83,7 @@
 #BANK#_TwoIconsTwoLines_P1_5
 	sleep	3
 #BANK#_TwoIconsTwoLines_P1_7
-	sleep	31
+	sleep	30
 	STA	RESP1			; 3 
 
 
@@ -123,10 +113,10 @@
 
 	LDA	frameColor		; 3 (43)
 	DEY				; 2 (45)
-	BMI	#BANK#_TwoIconsTwoLines_Ended
-					; 2 (47)
+	sleep	2
+
 	STA	COLUPF			; 3 (50)
-	sleep 	4
+	sleep 	2
 
 	TXA				; 2 (56)
 	ADC	temp04			; 3 (59)	
@@ -137,29 +127,18 @@
 	LDA	frameColor		; 3 
 	STA	COLUPF			; 3 
 
-	JMP	#BANK#_TwoIconsTwoLines_Loop_NOSYNC
+	CPY	#255			; 2
+	BNE	#BANK#_TwoIconsTwoLines_Loop_NOSYNC
+					; 2
 
 #BANK#_TwoIconsTwoLines_Ended
-
-	STA	COLUPF			; 3
-	sleep 	3
-
-	TXA				; 2 
-	ADC	temp04			; 3 	
-	STA	COLUPF			; 3 
-	sleep	2
-	LDX	#0			; 2
-	LDA	frameColor		; 3 
-	STA	COLUPF			; 3 	
-
+	LDX	frameColor
+	LDA	#0
 	STA	WSYNC			; 76
-	STA	COLUPF
-	STA	COLUP0
-	STA	COLUP1
-	STX	GRP0
-	STX	GRP1
-	STX	CTRLPF
-	STX	ENABL
-	STX	HMCLR
+	STX	COLUPF
+	STX	COLUP0
+	STX	COLUP1
+	STA	GRP0
+	STA	GRP1
 
 	JMP	(temp01)

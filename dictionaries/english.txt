@@ -297,3 +297,4 @@ spriteVar=Sprite Variable
 mirrored=Mirrored
 text=Text
 justifyRight=Justify Right
+dots=Dots (not Line)

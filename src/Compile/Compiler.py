@@ -111,11 +111,12 @@ class Compiler:
                      those  = self.generate_FullBar(fullName, data, self.__bank)
                      self.__bankData.append(those[0])
                      self.__userData[fullName] = those[1]
+
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
-                    #for item in those:
-                    #    print(item)
+
                      self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
+
 
                 elif subtyp == "HalfBarWithText":
                      those  = self.generate_HalfBarWithText(fullName, data, self.__bank)
@@ -123,12 +124,13 @@ class Compiler:
                      self.__userData[fullName] = those[1]
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+
                      self.__routines["HalfBarWithText"] = self.__io.loadSubModule("HalfBarWithText_Kernel").replace("#BANK#", self.__bank)
                      self.__userData[fullName + "_TextData"] = those[2]
 
                 elif subtyp == "TwoIconsTwoLines":
                      those  = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
-                     self.__bankData.append(those[0])
+                     self.__bankData.append(those[0].replace("#BANK#", self.__bank))
                      self.__userData[fullName] = those[1]
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
@@ -184,9 +186,126 @@ class Compiler:
         pictureData[pictureName1] = self.loadPictureData(pictureName1, pictureType1)
         pictureData[pictureName2] = self.loadPictureData(pictureName2, pictureType2)
 
+        topLevelText            += "\tLDA\tframeColor\n\tSTA\tCOLUPF\n"
+        topLevelText            += "\tLDA\t#0\n\tSTA\ttemp17\n"
 
+        topLevelText            += self.__io.loadSubModule("TwoIconsTwoLines_SelectOnFrame").\
+                                   replace("##SCREENITEM##", name). \
+                                   replace("##NAME1##", pictureName1). \
+                                   replace("##NAME2##", pictureName2)
 
-    def loadPictureData(self, path, pictureName, pictureType):
+    # ['Brutal_Big_Sprite_(Big)', '$40', '%00000000', '255', 'Bloody_Smiley_(Big)', '$80', '%00000000', '255', '1', 'random', 'random']
+
+        colorVarName1 = data[1]
+        colorVar1 = self.__loader.virtualMemory.getVariableByName2(colorVarName1)
+        if colorVar1 == False:
+            topLevelText    += "\tLDA\t#"+ colorVarName1 +"\n"
+        else:
+            topLevelText    += "\tLDA\t" + colorVarName1 + "\n"
+            if colorVar1.type == "nibble":
+                topLevelText += self.moveVarToTheRight(colorVar1.usedBits)
+            topLevelText += "\tAND\t#%11110000\n"
+
+        topLevelText    += "\tSTA\ttemp03\n"
+
+        colorVarName2 = data[5]
+        colorVar2 = self.__loader.virtualMemory.getVariableByName2(colorVarName2)
+        if colorVar2 == False:
+            topLevelText    += "\tLDA\t#"+ colorVarName2 +"\n"
+        else:
+            topLevelText    += "\tLDA\t" + colorVarName2 + "\n"
+            if colorVar2.type == "nibble":
+                topLevelText += self.moveVarToTheRight(colorVar2.usedBits)
+            topLevelText += "\tAND\t#%11110000\n"
+
+        topLevelText    += "\tSTA\ttemp04\n"
+
+        topLevelText +=            "\tLDA\t" + data[9] + "\n"
+        dataVar1      =            self.__loader.virtualMemory.getVariableByName2(data[9])
+        if dataVar1.type != "byte":
+            topLevelText +=        self.convertAnyTo8Bits(dataVar1.bits)
+
+        maxValue = int(data[3])
+        topLevelText            += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
+
+        topLevelText +=        "\tSTA\ttemp19\n" +\
+                               self.__loader.io.loadSubModule("preSetTwoIconsTwoBar").\
+                                   replace("CC","03").replace("#NAME#", name)
+
+        topLevelText +=            "\tLDA\t" + data[10] + "\n"
+        dataVar2 = self.__loader.virtualMemory.getVariableByName2(data[10])
+        if dataVar2.type != "byte":
+            topLevelText += self.convertAnyTo8Bits(dataVar2.bits)
+
+        maxValue = int(data[7])
+
+        topLevelText += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
+
+        topLevelText += "\tSTA\ttemp19\n" + \
+                        self.__loader.io.loadSubModule("preSetTwoIconsTwoBar"). \
+                            replace("CC", "04").replace("PF2", "PF1").replace("#NAME#", name)
+
+        pattern                = self.generate_fadeOutPattern(2)
+        patternIndex           = int(data[8])
+
+        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData             = xxx[0]
+        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp07\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp08\n"
+
+        picSettings1        = data[2]
+        picSettingsVar1     = self.__loader.virtualMemory.getVariableByName2(picSettings1)
+
+        if picSettingsVar1  == False:
+            topLevelText    +=  "\tLDA\t#" + picSettings1 + "\n"
+        else:
+            topLevelText    +=  "\tLDA\t" + picSettings1 + "\n"
+            if picSettingsVar1.type == "nibble":
+                topLevelText += self.moveVarToTheRight(picSettingsVar1.usedBits)
+        topLevelText += "\tSTA\ttemp19\n"
+        topLevelText += "\tAND\t#%00001111\n\tSTA\tRESP0\n\tSTA\tNUSIZ0\n\tAND\t#%00000111\n\tSTA\ttemp05\n"
+
+        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tLSR\n\tLSR\n\tLSR\n"
+        topLevelText += "\tCLC\n\tADC\ttemp09\n\tSTA\ttemp09\n"
+
+        picSettings2        = data[6]
+        picSettingsVar2     = self.__loader.virtualMemory.getVariableByName2(picSettings2)
+
+        if picSettingsVar2  == False:
+            topLevelText    +=  "\tLDA\t#" + picSettings2 + "\n"
+        else:
+            topLevelText    +=  "\tLDA\t" + picSettings2 + "\n"
+            if picSettingsVar2.type == "nibble":
+                topLevelText += self.moveVarToTheRight(picSettingsVar2.usedBits)
+        topLevelText += "\tSTA\ttemp19\n"
+        topLevelText += "\tAND\t#%00001111\n\tSTA\tRESP1\n\tSTA\tNUSIZ1\n\tAND\t#%00000111\n\tSTA\ttemp06\n"
+
+        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tLSR\n\tLSR\n\tLSR\n"
+        topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
+
+        # Jumpback!
+
+        topLevelText += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                        "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText += "\tJMP\t" + bank + "_TwoIconsTwoLines_Kernel" + "\n"
+        topLevelText += name + "_Back" + "\n"
+
+        #print(topLevelText)
+
+        #print(data)
+        if data[11] == "1":
+           topLevelText = topLevelText.replace("!!!AND0_PF2_Inverted!!!", "\tAND\t#%10101010")
+
+        topLevelText = topLevelText.replace("!!!PF2_REMOVE_LASTBIT!!!",
+                                            self.__io.loadSubModule("TwoIconsTwoBar_RemoveLastBit")
+                                            .replace("#NAME#", name)
+                                            .replace("#BANK#", bank))
+
+        if data[12] == "1":
+           topLevelText = topLevelText.replace("!!!AND0_PF1_Inverted!!!", "\tAND\t#%10101010")
+
+        return (topLevelText, patternData, pictureData)
+
+    def loadPictureData(self, pictureName, pictureType):
         if pictureType.upper() == 'BIG':
            path = self.__loader.mainWindow.projectPath + "bigSprites/"+pictureName+".asm"
         else:
@@ -196,115 +315,13 @@ class Compiler:
         txt = f.read()
         f.close()
 
-        if pictureType.upper() == 'BIG': txt = self.convertAnyTo8Bits(txt)
+        if pictureType.upper() != 'BIG': txt = self.convertSpriteToBigSprite(txt)
         return txt.replace("##NAME##", pictureName)
 
     def convertSpriteToBigSprite(self, txt):
-        return txt.replace("##NAME##_Sprite", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1"
-                          ).replace("##NAME##_SpriteColor",
-                                    "##NAME##_SpriteColor\n##NAME##_BigSpriteColor_0\n##NAME##_BigSpriteColor_1")
-
-    def generate_OnePicOneBar(self, name, data, bank):
-
-        topLevelText           = "\n" + name + "\n"
-
-
-        dataVarName            = data[0]
-        dataVar                = self.__loader.virtualMemory.getVariableByName2(dataVarName)
-
-        maxValue               = int(data[1])
-
-        colorVarName           = data[2]
-        colorVar               = self.__loader.virtualMemory.getVariableByName2(colorVarName)
-
-        pattern                = self.generate_fadeOutPattern(2)
-        patternIndex           = int(data[3])
-
-        topLevelText +=        "\tLDA\t" + dataVarName + "\n"
-        if dataVar.type        != "byte":
-           topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
-        topLevelText        += "\tSTA\ttemp03\n"
-
-        #topLevelText           +=  "\tLDA\t#" + str(32 // maxValue) + "\n\tSTA\ttemp04\n"
-
-        topLevelText           += '\tLDA\t'
-        if colorVar            == False:
-           topLevelText        += "#" + colorVarName + "\n"
-        else:
-           topLevelText        += colorVarName + "\n"
-           if colorVar.type    == "nibble":
-              topLevelText     += self.moveVarToTheRight(colorVar.usedBits)
-           topLevelText        += "\tAND\t#%11110000\n"
-
-        topLevelText           += "\tSTA\ttemp05\n"
-
-        topLevelText           += "\n\tLDA\t#"+data[1]+"\n\tCMP\ttemp03\n"       +\
-                                  "\tBCS\t"+name+"_NO_STA\n\tSTA\ttemp03\n"      +\
-                                  name+"_NO_STA\n"
-
-        topLevelText            += "\tLDA\ttemp03\n"
-        if   maxValue > 127:   topLevelText += "\tLSR\n" * 4
-        elif maxValue > 63:    topLevelText += "\tLSR\n" * 3
-        elif maxValue > 31:    topLevelText += "\tLSR\n" * 2
-        elif maxValue > 15:    topLevelText += "\tLSR\n"
-        elif maxValue > 7:     pass
-        elif maxValue > 3:     topLevelText += "\tASL\n"
-        elif maxValue > 1:     topLevelText += "\tASL\n" * 2
-        else:                  topLevelText += "\tASL\n" * 3
-
-        topLevelText            += "\tCMP\t#0\n\tBEQ\t" + name + "_NoAddOne\n\tCLC\n\tADC\t#1\n" + name + "_NoAddOne\n"
-        topLevelText            += "\tSTA\ttemp03\n"
-
-        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
-
-        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
-        # From here comes the special part
-        # Start with temp10
-
-        pictureName            = data[4].split("_(")[0]
-        picType                = data[4].split("_(")[1][:-1]
-
-        if picType == "Big":
-            topLevelText           += "\tLDA\t#<" + pictureName + "_BigSprite_0" + "\n\tSTA\ttemp10\n"
-            topLevelText           += "\tLDA\t#>" + pictureName + "_BigSprite_0" + "\n\tSTA\ttemp11\n"
-            topLevelText           += "\tLDA\t#<" + pictureName + "_BigSprite_1" + "\n\tSTA\ttemp12\n"
-            topLevelText           += "\tLDA\t#>" + pictureName + "_BigSprite_1" + "\n\tSTA\ttemp13\n"
-            topLevelText           += "\tLDA\t#<" + pictureName + "_BigSpriteColor_0" + "\n\tSTA\ttemp14\n"
-            topLevelText           += "\tLDA\t#>" + pictureName + "_BigSpriteColor_0" + "\n\tSTA\ttemp15\n"
-            topLevelText           += "\tLDA\t#<" + pictureName + "_BigSpriteColor_1" + "\n\tSTA\ttemp16\n"
-            topLevelText           += "\tLDA\t#>" + pictureName + "_BigSpriteColor_1" + "\n\tSTA\ttemp17\n"
-
-        if data[5].startswith("%"):
-           topLevelText += "\tLDA\t#" + data[5] + "\n\tSTA\ttemp18\n"
-        else:
-           topLevelText += "\tLDA\t"  + data[5] + "\n\tSTA\ttemp18\n"
-
-        if picType == "Big":
-            path = self.__loader.mainWindow.projectPath+"bigSprites/"+ pictureName +".asm"
-        else:
-            path = self.__loader.mainWindow.projectPath+"sprites/"+ pictureName +".asm"
-
-        f = open(path, "r")
-        picData = f.read().replace("##NAME##", pictureName)
-
-        if picType == "Big":
-            lines = picData.replace("\r","").split("\n")[0]
-            for line in lines:
-                if line.startswith("*") and "Mode=" in line:
-                   #mode = line.split("Mode=")[1]
-                   if "double" in line:
-                       topLevelText += "\tLDA\ttemp04\n\tORA\t#%10000000\n\tSTA\ttemp04\n"
-
-        # Jumpback!
-
-        topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
-                                  "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
-        topLevelText           += "\tJMP\t" + bank + "_OneBigPicOneBar_Kernel" + "\n"
-        topLevelText           += name + "_Back" + "\n"
-
-        return (topLevelText, patternData, picData)
-
+        return txt.replace("##NAME##_Sprite\n", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1\n"
+                          ).replace("##NAME##_SpriteColor\n",
+                                    "##NAME##_SpriteColor\n##NAME##_BigSpriteColor_0\n##NAME##_BigSpriteColor_1\n")
 
     def generate_HalfBarWithText(self, name, data, bank):
 
@@ -318,7 +335,7 @@ class Compiler:
 
         colorVarName           = data[2]
         colorVarName2          = data[4]
-        print(data)
+        #print(data)
 
         colorVar               = self.__loader.virtualMemory.getVariableByName2(colorVarName)
         colorVar2              = self.__loader.virtualMemory.getVariableByName2(colorVarName2)
@@ -350,19 +367,16 @@ class Compiler:
                                   name+"_NO_STA\n"
 
         topLevelText            += "\tLDA\ttemp03\n"
-        if   maxValue > 127:   topLevelText += "\tLSR\n" * 4
-        elif maxValue > 63:    topLevelText += "\tLSR\n" * 3
-        elif maxValue > 31:    topLevelText += "\tLSR\n" * 2
-        elif maxValue > 15:    topLevelText += "\tLSR\n"
-        elif maxValue > 7:     pass
-        elif maxValue > 3:     topLevelText += "\tASL\n"
-        elif maxValue > 1:     topLevelText += "\tASL\n" * 2
-        else:                  topLevelText += "\tASL\n" * 3
+
+
+        topLevelText            += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 4)
+
 
         topLevelText            += "\tCMP\t#0\n\tBEQ\t" + name + "_NoAddOne\n\tCLC\n\tADC\t#1\n" + name + "_NoAddOne\n"
         topLevelText            += "\tLDX\t#255\n\tLDY\t#0\n"
-        topLevelText            += ("\tSTA\ttemp03\n" + self.__loader.io.loadSubModule("preSetHalfBar")
-                                    .replace("#NAME#", name).replace("#BANK#", bank))
+
+        topLevelText        += ("\tSTA\ttemp03\n" + self.__loader.io.loadSubModule("preSetHalfBar")
+                                        .replace("#NAME#", name).replace("#BANK#", bank))
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
         patternData             = xxx[0]
@@ -400,6 +414,10 @@ class Compiler:
 
         topLevelText           += "\tJMP\t" + bank + "_HalfBarWithText_Kernel" + "\n"
         topLevelText           += name + "_Back" + "\n"
+
+        if data[7] == "1":
+           topLevelText = topLevelText.replace("!!!AND0_Normal!!!", "\tAND\t#%01010101").replace("!!!AND0_Inverted!!!", "\tAND\t#%10101010").\
+                          replace("!!!LDX_Normal!!!", "\tLDX\t#%01010101")
 
         return (topLevelText, patternData, textData)
 
@@ -495,14 +513,9 @@ class Compiler:
                                   name+"_NO_STA\n"
 
         topLevelText            += "\tLDA\ttemp03\n"
-        if   maxValue > 127:   topLevelText += "\tLSR\n" * 3
-        elif maxValue > 63:    topLevelText += "\tLSR\n" * 2
-        elif maxValue > 31:    topLevelText += "\tLSR\n"
-        elif maxValue > 15:    pass
-        elif maxValue > 7:     topLevelText += "\tASL\n"
-        elif maxValue > 3:     topLevelText += "\tASL\n" * 2
-        elif maxValue > 1:     topLevelText += "\tASL\n" * 3
-        else:                  topLevelText += "\tASL\n" * 4
+
+
+        topLevelText        += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 3)
 
         topLevelText            += "\tCMP\t#0\n\tBEQ\t" + name + "_NoAddOne\n\tCLC\n\tADC\t#1\n" + name + "_NoAddOne\n"
         topLevelText            += "\tSTA\ttemp03\n"
@@ -511,12 +524,33 @@ class Compiler:
         patternData             = xxx[0]
 
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
+
         topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                   "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
         topLevelText           += "\tJMP\t" + bank + "_FullBar_Kernel" + "\n"
         topLevelText           += name + "_Back" + "\n"
 
         return (topLevelText, patternData)
+
+    def generateASLLSRbyMaxValueAndStartPoint(self, maxValue, startPoint):
+        data = []
+        for num in range(0, 8):
+            num2 = startPoint - num
+            if num2 > 0:
+               data.append(num2 * "\tLSR\n")
+            elif num2 < 0:
+                data.append(abs(num2) * "\tASL\n")
+            else:
+                data.append("")
+
+        if   maxValue > 127: return data[0]
+        elif maxValue > 63:  return data[1]
+        elif maxValue > 31:  return data[2]
+        elif maxValue > 15:  return data[3]
+        elif maxValue > 7:   return data[4]
+        elif maxValue > 3:   return data[5]
+        elif maxValue > 1:   return data[6]
+        else:                return data[7]
 
     def generateBarColors(self, pattern, index, bank):
 

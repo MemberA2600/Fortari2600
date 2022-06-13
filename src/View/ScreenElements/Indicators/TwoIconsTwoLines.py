@@ -231,11 +231,15 @@ class TwoIconsTwoLines:
             self.__picListBox2.insert(END, item)
 
         self.__lastSelectedPictures = [ "" , "" ]
+
         if self.__data[3] == "#":
            self.__picListBox1.select_set(0)
            self.__picListBox2.select_set(0)
            self.__lastSelectedPictures[0] = self.__listOfPictures[0]
            self.__lastSelectedPictures[1] = self.__listOfPictures[0]
+           self.__data[3] = self.__listOfPictures[0]
+           self.__data[7] = self.__listOfPictures[0]
+
         else:
            bothSet = [False, False]
            for itemNum in range(0, len(self.__listOfPictures)):
@@ -290,6 +294,20 @@ class TwoIconsTwoLines:
         self.__maxVarEntry1.pack_propagate(False)
         self.__maxVarEntry1.pack(fill=X, side=TOP, anchor=N)
 
+        self.__dotMode1 = IntVar()
+        self.__dotModeButton1 = Checkbutton(self.__frame2, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("dots"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__dotMode1,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__dotsChanged1
+                                       )
+
+        self.__dotModeButton1.pack_propagate(False)
+        self.__dotModeButton1.pack(fill=X, side=TOP, anchor=N)
+
         self.__label4_1 = Label(self.__frame5,
                               text=self.__dictionaries.getWordFromCurrentLanguage("maxVal") + ":",
                               font=self.__smallFont, fg=self.__colors.getColor("font"),
@@ -322,6 +340,20 @@ class TwoIconsTwoLines:
 
         self.__maxVarEntry2.bind("<KeyRelease>", self.__changeMaxEntry2)
         self.__maxVarEntry2.bind("<FocusOut>", self.__changeMaxEntry2)
+
+        self.__dotMode2 = IntVar()
+        self.__dotModeButton2 = Checkbutton(self.__frame5, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("dots"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__dotMode2,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__dotsChanged2
+                                       )
+
+        self.__dotModeButton2.pack_propagate(False)
+        self.__dotModeButton2.pack(fill=X, side=TOP, anchor=N)
 
         self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
         self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
@@ -948,6 +980,18 @@ class TwoIconsTwoLines:
         #for itemNum in range(0, len(self.__data)):
         #    print(itemNum, self.__data[itemNum])
 
+        self.__dotMode1.set(int(self.__data[14]))
+        self.__dotMode2.set(int(self.__data[15]))
+
+
+    def __dotsChanged1(self):
+        self.__data[14] = str(self.__dotMode1.get())
+        self.__changeData(self.__data)
+
+    def __dotsChanged2(self):
+        self.__data[15] = str(self.__dotMode2.get())
+        self.__changeData(self.__data)
+
     def __chamgeConst1(self, event):
         if self.__constEntry1.getValue() != self.__data[4]:
             temp = self.__constEntry1.getValue()
@@ -959,11 +1003,11 @@ class TwoIconsTwoLines:
 
     def __chamgeConst2(self, event):
         if self.__constEntry2.getValue() != self.__data[8]:
-            temp = self.__constEntry1.getValue()
+            temp = self.__constEntry2.getValue()
             if self.isItHex(temp) == True:
                 temp = temp[:2] + "0"
                 self.__data[8] = temp
-                self.__constEntry1.setValue(temp)
+                self.__constEntry2.setValue(temp)
                 self.__changeData(self.__data)
 
 
@@ -1170,8 +1214,7 @@ class TwoIconsTwoLines:
         self.__changedPicVar_TheRealOne(self.__picSettingsOption1,
                                         self.__lastSelectedPictureVars,
                                         0, 5,
-                                        self.__picVarListBox1,
-                                        self.__nusizFrame1
+                                        self.__picVarListBox1
                                         )
 
 
@@ -1190,8 +1233,7 @@ class TwoIconsTwoLines:
         self.__changedPicVar_TheRealOne(self.__picSettingsOption2,
                                         self.__lastSelectedPictureVars,
                                         1, 9,
-                                        self.__picVarListBox2,
-                                        self.__nusizFrame2)
+                                        self.__picVarListBox2)
 
 
     def __mirroredChanged1(self):
@@ -1337,13 +1379,13 @@ class TwoIconsTwoLines:
                 self.__changeData(self.__data)
 
     def __changedPicture1(self, event):
-        if self.__listOfPictures[self.__picListBox1.curselection()[0]].split("::")[1] != self.__data[3]:
-           self.__data[3] =  self.__listOfPictures[self.__picListBox1.curselection()[0]].split("::")[1]
+        if self.__listOfPictures[self.__picListBox1.curselection()[0]] != self.__data[3]:
+           self.__data[3] =  self.__listOfPictures[self.__picListBox1.curselection()[0]]
            self.__changeData(self.__data)
 
     def __changedPicture2(self, event):
-        if self.__listOfPictures[self.__picListBox2.curselection()[0]].split("::")[1] != self.__data[7]:
-           self.__data[7] =  self.__listOfPictures[self.__picListBox2.curselection()[0]].split("::")[1]
+        if self.__listOfPictures[self.__picListBox2.curselection()[0]] != self.__data[7]:
+           self.__data[7] =  self.__listOfPictures[self.__picListBox2.curselection()[0]]
            self.__changeData(self.__data)
 
     def __changedDataVar1(self, event):

@@ -3,18 +3,21 @@
 
 	LDA	temp03			; 3 
 	CMP	#8			; 2 
-	BCS	#NAME#_LargerThan7	; 2 
+	BCS	#NAME#_LargerThan7	; 2
 	STY	PF1			; 3 
 	TAY				; 2 
-	LDA	#BANK#_Bar_Normal,y	; 5 
+	LDA	#BANK#_Bar_Normal,y	; 5
+!!!AND0_Normal!!! 
 	STA	PF2			; 3 
 	JMP	#NAME#_Values_Done	; 3 
 #NAME#_LargerThan7
 	SEC				; 2 
 	SBC	#8			; 2 
+!!!LDX_Normal!!! 
 	STX	PF2			; 3 
 	TAY				; 2 
 	LDA	#BANK#_Bar_Inverted,y	; 5 
+!!!AND0_Inverted!!! 
 	STA	PF1			; 3 
 #NAME#_Values_Done
 

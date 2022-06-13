@@ -108,10 +108,10 @@ class Indicator:
         from TwoIconsTwoLines import TwoIconsTwoLines
 
         self.screenSubs = {
-             "FullBar"          : [FullBar, ["#", "255", "$40|$30|$10", "1"]],
+             "FullBar"          : [FullBar, ["#", "255", "$40|$30|$10", "1", "0"]],
         #     "OnePicOneBar"     : [OnePicOneBar, ["#", "255", "$40", "1", "#", "%00000000"]],
-            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:", "0"]],
-            "TwoIconsTwoLines"  : [TwoIconsTwoLines, ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#"]]
+            "HalfBarWithText"   : [HalfBarWithText, ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
+            "TwoIconsTwoLines"  : [TwoIconsTwoLines, ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0"]]
         }
 
         if self.__data[2]  == "#":
