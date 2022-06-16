@@ -74,8 +74,10 @@ class NUSIZFrame:
         self.__entry.pack(fill=X, side=TOP, anchor=N)
         self.__canvas.pack(side=TOP, anchor=N, fill=X)
 
-        print(self.__data)
-        self.__value.set(str(int("0b" + self.__data[self.__dataNum][-3:], 2)))
+        try:
+            self.__value.set(str(int("0b" + self.__data[self.__dataNum][-3:], 2)))
+        except:
+            self.__value.set("0")
 
         self.__setCanvas()
         self.__active = True

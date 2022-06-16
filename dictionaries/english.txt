@@ -298,3 +298,7 @@ mirrored=Mirrored
 text=Text
 justifyRight=Justify Right
 dots=Dots (not Line)
+font=Font
+default=Default
+digital=Digital
+custom=Custom

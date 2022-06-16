@@ -298,3 +298,7 @@ mirrored=Tükrözött
 text=Szöveg
 justifyRight=Jobbra Igazított
 dots=Pöttyök (nem Vonal)
+font=Betûtípus
+default=Alapértelmezett
+digital=Digitális
+custom=Egyéni

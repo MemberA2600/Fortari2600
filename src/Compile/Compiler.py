@@ -267,9 +267,9 @@ class Compiler:
             if picSettingsVar1.type == "nibble":
                 topLevelText += self.moveVarToTheRight(picSettingsVar1.usedBits)
         topLevelText += "\tSTA\ttemp19\n"
-        topLevelText += "\tAND\t#%00001111\n\tSTA\tRESP0\n\tSTA\tNUSIZ0\n\tAND\t#%00000111\n\tSTA\ttemp05\n"
+        topLevelText += "\tAND\t#%00001111\n\tSTA\tREFP0\n\tSTA\tNUSIZ0\n\tAND\t#%00000111\n\tSTA\ttemp05\n"
 
-        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tLSR\n\tLSR\n\tLSR\n"
+        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tAND\t#%01111000\n"
         topLevelText += "\tCLC\n\tADC\ttemp09\n\tSTA\ttemp09\n"
 
         picSettings2        = data[6]
@@ -282,9 +282,9 @@ class Compiler:
             if picSettingsVar2.type == "nibble":
                 topLevelText += self.moveVarToTheRight(picSettingsVar2.usedBits)
         topLevelText += "\tSTA\ttemp19\n"
-        topLevelText += "\tAND\t#%00001111\n\tSTA\tRESP1\n\tSTA\tNUSIZ1\n\tAND\t#%00000111\n\tSTA\ttemp06\n"
+        topLevelText += "\tAND\t#%00001111\n\tSTA\tREFP1\n\tSTA\tNUSIZ1\n\tAND\t#%00000111\n\tSTA\ttemp06\n"
 
-        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tLSR\n\tLSR\n\tLSR\n"
+        topLevelText += "\tLDA\ttemp19\n\tLSR\n\tAND\t#%01111000\n"
         topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
         if data[11] == "1":
@@ -2157,11 +2157,14 @@ class Compiler:
             except:
                 pass
 
-        file = open(projectPath+"/source.asm", "w")
+        try:
+            file = open(projectPath+"/source.asm", "w")
+        except:
+            os.mkdir(projectPath + "temp")
+            file = open(projectPath + "/source.asm", "w")
+
         file.write(self.__mainCode)
         file.close()
-
-
 
 
     def addColors(self, name):

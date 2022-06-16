@@ -6,7 +6,7 @@ from time import sleep
 import re
 
 
-class TwoIconsTwoLines:
+class TwoIconsFourDigits:
     def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -104,12 +104,15 @@ class TwoIconsTwoLines:
         self.__frame7.pack_propagate(False)
         self.__frame7.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__listOfPictures = []
+        self.__listOfPictures  = []
+        self.__listOfPictures2 = []
+
         import os
 
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
             for file in files:
-                ok = False
+                ok   = False
+                mode = ""
                 if file.endswith(".asm"):
                     f = open(root + "/" + file, "r")
                     text = f.read()
@@ -133,10 +136,15 @@ class TwoIconsTwoLines:
                            ok = False
                        else:
                            ok = True
-
+                           if "Mode=simple" in fourthLine:
+                               mode = "simple"
+                           else:
+                               mode = "overlay"
 
                 if ok == True:
                     self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
+                    if mode == "simple":
+                        self.__listOfPictures2.append(file.replace(".asm", "") + "_(Big)")
 
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
             for file in files:
@@ -156,6 +164,7 @@ class TwoIconsTwoLines:
                             pass
                 if ok == True:
                     self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
+                    self.__listOfPictures2.append(file.replace(".asm", "") + "_(Normal)")
 
         self.__label1 = Label(self.__frame1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
@@ -268,7 +277,7 @@ class TwoIconsTwoLines:
                     self.__dataVars.append(address + "::" + variable)
 
         self.__label2_1 = Label(self.__frame2,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("maxVal") + ":",
+                              text=self.__dictionaries.getWordFromCurrentLanguage("font") + ":",
                               font=self.__smallFont, fg=self.__colors.getColor("font"),
                               bg=self.__colors.getColor("window"), justify=CENTER
                               )
@@ -276,84 +285,15 @@ class TwoIconsTwoLines:
         self.__label2_1.pack_propagate(False)
         self.__label2_1.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
-        self.__maxVar1 = StringVar()
-
-        if self.isItNum(self.__data[6]) == True:
-            self.__maxVar1.set(self.__data[6])
-        else:
-            self.__maxVar1.set("255")
-
-        self.__maxVarEntry1 = Entry(self.__frame2,
-                                   bg=self.__colors.getColor("boxBackNormal"),
-                                   fg=self.__colors.getColor("boxFontNormal"),
-                                   width=9999, justify=CENTER,
-                                   textvariable=self.__maxVar1,
-                                   font=self.__smallFont
-                                   )
-
-        self.__maxVarEntry1.pack_propagate(False)
-        self.__maxVarEntry1.pack(fill=X, side=TOP, anchor=N)
-
-        self.__dotMode1 = IntVar()
-        self.__dotModeButton1 = Checkbutton(self.__frame2, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("dots"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__dotMode1,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       command=self.__dotsChanged1
-                                       )
-
-        self.__dotModeButton1.pack_propagate(False)
-        self.__dotModeButton1.pack(fill=X, side=TOP, anchor=N)
 
         self.__label4_1 = Label(self.__frame5,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("maxVal") + ":",
+                              text=self.__dictionaries.getWordFromCurrentLanguage("font") + ":",
                               font=self.__smallFont, fg=self.__colors.getColor("font"),
                               bg=self.__colors.getColor("window"), justify=CENTER
                               )
 
         self.__label4_1.pack_propagate(False)
         self.__label4_1.pack(side=TOP, anchor=CENTER, fill=BOTH)
-
-        self.__maxVar2 = StringVar()
-
-        if self.isItNum(self.__data[10]) == True:
-            self.__maxVar2.set(self.__data[10])
-        else:
-            self.__maxVar2.set("255")
-
-        self.__maxVarEntry2 = Entry(self.__frame5,
-                                   bg=self.__colors.getColor("boxBackNormal"),
-                                   fg=self.__colors.getColor("boxFontNormal"),
-                                   width=9999, justify=CENTER,
-                                   textvariable=self.__maxVar2,
-                                   font=self.__smallFont
-                                   )
-
-        self.__maxVarEntry2.pack_propagate(False)
-        self.__maxVarEntry2.pack(fill=X, side=TOP, anchor=N)
-
-        self.__maxVarEntry1.bind("<KeyRelease>", self.__changeMaxEntry1)
-        self.__maxVarEntry1.bind("<FocusOut>", self.__changeMaxEntry1)
-
-        self.__maxVarEntry2.bind("<KeyRelease>", self.__changeMaxEntry2)
-        self.__maxVarEntry2.bind("<FocusOut>", self.__changeMaxEntry2)
-
-        self.__dotMode2 = IntVar()
-        self.__dotModeButton2 = Checkbutton(self.__frame5, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("dots"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__dotMode2,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       command=self.__dotsChanged2
-                                       )
-
-        self.__dotModeButton2.pack_propagate(False)
-        self.__dotModeButton2.pack(fill=X, side=TOP, anchor=N)
 
         self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
         self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
@@ -628,7 +568,7 @@ class TwoIconsTwoLines:
 
         self.__dataVarScrollBar2.config(command=self.__dataVarListBox2.yview)
 
-        for item in self.__dataVars:
+        for item in self.__colorVars:
             self.__dataVarListBox1.insert(END, item)
             self.__dataVarListBox2.insert(END, item)
 
@@ -979,18 +919,6 @@ class TwoIconsTwoLines:
 
         #for itemNum in range(0, len(self.__data)):
         #    print(itemNum, self.__data[itemNum])
-
-        self.__dotMode1.set(int(self.__data[14]))
-        self.__dotMode2.set(int(self.__data[15]))
-
-
-    def __dotsChanged1(self):
-        self.__data[14] = str(self.__dotMode1.get())
-        self.__changeData(self.__data)
-
-    def __dotsChanged2(self):
-        self.__data[15] = str(self.__dotMode2.get())
-        self.__changeData(self.__data)
 
     def __chamgeConst1(self, event):
         if self.__constEntry1.getValue() != self.__data[4]:
