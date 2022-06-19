@@ -194,6 +194,9 @@ class Compiler:
         pictureData                 = {}
         pictureData[iconName]       = self.loadPictureData(bank, iconName, iconType)
 
+        #After test, delete this line!
+        #topLevelText            += "\tLDA\t#$01\n\tSTA\tbkBaseColor\n\tLDA\t#$23\n\tSTA\tpfBaseColor\n"
+
         topLevelText            += "\tLDA\tframeColor\n\tSTA\tCOLUPF\n"
 
         digitColor               = self.__loader.virtualMemory.getVariableByName2(digitBaseColor)
@@ -257,31 +260,44 @@ class Compiler:
            if int(numOfDigits) == 1:
                topLevelText += "\tSTA\ttemp11\n\tSTX\ttemp12\n"
 
-        digitVar12 = self.__loader.virtualMemory.getVariableByName2(digitData12)
-        topLevelText += "\tLDA\t" + digitData12 + "\n"
-        if digitVar12.type == "nibble":
-            topLevelText += self.moveVarToTheRight(digitVar12.usedBits)
-        topLevelText += "\tAND\t#%11110000\n\tASL\n\tASL\n\tASL\n\tCLC\nADC\ttemp13\n\tSTA\ttemp13\n"
+        if int(numOfDigits) > 2 :
 
-        if int(numOfDigits) > 1:
+            digitVar12 = self.__loader.virtualMemory.getVariableByName2(digitData12)
             topLevelText += "\tLDA\t" + digitData12 + "\n"
-            topLevelText += "\tLSR\n\tAND\t#%11110000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
+            if digitVar12.type == "nibble":
+                topLevelText += self.moveVarToTheRight(digitVar12.usedBits)
+            topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
-        if int(numOfDigits) > 2:
+            if int(numOfDigits) > 1:
+                topLevelText += "\tLDA\t" + digitData12 + "\n"
+                topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
+
+            if int(numOfDigits) > 2:
+                digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
+                topLevelText += "\tLDA\t" + digitData34 + "\n"
+                if digitVar34.type == "nibble":
+                    topLevelText += self.moveVarToTheRight(digitVar34.usedBits)
+                topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp09\n\tSTA\ttemp09\n"
+
+                if int(numOfDigits) == 4:
+                    topLevelText += "\tLDA\t" + digitData34 + "\n"
+                    topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp07\n\tSTA\ttemp07\n"
+
+        else:
             digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
             topLevelText += "\tLDA\t" + digitData34 + "\n"
             if digitVar34.type == "nibble":
                 topLevelText += self.moveVarToTheRight(digitVar34.usedBits)
-            topLevelText += "\tAND\t#%11110000\n\tASL\n\tASL\n\tASL\n\tCLC\nADC\ttemp09\n\tSTA\ttemp09\n"
+            topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
-            if int(numOfDigits) == 4:
+            if int(numOfDigits) > 1:
                 topLevelText += "\tLDA\t" + digitData34 + "\n"
-                topLevelText += "\tLSR\n\tAND\t#%11110000\n\tCLC\n\tADC\ttemp07\n\tSTA\ttemp07\n"
+                topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
 
-        '''
+
         if int(numOfDigits) > 2:
             topLevelText        += "\tLDA\ttemp17\n\tORA\t#%00000001\n\tSTA\ttemp17\n"
-        '''
+
 
         topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                     "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"

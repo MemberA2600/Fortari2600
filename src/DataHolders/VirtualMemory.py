@@ -284,9 +284,10 @@ class VirtualMemory:
                     else:
                         self.memory[memoryAddress].removeBitsFromBankAddress(bits, validity)
                     self.memory[memoryAddress].addVariable(name, type, bits, validity)
+                    #print(name, memoryAddress, type)
+
                     success = True
                     break
-
 
         return(success)
             #print(memoryAddress)

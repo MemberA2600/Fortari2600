@@ -44,14 +44,6 @@
 	ROR				; 2 (33)
 	STA	HMP1			; 3 (36)
 
-*	TestOnly
-*
-	LDA	#255
-	STA	GRP1
-
-	LDA	#$1e
-	STA	COLUP1
-
 	STA	WSYNC			; 76
 	STA	HMOVE			; 3 
 	LDA	temp05			; 3
@@ -76,6 +68,13 @@
 *	Must Sync, since we can be at different cycle depending
 *	on the NUSIZ value.
 *
+
+	CLC				; 2 (32)
+
+*	LDA	temp17			; 3 (35)
+*	AND	#%00000001		; 2 (37)
+*	BEQ	#BANK#_OneIconWithDigits_TwoDigitMode	; 2 (39)
+
 	STA	WSYNC			; 76
 
 	LDA	counter			; 3 
@@ -85,13 +84,25 @@
 #BANK#_OneIconWithDigits_Prepare_Even
 	LDA	#$80			; 2 (11)
 	STA	HMP1			; 3 (14)
+*
+*	Preload colors
+*
+	LAX	(temp15),y		; 5
+	ADC	temp17			; 3
+	TAX				; 2
+
+
 	JMP	#BANK#_OneIconWithDigits_Loop_Even	; 3 (17)
 	
 #BANK#_OneIconWithDigits_Prepare_Odd
 	LDA	#$00			; 2 (11)
 	STA	HMP1			; 3 (14)
 	
-	sleep	54
+	sleep	44
+
+	LAX	(temp15),y		; 5
+	ADC	temp17			; 3
+	TAX				; 2
 
 	JMP	#BANK#_OneIconWithDigits_Loop_odd	; 3 (71)
 
@@ -105,29 +116,52 @@
 	LDA	(temp05),y		; 5 (16)
 	STA	COLUP0			; 3 (19)
 
-	sleep	40
+	LDA	(temp09),y		; 5 (24)
+	STA	GRP1			; 3 (27)
+	STX	COLUP1			; 3 (30)
+	LDA	(temp13),y		; 5 (35)
+	STA	GRP1			; 3 (38)	
 
-	LDA	#$80			; 2 (61)
-	STA	HMP0			; 3 (64)
-	LDA	#$00			; 2 (66)
-	STA	HMP1			; 3 (69)
-	DEY				; 2 (71)
-#BANK#_OneIconWithDigits_Loop_Secondline
+	sleep	11
+	
+	LDA	#$80			; 2 (51)
+	STA	HMP0			; 3 (54)
+	LDA	#$00			; 2 (56)
+	STA	HMP1			; 3 (59)
+	DEY				; 2 (61)
+
+	LAX	(temp15),y		; 5 (66)
+	ADC	temp17			; 3 (69)
+	TAX				; 2 (71)
+
+#BANK#_OneIconWithDigits_Loop_Even_Secondline
 	STA	HMOVE			; 3 (74)
 	LDA	(temp03),y		; 5 (3)
 	STA	GRP0			; 3 (6)
 	LDA	(temp05),y		; 5 (11)
 	STA	COLUP0			; 3 (14)
-	
-	sleep	42
 
-	LDA	#$80			; 2 (60)
-	STA	HMP1			; 3 (63)
-	LDA	#$00			; 2 (65)
-	STA	HMP0			; 3 (68)
+	LDA	(temp07),y		; 5 (24)
+	STA	GRP1			; 3 (27)
+	STX	COLUP1			; 3 (30)
+	LDA	(temp11),y		; 5 (35)
+	sleep	2
+	STA	GRP1			; 3 (38)
 
-	DEY				; 2 (70)
-	BPL	#BANK#_OneIconWithDigits_Loop_Even	; 2 (72)
+	sleep	9
+
+	LDA	#$80			; 2 (48)
+	STA	HMP1			; 3 (51)
+	LDA	#$00			; 2 (53)
+	STA	HMP0			; 3 (56)
+
+	DEY				; 2 (58)
+	LAX	(temp15),y		; 5 (63)
+	ADC	temp17			; 3 (66)
+	TAX				; 2 (68)
+	CPY	#255			; 2 (70)
+
+	BNE	#BANK#_OneIconWithDigits_Loop_Even	; 2 (72)
 	JMP	#BANK#_OneIconWithDigits_Ended
 
 	align 	255
@@ -140,9 +174,20 @@
 	LDA	(temp05),y		; 5 (11)
 	STA	COLUP0			; 3 (14)
 
-	sleep	44
+	LDA	(temp07),y		; 5 (19)
+	STA	GRP1			; 3 (22)
+	STX	COLUP1			; 3 (25)
+	LDA	(temp11),y		; 5 (30)
+	sleep	2
+	STA	GRP1			; 3 (35)
 
-	DEY				; 2 (63)
+	sleep	10
+
+	DEY				; 2 (53)
+	LAX	(temp15),y		; 5 (58)
+	ADC	temp17			; 3 (61)
+	TAX				; 2 (63)
+
 	LDA	#$00			; 2 (65)
 	STA	HMP0			; 3 (68)
 	LDA	#$80			; 2 (70)
@@ -156,14 +201,25 @@
 	LDA	(temp05),y		; 5 (16)
 	STA	COLUP0			; 3 (19)
 
-	sleep	35
+	LDA	(temp09),y		; 5 (24)
+	STA	GRP1			; 3 (27)
+	STX	COLUP1			; 3 (30)
+	LDA	(temp13),y		; 5 (34)
+	sleep	2
+	STA	GRP1			; 3 (39)
+	sleep	2
+
+	DEY				; 2 (48)
+	LAX	(temp15),y		; 5 (53)
+	ADC	temp17			; 3 (56)
+	TAX				; 2 (58)
 
 	LDA	#$80			; 2 (60)
 	STA	HMP0			; 3 (63)
 	LDA	#$00			; 2 (65)
 	STA	HMP1			; 3 (68)
-	DEY				; 2 (70)
-	BPL	#BANK#_OneIconWithDigits_Loop_odd	; 2 (72)	
+	CPY	#255			; 2 (70)
+	BNE	#BANK#_OneIconWithDigits_Loop_odd	; 2 (72)	
 	
 #BANK#_OneIconWithDigits_Ended
 	LDA	frameColor
