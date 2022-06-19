@@ -520,6 +520,7 @@ class TwoIconsTwoLines:
            self.__fuckinColors[0] = self.__data[4]
            self.__colorVarListBox1.config(state = DISABLED)
            self.__lastSelectedColors[0] = self.__colorVars[0].split("::")[1]
+           self.__constEntry1.setValue(self.__data[4])
 
         else:
            self.__picOption1.set(2)
@@ -535,6 +536,7 @@ class TwoIconsTwoLines:
            self.__fuckinColors[1] = self.__data[8]
            self.__colorVarListBox2.config(state = DISABLED)
            self.__lastSelectedColors[1] = self.__colorVars[0].split("::")[1]
+           self.__constEntry2.setValue(self.__data[8])
 
         else:
            self.__picOption2.set(2)
@@ -832,7 +834,6 @@ class TwoIconsTwoLines:
 
         self.__lastBits = ["%00000000", "%00000000"]
 
-
         self.__picVarScrollBar1 = Scrollbar(self.__frame3)
         self.__picVarListBox1 = Listbox(self.__frame3, width=100000,
                                          height=1000,
@@ -898,7 +899,7 @@ class TwoIconsTwoLines:
 
         if self.__data[5][0] == "%":
            self.__picSettingsOption1.set(1)
-           self.__lastSelectedPictureVars[0] = self.__byteVars[0]
+           self.__lastSelectedPictureVars[0] = self.__colorVars[0].split("::")[1]
 
            self.__picVarListBox1.config(state = DISABLED)
 

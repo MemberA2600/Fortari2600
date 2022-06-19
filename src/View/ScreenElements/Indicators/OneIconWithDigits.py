@@ -6,7 +6,7 @@ from time import sleep
 import re
 
 
-class TwoIconsFourDigits:
+class OneIconWithDigits:
     def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -48,6 +48,7 @@ class TwoIconsFourDigits:
         self.__gradientFrame = None
 
     def __addElements(self):
+
         self.__uniqueFrame = Frame(self.__baseFrame, width=self.__w,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=self.__h)
@@ -55,54 +56,47 @@ class TwoIconsFourDigits:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame1.pack_propagate(False)
         self.__frame1.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame2.pack_propagate(False)
         self.__frame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame3.pack_propagate(False)
         self.__frame3.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame4.pack_propagate(False)
         self.__frame4.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame5.pack_propagate(False)
         self.__frame5.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__frame6 = Frame(self.__uniqueFrame, width=self.__w // 7,
+        self.__frame6 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame6.pack_propagate(False)
         self.__frame6.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__frame7 = Frame(self.__uniqueFrame, width=self.__w // 7,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h)
-
-        self.__frame7.pack_propagate(False)
-        self.__frame7.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__listOfPictures  = []
         self.__listOfPictures2 = []
@@ -166,6 +160,8 @@ class TwoIconsFourDigits:
                     self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
                     self.__listOfPictures2.append(file.replace(".asm", "") + "_(Normal)")
 
+
+
         self.__label1 = Label(self.__frame1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
                               font=self.__smallFont, fg=self.__colors.getColor("font"),
@@ -175,31 +171,8 @@ class TwoIconsFourDigits:
         self.__label1.pack_propagate(False)
         self.__label1.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
-        self.__label3 = Label(self.__frame4,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__label3.pack_propagate(False)
-        self.__label3.pack(side=TOP, anchor=CENTER, fill=BOTH)
-
-        self.__frame1_1 = Frame(self.__frame1, width=self.__w // 7,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 6 * 3)
-
-        self.__frame1_1.pack_propagate(False)
-        self.__frame1_1.pack(side=TOP, anchor=N, fill=X)
-
-        self.__frame4_1 = Frame(self.__frame4, width=self.__w // 7,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 6 * 3)
-
-        self.__frame4_1.pack_propagate(False)
-        self.__frame4_1.pack(side=TOP, anchor=N, fill=X)
-
-        self.__picListScrollBar1 = Scrollbar(self.__frame1_1)
-        self.__picListBox1 = Listbox(self.__frame1_1, width=100000,
+        self.__picListScrollBar1 = Scrollbar(self.__frame1)
+        self.__picListBox1 = Listbox(self.__frame1, width=100000,
                                     height=1000,
                                     yscrollcommand=self.__picListScrollBar1.set,
                                     selectmode=BROWSE,
@@ -216,118 +189,42 @@ class TwoIconsFourDigits:
         self.__picListBox1.pack(side=LEFT, anchor=W, fill=BOTH)
         self.__picListScrollBar1.config(command=self.__picListBox1.yview)
 
-        self.__picListScrollBar2 = Scrollbar(self.__frame4_1)
-        self.__picListBox2 = Listbox(self.__frame4_1, width=100000,
-                                    height=1000,
-                                    yscrollcommand=self.__picListScrollBar2.set,
-                                    selectmode=BROWSE,
-                                    exportselection=False,
-                                    font=self.__miniFont,
-                                    justify=LEFT
-                                    )
-
-        self.__picListBox2.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
-        self.__picListBox2.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-        self.__picListBox2.pack_propagate(False)
-
-        self.__picListScrollBar2.pack(side=RIGHT, anchor=W, fill=Y)
-        self.__picListBox2.pack(side=LEFT, anchor=W, fill=BOTH)
-
-        self.__picListScrollBar2.config(command=self.__picListBox2.yview)
-
         for item in self.__listOfPictures:
             self.__picListBox1.insert(END, item)
-            self.__picListBox2.insert(END, item)
 
         self.__lastSelectedPictures = [ "" , "" ]
 
         if self.__data[3] == "#":
            self.__picListBox1.select_set(0)
-           self.__picListBox2.select_set(0)
            self.__lastSelectedPictures[0] = self.__listOfPictures[0]
-           self.__lastSelectedPictures[1] = self.__listOfPictures[0]
            self.__data[3] = self.__listOfPictures[0]
-           self.__data[7] = self.__listOfPictures[0]
 
         else:
-           bothSet = [False, False]
            for itemNum in range(0, len(self.__listOfPictures)):
                if self.__data[3] == self.__listOfPictures[itemNum]:
-                  bothSet[0] = True
                   self.__picListBox1.select_set(itemNum)
                   self.__lastSelectedPictures[0] = self.__listOfPictures[itemNum]
-               if self.__data[7] == self.__listOfPictures[itemNum]:
-                  bothSet[1] = True
-                  self.__picListBox2.select_set(itemNum)
-                  self.__lastSelectedPictures[1] = self.__listOfPictures[itemNum]
-
-               if False in bothSet == False:
                   break
-
-        self.__dataVars = []
-        for address in self.__loader.virtualMemory.memory.keys():
-            for variable in self.__loader.virtualMemory.memory[address].variables.keys():
-                var = self.__loader.virtualMemory.memory[address].variables[variable]
-                if ((var.validity == "global" or
-                     var.validity == self.__currentBank) and
-                        (var.system == False or
-                         var.iterable == True or
-                         var.linkable == True)
-                ):
-                    self.__dataVars.append(address + "::" + variable)
-
-        self.__label2_1 = Label(self.__frame2,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("font") + ":",
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__label2_1.pack_propagate(False)
-        self.__label2_1.pack(side=TOP, anchor=CENTER, fill=BOTH)
-
-
-        self.__label4_1 = Label(self.__frame5,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("font") + ":",
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__label4_1.pack_propagate(False)
-        self.__label4_1.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
         self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
         self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
         self.__picListBox1.bind("<KeyRelease-Down>", self.__changedPicture1)
 
-        self.__picListBox2.bind("<ButtonRelease-1>", self.__changedPicture2)
-        self.__picListBox2.bind("<KeyRelease-Up>", self.__changedPicture2)
-        self.__picListBox2.bind("<KeyRelease-Down>", self.__changedPicture2)
-
         from NUSIZFrame import NUSIZFrame
 
-        self.__nusizLabel = Label(self.__frame1,
-                              text="NUSIZ:",
-                              font=self.__miniFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
+        self.__nusizLabel = Label(self.__frame4,
+                                  text="NUSIZ:",
+                                  font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                  bg=self.__colors.getColor("window"), justify=CENTER
+                                  )
 
         self.__nusizLabel.pack_propagate(False)
         self.__nusizLabel.pack(side=TOP, anchor=CENTER, fill=X)
 
-        self.__nusizLabe2 = Label(self.__frame4,
-                              text="NUSIZ:",
-                              font=self.__miniFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
+        self.__nusizFrame1 = NUSIZFrame(self.__loader, self.__frame4, self.__changeData,
+                                        self.__h // 4, self.__data, self.dead, "small", 5, self.__w // 7, True)
 
-        self.__nusizLabe2.pack_propagate(False)
-        self.__nusizLabe2.pack(side=TOP, anchor=CENTER, fill=X)
-
-        self.__nusizFrame1 = NUSIZFrame(self.__loader, self.__frame1, self.__changeData,
-                                       self.__h // 4, self.__data, self.dead, "small", 5, self.__w // 7, True)
-
-        self.__nusizFrame2 = NUSIZFrame(self.__loader, self.__frame4, self.__changeData,
-                                       self.__h // 4, self.__data, self.dead, "small", 9, self.__w // 7, True)
+        self.__lastBits = ["%00000000", "%00000000"]
 
         self.__picOption1 = IntVar()
 
@@ -345,7 +242,7 @@ class TwoIconsFourDigits:
         self.__constButton1.pack(fill=X, side=TOP, anchor=N)
 
         from HexEntry import HexEntry
-        self.__fuckinColors = ["$40", "$80"]
+        self.__fuckinColors = ["$10", "$80"]
 
         w = ((self.__w // 7) * 2 ) // 3
         h = self.__h // 6
@@ -366,37 +263,6 @@ class TwoIconsFourDigits:
 
         self.__varButton1.pack_propagate(False)
         self.__varButton1.pack(fill=X, side=TOP, anchor=N)
-
-        self.__picOption2 = IntVar()
-
-        self.__constButton2 = Radiobutton(self.__frame5, width=99999,
-                                         text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
-                                         bg=self.__colors.getColor("window"),
-                                         fg=self.__colors.getColor("font"),
-                                         justify=LEFT, font=self.__smallFont,
-                                         variable=self.__picOption2,
-                                         activebackground=self.__colors.getColor("highLight"),
-                                         value=1, command=self.XXX3
-                                         )
-
-        self.__constButton2.pack_propagate(False)
-        self.__constButton2.pack(fill=X, side=TOP, anchor=N)
-
-        self.__constEntry2 = HexEntry(self.__loader, self.__frame5, self.__colors, self.__colorDict,
-                                     self.__normalFont, self.__fuckinColors, 1, None, self.__chamgeConst2)
-
-        self.__varButton2 = Radiobutton(self.__frame5, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__picOption2,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       value=2, command=self.XXX4
-                                       )
-
-        self.__varButton2.pack_propagate(False)
-        self.__varButton2.pack(fill=X, side=TOP, anchor=N)
 
         self.__colorVars = []
         for address in self.__loader.virtualMemory.memory.keys():
@@ -430,28 +296,8 @@ class TwoIconsFourDigits:
 
         self.__colorVarListScrollBar1.config(command=self.__colorVarListBox1.yview)
 
-        self.__colorVarListScrollBar2 = Scrollbar(self.__frame5)
-        self.__colorVarListBox2 = Listbox(self.__frame5, width=100000,
-                                         height=1000,
-                                         yscrollcommand=self.__colorVarListScrollBar2.set,
-                                         selectmode=BROWSE,
-                                         exportselection=False,
-                                         font=self.__smallFont,
-                                         justify=LEFT
-                                         )
-
-        self.__colorVarListBox2.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
-        self.__colorVarListBox2.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-        self.__colorVarListBox2.pack_propagate(False)
-
-        self.__colorVarListScrollBar2.pack(side=RIGHT, anchor=W, fill=Y)
-        self.__colorVarListBox2.pack(side=LEFT, anchor=W, fill=BOTH)
-
-        self.__colorVarListScrollBar2.config(command=self.__colorVarListBox2.yview)
-
         for item in self.__colorVars:
             self.__colorVarListBox1.insert(END, item)
-            self.__colorVarListBox2.insert(END, item)
 
         self.__lastSelectedColors = ["", ""]
 
@@ -460,7 +306,7 @@ class TwoIconsFourDigits:
            self.__fuckinColors[0] = self.__data[4]
            self.__colorVarListBox1.config(state = DISABLED)
            self.__lastSelectedColors[0] = self.__colorVars[0].split("::")[1]
-
+           self.__constEntry1.setValue(self.__data[4])
         else:
            self.__picOption1.set(2)
            self.__constEntry1.changeState(DISABLED)
@@ -470,38 +316,10 @@ class TwoIconsFourDigits:
                   self.__colorVarListBox1.select_set(itemNum)
                   break
 
-        if self.isItHex(self.__data[8]) == True:
-           self.__picOption2.set(1)
-           self.__fuckinColors[1] = self.__data[8]
-           self.__colorVarListBox2.config(state = DISABLED)
-           self.__lastSelectedColors[1] = self.__colorVars[0].split("::")[1]
 
-        else:
-           self.__picOption2.set(2)
-           self.__constEntry2.changeState(DISABLED)
-           for itemNum in range(0, len(self.__colorVars)):
-               if self.__data[8] == self.__colorVars[itemNum].split("::")[1]:
-                  self.__lastSelectedColors[1] = self.__data[8]
-                  self.__colorVarListBox2.select_set(itemNum)
-                  break
-
-        self.__labelData1 = Label(self.__frame3,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__labelData1.pack_propagate(False)
-        self.__labelData1.pack(side=TOP, anchor=CENTER, fill=BOTH)
-
-        self.__labelData2 = Label(self.__frame6,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__labelData2.pack_propagate(False)
-        self.__labelData2.pack(side=TOP, anchor=CENTER, fill=BOTH)
+        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
+        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changedColorVar1)
+        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changedColorVar1)
 
         self.__dataVars = []
         for address in self.__loader.virtualMemory.memory.keys():
@@ -515,20 +333,37 @@ class TwoIconsFourDigits:
                 ):
                     self.__dataVars.append(address + "::" + variable)
 
-
         self.__dataVarFrame1 = Frame(self.__frame3, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 4)
+                              height=self.__h // 3)
+
+        self.__dataVarFrame2 = Frame(self.__frame3, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h // 3)
+
+        self.__labelData1 = Label(self.__frame3,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__labelData1.pack_propagate(False)
+
+        self.__labelData2 = Label(self.__frame3,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__labelData2.pack_propagate(False)
 
         self.__dataVarFrame1.pack_propagate(False)
+        self.__labelData1.pack(side=TOP, anchor=CENTER, fill=BOTH)
         self.__dataVarFrame1.pack(side=TOP, anchor=N, fill=X)
 
-        self.__dataVarFrame2 = Frame(self.__frame6, width=self.__w // 7,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 4)
-
         self.__dataVarFrame2.pack_propagate(False)
-        self.__dataVarFrame2.pack(side=TOP, anchor=N, fill=X)
+        self.__labelData2.pack(side=TOP, anchor=CENTER, fill=BOTH)
+        self.__dataVarFrame2.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__dataVarScrollBar1 = Scrollbar(self.__dataVarFrame1)
         self.__dataVarListBox1 = Listbox(self.__dataVarFrame1, width=100000,
@@ -549,6 +384,10 @@ class TwoIconsFourDigits:
 
         self.__dataVarScrollBar1.config(command=self.__dataVarListBox1.yview)
 
+        self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
+        self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
+        self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
+
         self.__dataVarScrollBar2 = Scrollbar(self.__dataVarFrame2)
         self.__dataVarListBox2 = Listbox(self.__dataVarFrame2, width=200000,
                                          height=2000,
@@ -568,37 +407,33 @@ class TwoIconsFourDigits:
 
         self.__dataVarScrollBar2.config(command=self.__dataVarListBox2.yview)
 
-        for item in self.__colorVars:
+        for item in self.__dataVars:
             self.__dataVarListBox1.insert(END, item)
             self.__dataVarListBox2.insert(END, item)
-
-        self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
 
         self.__dataVarListBox2.bind("<ButtonRelease-1>", self.__changedDataVar2)
         self.__dataVarListBox2.bind("<KeyRelease-Up>", self.__changedDataVar2)
         self.__dataVarListBox2.bind("<KeyRelease-Down>", self.__changedDataVar2)
 
-        if self.__data[12] == "#":
-           self.__data[12] = self.__dataVars[0].split("::")[1]
+        if self.__data[7] == "#":
+           self.__data[7] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox1.select_set(0)
         else:
            for itemNum in range(0, len(self.__dataVars)):
-               if self.__dataVars[itemNum].split("::")[1] == self.__data[12]:
+               if self.__dataVars[itemNum].split("::")[1] == self.__data[7]:
                   self.__dataVarListBox1.select_set(itemNum)
 
-        if self.__data[13] == "#":
-           self.__data[13] = self.__dataVars[0].split("::")[1]
+        if self.__data[8] == "#":
+           self.__data[8] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox2.select_set(0)
         else:
            for itemNum in range(0, len(self.__dataVars)):
-               if self.__dataVars[itemNum].split("::")[1] == self.__data[13]:
+               if self.__dataVars[itemNum].split("::")[1] == self.__data[8]:
                   self.__dataVarListBox2.select_set(itemNum)
 
         self.__picSettingsOption1 = IntVar()
 
-        self.__constButton3 = Radiobutton(self.__frame3, width=99999,
+        self.__constButton3 = Radiobutton(self.__frame4, width=99999,
                                          text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
                                          bg=self.__colors.getColor("window"),
                                          fg=self.__colors.getColor("font"),
@@ -611,7 +446,7 @@ class TwoIconsFourDigits:
         self.__constButton3.pack_propagate(False)
         self.__constButton3.pack(fill=X, side=TOP, anchor=N)
 
-        self.__indexFrame1 = Frame(self.__frame3, width=self.__w // 7,
+        self.__indexFrame1 = Frame(self.__frame4, width=self.__w // 7,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h // 16)
 
@@ -633,7 +468,7 @@ class TwoIconsFourDigits:
         self.__indexFrame1_2.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__mirrored1 = IntVar()
-        self.__mirroredButton1 = Checkbutton(self.__frame3, width=99999,
+        self.__mirroredButton1 = Checkbutton(self.__frame4, width=99999,
                                        text=self.__dictionaries.getWordFromCurrentLanguage("mirrored"),
                                        bg=self.__colors.getColor("window"),
                                        fg=self.__colors.getColor("font"),
@@ -646,7 +481,7 @@ class TwoIconsFourDigits:
         self.__mirroredButton1.pack_propagate(False)
         self.__mirroredButton1.pack(fill=X, side=TOP, anchor=N)
 
-        self.__varButton3 = Radiobutton(self.__frame3, width=99999,
+        self.__varButton3 = Radiobutton(self.__frame4, width=99999,
                                        text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
                                        bg=self.__colors.getColor("window"),
                                        fg=self.__colors.getColor("font"),
@@ -659,69 +494,6 @@ class TwoIconsFourDigits:
         self.__varButton3.pack_propagate(False)
         self.__varButton3.pack(fill=X, side=TOP, anchor=N)
 
-        self.__picSettingsOption2 = IntVar()
-
-        self.__constButton4 = Radiobutton(self.__frame6, width=99999,
-                                         text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
-                                         bg=self.__colors.getColor("window"),
-                                         fg=self.__colors.getColor("font"),
-                                         justify=LEFT, font=self.__smallFont,
-                                         variable=self.__picSettingsOption2,
-                                         activebackground=self.__colors.getColor("highLight"),
-                                         value=1, command=self.XXX7
-                                         )
-
-        self.__constButton4.pack_propagate(False)
-        self.__constButton4.pack(fill=X, side=TOP, anchor=N)
-
-        self.__indexFrame2 = Frame(self.__frame6, width=self.__w // 7,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 16)
-
-        self.__indexFrame2.pack_propagate(False)
-        self.__indexFrame2.pack(side=TOP, anchor=N, fill=X)
-
-        self.__indexFrame2_1 = Frame(self.__indexFrame2, width=self.__w // 14,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 16)
-
-        self.__indexFrame2_1.pack_propagate(False)
-        self.__indexFrame2_1.pack(side=LEFT, anchor=E, fill=Y)
-
-        self.__indexFrame2_2 = Frame(self.__indexFrame2, width=self.__w // 14,
-                              bg=self.__loader.colorPalettes.getColor("window"),
-                              height=self.__h // 16)
-
-        self.__indexFrame2_2.pack_propagate(False)
-        self.__indexFrame2_2.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__mirrored2 = IntVar()
-        self.__mirroredButton2 = Checkbutton(self.__frame6, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("mirrored"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__mirrored2,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       command=self.__mirroredChanged2
-                                       )
-
-        self.__mirroredButton2.pack_propagate(False)
-        self.__mirroredButton2.pack(fill=X, side=TOP, anchor=N)
-
-        self.__varButton4 = Radiobutton(self.__frame6, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__picSettingsOption2,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       value=2, command=self.XXX8
-                                       )
-
-        self.__varButton4.pack_propagate(False)
-        self.__varButton4.pack(fill=X, side=TOP, anchor=N)
-
         self.__indexLabel = Label(self.__indexFrame1_1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("index"),
                               font=self.__smallFont, fg=self.__colors.getColor("font"),
@@ -730,15 +502,6 @@ class TwoIconsFourDigits:
 
         self.__indexLabel.pack_propagate(False)
         self.__indexLabel.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__indexLabel2 = Label(self.__indexFrame2_1,
-                              text=self.__dictionaries.getWordFromCurrentLanguage("index"),
-                              font=self.__smallFont, fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"), justify=CENTER
-                              )
-
-        self.__indexLabel2.pack_propagate(False)
-        self.__indexLabel2.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__indexVal1 = StringVar()
         self.__indexEntry1 = Entry(self.__indexFrame1_2,
@@ -752,29 +515,14 @@ class TwoIconsFourDigits:
         self.__indexEntry1.pack_propagate(False)
         self.__indexEntry1.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__indexVal2 = StringVar()
-        self.__indexEntry2 = Entry(self.__indexFrame2_2,
-                                   bg=self.__colors.getColor("boxBackNormal"),
-                                   fg=self.__colors.getColor("boxFontNormal"),
-                                   width=9999, justify=CENTER,
-                                   textvariable=self.__indexVal2,
-                                   font=self.__smallFont
-                                   )
-
-        self.__indexEntry2.pack_propagate(False)
-        self.__indexEntry2.pack(fill=BOTH, side=TOP, anchor=N)
-
         self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
         self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
-
-        self.__indexEntry2.bind("<KeyRelease>", self.__changeIndexAndMirroring2)
-        self.__indexEntry2.bind("<FocusOut>", self.__changeIndexAndMirroring2)
 
         self.__lastBits = ["%00000000", "%00000000"]
 
 
-        self.__picVarScrollBar1 = Scrollbar(self.__frame3)
-        self.__picVarListBox1 = Listbox(self.__frame3, width=100000,
+        self.__picVarScrollBar1 = Scrollbar(self.__frame4)
+        self.__picVarListBox1 = Listbox(self.__frame4, width=100000,
                                          height=1000,
                                          yscrollcommand=self.__picVarScrollBar1.set,
                                          selectmode=BROWSE,
@@ -792,25 +540,6 @@ class TwoIconsFourDigits:
 
         self.__picVarScrollBar1.config(command=self.__picVarListBox1.yview)
 
-        self.__picVarScrollBar2 = Scrollbar(self.__frame6)
-        self.__picVarListBox2 = Listbox(self.__frame6, width=200000,
-                                         height=2000,
-                                         yscrollcommand=self.__picVarScrollBar2.set,
-                                         selectmode=BROWSE,
-                                         exportselection=False,
-                                         font=self.__smallFont,
-                                         justify=LEFT
-                                         )
-
-        self.__picVarListBox2.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
-        self.__picVarListBox2.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-        self.__picVarListBox2.pack_propagate(False)
-
-        self.__picVarScrollBar2.pack(side=RIGHT, anchor=W, fill=Y)
-        self.__picVarListBox2.pack(side=LEFT, anchor=W, fill=BOTH)
-
-        self.__picVarScrollBar2.config(command=self.__picVarListBox2.yview)
-
         self.__byteVars = []
         for address in self.__loader.virtualMemory.memory.keys():
             for variable in self.__loader.virtualMemory.memory[address].variables.keys():
@@ -824,21 +553,14 @@ class TwoIconsFourDigits:
                 ):
                     self.__byteVars.append(address + "::" + variable)
 
-        # ColorVars has bytes and nibbles, so the mirroring will be turned off
-        # if you use nibbles (4bit).
-
-        #for item in self.__byteVars:
         for item in self.__colorVars:
             self.__picVarListBox1.insert(END, item)
-            self.__picVarListBox2.insert(END, item)
-
-        #5, 9
 
         self.__lastSelectedPictureVars = ["", ""]
 
         if self.__data[5][0] == "%":
            self.__picSettingsOption1.set(1)
-           self.__lastSelectedPictureVars[0] = self.__byteVars[0]
+           self.__lastSelectedPictureVars[0] = self.__colorVars[0].split("::")[1]
 
            self.__picVarListBox1.config(state = DISABLED)
 
@@ -866,59 +588,284 @@ class TwoIconsFourDigits:
                   self.__picVarListBox1.select_set(itemNum)
                   break
 
-        if self.__data[9][0] == "%":
-           self.__picSettingsOption2.set(1)
-           self.__lastSelectedPictureVars[1] = self.__colorVars[0].split("::")[1]
-
-           self.__picVarListBox2.config(state = DISABLED)
-
-           mirrored = self.__data[9][5]
-           index    = self.__data[9][1:5]
-           nusiz = self.__data[9][5:]
-
-           self.__mirrored2.set(int(mirrored))
-           self.__indexVal2.set(str(int("0b"+index, 2)))
-           self.__nusizFrame2.setValue(str(int("0b"+nusiz, 2)))
-
-        else:
-           self.__mirroredButton2.config(state = DISABLED)
-           self.__indexEntry2.config(state = DISABLED)
-           self.__nusizFrame2.changeState(DISABLED)
-
-           self.__picSettingsOption2.set(2)
-
-           self.__mirrored2.set(0)
-           self.__indexVal2.set("0")
-
-           for itemNum in range(0, len(self.__colorVars)):
-               if self.__colorVars[itemNum].split("::")[1] == self.__data[9]:
-                  self.__lastSelectedPictureVars[1] = self.__data[9]
-                  self.__picVarListBox2.select_set(itemNum)
-                  break
-
-
-        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
-        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changedColorVar1)
-        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changedColorVar1)
-
-        self.__colorVarListBox2.bind("<ButtonRelease-1>", self.__changedColorVar2)
-        self.__colorVarListBox2.bind("<KeyRelease-Up>", self.__changedColorVar2)
-        self.__colorVarListBox2.bind("<KeyRelease-Down>", self.__changedColorVar2)
+        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
 
         self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
         self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
         self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
 
-        self.__picVarListBox2.bind("<ButtonRelease-1>", self.__changedPicVar2)
-        self.__picVarListBox2.bind("<KeyRelease-Up>", self.__changedPicVar2)
-        self.__picVarListBox2.bind("<KeyRelease-Down>", self.__changedPicVar2)
-
         from GradientFrame import GradientFrame
-        self.__gradientFrame = GradientFrame(self.__loader, self.__frame7,
-                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", 11)
+        self.__gradientFrame = GradientFrame(self.__loader, self.__frame6,
+                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", 10)
 
-        #for itemNum in range(0, len(self.__data)):
-        #    print(itemNum, self.__data[itemNum])
+        self.__digitLabel = Label(self.__frame5,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("numOfDigits") + ":",
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__digitLabel.pack_propagate(False)
+        self.__digitLabel.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__digitNum = StringVar()
+
+        if self.isItNum(self.__data[6]) == True:
+            self.__digitNum.set(self.__data[6])
+            if int(self.__data[6]) < 3:
+                self.__dataVarListBox2.config(state=DISABLED)
+            else:
+                self.__dataVarListBox2.config(state=NORMAL)
+
+
+        else:
+            self.__digitNum.set("2")
+            self.__dataVarListBox2.config(state=DISABLED)
+
+        self.__digitsEntry = Entry(self.__frame5,
+                                   bg=self.__colors.getColor("boxBackNormal"),
+                                   fg=self.__colors.getColor("boxFontNormal"),
+                                   width=9999, justify=CENTER,
+                                   textvariable=self.__digitNum,
+                                   font=self.__smallFont
+                                   )
+
+        self.__digitsEntry.pack_propagate(False)
+        self.__digitsEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
+        self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
+
+        self.__fontLabel = Label(self.__frame5,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__fontLabel.pack_propagate(False)
+        self.__fontLabel.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__fontOptionFrame1_1   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_1.pack_propagate(False)
+        self.__fontOptionFrame1_1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOptionFrame1_2   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_2.pack_propagate(False)
+        self.__fontOptionFrame1_2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOptionFrame1_3   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_3.pack_propagate(False)
+        self.__fontOptionFrame1_3.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOption1 = IntVar()
+
+        self.__fontOptionButton1_1 = Radiobutton(self.__fontOptionFrame1_1, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("default"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.__changedFontOption1_1
+                                         )
+
+        self.__fontOptionButton1_1.pack_propagate(False)
+        self.__fontOptionButton1_1.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontOptionButton1_2 = Radiobutton(self.__fontOptionFrame1_2, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("digital"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=2, command=self.__changedFontOption1_2
+                                         )
+
+        self.__fontOptionButton1_2.pack_propagate(False)
+        self.__fontOptionButton1_2.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontOptionButton1_3 = Radiobutton(self.__fontOptionFrame1_3, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("custom"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=3, command=self.__changedFontOption1_3
+                                         )
+
+        self.__fontOptionButton1_3.pack_propagate(False)
+        self.__fontOptionButton1_3.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontVarListScrollBar1 = Scrollbar(self.__frame5)
+        self.__fontVarListBox1 = Listbox(self.__frame5, width=100000,
+                                         height=1000,
+                                         yscrollcommand=self.__fontVarListScrollBar1.set,
+                                         selectmode=BROWSE,
+                                         exportselection=False,
+                                         font=self.__smallFont,
+                                         justify=LEFT
+                                         )
+
+        self.__fontVarListBox1.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__fontVarListBox1.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__fontVarListBox1.pack_propagate(False)
+
+        self.__fontVarListScrollBar1.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__fontVarListBox1.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__fontVarListScrollBar1.config(command=self.__fontVarListBox1.yview)
+
+        self.__fontListSelect = [self.__listOfPictures2[0], self.__listOfPictures2[0]]
+
+
+        for item in self.__listOfPictures2:
+            self.__fontVarListBox1.insert(END, item)
+
+        if  self.__data[9] == "#":
+            self.__data[9] = "default"
+            self.__fontOption1.set(1)
+            self.__fontVarListBox1.config(state = DISABLED)
+
+        else:
+            if   self.__data[9] == "default":
+                self.__fontOption1.set(1)
+                self.__fontVarListBox1.config(state = DISABLED)
+            elif self.__data[9] == "digital":
+                self.__fontOption1.set(2)
+                self.__fontVarListBox1.config(state = DISABLED)
+            else:
+                self.__fontOption1.set(3)
+                for itemNum in range(0, len(self.__listOfPictures2)):
+                    self.__fontVarListBox1.select_set(itemNum)
+                    self.__fontListSelect[0] = self.__data[9]
+                    break
+
+        if   int(self.__digitNum.get()) == 1:
+            self.__dataListBoxVarTypes = ["nibble", "byte"]
+        elif int(self.__digitNum.get()) == 3:
+            self.__dataListBoxVarTypes = ["byte", "nibble"]
+        else:
+            self.__dataListBoxVarTypes = ["byte", "byte"]
+
+        self.__fillDataVarListBoxes()
+        self.__changeData(self.__data)
+
+    def __changeDigits(self, event):
+        if self.isItNum(self.__digitNum.get()) == False:
+            self.__digitsEntry.config(
+                bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+        else:
+            self.__digitsEntry.config(
+                bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+            )
+            if self.__digitNum.get() != self.__data[6]:
+                temp = self.__digitNum.get()
+                if int(temp) > 4:
+                    temp = "4"
+                elif int(temp) < 1:
+                    temp = "1"
+                self.__digitNum.set(temp)
+                self.__data[6] = self.__digitNum.get()
+                self.__changeData(self.__data)
+
+                if int(temp) < 3:
+                   self.__dataVarListBox2.config(state = DISABLED)
+                else:
+                   self.__dataVarListBox2.config(state=NORMAL)
+
+                # If the second is off, we leave it as byte! It does not matter anyway
+                if   int(temp) == 1:
+                    self.__dataListBoxVarTypes = ["nibble", "byte"]
+                elif int(temp) == 3:
+                    self.__dataListBoxVarTypes = ["byte", "nibble"]
+                else:
+                    self.__dataListBoxVarTypes = ["byte", "byte"]
+
+                self.__fillDataVarListBoxes()
+
+    def __fillDataVarListBoxes(self):
+        lists = {
+            "nibble"    : self.__colorVars,
+            "byte"      : self.__byteVars
+        }
+
+        listBox1Vars    = lists[self.__dataListBoxVarTypes[0]]
+        listBox2Vars    = lists[self.__dataListBoxVarTypes[1]]
+
+        self.__dataVarListBox1.select_clear(0, END)
+        self.__dataVarListBox2.select_clear(0, END)
+
+        self.__dataVarListBox1.delete(0, END)
+        self.__dataVarListBox2.delete(0, END)
+
+        for item in listBox1Vars:
+            self.__dataVarListBox1.insert(END, item)
+
+        for item in listBox2Vars:
+            self.__dataVarListBox2.insert(END, item)
+
+        selectNums = [0, 0]
+        for itemNum in range(0, len(listBox1Vars)):
+            if listBox1Vars[itemNum].split("::")[1] == self.__data[7]:
+               selectNums[0] = itemNum
+               break
+
+        for itemNum in range(0, len(listBox2Vars)):
+            if listBox2Vars[itemNum].split("::")[1] == self.__data[8]:
+               selectNums[1] = itemNum
+               break
+
+        self.__data[7] = listBox1Vars[selectNums[0]].split("::")[1]
+        self.__data[8] = listBox1Vars[selectNums[1]].split("::")[1]
+
+        self.__dataVarListBox1.select_set(selectNums[0])
+        self.__dataVarListBox2.select_set(selectNums[1])
+
+
+    def __changedFontVarListBox1(self, event):
+        if self.__fontOption1.get() != 3:
+            return
+
+        if self.__listOfPictures2[self.__fontVarListBox1.curselection()[0]] != self.__fontListSelect[0]:
+           self.__fontListSelect[0] = self.__listOfPictures2[self.__fontVarListBox1.curselection()[0]]
+           self.__data[9]           = self.__fontListSelect[0]
+           self.__changeData(self.__data)
+
+
+    def __changedFontOption1_1(self):
+        self.__fontVarListBox1.select_clear(0, END)
+        self.__fontVarListBox1.config(state = DISABLED)
+        self.__data[9]  = "default"
+        self.__changeData(self.__data)
+
+    def __changedFontOption1_2(self):
+        self.__fontVarListBox1.select_clear(0, END)
+        self.__fontVarListBox1.config(state = DISABLED)
+        self.__data[9]  = "digital"
+        self.__changeData(self.__data)
+
+    def __changedFontOption1_3(self):
+        self.__fontVarListBox1.config(state = NORMAL)
+        for itemNum in range(0, len(self.__listOfPictures2)):
+            if self.__listOfPictures2[itemNum] == self.__fontListSelect[0]:
+                self.__fontVarListBox1.select_set(itemNum)
+                self.__data[9]  = self.__fontListSelect[0]
+                self.__changeData(self.__data)
+                break
 
     def __chamgeConst1(self, event):
         if self.__constEntry1.getValue() != self.__data[4]:
@@ -928,16 +875,6 @@ class TwoIconsFourDigits:
                 self.__data[4] = temp
                 self.__constEntry1.setValue(temp)
                 self.__changeData(self.__data)
-
-    def __chamgeConst2(self, event):
-        if self.__constEntry2.getValue() != self.__data[8]:
-            temp = self.__constEntry2.getValue()
-            if self.isItHex(temp) == True:
-                temp = temp[:2] + "0"
-                self.__data[8] = temp
-                self.__constEntry2.setValue(temp)
-                self.__changeData(self.__data)
-
 
     def XXX_ConstOn(self, constEntry, lastSelected, lastSelectedNum, colorVarListBox, dataNum, variables):
         constEntry.changeState(state = NORMAL)
@@ -967,15 +904,6 @@ class TwoIconsFourDigits:
                          4,
                          self.__colorVars
                          )
-        '''        
-        self.__constEntry1.changeState(state = NORMAL)
-        self.__lastSelectedColors[0] = self.__colorVars[self.__colorVarListBox1.curselection()[0]].split("::")[1]
-        self.__colorVarListBox1.select_clear(0, END)
-        self.__colorVarListBox1.config(state = DISABLED)
-        if self.isItHex(self.__constEntry1.getValue()) == True:
-            self.__data[4] = self.__constEntry1.getValue()
-            self.__changeData(self.__data)
-        '''
 
     def XXX2(self):
         self.XXX_VarOn(self.__constEntry1,
@@ -984,55 +912,6 @@ class TwoIconsFourDigits:
                        self.__colorVarListBox1,
                        4,
                        self.__colorVars)
-
-        '''
-        self.__constEntry1.changeState(state = DISABLED)
-        self.__colorVarListBox1.config(state = NORMAL)
-        for itemNum in range(0, len(self.__colorVars)):
-            if self.__colorVars[itemNum].split("::")[1] == self.__lastSelectedColors[0]:
-               self.__colorVarListBox1.select_set(itemNum)
-               self.__data[4] = self.__lastSelectedColors[0]
-               self.__changeData(self.__data)
-               break
-        '''
-
-    def XXX3(self):
-        self.XXX_ConstOn(self.__constEntry2,
-                         self.__lastSelectedColors,
-                         1,
-                         self.__colorVarListBox2,
-                         8,
-                         self.__colorVars
-                         )
-
-        '''
-        
-        self.__constEntry2.changeState(state = NORMAL)
-        self.__lastSelectedColors[1] = self.__colorVars[self.__colorVarListBox2.curselection()[0]].split("::")[1]
-        self.__colorVarListBox2.select_clear(0, END)
-        self.__colorVarListBox2.config(state = DISABLED)
-        if self.isItHex(self.__constEntry2.getValue()) == True:
-            self.__data[8] = self.__constEntry2.getValue()
-            self.__changeData(self.__data)
-        '''
-
-    def XXX4(self):
-        self.XXX_VarOn(self.__constEntry2,
-                       self.__lastSelectedColors,
-                       1,
-                       self.__colorVarListBox2,
-                       8,
-                       self.__colorVars)
-        '''
-        self.__constEntry2.changeState(state = DISABLED)
-        self.__colorVarListBox2.config(state = NORMAL)
-        for itemNum in range(1, len(self.__colorVars)):
-            if self.__colorVars[itemNum].split("::")[1] == self.__lastSelectedColors[1]:
-               self.__colorVarListBox2.select_set(itemNum)
-               self.__data[8] = self.__lastSelectedColors[1]
-               self.__changeData(self.__data)
-               break
-        '''
 
     def XXX_changeToPicSettingsConst(self, mirrored, indexEntry, indexVal, lastSelected, listBox, selectNum, dataNum, mirroredButton, nusizFrame):
         mirroredButton.config(state=NORMAL)
@@ -1054,24 +933,6 @@ class TwoIconsFourDigits:
 
 
     def XXX5(self):
-        '''
-        self.__mirrored1.config(state = NORMAL)
-        self.__indexEntry1.config(state = NORMAL)
-
-        self.__lastSelectedPictureVars[0] = self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]
-        self.__picVarListBox1.config(state = DISABLED)
-
-        mirrored = str(self.__mirrored1.get())
-        try:
-            indexNum = bin(int(self.__indexVal1.get())).replace("0b", "")
-            while len(indexNum) < 4: indexNum = "0" + indexNum
-
-            self.__data[5] = "%" + indexNum + mirrored + "000"
-            self.__changeData(self.__data)
-        except:
-            pass
-        '''
-
         self.XXX_changeToPicSettingsConst(self.__mirrored1,
                                           self.__indexEntry1,
                                           self.__indexVal1,
@@ -1090,27 +951,6 @@ class TwoIconsFourDigits:
             self.__colorVars,
             self.__lastSelectedPictureVars,
             5, 0, self.__nusizFrame1
-        )
-
-    def XXX7(self):
-        self.XXX_changeToPicSettingsConst(self.__mirrored2,
-                                          self.__indexEntry2,
-                                          self.__indexVal2,
-                                          self.__lastSelectedPictureVars,
-                                          self.__picVarListBox2,
-                                          1, 9,
-                                          self.__mirroredButton2,
-                                          self.__nusizFrame2
-                                          )
-
-    def XXX8(self):
-        self.__changedPicVar(
-            self.__mirroredButton2,
-            self.__indexEntry2,
-            self.__picVarListBox2,
-            self.__colorVars,
-            self.__lastSelectedPictureVars,
-            9, 1, self.__nusizFrame2
         )
 
     def __changedPicVar(self, mirroredButton, indexEntry, picVarListBox, variables, lastSelected, dataNum, selectNum, nusizFrame):
@@ -1146,24 +986,6 @@ class TwoIconsFourDigits:
                                         )
 
 
-        '''
-        if self.__picSettingsOption1.get() == 1:
-           return
-
-        if self.__lastSelectedPictureVars[0] != self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]:
-           self.__lastSelectedPictureVars[0] = self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]
-           self.__data[5]                    = self.__lastSelectedPictureVars[0]
-           self.__changeData(self.__data)
-        '''
-
-
-    def __changedPicVar2(self, event):
-        self.__changedPicVar_TheRealOne(self.__picSettingsOption2,
-                                        self.__lastSelectedPictureVars,
-                                        1, 9,
-                                        self.__picVarListBox2)
-
-
     def __mirroredChanged1(self):
         # self.__changeIndexAndMirroring1(None)
         self.__changeIndexAndMirroring(self.__picSettingsOption1,
@@ -1173,15 +995,6 @@ class TwoIconsFourDigits:
                                        5,
                                        self.__nusizFrame1
                                        )
-
-    def __mirroredChanged2(self):
-        # self.__changeIndexAndMirroring2(None)
-        self.__changeIndexAndMirroring(self.__picSettingsOption2,
-                                       self.__mirrored2,
-                                       self.__indexVal2,
-                                       self.__indexEntry2,
-                                       9,
-                                       self.__nusizFrame2)
 
     def __changeIndexAndMirroring(self, picSettings, mirrorVar, indexVal, indexEntry, dataNum, nusizFrame):
         if picSettings.get() == 2:
@@ -1225,44 +1038,6 @@ class TwoIconsFourDigits:
                                        self.__indexEntry1,
                                        5, self.__nusizFrame1)
 
-        '''
-        if self.__picSettingsOption1.get() == 2:
-           return
-
-        mirrored = str(self.__mirrored1.get())
-        try:
-            frameNum = int(self.__indexVal1.get())
-        except:
-            self.__indexEntry1.config(
-                bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
-                fg=self.__loader.colorPalettes.getColor("boxFontUnSaved")
-            )
-            return
-        self.__indexEntry1.config(
-            bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-            fg=self.__loader.colorPalettes.getColor("boxFontNormal")
-        )
-
-        if frameNum > 15: frameNum = 15
-        if frameNum < 0 : frameNum = 0
-
-        self.__indexVal1.set(str(frameNum))
-
-        num = bin(frameNum)[2:]
-        while len(num) < 4:
-            num = "0" + num
-
-        self.__data[5] = "%" + num + mirrored + "000"
-        self.__changeData(self.__data)
-        '''
-
-    def __changeIndexAndMirroring2(self, event):
-        self.__changeIndexAndMirroring(self.__picSettingsOption2,
-                                       self.__mirrored2,
-                                       self.__indexVal2,
-                                       self.__indexEntry2,
-                                       9, self.__nusizFrame2)
-
     def isItHex(self, num):
         if num[0] != "$": return False
 
@@ -1278,16 +1053,6 @@ class TwoIconsFourDigits:
             return True
         except:
             return False
-
-    def __changeMaxEntry1(self, event):
-        self.__changeMaxEntry(
-            self.__maxVar1, self.__maxVarEntry1, 6
-        )
-
-    def __changeMaxEntry2(self, event):
-        self.__changeMaxEntry(
-            self.__maxVar2, self.__maxVarEntry2, 10
-        )
 
     def __changeMaxEntry(self, maxVar, maxVarEntry, num):
         if self.isItNum(maxVar.get()) == False:
@@ -1315,19 +1080,15 @@ class TwoIconsFourDigits:
            self.__data[3] =  self.__listOfPictures[self.__picListBox1.curselection()[0]]
            self.__changeData(self.__data)
 
-    def __changedPicture2(self, event):
-        if self.__listOfPictures[self.__picListBox2.curselection()[0]] != self.__data[7]:
-           self.__data[7] =  self.__listOfPictures[self.__picListBox2.curselection()[0]]
-           self.__changeData(self.__data)
 
     def __changedDataVar1(self, event):
-        if self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1] != self.__data[12]:
-           self.__data[12] =  self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1]
+        if self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1] != self.__data[7]:
+           self.__data[7] =  self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1]
            self.__changeData(self.__data)
 
     def __changedDataVar2(self, event):
-        if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[13]:
-           self.__data[13] =  self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1]
+        if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:
+           self.__data[8] =  self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1]
            self.__changeData(self.__data)
 
     def __changedColorVar1(self, event):
@@ -1336,12 +1097,4 @@ class TwoIconsFourDigits:
 
         if self.__dataVars[self.__colorVarListBox1.curselection()[0]].split("::")[1] != self.__data[4]:
            self.__data[4] =  self.__colorVars[self.__colorVarListBox1.curselection()[0]].split("::")[1]
-           self.__changeData(self.__data)
-
-    def __changedColorVar2(self, event):
-        if self.__picOption2.get() == 1:
-           return
-
-        if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:
-           self.__data[8] =  self.__dataVars[self.__colorVarListBox2.curselection()[0]].split("::")[1]
            self.__changeData(self.__data)

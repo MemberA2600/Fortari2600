@@ -302,3 +302,4 @@ font=Betûtípus
 default=Alapértelmezett
 digital=Digitális
 custom=Egyéni
+numOfDigits=Számjegyek Száma:

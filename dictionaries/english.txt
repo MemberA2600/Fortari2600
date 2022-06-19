@@ -302,3 +302,4 @@ font=Font
 default=Default
 digital=Digital
 custom=Custom
+numOfDigits=Number of Digits

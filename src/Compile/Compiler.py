@@ -138,6 +138,15 @@ class Compiler:
                      for key in those[2].keys():
                          self.__userData[key] = those[2][key]
 
+                elif subtyp == "OneIconWithDigits":
+                    those = self.generate_OneIconWithDigits(fullName, data, self.__bank)
+                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                    self.__userData[fullName] = those[1]
+                    self.__routines["OneIconWithDigits"] = self.__io.loadSubModule("OneIconWithDigits_Kernel").replace("#BANK#",
+                                                                                                         self.__bank)
+                    for key in those[2].keys():
+                        self.__userData[key] = those[2][key]
+
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -153,6 +162,150 @@ class Compiler:
 
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_OneIconWithDigits(self, name, data, bank):
+        '''
+        *
+        *JumpBack Pointer: temp01(+ temp02)
+        *Icon_Pixels: temp03(+ temp04)
+        *Icon_Colors: temp05(+ temp06)
+        *
+        *Digit1_Pixels: temp07(+ temp08)
+        *Digit2_Pixels: temp09(+ temp10)
+        *Digit3_Pixels: temp11(+ temp12)
+        *Digit4_Pixels: temp13(+ temp14)
+        *
+        *GradientPointer: temp15(+ temp16)
+        *Color	: temp17
+        *
+        '''
+
+        iconName        = data[0].split("_(")[0]
+        iconType        = data[0].split("_(")[1][:-1]
+        digitBaseColor  = data[1]
+        spriteSettings  = data[2]
+        numOfDigits     = data[3]
+        digitData34     = data[4]
+        digitData12     = data[5]
+        digitFont       = data[6]
+        gradientType    = data[7]
+
+        topLevelText                = "\n" + name + "\n"
+        pictureData                 = {}
+        pictureData[iconName]       = self.loadPictureData(bank, iconName, iconType)
+
+        topLevelText            += "\tLDA\tframeColor\n\tSTA\tCOLUPF\n"
+
+        digitColor               = self.__loader.virtualMemory.getVariableByName2(digitBaseColor)
+        if digitColor == False:
+            topLevelText    += "\tLDA\t#"+ digitBaseColor +"\n"
+        else:
+            topLevelText    += "\tLDA\t" + digitBaseColor + "\n"
+            if digitColor.type == "nibble":
+               topLevelText += self.moveVarToTheRight(digitColor.usedBits)
+            topLevelText += "\tAND\t#%11110000\n"
+
+        topLevelText    += "\tSTA\ttemp17\n"
+
+        topLevelText            += self.__io.loadSubModule("OneIconWithDigits_SelectOnFrame").\
+                                   replace("##SCREENITEM##", name). \
+                                   replace("##NAME##", bank+"_"+iconName)
+
+        spriteSetVar    = self.__loader.virtualMemory.getVariableByName2(spriteSettings)
+        if spriteSetVar == False:
+            topLevelText    += "\tLDA\t#"+ spriteSettings +"\n"
+        else:
+            topLevelText    += "\tLDA\t" + spriteSettings + "\n"
+            if spriteSetVar.type == "nibble":
+               topLevelText += self.moveVarToTheRight(spriteSetVar.usedBits)
+            topLevelText += "\tAND\t#%11110000\n"
+
+        topLevelText           += "\tSTA\tREFP0\n\tSTA\tNUSIZ0\n\tAND\t#%11110000\n\tLSR\n"
+        topLevelText           += "\tCLC\n\tADC\ttemp03\n\tSTA\ttemp03\n"
+
+        pattern                = self.generate_fadeOutPattern(2)
+        patternIndex           = int(gradientType)
+
+        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData             = xxx[0]
+        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp15\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp16\n"
+
+        ddd, fontName           = self.getDigitFont(bank, digitFont)
+        pictureData[fontName]   = ddd
+
+        topLevelText            += "\tLDA\t#<"+fontName+"\n\tSTA\ttemp13\n"
+        topLevelText            += "\tLDX\t#>"+fontName+"\n\tSTX\ttemp14\n"
+
+        if int(numOfDigits) > 1:
+            topLevelText += "\tSTA\ttemp11\n\tSTX\ttemp12\n"
+
+        if int(numOfDigits) > 2:
+            topLevelText += "\tSTA\ttemp09\n\tSTX\ttemp10\n"
+
+        if int(numOfDigits) == 4:
+           topLevelText += "\tSTA\ttemp07\n\tSTX\ttemp08\n"
+
+        if int(numOfDigits)     < 4:
+           pictureData[bank+"_"+"EmptyNumber"] = self.__io.loadSubModule("numbersEmpty").replace("BankXX", bank)
+
+           topLevelText         += "\tLDA\t#<" + bank + "_8PixNumbers_Empty\n\tLDX\t#>" + bank + "_8PixNumbers_Empty\n"
+           topLevelText         += "\tSTA\ttemp07\n\tSTX\ttemp08\n"
+
+           if int(numOfDigits) < 3:
+               topLevelText += "\tSTA\ttemp09\n\tSTX\ttemp10\n"
+
+           if int(numOfDigits) == 1:
+               topLevelText += "\tSTA\ttemp11\n\tSTX\ttemp12\n"
+
+        digitVar12 = self.__loader.virtualMemory.getVariableByName2(digitData12)
+        topLevelText += "\tLDA\t" + digitData12 + "\n"
+        if digitVar12.type == "nibble":
+            topLevelText += self.moveVarToTheRight(digitVar12.usedBits)
+        topLevelText += "\tAND\t#%11110000\n\tASL\n\tASL\n\tASL\n\tCLC\nADC\ttemp13\n\tSTA\ttemp13\n"
+
+        if int(numOfDigits) > 1:
+            topLevelText += "\tLDA\t" + digitData12 + "\n"
+            topLevelText += "\tLSR\n\tAND\t#%11110000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
+
+        if int(numOfDigits) > 2:
+            digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
+            topLevelText += "\tLDA\t" + digitData34 + "\n"
+            if digitVar34.type == "nibble":
+                topLevelText += self.moveVarToTheRight(digitVar34.usedBits)
+            topLevelText += "\tAND\t#%11110000\n\tASL\n\tASL\n\tASL\n\tCLC\nADC\ttemp09\n\tSTA\ttemp09\n"
+
+            if int(numOfDigits) == 4:
+                topLevelText += "\tLDA\t" + digitData34 + "\n"
+                topLevelText += "\tLSR\n\tAND\t#%11110000\n\tCLC\n\tADC\ttemp07\n\tSTA\ttemp07\n"
+
+        '''
+        if int(numOfDigits) > 2:
+            topLevelText        += "\tLDA\ttemp17\n\tORA\t#%00000001\n\tSTA\ttemp17\n"
+        '''
+
+        topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                    "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText            += "\tJMP\t" + bank + "_OneIconWithDigits_Kernel" + "\n"
+        topLevelText            += name + "_Back" + "\n"
+
+        return (topLevelText, patternData, pictureData)
+
+    def getDigitFont(self, bank, font):
+
+        if   font == "default":
+             fontData = self.__io.loadSubModule("numbersDefault").replace("BankXX", bank)
+             fontName = bank + "_8PixNumbers_Default"
+        elif font == "digital":
+             fontData = self.__io.loadSubModule("numbersDigital").replace("BankXX", bank)
+             fontName = bank + "_8PixNumbers_Digital"
+        else:
+             picName = font.split("_(")[0]
+             picType = font.split("_(")[1][:-1]
+
+             fontName = bank + "_" + picName + "_BigSprite_1"
+             fontData = self.loadPictureData(bank, picName, picType)
+
+        return fontData, fontName
 
     def generate_TwoIconsTwoLines(self, name, data, bank):
         '''
@@ -183,16 +336,16 @@ class Compiler:
         pictureType1           = picture1.split("_(")[1][:-1]
         pictureType2           = picture2.split("_(")[1][:-1]
 
-        pictureData[pictureName1] = self.loadPictureData(pictureName1, pictureType1)
-        pictureData[pictureName2] = self.loadPictureData(pictureName2, pictureType2)
+        pictureData[pictureName1] = self.loadPictureData(bank, pictureName1, pictureType1)
+        pictureData[pictureName2] = self.loadPictureData(bank, pictureName2, pictureType2)
 
         topLevelText            += "\tLDA\tframeColor\n\tSTA\tCOLUPF\n"
         topLevelText            += "\tLDA\t#0\n\tSTA\ttemp17\n"
 
         topLevelText            += self.__io.loadSubModule("TwoIconsTwoLines_SelectOnFrame").\
                                    replace("##SCREENITEM##", name). \
-                                   replace("##NAME1##", pictureName1). \
-                                   replace("##NAME2##", pictureName2)
+                                   replace("##NAME1##", bank+"_"+pictureName1). \
+                                   replace("##NAME2##", bank+"_"+pictureName2)
 
     # ['Brutal_Big_Sprite_(Big)', '$40', '%00000000', '255', 'Bloody_Smiley_(Big)', '$80', '%00000000', '255', '1', 'random', 'random']
 
@@ -318,7 +471,7 @@ class Compiler:
 
         return (topLevelText, patternData, pictureData)
 
-    def loadPictureData(self, pictureName, pictureType):
+    def loadPictureData(self, bank, pictureName, pictureType):
         if pictureType.upper() == 'BIG':
            path = self.__loader.mainWindow.projectPath + "bigSprites/"+pictureName+".asm"
         else:
@@ -329,7 +482,7 @@ class Compiler:
         f.close()
 
         if pictureType.upper() != 'BIG': txt = self.convertSpriteToBigSprite(txt)
-        return txt.replace("##NAME##", pictureName)
+        return txt.replace("##NAME##", bank+"_"+pictureName)
 
     def convertSpriteToBigSprite(self, txt):
         return txt.replace("##NAME##_Sprite\n", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1\n"
