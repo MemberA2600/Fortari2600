@@ -294,10 +294,10 @@ class Compiler:
                 topLevelText += "\tLDA\t" + digitData34 + "\n"
                 topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
 
-
+        '''
         if int(numOfDigits) > 2:
             topLevelText        += "\tLDA\ttemp17\n\tORA\t#%00000001\n\tSTA\ttemp17\n"
-
+        '''
 
         topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                     "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"

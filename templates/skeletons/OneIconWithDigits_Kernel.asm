@@ -98,7 +98,8 @@
 	LDA	#$00			; 2 (11)
 	STA	HMP1			; 3 (14)
 	
-	sleep	44
+	_sleep	38
+	sleep	2
 
 	LAX	(temp15),y		; 5
 	ADC	temp17			; 3
@@ -106,7 +107,7 @@
 
 	JMP	#BANK#_OneIconWithDigits_Loop_odd	; 3 (71)
 
-	align	255
+	align	256
 
 #BANK#_OneIconWithDigits_Loop_Even
 	STA	WSYNC			; 76
@@ -164,7 +165,7 @@
 	BNE	#BANK#_OneIconWithDigits_Loop_Even	; 2 (72)
 	JMP	#BANK#_OneIconWithDigits_Ended
 
-	align 	255
+	align 	256
 
 #BANK#_OneIconWithDigits_Loop_odd
 	STA	HMOVE			; 74
