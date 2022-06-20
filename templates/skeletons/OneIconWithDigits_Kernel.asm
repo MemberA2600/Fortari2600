@@ -98,8 +98,8 @@
 	LDA	#$00			; 2 (11)
 	STA	HMP1			; 3 (14)
 	
-	_sleep	38
-	sleep	2
+	_sleep	34
+	sleep	3
 
 	LAX	(temp15),y		; 5
 	ADC	temp17			; 3
@@ -206,6 +206,7 @@
 	STA	GRP1			; 3 (27)
 	STX	COLUP1			; 3 (30)
 	LDA	(temp13),y		; 5 (34)
+
 	sleep	2
 	STA	GRP1			; 3 (39)
 	sleep	2

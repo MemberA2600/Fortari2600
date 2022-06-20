@@ -107,12 +107,15 @@ class OneIconWithDigits:
             for file in files:
                 ok   = False
                 mode = ""
+                frames = 0
+
                 if file.endswith(".asm"):
                     f = open(root + "/" + file, "r")
                     text = f.read()
                     f.close()
 
-                    firstLine = text.replace("\r", "").split("\n")[0]
+                    firstLine  = text.replace("\r", "").split("\n")[0]
+                    secondLine = text.replace("\r", "").split("\n")[1]
                     fourthLine = text.replace("\r", "").split("\n")[3]
 
                     if "Height" in firstLine:
@@ -130,25 +133,37 @@ class OneIconWithDigits:
                            ok = False
                        else:
                            ok = True
+
                            if "Mode=simple" in fourthLine:
                                mode = "simple"
                            else:
                                mode = "overlay"
 
                 if ok == True:
+
+                    try:
+                        frames = int(secondLine.split("=")[1])
+                    except:
+                        pass
+
                     self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
-                    if mode == "simple":
+                    if mode == "simple" and frames > 9:
                         self.__listOfPictures2.append(file.replace(".asm", "") + "_(Big)")
 
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
             for file in files:
                 ok = False
+                frames = 0
+
                 if file.endswith(".asm"):
                     f = open(root + "/" + file, "r")
                     text = f.read()
                     f.close()
 
                     firstLine = text.replace("\r", "").split("\n")[0]
+                    secondLine = text.replace("\r", "").split("\n")[1]
+                    frames = 0
+
                     if "Height" in firstLine:
                         try:
                             num = int(firstLine.split("=")[1])
@@ -156,9 +171,16 @@ class OneIconWithDigits:
                                 ok = True
                         except:
                             pass
+
                 if ok == True:
+                    try:
+                        frames = int(secondLine.split("=")[1])
+                    except:
+                        pass
+
                     self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
-                    self.__listOfPictures2.append(file.replace(".asm", "") + "_(Normal)")
+                    if frames > 9:
+                        self.__listOfPictures2.append(file.replace(".asm", "") + "_(Normal)")
 
 
 
@@ -242,7 +264,7 @@ class OneIconWithDigits:
         self.__constButton1.pack(fill=X, side=TOP, anchor=N)
 
         from HexEntry import HexEntry
-        self.__fuckinColors = ["$10", "$80"]
+        self.__fuckinColors = ["$16", "$86"]
 
         w = ((self.__w // 7) * 2 ) // 3
         h = self.__h // 6
@@ -871,7 +893,7 @@ class OneIconWithDigits:
         if self.__constEntry1.getValue() != self.__data[4]:
             temp = self.__constEntry1.getValue()
             if self.isItHex(temp) == True:
-                temp = temp[:2] + "0"
+                temp = temp[:2] + "6"
                 self.__data[4] = temp
                 self.__constEntry1.setValue(temp)
                 self.__changeData(self.__data)
