@@ -107,7 +107,7 @@
 
 	JMP	#BANK#_OneIconWithDigits_Loop_odd	; 3 (71)
 
-	align	256
+	_align	90
 
 #BANK#_OneIconWithDigits_Loop_Even
 	STA	WSYNC			; 76
@@ -165,7 +165,7 @@
 	BNE	#BANK#_OneIconWithDigits_Loop_Even	; 2 (72)
 	JMP	#BANK#_OneIconWithDigits_Ended
 
-	align 	256
+	_align 	85
 
 #BANK#_OneIconWithDigits_Loop_odd
 	STA	HMOVE			; 74

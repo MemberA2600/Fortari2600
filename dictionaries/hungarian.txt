@@ -302,4 +302,5 @@ font=Betûtípus
 default=Alapértelmezett
 digital=Digitális
 custom=Egyéni
-numOfDigits=Számjegyek Száma:
+numOfDigits=Számjegyek Száma
+slotMachine=Nyerõgép Mód

@@ -780,8 +780,8 @@ class OneIconWithDigits:
         else:
             self.__dataListBoxVarTypes = ["byte", "byte"]
 
-        self.__fillDataVarListBoxes()
-        self.__changeData(self.__data)
+        self.__fillDataVarListBoxes(False)
+        #self.__changeData(self.__data)
 
     def __changeDigits(self, event):
         if self.isItNum(self.__digitNum.get()) == False:
@@ -802,7 +802,6 @@ class OneIconWithDigits:
                     temp = "1"
                 self.__digitNum.set(temp)
                 self.__data[6] = self.__digitNum.get()
-                self.__changeData(self.__data)
 
                 if int(temp) < 3:
                    self.__dataVarListBox2.config(state = DISABLED)
@@ -817,9 +816,9 @@ class OneIconWithDigits:
                 else:
                     self.__dataListBoxVarTypes = ["byte", "byte"]
 
-                self.__fillDataVarListBoxes()
+                self.__fillDataVarListBoxes(True)
 
-    def __fillDataVarListBoxes(self):
+    def __fillDataVarListBoxes(self, change):
         lists = {
             "nibble"    : self.__colorVars,
             "byte"      : self.__byteVars
@@ -856,6 +855,8 @@ class OneIconWithDigits:
 
         self.__dataVarListBox1.select_set(selectNums[0])
         self.__dataVarListBox2.select_set(selectNums[1])
+
+        if change == True: self.__changeData(self.__data)
 
 
     def __changedFontVarListBox1(self, event):
