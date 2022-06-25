@@ -34,6 +34,8 @@ class EightDigits:
 
         self.dead = dead
 
+        self.__loadPictures()
+
         itWasHash = False
         if data[3] == "#":
             itWasHash = True
@@ -41,6 +43,89 @@ class EightDigits:
         self.__addElements()
         if itWasHash == True:
             self.__changeData(data)
+
+    def __loadPictures(self):
+
+        self.__listOfPictures  = []
+
+        import os
+
+        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
+            for file in files:
+                ok   = False
+                mode = ""
+                frames = 0
+
+                if file.endswith(".asm"):
+                    f = open(root + "/" + file, "r")
+                    text = f.read()
+                    f.close()
+
+                    firstLine  = text.replace("\r", "").split("\n")[0]
+                    secondLine = text.replace("\r", "").split("\n")[1]
+                    fourthLine = text.replace("\r", "").split("\n")[3]
+
+                    if "Height" in firstLine:
+                        try:
+                            num = int(firstLine.split("=")[1])
+                            if num == 8:
+                                ok = True
+                            else:
+                                ok = False
+                        except:
+                            pass
+
+                    if ok == True:
+                       if "Mode=double" in fourthLine:
+                           ok = False
+                       else:
+                           ok = True
+
+                           if "Mode=simple" in fourthLine:
+                               mode = "simple"
+                           else:
+                               mode = "overlay"
+
+                    if ok == True:
+
+                        try:
+                            frames = int(secondLine.split("=")[1])
+                        except:
+                            pass
+
+                        if mode == "simple" and frames > 9:
+                            self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
+
+        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
+            for file in files:
+                ok = False
+                frames = 0
+
+                if file.endswith(".asm"):
+                    f = open(root + "/" + file, "r")
+                    text = f.read()
+                    f.close()
+
+                    firstLine = text.replace("\r", "").split("\n")[0]
+                    secondLine = text.replace("\r", "").split("\n")[1]
+                    frames = 0
+
+                    if "Height" in firstLine:
+                        try:
+                            num = int(firstLine.split("=")[1])
+                            if num == 8:
+                                ok = True
+                        except:
+                            pass
+
+                if ok == True:
+                    try:
+                        frames = int(secondLine.split("=")[1])
+                    except:
+                        pass
+
+                    if frames > 9:
+                        self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
 
     def killAll(self):
         for item in self.__uniqueFrame.pack_slaves():
@@ -99,94 +184,9 @@ class EightDigits:
         self.__frame6.pack_propagate(False)
         self.__frame6.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__listOfPictures  = []
-        self.__listOfPictures2 = []
-
-        import os
-
-        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
-            for file in files:
-                ok   = False
-                mode = ""
-                frames = 0
-
-                if file.endswith(".asm"):
-                    f = open(root + "/" + file, "r")
-                    text = f.read()
-                    f.close()
-
-                    firstLine  = text.replace("\r", "").split("\n")[0]
-                    secondLine = text.replace("\r", "").split("\n")[1]
-                    fourthLine = text.replace("\r", "").split("\n")[3]
-
-                    if "Height" in firstLine:
-                        try:
-                            num = int(firstLine.split("=")[1])
-                            if num == 8:
-                                ok = True
-                            else:
-                                ok = False
-                        except:
-                            pass
-
-                    if ok == True:
-                       if "Mode=double" in fourthLine:
-                           ok = False
-                       else:
-                           ok = True
-
-                           if "Mode=simple" in fourthLine:
-                               mode = "simple"
-                           else:
-                               mode = "overlay"
-
-                if ok == True:
-
-                    try:
-                        frames = int(secondLine.split("=")[1])
-                    except:
-                        pass
-
-                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
-                    if mode == "simple" and frames > 9:
-                        self.__listOfPictures2.append(file.replace(".asm", "") + "_(Big)")
-
-        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
-            for file in files:
-                ok = False
-                frames = 0
-
-                if file.endswith(".asm"):
-                    f = open(root + "/" + file, "r")
-                    text = f.read()
-                    f.close()
-
-                    firstLine = text.replace("\r", "").split("\n")[0]
-                    secondLine = text.replace("\r", "").split("\n")[1]
-                    frames = 0
-
-                    if "Height" in firstLine:
-                        try:
-                            num = int(firstLine.split("=")[1])
-                            if num == 8:
-                                ok = True
-                        except:
-                            pass
-
-                if ok == True:
-                    try:
-                        frames = int(secondLine.split("=")[1])
-                    except:
-                        pass
-
-                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
-                    if frames > 9:
-                        self.__listOfPictures2.append(file.replace(".asm", "") + "_(Normal)")
-
         dataVars     = self.__data[3:11]
         digitNum     = self.__data[11]
         slotMode     = self.__data[12]
-        gradientNum  = self.__data[13]
         color        = self.__data[14]
         font         = self.__data[15]
 
@@ -385,6 +385,196 @@ class EightDigits:
 
         self.__fillDataVarListBoxes(False, True)
 
+        from HexEntry import HexEntry
+        self.__fuckinColors = ["$16"]
+
+        if self.isItHex(self.__data[12]): self.__fuckinColors[0] = color
+
+        w = ((self.__w // 7) * 2 ) // 3
+        h = self.__h // 6
+
+        self.__colorEntry = HexEntry(self.__loader, self.__frame5, self.__colors, self.__colorDict,
+                                     self.__normalFont, self.__fuckinColors, 0, None, self.__chengeMainColor)
+
+        self.__fontLabel = Label(self.__frame5,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__fontLabel.pack_propagate(False)
+        self.__fontLabel.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__fontOptionFrame1_1   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_1.pack_propagate(False)
+        self.__fontOptionFrame1_1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOptionFrame1_2   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_2.pack_propagate(False)
+        self.__fontOptionFrame1_2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOptionFrame1_3   = Frame(self.__frame5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height = self.__h // 17)
+
+        self.__fontOptionFrame1_3.pack_propagate(False)
+        self.__fontOptionFrame1_3.pack(side=TOP, anchor=N, fill=X)
+
+        self.__fontOption1 = IntVar()
+
+        self.__fontOptionButton1_1 = Radiobutton(self.__fontOptionFrame1_1, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("default"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.__changedFontOption1
+                                         )
+
+        self.__fontOptionButton1_1.pack_propagate(False)
+        self.__fontOptionButton1_1.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontOptionButton1_2 = Radiobutton(self.__fontOptionFrame1_2, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("digital"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=2, command=self.__changedFontOption2
+                                         )
+
+        self.__fontOptionButton1_2.pack_propagate(False)
+        self.__fontOptionButton1_2.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontOptionButton1_3 = Radiobutton(self.__fontOptionFrame1_3, width=999999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("custom"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__fontOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=3, command=self.__changedFontOption3
+                                         )
+
+        self.__fontOptionButton1_3.pack_propagate(False)
+        self.__fontOptionButton1_3.pack(fill=X, side=TOP, anchor=N)
+
+        self.__fontVarListScrollBar1 = Scrollbar(self.__frame5)
+        self.__fontVarListBox1 = Listbox(self.__frame5, width=100000,
+                                         height=1000,
+                                         yscrollcommand=self.__fontVarListScrollBar1.set,
+                                         selectmode=BROWSE,
+                                         exportselection=False,
+                                         font=self.__smallFont,
+                                         justify=LEFT
+                                         )
+
+        self.__fontVarListBox1.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__fontVarListBox1.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__fontVarListBox1.pack_propagate(False)
+
+        self.__fontVarListScrollBar1.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__fontVarListBox1.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__fontVarListBoxSelected = ""
+
+        self.__fontVarListScrollBar1.config(command=self.__fontVarListBox1.yview)
+
+        for item in self.__listOfPictures: self.__fontVarListBox1.insert(END, item)
+
+        self.__changedFontData(font)
+        self.__saveIt = self.__fontOption1.get()
+
+        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFontVar)
+        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFontVar)
+        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFontVar)
+
+        from GradientFrame import GradientFrame
+        self.__gradientFrame = GradientFrame(self.__loader, self.__frame6,
+                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", 13)
+
+    def __changeFontVar(self, event):
+        if self.__fontOption1.get() != 3: return
+        if self.__fontVarListBoxSelected != self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]:
+           self.__fontVarListBoxSelected = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
+           self.__data[15] = self.__fontVarListBoxSelected
+           self.__changeData(self.__data)
+
+    def __changedFontData(self, data):
+        if   data == "default":
+             self.__fontOption1.set(1)
+             try:
+                 self.__fontVarListBoxSelected = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
+             except:
+                 self.__fontVarListBoxSelected = self.__listOfPictures[0]
+
+             self.__fontVarListBox1.select_clear(0, END)
+             self.__fontVarListBox1.config(state = DISABLED)
+             self.__data[15] = data
+
+        elif data == "digital":
+             self.__fontOption1.set(2)
+             try:
+                 self.__fontVarListBoxSelected = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
+             except:
+                 self.__fontVarListBoxSelected = self.__listOfPictures[0]
+
+             self.__fontVarListBox1.select_clear(0, END)
+             self.__fontVarListBox1.config(state = DISABLED)
+             self.__data[15] = data
+
+        else:
+            self.__fontOption1.set(3)
+            self.__fontVarListBox1.config(state = NORMAL)
+
+            self.__fontVarListBoxSelected = data
+
+            for itemNum in range(0, len(self.__listOfPictures)):
+                if self.__listOfPictures[itemNum] == self.__fontVarListBoxSelected:
+                   self.__fontVarListBox1.select_set(itemNum)
+                   self.__data[15] = data
+                   break
+
+
+
+    def __changedFontOption1(self):
+        self.__changedFontOption(self.__fontOptionButton1_1)
+
+    def __changedFontOption2(self):
+        self.__changedFontOption(self.__fontOptionButton1_2)
+
+    def __changedFontOption3(self):
+        self.__changedFontOption(self.__fontOptionButton1_3)
+
+    def __changedFontOption(self, widget):
+        www = {
+            self.__fontOptionButton1_1: "default",
+            self.__fontOptionButton1_2: "digital",
+            self.__fontOptionButton1_3: self.__fontVarListBoxSelected
+        }
+        self.__changedFontData(www[widget])
+
+        if self.__saveIt != self.__fontOption1.get(): self.__changeData(self.__data)
+        self.__saveIt = self.__fontOption1.get()
+
+
+    def __chengeMainColor(self, event):
+        if self.__colorEntry.getValue() != self.__data[14]:
+            temp = self.__colorEntry.getValue()
+            if self.isItHex(temp) == True:
+                temp = temp[:2] + "6"
+                self.__data[14] = temp
+                self.__colorEntry.setValue(temp)
+                self.__changeData(self.__data)
+
     def __changeDigits(self, event):
         if self.isItNum(self.__digitNum.get()) == False:
             self.__digitsEntry.config(
@@ -464,7 +654,8 @@ class EightDigits:
            return int(self.__digitNum.get())
 
     def __slotChanged(self):
-        pass
+        self.__data[12] = str(self.__slotMode.get())
+        self.__fillDataVarListBoxes(True, False)
 
     def __fillDataVarListBoxes(self, change, init):
         lists = {
@@ -479,7 +670,7 @@ class EightDigits:
                myList = self.__varListBoxes[num]
                typ    = self.__varBoxSettings[num]
 
-               self.__lastSelecteds[num] = lists[typ][myList.curselection()[0]]
+               self.__lastSelecteds[num] = lists[typ][myList.curselection()[0]].split("::")[1]
                myList.select_clear(0, END)
                myList.delete(0, END)
 
@@ -490,6 +681,7 @@ class EightDigits:
             typ = self.__varBoxSettings[num]
 
             selectNum = 0
+
             for itemNum in range(0, len(lists[typ])):
                 myList.insert(END, lists[typ][itemNum])
                 if lists[typ][itemNum].split("::")[1] == self.__lastSelecteds[num]:

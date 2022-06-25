@@ -33,6 +33,7 @@ class TwoIconsTwoLines:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
         self.dead = dead
+        self.__loadPictures()
 
         itWasHash = False
         if data[3] == "#":
@@ -40,6 +41,60 @@ class TwoIconsTwoLines:
 
         self.__addElements()
         if itWasHash == True: self.__changeData(data)
+
+    def __loadPictures(self):
+        self.__listOfPictures = []
+        import os
+
+        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
+            for file in files:
+                ok = False
+                if file.endswith(".asm"):
+                    f = open(root + "/" + file, "r")
+                    text = f.read()
+                    f.close()
+
+                    firstLine = text.replace("\r", "").split("\n")[0]
+                    fourthLine = text.replace("\r", "").split("\n")[3]
+
+                    if "Height" in firstLine:
+                        try:
+                            num = int(firstLine.split("=")[1])
+                            if num == 8:
+                                ok = True
+                            else:
+                                ok = False
+                        except:
+                            pass
+
+                    if ok == True:
+                       if "Mode=double" in fourthLine:
+                           ok = False
+                       else:
+                           ok = True
+
+
+                if ok == True:
+                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
+
+        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
+            for file in files:
+                ok = False
+                if file.endswith(".asm"):
+                    f = open(root + "/" + file, "r")
+                    text = f.read()
+                    f.close()
+
+                    firstLine = text.replace("\r", "").split("\n")[0]
+                    if "Height" in firstLine:
+                        try:
+                            num = int(firstLine.split("=")[1])
+                            if num == 8:
+                                ok = True
+                        except:
+                            pass
+                if ok == True:
+                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
 
     def killAll(self):
         for item in self.__uniqueFrame.pack_slaves():
@@ -103,59 +158,6 @@ class TwoIconsTwoLines:
 
         self.__frame7.pack_propagate(False)
         self.__frame7.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        self.__listOfPictures = []
-        import os
-
-        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
-            for file in files:
-                ok = False
-                if file.endswith(".asm"):
-                    f = open(root + "/" + file, "r")
-                    text = f.read()
-                    f.close()
-
-                    firstLine = text.replace("\r", "").split("\n")[0]
-                    fourthLine = text.replace("\r", "").split("\n")[3]
-
-                    if "Height" in firstLine:
-                        try:
-                            num = int(firstLine.split("=")[1])
-                            if num == 8:
-                                ok = True
-                            else:
-                                ok = False
-                        except:
-                            pass
-
-                    if ok == True:
-                       if "Mode=double" in fourthLine:
-                           ok = False
-                       else:
-                           ok = True
-
-
-                if ok == True:
-                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
-
-        for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
-            for file in files:
-                ok = False
-                if file.endswith(".asm"):
-                    f = open(root + "/" + file, "r")
-                    text = f.read()
-                    f.close()
-
-                    firstLine = text.replace("\r", "").split("\n")[0]
-                    if "Height" in firstLine:
-                        try:
-                            num = int(firstLine.split("=")[1])
-                            if num == 8:
-                                ok = True
-                        except:
-                            pass
-                if ok == True:
-                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
 
         self.__label1 = Label(self.__frame1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",

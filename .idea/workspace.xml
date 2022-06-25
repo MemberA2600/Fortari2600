@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-06-20_063358.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-06-23_064103.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/EightDigits.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/EightDigits.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/OneIconWithDigits_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/OneIconWithDigits_Kernel.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +36,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1655959262520" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1656140910792" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -122,37 +120,37 @@
     <session id="1636815425">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="246" />
+          <entry key="project.closed" value="248" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.12" value="1" />
           <entry key="project.open.time.3" value="12" />
-          <entry key="project.open.time.4" value="250" />
+          <entry key="project.open.time.4" value="252" />
           <entry key="project.open.time.5" value="43" />
           <entry key="project.open.time.6" value="4" />
           <entry key="project.open.time.8" value="1" />
-          <entry key="project.opened" value="318" />
+          <entry key="project.opened" value="320" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="231105" />
+          <entry key="py" value="233051" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="231105" />
+          <entry key="Python" value="233051" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="521" />
+          <entry key="py" value="524" />
           <entry key="txt" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="8" />
-          <entry key="Python" value="521" />
+          <entry key="Python" value="524" />
         </counts>
       </usages-collector>
     </session>
@@ -165,8 +163,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="117" lean-forward="true" selection-start-line="117" selection-end-line="117" />
+            <state relative-caret-position="219">
+              <caret line="42" column="94" selection-start-line="42" selection-start-column="88" selection-end-line="42" selection-end-column="94" />
             </state>
           </provider>
         </entry>
@@ -174,13 +172,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/EightDigits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="155">
-              <caret line="366" lean-forward="true" selection-start-line="366" selection-end-line="366" />
+            <state relative-caret-position="531">
+              <caret line="542" column="41" selection-start-line="542" selection-start-column="41" selection-end-line="542" selection-end-column="41" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1655959303383" expanded="true" signature="18482:19162" ph="..." />
-                <marker date="1655959303383" expanded="true" signature="19369:19374" ph="..." />
-                <marker date="1655959303383" expanded="true" signature="19411:19417" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="1751:4606" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="22681:23053" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="23087:23096" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="23087:24734" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="24471:24734" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="24772:25156" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="25191:25200" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="25515:25521" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="27413:28093" ph="..." />
+                <marker date="1656140910669" expanded="true" signature="28300:28305" ph="..." />
               </folding>
             </state>
           </provider>
@@ -189,8 +194,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="219">
-              <caret line="960" selection-start-line="960" selection-end-line="962" selection-end-column="82" />
+            <state relative-caret-position="243">
+              <caret line="78" selection-start-line="78" selection-end-line="78" />
+              <folding>
+                <marker date="1656047402302" expanded="true" signature="1743:3728" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -198,8 +206,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="16">
-              <caret line="782" column="41" selection-start-line="782" selection-start-column="41" selection-end-line="782" selection-end-column="41" />
+            <state relative-caret-position="324">
+              <caret line="621" selection-start-line="621" selection-end-line="623" selection-end-column="113" />
+              <folding>
+                <marker date="1656047365011" expanded="true" signature="1746:4849" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -215,26 +226,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>fontListFrame</find>
-      <find>__changeMaxEntry1</find>
-      <find>__digitsEntry</find>
-      <find>nusiz</find>
-      <find>data[7</find>
-      <find>__digitNum</find>
-      <find>__changeDigits</find>
-      <find>digita</find>
-      <find>digit</find>
-      <find>ListBox</find>
-      <find>dataVarL</find>
-      <find>loadPictureData</find>
-      <find>__fillDataVarListBoxes</find>
-      <find>empty</find>
-      <find>Jum</find>
-      <find>temp01</find>
-      <find>addSystemMemory</find>
-      <find>addVariable</find>
-      <find>ASL</find>
-      <find>color</find>
       <find>&quot;$10&quot;</find>
       <find>simple</find>
       <find>byteV</find>
@@ -245,6 +236,26 @@
       <find>check</find>
       <find>DISB</find>
       <find>bind</find>
+      <find>__slotChanged</find>
+      <find>Hex</find>
+      <find>__chamgeConst1</find>
+      <find>font</find>
+      <find>&quot;font</find>
+      <find>slotMode</find>
+      <find>__listOfPictures2</find>
+      <find>spriteName</find>
+      <find>__listOfPictures</find>
+      <find>listOfPictures2</find>
+      <find>listOf</find>
+      <find>ont</find>
+      <find>gra</find>
+      <find>gradient</find>
+      <find>self.__data[14]</find>
+      <find>self.__data[15]</find>
+      <find>__changedFontOption</find>
+      <find>change</find>
+      <find>__changeData</find>
+      <find>__changedFontData</find>
     </findStrings>
     <replaceStrings>
       <replace>__heightSetter.getEntry()</replace>
@@ -330,11 +341,11 @@
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsFourDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoDigits.py" />
         <option value="$PROJECT_DIR$/../Fortari2600ArchievedSrc/TwoIconTwoDigits/TwoIconsTwoDigits.py" />
-        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" />
+        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/EightDigits.py" />
       </list>
     </option>
@@ -598,10 +609,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7387141" visible="true" weight="0.24261874" />
-      <window_info id="Structure" order="1" sideWeight="0.2612859" side_tool="true" weight="0.23170732" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7370937" visible="true" weight="0.24903722" />
+      <window_info id="Structure" order="1" sideWeight="0.2629063" side_tool="true" visible="true" weight="0.24903722" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
@@ -772,13 +782,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="44" column="19" selection-start-line="44" selection-start-column="8" selection-end-line="44" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/VGMDataItem.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -893,13 +896,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/tkinter/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="1525" selection-start-line="1525" selection-end-line="1525" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsFourDigits.py" />
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoDigits.py" />
     <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
@@ -965,36 +961,63 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
+    <entry file="file://$PROJECT_DIR$/src/View/HexEntry.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="782" column="41" selection-start-line="782" selection-start-column="41" selection-end-line="782" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="117" lean-forward="true" selection-start-line="117" selection-end-line="117" />
+        <state relative-caret-position="417">
+          <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
+          <folding>
+            <marker date="1656047402302" expanded="true" signature="1743:3728" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="621" selection-start-line="621" selection-end-line="623" selection-end-column="113" />
+          <folding>
+            <marker date="1656047365011" expanded="true" signature="1746:4849" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/tkinter/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="1704" selection-start-line="1704" selection-end-line="1704" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
-          <caret line="960" selection-start-line="960" selection-end-line="962" selection-end-column="82" />
+          <caret line="42" column="94" selection-start-line="42" selection-start-column="88" selection-end-line="42" selection-end-column="94" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/EightDigits.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="155">
-          <caret line="366" lean-forward="true" selection-start-line="366" selection-end-line="366" />
+        <state relative-caret-position="531">
+          <caret line="542" column="41" selection-start-line="542" selection-start-column="41" selection-end-line="542" selection-end-column="41" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1655959303383" expanded="true" signature="18482:19162" ph="..." />
-            <marker date="1655959303383" expanded="true" signature="19369:19374" ph="..." />
-            <marker date="1655959303383" expanded="true" signature="19411:19417" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="1751:4606" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="22681:23053" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="23087:23096" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="23087:24734" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="24471:24734" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="24772:25156" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="25191:25200" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="25515:25521" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="27413:28093" ph="..." />
+            <marker date="1656140910669" expanded="true" signature="28300:28305" ph="..." />
           </folding>
         </state>
       </provider>
