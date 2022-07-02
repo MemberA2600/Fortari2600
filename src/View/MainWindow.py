@@ -342,7 +342,8 @@ class MainWindow:
                                           self.__openScreenTopBottom, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+        self.__menuLabel    = [None]
+        self.__menuLabel[0] = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
     """
     def __createSelectorFrame(self):
@@ -434,24 +435,35 @@ class MainWindow:
             name = str(event.widget).split(".")[-1]
             button = self.__loader.menuButtons[name].getButton()
             if button.cget("state") == DISABLED:
-                self.__menuLabel.changeColor(self.__loader.colorPalettes.getColor("fontDisabled"))
+                self.__menuLabel[0].changeColor(self.__loader.colorPalettes.getColor("fontDisabled"))
             else:
-                self.__menuLabel.changeColor(self.__loader.colorPalettes.getColor("font"))
+                self.__menuLabel[0].changeColor(self.__loader.colorPalettes.getColor("font"))
 
-            self.__menuLabel.setText(self.__dictionaries.getWordFromCurrentLanguage(name))
-            self.__menuLabel.changePlace(self.__places[name])
+            self.__menuLabel[0].setText(self.__dictionaries.getWordFromCurrentLanguage(name))
+            self.__menuLabel[0].changePlace(self.__places[name])
 
         except:
-            self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+            try:
+                self.__menuLabel[0].setText("")
+                self.__menuLabel[0].dead = True
+            except:
+                pass
+
+            self.__menuLabel[0] = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
     def setMode(self, mode):
         self.__bigFrame.setMode(mode)
 
     def __destroyLabel(self, event):
         try:
-            self.__menuLabel.setText("")
+            self.__menuLabel[0].setText("")
         except:
-            self.__menuLabel = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+            try:
+                self.__menuLabel[0].setText("")
+                self.__menuLabel[0].dead = True
+            except:
+                pass
+            self.__menuLabel[0] = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
 
     def __newButtonFunction(self):
         from NewProjectWindow import NewProjectWindow

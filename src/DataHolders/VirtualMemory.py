@@ -77,6 +77,16 @@ class VirtualMemory:
 
         self.cursor = len(self.archieved)-1
 
+    def generateMemoryAllocationForAssembler(self, validity):
+        text = ""
+        for address in self.memory.keys():
+            for name in self.memory[address].variables:
+                if self.memory[address].variables[name].validity == validity and\
+                   self.memory[address].variables[name].system   == False       :
+                   text += name + " = " + address + "\n"
+        return(text)
+
+
     def changeKernelMemory(self, old, new):
         from copy import deepcopy
         oldVirtualMemory = deepcopy(self.memory)

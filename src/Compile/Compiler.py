@@ -1,5 +1,4 @@
 import re
-from Assembler import Assembler
 
 class Block:
 
@@ -30,6 +29,7 @@ class Compiler:
     def __init__(self, loader, kernel, mode, data):
 
         if mode != "dummy":
+
             self.__loader = loader
             self.__kernel = kernel
             self.__mode = mode
@@ -66,18 +66,85 @@ class Compiler:
                 self.testMenu()
             elif self.__mode == "testScreenElements":
                 self.testScreenElements()
+            elif self.__mode == "save8bitsToAny":
+                self.__save8bitsToAnyInit()
+
+    def __save8bitsToAnyInit(self):
+        name     = self.__data[0]
+        value    = self.__data[1]
+
+        variable = self.__loader.virtualMemory.getVariableByName2(name)
+
+        if variable == False:
+            self.output = ""
+        else:
+            varType  = variable.type
+            varBits  = variable.usedBits
+
+            text     = ""
+            if varType != "byte":
+                text += self.save8bitsToAny(varBits, name, value)
+            else:
+                text = "\tLDA\t#" + value + "\n\tSTA\t" + name + "\n"
+
+            self.output = text
+
+
+    def save8bitsToAny(self, bits, varName, value):
+
+        startingBit     = min(bits)
+        lastBit         = max(bits)
+        text            = "\tLDA\t" + varName + "\n"
+
+        forAND          = ""
+
+        for num in range(7,-1,-1):
+            if num in bits:
+               forAND += "0"
+            else:
+               forAND += "1"
+
+        text            += "\tAND\t#%" + forAND + "\n\tSTA\t" + varName + "\n"
+
+        isInt = False
+        try:
+            teszt = int(value)
+            isInt = True
+        except:
+            pass
+
+        if isInt == True or value.startswith("$") or value.startswith("%"):
+            text += "\tLDA\t#" + str(value) + "\n"
+        else:
+            newVar = self.__loader.virtualMemory.getVariableByName2(value)
+            text += "\tLDA\t" + value + "\n"
+            if newVar.type != "byte":
+               text += self.convertAnyTo8Bits(newVar.usedBits)
+
+        shifting = ""
+        if (8-startingBit) < startingBit:
+            shifting = "\tROR\n" * (8 - startingBit)
+        else:
+            shifting = "\tASL\n"  * startingBit
+
+
+        forAND          = "0" * (8-len(bits)) + "1" * len(bits)
+        text            += "\tAND\t#%" + forAND  + "\n" + shifting +\
+                           "\tORA\t"   + varName + "\n\tSTA\t" + varName + "\n"
+        return(text)
 
     def testScreenElements(self):
         self.__screenElements  = self.__data[0]
         self.__tv              = self.__data[1]
         self.__bank            = self.__data[2]
+        self.__initCode        = self.__data[3]
 
         self.__bankData = []
         # In this case, there is no top or bottom, all tested goes to top.
         self.__routines = {}
         self.__userData = {}
 
-        self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon")
+        self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon") + self.__initCode
         self.__inits    = []
 
         testLine = self.__io.loadTestElementPlain("testLine")
@@ -147,7 +214,16 @@ class Compiler:
                     for key in those[2].keys():
                         self.__userData[key] = those[2][key]
 
+                elif subtyp == "SevenDigits":
+                    those = self.generate_SevenDigits(fullName, data, self.__bank)
+                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                    self.__userData[fullName] = those[1]
 
+                    for key in those[2].keys():
+                        self.__userData[key] = those[2][key]
+
+                    self.__routines[those[3][0]] = those[3][1].replace("#BANK#", self.__bank)
+                    
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
 
@@ -158,10 +234,163 @@ class Compiler:
         self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", "\n".join(self.__routines.values()))
         self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection("\n".join(self.__userData.values())))
 
+        self.__mainCode = self.registerMemory(self.__mainCode)
+
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+
+        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def registerMemory(self, mainCode):
+        validites = ["global"]
+        for num in range(1, 9):
+            validites.append("bank" + str(num))
+
+        for val in validites:
+            mainCode = mainCode.replace("!!!" + val.upper() + "_VARIABLES!!!",
+                                        self.__loader.virtualMemory.generateMemoryAllocationForAssembler(val))
+
+        return(mainCode)
+
+    def generate_SevenDigits(self, name, data, bank):
+        #
+        # Digit1 Pointer:		temp01 (+ temp02)
+        # Digit2 Pointer:		temp03 (+ temp04)
+        # Digit3 Pointer:		temp05 (+ temp06)
+        # Digit4 Pointer:		temp07 (+ temp08)
+        # Digit5 Pointer:		temp09 (+ temp10)
+        # Digit6 Pointer:		temp11 (+ temp12)
+        # Digit7 Pointer:		temp13 (+ temp14)
+        # JumpBack Pointer:		temp15 (+ temp16)
+        # Gradient:			    temp17 (+ temp18)
+        # Color:			    temp19
+        #
+
+        #['temp03', 'temp04', 'temp02', 'temp02', 'random', 'random', 'random', '$random', '8', '0',
+        # '3', '$10', 'digital', '#', '#', '#', '#', '#', '#']
+
+        digits = 7
+        dataVars = data[0:digits]
+        digitNum = data[digits]
+        slotMode = data[digits + 1]
+        gradient = data[digits + 2]
+        color    = data[digits + 3]
+        font     = data[digits + 4]
+
+        topLevelText                = "\n" + name + "\n"
+        pictureData                 = {}
+
+        ddd, fontName               = self.getDigitFont(bank, font)
+        pictureData[fontName]       = ddd
+
+        filledOnes = []
+
+        itemNum = -1
+        for num in range(1, 12, 2):
+            num1 = str(num)
+            num2 = str(num+1)
+
+            if len(num1) < 2: num1 = "0" + num1
+            if len(num2) < 2: num2 = "0" + num2
+
+            topLevelText += "\tLDA\t#<" + fontName + "\n\tSTA\ttemp"+ num1 +"\n"
+            topLevelText += "\tLDX\t#>" + fontName + "\n\tSTX\ttemp"+ num2 +"\n"
+
+            itemNum += 1
+            if itemNum + 1 > int(digitNum): break
+
+            filledOnes.append(num1)
+
+            var = dataVars[itemNum]
+            vvv = self.__loader.virtualMemory.getVariableByName2(var)
+            if vvv.type == "byte":
+                if slotMode == "1":
+                   topLevelText += "\tLDA\t" + dataVars[itemNum] + "\n\tCLC\n\tADC\ttemp"+ num1 + "\n\tSTA\ttemp"+num1+"\n"
+                else:
+                   trueItemNum = itemNum // 2
+                   if itemNum % 2 == 0:
+                        topLevelText += "\tLDA\t" + dataVars[
+                        trueItemNum] + "\n\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n"\
+                                     + "\t" +"CLC\n\tADC\ttemp" + num1 + "\n\tSTA\ttemp" + num1 + "\n"
+                   else:
+                       topLevelText += "\tLDA\t" + dataVars[
+                       trueItemNum] + "\n\tAND\t#%11110000\n\tLSR\n" \
+                                    + "\t" + "CLC\n\tADC\ttemp" + num1 + "\n\tSTA\ttemp" + num1 + "\n"
+            else:
+                topLevelText += "\tLDA\t" + var + "\n"
+                topLevelText += self.convertAnyTo8Bits(vvv.usedBits)
+                topLevelText += "\tASL\n" * 3
+                topLevelText += "\tCLC\n\tADC\ttemp"+ num1 + "\n\tSTA\ttemp" + num1 + "\n"
+
+
+        if digitNum != "7":
+            pictureData[bank + "_" + "EmptyNumber"] = self.__io.loadSubModule("numbersEmpty").replace("BankXX", bank)
+
+            for num in range(1, 14, 2):
+                num1 = str(num)
+                num2 = str(num + 1)
+
+                itemNum += 1
+
+                if len(num1) < 2: num1 = "0" + num1
+                if len(num2) < 2: num2 = "0" + num2
+
+                #print(num1)
+
+                if num1 not in filledOnes:
+                    topLevelText += "\tLDA\t#<" + bank + "_8PixNumbers_Empty\n\tLDX\t#>" + bank + "_8PixNumbers_Empty\n"
+                    topLevelText += "\tSTA\ttemp" + num1 + "\n\tSTX\ttemp" + num2 + "\n"
+
+        else:
+            topLevelText += "\tLDA\t#<" + fontName + "\n\tSTA\ttemp13"+"\n"
+            topLevelText += "\tLDX\t#>" + fontName + "\n\tSTX\ttemp14"+"\n"
+
+            if slotMode == "1":
+               topLevelText += "\tLDA\t" + dataVars[digits-1] + "\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
+            else:
+               var = dataVars[3]
+               variable = self.__loader.virtualMemory.getVariableByName2(var)
+               topLevelText += "\tLDA\t" + var + "\n"
+               if variable.type != "byte":
+                   topLevelText += self.convertAnyTo8Bits(variable.usedBits)
+               topLevelText += "\tASL\n" * 3
+               topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
+
+        pattern                = self.generate_fadeOutPattern(2)
+        patternIndex           = int(gradient)
+
+        xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData             = xxx[0]
+        topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp17\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp18\n"
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(color)
+
+        if colorVar == False:
+            topLevelText         += "\tLDA\t#" + color[:2] + digitNum + "\n"
+        else:
+            topLevelText         += "\tLDA\t"  + color + "\n"
+            if colorVar.type     == "nibble":
+                topLevelText += self.moveVarToTheRight(colorVar.usedBits)
+
+            bits = bin(int(digitNum)).replace("0b", "")
+            while len(bits) < 8: bits = "0" + bits
+            topLevelText        += "\tAND\t#%11110000\n\tORA\t#%"+ bits + "\n"
+
+        topLevelText         += "\tSTA\ttemp19\n"
+
+        routine = ["", ""]
+
+        routine[0] = "SevenDigits_Kernel"
+        routine[1] = self.__loader.io.loadSubModule(routine[0]).replace("#BANK#", bank)
+
+        topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp15\n" + \
+                                    "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp16\n"
+        topLevelText            += "\tJMP\t" + bank + "_" + routine[0] + "\n"
+        topLevelText            += name + "_Back" + "\n"
+
+        return (topLevelText, patternData, pictureData, routine)
 
     def generate_OneIconWithDigits(self, name, data, bank):
         '''
@@ -392,7 +621,7 @@ class Compiler:
         topLevelText +=            "\tLDA\t" + data[9] + "\n"
         dataVar1      =            self.__loader.virtualMemory.getVariableByName2(data[9])
         if dataVar1.type != "byte":
-            topLevelText +=        self.convertAnyTo8Bits(dataVar1.bits)
+            topLevelText +=        self.convertAnyTo8Bits(dataVar1.usedBits)
 
         maxValue = int(data[3])
         topLevelText            += "\tCMP\t#" + data[3] +"\n\tBCC\t" + name + "_Not_Larger_Than_Max1\n" +\
@@ -407,7 +636,7 @@ class Compiler:
         topLevelText +=            "\tLDA\t" + data[10] + "\n"
         dataVar2 = self.__loader.virtualMemory.getVariableByName2(data[10])
         if dataVar2.type != "byte":
-            topLevelText += self.convertAnyTo8Bits(dataVar2.bits)
+            topLevelText += self.convertAnyTo8Bits(dataVar2.usedBits)
 
         maxValue = int(data[7])
         topLevelText            += "\tCMP\t#" + data[7] +"\n\tBCC\t" + name + "_Not_Larger_Than_Max2\n" +\
@@ -527,7 +756,7 @@ class Compiler:
 
         topLevelText +=        "\tLDA\t" + dataVarName + "\n"
         if dataVar.type        != "byte":
-           topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
+           topLevelText        += self.convertAnyTo8Bits(dataVar.usedBits)
         topLevelText        += "\tSTA\ttemp03\n"
 
 
@@ -668,7 +897,7 @@ class Compiler:
 
         topLevelText +=        "\tLDA\t" + dataVarName + "\n"
         if dataVar.type        != "byte":
-           topLevelText        += self.convertAnyTo8Bits(dataVar.bits)
+           topLevelText        += self.convertAnyTo8Bits(dataVar.usedBits)
         topLevelText        += "\tSTA\ttemp03\n"
 
         #topLevelText           +=  "\tLDA\t#" + str(32 // maxValue) + "\n\tSTA\ttemp04\n"
@@ -2407,3 +2636,7 @@ class Compiler:
 #   c.preAlign(open("F:\PyCharm\P\Fortari2600\projects\zerg\\bigSprites\Bird.asm", "r").read())
 #   for num in range(1, 32):
 #        print(num, "-",c.getClosestPowerOf2Minus1(num))
+
+#if __name__ == "__main__":
+#    o = Compiler(None, None, "dummy", None)
+#    print(o.save8bitsToAny([5, 4], "Pacal", "$08"))

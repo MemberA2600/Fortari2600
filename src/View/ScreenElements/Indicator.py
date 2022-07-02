@@ -106,14 +106,14 @@ class Indicator:
         from HalfBarWithText    import HalfBarWithText
         from TwoIconsTwoLines   import TwoIconsTwoLines
         from OneIconWithDigits  import OneIconWithDigits
-        from EightDigits        import EightDigits
+        from SevenDigits          import SevenDigits
 
         self.screenSubs = {
             "FullBar"            : [FullBar,            ["#", "255", "$40|$30|$10", "1", "0"]],
             "HalfBarWithText"    : [HalfBarWithText,    ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
             "TwoIconsTwoLines"   : [TwoIconsTwoLines,   ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0"]],
             "OneIconWithDigits"  : [OneIconWithDigits,  ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
-            "EightDigits"        : [EightDigits,        ["#", "#", "#", "#", "#", "#", "#", "#", "8", "0", "1", "$10", "default"]]
+            "SevenDigits"        : [SevenDigits,        ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]]
         }
 
         if self.__data[2]  == "#":

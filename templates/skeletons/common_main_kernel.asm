@@ -571,6 +571,8 @@ ResetAll
 	STX	VDELP0
 	STX	VDELP1
 	STX	VDELBL
+	STX	REFP0
+	STX	REFP1
 
 	LDX	item		; Retrieve the stack pointer
 	TXS

@@ -6,7 +6,7 @@ from time import sleep
 import re
 
 
-class EightDigits:
+class SevenDigits:
     def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -118,14 +118,14 @@ class EightDigits:
                         except:
                             pass
 
-                if ok == True:
-                    try:
-                        frames = int(secondLine.split("=")[1])
-                    except:
-                        pass
+                    if ok == True:
+                        try:
+                            frames = int(secondLine.split("=")[1])
+                        except:
+                            pass
 
-                    if frames > 9:
-                        self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
+                        if frames > 9:
+                            self.__listOfPictures.append(file.replace(".asm", "") + "_(Normal)")
 
     def killAll(self):
         for item in self.__uniqueFrame.pack_slaves():
@@ -184,11 +184,12 @@ class EightDigits:
         self.__frame6.pack_propagate(False)
         self.__frame6.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        dataVars     = self.__data[3:11]
-        digitNum     = self.__data[11]
-        slotMode     = self.__data[12]
-        color        = self.__data[14]
-        font         = self.__data[15]
+        self.__lastDigit = 10
+        dataVars     = self.__data[3:self.__lastDigit]
+        digitNum     = self.__data[self.__lastDigit]
+        slotMode     = self.__data[self.__lastDigit+1]
+        color        = self.__data[self.__lastDigit+3]
+        font         = self.__data[self.__lastDigit+4]
 
         self.__label1 = Label(self.__frame1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
@@ -254,6 +255,11 @@ class EightDigits:
         self.__frame1_4.pack_propagate(False)
         self.__frame1_4.pack(side=TOP, anchor=N, fill=X)
 
+
+
+        w = ((self.__w // 7) * 2 ) // 3
+        h = self.__h // 6
+
         self.__byteVars = []
         for address in self.__loader.virtualMemory.memory.keys():
             for variable in self.__loader.virtualMemory.memory[address].variables.keys():
@@ -289,7 +295,7 @@ class EightDigits:
         frames = [self.__frame1_1, self.__frame1,
                   self.__frame1_2, self.__frame2,
                   self.__frame1_3, self.__frame3,
-                  self.__frame1_4, self.__frame4,
+                  self.__frame1_4
                   ]
 
         for frame in frames:
@@ -321,7 +327,7 @@ class EightDigits:
         self.__varListBox5 = self.__varListBoxes[4]
         self.__varListBox6 = self.__varListBoxes[5]
         self.__varListBox7 = self.__varListBoxes[6]
-        self.__varListBox8 = self.__varListBoxes[7]
+
 
         self.__digitLabel = Label(self.__frame5,
                               text=self.__dictionaries.getWordFromCurrentLanguage("numOfDigits") + ":",
@@ -337,7 +343,7 @@ class EightDigits:
         if self.isItNum(digitNum) == True:
             self.__digitNum.set(digitNum)
         else:
-            self.__digitNum.set("8")
+            self.__digitNum.set("7")
 
         self.__digitsEntry = Entry(self.__frame5,
                                    bg=self.__colors.getColor("boxBackNormal"),
@@ -353,7 +359,7 @@ class EightDigits:
         self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
         self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
 
-        self.__lastSelecteds = ["", "", "", "", "", "", "", ""]
+        self.__lastSelecteds = ["", "", "", "", "", "", ""]
 
         self.__slotMode = IntVar()
         self.__slotMode.set(int(slotMode))
@@ -384,17 +390,6 @@ class EightDigits:
             varListBox.bind("<KeyRelease-Down>", self.__changeVar)
 
         self.__fillDataVarListBoxes(False, True)
-
-        from HexEntry import HexEntry
-        self.__fuckinColors = ["$16"]
-
-        if self.isItHex(self.__data[12]): self.__fuckinColors[0] = color
-
-        w = ((self.__w // 7) * 2 ) // 3
-        h = self.__h // 6
-
-        self.__colorEntry = HexEntry(self.__loader, self.__frame5, self.__colors, self.__colorDict,
-                                     self.__normalFont, self.__fuckinColors, 0, None, self.__chengeMainColor)
 
         self.__fontLabel = Label(self.__frame5,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
@@ -499,13 +494,116 @@ class EightDigits:
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame6,
-                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", 13)
+                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", self.__lastDigit+2)
+
+        self.__colorSettings = IntVar()
+        self.__colorConstButton = Radiobutton(self.__frame4, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__colorSettings,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.colorSettingsChange1
+                                         )
+
+        self.__colorConstButton.pack_propagate(False)
+        self.__colorConstButton.pack(fill=X, side=TOP, anchor=N)
+
+        from HexEntry import HexEntry
+        self.__fuckinColors = ["$16"]
+
+        if self.isItHex(color): self.__fuckinColors[0] = color
+        self.__colorEntry = HexEntry(self.__loader, self.__frame4, self.__colors, self.__colorDict,
+                                     self.__normalFont, self.__fuckinColors, 0, None, self.__chengeMainColor)
+
+        self.__colorVarButton = Radiobutton(self.__frame4, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__colorSettings,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=2, command=self.colorSettingsChange2
+                                         )
+        self.__colorVarButton.pack_propagate(False)
+        self.__colorVarButton.pack(fill=X, side=TOP, anchor=N)
+
+        self.__colorVarListScrollBar1 = Scrollbar(self.__frame4)
+        self.__colorVarListBox1 = Listbox(self.__frame4, width=100000,
+                                         height=1000,
+                                         yscrollcommand=self.__colorVarListScrollBar1.set,
+                                         selectmode=BROWSE,
+                                         exportselection=False,
+                                         font=self.__smallFont,
+                                         justify=LEFT
+                                         )
+
+        self.__colorVarListBox1.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__colorVarListBox1.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__colorVarListBox1.pack_propagate(False)
+
+        self.__colorVarListScrollBar1.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__colorVarListBox1.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__colorVarListBoxSelected = ""
+        self.__colorVarListScrollBar1.config(command=self.__colorVarListBox1.yview)
+
+        for item in self.__nibbleVars: self.__colorVarListBox1.insert(END, item)
+
+        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changeColorVar)
+        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changeColorVar)
+        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changeColorVar)
+
+        if self.isItHex(color):
+           self.__colorSettings.set(1)
+           self.__colorVarListBox1.config(state = DISABLED)
+        else:
+           self.__colorSettings.set(2)
+           self.__colorEntry.changeState(DISABLED)
+           for itemNum in range(0, len(self.__nibbleVars)):
+               if color == self.__nibbleVars[itemNum].split("::")[1]:
+                  self.__colorVarListBox1.select_set(itemNum)
+                  self.__colorVarListBoxSelected = color
+                  break
+
+    def colorSettingsChange1(self):
+        self.__colorVarListBoxSelected = self.__nibbleVars[self.__colorVarListBox1.curselection()[0]]
+        self.__colorVarListBox1.config(state = DISABLED)
+        self.__colorEntry.changeState(NORMAL)
+
+        self.__colorVarListBox1.select_clear(0, END)
+        self.__data[self.__lastDigit+3] = self.__colorEntry.getValue()
+        self.__changeData(self.__data)
+
+    def colorSettingsChange2(self):
+        self.__colorVarListBox1.config(state = NORMAL)
+        self.__colorEntry.changeState(DISABLED)
+
+        selected = 0
+        for itemNum in range(0, len(self.__nibbleVars)):
+            if self.__colorVarListBoxSelected == self.__nibbleVars[itemNum].split("::")[1]:
+               selected = itemNum
+               break
+
+        self.__colorVarListBox1.select_set(selected)
+        self.__data[self.__lastDigit+3] = self.__nibbleVars[selected].split("::")[1]
+        self.__changeData(self.__data)
+
+
+    def __changeColorVar(self, event):
+        if self.__colorSettings.get() == 1: return
+
+        if self.__colorVarListBoxSelected != self.__nibbleVars[self.__colorVarListBox1.curselection()[0]]:
+           self.__colorVarListBoxSelected  = self.__nibbleVars[self.__colorVarListBox1.curselection()[0]].split("::")[1]
+           self.__data[self.__lastDigit+3] = self.__colorVarListBoxSelected
+           self.__changeData(self.__data)
 
     def __changeFontVar(self, event):
         if self.__fontOption1.get() != 3: return
-        if self.__fontVarListBoxSelected != self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]:
-           self.__fontVarListBoxSelected = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
-           self.__data[15] = self.__fontVarListBoxSelected
+        if self.__fontVarListBoxSelected   != self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]:
+           self.__fontVarListBoxSelected   = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
+           self.__data[self.__lastDigit+4] = self.__fontVarListBoxSelected
            self.__changeData(self.__data)
 
     def __changedFontData(self, data):
@@ -518,7 +616,7 @@ class EightDigits:
 
              self.__fontVarListBox1.select_clear(0, END)
              self.__fontVarListBox1.config(state = DISABLED)
-             self.__data[15] = data
+             self.__data[self.__lastDigit+4] = data
 
         elif data == "digital":
              self.__fontOption1.set(2)
@@ -529,7 +627,7 @@ class EightDigits:
 
              self.__fontVarListBox1.select_clear(0, END)
              self.__fontVarListBox1.config(state = DISABLED)
-             self.__data[15] = data
+             self.__data[self.__lastDigit+4] = data
 
         else:
             self.__fontOption1.set(3)
@@ -537,11 +635,25 @@ class EightDigits:
 
             self.__fontVarListBoxSelected = data
 
+            foundIt = False
+
             for itemNum in range(0, len(self.__listOfPictures)):
                 if self.__listOfPictures[itemNum] == self.__fontVarListBoxSelected:
                    self.__fontVarListBox1.select_set(itemNum)
-                   self.__data[15] = data
+                   self.__data[self.__lastDigit+4] = data
+                   foundIt = True
                    break
+
+            if foundIt == False:
+                self.__fontOption1.set(2)
+                try:
+                    self.__fontVarListBoxSelected = self.__listOfPictures[self.__fontVarListBox1.curselection()[0]]
+                except:
+                    self.__fontVarListBoxSelected = self.__listOfPictures[0]
+
+                self.__fontVarListBox1.select_clear(0, END)
+                self.__fontVarListBox1.config(state=DISABLED)
+                self.__data[self.__lastDigit+4] = data
 
 
 
@@ -567,11 +679,13 @@ class EightDigits:
 
 
     def __chengeMainColor(self, event):
-        if self.__colorEntry.getValue() != self.__data[14]:
+        if self.__colorSettings == 2: return
+
+        if self.__colorEntry.getValue() != self.__data[self.__lastDigit+3]:
             temp = self.__colorEntry.getValue()
             if self.isItHex(temp) == True:
                 temp = temp[:2] + "6"
-                self.__data[14] = temp
+                self.__data[self.__lastDigit+3] = temp
                 self.__colorEntry.setValue(temp)
                 self.__changeData(self.__data)
 
@@ -586,14 +700,14 @@ class EightDigits:
                 bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                 fg=self.__loader.colorPalettes.getColor("boxFontNormal")
             )
-            if self.__digitNum.get() != self.__data[11]:
+            if self.__digitNum.get() != self.__data[self.__lastDigit]:
                 temp = self.__digitNum.get()
-                if int(temp) > 8:
-                    temp = "8"
+                if int(temp) > 7:
+                    temp = "7"
                 elif int(temp) < 1:
                     temp = "1"
                 self.__digitNum.set(temp)
-                self.__data[11] = self.__digitNum.get()
+                self.__data[self.__lastDigit] = self.__digitNum.get()
 
         self.__fillDataVarListBoxes(True, False)
 
@@ -641,7 +755,7 @@ class EightDigits:
                 settingsDependingOnDigitNum.append("byte")
 
         else:
-            for num in range(0, 8):
+            for num in range(0, 7):
                 settingsDependingOnDigitNum.append("byte")
 
         return settingsDependingOnDigitNum
@@ -654,7 +768,7 @@ class EightDigits:
            return int(self.__digitNum.get())
 
     def __slotChanged(self):
-        self.__data[12] = str(self.__slotMode.get())
+        self.__data[self.__lastDigit+1] = str(self.__slotMode.get())
         self.__fillDataVarListBoxes(True, False)
 
     def __fillDataVarListBoxes(self, change, init):
@@ -676,7 +790,7 @@ class EightDigits:
 
         activeNum = self.__getActiveNum()
 
-        for num in range(0, 8):
+        for num in range(0, 7):
             myList = self.__varListBoxes[num]
             typ = self.__varBoxSettings[num]
 
@@ -688,7 +802,7 @@ class EightDigits:
                     selectNum = itemNum
 
             myList.select_set(selectNum)
-            self.__lastSelecteds[num] = lists[typ][selectNum]
+            self.__lastSelecteds[num] = lists[typ][selectNum].split("::")[1]
             self.__data[3+num]        = self.__lastSelecteds[num]
 
             if activeNum < num+1:

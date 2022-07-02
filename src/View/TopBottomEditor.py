@@ -561,21 +561,21 @@ class TopBottomEditor:
 
         self.__undoButton = Button(frame1, bg=self.__loader.colorPalettes.getColor("window"),
                                    image=self.__undoImage,
-                                   width= frame1.winfo_width(), height = frame1.winfo_height(),
+                                   width= 9999999999, height = 9999999999999,
                                    state=DISABLED,
                                    command=self.__undoChanges)
 
         self.__undoButton.pack_propagate(False)
-        self.__undoButton.pack(fill=BOTH, side = TOP, anchor = N)
+        self.__undoButton.pack(fill=BOTH, side = RIGHT, anchor = W)
 
         self.__redoButton = Button(frame2, bg=self.__loader.colorPalettes.getColor("window"),
                                    image=self.__redoImage,
-                                   width= frame1.winfo_width(), height = frame1.winfo_height(),
+                                   width= 9999999999, height = 99999999999999,
                                    state=DISABLED,
                                    command=self.__redoChanges)
 
         self.__redoButton.pack_propagate(False)
-        self.__redoButton.pack(fill=BOTH, side = TOP, anchor = N)
+        self.__redoButton.pack(fill=BOTH, side = LEFT, anchor = E)
 
         """
         self.__saveButton = Button(frame3, bg=self.__loader.colorPalettes.getColor("window"),
@@ -890,6 +890,14 @@ class TopBottomEditor:
         self.setTheSetter(name, typ)
 
     def __testAll(self):
+        from ScreenTopTester import ScreenTopTester
+
+        self.initCode = ""
+        self.answer   = ""
+        self.__subMenu = ScreenTopTester(self.__loader, self, self.__codeData)
+        if self.answer == "NOPE":
+            return
+
         t = Thread(target=self.__testAllThread)
         t.daemon = True
         t.start()
@@ -899,7 +907,7 @@ class TopBottomEditor:
 
         Compiler(self.__loader, self.__loader.virtualMemory.kernel,
                  "testScreenElements", [self.__codeData[self.__activePart][self.getBankNum()][2],
-                                        "NTSC", self.__activeBank
+                                        "NTSC", self.__activeBank, self.initCode
                                         ]
                  )
 

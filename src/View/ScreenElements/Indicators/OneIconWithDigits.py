@@ -770,10 +770,15 @@ class OneIconWithDigits:
                 self.__fontVarListBox1.config(state = DISABLED)
             else:
                 self.__fontOption1.set(3)
+                foundIt = False
                 for itemNum in range(0, len(self.__listOfPictures2)):
                     self.__fontVarListBox1.select_set(itemNum)
                     self.__fontListSelect[0] = self.__data[9]
+                    foundIt = True
                     break
+                if foundIt == False:
+                    self.__fontOption1.set(1)
+                    self.__fontVarListBox1.config(state=DISABLED)
 
         if   int(self.__digitNum.get()) == 1:
             self.__dataListBoxVarTypes = ["nibble", "byte"]

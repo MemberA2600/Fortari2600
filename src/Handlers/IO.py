@@ -10,6 +10,7 @@ class IO:
         self.__loader = loader
 
     def getImg(self, name, size):
+
         if (size == None):
             return(ImageTk.PhotoImage(Image.open("others/img/"+name+".png")
                                       .resize((self.__loader.mainWindow.getConstant(),

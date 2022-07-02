@@ -304,3 +304,4 @@ digital=Digitális
 custom=Egyéni
 numOfDigits=Számjegyek Száma
 slotMachine=Nyerõgép Mód
+screenTester=Képernyõteszt - Változók
