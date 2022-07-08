@@ -151,6 +151,11 @@ class GradientFrame:
         self.__gradButton3.bind("<ButtonRelease-1>", self.XXX)
         self.__gradButton4.bind("<ButtonRelease-1>", self.XXX)
 
+        self.__buttons = [
+            self.__gradButton1, self.__gradButton2,
+            self.__gradButton3, self.__gradButton4
+        ]
+
         while self.__canvas.winfo_width() < 2:
             sleep(0.005)
 
@@ -206,3 +211,21 @@ class GradientFrame:
         self.reDrawCanvas()
         self.__data[self.__dataNum] = str(self.__option.get())
         self.__changeData(self.__data)
+
+    def changeState(self, state):
+        from threading import Thread
+
+        t           = Thread(target=self.changeThread, args=[state])
+        t.daemon    = True
+        t.start()
+
+    def changeThread(self, state):
+        from time import sleep
+
+        while True:
+            try:
+                for item in self.__buttons:
+                    item.config(state = state)
+                break
+            except:
+                sleep(0.0025)

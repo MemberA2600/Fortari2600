@@ -305,3 +305,4 @@ custom=Custom
 numOfDigits=Number of Digits
 slotMachine=Slotmachine Mode
 screenTester=Screen Tester - Variables
+sameColor=Same Color as Icon

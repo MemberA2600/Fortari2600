@@ -102,18 +102,20 @@ class Indicator:
 
         self.__indicatorListBox.select_clear(0, END)
 
-        from FullBar            import FullBar
-        from HalfBarWithText    import HalfBarWithText
-        from TwoIconsTwoLines   import TwoIconsTwoLines
-        from OneIconWithDigits  import OneIconWithDigits
-        from SevenDigits          import SevenDigits
+        from FullBar             import FullBar
+        from HalfBarWithText     import HalfBarWithText
+        from TwoIconsTwoLines    import TwoIconsTwoLines
+        from OneIconWithDigits   import OneIconWithDigits
+        from SevenDigits         import SevenDigits
+        from TwelveIconsOrDigits import TwelveIconsOrDigits
 
         self.screenSubs = {
-            "FullBar"            : [FullBar,            ["#", "255", "$40|$30|$10", "1", "0"]],
-            "HalfBarWithText"    : [HalfBarWithText,    ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
-            "TwoIconsTwoLines"   : [TwoIconsTwoLines,   ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0"]],
-            "OneIconWithDigits"  : [OneIconWithDigits,  ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
-            "SevenDigits"        : [SevenDigits,        ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]]
+            "FullBar"             : [FullBar,             ["#", "255", "$40|$30|$10", "1", "0"]],
+            "HalfBarWithText"     : [HalfBarWithText,     ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
+            "TwoIconsTwoLines"    : [TwoIconsTwoLines,    ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0"]],
+            "OneIconWithDigits"   : [OneIconWithDigits,   ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
+            "SevenDigits"         : [SevenDigits,         ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]],
+            "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1"]]
         }
 
         if self.__data[2]  == "#":

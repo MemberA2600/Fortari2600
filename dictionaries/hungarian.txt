@@ -305,3 +305,4 @@ custom=Egyéni
 numOfDigits=Számjegyek Száma
 slotMachine=Nyerõgép Mód
 screenTester=Képernyõteszt - Változók
+sameColor=Ikonnal megegyezõ szín
