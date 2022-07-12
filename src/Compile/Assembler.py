@@ -658,7 +658,6 @@ class Assembler():
         if ("<" not in raw) and (">" not in raw):
             return(raw)
 
-        #print(raw)
         try:
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
         except:

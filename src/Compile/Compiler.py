@@ -168,7 +168,7 @@ class Compiler:
                 fullName += "_" + data[0]
                 those = self.generate_64px(fullName, data, data[0])
                 self.__bankData.append(those[0])
-                self.__userData[fullName] = those[1]
+                self.__userData[those[1][1]] = those[1][0]
                 self.__inits.append(those[2])
             elif typ == "Indicator":
                 subtyp = item[2]
@@ -177,7 +177,7 @@ class Compiler:
                 if   subtyp == "FullBar":
                      those  = self.generate_FullBar(fullName, data, self.__bank)
                      self.__bankData.append(those[0])
-                     self.__userData[fullName] = those[1]
+                     self.__userData[those[1][1]] = those[1][0]
 
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
@@ -188,7 +188,7 @@ class Compiler:
                 elif subtyp == "HalfBarWithText":
                      those  = self.generate_HalfBarWithText(fullName, data, self.__bank)
                      self.__bankData.append(those[0])
-                     self.__userData[fullName] = those[1]
+                     self.__userData[those[1][1]] = those[1][0]
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
 
@@ -198,7 +198,7 @@ class Compiler:
                 elif subtyp == "TwoIconsTwoLines":
                      those  = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
                      self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                     self.__userData[fullName] = those[1]
+                     self.__userData[those[1][1]] = those[1][0]
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
                      self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
@@ -208,7 +208,7 @@ class Compiler:
                 elif subtyp == "OneIconWithDigits":
                     those = self.generate_OneIconWithDigits(fullName, data, self.__bank)
                     self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    self.__userData[fullName] = those[1]
+                    self.__userData[those[1][1]] = those[1][0]
                     self.__routines["OneIconWithDigits"] = self.__io.loadSubModule("OneIconWithDigits_Kernel").replace("#BANK#",
                                                                                                          self.__bank)
                     for key in those[2].keys():
@@ -217,12 +217,25 @@ class Compiler:
                 elif subtyp == "SevenDigits":
                     those = self.generate_SevenDigits(fullName, data, self.__bank)
                     self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    self.__userData[fullName] = those[1]
+                    self.__userData[those[1][1]] = those[1][0]
 
                     for key in those[2].keys():
                         self.__userData[key] = those[2][key]
 
                     self.__routines[those[3][0]] = those[3][1].replace("#BANK#", self.__bank)
+
+                elif subtyp == "TwelveIconsOrDigits":
+                    those = self.generate_TwelveIconsOrDigits(fullName, data, self.__bank)
+                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                    if those[1] != None: self.__userData[those[1][1]] = those[1][0]
+                    self.__routines["TwelveIconsOrDigits"] = self.__io.loadSubModule("TwelveIconsOrDigits_Kernel").replace("#BANK#",
+                                                                                                         self.__bank)
+                    self.__routines["bin2BCD"] = self.__io.loadSubModule("bin2BCD").replace("#BANK#", self.__bank)
+
+                    for key in those[2].keys():
+                        self.__userData[key] = those[2][key]
+
+
                     
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -253,6 +266,99 @@ class Compiler:
                                         self.__loader.virtualMemory.generateMemoryAllocationForAssembler(val))
 
         return(mainCode)
+
+    def generate_TwelveIconsOrDigits(self, name, data, bank):
+        #
+        # JumpBack Kernel:	    temp01 (+ temp02)
+        # Icon_Pointer:		    temp03 (+ temp04)
+        # Icon_Color_Pointer:	temp05 (+ temp06)
+        # Digit01_Pointer:	    temp07 (+ temp08)
+        # Digit02_Pointer:	    temp09 (+ temp10)
+        # Gradient_Pointer:	    temp11 (+ temp12)
+        # Font_BaseColor	    temp13
+        # Data  		        temp14
+        # dataBDC               temp15
+        # Digit03_Pointer:      temp16 (+ temp17)
+        # dataBDC_100           temp18
+        #
+
+        icon            = data[0]
+        dataVar         = data[1]
+        digitColor      = data[2]
+        digitFont       = data[3]
+        digitGradient   = data[4]
+        colorMode       = data[5]
+
+        iconName        = icon.split("_(")[0]
+        iconType        = icon.split("_(")[1][:-1]
+
+        topLevelText = "\n" + name + "\n"
+
+        #
+        #   Get Data as BCD before we kill the whole
+        #
+
+        topLevelText += "\tLDA\t#0\n\tSTA\ttemp15\n\tSED\n"
+
+        topLevelText    += "\tLDA\t" + dataVar + "\n"
+        topLevelText    += self.convertAnyTo8Bits(self.__loader.virtualMemory.getVariableByName2(dataVar).usedBits)
+        topLevelText += "\tSTA\ttemp14\n"
+
+        pointerName     = name + "_ComeBackAfterThat"
+
+        topLevelText    += "\tLDX\t#<" + pointerName + "\n\tSTX\ttemp01\n" + \
+                           "\tLDX\t#>" + pointerName + "\n\tSTX\ttemp02\n" + \
+                           "\tJMP\t"   + "#BANK#_bin2BCD".replace("#BANK#", bank) + "\n" + \
+                           pointerName + "\n"
+
+        topLevelText    += "\tSTA\ttemp15\n\tSTY\ttemp18\n"
+
+        pictureData = {}
+        pictureData[iconName]   = self.loadPictureData(bank, iconName, iconType)
+
+        ddd, fontName           = self.getDigitFont(bank, digitFont)
+        pictureData[fontName]   = ddd
+
+        topLevelText            += self.__io.loadSubModule("Icon_SelectOnFrame").\
+                                   replace("##SCREENITEM##", name). \
+                                   replace("##NAME##", bank+"_"+iconName)
+
+        #pictureData[bank + "_" + "EmptyNumber"] = self.__io.loadSubModule("numbersEmpty").replace("BankXX", bank)
+
+        topLevelText            += "\tLDA\t#<"+fontName+"\n\tSTA\ttemp07\n" + "\tSTA\ttemp09\n" + "\tSTA\ttemp16\n"
+        topLevelText            += "\tLDX\t#>"+fontName+"\n\tSTX\ttemp08\n" + "\tSTX\ttemp10\n" + "\tSTX\ttemp17\n"
+
+        patternData = None
+
+        if colorMode == "0":
+           pattern = self.generate_fadeOutPattern(2)
+           patternIndex = int(digitGradient)
+
+           xxx = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+           patternData = xxx
+
+           colorVar = self.__loader.virtualMemory.getVariableByName2(digitColor)
+           if colorVar == False:
+               topLevelText += "\tLDA\t#" + digitColor[:2] + "6\n"
+           else:
+               topLevelText += "\tLDA\t" + digitColor + "\n"
+               if colorVar.type == "nibble":
+                   topLevelText += self.moveVarToTheRight(colorVar.usedBits)
+
+           topLevelText += "\tSTA\ttemp13\n"
+           topLevelText += "\tLDA\t#<" + xxx[1]   + "\n\tSTA\ttemp11\n\tLDA\t#>" + xxx[1]   + "\n\tSTA\ttemp12\n"
+        else:
+            topLevelText += "\tLDA\t#0\n\tSTA\ttemp13\n" + \
+                            "\tLDA\t#<" + bank + "_" + iconName + "_BigSpriteColor_0\n\tSTA\ttemp11\n\tLDA\t#>" + \
+                                          bank + "_" + iconName + "_BigSpriteColor_0\n\tSTA\ttemp12\n"
+
+        topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                    "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText            += "\tJMP\t" + bank + "_TwelveIconsOrDigits_Kernel" + "\n"
+        topLevelText            += name + "_Back" + "\n"
+
+        return (topLevelText, patternData, pictureData)
+
 
     def generate_SevenDigits(self, name, data, bank):
         #
@@ -362,7 +468,7 @@ class Compiler:
         patternIndex           = int(gradient)
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
+        patternData             = xxx
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp17\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp18\n"
 
         colorVar = self.__loader.virtualMemory.getVariableByName2(color)
@@ -459,7 +565,7 @@ class Compiler:
         patternIndex           = int(gradientType)
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
+        patternData             = xxx
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp15\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp16\n"
 
         ddd, fontName           = self.getDigitFont(bank, digitFont)
@@ -652,7 +758,7 @@ class Compiler:
         patternIndex           = int(data[8])
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
+        patternData             = xxx
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp07\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp08\n"
 
         picSettings1        = data[2]
@@ -790,7 +896,7 @@ class Compiler:
                                         .replace("#NAME#", name).replace("#BANK#", bank))
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
+        patternData             = xxx
 
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
         topLevelText           += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
@@ -932,7 +1038,7 @@ class Compiler:
         topLevelText            += "\tSTA\ttemp03\n"
 
         xxx                     = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
-        patternData             = xxx[0]
+        patternData             = xxx
 
         topLevelText           += "\tLDA\t#<" + xxx[1] +"\n\tSTA\ttemp06\n\tLDA\t#>" + xxx[1] +"\n\tSTA\ttemp07\n"
 
@@ -1300,6 +1406,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+        from Assembler import Assembler
+
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def menuASM(self):
@@ -1453,6 +1561,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+        from Assembler import Assembler
+
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
 
@@ -1478,6 +1588,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
         self.changePointerToZero(self.__data[1])
         self.doSave("temp/")
+        from Assembler import Assembler
+
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
 
@@ -1504,6 +1616,8 @@ class Compiler:
 
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
         self.doSave("temp/")
+        from Assembler import Assembler
+
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def getMusicBytesSizeOnly(self):
@@ -1711,6 +1825,9 @@ class Compiler:
                 delete = True
             else:
                 delete = False
+
+            from Assembler import Assembler
+
             assembler = Assembler(self.__loader, self.__pathToSave, True, "NTSC", delete)
         else:
             self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
@@ -2067,6 +2184,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+
+        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def getPFASM(self):
@@ -2115,6 +2234,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+
+        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
     def getSpriteASM(self):
@@ -2206,6 +2327,8 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
+
+        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
     def __contructChanger(self, variables, constants):
@@ -2447,9 +2570,8 @@ class Compiler:
         self.__mainCode = self.__mainCode.replace("!!!KERNEL_DATA!!!", (self.__convertedPlayfield+"\n\n"+self.__convertedSpite))
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
-
-
         self.doSave("temp/")
+        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
 

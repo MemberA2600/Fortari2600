@@ -636,6 +636,8 @@ class TwelveIconsOrDigits:
            self.__changeData(self.__data)
 
     def __changeFontColorVar(self, event):
+        if self.__sameColor.get() == 1: return
+
         if self.__lastTextColor != self.__colorVars[self.__textColorVarListBox.curselection()[0]].split("::")[1]:
            self.__lastTextColor  = self.__colorVars[self.__textColorVarListBox.curselection()[0]].split("::")[1]
            self.__data[5]        = self.__lastTextColor

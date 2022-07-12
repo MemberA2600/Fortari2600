@@ -29,20 +29,21 @@
 
 	STA	GRP0			; 3 (12)
 	STA	GRP1			; 3 (15)
-	STA	HMP0			; 3 (18)
+	sleep	4
 
 	LDA	#$01			; 2 (20)
 	STA	NUSIZ1			; 3 (23)
-*
-*	Even: $00
-*	Odd : $80
-*
 
 	LDA	counter			; 3 (26)
 	AND	#00000001		; 2 (28)
 	STA	RESP1			; 3 (31)
 	ROR				; 2 (33)
-	STA	HMP1			; 3 (36)
+	TAX 
+	LDA	#BANK#_OneIconWithDigits_HMOVE_TABLE,x
+	STA	HMP1			; 3 
+
+	LDA	#$F0
+	STA	HMP0
 
 	STA	WSYNC			; 76
 	STA	HMOVE			; 3 
@@ -56,6 +57,10 @@
 	LDY	#7			; 2 
 	JMP	#BANK#_OneIconWithDigits_P0_7
 					; 3 (16)
+#BANK#_OneIconWithDigits_HMOVE_TABLE
+	BYTE	#$10
+	BYTE	#$10
+
 #BANK#_OneIconWithDigits_P0_0
 	sleep	7
 #BANK#_OneIconWithDigits_P0_5
@@ -117,13 +122,14 @@
 	LDA	(temp05),y		; 5 (16)
 	STA	COLUP0			; 3 (19)
 
+	sleep	2
 	LDA	(temp09),y		; 5 (24)
 	STA	GRP1			; 3 (27)
 	STX	COLUP1			; 3 (30)
 	LDA	(temp13),y		; 5 (35)
 	STA	GRP1			; 3 (38)	
 
-	sleep	11
+	sleep	9
 	
 	LDA	#$80			; 2 (51)
 	STA	HMP0			; 3 (54)
@@ -146,10 +152,10 @@
 	STA	GRP1			; 3 (27)
 	STX	COLUP1			; 3 (30)
 	LDA	(temp11),y		; 5 (35)
-	sleep	2
+	sleep	4
 	STA	GRP1			; 3 (38)
 
-	sleep	9
+	sleep	7
 
 	LDA	#$80			; 2 (48)
 	STA	HMP1			; 3 (51)
@@ -179,10 +185,10 @@
 	STA	GRP1			; 3 (22)
 	STX	COLUP1			; 3 (25)
 	LDA	(temp11),y		; 5 (30)
-	sleep	2
+	sleep	4
 	STA	GRP1			; 3 (35)
 
-	sleep	10
+	sleep	8
 
 	DEY				; 2 (53)
 	LAX	(temp15),y		; 5 (58)
@@ -207,9 +213,9 @@
 	STX	COLUP1			; 3 (30)
 	LDA	(temp13),y		; 5 (34)
 
-	sleep	2
+	sleep	3
 	STA	GRP1			; 3 (39)
-	sleep	2
+*	sleep	2
 
 	DEY				; 2 (48)
 	LAX	(temp15),y		; 5 (53)
