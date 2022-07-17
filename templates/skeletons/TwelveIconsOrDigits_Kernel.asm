@@ -36,7 +36,6 @@
 	STA  	ENAM1
 	STA	HMCLR		; 12 x 3 (36)
 	
-
 	LDA	temp14		; 3 (39)
 	CMP	#7		; 2 (41)
 	BCC	#BANK#_TwelveIconsOrDigits_Basic_Mode ; 2 (40)

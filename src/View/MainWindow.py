@@ -805,6 +805,9 @@ class MainWindow:
     def focusOut(self, event):
         self.focused = None
 
+    def getCurrentSubMenuToplevel(self):
+        return self.__subMenu.getTopLevelWindow()
+
     def setCopyButton(self, button):
         from time import sleep
         sleep(2)

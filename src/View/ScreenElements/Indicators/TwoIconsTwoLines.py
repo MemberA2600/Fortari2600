@@ -7,7 +7,7 @@ import re
 
 
 class TwoIconsTwoLines:
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -35,12 +35,18 @@ class TwoIconsTwoLines:
         self.dead = dead
         self.__loadPictures()
 
-        itWasHash = False
-        if data[3] == "#":
-            itWasHash = True
+        if len(self.__listOfPictures) == 0:
+            blankAnimation({
+                               "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
+                                                                         self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
+                           })
+        else:
+            itWasHash = False
+            if data[3] == "#":
+                itWasHash = True
 
-        self.__addElements()
-        if itWasHash == True: self.__changeData(data)
+            self.__addElements()
+            if itWasHash == True: self.__changeData(data)
 
     def __loadPictures(self):
         self.__listOfPictures = []
@@ -924,10 +930,13 @@ class TwoIconsTwoLines:
            self.__indexVal1.set("0")
 
            for itemNum in range(0, len(self.__colorVars)):
+               selector = 0
                if self.__colorVars[itemNum].split("::")[1] == self.__data[5]:
                   self.__lastSelectedPictureVars[0] = self.__data[5]
-                  self.__picVarListBox1.select_set(itemNum)
+                  selector = itemNum
                   break
+
+           self.__picVarListBox1.select_set(selector)
 
         if self.__data[9][0] == "%":
            self.__picSettingsOption2.set(1)
@@ -953,11 +962,14 @@ class TwoIconsTwoLines:
            self.__mirrored2.set(0)
            self.__indexVal2.set("0")
 
+           selector = 0
            for itemNum in range(0, len(self.__colorVars)):
                if self.__colorVars[itemNum].split("::")[1] == self.__data[9]:
                   self.__lastSelectedPictureVars[1] = self.__data[9]
-                  self.__picVarListBox2.select_set(itemNum)
+                  selector = itemNum
                   break
+
+           self.__picVarListBox2.select_set(selector)
 
 
         self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
@@ -976,6 +988,24 @@ class TwoIconsTwoLines:
         self.__picVarListBox2.bind("<KeyRelease-Up>", self.__changedPicVar2)
         self.__picVarListBox2.bind("<KeyRelease-Down>", self.__changedPicVar2)
 
+        """
+        self.__rightVal = IntVar()
+        self.__right = Checkbutton(self.__frame7, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("justifyRight"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__rightVal,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__changeJustify
+                                       )
+
+        self.__right.pack_propagate(False)
+        self.__right.pack(fill=X, side=TOP, anchor=N)
+
+        if self.__data[16] == "1": self.__rightVal.set(1)
+        """
+
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame7,
                                              self.__changeData, self.__h, self.__data, self.dead, 8, "small", 11)
@@ -986,6 +1016,9 @@ class TwoIconsTwoLines:
         self.__dotMode1.set(int(self.__data[14]))
         self.__dotMode2.set(int(self.__data[15]))
 
+    def __changeJustify(self):
+        self.__data[16] = str(self.__rightVal.get())
+        self.__changeData(self.__data)
 
     def __dotsChanged1(self):
         self.__data[14] = str(self.__dotMode1.get())

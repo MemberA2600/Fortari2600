@@ -33,6 +33,7 @@ class Loader:
         self.piaNotes = None
         self.executor = None
         self.bigFrame = None
+        self.jumpman = []
 
         #self.frames = {}
         self.menuButtons = {}

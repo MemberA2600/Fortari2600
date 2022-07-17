@@ -7,7 +7,7 @@ import re
 
 
 class OneIconWithDigits:
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -36,13 +36,18 @@ class OneIconWithDigits:
 
         self.__loadPictures()
 
+        if len(self.__listOfPictures) or len(self.__listOfPictures2)== 0:
+            blankAnimation({
+                               "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
+                                                                         self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
+                           })
+        else:
+            itWasHash = False
+            if data[3] == "#":
+                itWasHash = True
 
-        itWasHash = False
-        if data[3] == "#":
-            itWasHash = True
-
-        self.__addElements()
-        if itWasHash == True: self.__changeData(data)
+            self.__addElements()
+            if itWasHash == True: self.__changeData(data)
 
     def __loadPictures(self):
         self.__listOfPictures  = []
@@ -606,11 +611,14 @@ class OneIconWithDigits:
            self.__mirrored1.set(0)
            self.__indexVal1.set("0")
 
+           selector = 0
            for itemNum in range(0, len(self.__colorVars)):
                if self.__colorVars[itemNum].split("::")[1] == self.__data[5]:
-                  self.__lastSelectedPictureVars[0] = self.__data[5]
-                  self.__picVarListBox1.select_set(itemNum)
+                  selector = itemNum
                   break
+
+           self.__lastSelectedPictureVars[0] = self.__data[5]
+           self.__picVarListBox1.select_set(selector)
 
         self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
         self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
@@ -752,6 +760,9 @@ class OneIconWithDigits:
 
         self.__fontListSelect = [self.__listOfPictures2[0], self.__listOfPictures2[0]]
 
+        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changedFontVarListBox1)
+        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changedFontVarListBox1)
+        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changedFontVarListBox1)
 
         for item in self.__listOfPictures2:
             self.__fontVarListBox1.insert(END, item)
@@ -772,10 +783,12 @@ class OneIconWithDigits:
                 self.__fontOption1.set(3)
                 foundIt = False
                 for itemNum in range(0, len(self.__listOfPictures2)):
-                    self.__fontVarListBox1.select_set(itemNum)
-                    self.__fontListSelect[0] = self.__data[9]
-                    foundIt = True
-                    break
+                    if self.__listOfPictures2[itemNum] == self.__data[9]:
+                       self.__fontVarListBox1.select_set(itemNum)
+                       self.__fontListSelect[0] = self.__data[9]
+                       foundIt = True
+                       break
+
                 if foundIt == False:
                     self.__fontOption1.set(1)
                     self.__fontVarListBox1.config(state=DISABLED)
@@ -890,12 +903,15 @@ class OneIconWithDigits:
 
     def __changedFontOption1_3(self):
         self.__fontVarListBox1.config(state = NORMAL)
+        selector = 0
         for itemNum in range(0, len(self.__listOfPictures2)):
             if self.__listOfPictures2[itemNum] == self.__fontListSelect[0]:
-                self.__fontVarListBox1.select_set(itemNum)
-                self.__data[9]  = self.__fontListSelect[0]
-                self.__changeData(self.__data)
+                selector = itemNum
                 break
+
+        self.__fontVarListBox1.select_set(selector)
+        self.__data[9] = self.__fontListSelect[0]
+        self.__changeData(self.__data)
 
     def __chamgeConst1(self, event):
         if self.__constEntry1.getValue() != self.__data[4]:
@@ -919,12 +935,16 @@ class OneIconWithDigits:
     def XXX_VarOn(self, constEntry, lastSelected, lastSelectedNum, colorVarListBox, dataNum, variables):
         constEntry.changeState(state = DISABLED)
         colorVarListBox.config(state = NORMAL)
+
+        selector = 0
         for itemNum in range(0, len(variables)):
             if variables[itemNum].split("::")[1] == lastSelected[lastSelectedNum]:
-               colorVarListBox.select_set(itemNum)
-               self.__data[dataNum] = lastSelected[lastSelectedNum]
-               self.__changeData(self.__data)
+               selector = itemNum
                break
+
+        colorVarListBox.select_set(selector)
+        self.__data[dataNum] = lastSelected[lastSelectedNum]
+        self.__changeData(self.__data)
 
     def XXX1(self):
         self.XXX_ConstOn(self.__constEntry1,
@@ -991,12 +1011,15 @@ class OneIconWithDigits:
         picVarListBox.config(state = NORMAL)
         picVarListBox.select_clear(0, END)
 
+        selector  = 0
         for itemNum in range(0, len(variables)):
             if lastSelected[selectNum] == variables[itemNum].split("::")[1]:
-               picVarListBox.select_set(itemNum)
-               self.__data[dataNum] = variables[itemNum].split("::")[1]
-               self.__changeData(self.__data)
+               selector = itemNum
                break
+
+        picVarListBox.select_set(selector)
+        self.__data[dataNum] = variables[selector].split("::")[1]
+        self.__changeData(self.__data)
 
     def __changedPicVar_TheRealOne(self, picOption, lastSelected, selectNum, dataNum, listBox):
         if picOption.get() == 1:

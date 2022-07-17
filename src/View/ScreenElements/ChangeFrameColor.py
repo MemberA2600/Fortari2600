@@ -8,7 +8,7 @@ from ScreenSetterFrameBase import ScreenSetterFrameBase
 
 class ChangeFrameColor:
 
-    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank):
+    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow):
 
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -144,8 +144,8 @@ class ChangeFrameColor:
         self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
         self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
-
-        self.__tempSet = self.__varList[0]
+        self.__tempSet = self.__varList[0].split("::")[1]
+        if "::" in self.__data[2]: self.__tempSet = self.__data[2]
 
         from HexEntry import HexEntry
         self.__color = ["$00"]
@@ -153,10 +153,15 @@ class ChangeFrameColor:
         self.__constEntry = HexEntry(self.__loader, self.__constantFrame, self.__colors, self.__colorDict,
                                      self.__normalFont, self.__color, 0, None, self.__chamgeConst)
 
+        if "::" not in self.__data[2]:
+            self.__color[0] = self.__data[2]
+            self.__constEntry.setValue(self.__data[2])
+
         self.setIt(None)
 
     def XXX(self):
         self.setIt(None)
+        self.__changeData(self.__data)
 
     def setIt(self, data):
         if self.__option.get() == 1:
@@ -164,12 +169,18 @@ class ChangeFrameColor:
            self.__varListBox.config(state=NORMAL)
 
            if data == None:
-               itemNum = 0
+               selector = 0
                for itemNum in range(0, len(self.__varList)):
                    if self.__varList[itemNum] == self.__tempSet:
-                      self.__varListBox.select_clear(0, END)
-                      self.__varListBox.select_set(itemNum)
+                      selector = itemNum
                       break
+
+               self.__varListBox.select_clear(0, END)
+               self.__varListBox.select_set(selector)
+               self.__data[2] = self.__varList[selector]
+               self.__tempSet = self.__data[2]
+               self.__changeData(self.__data)
+
            else:
                self.__tempSet = self.__varList[data]
                if self.__data[2] != self.__tempSet:
@@ -184,6 +195,8 @@ class ChangeFrameColor:
 
             if data == None:
                self.__constEntry.setValue(self.__color[0])
+               self.__data[2] = self.__color[0]
+               self.__changeData(self.__data)
             else:
                self.__color[0]  = self.__constEntry.getValue()
                if data != self.__data[2]:

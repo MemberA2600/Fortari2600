@@ -306,3 +306,5 @@ numOfDigits=Számjegyek Száma
 slotMachine=Nyerõgép Mód
 screenTester=Képernyõteszt - Változók
 sameColor=Ikonnal megegyezõ szín
+digitsOnly=Csak Számok
+missingItems=Nem található kompatibilis #item# a projekt #folder# mappájában!

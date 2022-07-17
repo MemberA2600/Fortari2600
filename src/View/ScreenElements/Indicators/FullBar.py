@@ -7,7 +7,7 @@ import re
 
 class FullBar:
 
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -159,10 +159,14 @@ class FullBar:
            self.__data[3] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox.select_set(0)
         else:
+
+           selector = 0
            for itemNum in range(0, len(self.__dataVars)):
-               if self.__dataVars[itemNum] == self.__data[3]:
-                  self.__dataVarListBox.select_set(itemNum)
+               if self.__dataVars[itemNum].split("::")[1] == self.__data[3]:
+                  selector = itemNum
                   break
+
+           self.__dataVarListBox.select_set(selector)
 
         self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
         self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
@@ -297,7 +301,6 @@ class FullBar:
         for item in self.__colorVars:
             self.__colorVarListBox.insert(END, item)
 
-
         if len(self.__data[5].split("|")) == 3:
            self.__colorOption.set(1)
            self.__color = self.__data[5].split("|")
@@ -312,7 +315,7 @@ class FullBar:
            self.__colorVarListBox.config(state = DISABLED)
         else:
            self.__colorOption.set(2)
-           self.__color = ["$40", "$30", "$f0", "$10"]
+           self.__color = ["$40", "$30", "$f0"]
            self.__constEntry.setValue(self.__color[0])
            self.__constEntry.changeState(DISABLED)
            self.__constEntry2.setValue(self.__color[1])
@@ -320,10 +323,13 @@ class FullBar:
            self.__constEntry3.setValue(self.__color[2])
            self.__constEntry3.changeState(DISABLED)
            self.__colorVarListBox.config(state = NORMAL)
-           for selector in range(0, len(self.__colorVars)):
-               if self.__colorVars[selector].split("::")[1] == self.__data[5]:
-                  self.__colorVarListBox.select_set(selector)
+
+           selector = 0
+           for itemNum in range(0, len(self.__colorVars)):
+               if self.__colorVars[itemNum].split("::")[1] == self.__data[5]:
+                  selector = itemNum
                   break
+           self.__colorVarListBox.select_set(selector)
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
@@ -431,10 +437,13 @@ class FullBar:
            self.__constEntry3.changeState(DISABLED)
 
            self.__colorVarListBox.config(state = NORMAL)
+           selector = 0
            for itemNum in range(0, len(self.__colorVars)):
                if self.__colorVars[itemNum] == self.__lastSet:
-                  self.__colorVarListBox.select_set(itemNum)
+                  selector = itemNum
                   break
+
+           self.__colorVarListBox.select_set(selector)
 
            self.__changedColorVar(None)
 

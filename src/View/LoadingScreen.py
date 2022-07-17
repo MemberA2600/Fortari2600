@@ -110,6 +110,10 @@ class LoadingScreen():
                                  (s[0], s[1], 1)
                                  )
 
+        self.loadAnimationFrames("jumpman", 7,
+                                 self.__loader.jumpman, "png",
+                                 (__w // 10, __h // 5, 1)
+                                 )
 
         from ColorDict import ColorDict
         self.__loader.colorDict = ColorDict(self.__loader)

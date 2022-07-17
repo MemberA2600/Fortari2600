@@ -138,13 +138,13 @@ class Compiler:
         self.__tv              = self.__data[1]
         self.__bank            = self.__data[2]
         self.__initCode        = self.__data[3]
+        self.__overScanCode    = self.__data[4]
 
         self.__bankData = []
         # In this case, there is no top or bottom, all tested goes to top.
         self.__routines = {}
         self.__userData = {}
 
-        self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon") + self.__initCode
         self.__inits    = []
 
         testLine = self.__io.loadTestElementPlain("testLine")
@@ -168,8 +168,9 @@ class Compiler:
                 fullName += "_" + data[0]
                 those = self.generate_64px(fullName, data, data[0])
                 self.__bankData.append(those[0])
-                self.__userData[those[1][1]] = those[1][0]
+                self.__userData[fullName] = those[1]
                 self.__inits.append(those[2])
+
             elif typ == "Indicator":
                 subtyp = item[2]
                 fullName += "_" + subtyp
@@ -236,14 +237,16 @@ class Compiler:
                         self.__userData[key] = those[2][key]
 
 
-                    
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
+
+        self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon") + self.__initCode
 
         self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode + "\n".join(self.__inits))
         self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", "\n".join(self.__bankData))
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
         self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", "\n".join(self.__routines.values()))
         self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection("\n".join(self.__userData.values())))
 
@@ -288,6 +291,8 @@ class Compiler:
         digitFont       = data[3]
         digitGradient   = data[4]
         colorMode       = data[5]
+        picSettings     = data[6]
+        forceDigits     = data[7]
 
         iconName        = icon.split("_(")[0]
         iconType        = icon.split("_(")[1][:-1]
@@ -301,6 +306,10 @@ class Compiler:
         topLevelText += "\tLDA\t#0\n\tSTA\ttemp15\n\tSED\n"
 
         topLevelText    += "\tLDA\t" + dataVar + "\n"
+
+        #if self.isItSARA(dataVar):
+        #    dataVar = self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(dataVar)
+
         topLevelText    += self.convertAnyTo8Bits(self.__loader.virtualMemory.getVariableByName2(dataVar).usedBits)
         topLevelText += "\tSTA\ttemp14\n"
 
@@ -351,6 +360,20 @@ class Compiler:
             topLevelText += "\tLDA\t#0\n\tSTA\ttemp13\n" + \
                             "\tLDA\t#<" + bank + "_" + iconName + "_BigSpriteColor_0\n\tSTA\ttemp11\n\tLDA\t#>" + \
                                           bank + "_" + iconName + "_BigSpriteColor_0\n\tSTA\ttemp12\n"
+
+        picSettingsVar = self.__loader.virtualMemory.getVariableByName2(picSettings)
+        if picSettingsVar == False:
+           topLevelText   += "\tLDA\t#" + picSettings + "\n"
+        else:
+           topLevelText   += "\tLDA\t"  + picSettings + "\n"
+           if picSettingsVar.type == "byte":
+              self.moveVarToTheRight(picSettingsVar.usedBits)
+
+        topLevelText += "\tAND\t#%11110000\n\tLSR\n\tCLC\n\tADC\ttemp03\n\tSTA\ttemp03\n"
+
+        if forceDigits == "1":
+           topLevelText += ("\tNOP\n" * 2) +\
+                           "\tLDA\t#13\n\tSTA\ttemp14\n"
 
         topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                     "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
@@ -1199,6 +1222,7 @@ class Compiler:
             num = int(data[0])
             varType = "constant"
         except Exception as e:
+            data[0] = data[0].split("::")[1]
             variable = self.__loader.virtualMemory.getVariableByName2(data[0])
             varType  = variable.type
             #varBits  = deepcopy(variable.usedBits)[::-1]
@@ -1207,8 +1231,8 @@ class Compiler:
         if   varType == "constant":
            text += "#"+ data[0] +"\n"
         else:
-           if self.isItSARA(data[0]):
-                self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
+           #if self.isItSARA(data[0]):
+           #     self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
 
            text += data[0] + "\n" +\
                    self.convertAnyTo8Bits(varBits)
@@ -1263,13 +1287,16 @@ class Compiler:
     def generate_ChangeFrameColor(self, name, data):
         text = "\n" + name + "\n" + "\tLDA\t"
 
-        if data[0][0] == "$":
+        if "::" not in data[0]:
            text += "#"
+        else:
+           data[0] = data[0].split("::")[1]
 
-        if self.isItSARA(data[0]):
-           self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
+        #if self.isItSARA(data[0]):
+        #   self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(data[0])
 
         text+= data[0] +"\n"+"\tSTA\tframeColor\n"
+
         return(text)
 
     def preAlign(self, text):

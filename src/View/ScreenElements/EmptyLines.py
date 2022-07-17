@@ -8,7 +8,7 @@ from ScreenSetterFrameBase import ScreenSetterFrameBase
 
 class EmptyLines:
 
-    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank):
+    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow):
 
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -142,11 +142,19 @@ class EmptyLines:
         self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
         self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
-        self.__tempSet = self.__varList[0]
+        if "::" in self.__data[2]:
+            self.__tempSet = self.__data[2]
+        else:
+            self.__tempSet = self.__varList[0]
 
         self.__entryVar = StringVar()
-        self.__entryVar.set(self.__data[2])
-        self.__value = int(self.__data[2])
+
+        if "::" not in self.__data[2]:
+            self.__entryVar.set(self.__data[2])
+            self.__value = int(self.__data[2])
+        else:
+            self.__entryVar.set("1")
+            self.__value = 1
 
         self.__entry = Entry(self.__constantFrame,
                                         bg=self.__colors.getColor("boxBackNormal"),
@@ -182,12 +190,17 @@ class EmptyLines:
            self.__varListBox.config(state=NORMAL)
 
            if data == None:
-               itemNum = 0
+               selector = 0
                for itemNum in range(0, len(self.__varList)):
                    if self.__varList[itemNum] == self.__tempSet:
-                      self.__varListBox.select_clear(0, END)
-                      self.__varListBox.select_set(itemNum)
+                      selector = itemNum
                       break
+
+               self.__varListBox.select_clear(0, END)
+               self.__varListBox.select_set(selector)
+               self.__data[2] = self.__varList[selector]
+               self.__changeData(self.__data)
+
            else:
                self.__tempSet = self.__varList[data]
                if self.__data[2] != self.__tempSet:
@@ -202,6 +215,8 @@ class EmptyLines:
 
             if data == None:
                self.__entryVar.set(str(self.__value))
+               self.__data[2] = str(self.__value)
+               self.__changeData(self.__data)
             else:
                self.__value  = int(self.__entryVar.get())
                if data != str(self.__data[2]):

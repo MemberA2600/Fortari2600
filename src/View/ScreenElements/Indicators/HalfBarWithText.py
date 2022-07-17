@@ -8,7 +8,7 @@ import re
 
 class HalfBarWithText:
 
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -175,10 +175,13 @@ class HalfBarWithText:
             self.__data[3] = self.__dataVars[0].split("::")[1]
             self.__dataVarListBox.select_set(0)
         else:
+            selector = 0
             for itemNum in range(0, len(self.__dataVars)):
-                if self.__dataVars[itemNum] == self.__data[3]:
-                    self.__dataVarListBox.select_set(itemNum)
+                if self.__dataVars[itemNum].split("::")[1] == self.__data[3]:
+                    selector = itemNum
                     break
+
+            self.__dataVarListBox.select_set(selector)
 
         self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
         self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
@@ -291,10 +294,14 @@ class HalfBarWithText:
             self.__constEntry.changeState(DISABLED)
 
             self.__colorVarListBox.config(state=NORMAL)
-            for selector in range(0, len(self.__colorVars)):
-                if self.__colorVars[selector].split("::")[1] == self.__data[5]:
-                    self.__colorVarListBox.select_set(selector)
+
+            selector = 0
+            for itemNum in range(0, len(self.__colorVars)):
+                if self.__colorVars[itemNum].split("::")[1] == self.__data[5]:
+                    selector = itemNum
                     break
+            self.__colorVarListBox.select_set(selector)
+
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
@@ -424,10 +431,14 @@ class HalfBarWithText:
             self.__constEntry2.changeState(DISABLED)
 
             self.__textColorVarListBox.config(state=NORMAL)
-            for selector in range(0, len(self.__colorVars)):
-                if self.__colorVars[selector].split("::")[1] == self.__data[7]:
-                    self.__textColorVarListBox.select_set(selector)
+            selector = 0
+            for itemNum in range(0, len(self.__colorVars)):
+                if self.__colorVars[itemNum].split("::")[1] == self.__data[7]:
+                    selector = itemNum
                     break
+
+            self.__textColorVarListBox.select_set(selector)
+
 
         self.__lastConst2 = deepcopy(self.__textColor)
         try:
@@ -481,19 +492,25 @@ class HalfBarWithText:
 
 
     def __chamgeConst(self, event):
-        self.__grrrrrr(0, self.__constEntry, self.__color, "0", 5)
+        force = False
+        if event == None: force = True
+
+        self.__grrrrrr(0, self.__constEntry, self.__color, "0", 5, force)
 
     def __chamgeConst2(self, event):
-        self.__grrrrrr(0, self.__constEntry2, self.__textColor, "6", 7)
+        force = False
+        if event == None: force = True
 
-    def __grrrrrr(self, num, entry, l, n, m):
-        if self.__constEntry.getValue() != l[num]:
+        self.__grrrrrr(0, self.__constEntry2, self.__textColor, "6", 7, force)
+
+    def __grrrrrr(self, num, entry, l, n, m, force):
+        if entry.getValue() != l[num] or force == True:
             temp = entry.getValue()
             if self.isItHex(temp) == True:
                 temp = temp[:2] + n
                 l[num] = temp
                 entry.setValue(temp)
-                self.__data[m] = l[0]
+                self.__data[m] = l[num]
                 self.__changeData(self.__data)
 
     def isItHex(self, num):
@@ -531,11 +548,13 @@ class HalfBarWithText:
             self.__constEntry.changeState(DISABLED)
 
             self.__colorVarListBox.config(state=NORMAL)
+            selector = 0
             for itemNum in range(0, len(self.__colorVars)):
                 if self.__colorVars[itemNum] == self.__lastSet:
-                    self.__colorVarListBox.select_set(itemNum)
+                    selector = itemNum
                     break
 
+            self.__colorVarListBox.select_set(selector)
             self.__changedColorVar(None)
 
     def XXX2(self):
@@ -557,11 +576,13 @@ class HalfBarWithText:
             self.__constEntry2.changeState(DISABLED)
 
             self.__textColorVarListBox.config(state=NORMAL)
+            selector = 0
             for itemNum in range(0, len(self.__colorVars)):
                 if self.__colorVars[itemNum] == self.__lastSet2:
-                    self.__textColorVarListBox.select_set(itemNum)
+                    selector = itemNum
                     break
 
+            self.__textColorVarListBox.select_set(selector)
             self.__changedColorVar2(None)
 
     def __changedDataVar(self, event):

@@ -8,7 +8,7 @@ from ScreenSetterFrameBase import ScreenSetterFrameBase
 
 class Picture64px:
 
-    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank):
+    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data.split(" ")
@@ -40,20 +40,41 @@ class Picture64px:
         self.dead = [False]
         self.__lastData = None
 
-        self.__tempSaved  = [None, None]
-        self.__values     = [None, None]
+        self.__loadPictures()
 
-        for num in range(0,2):
-            try:
-                self.__values[num] = int(self.__data[4+num])
-            except:
-                self.__tempSaved[num] = self.__data[4+num]
+        if len(self.__varList) != 0:
 
-        wasHash = False
-        if self.__data[2] == "#":
-           wasHash = True
-        self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
-        self.__addElements(wasHash)
+            self.__tempSaved  = [None, None]
+            self.__values     = [None, None]
+
+            for num in range(0,2):
+                try:
+                    self.__values[num] = int(self.__data[4+num])
+                except:
+                    self.__tempSaved[num] = self.__data[4+num]
+
+            wasHash = False
+            if self.__data[2] == "#":
+               wasHash = True
+            self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
+            self.__addElements(wasHash)
+        else:
+            blankAnimation(["missing", {
+                               "item": "64pxPicture", "folder": self.__loader.mainWindow.projectPath.split("/")[-2]+"/64px"
+                           }])
+
+    def __loadPictures(self):
+        folder = self.__loader.mainWindow.projectPath + "64px"
+
+        self.__varList = []
+
+        import os
+        for root, dirs, files in os.walk(folder):
+            for file in files:
+                if file.endswith(".asm"):
+                    self.__varList.append(file[:-4])
+
+        self.__varList.sort()
 
     def __addElements(self, wasHash):
         self.__uniqueFrame = Frame(self.__baseFrame, width=self.__w,
@@ -70,17 +91,6 @@ class Picture64px:
         self.__listFrame.pack_propagate(False)
         self.__listFrame.pack(side=TOP, anchor=N, fill=X)
 
-        folder = self.__loader.mainWindow.projectPath+"64px"
-
-        self.__varList = []
-
-        import os
-        for root, dirs, files in os.walk(folder):
-            for file in files:
-                if file.endswith(".asm"):
-                   self.__varList.append(file[:-4])
-
-        self.__varList.sort()
         self.__varListScrollBar = Scrollbar(self.__listFrame)
         self.__varListBox = Listbox(   self.__listFrame, width=100000,
                                         height=1000,
@@ -411,17 +421,18 @@ class Picture64px:
         self.__heightEntry.bind("<FocusOut>", self.heightConstStuff)
         self.__heightEntry.bind("<KeyRelease>", self.heightConstStuff)
 
-        self.setIt1(None, 0)
-        self.setIt1(None, 1)
-
         if wasHash == True:
            self.__heightVar.set(str(self.__maxH))
            self.__heightIndexVar.set(str(self.__maxH))
            self.__data[3] = str(self.__maxH)
            self.__data[4] = str(self.__maxH)
            self.__values[0] = self.__data[4]
+
            self.__lastData = None
            self.setIt(0)
+
+        self.setIt1(None, 0)
+        self.setIt1(None, 1)
 
     def isItNum(self, num):
         try:
@@ -442,12 +453,18 @@ class Picture64px:
            self.__vars[num]["listBox"].config(state=NORMAL)
 
            if data == None:
-               itemNum = 0
+               selector = 0
                for itemNum in range(0, len(self.__varList1)):
                    if self.__varList1[itemNum] == self.__tempSaved[num]:
-                      self.__vars[num]["listBox"].select_clear(0, END)
-                      self.__vars[num]["listBox"].select_set(itemNum)
+                      selector = itemNum
                       break
+
+               self.__tempSaved[num] = self.__varList1[selector]
+               self.__data[4+num] = self.__tempSaved[num]
+               self.__vars[num]["listBox"].select_clear(0, END)
+               self.__vars[num]["listBox"].select_set(selector)
+               if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
+
            else:
                self.__tempSaved[num] = self.__varList1[data]
                if self.__data[4+num] != self.__tempSaved[num]:
@@ -462,9 +479,12 @@ class Picture64px:
 
             if data == None:
                self.__vars[num]["value"].set(str(self.__values[num]))
+               self.__data[4+num] = str(self.__values[num])
+               self.__changeData(self.__data)
             else:
+               backUp = self.__values[num]
                self.__values[num]  = int(self.__vars[num]["value"].get())
-               if data != str(self.__values[num]):
+               if data != backUp:
                    self.__data[4+num]   = str(self.__values[num])
                    if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
 
@@ -507,8 +527,9 @@ class Picture64px:
 
         if self.__vars[num]["option"].get() == 1:
             return
-        self.setIt1(self.__vars[num]["listBox"].curselection()[0], num)
         self.__checkMaxHeight()
+        self.setIt1(self.__vars[num]["listBox"].curselection()[0], num)
+
 
     def __chamgeConst(self, event):
         name = self.getName(event)
@@ -547,7 +568,6 @@ class Picture64px:
         self.__vars[offset]["value"].set(str(num))
         return True
 
-
     def clickedListBox(self, event):
         self.setIt(self.__varListBox.curselection()[0])
         self.__forceMaxHeight()
@@ -564,7 +584,7 @@ class Picture64px:
 
             self.__varListBox.select_clear(0, END)
             self.__varListBox.select_set(num)
-            if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
+            #if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
             self.__maxH = self.getMaxHeight()
             self.__forceMaxHeight()
 

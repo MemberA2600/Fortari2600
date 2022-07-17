@@ -238,8 +238,11 @@ class TopBottomEditor:
         loop.start()
 
     def clickedListBox(self, event):
-        name, typ = self.getItemAndType()
-        self.setTheSetter(name, typ)
+        try:
+            name, typ = self.getItemAndType()
+            self.setTheSetter(name, typ)
+        except:
+            pass
 
     def getItemAndType(self):
         item = self.__codeData[self.__activePart][self.getBankNum()][2][self.__itemListBox.curselection()[0]]
@@ -276,7 +279,7 @@ class TopBottomEditor:
             except Exception as e:
                 pass
 
-            if self.__activeMode == "blank":
+            if self.__activeMode in ("blank", "missing"):
                try:
                    num2 += 1
                    if num2 == len(self.__loader.rainbowFrames) * 2: num2 = 0
@@ -296,6 +299,7 @@ class TopBottomEditor:
                     )
                 except:
                     pass
+
             else:
                 num = 0
 
@@ -379,9 +383,27 @@ class TopBottomEditor:
 
     def blankAnimation(self, mode):
         self.__allTheFunStuff.config(bg="black")
-        self.__activeMode = mode
+        items = {}
 
-        if   self.__activeMode == "blank":
+        if type(mode) != str:
+            self.__activeMode = mode[0]
+            items = mode[1]
+
+        else:
+            self.__activeMode = mode
+
+        if   self.__activeMode in ("blank", "missing"):
+
+            txt = ""
+            if   self.__activeMode == "blank":
+                txt = self.__dictionaries.getWordFromCurrentLanguage("emptyBank").replace("#bank#", self.__activeBank)\
+                      .replace("#level#", self.__dictionaries.getWordFromCurrentLanguage(self.__activePart.lower()))
+
+            elif self.__activeMode == "missing":
+                txt = self.__dictionaries.getWordFromCurrentLanguage("missingItems")
+                for key in items.keys():
+                    txt = txt.replace("#"+key+"#", items[key])
+
             self.__pictureFrame = Frame(self.__allTheFunStuff, bd=0, bg="black",
                                         height = round(self.__allTheFunStuff.winfo_height()*0.90)
                                         )
@@ -394,11 +416,8 @@ class TopBottomEditor:
             self.__lockedLabel = Label(self.__allTheFunStuff, bd=0, bg="black",
                                        fg = "orangered",
                                        height = 10, font = self.__bigFont,
-                                       text = self.__dictionaries.getWordFromCurrentLanguage("emptyBank")
-                                       .replace("#bank#", self.__activeBank)
-                                       .replace("#level#",
-                                                self.__dictionaries.getWordFromCurrentLanguage(
-                                                    self.__activePart.lower())))
+                                       text = txt
+                                       )
 
             self.__lockedLabel.pack(padx=0, pady=0, fill=BOTH, side=BOTTOM)
 
@@ -735,7 +754,7 @@ class TopBottomEditor:
                                             self.__codeData[self.__activePart][bank][2][
                                             self.__itemListBox.curselection()[0]],
                                             self.__changeName, self.__changeData, self.__uW, self.__uH,
-                                            self.__activeBank.lower()
+                                            self.__activeBank.lower(), self.blankAnimation, self.__topLevelWindow
                                             )
 
 
@@ -893,6 +912,7 @@ class TopBottomEditor:
         from ScreenTopTester import ScreenTopTester
 
         self.initCode = ""
+        self.overScanCode = ""
         self.answer   = ""
         self.__subMenu = ScreenTopTester(self.__loader, self, self.__codeData)
         if self.answer == "NOPE":
@@ -907,7 +927,7 @@ class TopBottomEditor:
 
         Compiler(self.__loader, self.__loader.virtualMemory.kernel,
                  "testScreenElements", [self.__codeData[self.__activePart][self.getBankNum()][2],
-                                        "NTSC", self.__activeBank, self.initCode
+                                        "NTSC", self.__activeBank, self.initCode, self.overScanCode
                                         ]
                  )
 

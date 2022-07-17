@@ -182,14 +182,29 @@ class ScreenTopTester:
 
         vvv = {}
 
+        counter = self.__loader.virtualMemory.getVariableByName2("counter")
+        random  = self.__loader.virtualMemory.getVariableByName2("random")
+
         for screenPart in self.__codeData.keys():
             for datas in self.__codeData[screenPart]:
                 for dataLine in datas[2]:
                     line = dataLine.split(" ")
                     for item in line:
                         variable = self.__loader.virtualMemory.getVariableByName2(item)
+                        if variable == counter or variable == random: continue
+
                         if variable != False:
                            vvv[item] = [variable.type, "0"]
+
+                        try:
+                            variable = self.__loader.virtualMemory.getVariableByName2(item.split("::")[1])
+                            if variable == counter or variable == random: continue
+
+                            if variable != False:
+                               vvv[item] = [variable.type, "0"]
+                        except:
+                            pass
+
 
         keys = list(vvv.keys())
         keys.sort()
@@ -242,6 +257,7 @@ class ScreenTopTester:
         mode = "dec"
         if   self.__lines[num]["value"].get().startswith("$"): mode = "hex"
         elif self.__lines[num]["value"].get().startswith("%"): mode = "bin"
+        elif self.__lines[num]["value"].get().startswith("/"): mode = "inc"
 
         try:
             val = 0
@@ -249,13 +265,28 @@ class ScreenTopTester:
                 val = int(self.__lines[num]["value"].get())
             elif mode == "hex":
                 val = int(self.__lines[num]["value"].get().replace("$", "0x"), 16)
+            elif mode == "inc":
+                val = int(self.__lines[num]["value"].get()[1:])
+                if val == 0: val = 1
+                if val != 1:
+                    val -=1
+                    val = bin(val).replace("0b", "")
+                    while len(val) < 8:
+                        val = "0" + val
+                    firstOne = 0
+                    for num2 in range(0, 8):
+                        if val[num2] == "1":
+                            firstOne = num2
+                            break
+
+                    val = val[:firstOne] + "1" * (8-firstOne)
+                    val = int("0b"+val, 2) + 1
             else:
                 val = int(self.__lines[num]["value"].get().replace("%", "0b"), 2)
 
-
             self.__lines[num]["entry"].config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                               fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-        except:
+        except Exception as e:
             self.__lines[num]["entry"].config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                               fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
             return
@@ -263,10 +294,12 @@ class ScreenTopTester:
         maxValues = { "bit": 1, "doubleBit": 3, "nibble": 15, "byte": 255 }
 
         if val < 0: val = 0
+
         if val > maxValues[self.__lines[num]["varType"].cget("text")]:\
            val = maxValues[self.__lines[num]["varType"].cget("text")]
 
         if   mode == "dec": self.__lines[num]["value"].set(str(val))
+        elif mode == "inc": self.__lines[num]["value"].set("/"+str(val))
         elif mode == "hex":
             temp = hex(val).replace("0x", "")
             if len(temp) == 1: temp = "0" + temp
@@ -282,20 +315,39 @@ class ScreenTopTester:
         self.__caller.initCode = ""
         xxx                    = ""
 
+        testCounter = 0
+
         from Compiler import Compiler
 
         for variable in self.__variableList.keys():
-            tempText = "\tLDA\t#" + self.__variableList[variable][1] + "\n"
-            theVar = self.__loader.virtualMemory.getVariableByName2(variable)
-            c = Compiler(None, None, "dummy", None)
-            tempText += c.convertAnyTo8Bits(theVar.usedBits) + "\tSTA\t" + variable + "\n"
+            if "::" in variable:
+                variableName = variable.split("::")[1]
+            else:
+                variableName = variable
+
+            if self.__variableList[variable][1].startswith("/") == False:
+                tempText = "\tLDA\t#" + self.__variableList[variable][1] + "\n"
+                theVar = self.__loader.virtualMemory.getVariableByName2(variableName)
+                c = Compiler(None, None, "dummy", None)
+                tempText += c.convertAnyTo8Bits(theVar.usedBits) + "\tSTA\t" + variableName + "\n"
+            else:
+                tempText = "\tLDA\tcounter\n"
+                incrementer = int(self.__variableList[variable][1][1:])-1
+                if incrementer > 0:
+                   tempText += "\tAND\t#"+str(incrementer)+"\n\tCMP\t#"+str(incrementer) + "\n"
+                   label = "ThisIsAReallyImportantLabel_"+str(testCounter)
+                   testCounter += 1
+
+                   tempText += "\tBNE\t"+label+"\n" + "\tINC\t"+ variableName + "\n" + label + "\n"
+                else:
+                   tempText += "\tSTA\t" + variableName + "\n"
 
             xxx += tempText
 
         self.__closeWindow()
-        self.__caller.initCode = xxx
+        self.__caller.overScanCode = xxx
+        self.__soundPlayer.playSound("Okay")
         self.__caller.answer   = "OK"
-
 
 
 

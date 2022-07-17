@@ -7,7 +7,7 @@ import re
 
 
 class SevenDigits:
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -36,13 +36,19 @@ class SevenDigits:
 
         self.__loadPictures()
 
-        itWasHash = False
-        if data[3] == "#":
-            itWasHash = True
+        if len(self.__listOfPictures) == 0:
+            blankAnimation({
+                               "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
+                                                                         self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
+                           })
+        else:
+            itWasHash = False
+            if data[3] == "#":
+                itWasHash = True
 
-        self.__addElements()
-        if itWasHash == True:
-            self.__changeData(data)
+            self.__addElements()
+            if itWasHash == True:
+                self.__changeData(data)
 
     def __loadPictures(self):
 
@@ -561,11 +567,16 @@ class SevenDigits:
         else:
            self.__colorSettings.set(2)
            self.__colorEntry.changeState(DISABLED)
+
+           selector = 0
            for itemNum in range(0, len(self.__nibbleVars)):
                if color == self.__nibbleVars[itemNum].split("::")[1]:
-                  self.__colorVarListBox1.select_set(itemNum)
+                  selector = itemNum
                   self.__colorVarListBoxSelected = color
                   break
+
+           self.__colorVarListBox1.select_set(selector)
+
 
     def colorSettingsChange1(self):
         self.__colorVarListBoxSelected = self.__nibbleVars[self.__colorVarListBox1.curselection()[0]]

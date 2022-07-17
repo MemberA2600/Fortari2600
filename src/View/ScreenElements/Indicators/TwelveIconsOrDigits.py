@@ -7,7 +7,7 @@ import re
 
 
 class TwelveIconsOrDigits:
-    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead):
+    def __init__(self, loader, baseFrame, data, changeData, w, h, currentBank, dead, blankAnimation):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
@@ -36,13 +36,19 @@ class TwelveIconsOrDigits:
 
         self.__loadPictures()
 
-        itWasHash = False
-        if data[3] == "#":
-            itWasHash = True
+        if len(self.__listOfPictures) or len(self.__listOfPictures2)== 0:
+            blankAnimation({
+                               "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
+                                                                         self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
+                           })
+        else:
+            itWasHash = False
+            if data[3] == "#":
+                itWasHash = True
 
-        self.__addElements()
-        if itWasHash == True:
-            self.__changeData(data)
+            self.__addElements()
+            if itWasHash == True:
+                self.__changeData(data)
 
     def __loadPictures(self):
 
@@ -177,35 +183,42 @@ class TwelveIconsOrDigits:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 5,
+        self.__frame1 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame1.pack_propagate(False)
         self.__frame1.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 5,
+        self.__frame1_5 = Frame(self.__uniqueFrame, width=self.__w // 6,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h)
+
+        self.__frame1_5.pack_propagate(False)
+        self.__frame1_5.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__frame2 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame2.pack_propagate(False)
         self.__frame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 5,
+        self.__frame3 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame3.pack_propagate(False)
         self.__frame3.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 5,
+        self.__frame4 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
         self.__frame4.pack_propagate(False)
         self.__frame4.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 5,
+        self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 6,
                               bg=self.__loader.colorPalettes.getColor("window"),
                               height=self.__h)
 
@@ -218,6 +231,8 @@ class TwelveIconsOrDigits:
         digitFont       = self.__data[6]
         digitGradient   = self.__data[7]
         colorMode       = self.__data[8]
+        picSettings     = self.__data[9]
+        forceDigits     = self.__data[10]
 
         self.__init     = True
 
@@ -564,7 +579,257 @@ class TwelveIconsOrDigits:
         self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changeFontColorVar)
         self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changeFontColorVar)
 
+        self.__lastBits = "%00000000"
+
+        self.__forceDigistsVal = IntVar()
+        self.__forceDigists = Checkbutton(self.__frame1_5, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("digitsOnly"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__forceDigistsVal,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__changeForce
+                                       )
+
+        self.__forceDigists.pack_propagate(False)
+        self.__forceDigists.pack(fill=X, side=TOP, anchor=N)
+
+        if forceDigits == "1": self.__forceDigistsVal.set(1)
+
+
+        self.__picSettingsOption1 = IntVar()
+
+        self.__constButton3 = Radiobutton(self.__frame1_5, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__picSettingsOption1,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.__changeIconSettings
+                                         )
+
+        self.__constButton3.pack_propagate(False)
+        self.__constButton3.pack(fill=X, side=TOP, anchor=N)
+
+        self.__indexFrame1 = Frame(self.__frame1_5, width=self.__w // 7,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h // 16)
+
+        self.__indexFrame1.pack_propagate(False)
+        self.__indexFrame1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__indexFrame1_1 = Frame(self.__indexFrame1, width=self.__w // 14,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h // 16)
+
+        self.__indexFrame1_1.pack_propagate(False)
+        self.__indexFrame1_1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__indexFrame1_2 = Frame(self.__indexFrame1, width=self.__w // 14,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h // 16)
+
+        self.__indexFrame1_2.pack_propagate(False)
+        self.__indexFrame1_2.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__mirrored1 = IntVar()
+        self.__mirroredButton1 = Checkbutton(self.__frame1_5, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("mirrored"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__mirrored1,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__mirroredChanged1
+                                       )
+
+        self.__mirroredButton1.pack_propagate(False)
+
+     #   self.__mirroredButton1.pack(fill=X, side=TOP, anchor=N)
+
+        self.__varButton3 = Radiobutton(self.__frame4, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__picSettingsOption1,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       value=2, command=self.__changeIconSettings
+                                       )
+
+        self.__varButton3.pack_propagate(False)
+        self.__varButton3.pack(fill=X, side=TOP, anchor=N)
+
+        self.__indexLabel = Label(self.__indexFrame1_1,
+                              text=self.__dictionaries.getWordFromCurrentLanguage("index"),
+                              font=self.__smallFont, fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"), justify=CENTER
+                              )
+
+        self.__indexLabel.pack_propagate(False)
+        self.__indexLabel.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__indexVal1 = StringVar()
+        self.__indexEntry1 = Entry(self.__indexFrame1_2,
+                                   bg=self.__colors.getColor("boxBackNormal"),
+                                   fg=self.__colors.getColor("boxFontNormal"),
+                                   width=9999, justify=CENTER,
+                                   textvariable=self.__indexVal1,
+                                   font=self.__smallFont
+                                   )
+
+        self.__indexEntry1.pack_propagate(False)
+        self.__indexEntry1.pack(fill=BOTH, side=TOP, anchor=N)
+
+        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+
+        self.__varButton3 = Radiobutton(self.__frame1_5, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__picSettingsOption1,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       value=2, command=self.__changeIconSettings
+                                       )
+
+        self.__varButton3.pack_propagate(False)
+        self.__varButton3.pack(fill=X, side=TOP, anchor=N)
+
+        self.__picVarScrollBar1 = Scrollbar(self.__frame1_5)
+        self.__picVarListBox1 = Listbox(self.__frame1_5, width=100000,
+                                        height=1000,
+                                        yscrollcommand=self.__picVarScrollBar1.set,
+                                        selectmode=BROWSE,
+                                        exportselection=False,
+                                        font=self.__smallFont,
+                                        justify=LEFT
+                                        )
+
+        self.__picVarListBox1.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__picVarListBox1.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__picVarListBox1.pack_propagate(False)
+
+        self.__picVarScrollBar1.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__picVarListBox1.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__picVarScrollBar1.config(command=self.__picVarListBox1.yview)
+        self.__lastSelectedPictureVar = None
+
+        for item in self.__colorVars:
+            self.__picVarListBox1.insert(END, item)
+
+        if picSettings[0] == "%":
+            self.__picSettingsOption1.set(1)
+            self.__lastSelectedPictureVar = self.__colorVars[0].split("::")[1]
+
+            self.__picVarListBox1.config(state=DISABLED)
+
+            mirrored = picSettings[5]
+            index = picSettings[1:5]
+            nusiz = picSettings[5:]
+
+            self.__mirrored1.set(int(mirrored))
+            self.__indexVal1.set(str(int("0b" + index, 2)))
+
+        else:
+            self.__mirroredButton1.config(state=DISABLED)
+            self.__indexEntry1.config(state=DISABLED)
+
+            self.__picSettingsOption1.set(2)
+
+            self.__mirrored1.set(0)
+            self.__indexVal1.set("0")
+
+            selector = 0
+            for itemNum in range(0, len(self.__colorVars)):
+                if self.__colorVars[itemNum].split("::")[1] == picSettings:
+                    selector = itemNum
+                    break
+
+            self.__picVarListBox1.select_set(selector)
+            self.__lastSelectedPictureVar = self.__colorVars[selector].split("::")[1]
+
         self.__init     = False
+
+        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+
+        self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
+        self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
+        self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
+
+
+    def __changeForce(self):
+        self.__data[10] = str(self.__forceDigistsVal.get())
+        self.__changeData(self.__data)
+
+    def __changeIconSettings(self):
+
+        if self.__picSettingsOption1.get() == 1:
+            self.__lastSelectedPictureVar = self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]
+            self.__picVarListBox1.config(state=DISABLED)
+            self.__mirroredButton1.config(state=NORMAL)
+            self.__indexEntry1.config(state=NORMAL)
+
+            self.__changeIndexAndMirroring1(None)
+
+        else:
+            self.__mirroredButton1.config(state=DISABLED)
+            self.__indexEntry1.config(state=DISABLED)
+            self.__picVarListBox1.config(state=NORMAL)
+
+            selector = 0
+            for itemNum in range(0, len(self.__colorVars)):
+                if self.__colorVars[itemNum].split("::")[1] == self.__lastSelectedPictureVar:
+                    selector = itemNum
+                    break
+
+            self.__picVarListBox1.select_set(selector)
+            self.__data[9] = self.__colorVars[selector].split("::")[1]
+
+        self.__changeData(self.__data)
+
+    def __changeIndexAndMirroring1(self, event):
+        if self.__picSettingsOption1.get() == 2: return
+
+        mirrored = str(self.__mirrored1.get())
+        try:
+            number = int(self.__indexVal1.get())
+        except:
+            self.__indexEntry1.config(
+                bg = self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg = self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+            return
+
+        bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+        fg = self.__loader.colorPalettes.getColor("boxFontNormal")
+
+        if   number < 0:  number = 0
+        elif number > 15: number = 15
+
+        index = bin(number).replace("0b", "")
+        while len(index) < 4:
+            index = "0" + index
+
+        self.__data[9] = "%" + index + mirrored + "000"
+        self.__changeData(self.__data)
+
+    def __mirroredChanged1(self):
+        if self.__picSettingsOption1.get() == 2: return
+        self.__changeIndexAndMirroring1(None)
+
+    def __changedPicVar1(self, event):
+        if self.__picSettingsOption1.get() == 1: return
+
+        if self.__lastSelectedPictureVar != self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]:
+           self.__lastSelectedPictureVar = self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]
+           self.__data[9]                = self.__lastSelectedPictureVar
+           self.__changeData(self.__data)
 
     def __changePicture(self, event):
         if self.__lastSelectedPicture != self.__listOfPictures[self.__picListBox1.curselection()[0]]:
