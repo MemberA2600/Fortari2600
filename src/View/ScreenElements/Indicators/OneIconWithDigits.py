@@ -36,7 +36,7 @@ class OneIconWithDigits:
 
         self.__loadPictures()
 
-        if len(self.__listOfPictures) or len(self.__listOfPictures2)== 0:
+        if len(self.__listOfPictures) == 0:
             blankAnimation({
                                "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
                                                                          self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
@@ -758,7 +758,12 @@ class OneIconWithDigits:
 
         self.__fontVarListScrollBar1.config(command=self.__fontVarListBox1.yview)
 
-        self.__fontListSelect = [self.__listOfPictures2[0], self.__listOfPictures2[0]]
+        try:
+            self.__fontListSelect = [self.__listOfPictures2[0], self.__listOfPictures2[0]]
+        except:
+            self.__fontListSelect = ["", ""]
+
+
 
         self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changedFontVarListBox1)
         self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changedFontVarListBox1)
@@ -780,18 +785,25 @@ class OneIconWithDigits:
                 self.__fontOption1.set(2)
                 self.__fontVarListBox1.config(state = DISABLED)
             else:
-                self.__fontOption1.set(3)
-                foundIt = False
-                for itemNum in range(0, len(self.__listOfPictures2)):
-                    if self.__listOfPictures2[itemNum] == self.__data[9]:
-                       self.__fontVarListBox1.select_set(itemNum)
-                       self.__fontListSelect[0] = self.__data[9]
-                       foundIt = True
-                       break
+                if len(self.__listOfPictures2) > 0:
+                    self.__fontOption1.set(3)
+                    foundIt = False
+                    for itemNum in range(0, len(self.__listOfPictures2)):
+                        if self.__listOfPictures2[itemNum] == self.__data[9]:
+                           self.__fontVarListBox1.select_set(itemNum)
+                           self.__fontListSelect[0] = self.__data[9]
+                           foundIt = True
+                           break
 
-                if foundIt == False:
+                    if foundIt == False:
+                        self.__fontOption1.set(1)
+                        self.__fontVarListBox1.config(state=DISABLED)
+                else:
                     self.__fontOption1.set(1)
-                    self.__fontVarListBox1.config(state=DISABLED)
+
+        if len(self.__listOfPictures2) == 0:
+            self.__fontOptionButton1_3.config(state=DISABLED)
+            self.__fontVarListBox1.config(state=DISABLED)
 
         if   int(self.__digitNum.get()) == 1:
             self.__dataListBoxVarTypes = ["nibble", "byte"]

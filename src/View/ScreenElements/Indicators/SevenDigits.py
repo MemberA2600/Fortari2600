@@ -36,19 +36,13 @@ class SevenDigits:
 
         self.__loadPictures()
 
-        if len(self.__listOfPictures) == 0:
-            blankAnimation({
-                               "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
-                                                                         self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
-                           })
-        else:
-            itWasHash = False
-            if data[3] == "#":
-                itWasHash = True
+        itWasHash = False
+        if data[3] == "#":
+            itWasHash = True
 
-            self.__addElements()
-            if itWasHash == True:
-                self.__changeData(data)
+        self.__addElements()
+        if itWasHash == True:
+            self.__changeData(data)
 
     def __loadPictures(self):
 
@@ -490,6 +484,10 @@ class SevenDigits:
         self.__fontVarListScrollBar1.config(command=self.__fontVarListBox1.yview)
 
         for item in self.__listOfPictures: self.__fontVarListBox1.insert(END, item)
+
+        if len(self.__listOfPictures) == 0:
+           self.__fontOptionButton1_3.config(state = DISABLED)
+           font = "default"
 
         self.__changedFontData(font)
         self.__saveIt = self.__fontOption1.get()

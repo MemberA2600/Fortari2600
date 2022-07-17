@@ -36,7 +36,7 @@ class TwelveIconsOrDigits:
 
         self.__loadPictures()
 
-        if len(self.__listOfPictures) or len(self.__listOfPictures2)== 0:
+        if len(self.__listOfPictures) == 0:
             blankAnimation({
                                "item": "bigSprite / sprite", "folder": "'" +self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites' / '" +
                                                                          self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites'"
@@ -536,6 +536,11 @@ class TwelveIconsOrDigits:
             self.__fontVarListBox1.insert(END, item)
 
         self.__lastFont = ""
+        try:
+            self.__lastSelectedFont = self.__listOfPictures2[0]
+        except:
+            self.__lastSelectedFont = ""
+
         if digitFont == "#":
            self.__fontOption1.set(1)
            self.__lastFont = "default"
@@ -547,21 +552,31 @@ class TwelveIconsOrDigits:
                   self.__fontOption1.set(1)
                   self.__lastFont = "default"
                   self.__fontVarListBox1.config(state = DISABLED)
+
+
             elif  digitFont == "digital":
                   self.__fontOption1.set(2)
                   self.__lastFont = "digital"
                   self.__fontVarListBox1.config(state = DISABLED)
 
             else:
-                  self.__fontOption1.set(3)
-                  selector = 0
-                  for itemNum in range(0, len(self.__listOfPictures2)):
-                      if digitFont == self.__listOfPictures2[itemNum]:
-                         selector = itemNum
-                         break
+                  if len(self.__listOfPictures2) > 0:
+                      self.__fontOption1.set(3)
+                      selector = 0
+                      for itemNum in range(0, len(self.__listOfPictures2)):
+                          if digitFont == self.__listOfPictures2[itemNum]:
+                             selector = itemNum
+                             break
 
-                  self.__fontVarListBox1.selection_set(selector)
-                  self.__lastFont = self.__listOfPictures2[selector]
+                      self.__fontVarListBox1.selection_set(selector)
+                      self.__lastFont = self.__listOfPictures2[selector]
+                      self.__lastSelectedFont = self.__lastFont
+                  else:
+                      self.__fontOption1.set(1)
+
+        if len(self.__listOfPictures2) == 0:
+            self.__fontOptionButton1_3.config(state=DISABLED)
+            self.__fontVarListBox1.config(state=DISABLED)
 
         self.__picListBox1.bind("<ButtonRelease-1>", self.__changePicture)
         self.__picListBox1.bind("<KeyRelease-Up>", self.__changePicture)
@@ -858,10 +873,17 @@ class TwelveIconsOrDigits:
 
 
     def __changedFontOption1_3(self):
-        if self.__data[6]   != self.__lastFont:
-           self.__data[6]   = self.__lastFont
-           self.__fontVarListBox1.config(state = NORMAL)
-           self.__changeData(self.__data)
+        self.__fontVarListBox1.config(state = NORMAL)
+        selector = 0
+        for itemNum in range(0, len(self.__listOfPictures2)):
+            if self.__listOfPictures2[itemNum] == self.__lastSelectedFont:
+                selector = itemNum
+                break
+        self.__fontVarListBox1.select_set(selector)
+
+        self.__data[6]   = self.__lastSelectedFont
+        self.__lastFont  = self.__lastSelectedFont
+        self.__changeData(self.__data)
 
 
     def __changeConstant(self, event):
@@ -895,9 +917,10 @@ class TwelveIconsOrDigits:
     def __changeFont(self, event):
         if self.__fontOption1.get() != 3: return
 
-        if self.__data[6] != self.__listOfPictures2[self.__picListBox1.curselection()[0]]:
-           self.__data[6] = self.__listOfPictures2[self.__picListBox1.curselection()[0]]
+        if self.__data[6] != self.__listOfPictures2[self.__fontVarListBox1.curselection()[0]]:
+           self.__data[6] = self.__listOfPictures2[self.__fontVarListBox1.curselection()[0]]
            self.__lastFont = self.__data[6]
+           self.__lastSelectedFont = self.__lastFont
            self.__changeData(self.__data)
 
     def __changeFontColorVar(self, event):
