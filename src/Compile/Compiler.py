@@ -859,9 +859,14 @@ class Compiler:
 
         else:
             if data[11] == "1":
-                topLevelText = topLevelText.replace("!!!DOTS_FP2!!!", "AND\t#%10101010\n") \
-                                           .replace("!!!DOTS_FP0!!!", "AND\t#%10101010\n") \
-                                           .replace("!!!DOTS_FP1!!!", "AND\t#%01010101\n")
+                topLevelText = topLevelText.replace("!!!DOTS_PF2!!!",   "AND\t#%10101010\n")
+                topLevelText = topLevelText.replace("!!!DOTS_PF1_2!!!", "AND\t#%11110101\n")
+            if data[12] == "1":
+                topLevelText = topLevelText.replace("!!!DOTS_PF1_2!!!", "AND\t#%01011111\n")
+                topLevelText = topLevelText.replace("!!!DOTS_PF0!!!",   "AND\t#%10101010\n")
+            if data[11] == "1" and data[12] == "1":
+                topLevelText = topLevelText.replace("!!!WTF_IS_THIS!!!", "AND\t#%01011111\n")
+
 
         # Jumpback!
 

@@ -11,6 +11,8 @@
 	LSR				; 2
 	LSR				; 2
 	LSR				; 2
+
+	!!!DOTS_PF1_1!!!
 	STA	temp18			; 3
 
 	LDA	#BANK#_Bar_Inverted,y	; 5

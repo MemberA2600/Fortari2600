@@ -82,7 +82,6 @@ class HalfBarWithText:
                               height=self.__h)
 
         self.__frame4.pack_propagate(False)
-        self.__frame4.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__frame5 = Frame(self.__uniqueFrame, width=self.__w // 6 * 2,
                               bg=self.__loader.colorPalettes.getColor("window"),
@@ -90,6 +89,8 @@ class HalfBarWithText:
 
         self.__frame5.pack_propagate(False)
         self.__frame5.pack(side=LEFT, anchor=E, fill=BOTH)
+        self.__frame4.pack(side=LEFT, anchor=E, fill=BOTH)
+
 
         self.__label1 = Label(self.__frame1,
                               text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",

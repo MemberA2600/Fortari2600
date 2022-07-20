@@ -20,7 +20,8 @@
 	ASL				; 4
 	ASL				; 4
 	ORA	temp18			; 3
-	!!!DOTS_PF1!!!
+	!!!DOTS_PF1_2!!!
+	!!!WTF_IS_THIS!!!
 
 	STA	temp17			; 3
 	AND	#%11110111		; 2
@@ -29,7 +30,8 @@
 *	Ball replaces this bit.
 *
 	LDA	temp17			; 3
-	AND	#%0000100		; 2
+	AND	#%0001000		; 2
+	LSR
 	LSR
 	STA	temp17			; 3
 
