@@ -988,7 +988,6 @@ class TwoIconsTwoLines:
         self.__picVarListBox2.bind("<KeyRelease-Up>", self.__changedPicVar2)
         self.__picVarListBox2.bind("<KeyRelease-Down>", self.__changedPicVar2)
 
-        """
         self.__rightVal = IntVar()
         self.__right = Checkbutton(self.__frame7, width=99999,
                                        text=self.__dictionaries.getWordFromCurrentLanguage("justifyRight"),
@@ -1004,7 +1003,6 @@ class TwoIconsTwoLines:
         self.__right.pack(fill=X, side=TOP, anchor=N)
 
         if self.__data[16] == "1": self.__rightVal.set(1)
-        """
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame7,

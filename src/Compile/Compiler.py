@@ -202,7 +202,8 @@ class Compiler:
                      self.__userData[those[1][1]] = those[1][0]
                      self.__userData[self.__bank+"_Bar_Normal"] =\
                         self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
-                     self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
+                     # self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
+                     self.__routines[those[3][0]] = those[3][1]
                      for key in those[2].keys():
                          self.__userData[key] = those[2][key]
 
@@ -699,12 +700,20 @@ class Compiler:
     *	sprite1_Color	: temp15 (+ temp16)
         '''
 
+        mainRoutine = ""
+
+        if data[13] == "1":
+            mainRoutine = ["TwoIconsTwoLines",
+                           self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)]
+        else:
+            mainRoutine = ["TwoIconsTwoLines_Left",
+                           self.__io.loadSubModule("TwoIconsTwoLines_Left_Kernel").replace("#BANK#", self.__bank)]
+
         topLevelText           = "\n" + name + "\n"
         picture1               = data[0]
         picture2               = data[4]
 
         pictureData            = {}
-
         pictureName1           = picture1.split("_(")[0]
         pictureName2           = picture2.split("_(")[0]
         pictureType1           = picture1.split("_(")[1][:-1]
@@ -721,29 +730,28 @@ class Compiler:
                                    replace("##NAME1##", bank+"_"+pictureName1). \
                                    replace("##NAME2##", bank+"_"+pictureName2)
 
-    # ['Brutal_Big_Sprite_(Big)', '$40', '%00000000', '255', 'Bloody_Smiley_(Big)', '$80', '%00000000', '255', '1', 'random', 'random']
+        # ['Brutal_Big_Sprite_(Big)', '$40', '%00000000', '255', 'Bloody_Smiley_(Big)', '$80', '%00000000', '255', '1', 'random', 'random']
 
         colorVarName1 = data[1]
         colorVar1 = self.__loader.virtualMemory.getVariableByName2(colorVarName1)
         if colorVar1 == False:
-            topLevelText    += "\tLDA\t#"+ colorVarName1 +"\n"
+           topLevelText    += "\tLDA\t#"+ colorVarName1 +"\n"
         else:
-            topLevelText    += "\tLDA\t" + colorVarName1 + "\n"
-            if colorVar1.type == "nibble":
-                topLevelText += self.moveVarToTheRight(colorVar1.usedBits)
-            topLevelText += "\tAND\t#%11110000\n"
-
+           topLevelText    += "\tLDA\t" + colorVarName1 + "\n"
+           if colorVar1.type == "nibble":
+              topLevelText += self.moveVarToTheRight(colorVar1.usedBits)
+           topLevelText += "\tAND\t#%11110000\n"
         topLevelText    += "\tSTA\ttemp03\n"
 
         colorVarName2 = data[5]
         colorVar2 = self.__loader.virtualMemory.getVariableByName2(colorVarName2)
         if colorVar2 == False:
-            topLevelText    += "\tLDA\t#"+ colorVarName2 +"\n"
+           topLevelText    += "\tLDA\t#"+ colorVarName2 +"\n"
         else:
-            topLevelText    += "\tLDA\t" + colorVarName2 + "\n"
-            if colorVar2.type == "nibble":
-                topLevelText += self.moveVarToTheRight(colorVar2.usedBits)
-            topLevelText += "\tAND\t#%11110000\n"
+           topLevelText    += "\tLDA\t" + colorVarName2 + "\n"
+           if colorVar2.type == "nibble":
+              topLevelText += self.moveVarToTheRight(colorVar2.usedBits)
+           topLevelText += "\tAND\t#%11110000\n"
 
         topLevelText    += "\tSTA\ttemp04\n"
 
@@ -754,15 +762,20 @@ class Compiler:
 
         maxValue = int(data[3])
         topLevelText            += "\tCMP\t#" + data[3] +"\n\tBCC\t" + name + "_Not_Larger_Than_Max1\n" +\
-                                   "\tLDA\t#" + data[3] + "\n" + name + "_Not_Larger_Than_Max1\n"
+                                       "\tLDA\t#" + data[3] + "\n" + name + "_Not_Larger_Than_Max1\n"
 
         topLevelText            += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
 
-        topLevelText +=        "\tSTA\ttemp19\n" +\
-                               self.__loader.io.loadSubModule("preSetTwoIconsTwoBar").\
+        if data[13] == "1":
+            topLevelText +=        "\tSTA\ttemp19\n" +\
+                                   self.__loader.io.loadSubModule("preSetTwoIconsTwoBar").\
                                    replace("CC","03").replace("#NAME#", name)
+        else:
+            topLevelText +=         "\tSTA\ttemp19\n" + \
+                                    self.__loader.io.loadSubModule("preSetTwoIconsTwoBar_Left_1").\
+                                    replace("#NAME#", name)
 
-        topLevelText +=            "\tLDA\t" + data[10] + "\n"
+        topLevelText +=             "\tLDA\t" + data[10] + "\n"
         dataVar2 = self.__loader.virtualMemory.getVariableByName2(data[10])
         if dataVar2.type != "byte":
             topLevelText += self.convertAnyTo8Bits(dataVar2.usedBits)
@@ -773,9 +786,14 @@ class Compiler:
 
         topLevelText += self.generateASLLSRbyMaxValueAndStartPoint(maxValue, 5)
 
-        topLevelText += "\tSTA\ttemp19\n" + \
-                        self.__loader.io.loadSubModule("preSetTwoIconsTwoBar"). \
-                            replace("CC", "04").replace("PF2", "PF1").replace("#NAME#", name)
+        if data[13] == "1":
+            topLevelText += "\tSTA\ttemp19\n" + \
+                            self.__loader.io.loadSubModule("preSetTwoIconsTwoBar").\
+                                replace("CC", "04").replace("PF2", "PF1").replace("#NAME#", name)
+        else:
+            topLevelText +=         "\tSTA\ttemp19\n" + \
+                                    self.__loader.io.loadSubModule("preSetTwoIconsTwoBar_Left_2").\
+                                    replace("#NAME#", name)
 
         pattern                = self.generate_fadeOutPattern(2)
         patternIndex           = int(data[8])
@@ -814,36 +832,50 @@ class Compiler:
         topLevelText += "\tLDA\ttemp19\n\tLSR\n\tAND\t#%01111000\n"
         topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
-        if data[11] == "1":
-           topLevelText = topLevelText + "\tLDA\t#$e0\n\tSTA\ttemp18\n"
-           topLevelText = topLevelText + self.__loader.io.loadSubModule("TwoIconsTwoBar_DotsDots").replace("#NAME#", name)
+        if data[13] == "1":
+            if data[11] == "1":
+               topLevelText = topLevelText + "\tLDA\t#$e0\n\tSTA\ttemp18\n"
+               topLevelText = topLevelText + self.__loader.io.loadSubModule("TwoIconsTwoBar_DotsDots").replace("#NAME#", name)
+            else:
+               topLevelText = topLevelText + "\tLDA\t#$20\n\tSTA\ttemp18\n"
         else:
-           topLevelText = topLevelText + "\tLDA\t#$20\n\tSTA\ttemp18\n"
+            pass
+
+
+        inverted = "10101010"
+        #print(data)
+
+        if data[13] == "1":
+            if data[11] == "1":
+                topLevelText = topLevelText.replace("!!!AND0_PF2_Inverted!!!", "\tAND\t#%" + inverted)
+
+            topLevelText = topLevelText.replace("!!!PF2_REMOVE_LASTBIT!!!",
+                                                self.__io.loadSubModule("TwoIconsTwoBar_RemoveLastBit")
+                                                .replace("#NAME#", name)
+                                                .replace("#BANK#", bank))
+
+            if data[12] == "1":
+                topLevelText = topLevelText.replace("!!!AND0_PF1_Inverted!!!", "\tAND\t#%" + inverted)
+
+        else:
+            if data[11] == "1":
+                topLevelText = topLevelText.replace("!!!DOTS_FP2!!!", "AND\t#%10101010\n") \
+                                           .replace("!!!DOTS_FP0!!!", "AND\t#%10101010\n") \
+                                           .replace("!!!DOTS_FP1!!!", "AND\t#%01010101\n")
 
         # Jumpback!
 
         topLevelText += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                         "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
-        topLevelText += "\tJMP\t" + bank + "_TwoIconsTwoLines_Kernel" + "\n"
+
+        if data[13] == "1":
+            topLevelText += "\tJMP\t" + bank + "_TwoIconsTwoLines_Kernel" + "\n"
+        else:
+            topLevelText += "\tJMP\t" + bank + "_TwoIconsTwoLines_Left_Kernel" + "\n"
+
         topLevelText += name + "_Back" + "\n"
 
-        #print(topLevelText)
-
-        inverted = "10101010"
-        #print(data)
-
-        if data[11] == "1":
-           topLevelText = topLevelText.replace("!!!AND0_PF2_Inverted!!!", "\tAND\t#%" + inverted)
-
-        topLevelText = topLevelText.replace("!!!PF2_REMOVE_LASTBIT!!!",
-                                            self.__io.loadSubModule("TwoIconsTwoBar_RemoveLastBit")
-                                            .replace("#NAME#", name)
-                                            .replace("#BANK#", bank))
-
-        if data[12] == "1":
-           topLevelText = topLevelText.replace("!!!AND0_PF1_Inverted!!!", "\tAND\t#%" + inverted)
-
-        return (topLevelText, patternData, pictureData)
+        return (topLevelText, patternData, pictureData, mainRoutine)
 
     def loadPictureData(self, bank, pictureName, pictureType):
         if pictureType.upper() == 'BIG':

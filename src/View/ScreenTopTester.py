@@ -312,8 +312,11 @@ class ScreenTopTester:
         self.__variableList[self.__lines[num]["variable"].cget("text")][1] = self.__lines[num]["value"].get()
 
     def __OK(self):
-        self.__caller.initCode = ""
-        xxx                    = ""
+        self.__caller.initCode     = ""
+        self.__caller.overScanCode = ""
+
+        xxx = ""
+        yyy = ""
 
         testCounter = 0
 
@@ -330,6 +333,8 @@ class ScreenTopTester:
                 theVar = self.__loader.virtualMemory.getVariableByName2(variableName)
                 c = Compiler(None, None, "dummy", None)
                 tempText += c.convertAnyTo8Bits(theVar.usedBits) + "\tSTA\t" + variableName + "\n"
+                yyy += tempText
+
             else:
                 tempText = "\tLDA\tcounter\n"
                 incrementer = int(self.__variableList[variable][1][1:])-1
@@ -342,9 +347,10 @@ class ScreenTopTester:
                 else:
                    tempText += "\tSTA\t" + variableName + "\n"
 
-            xxx += tempText
+                xxx += tempText
 
         self.__closeWindow()
+        self.__caller.initCode = yyy
         self.__caller.overScanCode = xxx
         self.__soundPlayer.playSound("Okay")
         self.__caller.answer   = "OK"
