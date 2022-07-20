@@ -79,13 +79,26 @@ class VirtualMemory:
 
     def generateMemoryAllocationForAssembler(self, validity):
         text = ""
+        already = self.getKernelsPreSetVars()
+
         for address in self.memory.keys():
             for name in self.memory[address].variables:
                 if self.memory[address].variables[name].validity == validity and\
-                   self.memory[address].variables[name].system   == False       :
+                 ( self.memory[address].variables[name].system   == False or name not in already ):
                    text += name + " = " + address + "\n"
         return(text)
 
+    def getKernelsPreSetVars(self):
+        import re
+
+        txt = self.__loader.io.loadKernelElement(self.kernel, "main_kernel")
+        vars = re.findall(r'.+\s\=\s\$[0-9a-fA-F]{2}', txt)
+
+        forReturn = []
+        for item in vars:
+            forReturn.append(item.split(" ")[0])
+
+        return(forReturn)
 
     def changeKernelMemory(self, old, new):
         from copy import deepcopy

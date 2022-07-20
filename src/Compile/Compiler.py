@@ -1254,6 +1254,7 @@ class Compiler:
         text = "\n" + name + "\n\tLDA\t"
 
         varType = None
+        varBits = None
 
         try:
             num = int(data[0])

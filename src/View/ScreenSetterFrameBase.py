@@ -5,13 +5,15 @@ from time import sleep
 
 class ScreenSetterFrameBase:
 
-    def __init__(self, loader, baseFrame, data, name, changeName, dead):
+    def __init__(self, loader, baseFrame, data, name, changeName, dead, names):
 
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data
         self.__changeName = changeName
         self.__dead = dead
+        self.__names = names
+        self.__countBack = 0
 
         if type(data) == str: self.__data = self.__data.split(" ")
 
@@ -108,7 +110,10 @@ class ScreenSetterFrameBase:
                 if foundError == False:
                    self.clearErrorText()
 
-            except:
+                if self.__countBack > 0: self.__countBack -=1
+                if self.__countBack == 1: self.__checkIfNewName()
+
+            except Exception as e:
                 pass
 
             sleep(0.005)
@@ -133,11 +138,21 @@ class ScreenSetterFrameBase:
             )
 
         eventType = str(event).split(" ")[0][1:]
-        if eventType == "FocusOut": self.__checkIfNewName()
+        if eventType == "FocusOut":
+            self.__checkIfNewName()
+        else:
+            self.__countBack = 100
 
     def __checkIfNewName(self):
         newName = self.__name.get()
         oldName = self.__data[0]
+
+        counter = 0
+        while (newName in self.__names) and (newName != oldName):
+            newName =  self.__name.get() + "_" + str(counter)
+            counter += 1
+            self.__name.set(newName)
+
         if newName == oldName: return
 
         self.__data[0] = newName

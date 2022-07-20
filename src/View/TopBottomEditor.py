@@ -750,11 +750,18 @@ class TopBottomEditor:
                "Indicator"          : Indicator
            }
 
+           self.__listOfNames = []
+
+           for screenPart in self.__codeData.keys():
+               for bankNum in range(0, len(self.__codeData[screenPart])):
+                   for item in self.__codeData[screenPart][bankNum][2]:
+                       self.__listOfNames.append(item.split(" ")[0])
+
            self.__setterFrame = typs[typ](  self.__loader, self.__allTheFunStuff,
                                             self.__codeData[self.__activePart][bank][2][
                                             self.__itemListBox.curselection()[0]],
                                             self.__changeName, self.__changeData, self.__uW, self.__uH,
-                                            self.__activeBank.lower(), self.blankAnimation, self.__topLevelWindow
+                                            self.__activeBank.lower(), self.blankAnimation, self.__topLevelWindow, self.__listOfNames
                                             )
 
 
@@ -1007,6 +1014,8 @@ class TopBottomEditor:
 
         self.__finishedThem[1] = True
         self.__itemListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        self.__itemListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        self.__itemListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
 
     def __changeSlot(self, event):

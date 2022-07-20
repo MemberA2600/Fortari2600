@@ -8,7 +8,7 @@ from ScreenSetterFrameBase import ScreenSetterFrameBase
 
 class EmptyLines:
 
-    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow):
+    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow, itemNames):
 
         self.__loader = loader
         self.__baseFrame = baseFrame
@@ -40,7 +40,7 @@ class EmptyLines:
         self.dead = [False]
         self.__lastData     = self.__data[2]
 
-        self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
+        self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead, itemNames)
         self.__addElements()
 
     def __addElements(self):

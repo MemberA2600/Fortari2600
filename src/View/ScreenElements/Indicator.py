@@ -8,7 +8,7 @@ from ScreenSetterFrameBase import ScreenSetterFrameBase
 
 class Indicator:
 
-    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow):
+    def __init__(self, loader, baseFrame, data, changeName, changeData, w, h, currentBank, blankAnimation, topLevelWindow, itemNames):
         self.__loader = loader
         self.__baseFrame = baseFrame
         self.__data = data.split(" ")
@@ -41,7 +41,7 @@ class Indicator:
         self.dead = [False]
         self.stopMe = True
 
-        self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead)
+        self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead, itemNames)
         self.__addElements()
 
     def __addElements(self):

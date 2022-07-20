@@ -38,7 +38,6 @@ class MainWindow:
         self.__colors = self.__loader.colorPalettes
 
         self.__mainFocus = None
-        self.__subMenu = None
 
         self.__subMenuOpened = False
         self.__setProjectPath(None)
@@ -156,7 +155,6 @@ class MainWindow:
 
     def __killRemaining(self):
         import gc
-        self.__subMenu = None
         self.__loader.subMenus = []
 
         for item in gc.get_objects():
@@ -467,7 +465,7 @@ class MainWindow:
 
     def __newButtonFunction(self):
         from NewProjectWindow import NewProjectWindow
-        self.__subMenu = NewProjectWindow(self.__loader)
+        NewProjectWindow(self.__loader)
 
 
     def projectOpenedWantToSave(self):
@@ -685,48 +683,48 @@ class MainWindow:
 
         from OpenProjectWindow import OpenProjectWindow
 
-        self.__subMenu = OpenProjectWindow(self.__loader, self, self.openProject)
+        OpenProjectWindow(self.__loader, self, self.openProject)
 
 
     def __openMusicComposer(self):
         from MusicComposer import MusicComposer
 
-        self.__subMenu = MusicComposer(self.__loader, self, None)
+        MusicComposer(self.__loader, self, None)
 
     def __openPictureConverter(self):
         from PictureToCode import PictureToCode
 
-        self.__subMenu = PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
+        PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
 
     def __openSoundPlayer(self):
         from SoundPlayerEditor import SoundPlayerEditor
 
-        self.__subMenu = SoundPlayerEditor(self.__loader, self)
+        SoundPlayerEditor(self.__loader, self)
 
     def __openPFEditor(self):
         from PlayfieldEditor import PlayfieldEditor
 
-        self.__subMenu = PlayfieldEditor(self.__loader, self)
+        PlayfieldEditor(self.__loader, self)
 
     def __openSpriteEditor(self):
         from SpriteEditor import SpriteEditor
 
-        self.__subMenu = SpriteEditor(self.__loader, self)
+        SpriteEditor(self.__loader, self)
 
     def __openBigSpriteEditor(self):
         from BigSpriteMaker import BigSpriteMaker
 
-        self.__subMenu = BigSpriteMaker(self.__loader)
+        BigSpriteMaker(self.__loader)
 
     def __openScreenTopBottom(self):
         from TopBottomEditor import TopBottomEditor
 
-        self.__subMenu = TopBottomEditor(self.__loader)
+        TopBottomEditor(self.__loader)
 
     def __openMenuMaker(self):
         from MenuMaker import MenuMaker
 
-        self.__subMenu = MenuMaker(self.__loader)
+        MenuMaker(self.__loader)
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
@@ -745,7 +743,7 @@ class MainWindow:
     def __achiveButtonFunction(self):
         from ArchiveWindow import ArchiveWindow
 
-        self.__subMenu = ArchiveWindow(self.__loader)
+        ArchiveWindow(self.__loader)
 
 
     def __copyButtonFunction(self):
@@ -805,8 +803,6 @@ class MainWindow:
     def focusOut(self, event):
         self.focused = None
 
-    def getCurrentSubMenuToplevel(self):
-        return self.__subMenu.getTopLevelWindow()
 
     def setCopyButton(self, button):
         from time import sleep
@@ -854,9 +850,9 @@ class MainWindow:
 
     def __openLockManager(self):
         from LockManagerWindow import LockManagerWindow
-        self.__subMenu = LockManagerWindow(self.__loader)
+        LockManagerWindow(self.__loader)
 
     def openMemoryManager(self):
         from MemoryManagerWindow import MemoryManagerWindow
 
-        self.__subMenu = MemoryManagerWindow(self.__loader)
+        MemoryManagerWindow(self.__loader)
