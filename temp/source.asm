@@ -1456,18 +1456,6 @@ EnterScreenBank2
 
 	LDA	#0		; set frame color to black
 	STA	frameColor
-	LDA	#0
-	STA	P0SpriteIndex
-	LDA	#0
-	STA	P0Y
-	LDA	#0
-	STA	P1Height
-	LDA	#0
-	STA	bkBaseColor
-	LDA	#0
-	STA	pfBaseColor
-	LDA	#0
-	STA	pfIndex
 
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
@@ -1548,12 +1536,6 @@ OverScanBank2
 * begins.
 *
 
-	LDA	counter
-	AND	#7
-	CMP	#7
-	BNE	ThisIsAReallyImportantLabel_0
-	INC	M0Color
-ThisIsAReallyImportantLabel_0
 
 
 
@@ -1672,75 +1654,199 @@ VBlankEndBank2
 	STA	COLUBK
 
 
-Bank2_Indicator_Indicator_SevenDigits
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp01
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp02
-	LDA	M0Color
-	CLC
-	ADC	temp01
-	STA	temp01
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp03
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp04
-	LDA	P1Height
-	CLC
-	ADC	temp03
-	STA	temp03
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp05
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp06
-	LDA	P0SpriteIndex
-	CLC
-	ADC	temp05
-	STA	temp05
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp07
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp08
-	LDA	P0Y
-	CLC
-	ADC	temp07
-	STA	temp07
-	LDA	#<Bank2_8PixNumbers_Default
+Bank2_Indicator_Indicator_TwoIconsTwoLines
+	LDA	frameColor
+	STA	COLUPF
+	LDA	#0
+	STA	temp17
+	LDA	counter
+	AND	#%00000001
+	CMP	#%00000001
+	BEQ	Bank2_Indicator_Indicator_TwoIconsTwoLines_Odd_Frame
+
+	LDA	#<Bank2_Battery_BigSprite_1
 	STA	temp09
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp10
-	LDA	bkBaseColor
+	LDA	#>Bank2_Battery_BigSprite_1
+	STA	temp10
+	LDA	#<Bank2_Battery_BigSpriteColor_1
+	STA	temp11
+	LDA	#>Bank2_Battery_BigSpriteColor_1
+	STA	temp12
+
+	LDA	#<Bank2_Battery_BigSprite_1
+	STA	temp13
+	LDA	#>Bank2_Battery_BigSprite_1
+	STA	temp14
+	LDA	#<Bank2_Battery_BigSpriteColor_1
+	STA	temp15
+	LDA	#>Bank2_Battery_BigSpriteColor_1
+	STA	temp16
+
+	JMP	Bank2_Indicator_Indicator_TwoIconsTwoLines_Even_Frame
+Bank2_Indicator_Indicator_TwoIconsTwoLines_Odd_Frame
+	LDA	#<Bank2_Battery_BigSprite_0
+	STA	temp09
+	LDA	#>Bank2_Battery_BigSprite_0
+	STA	temp10
+	LDA	#<Bank2_Battery_BigSpriteColor_0
+	STA	temp11
+	LDA	#>Bank2_Battery_BigSpriteColor_0
+	STA	temp12
+
+	LDA	#<Bank2_Battery_BigSprite_0
+	STA	temp13
+	LDA	#>Bank2_Battery_BigSprite_0
+	STA	temp14
+	LDA	#<Bank2_Battery_BigSpriteColor_0
+	STA	temp15
+	LDA	#>Bank2_Battery_BigSpriteColor_0
+	STA	temp16
+
+Bank2_Indicator_Indicator_TwoIconsTwoLines_Even_Frame
+	LDA	#$40
+	STA	temp03
+	LDA	#$80
+	STA	temp04
+	LDA	random
+	CMP	#255
+	BCC	Bank2_Indicator_Indicator_TwoIconsTwoLines_Not_Larger_Than_Max1
+	LDA	#255
+Bank2_Indicator_Indicator_TwoIconsTwoLines_Not_Larger_Than_Max1
+	LSR
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	temp19
+	LDA	temp19			; 3 
+	CMP	#0			
+	BEQ	Bank2_Indicator_Indicator_TwoIconsTwoLines_NoAdd1_Icon1
+	CLC
+	ADC	#1
+Bank2_Indicator_Indicator_TwoIconsTwoLines_NoAdd1_Icon1
+
+	TAY				; 2 
+	LDA	Bank2_Bar_Normal,y	; 5 
+	LSR				; 2
+	LSR				; 2
+	LSR				; 2
+	LSR				; 2
+
+	
+	STA	temp18			; 3
+
+	LDA	Bank2_Bar_Inverted,y	; 5
+	LSR				; 2
+	LSR				; 2
+	LSR				; 2
+	LSR				; 2
+
+	
+	STA	PF2			; 3
+
+	LDA	#$0f			; 2
+	CMP	temp19			; 3
+	BCS	Bank2_Indicator_Indicator_TwoIconsTwoLines_NoSTAThat_Icon1 	; 2	
+	STA	temp19			; 3
+Bank2_Indicator_Indicator_TwoIconsTwoLines_NoSTAThat_Icon1
+	LDA	temp19			; 3
+	CLC				; 2
+	ADC	temp03			; 3
+	STA	temp03			; 3
+	LDA	random
+	CMP	#255
+	BCC	Bank2_Indicator_Indicator_TwoIconsTwoLines_Not_Larger_Than_Max2
+	LDA	#255
+Bank2_Indicator_Indicator_TwoIconsTwoLines_Not_Larger_Than_Max2
+	LSR
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	temp19
+	LDA	temp19			; 3 
+	CMP	#0			
+	BEQ	Bank2_Indicator_Indicator_TwoIconsTwoLines_NoAdd1_Icon2
+	CLC
+	ADC	#1
+Bank2_Indicator_Indicator_TwoIconsTwoLines_NoAdd1_Icon2
+
+	TAY				; 2 
+	LDA	Bank2_Bar_Inverted,y	; 5 
+	ASL				; 2
+	ASL				; 2
+	ASL				; 2
+	ASL				; 2
+	
+	STA	PF0			; 3
+
+	LDA	Bank2_Bar_Normal,y	; 5
+	ASL				; 4
+	ASL				; 4
+	ASL				; 4
+	ASL				; 4
+	ORA	temp18			; 3
+	
+	
+
+	STA	temp17			; 3
+	AND	#%11110111		; 2
+	STA	PF1			; 3
+*
+*	Ball replaces this bit.
+*
+	LDA	temp17			; 3
+	AND	#%0001000		; 2
+	LSR
+	LSR
+	STA	temp17			; 3
+
+
+	LDA	#$0f			; 2
+	CMP	temp19			; 3
+	BCS	Bank2_Indicator_Indicator_TwoIconsTwoLines_NoSTAThat_Icon2 	; 2	
+	STA	temp19			; 3
+Bank2_Indicator_Indicator_TwoIconsTwoLines_NoSTAThat_Icon2
+	LDA	temp19			; 3
+	CLC				; 2
+	ADC	temp04			; 3
+	STA	temp04			; 3
+	LDA	#<Bank2_Gradient_8_1
+	STA	temp07
+	LDA	#>Bank2_Gradient_8_1
+	STA	temp08
+	LDA	#%00000000
+	STA	temp19
+	AND	#%00001111
+	STA	REFP0
+	STA	NUSIZ0
+	AND	#%00000111
+	STA	temp05
+	LDA	temp19
+	LSR
+	AND	#%01111000
 	CLC
 	ADC	temp09
 	STA	temp09
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp11
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp12
-	LDA	pfBaseColor
-	CLC
-	ADC	temp11
-	STA	temp11
-	LDA	#<Bank2_8PixNumbers_Default
-	STA	temp13
-	LDX	#>Bank2_8PixNumbers_Default
-	STX	temp14
-	LDA	pfIndex
+	LDA	#%00000000
+	STA	temp19
+	AND	#%00001111
+	STA	REFP1
+	STA	NUSIZ1
+	AND	#%00000111
+	STA	temp06
+	LDA	temp19
+	LSR
+	AND	#%01111000
 	CLC
 	ADC	temp13
 	STA	temp13
-	LDA	#<Bank2_Gradient_8_1
-	STA	temp17
-	LDA	#>Bank2_Gradient_8_1
-	STA	temp18
-	LDA	#$17
-	STA	temp19
-	LDA	#<Bank2_Indicator_Indicator_SevenDigits_Back
-	STA	temp15
-	LDA	#>Bank2_Indicator_Indicator_SevenDigits_Back
-	STA	temp16
-	JMP	Bank2_SevenDigits_Kernel
-Bank2_Indicator_Indicator_SevenDigits_Back
+	LDA	#<Bank2_Indicator_Indicator_TwoIconsTwoLines_Back
+	STA	temp01
+	LDA	#>Bank2_Indicator_Indicator_TwoIconsTwoLines_Back
+	STA	temp02
+	JMP	Bank2_TwoIconsTwoLines_Left_Kernel
+Bank2_Indicator_Indicator_TwoIconsTwoLines_Back
 
 *
 *	Testline
@@ -1845,6 +1951,80 @@ ScreenBottomBank2
 	align	256
 
 
+Bank2_Battery_BigSprite_1
+	byte	#%01111110
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%01111110
+	byte	#%00011000	; (0)
+	byte	#%00111100
+	byte	#%01000010
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%01000010
+	byte	#%01111110
+	byte	#%00011000	; (1)
+	byte	#%11111111
+	byte	#%10000001
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%10000001
+	byte	#%11111111
+	byte	#%00011000	; (2)
+
+Bank2_Battery_BigSprite_0
+	byte	#%00000000
+	byte	#%00010000
+	byte	#%00001000
+	byte	#%00001100
+	byte	#%00011000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000	; (0)
+	byte	#%00000000
+	byte	#%00010000
+	byte	#%00001100
+	byte	#%00000110
+	byte	#%00001100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000	; (1)
+	byte	#%00000000
+	byte	#%00001000
+	byte	#%00001000
+	byte	#%00011000
+	byte	#%00110000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000	; (2)
+
+Bank2_Bar_Normal
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%11110000
+	BYTE	#%11111000
+	BYTE	#%11111100
+	BYTE	#%11111110
+	BYTE	#%11111111
+
+Bank2_Bar_Inverted
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000011
+	BYTE	#%00000111
+	BYTE	#%00001111
+	BYTE	#%00011111
+	BYTE	#%00111111
+	BYTE	#%01111111
+	BYTE	#%11111111
+
 Bank2_Gradient_8_1
 	BYTE	#$08
 	BYTE	#$08
@@ -1855,117 +2035,45 @@ Bank2_Gradient_8_1
 	BYTE	#$02
 	BYTE	#$02
 
-Bank2_8PixNumbers_Default
+Bank2_Battery_BigSpriteColor_1
+	byte	#$04
+	byte	#$06
+	byte	#$08
+	byte	#$06
+	byte	#$08
+	byte	#$06
+	byte	#$04
+	byte	#$88
 
-Bank2_8PixNumbers_Default_0
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%10001010
-	BYTE	#%10010010
-	BYTE	#%10010010
-	BYTE	#%10100010
-	BYTE	#%01000100
-	BYTE	#%00111000
+Bank2_Battery_BigSpriteColor_0
+	byte	#$16
+	byte	#$18
+	byte	#$1a
+	byte	#$1c
+	byte	#$1e
+	byte	#$1c
+	byte	#$1a
+	byte	#$18
 
-Bank2_8PixNumbers_Default_1
-	BYTE	#%00111110
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00101000
-	BYTE	#%00101000
-	BYTE	#%00011000
-	BYTE	#%00011000
+Bank2_Battery_BigSpriteBG
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
 
-Bank2_8PixNumbers_Default_2
-	BYTE	#%01111110
-	BYTE	#%01100000
-	BYTE	#%00010000
-	BYTE	#%00001000
-	BYTE	#%00000100
-	BYTE	#%01000010
-	BYTE	#%01000010
-	BYTE	#%00111100
-
-Bank2_8PixNumbers_Default_3
-	BYTE	#%00111100
-	BYTE	#%01000010
-	BYTE	#%00000010
-	BYTE	#%00000100
-	BYTE	#%00011100
-	BYTE	#%00000010
-	BYTE	#%01000010
-	BYTE	#%00111100
-
-Bank2_8PixNumbers_Default_4
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%11111110
-	BYTE	#%01010000
-	BYTE	#%01010000
-	BYTE	#%00100000
-	BYTE	#%00010000
-
-Bank2_8PixNumbers_Default_5
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%00000010
-	BYTE	#%00000010
-	BYTE	#%00000100
-	BYTE	#%01111000
-	BYTE	#%01000000
-	BYTE	#%01111110
-
-Bank2_8PixNumbers_Default_6
-	BYTE	#%00111100
-	BYTE	#%01000010
-	BYTE	#%10000010
-	BYTE	#%11000010
-	BYTE	#%10111100
-	BYTE	#%10000000
-	BYTE	#%01000010
-	BYTE	#%00111100
-
-Bank2_8PixNumbers_Default_7
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00010000
-	BYTE	#%00001000
-	BYTE	#%00000100
-	BYTE	#%00000010
-	BYTE	#%00000010
-	BYTE	#%01111110
-
-Bank2_8PixNumbers_Default_8
-	BYTE	#%00111100
-	BYTE	#%01000010
-	BYTE	#%01000010
-	BYTE	#%01000010
-	BYTE	#%00111100
-	BYTE	#%01000010
-	BYTE	#%01000010
-	BYTE	#%00111100
-
-Bank2_8PixNumbers_Default_9
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%00000010
-	BYTE	#%00000010
-	BYTE	#%00111110
-	BYTE	#%01000010
-	BYTE	#%01000010
-	BYTE	#%00111100
-
-Bank2_8PixNumbers_Default_Slot_0
-	BYTE	#%00111000
-	BYTE	#%01000100
-	BYTE	#%10001010
-	BYTE	#%10010010
-	BYTE	#%10010010
-	BYTE	#%10100010
-	BYTE	#%01000100
-	BYTE	#%00111000
+Bank2_Battery_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
 
 
 
@@ -1977,302 +2085,130 @@ Bank2_8PixNumbers_Default_Slot_0
 *
 
 *
-* Digit1 Pointer:		temp01 (+ temp02)
-* Digit2 Pointer:		temp03 (+ temp04)
-* Digit3 Pointer:		temp05 (+ temp06)
-* Digit4 Pointer:		temp07 (+ temp08) 
-* Digit5 Pointer:		temp09 (+ temp10)
-* Digit6 Pointer:		temp11 (+ temp12)
-* Digit7 Pointer:		temp13 (+ temp14)
-* JumpBack Pointer:		temp15 (+ temp16)
-* Gradient:			temp17 (+ temp18) 
-* Color:			temp19
-*				0-2: Store the number of digits!
+*	JumpBack Pointer: temp01 (+ temp02)
+*	Color1		: temp03	
+*	Color2		: temp04
+*	NUSIZ0		: temp05
+*	NUSIZ1		: temp06
+*	GradientPointer : temp07 (+ temp08)
+*	sprite0_Pixels	: temp09 (+ temp10)
+*	sprite0_Colors	: temp11 (+ temp12)
+*	sprite1_Pixels	: temp13 (+ temp14)
+*	sprite1_Color	: temp15 (+ temp16)
+*	ENABL		: temp17
+*
+*	PF1 and PF2 is set in the Toplevel section.
+*	Since we don't have enough memory for both sprites,
+*	we have to flicker them. If the spritedata is
+*	just copied, there won't be any flicker at all.
+*
 *
 
-Bank2_SevenDigits_Kernel
-	LDA	frameColor
-	STA	WSYNC		; 76
-	STA	COLUBK		; 3
+Bank2_TwoIconsTwoLines_Left_Kernel
+	LDA	#0			; 2 (64)
+	LDX	frameColor		; 3 (67)
+	STA	WSYNC			; 3 (76)
+	STA	HMCLR			; 3 
+	STX	COLUBK			; 3 (6)
+	STX	COLUPF			; 3 (9)
 
-	LDA	#0		; 2 (5)
-	STA	GRP0		; 3 (8)
-	STA	GRP1		; 3 (11)
-	STA	PF0		; 3 (14)
-	STA	PF1		; 3 (17)
-	STA	PF2		; 3 (20)
-	STA	HMCLR		; 3 (32)
-	STA	REFP0		; 3 (35)
-	STA	REFP1		; 3 (38)
+	STA	GRP0			; 3 (12)
+	STA	GRP1			; 3 (15)
 
-	LDA	temp19		; 3 (41)
+	STA	NUSIZ0			; 3 (18)
+	STA	NUSIZ1			; 3 (21)
+
+	STA	ENABL
+	STA	RESP0			; 3 (27)
+	STA	RESBL			; 3 (30)
+
+	LDA	#$20			; 2 
+	STA	HMP0			; 3 
+	LDA	#$a0			; 2
+	STA	HMBL			; 3
+
+	STA	RESP1			; 3
+	LDA	#$10			; 2
+	STA	HMP1			; 3
+
+	STA	WSYNC			; 76
+	STA	HMOVE			; 3
+
+	LDY	#7			; 2 (5) 
+	LDA	#$20			; 2 (7)
+	STA	CTRLPF			; 3 (10)
+
+*
+*	Eary things. Love timing issues.
+*
+
+	LAX 	(temp07),y		; 5
+
+	LDA	temp17			; 2
+	STA	ENABL			; 3
+
+	LDA	(temp15),y		; 5 
+	STA 	COLUP1			; 3
+		
+	JMP	Bank2_TwoIconsTwoLines_Left_Loop
+
+	align	256
+
+Bank2_TwoIconsTwoLines_Left_Loop
+	STA 	WSYNC			; 76
+	LDA	(temp09),y		; 5
+	STA	GRP0			; 3 (8)
+	LDA	(temp11),y		; 5 (13)
+	STA	COLUP0			; 3 (16)	
+	
+	LDA	(temp13),y		; 5 (21)
+	STA	GRP1			; 3 (24)
+
+	TXA				; 2 (26)
+	ADC	temp03			; 3 (29)
+
 	sleep	2
-	STA	RESP0		; 3 (46)
-	sleep	3
-	STA	RESP1		; 3 (52)
-
-	AND	#%00000111	; 2 (54)
-	CMP	#$06		; 2 (56)
-	BCC	Bank2_SevenDigits_5_digits_Mode   ; 2 (58)
-	
-	LDA	temp19		; 3 (59)
-	AND	#%11110000	; 2 (61)
-	ORA	#$06		; 2 (63)
-	STA	temp19		; 3 (66)
-
-	LDA	#$02		; 2 (68)
-	STA	NUSIZ0		; 3 (71)
-	LDA	#$02		; 2 (73)
-	STA	NUSIZ1		; 3 (76)
-
-	LDY	#7		; 2 
-	CLC			; 2 (4)
-	
-	LDA	#$00		; 2 (6)
-	STA	HMP0		; 3 (9)
-	LDA	#$20		; 2 (11)
-	STA	HMP1		; 3 (14)
-
-	STA	WSYNC		; 76		
-	STA	HMOVE		; 3
-
-	LDA	counter		; 3 
-	AND	#%00000001	; 2 
-	TAX			; 2 
-	LDA	Bank2_SevenDigits_Offsets,x ; 5 
-	STA	HMP0		; 3 
-	STA	HMP1		; 3 
-
-	LDA	frameColor	; 3 
-	STA	COLUPF		; 3 
-	LDA	#%000100	; 2
-	STA	CTRLPF		; 3
-
-	LDA	#%00000011	; 2
-	STA	PF2		; 3
-
-	STA	WSYNC		; 76		
-	STA	HMOVE		; 3
-
-	LDA	counter		; 3 (6)
-	AND	#%00000001	; 2 (8) 
-	CMP	#%00000001	; 2 (10)
-	BEQ	Bank2_SevenDigits_Odd_Init	; 2 (12)
-	
-	LDA	#$80
-	STA	HMP0
-	STA	HMP1
-
-	
-	JMP	Bank2_SevenDigits_Even_Loop
-
-	_align	90
-
-Bank2_SevenDigits_Even_Loop
-	STA	WSYNC		; 76
-	STA	HMOVE		; 3
-	LDA	(temp17),y	; 5 (8)
-	ADC	temp19		; 3 (11)
-	STA	COLUP0		; 3 (14)
-	STA	COLUP1		; 3 (17)
-
-	LDA 	(temp13),y	; 5 (22)
-	STA	GRP0		; 3 (25)
-
-	LDA 	(temp09),y	; 5 (30)
-	STA	GRP1		; 3 (33)
-
-	sleep	5
-
-	LAX 	(temp01),y	; 5
-	LDA 	(temp05),y	; 5 
-	STA	GRP0		; 3 
-	STX	GRP1		; 3
-
-	sleep	7
-		
-	LDA	#$00		; 2 (63)
-	STA	HMP0		; 3 (66)
-	STA	HMP1		; 3 (69)
-	DEY			; 2 (71)
-
-Bank2_SevenDigits_Even_SecondLine
-	STA	HMOVE		; 3 (74)
-
-	LDA	(temp17),y	; 5 (3)
-	ADC	temp19		; 3 (6)
-	STA	COLUP0		; 3 (9)
-	STA	COLUP1		; 3 (12)
-	
-	LDA 	(temp11),y	; 5 (17)
-	STA	GRP1		; 3 (20)
-
-	LDA 	(temp07),y	; 5 (25)
-	STA	GRP0		; 3 (28)
-
-	sleep	15
-
-	LDA 	(temp03),y	; 5 
-	STA	GRP1		; 3 
-
-	sleep	5
-
-	LDA	#$80		; 2 (61)
-	STA	HMP0		; 3 (64)
-	STA	HMP1		; 3 (67)
-
-	DEY
-		
-	BPL	Bank2_SevenDigits_Even_Loop	; 2 (71)
-	JMP	Bank2_SevenDigits_Finish	
-	
-Bank2_SevenDigits_Odd_Init	
-	
-	LDA	#$00		; 2 (14)
-	STA	HMP0		; 3 (17)
-	STA	HMP1		; 3 (20)
-
-	
-	_sleep	34
-	sleep	3
-
-	JMP	Bank2_SevenDigits_Odd_Loop	; 3 (71)
-
-
-	_align	86	
-
-Bank2_SevenDigits_Odd_Loop	
-	STA	HMOVE		; 3 (74)
-	LDA	(temp17),y	; 5 (3)
-	ADC	temp19		; 3 (6)
-	STA	COLUP0		; 3 (9)
-	STA	COLUP1		; 3 (12)
-	
-	LDA 	(temp11),y	; 5 (17)
-	STA	GRP1		; 3 (20)
-
-	LDA 	(temp07),y	; 5 (25)
-	STA	GRP0		; 3 (28)
-
-	sleep	15
-
-	LDA 	(temp03),y	; 5 
-	STA	GRP1		; 3 
-
-	LDA	#$80		; 2 (65)
-	STA	HMP0		; 3 (68)
-	STA	HMP1		; 3 (71)
-	DEY			; 2 (73)
-	LAX 	(temp01),y	; 5
-Bank2_SevenDigits_Odd_SecondLine
-	STA	WSYNC		; 76
-	STA	HMOVE		; 3
-	LDA	(temp17),y	; 5 (8)
-	ADC	temp19		; 3 (11)
-	STA	COLUP0		; 3 (14)
-	STA	COLUP1		; 3 (17)
-
-	LDA 	(temp13),y	; 5 (22)
-	STA	GRP0		; 3 (25)
-
-	LDA 	(temp09),y	; 5 (30)
-	STA	GRP1		; 3 (33)
+	STA	COLUPF			
 
 	sleep	3
-	
-	LDA 	(temp05),y	; 5 
-	STA	GRP0		; 3 
-	sleep	4
-	STX	GRP1		; 3
+	tXA				; 2 (37)
+	ADC	temp04			; 3 (40)
+	STA	COLUPF			; 3 (43)
 
-	sleep	5
+	DEY				; 2 (45)
+	LAX 	(temp07),y		; 5 (50)
 
-	LDA	#$00		; 2 (61)
-	STA	HMP0		; 3 (64)
-	STA	HMP1		; 3 (67)
-	DEY			; 2 (69)
-	
-	BPL	Bank2_SevenDigits_Odd_Loop	; 2 (71)
-	JMP	Bank2_SevenDigits_Finish
+	sleep	2
 
-	_align	90
-
-Bank2_SevenDigits_5_digits_Mode 
-	LDA	temp19		; 3 (59)
-	AND	#%11110000	; 2 (61)
-	ORA	#$06		; 2 (63)
-	STA	temp19		; 3 (66)
-
-	LDA	#$03		; 2 (68)
-	STA	NUSIZ0		; 3 (71)
-	LDA	#$01		; 2 (73)
-	STA	NUSIZ1		; 3 (76)
-	
-	LDY	#7		; 2 
-	CLC			; 2 (4)
-	
-	LDA	#$00		; 2 (6)
-	STA	HMP0		; 3 (9)
-	STA	ENABL		; 3 (12)
-	LDA	#$10		; 2 (14)
-	STA	HMP1		; 3 (17)
-
-	sleep	22
-
-	
-	LAX	(temp01),y	; 5 
-	TXS			; 2 
-
-	STA	RESP0
-	STA	RESP1
-
-	STA	WSYNC		; 76		
-	STA	HMOVE		; 3
-
-Bank2_SevenDigits_5_Loop
-	STA	WSYNC		; 76
-	LDA	(temp17),y	; 5 
-	ADC	temp19		; 3 (8)
-	STA	COLUP0		; 3 (11)
-	STA	COLUP1		; 3 (14)
-
-	LDA	(temp09),y	; 5 (17)
-	STA	GRP0		; 3 (20)
-
-	LDA	(temp07),y	; 5 (25)
-	STA	GRP1		; 3 (28)
-
-	sleep	6
-
-	LAX	(temp03),y	; 5 
-	LDA	(temp05),y	; 5 
-	STA	GRP0		; 3 
-	STX	GRP1		; 3 
-	TSX			; 2 
-	STX	GRP0		; 3 
-	DEY			; 2 
-	LAX	(temp01),y	; 5 
-	TXS			; 2 
-	INY
-	DEY
-
-	BPL	Bank2_SevenDigits_5_Loop	; 2 (59)
+	LDA	frameColor		; 3 (55)
+	STA	COLUPF			; 3 (58)
 
 
-Bank2_SevenDigits_Finish
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	HMCLR
-	STA	PF2
-	STA	CTRLPF
-	JMP	(temp15)
+	LDA	(temp15),y		; 5 (63)
+	STA 	COLUP1			; 3 (66)
 
-Bank2_SevenDigits_Offsets
-	BYTE	#$00
-	BYTE	#$80
+	CPY	#255					; 2 (70)
+	BNE	Bank2_TwoIconsTwoLines_Left_Loop	; 2 (72)
 
 
+
+Bank2_TwoIconsTwoLines_Left_Ended
+	LDA	frameColor
+	LDX	#0	
+
+	STA	WSYNC			; 76
+	STA	COLUPF
+	STA	COLUP0
+	STA	COLUP1
+	STX	GRP0
+	STX	GRP1
+	STX	ENABL
+	STX	HMCLR
+	STX	REFP0
+	STX	REFP1
+	STX	CTRLPF
+
+	JMP	(temp01)
 	
 
 	saveFreeBytes

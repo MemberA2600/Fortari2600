@@ -3,16 +3,17 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-07-20_125600.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/EmptyLines.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/EmptyLines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Picture64px.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Picture64px.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenSetterFrameBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenSetterFrameBase.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/TopBottomEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/TopBottomEditor.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-07-20_162325.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -47,7 +48,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1658327004353" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1658335691343" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -602,6 +603,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.7004104" visible="true" weight="0.18228498" />
       <window_info id="Structure" order="1" sideWeight="0.2995896" side_tool="true" weight="0.17265725" />

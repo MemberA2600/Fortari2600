@@ -66,7 +66,7 @@
 		
 	JMP	#BANK#_TwoIconsTwoLines_Left_Loop
 
-	align	256
+	_align	45
 
 #BANK#_TwoIconsTwoLines_Left_Loop
 	STA 	WSYNC			; 76
