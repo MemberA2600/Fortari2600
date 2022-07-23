@@ -1226,7 +1226,9 @@ class Compiler:
 
         userData = d.replace("pic64px", name)
 
-        enterCode = self.__loader.io.loadSubModule("64pxPictureEnter")
+        enterCode = self.__loader.io.loadSubModule("64pxPictureEnter").replace(
+            "\tLDA\t#picHeight\n\tSTA\tpicDisplayHeight\n\n\tLDA\t#0\n\tSTA\tpicIndex\n", ""
+        )
         ddd = enterCode.replace("\r", "").split("\n")
         for line in ddd:
             if "#VAR" in line:

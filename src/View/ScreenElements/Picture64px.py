@@ -571,6 +571,9 @@ class Picture64px:
     def clickedListBox(self, event):
         self.setIt(self.__varListBox.curselection()[0])
         self.__forceMaxHeight()
+        self.__values[0] = str(self.__maxH)
+        self.__values[1] = "0"
+
 
     def setIt(self, selected):
         if self.__lastData != self.__varList[selected]:
