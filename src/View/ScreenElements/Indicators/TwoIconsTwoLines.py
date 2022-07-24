@@ -1406,6 +1406,21 @@ class TwoIconsTwoLines:
                 bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                 fg=self.__loader.colorPalettes.getColor("boxFontNormal")
             )
+
+            binary = bin(int(maxVar.get())).replace("0b", "")
+            while len(binary) < 8: binary = "0" + binary
+
+            firstOne = None
+            for num in range(0, len(binary)):
+                if binary[num] == "1":
+                   firstOne = num
+                   break
+
+            if firstOne != None:
+               binary = binary[:firstOne] + "1" * (8 - firstOne)
+
+            maxVar.set(str(int("0b"+binary, 2)))
+
             if maxVar.get() != self.__data[num]:
                 temp = maxVar.get()
                 if int(temp) > 255:

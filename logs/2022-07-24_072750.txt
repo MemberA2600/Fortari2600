@@ -1,0 +1,3766 @@
+**********************************
+*** 2022-07-24 07:27:53.469312 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = src/View\ET.py
+self = <ET.ET object at 0x00000000367486A0>
+mouse = <module 'mouse' from 'F:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2022-07-24 07:27:53.969340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.970340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.970340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.970340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2022-07-24 07:27:53.970340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank3
+section = local_variables
+validity = bank3
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Pocok=doubleBit', '', '']
+line = 
+data = ['']
+name = 
+TYPE = doubleBit
+
+
+**********************************
+*** 2022-07-24 07:27:53.971340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.971340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2022-07-24 07:27:53.971340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2022-07-24 07:27:53.972340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = bit
+
+
+**********************************
+*** 2022-07-24 07:27:53.972340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,Vacsora)
+item = Vacsora
+
+
+**********************************
+*** 2022-07-24 07:27:53.972340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2022-07-24 07:27:53.972340 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = array(Reggeli,temp9)
+item = temp9
+
+
+**********************************
+*** 2022-07-24 07:27:53.973341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.973341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.973341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.973341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.974341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.974341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.974341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:53.975341 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001CFC9B38>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2022-07-24 07:27:54.001342 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x0000000037844278>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = open
+w = 533.3333333333334
+h = 355.0
+checker = None
+addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x00000000378327B8>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-32, stopped daemon 2424)>
+
+
+**********************************
+*** 2022-07-24 07:27:54.002342 ***
+**********************************
+
+Exception: invalid command name ".!toplevel2.!frame2.!frame2.!button"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = SubMenuOkCancelButtons
+__file__ = src/View\SubMenuOkCancelButtons.py
+self = <SubMenuOkCancelButtons.SubMenuOkCancelButtons object at 0x0000000036748198>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2022-07-24 07:27:55.213411 ***
+**********************************
+
+Exception: None
+Error Class: <class 'KeyError'>
+Variables: 
+__name__ = OpenProjectWindow
+__file__ = src/View\OpenProjectWindow.py
+self = <OpenProjectWindow.OpenProjectWindow object at 0x00000000378327B8>
+sleep = <built-in function sleep>
+
+
+**********************************
+*** 2022-07-24 07:27:57.709554 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x0000000036791208>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = screenItem
+w = 426.0
+h = 325.0
+checker = None
+addElements = <bound method ScreenTopFrame.__addElements of <ScreenTopFrame.ScreenTopFrame object at 0x00000000367AE5C0>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-45, stopped daemon 6012)>
+
+
+**********************************
+*** 2022-07-24 07:28:00.117692 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:02.312818 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x00000000367488D0>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = screenTopBottom
+w = 1391.0
+h = 905.0
+checker = None
+addElements = <bound method TopBottomEditor.__addElements of <TopBottomEditor.TopBottomEditor object at 0x0000000036790F98>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-39, stopped daemon 8876)>
+
+
+**********************************
+*** 2022-07-24 07:28:10.119264 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:20.121836 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:28.486315 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000001D303240>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = music
+w = 1454.5454545454545
+h = 1055.9090909090908
+checker = None
+addElements = <bound method MusicComposer.__addElementsCommon of <MusicComposer.MusicComposer object at 0x0000000038104358>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-50, stopped daemon 6344)>
+
+
+**********************************
+*** 2022-07-24 07:28:30.123408 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:34.176640 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003CB5AFD0>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = screenItem
+w = 426.0
+h = 325.0
+checker = None
+addElements = <bound method ScreenTopFrame.__addElements of <ScreenTopFrame.ScreenTopFrame object at 0x000000003CB362E8>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-64, stopped daemon 2016)>
+
+
+**********************************
+*** 2022-07-24 07:28:40.124980 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:50.126552 ***
+**********************************
+
+$80
+random
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$81
+counter
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$82
+temp01
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$83
+temp02
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$84
+temp03
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$85
+temp04
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$86
+temp05
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$87
+temp06
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$88
+temp07
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$89
+temp08
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8a
+temp09
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8b
+temp10
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8c
+temp11
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8d
+temp12
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8e
+temp13
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$8f
+temp14
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$90
+temp15
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$91
+temp16
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$92
+temp17
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$93
+temp18
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$94
+temp19
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$95
+item
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$96
+frameColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$97
+pf0Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$98
+pf0PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$99
+pf1Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9a
+pf1PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9b
+pf2Pointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9c
+pf2PointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9d
+pfColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9e
+pfColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$9f
+bkColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a0
+bkColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a1
+bkBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a2
+pfBaseColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a3
+pfIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a4
+pfLines
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a5
+P0SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a6
+P0SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a7
+P0ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a8
+P0ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$a9
+P1SpritePointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$aa
+P1SpritePointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ab
+P1ColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ac
+P1ColorPointerLO
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ad
+P0Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ae
+P1Settings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$af
+pfSettings
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b0
+P0Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b1
+P1Height
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b2
+P0SpriteIndex
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b3
+P0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b4
+P1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b5
+M0Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b6
+M1Y
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b7
+BLY
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b8
+P0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$b9
+P1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ba
+M0X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bb
+M1X
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bc
+BLX
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bd
+M0Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$be
+M1Color
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$bf
+TileSetPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c0
+TileSetPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c1
+TileScreenMainColor
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c2
+Tile1_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c3
+Tile1_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c4
+Tile1_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c5
+Tile2_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c6
+Tile2_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c7
+Tile2_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c8
+Tile3_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$c9
+Tile3_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ca
+Tile3_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cb
+Tile4_1
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cc
+Tile4_3
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cd
+Tile4_5
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$ce
+TileColorPointer
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$cf
+TileColorPointerHI
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d0
+TileSelected
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d1
+zerg
+nibble
+global
+[0, 1, 2, 3]
+terran
+nibble
+global
+[4, 5, 6, 7]
+------------------------------
+$d2
+protoss
+byte
+global
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d3
+Pocok
+doubleBit
+bank3
+[0, 1]
+Reggeli
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d4
+vacsora
+byte
+bank4
+[0, 1, 2, 3, 4, 5, 6, 7]
+------------------------------
+$d5
+Csiga
+bit
+bank4
+[0]
+------------------------------
+races: global, ['zerg', 'protoss']
+WarCraft: global, ['protoss', 'temp04']
+Kajalas: bank4, ['Reggeli', 'Vacsora']
+Csillag: bank4, ['Reggeli', 'temp9']
+------------------------------
+
+
+**********************************
+*** 2022-07-24 07:28:56.487916 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003CD7B358>
+loader = <Loader.Loader object at 0x000000001B71B4E0>
+name = screenTopBottom
+w = 1391.0
+h = 905.0
+checker = None
+addElements = <bound method TopBottomEditor.__addElements of <TopBottomEditor.TopBottomEditor object at 0x000000003CD7BE10>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-58, stopped daemon 7768)>
+
+

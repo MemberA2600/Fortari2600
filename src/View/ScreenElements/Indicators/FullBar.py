@@ -468,6 +468,21 @@ class FullBar:
                 bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                 fg=self.__loader.colorPalettes.getColor("boxFontNormal")
             )
+
+            binary = bin(int(self.__maxVar.get())).replace("0b", "")
+            while len(binary) < 8: binary = "0" + binary
+
+            firstOne = None
+            for num in range(0, len(binary)):
+                if binary[num] == "1":
+                   firstOne = num
+                   break
+
+            if firstOne != None:
+               binary = binary[:firstOne] + "1" * (8 - firstOne)
+
+            self.__maxVar.set(str(int("0b"+binary, 2)))
+
             if self.__maxVar.get() != self.__data[4]:
                temp = self.__maxVar.get()
                if   int(temp) > 255: temp = "255"
