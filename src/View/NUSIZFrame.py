@@ -134,6 +134,7 @@ class NUSIZFrame:
                 self.__value.set(str(num))
 
                 self.__data[self.__dataNum] = self.__data[self.__dataNum][:6] + d
+
                 self.__changeData(self.__data)
                 self.__setCanvas()
 

@@ -1316,7 +1316,7 @@ class TwoIconsTwoLines:
         while len(num) < 4:
             num = "0" + num
 
-        nusiz = nusizFrame.getValue()
+        nusiz = bin(int(nusizFrame.getValue())).replace("0b", "")
         while len(nusiz) < 3:
             nusiz = "0" + nusiz
 

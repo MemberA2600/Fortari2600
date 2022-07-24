@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-07-24_072750.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-07-24_084108.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/NUSIZFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/NUSIZFrame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +41,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1658644867629" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1658647554825" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -137,24 +140,24 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="264489" />
+          <entry key="py" value="264589" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="264489" />
+          <entry key="Python" value="264589" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="701" />
+          <entry key="py" value="707" />
           <entry key="txt" value="10" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="10" />
-          <entry key="Python" value="701" />
+          <entry key="Python" value="707" />
         </counts>
       </usages-collector>
     </session>
@@ -173,11 +176,38 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/FullBar.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="307">
               <caret line="471" selection-start-line="471" selection-end-line="483" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="369">
+              <caret line="1079" column="9" lean-forward="true" selection-start-line="1079" selection-start-column="9" selection-end-line="1079" selection-end-column="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="513">
+              <caret line="1322" column="59" lean-forward="true" selection-start-line="1322" selection-start-column="59" selection-end-line="1322" selection-end-column="59" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="249">
+              <caret line="464" selection-start-line="464" selection-end-line="464" />
             </state>
           </provider>
         </entry>
@@ -193,10 +223,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>initC</find>
-      <find>initCode</find>
-      <find>__overScanCode</find>
-      <find>__initCode</find>
       <find>generate_TwoIconsTwoLines</find>
       <find>Up</find>
       <find>bind</find>
@@ -222,7 +248,11 @@
       <find>clickedListBox</find>
       <find>maxVal</find>
       <find>__maxVarEntry</find>
+      <find>changed</find>
+      <find>maxEntry</find>
       <find>__changeMaxEntry</find>
+      <find>mirrored</find>
+      <find>__mirroredChanged1</find>
     </findStrings>
     <replaceStrings>
       <replace>errors</replace>
@@ -282,7 +312,6 @@
         <option value="$PROJECT_DIR$/src/View/KernelTester.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconTwoLines.py" />
         <option value="$PROJECT_DIR$/venv/renamer.py" />
-        <option value="$PROJECT_DIR$/src/View/NUSIZFrame.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsFourDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoDigits.py" />
         <option value="$PROJECT_DIR$/../Fortari2600ArchievedSrc/TwoIconTwoDigits/TwoIconsTwoDigits.py" />
@@ -295,14 +324,11 @@
         <option value="$PROJECT_DIR$/src/Handlers/IO.py" />
         <option value="$PROJECT_DIR$/src/View/MenuLabel.py" />
         <option value="$PROJECT_DIR$/src/View/GradientFrame.py" />
-        <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
         <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
         <option value="$PROJECT_DIR$/src/View/LoadingScreen.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/SevenDigits.py" />
-        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwelveIconsOrDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenTopTester.py" />
-        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/HalfBarWithText.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/EmptyLines.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" />
@@ -313,6 +339,10 @@
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Picture64px.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/FullBar.py" />
+        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/HalfBarWithText.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
+        <option value="$PROJECT_DIR$/src/View/NUSIZFrame.py" />
+        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py" />
       </list>
     </option>
@@ -670,13 +700,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/NUSIZFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="650">
-          <caret line="79" column="33" selection-start-line="79" selection-start-column="33" selection-end-line="79" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/BigSpriteMaker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="219">
@@ -824,13 +847,6 @@
     <entry file="file://$PROJECT_DIR$/src/Scripts/SoundPlayer.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="487" column="17" selection-start-line="487" selection-start-column="13" selection-end-line="487" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/Loader.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="508">
@@ -859,13 +875,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="766" selection-start-line="766" selection-end-line="766" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwelveIconsOrDigits.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
@@ -877,13 +886,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="412">
           <caret line="340" column="35" lean-forward="true" selection-start-line="340" selection-start-column="35" selection-end-line="340" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/HalfBarWithText.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="219">
-          <caret line="187" column="48" selection-start-line="187" selection-start-column="37" selection-end-line="187" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -961,10 +963,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py">
+    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="593">
-          <caret line="1421" column="48" selection-start-line="1421" selection-start-column="48" selection-end-line="1421" selection-end-column="48" />
+        <state relative-caret-position="249">
+          <caret line="464" selection-start-line="464" selection-end-line="464" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/NUSIZFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="666">
+          <caret line="137" selection-start-line="137" selection-end-line="137" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/HalfBarWithText.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="787">
+          <caret line="187" column="48" selection-start-line="187" selection-start-column="37" selection-end-line="187" selection-end-column="48" />
         </state>
       </provider>
     </entry>
@@ -972,6 +988,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="307">
           <caret line="471" selection-start-line="471" selection-end-line="483" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="1079" column="9" lean-forward="true" selection-start-line="1079" selection-start-column="9" selection-end-line="1079" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwoIconsTwoLines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="513">
+          <caret line="1322" column="59" lean-forward="true" selection-start-line="1322" selection-start-column="59" selection-end-line="1322" selection-end-column="59" />
         </state>
       </provider>
     </entry>
