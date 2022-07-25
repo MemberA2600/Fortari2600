@@ -1463,6 +1463,6 @@ class TwoIconsTwoLines:
         if self.__picOption2.get() == 1:
            return
 
-        if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:
+        if self.__dataVars[self.__colorVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:
            self.__data[8] =  self.__dataVars[self.__colorVarListBox2.curselection()[0]].split("::")[1]
            self.__changeData(self.__data)

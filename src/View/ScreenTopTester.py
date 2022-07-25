@@ -104,7 +104,7 @@ class ScreenTopTester:
 
             label1 = Label(self.__frames[num]["leftFrame"],
                                  text="-",
-                                 font=self.__normalFont, fg=self.__colors.getColor("font"),
+                                 font=self.__smallFont, fg=self.__colors.getColor("font"),
                                  bg=self.__colors.getColor("window"), justify=CENTER
                                  )
 

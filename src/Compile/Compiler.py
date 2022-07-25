@@ -485,7 +485,7 @@ class Compiler:
                topLevelText += "\tLDA\t" + var + "\n"
                if variable.type != "byte":
                    topLevelText += self.convertAnyTo8Bits(variable.usedBits)
-               topLevelText += "\tASL\n" * 3
+               topLevelText += "\tAND\t#%00001111\n" + "\tASL\n" * 3
                topLevelText += "\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
         pattern                = self.generate_fadeOutPattern(2)
