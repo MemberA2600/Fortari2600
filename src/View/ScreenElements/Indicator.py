@@ -109,6 +109,7 @@ class Indicator:
         from OneIconWithDigits   import OneIconWithDigits
         from SevenDigits         import SevenDigits
         from TwelveIconsOrDigits import TwelveIconsOrDigits
+        from DigitClock          import DigitClock
 
         self.screenSubs = {
             "FullBar"             : [FullBar,             ["#", "255", "$40|$30|$10", "1", "0"]],
@@ -116,7 +117,8 @@ class Indicator:
             "TwoIconsTwoLines"    : [TwoIconsTwoLines,    ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0", "0"]],
             "OneIconWithDigits"   : [OneIconWithDigits,   ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
             "SevenDigits"         : [SevenDigits,         ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]],
-            "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1", "%00000000", "0"]]
+            "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1", "%00000000", "0"]],
+            "DigitClock"          : [DigitClock,          ["#", "#", "#", "$16", "default", "1", "32", "1"]]
         }
 
         if self.__data[2]  == "#":

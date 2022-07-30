@@ -1411,9 +1411,9 @@ class TwoIconsTwoLines:
             while len(binary) < 8: binary = "0" + binary
 
             firstOne = None
-            for num in range(0, len(binary)):
-                if binary[num] == "1":
-                   firstOne = num
+            for num2 in range(0, len(binary)):
+                if binary[num2] == "1":
+                   firstOne = num2
                    break
 
             if firstOne != None:

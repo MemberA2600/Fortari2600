@@ -308,3 +308,6 @@ screenTester=Képernyõteszt - Változók
 sameColor=Ikonnal megegyezõ szín
 digitsOnly=Csak Számok
 missingItems=Nem található kompatibilis #item# a projekt #folder# mappájában!
+24hours=24 órás mód
+divider=Frame Osztó
+decrement=Csökkenõ

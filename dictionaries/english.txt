@@ -308,3 +308,6 @@ screenTester=Screen Tester - Variables
 sameColor=Same Color as Icon
 digitsOnly=Digits Only
 missingItems=Could'nt find any suitable #item# in project folder #folder#!
+24hours=24 hours mode
+divider=Frame Divider
+decrement=Decrementing

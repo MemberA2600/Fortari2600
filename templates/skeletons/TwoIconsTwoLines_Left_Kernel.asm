@@ -29,21 +29,20 @@
 	STA	GRP0			; 3 (12)
 	STA	GRP1			; 3 (15)
 
-	STA	NUSIZ0			; 3 (18)
-	STA	NUSIZ1			; 3 (21)
+	sleep	6
 
 	STA	ENABL
 	STA	RESP0			; 3 (27)
 	STA	RESBL			; 3 (30)
 
-	LDA	#$20			; 2 
-	STA	HMP0			; 3 
-	LDA	#$a0			; 2
-	STA	HMBL			; 3
+	LDA	#$20			; 2 (32)
+	STA	HMP0			; 3 (35) 
+	LDA	#$a0			; 2 (37)
+	STA	HMBL			; 3 (40)
 
-	STA	RESP1			; 3
-	LDA	#$10			; 2
-	STA	HMP1			; 3
+	STA	RESP1			; 3 (43)
+	LDA	#$10			; 2 (45)
+	STA	HMP1			; 3 (48)
 
 	STA	WSYNC			; 76
 	STA	HMOVE			; 3
