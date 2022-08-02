@@ -612,6 +612,7 @@ class Assembler():
         elif second.startswith("0x"):
             line.bytes.append(bytes([int(second, 16)]))
         else:
+            #print(line, second)
             line.bytes.append(bytes([int(second, 10)]))
 
     def doTheMath(self, raw):

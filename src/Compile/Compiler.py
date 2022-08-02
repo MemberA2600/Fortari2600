@@ -237,6 +237,17 @@ class Compiler:
                     for key in those[2].keys():
                         self.__userData[key] = those[2][key]
 
+                elif subtyp == "DigitClock":
+                    those = self.generate_DigitClock(fullName, data, self.__bank)
+                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                    self.__userData[those[1][1]] = those[1][0]
+
+                    for key in those[2].keys():
+                        self.__userData[key] = those[2][key]
+
+                    self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
+                                                                                          self.__bank)
+
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -259,6 +270,77 @@ class Compiler:
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_DigitClock(self, name, data, bank):
+
+        #
+        # JumpBack Pointer:	temp01 (+ temp02)
+        # Digit0_Pointer:	temp03 (+ temp04)
+        # Digit1_Pointer: 	temp05 (+ temp06)
+        # Digit2_Pointer: 	temp07 (+ temp08)
+        # Digit3_Pointer:   temp09 (+ temp10)
+        # Gradient_Pointer: temp15 (+ temp16)
+        # Color:            temp17 (bit 0 is if AM / PM)
+        #
+
+        digitData   = data[0:3]
+        color       = data[3]
+        font        = data[4]
+        x24hours    = data[5]
+        divider     = data[6]
+        gradient    = data[7]
+
+        topLevelText = "\n" + name + "\n"
+        pictureData = {}
+
+        pattern = self.generate_fadeOutPattern(2)
+        patternIndex = int(gradient)
+
+        xxx = self.generateBarColors(pattern[patternIndex], patternIndex, bank)
+        patternData = xxx
+        topLevelText += "\tLDA\t#<" + xxx[1] + "\n\tSTA\ttemp15\n\tLDA\t#>" + xxx[1] + "\n\tSTA\ttemp16\n"
+
+        ddd, fontName = self.getDigitFont(bank, font)
+        pictureData[fontName] = ddd
+
+        topLevelText            += "\tLDA\t#<"+fontName+"\n\tSTA\ttemp03\n" + "\tSTA\ttemp05\n" + "\tSTA\ttemp07\n" + \
+                                   "\n\tSTA\ttemp09\n"
+        topLevelText            += "\tLDX\t#>"+fontName+"\n\tSTX\ttemp04\n" + "\tSTX\ttemp06\n" + "\tSTX\ttemp08\n" + \
+                                   "\n\tSTX\ttemp10\n"
+
+        digitColor               = self.__loader.virtualMemory.getVariableByName2(color)
+        if digitColor == False:
+            topLevelText    += "\tLDA\t#"+ color +"\n"
+        else:
+            topLevelText    += "\tLDA\t" + color + "\n"
+            if digitColor.type == "nibble":
+               topLevelText += self.moveVarToTheRight(digitColor.usedBits)
+            topLevelText += "\tAND\t#%11110000\n"
+
+        topLevelText    += "\tSTA\ttemp17\n"
+
+        if x24hours == "1":
+            x24hoursStuff = self.__loader.io.loadSubModule("DigitClock_Just_Check")
+        else:
+            x24hoursStuff = self.__loader.io.loadSubModule("DigitClock_Convert_To_12")
+
+
+        topLevelText            += self.__loader.io.loadSubModule("DigitClock_Set_Digits")\
+                                   .replace("#DIVIDER#", divider).replace("#24HOURS#", x24hoursStuff) \
+                                   .replace("#DIGIT_DATA1#", digitData[0]) \
+                                   .replace("#DIGIT_DATA2#", digitData[1]) \
+                                   .replace("#DIGIT_DATA3#", digitData[2]) \
+                                   .replace("#NAME#", name)
+
+        topLevelText    += "\tLDA\ttemp17\n\nAND\t#%11110001\n\tORA\t#%00000110\n\tSTA\ttemp17\n"
+
+
+        topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                    "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText            += "\tJMP\t" + bank + "_DigitClock_Kernel" + "\n"
+        topLevelText            += name + "_Back" + "\n"
+
+        return (topLevelText, patternData, pictureData)
 
     def registerMemory(self, mainCode):
         validites = ["global"]
