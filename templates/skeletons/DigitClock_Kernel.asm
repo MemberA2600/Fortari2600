@@ -92,6 +92,9 @@
 #BANK#_DigitClock_Kernel_PF2
 	BYTE	#%00010000
 	BYTE	#%00011100
+
+	_align 	56
+
 #BANK#_DigitClock_Kernel_AM
 	BYTE	#%00010001
 	BYTE	#%00010001
@@ -110,8 +113,6 @@
 	BYTE	#%11110000
 	BYTE	#%10010000
 	BYTE	#%11100000
-
-	align 	256
 
 #BANK#_DigitClock_Kernel_Loop
 	STA	WSYNC				; 76

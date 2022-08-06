@@ -466,7 +466,8 @@ class MainWindow:
     def __newButtonFunction(self):
         from NewProjectWindow import NewProjectWindow
         NewProjectWindow(self.__loader)
-
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def projectOpenedWantToSave(self):
         if self.projectPath!=None and self.__getIfThereIsUnsavedItem() == True:
@@ -684,47 +685,64 @@ class MainWindow:
         from OpenProjectWindow import OpenProjectWindow
 
         OpenProjectWindow(self.__loader, self, self.openProject)
-
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openMusicComposer(self):
         from MusicComposer import MusicComposer
 
         MusicComposer(self.__loader, self, None)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openPictureConverter(self):
         from PictureToCode import PictureToCode
 
         PictureToCode(self.__loader, "common", "64pxPicture" , None, None)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openSoundPlayer(self):
         from SoundPlayerEditor import SoundPlayerEditor
 
         SoundPlayerEditor(self.__loader, self)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openPFEditor(self):
         from PlayfieldEditor import PlayfieldEditor
 
         PlayfieldEditor(self.__loader, self)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openSpriteEditor(self):
         from SpriteEditor import SpriteEditor
 
         SpriteEditor(self.__loader, self)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openBigSpriteEditor(self):
         from BigSpriteMaker import BigSpriteMaker
 
         BigSpriteMaker(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openScreenTopBottom(self):
         from TopBottomEditor import TopBottomEditor
 
         TopBottomEditor(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __openMenuMaker(self):
         from MenuMaker import MenuMaker
 
         MenuMaker(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
@@ -733,7 +751,6 @@ class MainWindow:
 
     def __saveAllButtonFunction(self):
         self.__saveProject()
-
 
     def __closeProjectButtonFunction(self):
         if self.projectOpenedWantToSave()=="Yes":
@@ -744,7 +761,8 @@ class MainWindow:
         from ArchiveWindow import ArchiveWindow
 
         ArchiveWindow(self.__loader)
-
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def __copyButtonFunction(self):
         import clipboard
@@ -851,8 +869,12 @@ class MainWindow:
     def __openLockManager(self):
         from LockManagerWindow import LockManagerWindow
         LockManagerWindow(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
 
     def openMemoryManager(self):
         from MemoryManagerWindow import MemoryManagerWindow
 
         MemoryManagerWindow(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()

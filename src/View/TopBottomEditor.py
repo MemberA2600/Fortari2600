@@ -704,14 +704,17 @@ class TopBottomEditor:
                 "ChangeFrameColor"  : name + " " + "ChangeFrameColor $00",
                 "EmptyLines"        : name + " " + "EmptyLines 1",
                 "Picture64px"       : name + " " + "Picture64px # 0 0 0",
-                "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #"
-            }
+                "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #",
+                "BigSprite"         : name + " " + "BigSprite # # # # # # #"
+             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
             self.__codeData[self.__activePart][bank][1] = True
 
             self.checkForChanges()
             self.setTheSetter(name, self.answer)
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def setTheSetter(self, name, typ):
 
@@ -742,12 +745,14 @@ class TopBottomEditor:
            from EmptyLines          import EmptyLines
            from Picture64px         import Picture64px
            from Indicator           import Indicator
+           from BigSprite           import BigSprite
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
                "EmptyLines"         : EmptyLines,
                "Picture64px"        : Picture64px,
-               "Indicator"          : Indicator
+               "Indicator"          : Indicator,
+               "BigSprite"          : BigSprite
            }
 
            self.__listOfNames = []
@@ -952,6 +957,7 @@ class TopBottomEditor:
 
             b = Button( f, height=9999, width=9999,
                         bg=self.__loader.colorPalettes.getColor("window"),
+                        fg=self.__loader.colorPalettes.getColor("font"),
                         text = bankNum, font = self.__normalFont,
                         state=DISABLED, name = bankNum.lower()
                         )

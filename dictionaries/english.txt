@@ -311,3 +311,4 @@ missingItems=Could'nt find any suitable #item# in project folder #folder#!
 24hours=24 hours mode
 divider=Frame Divider
 decrement=Decrementing
+xPoz=X Position
