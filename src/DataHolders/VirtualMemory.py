@@ -51,9 +51,9 @@ class VirtualMemory:
         self.resetMemory()
         self.emptyArchieved()
 
-        t = Thread(target=self.testPrintMemory)
-        t.daemon = True
-        t.start()
+        #t = Thread(target=self.testPrintMemory)
+        #t.daemon = True
+        #t.start()
 
     def archieve(self):
         self.archieved = self.archieved[:self.cursor+1]

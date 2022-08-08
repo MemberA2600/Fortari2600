@@ -1295,7 +1295,7 @@ class MemoryManagerWindow:
                     except:
                         pass
 
-            sleep(0.0001)
+            sleep(0.05)
 
     def getNameAndChange(self, event):
         if type(event) == str:

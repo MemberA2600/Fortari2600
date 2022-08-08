@@ -719,6 +719,8 @@ class SevenDigits:
                 self.__data[self.__lastDigit] = self.__digitNum.get()
 
         self.__fillDataVarListBoxes(True, False)
+        self.__fillDataVarListBoxes(True, False)
+
 
     def __changeVar(self, event):
         lists = {
@@ -767,6 +769,10 @@ class SevenDigits:
             for num in range(0, 7):
                 settingsDependingOnDigitNum.append("byte")
 
+        for num in range(0, len(settingsDependingOnDigitNum)):
+            self.__varBoxSettings[num] = settingsDependingOnDigitNum[num]
+
+
         return settingsDependingOnDigitNum
 
 
@@ -786,33 +792,43 @@ class SevenDigits:
             "byte": self.__byteVars
         }
 
-        settingsDependingOnDigitNum = self.__getSettingsDependingOnDigitNum()
-
         if init == False:
-           for num in range(0, len(settingsDependingOnDigitNum)):
+           for num in range(0, 7):
                myList = self.__varListBoxes[num]
                typ    = self.__varBoxSettings[num]
 
-               self.__lastSelecteds[num] = lists[typ][myList.curselection()[0]].split("::")[1]
+               try:
+                   self.__lastSelecteds[num] = lists[typ][myList.curselection()[0]].split("::")[1]
+               except:
+                   pass
                myList.select_clear(0, END)
                myList.delete(0, END)
 
+        else:
+            item = self.__byteVars[0].split("::")[1]
+            self.__lastSelecteds = [item, item, item, item, item, item, item]
+
+        settingsDependingOnDigitNum = self.__getSettingsDependingOnDigitNum()
         activeNum = self.__getActiveNum()
+
+        last = int(self.__digitNum.get())
+        if self.__slotMode.get() == 0:
+           last = last//2 + last%2
 
         for num in range(0, 7):
             myList = self.__varListBoxes[num]
             typ = self.__varBoxSettings[num]
 
             selectNum = 0
-
             for itemNum in range(0, len(lists[typ])):
                 myList.insert(END, lists[typ][itemNum])
                 if lists[typ][itemNum].split("::")[1] == self.__lastSelecteds[num]:
                     selectNum = itemNum
 
-            myList.select_set(selectNum)
-            self.__lastSelecteds[num] = lists[typ][selectNum].split("::")[1]
-            self.__data[3+num]        = self.__lastSelecteds[num]
+            if num < last:
+                myList.select_set(selectNum)
+                self.__lastSelecteds[num] = lists[typ][selectNum].split("::")[1]
+                self.__data[3+num]        = self.__lastSelecteds[num]
 
             if activeNum < num+1:
                myList.config(state = DISABLED)

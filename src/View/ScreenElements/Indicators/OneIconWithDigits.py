@@ -809,13 +809,17 @@ class OneIconWithDigits:
             self.__dataListBoxVarTypes = ["nibble", "byte"]
         elif int(self.__digitNum.get()) == 3:
             self.__dataListBoxVarTypes = ["byte", "nibble"]
+
         else:
             self.__dataListBoxVarTypes = ["byte", "byte"]
 
+        self.__lastFirst  = self.__data[7]
+        self.__lastSecond = self.__data[8]
         self.__fillDataVarListBoxes(False)
         #self.__changeData(self.__data)
 
     def __changeDigits(self, event):
+
         if self.isItNum(self.__digitNum.get()) == False:
             self.__digitsEntry.config(
                 bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
@@ -841,14 +845,15 @@ class OneIconWithDigits:
                    self.__dataVarListBox2.config(state=NORMAL)
 
                 # If the second is off, we leave it as byte! It does not matter anyway
-                if   int(temp) == 1:
+                if int(self.__digitNum.get()) == 1:
                     self.__dataListBoxVarTypes = ["nibble", "byte"]
-                elif int(temp) == 3:
+                elif int(self.__digitNum.get()) == 3:
                     self.__dataListBoxVarTypes = ["byte", "nibble"]
                 else:
                     self.__dataListBoxVarTypes = ["byte", "byte"]
 
                 self.__fillDataVarListBoxes(True)
+
 
     def __fillDataVarListBoxes(self, change):
         lists = {
@@ -873,17 +878,17 @@ class OneIconWithDigits:
 
         selectNums = [0, 0]
         for itemNum in range(0, len(listBox1Vars)):
-            if listBox1Vars[itemNum].split("::")[1] == self.__data[7]:
+            if listBox1Vars[itemNum].split("::")[1] == self.__lastFirst:
                selectNums[0] = itemNum
                break
 
         for itemNum in range(0, len(listBox2Vars)):
-            if listBox2Vars[itemNum].split("::")[1] == self.__data[8]:
+            if listBox2Vars[itemNum].split("::")[1] == self.__lastSecond:
                selectNums[1] = itemNum
                break
 
         self.__data[7] = listBox1Vars[selectNums[0]].split("::")[1]
-        self.__data[8] = listBox1Vars[selectNums[1]].split("::")[1]
+        self.__data[8] = listBox2Vars[selectNums[1]].split("::")[1]
 
         self.__dataVarListBox1.select_set(selectNums[0])
         self.__dataVarListBox2.select_set(selectNums[1])
@@ -1147,13 +1152,29 @@ class OneIconWithDigits:
 
 
     def __changedDataVar1(self, event):
+        lists = {
+            "nibble"    : self.__colorVars,
+            "byte"      : self.__byteVars
+        }
+
+        listBoxVars    = lists[self.__dataListBoxVarTypes[0]]
+
         if self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1] != self.__data[7]:
-           self.__data[7] =  self.__dataVars[self.__dataVarListBox1.curselection()[0]].split("::")[1]
+           self.__data[7] =  listBoxVars[self.__dataVarListBox1.curselection()[0]].split("::")[1]
+           self.__lastFirst = self.__data[8]
            self.__changeData(self.__data)
 
     def __changedDataVar2(self, event):
+        lists = {
+            "nibble"    : self.__colorVars,
+            "byte"      : self.__byteVars
+        }
+
+        listBoxVars    = lists[self.__dataListBoxVarTypes[1]]
+
         if self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1] != self.__data[8]:
-           self.__data[8] =  self.__dataVars[self.__dataVarListBox2.curselection()[0]].split("::")[1]
+           self.__data[8] =  listBoxVars[self.__dataVarListBox2.curselection()[0]].split("::")[1]
+           self.__lastSecond = self.__data[8]
            self.__changeData(self.__data)
 
     def __changedColorVar1(self, event):

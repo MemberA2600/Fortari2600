@@ -114,7 +114,7 @@ class BigSprite:
         self.__varListScrollBar.config(command=self.__varListBox.yview)
 
         for item in self.__listOfPictures:
-            self.__varListBox.insert(0, item)
+            self.__varListBox.insert(END, item)
 
         selector = 0
         if sprite != "#":
@@ -305,10 +305,11 @@ class BigSprite:
 
         self.__lastSelectedspriteSettings = [vars[0]]
         if self.isItBin(vars[0]):
-           self.__spriteSettingsVar.set(vars[0])
+           # self.__spriteSettingsVar.set(vars[0])
            self.__spriteSettingsVarListBox.config(state = DISABLED)
            self.__options[0]["option"].set(1)
            bytes = self.__data[3].replace("%", "")
+
            self.__spriteSettingsVar.set(str(int("0b"+bytes[0:4], 2)))
            self.__mirrored1.set(int(bytes[4]))
            self.__nusizVal.set(str(int("0b"+bytes[5:8], 2)))
@@ -316,7 +317,7 @@ class BigSprite:
         else:
            selector = 0
            for itemNum in range(0, len(self.__nibbleVars)):
-               if self.__nibbleVars[itemNum] == vars[0]:
+               if self.__nibbleVars[itemNum].split("::")[1] == vars[0]:
                   selector = itemNum
                   break
            self.__lastSelectedspriteSettings[0] = self.__nibbleVars[selector].split("::")[1]
@@ -339,7 +340,7 @@ class BigSprite:
         self.__nusizEntry.bind("<FocusOut>", self.__changedSpriteConst)
 
         from HexEntry import HexEntry
-        self.__fuckinColors = ["$80"]
+        self.__fuckinColors = ["$00"]
 
         self.__constantHex = HexEntry(self.__loader, self.__frames[1], self.__colors, self.__colorDict,
                                      self.__smallFont, self.__fuckinColors, 0, None, self.__changeHex)
@@ -381,7 +382,7 @@ class BigSprite:
         else:
            selector = 0
            for itemNum in range(0, len(self.__nibbleVars)):
-               if self.__nibbleVars[itemNum] == vars[1]:
+               if self.__nibbleVars[itemNum].split("::")[1] == vars[1]:
                   selector = itemNum
                   break
            self.__lastBackColorSelected[0] = self.__nibbleVars[selector].split("::")[1]
@@ -447,7 +448,7 @@ class BigSprite:
 
         else:
             var = vars[2]
-            if self.isItNum(vars):
+            if self.isItNum(var):
                self.__options[2]["option"].set(1)
                self.__xSettingsVarListBox.config(state = DISABLED)
                self.__xVal.set(var)
@@ -462,7 +463,7 @@ class BigSprite:
                self.__options[2]["option"].set(2)
                self.__xEntry.config(state = DISABLED)
                self.__xSettingsVarListBox.select_set(selector)
-               self.__lastXSelected = self.__byteVars[selector].split("::")[1]
+               self.__lastXSelected[0] = self.__byteVars[selector].split("::")[1]
                self.__xVal.set("127")
 
         self.__label1 = Label(self.__frames[3],
@@ -652,8 +653,15 @@ class BigSprite:
         )
 
         value = int(value)
-        if value < 1: value = 1
+        if value < 1:   value = 1
+        if value > 255: value = 255
 
+        maxs    = [self.__maxHeight, 255]
+        if value > maxs[num]: value = maxs[num]
+
+        vals[num].set(str(value))
+        self.__data[6+num] = str(value)
+        self.__changeData(self.__data)
 
     def __changeMode(self):
         modes = ["simple", "double", "overlay"]
@@ -682,16 +690,16 @@ class BigSprite:
 
         self.__xVal.set(str(num))
 
-        self.__data[2] = val
+        self.__data[5] = val
         self.__changeData(self.__data)
 
     def __changeHex(self, event):
         val = self.__constantHex.getValue()
         if self.isItHex(val) == True:
            if val != self.__data[3]:
-              val            = val[:2] + "0"
+              val            = val[:2] + str(int(val[2]) // 2 * 2)
               self.__constantHex.setValue(val)
-              self.__data[3] = val
+              self.__data[4] = val
               self.__changeData(self.__data)
 
     def __mirroredChanged(self):
@@ -748,7 +756,7 @@ class BigSprite:
         nusiz = bin(num2).replace("0b", "")
         while len(nusiz) < 3: nusiz = "0"+nusiz
 
-        self.__data[2] = "%"+frameNum+str(self.__mirrored1.get())+nusiz
+        self.__data[3] = "%"+frameNum+str(self.__mirrored1.get())+nusiz
         if event != "FUCK": self.__changeData(self.__data)
 
     def __changeListBoxItem(self, event):
@@ -799,9 +807,14 @@ class BigSprite:
                 val = self.__constantHex.getValue()
                 if self.isItHex(val):
                    newData = val
+           elif num == 2:
+               val = self.__xVal.get()
+               if self.isItNum(val):
+                   newData = val
 
-           self.__data[3+num] = newData
-           self.__changeData(self.__data)
+           if newData != "":
+               self.__data[3+num] = newData
+               self.__changeData(self.__data)
         else:
             for item in entries[num]:
                 item.config(state=DISABLED)
@@ -814,6 +827,7 @@ class BigSprite:
                     break
 
             lasts[num][0] = lists[num][selector].split("::")[1]
+
             lboxes[num].select_clear(0, END)
             lboxes[num].select_set(selector)
             self.__data[3+num] = lasts[num][0]

@@ -247,7 +247,13 @@ class Compiler:
 
                     self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
                                                                                           self.__bank)
-
+            elif typ == "BigSprite":
+                fullName += "_" + data[0]
+                those = self.generate_BigSprite(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[fullName] = those[1]
+                self.__routines["BigSprite"] = self.__io.loadSubModule("bigSpriteKernel").replace("##BANK##",
+                                                                                             self.__bank)
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -263,13 +269,81 @@ class Compiler:
         self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection("\n".join(self.__userData.values())))
 
         self.__mainCode = self.registerMemory(self.__mainCode)
-
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_BigSprite(self, name, data, bank):
+        # ['Battery_(Big)', 'random', '$00', 'random', '8', '2', 'overlay']
+
+        picture         = data[0]
+        spriteVar       = data[1]
+        spriteColor     = data[2]
+        xPoz            = data[3]
+        height          = data[4]
+        lineHeight      = data[5]
+        mode            = data[6]
+
+        topLevelText = "\n" + name + "\n"
+
+        picName        = picture.split("_(")[0]
+        picType        = picture.split("_(")[1][:-1]
+
+        pictureData    = self.loadPictureData(bank, picName, picType)
+
+        var = self.__loader.virtualMemory.getVariableByName2(spriteVar)
+        if var == False:
+           topLevelText += "\tLDA\t#"+spriteVar+"\n"
+        else:
+           topLevelText += "\tLDA\t" + spriteVar + "\n"
+           if var.type == "nibble":
+              topLevelText += self.moveVarToTheRight(var.usedBits, False)
+        topLevelText += "\tSTA\ttemp17\n"
+
+        var = self.__loader.virtualMemory.getVariableByName2(spriteColor)
+        if var == False:
+           topLevelText += "\tLDA\t#"+spriteColor+"\n"
+        else:
+           topLevelText += "\tLDA\t" + spriteColor + "\n"
+           if var.type == "nibble":
+              topLevelText += self.moveVarToTheRight(var.usedBits, False)
+        topLevelText += "\tSTA\ttemp16\n"
+
+        var = self.__loader.virtualMemory.getVariableByName2(xPoz)
+        if var == False:
+           topLevelText += "\tLDA\t#"+xPoz+"\n"
+        else:
+           topLevelText += "\tLDA\t" + xPoz + "\n"
+           if var.type == "nibble":
+              topLevelText += self.convertAnyTo8Bits(var.usedBits)
+        topLevelText += "\tSTA\ttemp15\n"
+
+        topLevelText += "\tLDA\t#"+height+"\n\tSTA\ttemp13\n"
+        topLevelText += "\tLDA\t#"+lineHeight+"\n\tSTA\ttemp14\n"
+
+        if mode == "simple":
+           topLevelText += "\tLDA\t#0\n\tSTA\ttemp19\n"
+        else:
+           topLevelText += "\tLDA\t#1\n\tSTA\ttemp19\n"
+
+        if mode != "double":
+           topLevelText += "\tLDA\t#0\n\tSTA\ttemp18\n"
+        else:
+           topLevelText += "\tLDA\t#8\n\tSTA\ttemp18\n"
+
+        topLevelText            += self.__io.loadSubModule("bigSpriteTopBottom2")
+        topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
+                                    "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
+        topLevelText            += "\tJMP\t" + bank + "_BigSprite_Kernel_Begin" + "\n"
+        topLevelText            += name + "_Back" + "\n"
+
+        topLevelText            = topLevelText.replace("#NAME#", name).replace("#BANK#", bank)
+        pictureData             = pictureData.replace("#NAME#", name).replace("#BANK#", bank)
+
+        return (topLevelText, pictureData)
 
     def generate_DigitClock(self, name, data, bank):
 
@@ -314,7 +388,7 @@ class Compiler:
         else:
             topLevelText    += "\tLDA\t" + color + "\n"
             if digitColor.type == "nibble":
-               topLevelText += self.moveVarToTheRight(digitColor.usedBits)
+               topLevelText += self.moveVarToTheRight(digitColor.usedBits, False)
             topLevelText += "\tAND\t#%11110000\n"
 
         topLevelText    += "\tSTA\ttemp17\n"
@@ -435,7 +509,7 @@ class Compiler:
            else:
                topLevelText += "\tLDA\t" + digitColor + "\n"
                if colorVar.type == "nibble":
-                   topLevelText += self.moveVarToTheRight(colorVar.usedBits)
+                   topLevelText += self.moveVarToTheRight(colorVar.usedBits, True)
 
            topLevelText += "\tSTA\ttemp13\n"
            topLevelText += "\tLDA\t#<" + xxx[1]   + "\n\tSTA\ttemp11\n\tLDA\t#>" + xxx[1]   + "\n\tSTA\ttemp12\n"
@@ -450,7 +524,7 @@ class Compiler:
         else:
            topLevelText   += "\tLDA\t"  + picSettings + "\n"
            if picSettingsVar.type == "byte":
-              self.moveVarToTheRight(picSettingsVar.usedBits)
+              self.moveVarToTheRight(picSettingsVar.usedBits, False)
 
         topLevelText += "\tAND\t#%11110000\n\tLSR\n\tCLC\n\tADC\ttemp03\n\tSTA\ttemp03\n"
 
@@ -584,7 +658,7 @@ class Compiler:
         else:
             topLevelText         += "\tLDA\t"  + color + "\n"
             if colorVar.type     == "nibble":
-                topLevelText += self.moveVarToTheRight(colorVar.usedBits)
+                topLevelText += self.moveVarToTheRight(colorVar.usedBits, False)
 
             bits = bin(int(digitNum)).replace("0b", "")
             while len(bits) < 8: bits = "0" + bits
@@ -646,7 +720,7 @@ class Compiler:
         else:
             topLevelText    += "\tLDA\t" + digitBaseColor + "\n"
             if digitColor.type == "nibble":
-               topLevelText += self.moveVarToTheRight(digitColor.usedBits)
+               topLevelText += self.moveVarToTheRight(digitColor.usedBits, False)
             topLevelText += "\tAND\t#%11110000\n"
 
         topLevelText    += "\tSTA\ttemp17\n"
@@ -661,7 +735,7 @@ class Compiler:
         else:
             topLevelText    += "\tLDA\t" + spriteSettings + "\n"
             if spriteSetVar.type == "nibble":
-               topLevelText += self.moveVarToTheRight(spriteSetVar.usedBits)
+               topLevelText += self.moveVarToTheRight(spriteSetVar.usedBits, False)
             topLevelText += "\tAND\t#%11110000\n"
 
         topLevelText           += "\tSTA\tREFP0\n\tSTA\tNUSIZ0\n\tAND\t#%11110000\n\tLSR\n"
@@ -701,44 +775,32 @@ class Compiler:
            if int(numOfDigits) == 1:
                topLevelText += "\tSTA\ttemp11\n\tSTX\ttemp12\n"
 
-        if int(numOfDigits) > 2 :
+        if   int(numOfDigits) == 1:
+             digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
+             topLevelText += "\tLDA\t" + digitData34 + "\n"
+             if digitVar34.type == "nibble":
+                 topLevelText += self.convertAnyTo8Bits(digitVar34.usedBits)
+             topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
 
-            digitVar12 = self.__loader.virtualMemory.getVariableByName2(digitData12)
-            topLevelText += "\tLDA\t" + digitData12 + "\n"
-            if digitVar12.type == "nibble":
-                topLevelText += self.moveVarToTheRight(digitVar12.usedBits)
-            topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
+        elif int(numOfDigits) > 2:
+             topLevelText += "\tLDA\t" + digitData34 + "\n"
+             topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
+             topLevelText += "\tLDA\t" + digitData34 + "\n"
+             topLevelText += "\tAND\t#%11110000\n\tLSR\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
 
-            if int(numOfDigits) > 1:
+             if int(numOfDigits) == 3:
+                digitVar12 = self.__loader.virtualMemory.getVariableByName2(digitData12)
                 topLevelText += "\tLDA\t" + digitData12 + "\n"
-                topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
-
-            if int(numOfDigits) > 2:
-                digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
-                topLevelText += "\tLDA\t" + digitData34 + "\n"
-                if digitVar34.type == "nibble":
-                    topLevelText += self.moveVarToTheRight(digitVar34.usedBits)
+                if digitVar12.type == "nibble":
+                    topLevelText += self.convertAnyTo8Bits(digitVar12.usedBits)
                 topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp09\n\tSTA\ttemp09\n"
+             elif  int(numOfDigits) == 4:
+                 topLevelText += "\tLDA\t" + digitData12 + "\n"
+                 topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp09\n\tSTA\ttemp09\n"
+                 topLevelText += "\tLDA\t" + digitData12 + "\n"
+                 topLevelText += "\tAND\t#%11110000\n\tLSR\n\tCLC\n\tADC\ttemp07\n\tSTA\ttemp07\n"
 
-                if int(numOfDigits) == 4:
-                    topLevelText += "\tLDA\t" + digitData34 + "\n"
-                    topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp07\n\tSTA\ttemp07\n"
 
-        else:
-            digitVar34 = self.__loader.virtualMemory.getVariableByName2(digitData34)
-            topLevelText += "\tLDA\t" + digitData34 + "\n"
-            if digitVar34.type == "nibble":
-                topLevelText += self.moveVarToTheRight(digitVar34.usedBits)
-            topLevelText += "\tAND\t#%00001111\n\tASL\n\tASL\n\tASL\n\tCLC\n\tADC\ttemp13\n\tSTA\ttemp13\n"
-
-            if int(numOfDigits) > 1:
-                topLevelText += "\tLDA\t" + digitData34 + "\n"
-                topLevelText += "\tLSR\n\tAND\t#%01111000\n\tCLC\n\tADC\ttemp11\n\tSTA\ttemp11\n"
-
-        '''
-        if int(numOfDigits) > 2:
-            topLevelText        += "\tLDA\ttemp17\n\tORA\t#%00000001\n\tSTA\ttemp17\n"
-        '''
 
         topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                     "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
@@ -821,7 +883,7 @@ class Compiler:
         else:
            topLevelText    += "\tLDA\t" + colorVarName1 + "\n"
            if colorVar1.type == "nibble":
-              topLevelText += self.moveVarToTheRight(colorVar1.usedBits)
+              topLevelText += self.moveVarToTheRight(colorVar1.usedBits, False)
            topLevelText += "\tAND\t#%11110000\n"
         topLevelText    += "\tSTA\ttemp03\n"
 
@@ -832,7 +894,7 @@ class Compiler:
         else:
            topLevelText    += "\tLDA\t" + colorVarName2 + "\n"
            if colorVar2.type == "nibble":
-              topLevelText += self.moveVarToTheRight(colorVar2.usedBits)
+              topLevelText += self.moveVarToTheRight(colorVar2.usedBits, False)
            topLevelText += "\tAND\t#%11110000\n"
 
         topLevelText    += "\tSTA\ttemp04\n"
@@ -892,7 +954,7 @@ class Compiler:
         else:
             topLevelText    +=  "\tLDA\t" + picSettings1 + "\n"
             if picSettingsVar1.type == "nibble":
-                topLevelText += self.moveVarToTheRight(picSettingsVar1.usedBits)
+                topLevelText += self.moveVarToTheRight(picSettingsVar1.usedBits, True)
         topLevelText += "\tSTA\ttemp19\n"
         topLevelText += "\tAND\t#%00001111\n\tSTA\tREFP0\n\tSTA\tNUSIZ0\n\tAND\t#%00000111\n\tSTA\ttemp05\n"
 
@@ -907,7 +969,7 @@ class Compiler:
         else:
             topLevelText    +=  "\tLDA\t" + picSettings2 + "\n"
             if picSettingsVar2.type == "nibble":
-                topLevelText += self.moveVarToTheRight(picSettingsVar2.usedBits)
+                topLevelText += self.moveVarToTheRight(picSettingsVar2.usedBits, True)
         topLevelText += "\tSTA\ttemp19\n"
         topLevelText += "\tAND\t#%00001111\n\tSTA\tREFP1\n\tSTA\tNUSIZ1\n\tAND\t#%00000111\n\tSTA\ttemp06\n"
 
@@ -978,9 +1040,22 @@ class Compiler:
         return txt.replace("##NAME##", bank+"_"+pictureName)
 
     def convertSpriteToBigSprite(self, txt):
-        return txt.replace("##NAME##_Sprite\n", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1\n"
+        txt =             txt.replace("##NAME##_Sprite\n", "##NAME##_Sprite\n##NAME##_BigSprite_0\n##NAME##_BigSprite_1\n"
                           ).replace("##NAME##_SpriteColor\n",
                                     "##NAME##_SpriteColor\n##NAME##_BigSpriteColor_0\n##NAME##_BigSpriteColor_1\n")
+
+
+        lines = txt.split("\n")
+        height = 1
+
+        for line in lines:
+            if "* Height=" in line:
+               height = int(line.split("=")[1].replace("\r", ""))
+               break
+
+        txt += "\n##NAME##_Empty\n" + ("\tBYTE\t#0\n" * height)
+
+        return txt
 
     def generate_HalfBarWithText(self, name, data, bank):
 
@@ -1017,7 +1092,7 @@ class Compiler:
         else:
            topLevelText        += colorVarName + "\n"
            if colorVar.type    == "nibble":
-              topLevelText     += self.moveVarToTheRight(colorVar.usedBits)
+              topLevelText     += self.moveVarToTheRight(colorVar.usedBits, False)
            topLevelText        += "\tAND\t#%11110000\n"
            topLevelText        += "\tSTA\ttemp04\n"
 
@@ -1050,7 +1125,7 @@ class Compiler:
         else:
            topLevelText        += colorVarName2 + "\n"
            if colorVar2.type    == "nibble":
-              topLevelText     += self.moveVarToTheRight(colorVar2.usedBits)
+              topLevelText     += self.moveVarToTheRight(colorVar2.usedBits, False)
            topLevelText        += "\tAND\t#%11110000\n"
            topLevelText        += "\tORA\t#%00000110\n"
            topLevelText        += "\tSTA\ttemp05\n"
@@ -1160,7 +1235,7 @@ class Compiler:
         else:
            topLevelText        += colorVarName + "\n"
            if colorVar.type    == "nibble":
-              topLevelText     += self.moveVarToTheRight(colorVar.usedBits)
+              topLevelText     += self.moveVarToTheRight(colorVar.usedBits, False)
            topLevelText        += "\tAND\t#%11110000\n"
 
            topLevelText        += "\tSTA\ttemp05\n" +\
@@ -1224,9 +1299,14 @@ class Compiler:
             text += "\tBYTE\t#$"+item+"\n"
         return(text, name)
 
-    def moveVarToTheRight(self, bits):
+    def moveVarToTheRight(self, bits, AND):
         numForASL = 7 - max(bits)
-        return numForASL * "\tASL\n"
+        numForAND = "1" * len(bits) + "0" * (8 - len(bits))
+
+        if AND == True:
+            return numForASL * "\tASL\n" + "\tAND\t#%" + numForAND + "\n"
+        else:
+            return numForASL * "\tASL\n"
 
 
     def getPixelStep(self, numOfPix, maxValue):

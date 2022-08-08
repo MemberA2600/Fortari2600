@@ -138,16 +138,13 @@ class MusicComposer:
                         self.__currentSelected.set("1")
                         self.reset = False
 
-
                     if self.__channelNum[0] != self.__tiaScreens.currentChannel:
                         self.__tiaScreens.currentChannel = self.__channelNum[0]
                         self.reColorAll()
                     self.checkScreenSetter()
-
             except Exception as e:
                 print(str(e))
                 self.__loader.logger.errorLog(e)
-
 
             sleep(0.4)
 
@@ -1937,7 +1934,6 @@ class MusicComposer:
         b.pack_propagate(False)
         b.pack(fill=BOTH)
         b.bind("<ButtonPress-1>", self.playNote1)
-
 
     def __drawField(self, frame, frameH, start, end, pattern, key):
 
