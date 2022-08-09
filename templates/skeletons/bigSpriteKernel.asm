@@ -277,13 +277,15 @@
 	LDA	(temp09),y	; 5
 	STA	COLUP1		; 3
 
-	LDA	(temp11),y		
-	CLC							
-	ADC	temp16
+*	LDA	(temp11),y		
+*	CLC							
+*	ADC	temp16
+
+	sleep	10
 
 	STA	WSYNC				; 3 (76)
 	STA	HMOVE				; 3
-	STA	COLUBK			
+*	STA	COLUBK			
 
 	JMP	##BANK##_BigSprite_MainLoopFirst	; 3 (10)
 
@@ -293,7 +295,8 @@
 *
 	
 ##BANK##_BigSprite_Dummy
-	fill 3
+*	fill 3
+	fill 5	
 
 ##BANK##_BigSprite_AddToX
 	byte	#8	

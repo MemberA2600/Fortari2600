@@ -326,7 +326,7 @@ class BigSprite:
            self.__mirroredButton1.config(state = DISABLED)
            self.__nusizEntry.config(state = DISABLED)
            self.__options[0]["option"].set(2)
-           self.__spriteSettingsVar.set("1")
+           self.__spriteSettingsVar.set("0")
            self.__mirrored1.set(0)
            self.__nusizVal.set("0")
 
@@ -633,6 +633,15 @@ class BigSprite:
 
         modes = ["simple", "double", "overlay"]
         self.__modeOption.set(modes.index(self.__defaultMode)+1)
+
+        self.__data[6] = self.__heightVal.get()
+        self.__data[7] = self.__lineHeightVal.get()
+        self.__data[8] = modes[self.__modeOption.get() - 1]
+
+        if self.__options[0]["option"] == 1:
+            self.__changedSpriteConst("FUCK")
+
+        self.__changeData(self.__data)
 
     def __changeConstEntry(self, event):
         entries = [self.__heightEntry, self.__lineHeightEntry]

@@ -80,3 +80,13 @@
 	byte	#$92
 	byte	#$90
 
+##NAME##_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+

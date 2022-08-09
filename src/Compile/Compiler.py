@@ -325,23 +325,22 @@ class Compiler:
         topLevelText += "\tLDA\t#"+lineHeight+"\n\tSTA\ttemp14\n"
 
         if mode == "simple":
-           topLevelText += "\tLDA\t#0\n\tSTA\ttemp19\n"
-        else:
            topLevelText += "\tLDA\t#1\n\tSTA\ttemp19\n"
+        else:
+           topLevelText += "\tLDA\t#0\n\tSTA\ttemp19\n"
 
         if mode != "double":
            topLevelText += "\tLDA\t#0\n\tSTA\ttemp18\n"
         else:
            topLevelText += "\tLDA\t#8\n\tSTA\ttemp18\n"
 
-        topLevelText            += self.__io.loadSubModule("bigSpriteTopBottom2")
+        topLevelText            += self.__io.loadSubModule("bigSpriteTopBottom2").replace("#NAME#", bank+"_"+picName)
         topLevelText            += "\tLDA\t#<" + name + "_Back" + "\n\tSTA\ttemp01\n" + \
                                     "\tLDA\t#>" + name + "_Back" + "\n\tSTA\ttemp02\n"
         topLevelText            += "\tJMP\t" + bank + "_BigSprite_Kernel_Begin" + "\n"
         topLevelText            += name + "_Back" + "\n"
 
         topLevelText            = topLevelText.replace("#NAME#", name).replace("#BANK#", bank)
-        pictureData             = pictureData.replace("#NAME#", name).replace("#BANK#", bank)
 
         return (topLevelText, pictureData)
 
