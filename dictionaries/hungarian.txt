@@ -312,3 +312,5 @@ missingItems=Nem található kompatibilis #item# a projekt #folder# mappájában!
 divider=Frame Osztó
 decrement=Csökkenõ
 xPoz=X Pozíció
+textColor=Betûszín
+backColor=Hattérszín

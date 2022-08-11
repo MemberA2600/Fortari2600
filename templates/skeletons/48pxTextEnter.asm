@@ -1,0 +1,14 @@
+Letter01 = $d4
+Letter02 = $d5
+Letter03 = $d6
+Letter04 = $d7
+Letter05 = $d8
+Letter06 = $d9
+Letter07 = $da
+Letter08 = $db
+Letter09 = $dc
+Letter10 = $dd
+Letter11 = $de
+Letter12 = $de
+TextColor = $df
+TextBackColor = $e0
