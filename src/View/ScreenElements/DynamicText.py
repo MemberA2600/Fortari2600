@@ -81,14 +81,14 @@ class DynamicText:
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
         thisH = self.__h // 3.5
-        thisW = self.__w // 6
+        thisW = self.__w // 5
 
         dataFrames = []
         counter = 12
 
         dataVars = self.__data[2:14]
         colors   = [self.__data[14], self.__data[15]]
-        gradient = self.__data[16]
+        #gradient = self.__data[16]
 
         #colors = [["blue", "red", "yellow", 'white'],
         #          ["purple", "green", "black", "gray"]]
@@ -296,9 +296,9 @@ class DynamicText:
             listBox.bind("<KeyRelease-Up>", self.__changeColorListBox)
             listBox.bind("<KeyRelease-Down>", self.__changeColorListBox)
 
-        from GradientFrame import GradientFrame
-        self.__gradientFrame = GradientFrame(self.__loader, self.__uniqueFrame,
-                                             self.__changeData, self.__h, self.__data, self.dead, 8, "small", 16)
+        # from GradientFrame import GradientFrame
+        # self.__gradientFrame = GradientFrame(self.__loader, self.__uniqueFrame,
+        #                                      self.__changeData, self.__h, self.__data, self.dead, 8, "small", 16)
     def __changeColorListBox(self, event):
         name = str(event.widget).split(".")[-1]
         num  = int(name.split("_")[1])

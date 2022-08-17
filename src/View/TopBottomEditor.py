@@ -706,7 +706,7 @@ class TopBottomEditor:
                 "Picture64px"       : name + " " + "Picture64px # 0 0 0",
                 "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #",
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
-                "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00 1"
+                "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00"
              }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))

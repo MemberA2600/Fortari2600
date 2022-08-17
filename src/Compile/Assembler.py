@@ -444,6 +444,7 @@ class Assembler():
                         number = (second-line.address)-2
                         if (number<0):
                             number = 256 + number
+
                         line.bytes.append(bytes([number]))
                         break
 

@@ -72,9 +72,18 @@ class SubMenu:
 
     def changeWindowState(self, state, last):
         self.__loader.mainWindow.editor.attributes('-disabled', state)
+        failed = False
         if last > 0:
             for num in range(last):
-                self.__loader.topLevels[num].attributes('-disabled', state)
+                try:
+                    self.__loader.topLevels[num].attributes('-disabled', state)
+                except:
+                     failed = num
+                     break
+
+        if failed != False:
+            while len(self.__loader.topLevels) > failed + 1:
+                self.__loader.topLevels.pop(-1)
 
         if state == False:
             if last == 0:

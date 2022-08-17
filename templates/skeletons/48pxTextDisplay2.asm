@@ -1,6 +1,4 @@
 *
-*	temp02-temp09	: Letters
-*	#GRADIENT#   	: Physical address of 5 lines gradient
 *	#VAR01#		: Letter01
 *	#VAR02#		: Letter02
 *	#VAR03#		: Letter03
@@ -13,260 +11,381 @@
 *	#VAR10#		: Letter10
 *	#VAR11#		: Letter11
 *	#VAR12#		: Letter12
-*	#TextColor#	: Text Front Color
-*	#TextBackColor#	: Text Back  Color
+*			
+*	temp18		: Text Front Color
+*	temp19		: Text Back  Color
 *
 
-#NAME#_Begin
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	HMCLR		; 3
-	STA	COLUBK		; 3 (6)
-	LDA	#0		; 2 (8)
-	STA	PF0		; 3 (11)
-	STA	PF1		; 3 (14)
-	STA	PF2		; 3 (17)
-	STA	GRP0		; 3 (20)
-	STA	GRP1		; 3 (23)
-	STA	VDELP0		; 3 (26)
-	STA	VDELP1		; 3 (29)
+#NAME#_DynamicText_Begin
 
-	LDA	#%00000101	; 3
-	STA	CTRLPF		; 3 (32)
-
-	sleep	2		
-
-	STA	RESP0		; 3 	
-	STA	RESP1		; 3 Set the X pozition of sprites.
-
-	LDA	#$00		; 2 
-	STA	HMP0		; 3 
-
-	LDA	#$10		; 2 
-	STA	RESBL
-	STA	HMP1		; 3 
-
-	LDA	#$E0
-	STA	HMBL
-
-	LDA	#$03		; 2 			
-	STA	NUSIZ0		; 3 
-	STA	NUSIZ1		; 3 
+	LDX	#0			; 2
+	LDA	frameColor		; 3
+	STA	WSYNC			; 76
+	STA	COLUBK			; 3
+	STA	COLUPF			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
 	
-#NAME#_PrepareForDarkness
-	LDA	#TextBackColor#	
-	STA	WSYNC
-	STA	HMOVE		; 3	
-	STA	COLUBK		; 3 (6)
-	STA	COLUPF
-
-	LDY	#4		
-	STY	temp02		
-
-#NAME#_FillerLine1
-	LDA	counter	
-	AND	#%00000010
-	CMP	#%00000010
-	BEQ	#NAME#_CalculateDataStart
-	STA	WSYNC
-	STA	WSYNC
-
-#NAME#_CalculateDataStart
-	STA	WSYNC
-	LDX	#0
-#NAME#_ResetGRP
-	STX	GRP0
-	STX	GRP1
-
-	LDA	#2
-	STA	ENABL
-	LDA	#TextBackColor#
-	STA	COLUPF
-
-#NAME#_CalculateData
-	TYA
-	EOR	counter		  	; Seems like the best way to decide
-	AND	#%00000001		; which lines to draw.
-	CMP	#%00000001
-	BEQ	#NAME#_EvenLine
-
-#NAME#_OddLine
-	LDA	#VAR01#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp03
+	STX	PF0			; 3 (15)
+	STX	PF1			; 3 (18)
+	STX	PF2			; 3 (21)
 	
-	LDA	#VAR03#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp04
+	STX	GRP1			; 3 (24)
+	STX	GRP0			; 3 (27)
+	STX	ENAM0			; 3 (30)
+	STX	ENAM1			; 3 (33)
+	STX	ENABL			; 3 (36)
 
-	LDA	#VAR05#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp05
+	STX	RESP0			; 3 (39)
+	STX	RESP1			; 3 (42)
 
-	LDA	#VAR07#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp06
+	STX	REFP0			; 3 (45)
+	STX	REFP1			; 3 (48)
 
-	LDA	#VAR09#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp07
+	LDA	#$00			; 2 (50)
+	STA	HMP0			; 3 (53)
+	LDA	#$10			; 2 (55)
+	STA	HMP1			; 3 (58)
 
-	LDA	#VAR11#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%11110000
-	STA	temp08
+	LDA	#$03			; 2 (62)
+	STA	NUSIZ0			; 3 (65)
+	STA	NUSIZ1			; 3 (68)
 
-	JMP	#NAME#_ThisLineIsCalculated	
-#NAME#_EvenLine
-	LDA	#VAR02#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp03
+	STA	WSYNC			; 76
+	STA	HMOVE			; 3
+
+	LDA	temp18			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
 	
-	LDA	#VAR04#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp04
+	LDA	counter			; 3 
+	AND	#%00000001		; 2 
+	CMP	#%00000001		; 2 		
+	BEQ	#NAME#_DynamicText_Otherjump	; 2 
+	JMP	#NAME#_DynamicText_Even_Begin	; 3 
+#NAME#_DynamicText_Otherjump
+	JMP	#NAME#_DynamicText_Odd_Begin	; 3 
+	
+	_align	250
 
-	LDA	#VAR06#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp05
+#NAME#_DynamicText_Odd_Begin
 
-	LDA	#VAR08#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp06
+	LDY	#VAR09#				; 3 
+	LDA	BankXXFont_Right_Line4,y	; 5 
+	LDY	#VAR10#				; 3 
+	ORA	BankXXFont_Left_Line4,y		; 5  	
+	TAX					; 2 
 
-	LDA	#VAR10#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp07
+	LDY	temp19				; 3 
 
-	LDA	#VAR12#
-	TAX
-	LDA	BankXX5Table,x		; Got the starting address
-	CLC
-	ADC	temp02
-	TAX
-	LDA	BankXXFont,x		; Got the font data
-	AND	#%00001111
-	STA	temp08
+#NAME#_DynamicText_Odd_Line0
+	STA	WSYNC				; 76
+	STY	COLUBK
 
-	JMP	#NAME#_ThisLineIsCalculated
+	LDY	#VAR01#				; 3
+	LDA	BankXXFont_Right_Line4,y	; 4 (7)
+	LDY	#VAR02#				; 3 (10)
+	ORA	BankXXFont_Left_Line4,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
 
-	align 	256
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (22)
 
-#NAME#_ThisLineIsCalculated	
-	LDA	#TextColor#
-	ADC	#GRADIENT#,y
-	STA	COLUP0
-	STA	COLUP1
+	sleep	3
 
-	BIT	temp08
-	BPL	#NAME#_NoReColor
-	STA	COLUPF
-#NAME#_NoReColor
+	LDY	#VAR05#				; 3 (32)
+	LDA	BankXXFont_Right_Line4,y	; 4 (36)
+	LDY	#VAR06#				; 3 (39)
+	ORA	BankXXFont_Left_Line4,y		; 4 (43) 	
+	STA	GRP0				; 3 (47)
 
-	STA	WSYNC
-	LDA	temp03		; 3 (6)
-	STA	GRP0		; 3 (9)
-	LDA	temp04		; 3 (12)
-	STA	GRP1		; 3 (15)
+	sleep	2
 
-	LDX	temp08
-	TXS
-	TXA	
-	LDY	temp06
-	LDX	temp07
+	STX	GRP0				; 3 (52)
+
+	LDY	#VAR11#				; 3 (55)
+	LDA	BankXXFont_Right_Line3,y	; 4 (59)
+	LDY	#VAR12#				; 3 (62)
+	ORA	BankXXFont_Left_Line3,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+#NAME#_DynamicText_Odd_Line1
+	STA	WSYNC				; 76
+	LDY	#VAR03#				; 3
+	LDA	BankXXFont_Right_Line3,y	; 4 (7)
+	LDY	#VAR04#				; 3 (10)
+	ORA	BankXXFont_Left_Line3,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	#VAR07#				; 3 (34)
+	LDA	BankXXFont_Right_Line3,y	; 4 (38)
+	LDY	#VAR08#				; 3 (41)
+	ORA	BankXXFont_Left_Line3,y		; 4 (44) 	
+	STA	GRP1				; 3 (47)
+
+	sleep	2
+
+	STX	GRP1				; 3 (52)
+
+	LDY	#VAR09#				; 3 (55)
+	LDA	BankXXFont_Right_Line2,y	; 4 (59)
+	LDY	#VAR10#				; 3 (62)
+	ORA	BankXXFont_Left_Line2,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+#NAME#_DynamicText_Odd_Line2
+	STA	WSYNC				; 76
+	LDY	#VAR01#				; 3
+	LDA	BankXXFont_Right_Line2,y	; 4 (7)
+	LDY	#VAR02#				; 3 (10)
+	ORA	BankXXFont_Left_Line2,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (22)
+
+	sleep	6
+
+	LDY	#VAR05#				; 3 (32)
+	LDA	BankXXFont_Right_Line2,y	; 4 (36)
+	LDY	#VAR06#				; 3 (39)
+	ORA	BankXXFont_Left_Line2,y		; 4 (43) 	
+	STA	GRP0				; 3 (47)
+
+	sleep	2
+
+	STX	GRP0				; 3 (52)
+
+	LDY	#VAR11#				; 3 (55)
+	LDA	BankXXFont_Right_Line1,y	; 4 (59)
+	LDY	#VAR12#				; 3 (62)
+	ORA	BankXXFont_Left_Line1,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+#NAME#_DynamicText_Odd_Line3
+	STA	WSYNC				; 76
+	LDY	#VAR03#				; 3
+	LDA	BankXXFont_Right_Line1,y	; 4 (8)
+	LDY	#VAR04#				; 3 (11)
+	ORA	BankXXFont_Left_Line1,y		; 4 (16) 	
+	STA	GRP1				; 3 (19)
+
+	LDA	#0				; 2 (21)
+	STA	GRP0				; 3 (24)
+
+	sleep	8
+
+	LDY	#VAR07#				; 3 (27)
+	LDA	BankXXFont_Right_Line1,y	; 4 (31)
+	LDY	#VAR08#				; 3 (34)
+	ORA	BankXXFont_Left_Line1,y		; 4 (38) 	
+	STA	GRP1				; 3 (41)
+
+	sleep	2
+
+	STX	GRP1				; 3 (46)
+
+	LDY	#VAR09#				; 3 (49)
+	LDA	BankXXFont_Right_Line0,y	; 4 (54)
+	LDY	#VAR10#				; 3 (57)
+	ORA	BankXXFont_Left_Line0,y		; 4 (61) 	
+	TAX					; 2 (63)
+
+#NAME#_DynamicText_Odd_Line2
+	STA	WSYNC				; 76
+	LDY	#VAR01#				; 3
+	LDA	BankXXFont_Right_Line0,y	; 4 (7)
+	LDY	#VAR02#				; 3 (10)
+	ORA	BankXXFont_Left_Line0,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (21)
+
+	sleep	6
+
+	LDY	#VAR05#				; 3 (31)
+	LDA	BankXXFont_Right_Line0,y	; 4 (35)
+	LDY	#VAR06#				; 3 (38)
+	ORA	BankXXFont_Left_Line0,y		; 4 (42) 	
+	STA	GRP0				; 3 (45)
+
+	sleep	2
+
+	STX	GRP0				; 3 (50)
 
 	sleep	12
-
-	LDA	temp05		; 3 
-	STA	GRP0		; 3 
 	
-	STY	GRP1
-	STX	GRP0
-	TSX
-	STX	GRP1
+	JMP	#NAME#_DynamicText_Reset
 
+	_align	250
 
-	DEC	temp02		; 5
-	LDY	temp02		; 3
-	BMI	#NAME#_FillerLine2	; 2 
-	JMP	#NAME#_CalculateDataStart   ; 3
+#NAME#_DynamicText_Even_Begin
+	LDY	#VAR11#				; 3 
+	LDA	BankXXFont_Right_Line4,y	; 4 
+	LDY	#VAR12#				; 3 
+	ORA	BankXXFont_Left_Line4,y		; 4  	
+	TAX					; 2 
 
-#NAME#_FillerLine2
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA 	ENABL		
+	LDY	temp19				; 3 
 
-	LDA	counter	
-	AND	#%00000010
-	CMP	#%00000010
-	BNE	#NAME#_Reset
-	STA	WSYNC
-	STA	WSYNC
+#NAME#_DynamicText_Even_Line0
+	STA	WSYNC				; 76
+	STY	COLUBK				; 3
 
-#NAME#_Reset
+	LDY	#VAR03#				; 3
+	LDA	BankXXFont_Right_Line4,y	; 4 (7)
+	LDY	#VAR04#				; 3 (10)
+	ORA	BankXXFont_Left_Line4,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	5
+
+	LDY	#VAR07#				; 3 (34)
+	LDA	BankXXFont_Right_Line4,y	; 4 (38)
+	LDY	#VAR08#				; 3 (41)
+	ORA	BankXXFont_Left_Line4,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	LDY	#VAR09#				; 3 (56)
+	LDA	BankXXFont_Right_Line3,y	; 4 (60)
+	LDY	#VAR10#				; 3 (63)
+	ORA	BankXXFont_Left_Line3,y		; 4 (67) 	
+	TAX					; 2 (69)
+
+#NAME#_DynamicText_Even_Line1
+	STA	WSYNC				; 76
+	LDY	#VAR01#				; 3
+	LDA	BankXXFont_Right_Line3,y	; 4 (7)
+	LDY	#VAR02#				; 3 (10)
+	ORA	BankXXFont_Left_Line3,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (21)
+
+	sleep	6
+
+	LDY	#VAR05#				; 3 (31)
+	LDA	BankXXFont_Right_Line3,y	; 4 (35)
+	LDY	#VAR06#				; 3 (38)
+	ORA	BankXXFont_Left_Line3,y		; 4 (42) 	
+	STA	GRP0				; 3 (45)
+
+	sleep	2
+
+	STX	GRP0				; 3 (50)
+
+	LDY	#VAR11#				; 3 (53)
+	LDA	BankXXFont_Right_Line2,y	; 4 (57)
+	LDY	#VAR12#				; 3 (60)
+	ORA	BankXXFont_Left_Line2,y		; 4 (64) 	
+	TAX					; 2 (66)
+
+#NAME#_DynamicText_Even_Line2
+	STA	WSYNC				; 76
+	LDY	#VAR03#				; 3
+	LDA	BankXXFont_Right_Line2,y	; 4 (7)
+	LDY	#VAR04#				; 3 (10)
+	ORA	BankXXFont_Left_Line2,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	#VAR07#				; 3 (34)
+	LDA	BankXXFont_Right_Line2,y	; 4 (38)
+	LDY	#VAR08#				; 3 (41)
+	ORA	BankXXFont_Left_Line2,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	LDY	#VAR09#				; 3 (56)
+	LDA	BankXXFont_Right_Line1,y	; 4 (60)
+	LDY	#VAR10#				; 3 (63)
+	ORA	BankXXFont_Left_Line1,y		; 4 (67) 	
+	TAX		
+
+#NAME#_DynamicText_Even_Line3
+	STA	WSYNC				; 76
+	LDY	#VAR01#				; 3
+	LDA	BankXXFont_Right_Line1,y	; 4 (8)
+	LDY	#VAR02#				; 3 (11)
+	ORA	BankXXFont_Left_Line1,y		; 4 (16) 	
+	STA	GRP0				; 3 (19)
+
+	LDA	#0				; 2 (21)
+	STA	GRP1				; 3 (24)
+
+	sleep	6
+
+	LDY	#VAR05#				; 3 (27)
+	LDA	BankXXFont_Right_Line1,y	; 4 (32)
+	LDY	#VAR06#				; 3 (35)
+	ORA	BankXXFont_Left_Line1,y		; 4 (40) 	
+	STA	GRP0				; 3 (43)
+
+	sleep	2
+
+	STX	GRP0				; 3 (46)
+
+	LDY	#VAR11#				; 3 (49)
+	LDA	BankXXFont_Right_Line0,y	; 4 (54)
+	LDY	#VAR12#				; 3 (57)
+	ORA	BankXXFont_Left_Line0,y		; 4 (61) 	
+	TAX					; 2 (63)
+
+#NAME#_DynamicText_Even_Line4
+	STA	WSYNC				; 76
+	LDY	#VAR03#				; 3
+	LDA	BankXXFont_Right_Line0,y	; 4 (7)
+	LDY	#VAR04#				; 3 (10)
+	ORA	BankXXFont_Left_Line0,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	#VAR07#				; 3 (34)
+	LDA	BankXXFont_Right_Line0,y	; 4 (38)
+	LDY	#VAR08#				; 3 (41)
+	ORA	BankXXFont_Left_Line0,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	sleep	13
+
+#NAME#_DynamicText_Reset
+	LDX	#0			; 2
+	STX	GRP1			; 3 
+	STX	GRP0			; 3
+
+	LDA	frameColor		; 3
+	STA	WSYNC			; 76
+	STA	COLUBK			; 3
+	STA	COLUPF			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
+	STX	HMCLR			; 3 (30)

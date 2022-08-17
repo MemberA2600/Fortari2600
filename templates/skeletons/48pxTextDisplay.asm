@@ -61,6 +61,7 @@
 
 	LDA	#2
 	STA	ENABL
+
 	LDA	TextBackColor
 	STA	COLUPF
 

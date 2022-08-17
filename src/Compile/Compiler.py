@@ -248,12 +248,19 @@ class Compiler:
                     self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
                                                                                           self.__bank)
             elif typ == "BigSprite":
-                fullName += "_" + data[0]
                 those = self.generate_BigSprite(fullName, data, self.__bank)
                 self.__bankData.append(those[0])
                 self.__userData[fullName] = those[1]
                 self.__routines["BigSprite"] = self.__io.loadSubModule("bigSpriteKernel").replace("##BANK##",
                                                                                              self.__bank)
+
+            elif typ == "DynamicText":
+                those = self.generate_DynamicText(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+
+                for itemNum in range(0, len(those[1])):
+                    if those[1][itemNum][1] != "":
+                        self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -275,6 +282,70 @@ class Compiler:
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_DynamicText(self, name, data, bank):
+
+        dataVars  = data[0:12]
+        colorVars = data[12:14]
+        # gradient  = data[14]
+
+        topLevelText = "\n" + name + "\n"
+
+        mainCode = self.__loader.io.loadSubModule("48pxTextDisplay2")\
+                    .replace("#BANK#", bank)\
+                    .replace("BankXX", bank)\
+                    .replace("#NAME#", name)
+
+        counter = 0
+        for dataVar in dataVars:
+            counter += 1
+            num = str(counter)
+            if len(num) == 1: num = "0" + num
+            varName = "#VAR"+num+"#"
+
+            #print(varName, dataVar)
+
+            mainCode = mainCode.replace(varName, dataVar)
+
+        counter = 17
+        for colorVar in colorVars:
+            counter += 1
+            variable = self.__loader.virtualMemory.getVariableByName2(colorVar)
+            if variable == False:
+               topLevelText += "\tLDA\t#" + colorVar + "\n"
+            else:
+               topLevelText += "\tLDA\t" + colorVar + "\n"
+               if variable.type == "nibble":
+                   topLevelText += self.moveVarToTheRight(variable.usedBits, True)
+
+            topLevelText += "\tSTA\ttemp"+ str(counter) +"\n"
+
+        # 3 is not used (included with the font)
+        """
+
+        pattern = {
+            1: ["$00", "$02", "$04", "$06", "$08"],
+            2: ["$08", "$06", "$04", "$02", "$00"],
+            3: ["$00", "$02", "$04", "$02", "$00"],
+            4: ["$04", "$02", "$00", "$02", "$04"]
+        }
+
+        gradientPointer =  bank + "Colors"
+        gradientText = ""
+        if int(gradient) !=3:
+            gradientPointer += "_" + gradient
+            gradientText += gradientPointer + "\n"
+            for hexa in pattern[int(gradient)]:
+                gradientText += "\tBYTE\t#" + hexa + "\n"
+        """
+
+        routines = []
+        routines.append([bank + "Font", self.__loader.io.loadSubModule("48pxTextFont2").replace("BankXX", bank)])
+        #routines.append([gradientPointer, gradientText])
+
+        topLevelText = topLevelText + mainCode
+
+        return [topLevelText, routines]
 
     def generate_BigSprite(self, name, data, bank):
         # ['Battery_(Big)', 'random', '$00', 'random', '8', '2', 'overlay']
@@ -300,7 +371,7 @@ class Compiler:
         else:
            topLevelText += "\tLDA\t" + spriteVar + "\n"
            if var.type == "nibble":
-              topLevelText += self.moveVarToTheRight(var.usedBits, False)
+              topLevelText += self.moveVarToTheRight(var.usedBits, True)
         topLevelText += "\tSTA\ttemp17\n"
 
         var = self.__loader.virtualMemory.getVariableByName2(spriteColor)
@@ -309,7 +380,7 @@ class Compiler:
         else:
            topLevelText += "\tLDA\t" + spriteColor + "\n"
            if var.type == "nibble":
-              topLevelText += self.moveVarToTheRight(var.usedBits, False)
+              topLevelText += self.moveVarToTheRight(var.usedBits, True)
         topLevelText += "\tSTA\ttemp16\n"
 
         var = self.__loader.virtualMemory.getVariableByName2(xPoz)
@@ -1992,7 +2063,7 @@ class Compiler:
                                                           self.__music1 + "\n" + self.__songData[1]
                                                           )
 
-        self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont.asm")
+        self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont2.asm").replace("BankXX", "Bank2")
 
         if self.__picturePath == None:
             picName = "fortari"
@@ -2028,14 +2099,21 @@ class Compiler:
                                     .replace("#COLOR4#", self.__colors[4][1])
                                     .replace("#COLOR5#", self.__colors[5][1]))
 
-        
+        textDisplay =   ("\tSTA\tWSYNC\n"*3) +\
+                        self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay2.asm").replace("#NAME#", CoolSong).\
+                        replace("temp18","TextColor").replace("temp19","TextBackColor")
+
+        for num in range(1, 13):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+            textDisplay = textDisplay.replace("#VAR"+num+"#", "Letter"+num )
+
         self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
-                           self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay.asm")+ "\n" +
-                            musicVisuals + "\n")
+                            textDisplay+ "\n" + musicVisuals + "\n")
 
-        self.__screenTop = self.__screenTop.replace("pic64px", picName).replace("48pxText", CoolSong)
+        self.__screenTop = self.__screenTop.replace("pic64px", picName)
 
-        self.__kernelText = (self.__kernelText.replace("!!!USER_DATA_BANK2!!!", self.__bank2Data)
+        self.__kernelText = (self.__kernelText.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection(self.__bank2Data))
                              .replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)
                              )
 
@@ -2236,8 +2314,6 @@ class Compiler:
         return(Channels, bytes)
 
 
-
-
     def compress(self, data, sectonName, channelNum, dataArrayNotes, generateNotes):
         patterns = {}
 
@@ -2372,22 +2448,31 @@ class Compiler:
         charset = {
             "0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9,
             "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15, "G": 16, "H": 17, "I": 18, "J": 19,
-            "K": 20, "L": 21, "M": 22, "N": 23, "O": 24, "P": 25, "Q": 26, "R": 27, "S": 28, "T": 29,
-            "U": 30, "V": 31, "W": 32, "X": 33, "Y": 34, "Z": 35,
-            " ": 36, '\t': 36, '\n': 36,
-            "<": 37, "(": 37, "[": 37, "{": 37,
-            ">": 38, ")": 38, "]": 38, "}": 38,
-            "+": 39, "-": 40, "=": 41, "*": 42, "¤": 42, "/": 43, "%": 44, "_": 45, ".": 46, "!": 47, "?": 48, ":": 49,
-            ",": 46, ";": 49
+            "K": 20, "L": 21, "M1": 22, "M2": 23,
+            "N": 24, "O": 25, "P": 26, "Q": 27, "R": 28, "S": 29, "T": 30,
+            "U": 31, "V": 32, "W1": 33, "W2": 34, "X": 35, "Y": 36, "Z": 37,
+            "<": 39, "(": 39, "[": 39, "{": 39,
+            ">": 40, ")": 40, "]": 40, "}": 40,
+            "+": 41, "-": 42, "=": 43, "*": 44, "¤": 44, "/": 45, "%": 46, "_": 47, ".": 48, "!": 49, "?": 50, ":": 51,
+            ",": 48, ";": 51
         }
 
+        doubleChars = ("M", "W")
+
         for char in text.upper():
-            if char in charset:
-                textToReturn +="\tBYTE\t#"+str(charset[char]) + "\n"
-                charNums.append(charset[char])
+            if (char in charset) or (char in doubleChars):
+                if char in doubleChars:
+                    textToReturn +="\tBYTE\t#"+str(charset[char+"1"]) + "\n"
+                    charNums.append(charset[char+"1"])
+                    textToReturn +="\tBYTE\t#"+str(charset[char+"2"]) + "\n"
+                    charNums.append(charset[char+"2"])
+
+                else:
+                    textToReturn +="\tBYTE\t#"+str(charset[char]) + "\n"
+                    charNums.append(charset[char])
             else:
-                textToReturn += "\tBYTE\t#36\n"
-                charNums.append(36)
+                textToReturn += "\tBYTE\t#38\n"
+                charNums.append(38)
 
 
         textToReturn+= "\tBYTE\t#255\n"
@@ -2990,3 +3075,7 @@ class Compiler:
 #if __name__ == "__main__":
 #    o = Compiler(None, None, "dummy", None)
 #    print(o.save8bitsToAny([5, 4], "Pacal", "$08"))
+
+#if __name__ == "__main__":
+#   c = Compiler(None, None, "dummy" ,None)
+#   print(c.generateTextDataFromString("Elzevir - Forgive Me"))
