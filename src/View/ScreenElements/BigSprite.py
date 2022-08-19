@@ -52,9 +52,11 @@ class BigSprite:
             if itWasHash == True:
                 self.__changeData(self.__data)
         else:
-            blankAnimation(["missing", {
-                               "item": "BigSprite", "folder": self.__loader.mainWindow.projectPath.split("/")[-2]+"/64px"
-                           }])
+            blankAnimation({
+                "item": "bigSprite / sprite",
+                "folder": "'" + self.__loader.mainWindow.projectPath.split("/")[-2] + "/bigSprites' / '" +
+                          self.__loader.mainWindow.projectPath.split("/")[-2] + "/sprites'"
+            })
 
     def __loadPictures(self):
 

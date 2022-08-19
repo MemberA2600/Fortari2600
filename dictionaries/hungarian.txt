@@ -314,3 +314,7 @@ decrement=Csökkenõ
 xPoz=X Pozíció
 textColor=Betûszín
 backColor=Hattérszín
+menu=Menü
+defaultColors=Alapértelmezett Színek
+activeColor=Aktív Szín
+inactiveColor=Inaktív Szín

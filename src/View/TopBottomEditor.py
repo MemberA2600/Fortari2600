@@ -706,7 +706,8 @@ class TopBottomEditor:
                 "Picture64px"       : name + " " + "Picture64px # 0 0 0",
                 "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #",
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
-                "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00"
+                "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
+                "Menu"              : name + " " + "Menu # # # # #"
              }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -748,6 +749,7 @@ class TopBottomEditor:
            from Indicator           import Indicator
            from BigSprite           import BigSprite
            from DynamicText         import DynamicText
+           from Menu                import Menu
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -755,7 +757,8 @@ class TopBottomEditor:
                "Picture64px"        : Picture64px,
                "Indicator"          : Indicator,
                "BigSprite"          : BigSprite,
-               "DynamicText"        : DynamicText
+               "DynamicText"        : DynamicText,
+               "Menu"               : Menu
            }
 
            self.__listOfNames = []

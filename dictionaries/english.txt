@@ -314,3 +314,7 @@ decrement=Decrementing
 xPoz=X Position
 textColor=Text Color
 backColor=Background Color
+menu=Menu
+defaultColors=Set Default Colors
+activeColor=Active Color
+inactiveColor=Inactive Color
