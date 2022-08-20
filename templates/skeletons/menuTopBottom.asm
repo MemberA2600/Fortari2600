@@ -58,6 +58,7 @@
 	STA	PF2		; 3 (62)
 
 	LDA	##NAME##_Selected_Item	; 3 (65)
+!!!Insert_Here_Calculation!!!
 	LDX	#254		; 2 (67)
 
 	STA	WSYNC		; 76
@@ -141,6 +142,7 @@
 	STA	temp13				; 3 (44)
 	
 	LDA	##NAME##_Selected_Item		; 3 (47)
+!!!Insert_Here_Calculation!!!
 	SEC					; 2 (49)
 	SBC	temp19				; 3 (52)	
 	STA	temp18				; 3 (55)

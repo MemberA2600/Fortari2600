@@ -262,6 +262,11 @@ class Compiler:
                     if those[1][itemNum][1] != "":
                         self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
 
+            elif typ == "Menu":
+                those = self.generate_Menu(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[name+"_data" ] = those[1]
+
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
 
@@ -282,6 +287,53 @@ class Compiler:
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_Menu(self, name, data, bank):
+        fileName    = data[0]
+        varName     = data[1]
+        colors      = data[2:]
+
+
+        path = self.__loader.mainWindow.projectPath + "/menus/" + fileName + ".asm"
+        f = open(path, "r")
+        d = f.read()
+        f.close()
+
+        assemblyBase = d.split("##NAME##_Color_UNSELECTED")[0]
+
+        labels = ["##NAME##_Color_UNSELECTED", "##NAME##_Color_SELECTED_FG", "##NAME##_Color_SELECTED_BG"]
+
+        for num in range(0, 3):
+            tempText = labels[num] + "\n"
+            tempData = colors[num].split("|")
+            for item in tempData:
+                tempText += "\tBYTE\t#" + item + "\n"
+
+            assemblyBase += tempText +'\n'
+
+        kernelText = self.__loader.io.loadSubModule("menuEnter2") + self.__loader.io.loadSubModule("menuTopBottom")
+
+        items   = None
+        largest = None
+
+        lines   = assemblyBase.split("\n")
+        for line in lines:
+            if items != None and largest != None:
+               break
+
+            if   "Items=" in line:
+                items = int(line.split("=")[1].replace("\n", "").replace("\r",""))
+            elif "Largest=" in line:
+                largest = int(line.split("=")[1].replace("\n", "").replace("\r", ""))
+
+        kernelText = kernelText.replace("##CON01##", str(items)).replace("##CON02##", str(largest)).replace("##VAR01##", varName)
+
+        variable = self.__loader.virtualMemory.getVariableByName2(varName)
+        if variable.type != "byte":
+           kernelText = kernelText.replace("!!!Insert_Here_Calculation!!!", self.convertAnyTo8Bits(variable.usedBits))
+
+        return(kernelText.replace("##NAME##", name), assemblyBase.replace("##NAME##", name))
+
 
     def generate_DynamicText(self, name, data, bank):
 
