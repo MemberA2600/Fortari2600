@@ -34,6 +34,8 @@ class Loader:
         self.executor = None
         self.bigFrame = None
         self.jumpman = []
+        self.jukebox = []
+
 
         #self.frames = {}
         self.menuButtons = {}

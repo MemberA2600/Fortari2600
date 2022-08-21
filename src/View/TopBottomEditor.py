@@ -707,8 +707,10 @@ class TopBottomEditor:
                 "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #",
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
                 "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
-                "Menu"              : name + " " + "Menu # # # # #"
-             }
+                "Menu"              : name + " " + "Menu # # # # #",
+                "JukeBox"           : name + " " + "JukeBox # # # # # # #"
+
+            }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
             self.__codeData[self.__activePart][bank][1] = True
@@ -750,6 +752,8 @@ class TopBottomEditor:
            from BigSprite           import BigSprite
            from DynamicText         import DynamicText
            from Menu                import Menu
+           from JukeBox             import JukeBox
+
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -758,7 +762,8 @@ class TopBottomEditor:
                "Indicator"          : Indicator,
                "BigSprite"          : BigSprite,
                "DynamicText"        : DynamicText,
-               "Menu"               : Menu
+               "Menu"               : Menu,
+               "JukeBox"            : JukeBox
            }
 
            self.__listOfNames = []

@@ -41,7 +41,7 @@ class BigSprite:
 
         self.__loadPictures()
 
-        if len(self.__listOfPictures) > 0:
+        if len(self.__listOfPictures) != 0:
             itWasHash = False
             if self.__data[2] == "#":
                 itWasHash = True
@@ -52,11 +52,10 @@ class BigSprite:
             if itWasHash == True:
                 self.__changeData(self.__data)
         else:
-            blankAnimation({
-                "item": "bigSprite / sprite",
-                "folder": "'" + self.__loader.mainWindow.projectPath.split("/")[-2] + "/bigSprites' / '" +
-                          self.__loader.mainWindow.projectPath.split("/")[-2] + "/sprites'"
-            })
+            blankAnimation(["missing", {
+                               "item": "bigSprite / Sprite", "folder": self.__loader.mainWindow.projectPath.split("/")[-2]+"/bigSprites" +\
+                                                                       "/" + self.__loader.mainWindow.projectPath.split("/")[-2]+"/sprites"
+                           }])
 
     def __loadPictures(self):
 

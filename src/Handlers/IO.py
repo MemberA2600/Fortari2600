@@ -1,7 +1,6 @@
 import os
 from PIL import Image, ImageTk
 
-
 class IO:
 
     def __init__(self, config, dict, loader):
@@ -78,3 +77,18 @@ class IO:
 
     def loadTestElementPlain(self, element):
         return(open("templates/testCodes/"+element+".asm", "r").read())
+
+    def loadAnimationFrames(self, folder, maxNum, dataHolder, format, s):
+        from PIL import Image as IMAGE
+
+        for num in range(1, maxNum):
+            num = str(num)
+            if len(num) == 1:
+                num = "0" + num
+            dataHolder.append(
+                self.returnResized(IMAGE.open(str("others/img/"+folder+"/" + num + "."+format)), s[0], s[1], s[2]))
+
+    def returnResized(self, source, w, h, part):
+        from PIL import Image as IMAGE
+
+        return ImageTk.PhotoImage(source.resize((round(w*part), round(h))), IMAGE.ANTIALIAS)

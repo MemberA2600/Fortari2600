@@ -489,6 +489,15 @@ class VirtualMemory:
 
         return(this)
 
+    def returnBankLocks(self):
+        this = {}
+        for num in range(3, 9):
+            bankNum = "bank" + str(num)
+            if self.locks[bankNum] != None:
+                this[bankNum] = self.locks[bankNum]
+
+        return(this)
+
     def registerNewLock(self, bankNum, name, type, number, last):
         from Lock import Lock
 

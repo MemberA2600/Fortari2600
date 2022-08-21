@@ -318,3 +318,5 @@ menu=Menu
 defaultColors=Set Default Colors
 activeColor=Active Color
 inactiveColor=Inactive Color
+availableMusic=Available Music
+addedMusic=Added Music

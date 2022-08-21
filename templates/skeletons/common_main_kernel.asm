@@ -141,6 +141,13 @@ GrayScale     = $d0 ; 6th bit: GrayScale overlap
 OverLapIndicator = $d0
 *******************
 
+*** Music Stuff (same for all jukeboxes)
+Music_Pointer0 = $d1	; 16 bits
+Music_Pointer1 = $d3	; 16 bits
+Music_Duration0 = $d5
+Music_Duration1 = $d6 
+************************
+
 	; Constants
  
 NTSC_Vblank   =	169

@@ -318,3 +318,5 @@ menu=Menü
 defaultColors=Alapértelmezett Színek
 activeColor=Aktív Szín
 inactiveColor=Inaktív Szín
+availableMusic=Elérhetõ Zene
+addedMusic=Hozzáadott Zene
