@@ -146,6 +146,13 @@ Music_Pointer0 = $d1	; 16 bits
 Music_Pointer1 = $d3	; 16 bits
 Music_Duration0 = $d5
 Music_Duration1 = $d6 
+***
+JukeBox_Controller = $d7 
+JukeBox_Music_Index = $d7 ; 0-2
+JukeBox_Wave_Index = $d7  ; 3-5
+JukeBox_Music_Loop = $d7  ; 6
+			  ; 7 = Free	
+***
 ************************
 
 	; Constants

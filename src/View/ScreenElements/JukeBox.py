@@ -48,7 +48,7 @@ class JukeBox:
 
             self.__loadPictures()
 
-            itWasHash = False
+            #itWasHash = False
 
             if self.__data[2] == "#":
                 itWasHash = True
@@ -56,12 +56,14 @@ class JukeBox:
             self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead, itemNames)
             self.__addElements()
 
-            if itWasHash == True:
-                self.__changeData(self.__data)
+            #if itWasHash == True:
+            #    self.__changeData(self.__data)
 
         else:
             blankAnimation(["missing", {
-                               "item": "music", "folder": self.__loader.mainWindow.projectPath.split("/")[-2]+"/musics"
+                               "item": "music / waveform", "folder": self.__loader.mainWindow.projectPath.split("/")[-2]+"/musics / " + \
+                                                                     self.__loader.mainWindow.projectPath.split("/")[
+                                                                         -2] + "/waveforms"
                            }])
 
     def __loadMusicData(self):
@@ -87,6 +89,13 @@ class JukeBox:
                    if len(asmPairs) == 2: self.__musicData[name].append("double")
                    else:  self.__musicData[name].append("simple")
 
+                   self.__musicData[name].append("music")
+
+        for root, dir, files in os.walk(self.__loader.mainWindow.projectPath + "/waveforms/"):
+            for file in files:
+                if file.endswith(".asm"):
+                    name = ".".join(file.split(".")[:-1])
+                    self.__musicData[name] = ["simple", "waveform"]
 
     def __loadPictures(self):
 
@@ -117,7 +126,7 @@ class JukeBox:
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    fg=self.__loader.colorPalettes.getColor("font"),
                                    height=1,
-                                   font = self.__miniFont,
+                                   font = self.__smallFont,
                                    textvariable = self.__errorText
                                  )
 
@@ -134,7 +143,7 @@ class JukeBox:
         self.__boxFrame.pack_propagate(False)
         self.__boxFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
-        divider = 5
+        divider = 3
 
         self.__availableFrame = Frame(self.__boxFrame, width=self.__w // divider,
                                    bg=self.__loader.colorPalettes.getColor("window"),
@@ -188,7 +197,7 @@ class JukeBox:
                 self.__availableListBox.insert(END, key)
                 self.__availableListBoxItems.append(key)
 
-        self.__buttonsFrame = Frame(self.__boxFrame, width=self.__w // divider // 2,
+        self.__buttonsFrame = Frame(self.__boxFrame, width=self.__w // divider,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=9999999
                                  )
@@ -216,13 +225,35 @@ class JukeBox:
         self.__addButton.pack_propagate(False)
         self.__addButton.pack(fill=X, side = BOTTOM, anchor = S)
 
+        self.__banksNeededLabel = Label(self.__buttonsFrame,
+                                   text=self.__dictionaries.getWordFromCurrentLanguage("banksNeeded")+":",
+                                   font=self.__miniFont, fg=self.__colors.getColor("font"),
+                                   bg=self.__colors.getColor("window"), justify=CENTER
+                                   )
+
+        self.__banksNeededLabel.pack_propagate(False)
+
+
+        self.__banksNeededVal = StringVar()
+        self.__banksNeededEntry = Entry(self.__buttonsFrame,
+                                   bg=self.__colors.getColor("boxBackNormal"),
+                                   fg=self.__colors.getColor("boxFontNormal"),
+                                   width=9999, justify=CENTER,
+                                   textvariable=self.__banksNeededVal,
+                                   font=self.__smallFont, state = DISABLED
+                                   )
+
+        self.__banksNeededEntry.pack_propagate(False)
+        self.__banksNeededEntry.pack(fill=X, side=BOTTOM, anchor=N)
+        self.__banksNeededLabel.pack(side=BOTTOM, anchor=CENTER, fill=X)
+
         self.__addedFrame = Frame(self.__boxFrame, width=self.__w // divider,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    height=9999999
                                  )
 
         self.__addedFrame.pack_propagate(False)
-        self.__addedFrame.pack(side=LEFT, anchor=E, fill=Y)
+        self.__addedFrame.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__addedLabel = Label(self.__addedFrame,
                                    text=self.__dictionaries.getWordFromCurrentLanguage("addedMusic")+":",
@@ -262,11 +293,176 @@ class JukeBox:
 
         self.__selecteds = {"availableList": "",
                             "addedList": ""}
+
+        self.__banksLabel = Label(self.__buttonsFrame,
+                                   text=self.__dictionaries.getWordFromCurrentLanguage("banksLocked")+":",
+                                   font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                   bg=self.__colors.getColor("window"), justify=CENTER
+                                   )
+
+        self.__banksLabel.pack_propagate(False)
+
+        self.__bankCheckBoxes = []
+        self.__bankBoxesFrame = Frame(self.__buttonsFrame, width=self.__w,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 10
+                                 )
+
+        self.__bankBoxesFrame.pack_propagate(False)
+        self.__banksLabel.pack(side=TOP, anchor=CENTER, fill=X)
+        self.__bankBoxesFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__checkBoxFunctions = [
+            self.__checkBoxPressed3,
+            self.__checkBoxPressed4,
+            self.__checkBoxPressed5,
+            self.__checkBoxPressed6,
+            self.__checkBoxPressed7,
+            self.__checkBoxPressed8,
+        ]
+
+        for num in range(3, 9):
+
+
+
+            item = {}
+            item["value"]  = IntVar()
+            item["frame"]  = Frame(self.__bankBoxesFrame, width=self.__w // divider // 6,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   height=self.__h // 10
+                                   )
+
+            item["frame"].pack_propagate(False)
+            item["frame"].pack(side=LEFT, anchor=W, fill=Y)
+
+
+
+            item["button"] = Checkbutton(item["frame"],
+                                                 name="bankButton_"+str(num) ,
+                                                 text=str(num),
+                                                 bg=self.__colors.getColor("window"),
+                                                 fg=self.__colors.getColor("font"),
+                                                 justify=LEFT, font=self.__normalFont,
+                                                 variable=item["value"], state = DISABLED,
+                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 command = self.__checkBoxFunctions[num-3]
+                                            )
+
+            item["button"].pack_propagate(False)
+            item["button"].pack(fill=BOTH, side=TOP, anchor=CENTER)
+            self.__bankCheckBoxes.append(item)
+
         self.__setButtonsAndErros()
+        self.__error = True
 
         t = Thread(target=self.jukeAnimation)
         t.daemon = True
         t.start()
+
+    def __setCheckBoxes(self):
+        if self.__selecteds["addedList"] == "":
+           for num in range(0, 6):
+               self.__bankCheckBoxes[num]["button"].config(state = DISABLED)
+        else:
+            lockedBanks = self.__loader.virtualMemory.returnBankLocks()
+            for num in range(0, 6):
+                self.__bankCheckBoxes[num]["button"].config(state=NORMAL)
+
+            lockForItem = 0
+
+            bNeeded = {"simple": 1, "double": 2}
+            neededBanks = bNeeded[self.__musicData[self.__selecteds["addedList"]][0]]
+
+            for bank in lockedBanks:
+                itemNum = int(bank[-1])-3
+                name = lockedBanks[bank].name
+                self.__bankCheckBoxes[itemNum]["value"].set(1)
+                if name != self.__selecteds["addedList"]:
+                   self.__bankCheckBoxes[itemNum]["button"].config(state=DISABLED)
+                else:
+                   lockForItem += 1
+
+            if lockForItem < neededBanks:
+               self.setErrorLabel("jukeBoxError2", True, {
+                                   "item": self.__selecteds["addedList"], "number": str(neededBanks-lockForItem)
+                                    })
+            else:
+                for num in range(0, 6):
+                    if self.__bankCheckBoxes[num]["value"].get() == 0:
+                       self.__bankCheckBoxes[num]["button"].config(state=DISABLED)
+                self.__error = False
+
+            if self.__error == False:
+                self.setErrorLabel("", False, None)
+                self.saveData()
+
+    def __checkBoxPressed3(self):
+        self.__checkBoxPressed(3)
+
+    def __checkBoxPressed4(self):
+        self.__checkBoxPressed(4)
+
+    def __checkBoxPressed5(self):
+        self.__checkBoxPressed(5)
+
+    def __checkBoxPressed6(self):
+        self.__checkBoxPressed(6)
+
+    def __checkBoxPressed7(self):
+        self.__checkBoxPressed(7)
+
+    def __checkBoxPressed8(self):
+        self.__checkBoxPressed(8)
+
+    def __checkBoxPressed(self, bankNum):
+        #if event.widget.cget("state") == DISABLED:
+        #    return
+
+        num     = bankNum-3
+        value = self.__bankCheckBoxes[num]["value"].get()
+
+        if value == 0:
+            bank = "bank" + str(bankNum)
+            self.__loader.virtualMemory.locks[bank] = None
+        else:
+            bNeeded         = {"simple": 1, "double": 2}
+            name            = self.__selecteds["addedList"]
+
+            neededBanks     = bNeeded[self.__musicData[name][0]]
+            freeBanks = self.__loader.virtualMemory.getBanksAvailableForLocking()
+            typ = self.__musicData[name][1]
+            mode = self.__musicData[name][0]
+
+            if neededBanks == 1:
+               if typ == "waveform":
+                  self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                              typ, 0, "LAST")
+               else:
+                  locks = self.__loader.virtualMemory.returnBankLocks()
+                  alreadyNum = None
+                  for key in locks.keys():
+                      lock = locks[key]
+                      if lock.name == name and lock.type == typ:
+                         alreadyNum = int(lock.number)
+
+                      if alreadyNum == 0:
+                          self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                                      typ, 1, "LAST")
+                      else:
+                          self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                                      typ, 0, "")
+
+            elif neededBanks == 2:
+                #   With current settings, this means you want to set a music lock and
+                #   there are no current locks for data.
+
+                self.__loader.virtualMemory.registerNewLock(bankNum,
+                                                            self.__selecteds["addedList"],
+                                                            typ, 0, "")
+
+        #print(self.__loader.virtualMemory.returnBankLocks().keys())
+        self.__setCheckBoxes()
+
 
     def aListBoxChanged(self, event):
         name = str(event.widget).split(".")[-1]
@@ -277,37 +473,126 @@ class JukeBox:
         self.__selecteds[name] = lists[name][listBox.curselection()[0]]
         self.__setButtonsAndErros()
 
+    def setErrorLabel(self, text, error, listOfChangers):
+        try:
+            newText = self.__loader.dictionaries.getWordFromCurrentLanguage(text)
+        except:
+            newText = text
+
+        if listOfChangers != None:
+           for key in listOfChangers.keys():
+               newText = newText.replace("#"+key+"#", listOfChangers[key])
+
+        self.__errorText.set(newText)
+
+        if error == False:
+           self.__error = False
+           self.__errorLine.config(
+               bg=self.__loader.colorPalettes.getColor("window"),
+               fg=self.__loader.colorPalettes.getColor("font"),
+           )
+        else:
+            self.__error = True
+            self.__errorLine.config(
+                    bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                    fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                )
 
     def __setButtonsAndErros(self):
+        self.__error = False
+
         if len(self.__addedListBoxItems) > 0:
            self.__removeButton.config(state = NORMAL)
         else:
+           self.setErrorLabel("jukeBoxError1", True, None)
            self.__removeButton.config(state = DISABLED)
 
         try:
-            teszt = self.__addedListBox[self.__availableListBox.curselection()[0]]
-        except:
+            teszt = self.__addedListBoxItems[self.__addedListBox.curselection()[0]]
+        except Exception as e:
             self.__removeButton.config(state=DISABLED)
 
         bNeeded = {"simple": 1, "double": 2}
+
 
         freeBanks     = self.__loader.virtualMemory.getBanksAvailableForLocking()
         try:
             selectedItem  = self.__availableListBoxItems[self.__availableListBox.curselection()[0]]
 
             neededBanks   = bNeeded[self.__musicData[selectedItem][0]]
-            if neededBanks < len(freeBanks):
+            self.__banksNeededVal.set(str(neededBanks))
+
+            if neededBanks > len(freeBanks):
                 self.__addButton.config(state=DISABLED)
             else:
                 self.__addButton.config(state=NORMAL)
-        except:
+        except Exception as e:
+            #print(str(e))
             self.__addButton.config(state=DISABLED)
+            self.__banksNeededVal.set("")
+
+        self.__setCheckBoxes()
+
+        if self.__error == False:
+            self.setErrorLabel("", False, None)
+            self.saveData()
 
     def __addNew(self):
-        pass
+        itemSelected = self.__availableListBoxItems[self.__availableListBox.curselection()[0]]
+        self.__availableListBoxItems.remove(itemSelected)
+        self.__addedListBoxItems.append(itemSelected)
+        self.__addedListBoxItems.sort()
+
+        self.__selecteds["availableList"]   = ""
+        self.__selecteds["addedList"]       = itemSelected
+
+        self.__alignListBoxes()
 
     def __removeSelected(self):
-        pass
+        itemSelected = self.__addedListBoxItems[self.__addedListBox.curselection()[0]]
+        self.__addedListBoxItems.remove(itemSelected)
+        self.__availableListBoxItems.append(itemSelected)
+        self.__availableListBoxItems.sort()
+
+        self.__selecteds["availableList"]   = itemSelected
+        self.__selecteds["addedList"]       = ""
+
+        self.__alignListBoxes()
+
+    def __alignListBoxes(self):
+
+        self.__availableListBox.select_clear(0, END)
+        self.__addedListBox.select_clear(0, END)
+
+        self.__availableListBox.delete(0, END)
+        self.__addedListBox.delete(0, END)
+
+        for item in self.__availableListBoxItems:
+            self.__availableListBox.insert(END, item)
+
+        for item in self.__addedListBoxItems:
+            self.__addedListBox.insert(END, item)
+
+        if self.__selecteds["availableList"] != "":
+           selector = 0
+           for itemNum in range(0, len(self.__availableListBoxItems)):
+               if self.__availableListBoxItems[itemNum] == self.__selecteds["availableList"]:
+                   selector = itemNum
+                   break
+
+           self.__availableListBox.select_set(selector)
+
+        if self.__selecteds["addedList"] != "":
+            selector = 0
+            for itemNum in range(0, len(self.__addedListBoxItems)):
+                if self.__addedListBoxItems[itemNum] == self.__selecteds["addedList"]:
+                    selector = itemNum
+                    break
+
+            self.__addedListBox.select_set(selector)
+
+        self.__setButtonsAndErros()
+
 
     def jukeAnimation(self):
         from time import sleep
@@ -323,4 +608,6 @@ class JukeBox:
                 break
             sleep(0.1)
 
-
+    def saveData(self):
+        self.__data[2] = "|".join(self.__addedListBoxItems)
+        self.__changeData(self.__data)

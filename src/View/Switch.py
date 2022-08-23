@@ -90,15 +90,15 @@ class Switch:
             bank = "bank"+str(num)
             if self.__loader.virtualMemory.locks[bank] != None:
                 if self.__loader.virtualMemory.locks[bank].name == text:
-                    doIt = False
-                    if self.__loader.BFG9000.getSelected()[0]=="bank"+str(self.__bankNum):
-                        doIt = True
+                    #doIt = False
+                    #if self.__loader.BFG9000.getSelected()[0]=="bank"+str(self.__bankNum):
+                    #    doIt = True
                     self.__loader.virtualMemory.locks[bank] = None
 
                     self.__banks[num-3].createSwitch()
                     self.__banks[num-3].lockLabel.config(text = "")
-                    if doIt == True:
-                        self.__loader.BFG9000.first = True
+                    #if doIt == True:
+                    #    self.__loader.BFG9000.first = True
 
     def killFrame(self):
         self.__loader.virtualMemory.createTheBankConfigFromMemory()
