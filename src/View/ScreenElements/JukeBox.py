@@ -352,6 +352,18 @@ class JukeBox:
             item["button"].pack(fill=BOTH, side=TOP, anchor=CENTER)
             self.__bankCheckBoxes.append(item)
 
+        self.__autoButton = Button(self.__buttonsFrame, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("autoLock"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__normalFont,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         command=self.__autoLock
+                                         )
+
+        self.__autoButton.pack_propagate(False)
+        self.__autoButton.pack(fill=X, side=TOP, anchor=N)
+
         self.__setButtonsAndErros()
         self.__error = True
 
@@ -361,6 +373,7 @@ class JukeBox:
 
     def __setCheckBoxes(self):
         if self.__selecteds["addedList"] == "":
+           self.__autoButton.config(state = DISABLED)
            for num in range(0, 6):
                self.__bankCheckBoxes[num]["button"].config(state = DISABLED)
         else:
@@ -368,6 +381,7 @@ class JukeBox:
             for num in range(0, 6):
                 self.__bankCheckBoxes[num]["button"].config(state=NORMAL)
 
+            self.__autoButton.config(state=NORMAL)
             lockForItem = 0
 
             bNeeded = {"simple": 1, "double": 2}
@@ -390,6 +404,7 @@ class JukeBox:
                 for num in range(0, 6):
                     if self.__bankCheckBoxes[num]["value"].get() == 0:
                        self.__bankCheckBoxes[num]["button"].config(state=DISABLED)
+                self.__autoButton.config(state=DISABLED)
                 self.__error = False
 
             if self.__error == False:
@@ -432,37 +447,39 @@ class JukeBox:
             freeBanks = self.__loader.virtualMemory.getBanksAvailableForLocking()
             typ = self.__musicData[name][1]
             mode = self.__musicData[name][0]
+            self.tryToAddNewLock(neededBanks, bankNum, name, typ)
 
-            if neededBanks == 1:
-               if typ == "waveform":
-                  self.__loader.virtualMemory.registerNewLock(bankNum, name,
-                                                              typ, 0, "LAST")
-               else:
-                  locks = self.__loader.virtualMemory.returnBankLocks()
-                  alreadyNum = None
-                  for key in locks.keys():
-                      lock = locks[key]
-                      if lock.name == name and lock.type == typ:
-                         alreadyNum = int(lock.number)
-
-                      if alreadyNum == 0:
-                          self.__loader.virtualMemory.registerNewLock(bankNum, name,
-                                                                      typ, 1, "LAST")
-                      else:
-                          self.__loader.virtualMemory.registerNewLock(bankNum, name,
-                                                                      typ, 0, "")
-
-            elif neededBanks == 2:
-                #   With current settings, this means you want to set a music lock and
-                #   there are no current locks for data.
-
-                self.__loader.virtualMemory.registerNewLock(bankNum,
-                                                            self.__selecteds["addedList"],
-                                                            typ, 0, "")
 
         #print(self.__loader.virtualMemory.returnBankLocks().keys())
         self.__setCheckBoxes()
 
+    def tryToAddNewLock(self, neededBanks, bankNum, name, typ):
+        if neededBanks == 1:
+            if typ == "waveform":
+                self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                            typ, 0, "LAST")
+            else:
+                locks = self.__loader.virtualMemory.returnBankLocks()
+                alreadyNum = None
+                for key in locks.keys():
+                    lock = locks[key]
+                    if lock.name == name and lock.type == typ:
+                        alreadyNum = int(lock.number)
+
+                    if alreadyNum == 0:
+                        self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                                    typ, 1, "LAST")
+                    else:
+                        self.__loader.virtualMemory.registerNewLock(bankNum, name,
+                                                                    typ, 0, "")
+
+        elif neededBanks == 2:
+            #   With current settings, this means you want to set a music lock and
+            #   there are no current locks for data.
+
+            self.__loader.virtualMemory.registerNewLock(bankNum,
+                                                        self.__selecteds["addedList"],
+                                                        typ, 0, "")
 
     def aListBoxChanged(self, event):
         name = str(event.widget).split(".")[-1]
@@ -472,6 +489,7 @@ class JukeBox:
 
         self.__selecteds[name] = lists[name][listBox.curselection()[0]]
         self.__setButtonsAndErros()
+
 
     def setErrorLabel(self, text, error, listOfChangers):
         try:
@@ -514,7 +532,6 @@ class JukeBox:
 
         bNeeded = {"simple": 1, "double": 2}
 
-
         freeBanks     = self.__loader.virtualMemory.getBanksAvailableForLocking()
         try:
             selectedItem  = self.__availableListBoxItems[self.__availableListBox.curselection()[0]]
@@ -546,7 +563,61 @@ class JukeBox:
         self.__selecteds["availableList"]   = ""
         self.__selecteds["addedList"]       = itemSelected
 
+        #self.__autoLock(itemSelected)
         self.__alignListBoxes()
+
+    def __autoLock(self):
+        name = self.__selecteds["addedList"]
+        locks = self.__loader.virtualMemory.returnBankLocks()
+        alreadyLockedForItem = 0
+
+        for key in locks.keys():
+            if locks[key].name == name:
+               alreadyLockedForItem += 1
+
+        bNeeded = {"simple": 1, "double": 2}
+        locksNeeded = bNeeded[self.__musicData[name][0]]
+        freeBanks = self.__loader.virtualMemory.getBanksAvailableForLocking()
+
+        difference = locksNeeded - alreadyLockedForItem
+
+        for bankNum in freeBanks:
+            if difference == 0:
+                break
+
+            else:
+                hasMemoryAdded = False
+                for address in self.__loader.virtualMemory.memory.keys():
+                    for varName in self.__loader.virtualMemory.memory[address].variables:
+                        if self.__loader.virtualMemory.memory[address].variables[varName].validity == "bank" + str(bankNum):
+                           hasMemoryAdded = True
+                           break
+
+                if hasMemoryAdded == True: continue
+
+                hasCode = False
+
+                for section in self.__loader.virtualMemory.codes["bank"+ str(bankNum)]:
+                    valids = ["enter", "leave", "overscan", "subroutines", "vblank"]
+                    if section in valids:
+                        code = self.__loader.virtualMemory.codes["bank"+ str(bankNum)][section].code.split("\n")
+                        for line in code:
+                            line = line.replace("\n", "").replace("\r", "")
+                            if line[0] == "#" or line[0] == "*" or line == "":
+                               continue
+                            else:
+                               hasCode = True
+                               break
+                    if hasCode == True: break
+
+                if hasCode == True: continue
+
+                self.tryToAddNewLock(locksNeeded, bankNum, name, self.__musicData[name][1])
+                difference -= 1
+
+        self.__setCheckBoxes()
+
+
 
     def __removeSelected(self):
         itemSelected = self.__addedListBoxItems[self.__addedListBox.curselection()[0]]

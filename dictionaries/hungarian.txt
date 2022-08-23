@@ -324,3 +324,4 @@ jukeBoxError1=A JukeBox-nak legalább egy dalt/hangot tartalmaznia kell!
 banksNeeded=Bank Igény
 banksLocked=Foglalt Bankok
 jukeBoxError2=#item# számára további #number# bank foglalandó!!
+autoLock=Autofoglalás

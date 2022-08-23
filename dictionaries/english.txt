@@ -324,3 +324,4 @@ jukeBoxError1=Jukebox needs at least one song/wave to be added!
 banksNeeded=Banks Needed
 banksLocked=Locked Banks
 jukeBoxError2=#item# needs #number# more banks locked!
+autoLock=Auto Lock

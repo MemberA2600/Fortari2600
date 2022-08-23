@@ -447,7 +447,10 @@ class MainWindow:
             except:
                 pass
 
-            self.__menuLabel[0]  = [MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)]
+            try:
+                self.__menuLabel[0]  = [MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)]
+            except:
+                self.__menuLabel.append([MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)])
 
     def setMode(self, mode):
         self.__bigFrame.setMode(mode)
