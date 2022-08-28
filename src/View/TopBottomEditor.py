@@ -684,7 +684,7 @@ class TopBottomEditor:
         from ScreenTopFrame import ScreenTopFrame
 
         self.answer = None
-        self.__subMenu = ScreenTopFrame(self.__loader, self, self.__activeBank, self.__activePart)
+        self.__subMenu = ScreenTopFrame(self.__loader, self, self.__activeBank)
 
         name = self.answer
         if self.answer != None:
