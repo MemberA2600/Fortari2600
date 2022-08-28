@@ -6,7 +6,7 @@ from time import sleep
 
 class ScreenTopFrame:
 
-    def __init__(self, loader, caller):
+    def __init__(self, loader, caller, bank, screenPart):
 
         self.__loader = loader
         self.__mainWindow = self.__loader.mainWindow
@@ -31,6 +31,9 @@ class ScreenTopFrame:
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize * 0.65), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize * 1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
+
+        self.__bank         = bank
+        self.__screenPart   = screenPart
 
         self.__sizes = [self.__screenSize[0] // 3.75, self.__screenSize[1] // 3.15 - 55]
         self.__window = SubMenu(self.__loader, "screenItem", self.__sizes[0], self.__sizes[1], None, self.__addElements,
@@ -131,6 +134,9 @@ class ScreenTopFrame:
         for root, dirs, files in os.walk("src/View/ScreenElements"):
             for file in files:
                 if root == "src/View/ScreenElements" and ".py" in file:
+                   if file == "JukeBox.py":
+                      if self.getIfThereIsAlreadyAJukeBoxAdded() == True: continue
+
                    self.__listBoxItems.append(file.replace(".py", ""))
                    self.__itemListBox.insert(END, file.replace(".py", ""))
 
@@ -142,3 +148,12 @@ class ScreenTopFrame:
 
     def __cancel(self):
         self.__closeWindow()
+
+    def getIfThereIsAlreadyAJukeBoxAdded(self):
+        __codeData = self.__caller.returnCodeData()
+
+        for item in __codeData[self.__screenPart][int(self.__bank[-1])-2][2]:
+            item = item.split(" ")
+            if item[1] == "JukeBox": return True
+
+        return False

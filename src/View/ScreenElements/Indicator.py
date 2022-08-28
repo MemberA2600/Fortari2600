@@ -40,6 +40,7 @@ class Indicator:
 
         self.dead = [False]
         self.stopMe = True
+        self.__mode = self.__data[1]
 
         self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead, itemNames)
         self.__addElements()
@@ -55,7 +56,11 @@ class Indicator:
         self.__indicators = []
         import os
 
-        groot = os.getcwd() + "\src\View\ScreenElements\Indicators"
+        if   self.__mode == "Indicator":
+            groot = os.getcwd() + "\src\View\ScreenElements\Indicators"
+        elif self.__mode == "SpecialEffect":
+            groot = os.getcwd() + "\src\View\ScreenElements\SpecialEffects"
+
         #print(groot)
         for root, dirs, files in os.walk(groot):
             for file in files:
@@ -103,23 +108,28 @@ class Indicator:
 
         self.__indicatorListBox.select_clear(0, END)
 
-        from FullBar             import FullBar
-        from HalfBarWithText     import HalfBarWithText
-        from TwoIconsTwoLines    import TwoIconsTwoLines
-        from OneIconWithDigits   import OneIconWithDigits
-        from SevenDigits         import SevenDigits
-        from TwelveIconsOrDigits import TwelveIconsOrDigits
-        from DigitClock          import DigitClock
+        if self.__mode == "Indicator":
+            from FullBar             import FullBar
+            from HalfBarWithText     import HalfBarWithText
+            from TwoIconsTwoLines    import TwoIconsTwoLines
+            from OneIconWithDigits   import OneIconWithDigits
+            from SevenDigits         import SevenDigits
+            from TwelveIconsOrDigits import TwelveIconsOrDigits
+            from DigitClock          import DigitClock
 
-        self.screenSubs = {
-            "FullBar"             : [FullBar,             ["#", "255", "$40|$30|$10", "1", "0"]],
-            "HalfBarWithText"     : [HalfBarWithText,     ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
-            "TwoIconsTwoLines"    : [TwoIconsTwoLines,    ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0", "0"]],
-            "OneIconWithDigits"   : [OneIconWithDigits,   ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
-            "SevenDigits"         : [SevenDigits,         ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]],
-            "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1", "%00000000", "0"]],
-            "DigitClock"          : [DigitClock,          ["#", "#", "#", "$16", "default", "1", "32", "1"]]
-        }
+            self.screenSubs = {
+                "FullBar"             : [FullBar,             ["#", "255", "$40|$30|$10", "1", "0"]],
+                "HalfBarWithText"     : [HalfBarWithText,     ["#", "255", "$40", "1", "$06" ,"Health:", "0", "0"]],
+                "TwoIconsTwoLines"    : [TwoIconsTwoLines,    ["#", "$40", "%00000000", "255", "#", "$80", "%00000000", "255", "1", "#", "#", "0", "0", "0"]],
+                "OneIconWithDigits"   : [OneIconWithDigits,   ["#", "$16", "%00000000", "2", "#", "#", "default", "1"]],
+                "SevenDigits"         : [SevenDigits,         ["#", "#", "#", "#", "#", "#", "#", "7", "0", "1", "$16", "default"]],
+                "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1", "%00000000", "0"]],
+                "DigitClock"          : [DigitClock,          ["#", "#", "#", "$16", "default", "1", "32", "1"]]
+            }
+        elif self.__mode == "SpecialEffects":
+
+            self.screenSubs = {}
+
 
         if self.__data[2]  == "#":
            self.__data[2]  = self.__indicators[0]

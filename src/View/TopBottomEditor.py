@@ -684,7 +684,7 @@ class TopBottomEditor:
         from ScreenTopFrame import ScreenTopFrame
 
         self.answer = None
-        self.__subMenu = ScreenTopFrame(self.__loader, self)
+        self.__subMenu = ScreenTopFrame(self.__loader, self, self.__activeBank, self.__activePart)
 
         name = self.answer
         if self.answer != None:
@@ -708,8 +708,8 @@ class TopBottomEditor:
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
                 "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
                 "Menu"              : name + " " + "Menu # # # # #",
-                "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19"
-
+                "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19",
+                "SpecialEffect"     : name + " " + "SpecialEffect # # # # # # # # # # # # # # # # # # # #"
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -753,7 +753,7 @@ class TopBottomEditor:
            from DynamicText         import DynamicText
            from Menu                import Menu
            from JukeBox             import JukeBox
-
+           from SpecialEffect       import SpecialEffect
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -763,7 +763,8 @@ class TopBottomEditor:
                "BigSprite"          : BigSprite,
                "DynamicText"        : DynamicText,
                "Menu"               : Menu,
-               "JukeBox"            : JukeBox
+               "JukeBox"            : JukeBox,
+               "SpecialEffect"      : Indicator
            }
 
            self.__listOfNames = []
@@ -780,6 +781,8 @@ class TopBottomEditor:
                                             self.__activeBank.lower(), self.blankAnimation, self.__topLevelWindow, self.__listOfNames
                                             )
 
+    def returnCodeData(self):
+        return self.__codeData
 
     def __changeData(self, data):
         section = self.__codeData[self.__activePart][self.getBankNum()]

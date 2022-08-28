@@ -147,6 +147,7 @@ class Compiler:
 
         self.__inits    = []
         self.__bankEaters = {}
+        self.__jukeBoxes = {}
 
         testLine = self.__io.loadTestElementPlain("testLine")
 
@@ -269,7 +270,7 @@ class Compiler:
                 self.__userData[name+"_data" ] = those[1]
 
             elif typ == "JukeBox":
-                self.__bankData.append(self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters))
+                self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters, self.__jukeBoxes)
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -282,6 +283,9 @@ class Compiler:
                                                         rf'###Start-Bank{str(key)}.+###End-Bank{str(key)}',
                                                         self.__bankEaters[key])
             self.changePointerToZero(key)
+
+        for key in self.__jukeBoxes.keys():
+            self.__mainCode = self.__mainCode.replace("!!!JUKEBOX_BANK"+key[-1]+"!!!", self.__jukeBoxes[key])
 
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode + "\n".join(self.__inits))
@@ -298,7 +302,7 @@ class Compiler:
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
-    def generate_JukeBox(self, fullname, data, bank, bankEaters):
+    def generate_JukeBox(self, fullname, data, bank, bankEaters, jukeBoxes):
         locks = self.__loader.virtualMemory.returnBankLocks()
 
         topLevelText  = "\n" + fullname + "\n"
@@ -409,7 +413,7 @@ class Compiler:
             counter += 1
             jukeKernel = jukeKernel.replace("VAR0"+str(counter), var)
 
-        return jukeKernel
+        jukeBoxes[bank] = jukeKernel
 
     def generate_Menu(self, name, data, bank):
         fileName    = data[0]

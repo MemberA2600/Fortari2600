@@ -1529,7 +1529,7 @@ OverScanBank2
 *
 
 !!!OVERSCAN_BANK2!!!
-
+!!!JUKEBOX_BANK2!!!
 
 *VSYNC
 *----------------------------
@@ -1853,7 +1853,7 @@ OverScanBank3
 *
 
 !!!OVERSCAN_BANK3!!!
-
+!!!JUKEBOX_BANK3!!!
 
 *VSYNC
 *----------------------------
@@ -2177,7 +2177,7 @@ OverScanBank4
 *
 
 !!!OVERSCAN_BANK4!!!
-
+!!!JUKEBOX_BANK4!!!
 
 *VSYNC
 *----------------------------
@@ -2501,7 +2501,7 @@ OverScanBank5
 *
 
 !!!OVERSCAN_BANK5!!!
-
+!!!JUKEBOX_BANK5!!!
 
 *VSYNC
 *----------------------------
@@ -2824,7 +2824,7 @@ OverScanBank6
 *
 
 !!!OVERSCAN_BANK6!!!
-
+!!!JUKEBOX_BANK6!!!
 
 *VSYNC
 *----------------------------
@@ -3147,7 +3147,7 @@ OverScanBank7
 *
 
 !!!OVERSCAN_BANK7!!!
-
+!!!JUKEBOX_BANK7!!!
 
 *VSYNC
 *----------------------------
@@ -3471,7 +3471,7 @@ OverScanBank8
 *
 
 !!!OVERSCAN_BANK8!!!
-
+!!!JUKEBOX_BANK8!!!
 
 *VSYNC
 *----------------------------

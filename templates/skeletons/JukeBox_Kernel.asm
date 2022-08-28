@@ -24,8 +24,8 @@
 
 #NAME#_JukeBox_Kernel
 
-	ldx	item
-	txs
+*	ldx	item
+*	txs
 
 	LDA	JukeBox_Controller
 	AND	#%00111111
@@ -124,5 +124,5 @@
 
 !!!POINTERS!!!
 #NAME#_JukeBox_Kernel_END
-	tsx
-	stx	item
+*	tsx
+*	stx	item
