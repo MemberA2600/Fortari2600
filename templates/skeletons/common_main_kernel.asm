@@ -150,9 +150,12 @@ Music_Duration1 = $d6
 JukeBox_Controller = $d7 
 JukeBox_Music_Index = $d7 ; 0-2
 JukeBox_Wave_Index = $d7  ; 3-5
-JukeBox_Music_Loop = $d7  ; 6
-			  ; 7 = Free	
+JukeBox_Music_Duration0bit = $d7  ; 6
+JukeBox_Music_Duration1bit = $d7  ; 7
 ***
+Music_PointerBackUp0 = $d8	; 16 bits
+Music_PointerBackUp1 = $da	; 16 bits
+
 ************************
 
 	; Constants
@@ -4051,6 +4054,10 @@ ClearSCRAM
 	STA 	$F000,Y
 	INY
 	BPL 	ClearSCRAM
+
+DisableMusicWaveOnStartUp
+	LDA	#%00111111
+	STA	JukeBox_Controller
 
 	lda	#>(EnterScreenBank2-1)
    	pha

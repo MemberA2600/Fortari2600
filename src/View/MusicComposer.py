@@ -913,26 +913,26 @@ class MusicComposer:
                                                               self.__maxChannels,
                                                               int(self.__removeOutside.get()),
                                                               "NTSC", self.getRangeToCut(),
-                                                              self.__reAlign.get())])
+                                                              self.__reAlign.get()), self.__banks])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
                 self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
+                #self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
             except:
                 pass
         elif numOfBanks.musicMode == "double":
             try:
                 self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
+                #self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
             except:
                 pass
 
             try:
                 self.__banks[1] = int(self.__bank2.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
+                #self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
             except:
                 pass
 
@@ -1286,31 +1286,38 @@ class MusicComposer:
                                                               self.__maxChannels,
                                                               self.__removeOutside.get(),
                                                               "NTSC", self.getRangeToCut(),
-                                                              self.__reAlign.get())])
+                                                              self.__reAlign.get()), self.__banks])
 
         name = (self.__artistName.get() + "_-_" + self.__songTitle.get()).replace(" ", "_")
 
-        for bankNum in range(0, len(numOfBanks.banks)):
+        for bankNum in range(0, len(numOfBanks.songData)):
             F = open(fileName.replace(".a26", "_bank"+str(bankNum)+"_"+numOfBanks.musicMode+".asm"), "w")
-            F.write("* Lock=" + str(self.__banks[bankNum]) + "\n" + numOfBanks.banks[bankNum])
+            F.write("* Lock=" + str(self.__banks[bankNum]) + "\n" + str(numOfBanks.songData[bankNum]))
             F.close()
+
+        for engineNum in range(0, 2):
+            engine = numOfBanks.musicEngines[engineNum]
+            if engine != None:
+               F = open(fileName.replace(".a26", "_bank"+str(engineNum)+"_"+numOfBanks.musicMode+"_engine.asm"), 'w')
+               F.write(engine)
+               F.close()
 
         if numOfBanks.musicMode == "mono" or numOfBanks.musicMode == "stereo":
             try:
                 self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
+                #self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, "LAST")
             except:
                 pass
         elif numOfBanks.musicMode == "double":
             try:
                 self.__banks[0] = int(self.__bank1.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
+                #self.__virtualMemory.registerNewLock(self.__banks[0], name, "music", 0, None)
             except:
                 pass
 
             try:
                 self.__banks[1] = int(self.__bank2.getValue())
-                self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
+                #self.__virtualMemory.registerNewLock(self.__banks[1], name, "music", 1, "LAST")
             except:
                 pass
 
@@ -1904,8 +1911,8 @@ class MusicComposer:
                 b.pack(fill=BOTH)
                 self.__piaNoteTable[str(counter) + "," + str(yY+89)] = b
 
-                b.bind("<ButtonPress-1>", self.clickedButton)
-                b.bind("<MouseWheel>", self.mouseWheel)
+                # b.bind("<ButtonPress-1>", self.clickedButton)
+                # b.bind("<MouseWheel>", self.mouseWheel)
                 b.bind("<Enter>", self.enterCommon)
                 b.bind("<Leave>", self.leave)
 
@@ -2018,8 +2025,8 @@ class MusicComposer:
             self.__piaNoteTable[str(counter) + "," + str(theY)] = b
             counter+=1
 
-            b.bind("<ButtonPress-1>", self.clickedButton)
-            b.bind("<MouseWheel>", self.mouseWheel)
+            # b.bind("<ButtonPress-1>", self.clickedButton)
+            # b.bind("<MouseWheel>", self.mouseWheel)
             b.bind("<Enter>", self.enterCommon)
             b.bind("<Leave>", self.leave)
 
@@ -2237,6 +2244,10 @@ class MusicComposer:
 
 
     def enterCommon(self, event):
+        event.widget.bind("<ButtonPress-1>", self.clickedButton)
+        event.widget.bind("<MouseWheel>", self.mouseWheel)
+
+
         if self.__runningThreads > 0:
             return
 
@@ -2275,6 +2286,9 @@ class MusicComposer:
         """
 
     def leave(self, event):
+        event.widget.unbind("<ButtonPress-1>")
+        event.widget.unbind("<MouseWheel>")
+
         self.__choosenOne = None
 
     def focusIn(self, event):

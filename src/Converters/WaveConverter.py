@@ -13,7 +13,7 @@ class WaveConverter:
 
         for byte in bytes:
             byteStrings.append(hex(byte).replace("0x", ""))
-
+            if len(byteStrings[-1]) == 1: byteStrings[-1] = "0" + byteStrings[-1]
         self.result = None
 
         header = {}
@@ -355,7 +355,6 @@ class WaveConverter:
         length = len(data) // 2 * 2
 
         for num in range(0, length, 2):
-
 
             newByte = bin(int("0x"+data[num+1][0]+data[num][0], 16)).replace("0b", "")
             while len(newByte) < 8:

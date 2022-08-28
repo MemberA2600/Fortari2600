@@ -708,7 +708,7 @@ class TopBottomEditor:
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
                 "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
                 "Menu"              : name + " " + "Menu # # # # #",
-                "JukeBox"           : name + " " + "JukeBox # # # # # # #"
+                "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19"
 
             }
 
@@ -941,9 +941,70 @@ class TopBottomEditor:
         if self.answer == "NOPE":
             return
 
-        t = Thread(target=self.__testAllThread)
-        t.daemon = True
-        t.start()
+        if self.__checkIncomplete() == False:
+
+            t = Thread(target=self.__testAllThread)
+            t.daemon = True
+            t.start()
+
+    def __checkIncomplete(self):
+        locks = self.__loader.virtualMemory.returnBankLocks()
+
+        for screenPart in self.__codeData.keys():
+            for bankNum in range(0, len(self.__codeData[screenPart])):
+                for item in self.__codeData[screenPart][bankNum][2]:
+                    item = item.split(" ")
+                    for setter in item:
+                        if setter == "#":
+                           self.__loader.fileDialogs.displayError("incompleteItem",
+                                                                  "incompleteItemError",
+                                                                  {
+                                                                      "item": item[0],
+                                                                      "bank": "bank" + str(bankNum) + "|" + screenPart
+                                                                  }, None
+
+                                                                  )
+                           self.__topLevelWindow.deiconify()
+                           self.__topLevelWindow.focus()
+                           return True
+
+                    if (item[1]) == "JukeBox":
+                        files = item[2].split("|")
+                        for file in files:
+                            locksNeeded = 1
+                            testPath = self.__loader.mainWindow.projectPath + "/musics/" + file + "_bank1_double.asm"
+                            try:
+                                f = open(testPath, "r")
+                                t = f.read()
+                                f.close()
+                                locksNeeded = 2
+
+                            except:
+                                pass
+
+                            locksFound = 0
+                            for key in locks.keys():
+                                lock = locks[key]
+                                if lock.name == file:
+                                   locksFound += 1
+
+                                   if locksFound == locksNeeded: break
+
+                            if locksFound < locksNeeded:
+                                self.__loader.fileDialogs.displayError("missingLock",
+                                                                       "missingLockError",
+                                                                       {
+                                                                           "item": item[0],
+                                                                           "bank": "bank" + str(
+                                                                               bankNum) + "|" + screenPart
+                                                                       }, None
+
+                                                                       )
+                                self.__topLevelWindow.deiconify()
+                                self.__topLevelWindow.focus()
+                                return True
+
+        return False
 
     def __testAllThread(self):
         from Compiler import Compiler

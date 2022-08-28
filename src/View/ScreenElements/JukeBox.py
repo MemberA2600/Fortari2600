@@ -37,6 +37,8 @@ class JukeBox:
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
+        self.__tinyFont = self.__fontManager.getFont(int(self.__fontSize*0.50), False, False, False)
+
 
         self.__name         = StringVar()
         self.__name.set(self.__data[0])
@@ -47,7 +49,7 @@ class JukeBox:
         if len(list(self.__musicData.keys())) != 0:
 
             self.__loadPictures()
-
+            self.__loadVars()
             #itWasHash = False
 
             if self.__data[2] == "#":
@@ -66,6 +68,27 @@ class JukeBox:
                                                                          -2] + "/waveforms"
                            }])
 
+    def __loadVars(self):
+        self.__byteVars     = []
+        self.__nibbleVars   = []
+        self.__allVars      = []
+
+        for address in self.__loader.virtualMemory.memory.keys():
+            for variable in self.__loader.virtualMemory.memory[address].variables.keys():
+                var = self.__loader.virtualMemory.memory[address].variables[variable]
+                if ((var.validity == "global" or
+                     var.validity == self.__currentBank) and
+                        (var.system == False or
+                         var.iterable == True or
+                         var.linkable == True)
+                ):
+                    self.__allVars.append(address + "::" + variable)
+                    if   var.type     == "byte":
+                        self.__byteVars.append(address + "::" + variable)
+                        self.__nibbleVars.append(address + "::" + variable)
+                    elif var.type     == "nibble":
+                        self.__nibbleVars.append(address + "::" + variable)
+
     def __loadMusicData(self):
         self.__musicData = {}
         import os
@@ -80,7 +103,8 @@ class JukeBox:
 
                    for root, dir, files in os.walk(self.__loader.mainWindow.projectPath + "/musics/"):
                        for file in files:
-                           if (name in file) and ("overflow" not in file.split("_")[-1]) and (file.endswith(".asm")):
+                           if (name in file) and ("overflow" not in file.split("_")[-1]) and\
+                                    (file.endswith(".asm")) and ("engine.asm" not in file):
                                asmPairs.append(file)
 
                    if len(asmPairs) == 0: continue
@@ -322,9 +346,6 @@ class JukeBox:
         ]
 
         for num in range(3, 9):
-
-
-
             item = {}
             item["value"]  = IntVar()
             item["frame"]  = Frame(self.__bankBoxesFrame, width=self.__w // divider // 6,
@@ -356,7 +377,7 @@ class JukeBox:
                                          text=self.__dictionaries.getWordFromCurrentLanguage("autoLock"),
                                          bg=self.__colors.getColor("window"),
                                          fg=self.__colors.getColor("font"),
-                                         justify=LEFT, font=self.__normalFont,
+                                         justify=LEFT, font=self.__smallFont,
                                          activebackground=self.__colors.getColor("highLight"),
                                          command=self.__autoLock
                                          )
@@ -364,12 +385,90 @@ class JukeBox:
         self.__autoButton.pack_propagate(False)
         self.__autoButton.pack(fill=X, side=TOP, anchor=N)
 
+        self.__lll = Label(self.__buttonsFrame,
+                                   text=self.__dictionaries.getWordFromCurrentLanguage("soundDataVars")+":",
+                                   font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                   bg=self.__colors.getColor("window"), justify=CENTER
+                                   )
+
+        self.__lll.pack_propagate(False)
+        self.__lll.pack(fill=X, side=TOP, anchor=N)
+
+        self.__panelsFrame = Frame(self.__buttonsFrame, width=self.__w // divider,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h
+                              )
+
+        self.__panelsFrame.pack_propagate(False)
+        self.__panelsFrame.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__panelsFrames = []
+        for num in range(0,4):
+            self.__panelsFrames.append({})
+
+            f = Frame(self.__panelsFrame, width=self.__w // divider // 4,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height=self.__h
+                              )
+
+            f.pack_propagate(False)
+            f.pack(side=LEFT, anchor=E, fill=Y)
+            self.__panelsFrames[-1]["frame"] = f
+
+            scrollBar = Scrollbar(f)
+            listBox = Listbox(              f, width=100000, name = "varListBox_" + str(num),
+                                            height=1000,
+                                            yscrollcommand=scrollBar.set,
+                                            selectmode=BROWSE,
+                                            exportselection = False,
+                                            font = self.__tinyFont,
+                                            justify = LEFT
+                                        )
+
+            listBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+            listBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+            listBox.pack_propagate(False)
+
+            scrollBar.pack(side=RIGHT, anchor=W, fill=Y)
+            listBox.pack(side=LEFT, anchor=W, fill=BOTH)
+
+            scrollBar.config(command=listBox.yview)
+            data = self.__data[3 + num]
+
+            selector = 0
+            n = -1
+            for item in self.__byteVars:
+                n += 1
+                listBox.insert(END, item)
+                item = item.split("::")[1]
+                if item == data:
+                   selector = n
+
+            listBox.select_set(selector)
+            self.__panelsFrames[-1]["listbox"]   = listBox
+            self.__panelsFrames[-1]["selected"]  = data
+            self.__panelsFrames[-1]["scrollbar"] = scrollBar
+
+            self.__panelsFrames[-1]["listbox"].bind("<ButtonRelease-1>", self.__changeDataListBox)
+            self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Up>", self.__changeDataListBox)
+            self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Down>", self.__changeDataListBox)
+
+
         self.__setButtonsAndErros()
         self.__error = True
 
         t = Thread(target=self.jukeAnimation)
         t.daemon = True
         t.start()
+
+    def __changeDataListBox(self, event):
+        num = int(str(event.widget).split(".")[-1].split("_")[-1])
+
+        if self.__panelsFrames[num]["selected"] != self.__byteVars[self.__panelsFrames[num]["listbox"].curselection()[0]].split("::")[1]:
+           self.__panelsFrames[num]["selected"] = self.__byteVars[self.__panelsFrames[num]["listbox"].curselection()[0]].split("::")[1]
+           self.__data[3+num]                   = self.__panelsFrames[num]["selected"]
+           if self.__error == False: self.__changeData(self.__data)
+
 
     def __setCheckBoxes(self):
         if self.__selecteds["addedList"] == "":
@@ -454,6 +553,14 @@ class JukeBox:
         self.__setCheckBoxes()
 
     def tryToAddNewLock(self, neededBanks, bankNum, name, typ):
+
+        if typ == "music" and neededBanks == 2:
+           locks = self.__loader.virtualMemory.returnBankLocks()
+           for key in locks.keys():
+               lock = locks[key]
+               if lock.name == name and lock.type == typ:
+                  neededBanks -= 1
+
         if neededBanks == 1:
             if typ == "waveform":
                 self.__loader.virtualMemory.registerNewLock(bankNum, name,
@@ -627,6 +734,12 @@ class JukeBox:
 
         self.__selecteds["availableList"]   = itemSelected
         self.__selecteds["addedList"]       = ""
+
+        locks = self.__loader.virtualMemory.returnBankLocks()
+        for key in locks:
+            if locks[key].name == itemSelected:
+               self.__loader.virtualMemory.locks[key] = None
+               self.__bankCheckBoxes[int(key[-1])-3]["value"].set(0)
 
         self.__alignListBoxes()
 

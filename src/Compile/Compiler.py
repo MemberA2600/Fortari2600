@@ -45,9 +45,9 @@ class Compiler:
             elif self.__mode == "kernelTest":
                 self.kernelTest()
             elif self.__mode == 'music':
-                self.generateMusicROM()
+                self.generateMusicROM("full")
             elif self.__mode == 'getMusicBytes':
-                self.getMusicBytesSizeOnly()
+                self.generateMusicROM("save")
             elif self.__mode == 'test64px':
                 self.test64PX()
             elif self.__mode == 'testWav':
@@ -146,6 +146,7 @@ class Compiler:
         self.__userData = {}
 
         self.__inits    = []
+        self.__bankEaters = {}
 
         testLine = self.__io.loadTestElementPlain("testLine")
 
@@ -267,12 +268,21 @@ class Compiler:
                 self.__bankData.append(those[0])
                 self.__userData[name+"_data" ] = those[1]
 
+            elif typ == "JukeBox":
+                self.__bankData.append(self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters))
+
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
 
         self.__enterCode =  self.__io.loadTestElementPlain("enterTestCommon") + self.__initCode
 
         self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        for key in self.__bankEaters:
+            self.__mainCode = self.findAndDotALLReplace(self.__mainCode,
+                                                        rf'###Start-Bank{str(key)}.+###End-Bank{str(key)}',
+                                                        self.__bankEaters[key])
+            self.changePointerToZero(key)
+
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode + "\n".join(self.__inits))
         self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", "\n".join(self.__bankData))
@@ -287,6 +297,119 @@ class Compiler:
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_JukeBox(self, fullname, data, bank, bankEaters):
+        locks = self.__loader.virtualMemory.returnBankLocks()
+
+        topLevelText  = "\n" + fullname + "\n"
+        pointets_Text = fullname + "_PointerTable\n"
+        pointer_Len   = 0
+
+        variables = data[1:5]
+
+        items = data[0].split("|")
+        for item in items:
+            bankNum = None
+            typ     = None
+            for key in locks:
+                if locks[key].name == item and locks[key].number == 0:
+                   bankNum = key
+                   typ     = locks[key].type
+                   break
+
+            thatName = bankNum + "_" + item
+            if typ == "waveform":
+               if bankNum[-1] not in bankEaters.keys():
+                   f = open(self.__loader.mainWindow.projectPath + "/waveforms/" + item + ".asm")
+                   text = f.read()
+                   f.close()
+
+                   text = text.replace("#>(" + item + "_Return-1)", "temp02").replace("#<(" + item + "_Return-1)", "temp01")
+                   text = text.replace(item, thatName)
+
+                   bankEaters[bankNum[-1]] = text
+
+                   pointets_Text += "\tBYTE\t#>(" + thatName + "_Initialize-1)\n" + \
+                                    "\tBYTE\t#<(" + thatName + "_Initialize-1)\n" + \
+                                    "\tBYTE\t#"  + str(bankNum[-1]) + "\n\tBYTE\t#255\n"
+                   pointer_Len  += 4
+
+            else:
+               if bankNum[-1] not in bankEaters.keys():
+                   modes = ["mono", "stereo", "double"]
+                   mode = None
+                   secondBank = None
+
+                   for m in modes:
+                       path = self.__loader.mainWindow.projectPath + "/musics/" + item + "_" + "bank0_" + m + ".asm"
+                       try:
+                           t = open(path, "r")
+                           r = t.read()
+                           t.close()
+                           mode = m
+                       except:
+                           pass
+
+                   if mode == "double":
+                       for key in locks:
+                           if locks[key].name == item and locks[key].number == 1:
+                               secondBank = key
+                               break
+
+                   path = self.__loader.mainWindow.projectPath + "/musics/" + item + "_" + "bank0_"+mode+"_engine.asm"
+
+                   f = open(path)
+                   engine = f.read()
+                   f.close()
+
+                   path = self.__loader.mainWindow.projectPath + "/musics/" + item + "_" + "bank0_"+mode+".asm"
+
+                   f = open(path)
+                   data = f.read()
+                   f.close()
+
+                   if secondBank != None:
+                      this = re.findall(r'\tldx\t#\d', engine)[0]
+                      engine = engine.replace(this, "\tldx\t#" + secondBank[-1])
+
+                   bankEaters[bankNum[-1]] = ((engine + "\n" + data)
+                        .replace("CoolSong_Pointer" , "Music_Pointer")
+                        .replace("CoolSong_Duration", "Music_Duration")
+                        .replace("CoolSong"         , thatName))
+
+                   pointets_Text += "\tBYTE\t#>(" + thatName + "_Driver0-1)\n" + \
+                                    "\tBYTE\t#<(" + thatName + "_Driver0-1)\n" + \
+                                    "\tBYTE\t#"  + str(bankNum[-1]) + "\n\tBYTE\t#255\n"
+                   pointer_Len  += 4
+
+                   if secondBank != None:
+                       path = self.__loader.mainWindow.projectPath + "/musics/" + item + "_" + "bank1_" + mode + "_engine.asm"
+
+                       f = open(path)
+                       engine = f.read()
+                       f.close()
+
+                       path = self.__loader.mainWindow.projectPath + "/musics/" + item + "_" + "bank1_" + mode + ".asm"
+
+                       f = open(path)
+                       data = f.read()
+                       f.close()
+
+                       bankEaters[secondBank[-1]] = ((engine + "\n" + data)
+                        .replace("CoolSong_Pointer" , "Music_Pointer")
+                        .replace("CoolSong_Duration", "Music_Duration")
+                        .replace("CoolSong"         , thatName))
+
+        jukeKernel = self.__loader.io.loadSubModule("JukeBox_Kernel").replace("!!!POINTERS!!!",
+                                      "\t_align\t" + str(pointer_Len) + "\n" + pointets_Text).replace("BANK_TO_JUMP", str(int(bank[-1])*4))
+        jukeKernel = jukeKernel.replace("#NAME#", fullname).replace("#BANK#", bank)
+
+        counter = 0
+        for var in variables:
+            counter += 1
+            jukeKernel = jukeKernel.replace("VAR0"+str(counter), var)
+
+        return jukeKernel
 
     def generate_Menu(self, name, data, bank):
         fileName    = data[0]
@@ -1971,55 +2094,63 @@ class Compiler:
 
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
+    """
     def getMusicBytesSizeOnly(self):
         self.banks, self.bytes = self.generateSongBytes(self.__data[0], "NTSC")
         self.musicMode = self.__musicMode
 
-    def generateMusicROM(self):
+    """
+    def generateMusicROM(self, mode):
         import re
 
         self.__picturePath = self.__data[0]
-        self.__pathToSave = self.__data[1]
 
         # valid: mono, stereo, double
         self.__musicMode = "stereo"
+        CoolSong = "CoolSong"
 
-        self.__openEmulator = self.__data[2]
+        if mode == "full":
+            self.__pathToSave = self.__data[1]
+            self.__openEmulator = self.__data[2]
 
-        self.__textBytes, self.__charNums = self.generateTextDataFromString(self.__data[3] + " - "+self.__data[4])
-        self.__songData, bytes = self.generateSongBytes(self.__data[5], "NTSC")
+            self.__textBytes, self.__charNums = self.generateTextDataFromString(self.__data[3] + " - "+self.__data[4])
+            self.__songData, bytes = self.generateSongBytes(self.__data[5], "NTSC")
 
-        self.__banks = self.__data[6]
-        self.__variables = self.__data[7]
-        self.__colors = self.__data[8]
-        self.__pictureData = self.__data[9]
+            self.__banks = self.__data[6]
+            self.__variables = self.__data[7]
+            self.__colors = self.__data[8]
+            self.__pictureData = self.__data[9]
 
-        CoolSong = (self.__data[3] + " - "+self.__data[4]).replace(" ", "_")
-        CoolSong = "".join(re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', CoolSong))
+            CoolSong = (self.__data[3] + " - "+self.__data[4]).replace(" ", "_")
+            CoolSong = "".join(re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', CoolSong))
 
         #self.__init += "\n" + self.__loader.io.loadWholeText("templates/testCodes/musicEnterPlus.asm")
 
-        self.__init = ("\n" + self.__loader.io.loadWholeText("templates/testCodes/musicTestEnter.asm")
-                        .replace("FULLHEIGHT", str(self.__pictureData[0]))
-                        .replace("DSPHEIGHT", str(self.__pictureData[1]))
-                        .replace("DSPINDEX", str(self.__pictureData[2]))
-                        .replace("TEST_TEXT_COLOR", str(self.__colors[0]))
-                        .replace("TEST_BACK_COLOR", str(self.__colors[1]))
-                        .replace("FRAME_COLOR", str(self.__colors[2]))
-                        .replace("TEST_TEXT_END", str(len(self.__charNums)-12)))
+            self.__init = ("\n" + self.__loader.io.loadWholeText("templates/testCodes/musicTestEnter.asm")
+                            .replace("FULLHEIGHT", str(self.__pictureData[0]))
+                            .replace("DSPHEIGHT", str(self.__pictureData[1]))
+                            .replace("DSPINDEX", str(self.__pictureData[2]))
+                            .replace("TEST_TEXT_COLOR", str(self.__colors[0]))
+                            .replace("TEST_BACK_COLOR", str(self.__colors[1]))
+                            .replace("FRAME_COLOR", str(self.__colors[2]))
+                            .replace("TEST_TEXT_END", str(len(self.__charNums)-12)))
 
 
-        for num in range(0,12):
+            for num in range(0,12):
 
-            strNum = str(num+1)
-            if len(strNum) == 1:
-                strNum = "0"+strNum
+                strNum = str(num+1)
+                if len(strNum) == 1:
+                    strNum = "0"+strNum
 
-            try:
-                self.__init = self.__init.replace("INITLETTER"+strNum, str(self.__charNums[num]))
-            except:
-                self.__init = self.__init.replace("INITLETTER"+strNum, "0")
+                try:
+                    self.__init = self.__init.replace("INITLETTER"+strNum, str(self.__charNums[num]))
+                except:
+                    self.__init = self.__init.replace("INITLETTER"+strNum, "0")
 
+        else:
+            self.__songData, bytes  = self.generateSongBytes(self.__data[0], "NTSC")
+            self.__variables        = [None, None, None, None]
+            self.__banks = self.__data[1]
 
         self.__music0 = self.createMusicEngine(0, CoolSong)
         if self.__musicMode != "mono":
@@ -2064,131 +2195,140 @@ class Compiler:
             self.__music1 = self.__music1.replace("!!!JumpOrReturn!!!",
                                   self.__loader.io.loadWholeText("templates/skeletons/musicJumpBack.asm"))
 
-        if self.__musicMode == "mono":
-            self.__init += "\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4"
-            self.__init += "\n" + "CoolSong_PointerBackUp0 = $e5"
-            self.__init += "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitMono.asm")
+        if mode == "full":
+            if self.__musicMode == "mono":
+                self.__init += "\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4"
+                self.__init += "\n" + "CoolSong_PointerBackUp0 = $e5"
+                self.__init += "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitMono.asm")
 
-        else:
-            self.__init += "\n\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4\nCoolSong_Pointer1 = $e5\nCoolSong_Duration1 = $e7"
-            self.__init += "\n" + "CoolSong_PointerBackUp0 = $e8" + "\n" + "CoolSong_PointerBackUp1 = $ea" + "\n"
-
-            self.__init += "\n\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitStereo.asm")
-
-        self.__init = self.__init.replace("CoolSong", CoolSong)
-
-
-
-
-        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
-        self.__kernelText = self.__kernelText.replace("!!!ENTER_BANK2!!!", self.__init)
-
-        self.__kernelText = self.__kernelText.replace("!!!OVERSCAN_BANK2!!!",
-                                  (self.__loader.io.loadWholeText("templates/testCodes/musicTestOverScan.asm")
-                                   + "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicJumpStart.asm"))
-                                  .replace("BANKBACK", "2")
-                                  .replace("BANKNEXT", str(self.__banks[0]))
-                                  )
-
-        if self.__musicMode == "mono":
-            #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+self.__songData[0], self.__kernelText, re.DOTALL)
-            self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
-                                                          self.__music0 + "\n" + self.__songData[0]
-                                                          )
-
-        elif self.__musicMode == "stereo":
-            #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+
-            #                           self.__songData[0] + "\n" + self.__songData[1], self.__kernelText, re.DOTALL)
-
-            self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
-                                                          self.__music0 + "\n"+self.__songData[0] + "\n" + self.__songData[1]
-                                                          )
-        elif self.__musicMode == "double":
-            #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+self.__songData[0], self.__kernelText, re.DOTALL)
-            #self.__kernelText = re.sub(r'###Start-Bank4.+###End-Bank4', self.__music1 + "\n\talign\t256\n"+self.__songData[1], self.__kernelText, re.DOTALL)
-
-            self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
-                                                          self.__music0 + "\n" + self.__songData[0]
-                                                          )
-
-            self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank4.+###End-Bank4',
-                                                          self.__music1 + "\n" + self.__songData[1]
-                                                          )
-
-        self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont2.asm").replace("BankXX", "Bank2")
-
-        if self.__picturePath == None:
-            picName = "fortari"
-            self.__bank2Data += self.__loader.io.loadWholeText("templates/testCodes/fortariLogo.asm").replace("pic64px", picName)
-        else:
-            picName = ".".join(self.__picturePath.split("/")[-1].split(".")[:-1])
-            self.__bank2Data += self.__loader.io.loadWholeText(self.__picturePath).replace("pic64px", picName)
-
-        self.__bank2Data+="\n"+self.__textBytes
-
-        musicVisuals = self.__loader.io.loadWholeText("templates/skeletons/musicVisualizer.asm").replace("Music_Visuals", CoolSong+"_Visuals")
-        if self.__variables[0] == None:
-            musicVisuals = musicVisuals.replace("temp&1", "temp16")
-        else:
-            musicVisuals = musicVisuals.replace("temp&1", self.__variables[0])
-
-        if self.__variables[1] == None:
-            musicVisuals = musicVisuals.replace("temp&2", "temp17")
-        else:
-            musicVisuals = musicVisuals.replace("temp&2", self.__variables[1])
-
-        if self.__variables[2] == None:
-            musicVisuals = musicVisuals.replace("temp&3", "temp18")
-        else:
-            musicVisuals = musicVisuals.replace("temp&3", self.__variables[2])
-
-        if self.__variables[3] == None:
-            musicVisuals = musicVisuals.replace("temp&4", "temp19")
-        else:
-            musicVisuals = musicVisuals.replace("temp&4", self.__variables[3])
-
-        musicVisuals = (musicVisuals.replace("#COLOR3#", self.__colors[3][1])
-                                    .replace("#COLOR4#", self.__colors[4][1])
-                                    .replace("#COLOR5#", self.__colors[5][1]))
-
-        textDisplay =   ("\tSTA\tWSYNC\n"*3) +\
-                        self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay2.asm").replace("#NAME#", CoolSong).\
-                        replace("temp18","TextColor").replace("temp19","TextBackColor")
-
-        for num in range(1, 13):
-            num = str(num)
-            if len(num) == 1: num = "0" + num
-            textDisplay = textDisplay.replace("#VAR"+num+"#", "Letter"+num )
-
-        self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
-                            textDisplay+ "\n" + musicVisuals + "\n")
-
-        self.__screenTop = self.__screenTop.replace("pic64px", picName)
-
-        self.__kernelText = (self.__kernelText.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection(self.__bank2Data))
-                             .replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)
-                             )
-
-        self.__kernelText = self.__kernelText.replace("!!!TV!!!", "NTSC").replace("BankXX", "Bank2")
-
-        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText).replace("CoolSong", CoolSong)
-
-        if self.__musicMode == "double":
-            self.changePointerToZero(self.__banks[1])
-        self.changePointerToZero(self.__banks[0])
-
-        if self.__musicMode != "overflow":
-            self.doSave(self.__pathToSave)
-            if self.__pathToSave!="temp/":
-                delete = True
             else:
-                delete = False
+                self.__init += "\n\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4\nCoolSong_Pointer1 = $e5\nCoolSong_Duration1 = $e7"
+                self.__init += "\n" + "CoolSong_PointerBackUp0 = $e8" + "\n" + "CoolSong_PointerBackUp1 = $ea" + "\n"
 
-            from Assembler import Assembler
+                self.__init += "\n\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitStereo.asm")
 
-            assembler = Assembler(self.__loader, self.__pathToSave, True, "NTSC", delete)
+            self.__init = self.__init.replace("CoolSong", CoolSong)
+
+
+
+
+            self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+            self.__kernelText = self.__kernelText.replace("!!!ENTER_BANK2!!!", self.__init)
+
+            self.__kernelText = self.__kernelText.replace("!!!OVERSCAN_BANK2!!!",
+                                      (self.__loader.io.loadWholeText("templates/testCodes/musicTestOverScan.asm")
+                                       + "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicJumpStart.asm"))
+                                      .replace("BANKBACK", "2")
+                                      .replace("BANKNEXT", str(self.__banks[0]))
+                                      )
+
+            if self.__musicMode == "mono":
+                #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+self.__songData[0], self.__kernelText, re.DOTALL)
+                self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
+                                                              self.__music0 + "\n" + self.__songData[0]
+                                                              )
+
+            elif self.__musicMode == "stereo":
+                #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+
+                #                           self.__songData[0] + "\n" + self.__songData[1], self.__kernelText, re.DOTALL)
+
+                self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
+                                                              self.__music0 + "\n"+self.__songData[0] + "\n" + self.__songData[1]
+                                                              )
+            elif self.__musicMode == "double":
+                #self.__kernelText = re.sub(r'###Start-Bank3.+###End-Bank3', self.__music0 + "\n\talign\t256\n"+self.__songData[0], self.__kernelText, re.DOTALL)
+                #self.__kernelText = re.sub(r'###Start-Bank4.+###End-Bank4', self.__music1 + "\n\talign\t256\n"+self.__songData[1], self.__kernelText, re.DOTALL)
+
+                self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank3.+###End-Bank3',
+                                                              self.__music0 + "\n" + self.__songData[0]
+                                                              )
+
+                self.__kernelText = self.findAndDotALLReplace(self.__kernelText, r'###Start-Bank4.+###End-Bank4',
+                                                              self.__music1 + "\n" + self.__songData[1]
+                                                              )
+
+            self.__bank2Data = self.__loader.io.loadWholeText("templates/skeletons/48pxTextFont2.asm").replace("BankXX", "Bank2")
+
+            if self.__picturePath == None:
+                picName = "fortari"
+                self.__bank2Data += self.__loader.io.loadWholeText("templates/testCodes/fortariLogo.asm").replace("pic64px", picName)
+            else:
+                picName = ".".join(self.__picturePath.split("/")[-1].split(".")[:-1])
+                self.__bank2Data += self.__loader.io.loadWholeText(self.__picturePath).replace("pic64px", picName)
+
+            self.__bank2Data+="\n"+self.__textBytes
+
+            musicVisuals = self.__loader.io.loadWholeText("templates/skeletons/musicVisualizer.asm").replace("Music_Visuals", CoolSong+"_Visuals")
+            if self.__variables[0] == None:
+                musicVisuals = musicVisuals.replace("temp&1", "temp16")
+            else:
+                musicVisuals = musicVisuals.replace("temp&1", self.__variables[0])
+
+            if self.__variables[1] == None:
+                musicVisuals = musicVisuals.replace("temp&2", "temp17")
+            else:
+                musicVisuals = musicVisuals.replace("temp&2", self.__variables[1])
+
+            if self.__variables[2] == None:
+                musicVisuals = musicVisuals.replace("temp&3", "temp18")
+            else:
+                musicVisuals = musicVisuals.replace("temp&3", self.__variables[2])
+
+            if self.__variables[3] == None:
+                musicVisuals = musicVisuals.replace("temp&4", "temp19")
+            else:
+                musicVisuals = musicVisuals.replace("temp&4", self.__variables[3])
+
+            musicVisuals = (musicVisuals.replace("#COLOR3#", self.__colors[3][1])
+                                        .replace("#COLOR4#", self.__colors[4][1])
+                                        .replace("#COLOR5#", self.__colors[5][1]))
+
+            textDisplay =   ("\tSTA\tWSYNC\n"*3) +\
+                            self.__loader.io.loadWholeText("templates/skeletons/48pxTextDisplay2.asm").replace("#NAME#", CoolSong).\
+                            replace("temp18","TextColor").replace("temp19","TextBackColor")
+
+            for num in range(1, 13):
+                num = str(num)
+                if len(num) == 1: num = "0" + num
+                textDisplay = textDisplay.replace("#VAR"+num+"#", "Letter"+num )
+
+            self.__screenTop = (self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")+"\n" +
+                                textDisplay+ "\n" + musicVisuals + "\n")
+
+            self.__screenTop = self.__screenTop.replace("pic64px", picName)
+
+            self.__kernelText = (self.__kernelText.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection(self.__bank2Data))
+                                 .replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)
+                                 )
+
+            self.__kernelText = self.__kernelText.replace("!!!TV!!!", "NTSC").replace("BankXX", "Bank2")
+
+            self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText).replace("CoolSong", CoolSong)
+
+            if self.__musicMode == "double":
+                self.changePointerToZero(self.__banks[1])
+            self.changePointerToZero(self.__banks[0])
+
+        if mode == "full":
+            if self.__musicMode != "overflow":
+                self.doSave(self.__pathToSave)
+                if self.__pathToSave!="temp/":
+                    delete = True
+                else:
+                    delete = False
+
+                from Assembler import Assembler
+
+                assembler = Assembler(self.__loader, self.__pathToSave, True, "NTSC", delete)
+            else:
+                self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
+
         else:
-            self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
+            self.banks          = self.__banks
+            self.bytes          = bytes
+            self.musicMode      = self.__musicMode
+            self.musicEngines   = [self.__music0, self.__music1]
+            self.songData       = self.__songData
 
         #file = open("ffff.txt", "w")
         #file.write(self.__kernelText)
@@ -2206,7 +2346,7 @@ class Compiler:
 
 
     def findAndDotALLReplace(self, string, pattern, repl):
-
+        #print(pattern)
         stuff = re.findall(pattern, string, re.DOTALL)[0]
         return(string.replace(stuff, repl))
 

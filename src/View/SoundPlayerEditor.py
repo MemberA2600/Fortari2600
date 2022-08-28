@@ -359,7 +359,7 @@ class SoundPlayerEditor:
             file.write(toSave)
             file.close()
 
-            self.__loader.virtualMemory.registerNewLock(self.__lockNum.get(), self.__title.get(), "waveform", 0, "LAST")
+            #self.__loader.virtualMemory.registerNewLock(self.__lockNum.get(), self.__title.get(), "waveform", 0, "LAST")
             self.__soundPlayer.playSound("Success")
 
     def __testThread(self):

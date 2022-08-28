@@ -25,7 +25,7 @@ PlaySoundXX_Initialize
 	; temp09	: Mode Flag	
 
 
-PlaySoundXX_Constant      = 8
+PlaySoundXX_Constant      = 20
 PlaySoundXX_NTSC_Vblank   = 37
 PlaySoundXX_NTSC_Overscan = 30
 PlaySoundXX_PAL_Vblank    = 67

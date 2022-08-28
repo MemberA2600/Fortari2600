@@ -86,3 +86,7 @@ MusicPointer1_HI=byte,non-iter,non-link
 MusicDuration0=byte,non-iter,linkable
 MusicDuration1=byte,non-iter,linkable
 JukeBox_Controller=byte,non-iter,non-link
+MusicPointerBackUp0_LO=byte,non-iter,non-link
+MusicPointerBackUp0_HI=byte,non-iter,non-link
+MusicPointerBackUp1_LO=byte,non-iter,non-link
+MusicPointerBackUp1_HI=byte,non-iter,non-link

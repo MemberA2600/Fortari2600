@@ -38,6 +38,8 @@ class MainWindow:
         self.__colors = self.__loader.colorPalettes
 
         self.__mainFocus = None
+        self.__menuLabel = []
+        self.__created   = False
 
         self.__subMenuOpened = False
         self.__setProjectPath(None)
@@ -328,20 +330,23 @@ class MainWindow:
                                           self.__openMenuMaker, "projectPath",
                                             False, None, self.__places, __vals[2])
 
+        """
         self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 18.5,
                                           self.__openLockManager, "projectPath",
                                             False, None, self.__places, __vals[3])
+        """
 
-        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 19.5,
+        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 18.5,
                                           self.openMemoryManager, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 20.5,
+        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 19.5,
                                           self.__openScreenTopBottom, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__menuLabel    = [None]
-        self.__menuLabel[0] = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
+        self.__menuLabel    = []
+        self.__menuLabel.append(MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager))
+        self.__created      = True
 
     """
     def __createSelectorFrame(self):
@@ -429,6 +434,8 @@ class MainWindow:
 
 
     def __createLabel(self, event):
+        if self.__created == False: return
+
         try:
             name = str(event.widget).split(".")[-1]
             button = self.__loader.menuButtons[name].getButton()
