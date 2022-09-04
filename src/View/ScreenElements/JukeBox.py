@@ -704,17 +704,17 @@ class JukeBox:
 
                 hasCode = False
 
-                for section in self.__loader.virtualMemory.codes["bank"+ str(bankNum)]:
+                for section in self.__loader.virtualMemory.codes["bank" + str(bankNum)]:
                     valids = ["enter", "leave", "overscan", "subroutines", "vblank"]
                     if section in valids:
-                        code = self.__loader.virtualMemory.codes["bank"+ str(bankNum)][section].code.split("\n")
+                        code = self.__loader.virtualMemory.codes["bank" + str(bankNum)][section].code.split("\n")
                         for line in code:
                             line = line.replace("\n", "").replace("\r", "")
                             if line[0] == "#" or line[0] == "*" or line == "":
-                               continue
+                                continue
                             else:
-                               hasCode = True
-                               break
+                                hasCode = True
+                                break
                     if hasCode == True: break
 
                 if hasCode == True: continue
@@ -722,8 +722,7 @@ class JukeBox:
                 self.tryToAddNewLock(locksNeeded, bankNum, name, self.__musicData[name][1])
                 difference -= 1
 
-        self.__setCheckBoxes()
-
+            self.__setCheckBoxes()
 
 
     def __removeSelected(self):
@@ -732,14 +731,14 @@ class JukeBox:
         self.__availableListBoxItems.append(itemSelected)
         self.__availableListBoxItems.sort()
 
-        self.__selecteds["availableList"]   = itemSelected
-        self.__selecteds["addedList"]       = ""
+        self.__selecteds["availableList"] = itemSelected
+        self.__selecteds["addedList"] = ""
 
         locks = self.__loader.virtualMemory.returnBankLocks()
         for key in locks:
             if locks[key].name == itemSelected:
-               self.__loader.virtualMemory.locks[key] = None
-               self.__bankCheckBoxes[int(key[-1])-3]["value"].set(0)
+                self.__loader.virtualMemory.locks[key] = None
+                self.__bankCheckBoxes[int(key[-1]) - 3]["value"].set(0)
 
         self.__alignListBoxes()
 

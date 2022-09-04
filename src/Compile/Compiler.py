@@ -150,18 +150,22 @@ class Compiler:
         self.__jukeBoxes = {}
 
         testLine = self.__io.loadTestElementPlain("testLine")
+        self.__typ = None
 
         for item in self.__screenElements:
             item = item.split(" ")
             name = item[0]
             typ  = item[1]
             data = item[2:]
+            prevOne = self.__typ
+            self.__typ = typ
 
             fullName = self.__bank + "_" + name + "_" + typ
             if   typ == "ChangeFrameColor":
                self.__bankData.append(
                    self.generate_ChangeFrameColor(fullName, data)
                )
+
             elif typ == "EmptyLines":
                 self.__bankData.append(
                     self.generate_EmptyLines(fullName, data)

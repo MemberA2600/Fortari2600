@@ -330,3 +330,6 @@ incompleteItem=Befejezetlen Elem Található
 incompleteItemError=#item# befejezetlen a #bank#-on és a fordítás összeomlana!
 missingLock=Hiányzó Foglalás
 missingLockError=#item# a #bank#-n további lefoglalt bankokat igényel! Különben a fordítás összeomlik!
+spriteColor=Sprite Színe
+gradientSprite=Sprite Áttûnés
+gradientBack=Háttér Áttûnés

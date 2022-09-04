@@ -39,7 +39,7 @@ class ScreenSetterFrameBase:
         self.__originalName = self.__name.get()
 
         self.__titleLabel = Label(  self.__baseFrame,
-                                    text = self.__dictionaries.getWordFromCurrentLanguage("changeFrameColor"),
+                                    text = self.__data[1],
                                     bg = self.__colors.getColor("font"),
                                     fg = self.__colors.getColor("window"),
                                     justify = LEFT, font = self.__normalFont

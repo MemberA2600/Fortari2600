@@ -330,3 +330,6 @@ incompleteItem=Incomplete Item Found
 incompleteItemError=#item# seems to be unfinished on #bank# and compiling would fail!
 missingLock=Missing Lock
 missingLockError=#item# on #bank# is missing locks! Compiling would fail!
+spriteColor=Sprite Color
+gradientSprite=Sprite Gradient
+gradientBack=Background Gradient

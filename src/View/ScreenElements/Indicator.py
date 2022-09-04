@@ -126,9 +126,16 @@ class Indicator:
                 "TwelveIconsOrDigits" : [TwelveIconsOrDigits, ["#", "#", "$06", "#", "1", "1", "%00000000", "0"]],
                 "DigitClock"          : [DigitClock,          ["#", "#", "#", "$16", "default", "1", "32", "1"]]
             }
-        elif self.__mode == "SpecialEffects":
+        elif self.__mode == "SpecialEffect":
 
-            self.screenSubs = {}
+            from Smoke import Smoke
+
+            self.screenSubs = {
+                "Smoke"                 : [Smoke,           ["#", "$02", "$74",
+                                                             "$00|$00|$02|$00|$02|$04|$06|$06|$06|$04|$02|$02|$00|$02|$00|$00",
+                                                             "$0a|$0a|$08|$0a|$0a|$08|$08|$06|$08|$06|$08|$06|$04|$04|$02|$00"]]
+
+            }
 
 
         if self.__data[2]  == "#":
