@@ -60,10 +60,10 @@
 	BYTE	#8
 
 #NAME#_Smoke_Back_Gradient
-!!!GRADIENT1!!!
+!!!GRADIENT2!!!
 
 #NAME#_Smoke_Gradient
-!!!GRADIENT2!!!
+!!!GRADIENT1!!!
 
 #NAME#_Smoke_AND
 	BYTE	#3

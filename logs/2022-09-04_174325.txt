@@ -1,5 +1,5 @@
 **********************************
-*** 2022-09-04 09:17:17.189491 ***
+*** 2022-09-04 17:43:31.748799 ***
 **********************************
 
 Exception: 'ET' object has no attribute '_ET__spriteImage'
@@ -7,12 +7,12 @@ Error Class: <class 'AttributeError'>
 Variables: 
 __name__ = ET
 __file__ = src/View\ET.py
-self = <ET.ET object at 0x0000000036C06358>
+self = <ET.ET object at 0x0000000036178C88>
 mouse = <module 'mouse' from 'D:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
 
 
 **********************************
-*** 2022-09-04 09:17:17.586514 ***
+*** 2022-09-04 17:43:32.322832 ***
 **********************************
 
 Exception: list index out of range
@@ -20,7 +20,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank2
 section = local_variables
 validity = bank2
@@ -31,7 +31,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.586514 ***
+*** 2022-09-04 17:43:32.322832 ***
 **********************************
 
 Exception: list index out of range
@@ -39,7 +39,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank2
 section = local_variables
 validity = bank2
@@ -50,7 +50,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.587514 ***
+*** 2022-09-04 17:43:32.323832 ***
 **********************************
 
 Exception: list index out of range
@@ -58,7 +58,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -69,7 +69,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.587514 ***
+*** 2022-09-04 17:43:32.323832 ***
 **********************************
 
 Exception: list index out of range
@@ -77,7 +77,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -89,7 +89,7 @@ TYPE = doubleBit
 
 
 **********************************
-*** 2022-09-04 09:17:17.587514 ***
+*** 2022-09-04 17:43:32.323832 ***
 **********************************
 
 Exception: list index out of range
@@ -97,7 +97,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank3
 section = local_variables
 validity = bank3
@@ -109,7 +109,7 @@ TYPE = doubleBit
 
 
 **********************************
-*** 2022-09-04 09:17:17.587514 ***
+*** 2022-09-04 17:43:32.323832 ***
 **********************************
 
 Exception: list index out of range
@@ -117,7 +117,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -128,7 +128,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.587514 ***
+*** 2022-09-04 17:43:32.323832 ***
 **********************************
 
 Exception: list index out of range
@@ -136,27 +136,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
-bank = bank4
-section = local_variables
-validity = bank4
-lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
-line = 
-data = ['']
-name = 
-TYPE = byte
-
-
-**********************************
-*** 2022-09-04 09:17:17.588514 ***
-**********************************
-
-Exception: list index out of range
-Error Class: <class 'IndexError'>
-Variables: 
-__name__ = VirtualMemory
-__file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -168,7 +148,7 @@ TYPE = byte
 
 
 **********************************
-*** 2022-09-04 09:17:17.588514 ***
+*** 2022-09-04 17:43:32.324832 ***
 **********************************
 
 Exception: list index out of range
@@ -176,7 +156,27 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
+bank = bank4
+section = local_variables
+validity = bank4
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', 'Reggeli=byte', '', 'vacsora=byte', '', 'Csiga=bit', '', 'Kajalas=array(Reggeli,Vacsora)', '', 'Csillag=array(Reggeli,temp9)', '', '']
+line = 
+data = ['']
+name = 
+TYPE = byte
+
+
+**********************************
+*** 2022-09-04 17:43:32.324832 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -188,7 +188,7 @@ TYPE = bit
 
 
 **********************************
-*** 2022-09-04 09:17:17.588514 ***
+*** 2022-09-04 17:43:32.324832 ***
 **********************************
 
 Exception: list index out of range
@@ -196,7 +196,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -209,7 +209,7 @@ item = Vacsora
 
 
 **********************************
-*** 2022-09-04 09:17:17.588514 ***
+*** 2022-09-04 17:43:32.324832 ***
 **********************************
 
 Exception: list index out of range
@@ -217,7 +217,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -230,7 +230,7 @@ item = temp9
 
 
 **********************************
-*** 2022-09-04 09:17:17.588514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -238,7 +238,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank4
 section = local_variables
 validity = bank4
@@ -251,7 +251,7 @@ item = temp9
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -259,7 +259,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank5
 section = local_variables
 validity = bank5
@@ -270,7 +270,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -278,7 +278,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank5
 section = local_variables
 validity = bank5
@@ -289,7 +289,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -297,7 +297,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank6
 section = local_variables
 validity = bank6
@@ -308,7 +308,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -316,7 +316,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank6
 section = local_variables
 validity = bank6
@@ -327,7 +327,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.325832 ***
 **********************************
 
 Exception: list index out of range
@@ -335,7 +335,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank7
 section = local_variables
 validity = bank7
@@ -346,7 +346,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.589514 ***
+*** 2022-09-04 17:43:32.326832 ***
 **********************************
 
 Exception: list index out of range
@@ -354,7 +354,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank7
 section = local_variables
 validity = bank7
@@ -365,7 +365,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.590514 ***
+*** 2022-09-04 17:43:32.326832 ***
 **********************************
 
 Exception: list index out of range
@@ -373,7 +373,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank8
 section = local_variables
 validity = bank8
@@ -384,7 +384,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.590514 ***
+*** 2022-09-04 17:43:32.326832 ***
 **********************************
 
 Exception: list index out of range
@@ -392,7 +392,7 @@ Error Class: <class 'IndexError'>
 Variables: 
 __name__ = VirtualMemory
 __file__ = src/DataHolders\VirtualMemory.py
-self = <VirtualMemory.VirtualMemory object at 0x000000001CF88EF0>
+self = <VirtualMemory.VirtualMemory object at 0x000000001D0D8FD0>
 bank = bank8
 section = local_variables
 validity = bank8
@@ -403,7 +403,7 @@ name =
 
 
 **********************************
-*** 2022-09-04 09:17:17.615516 ***
+*** 2022-09-04 17:43:32.351834 ***
 **********************************
 
 Exception: list.remove(x): x not in list
@@ -411,34 +411,20 @@ Error Class: <class 'ValueError'>
 Variables: 
 __name__ = SubMenu
 __file__ = src/View\SubMenu.py
-self = <SubMenu.SubMenu object at 0x0000000036E9E550>
-loader = <Loader.Loader object at 0x00000000041B8588>
+self = <SubMenu.SubMenu object at 0x00000000369DB9B0>
+loader = <Loader.Loader object at 0x000000001B7F7748>
 name = open
 w = 533.3333333333334
 h = 355.0
 checker = None
-addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x0000000036E68828>>
+addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x00000000369DB940>>
 maxNum = 1
 Thread = <class 'threading.Thread'>
-add = <Thread(Thread-30, stopped daemon 7604)>
+add = <Thread(Thread-30, stopped daemon 9992)>
 
 
 **********************************
-*** 2022-09-04 09:17:17.615516 ***
-**********************************
-
-Exception: bad window path name ".!toplevel2"
-Error Class: <class '_tkinter.TclError'>
-Variables: 
-__name__ = ET
-__file__ = src/View\ET.py
-self = <ET.ET object at 0x0000000036C06358>
-mouse = <module 'mouse' from 'D:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
-posX = 875.625
-
-
-**********************************
-*** 2022-09-04 09:17:17.618516 ***
+*** 2022-09-04 17:43:32.352834 ***
 **********************************
 
 Exception: invalid command name ".!toplevel2.!frame2.!frame2.!button"
@@ -446,26 +432,12 @@ Error Class: <class '_tkinter.TclError'>
 Variables: 
 __name__ = SubMenuOkCancelButtons
 __file__ = src/View\SubMenuOkCancelButtons.py
-self = <SubMenuOkCancelButtons.SubMenuOkCancelButtons object at 0x0000000036C06AC8>
+self = <SubMenuOkCancelButtons.SubMenuOkCancelButtons object at 0x00000000361785F8>
 sleep = <built-in function sleep>
 
 
 **********************************
-*** 2022-09-04 09:17:17.619516 ***
-**********************************
-
-Exception: invalid command name ".!toplevel2.!frame2.!frame3.!canvas"
-Error Class: <class '_tkinter.TclError'>
-Variables: 
-__name__ = ET
-__file__ = src/View\ET.py
-self = <ET.ET object at 0x0000000036C06358>
-sleep = <built-in function sleep>
-moving = None
-
-
-**********************************
-*** 2022-09-04 09:17:18.832585 ***
+*** 2022-09-04 17:43:33.558903 ***
 **********************************
 
 Exception: None
@@ -473,12 +445,12 @@ Error Class: <class 'KeyError'>
 Variables: 
 __name__ = OpenProjectWindow
 __file__ = src/View\OpenProjectWindow.py
-self = <OpenProjectWindow.OpenProjectWindow object at 0x0000000036E68828>
+self = <OpenProjectWindow.OpenProjectWindow object at 0x00000000369DB940>
 sleep = <built-in function sleep>
 
 
 **********************************
-*** 2022-09-04 09:17:19.906647 ***
+*** 2022-09-04 17:43:35.244999 ***
 **********************************
 
 Exception: list.remove(x): x not in list
@@ -486,15 +458,141 @@ Error Class: <class 'ValueError'>
 Variables: 
 __name__ = SubMenu
 __file__ = src/View\SubMenu.py
-self = <SubMenu.SubMenu object at 0x0000000036CD1470>
-loader = <Loader.Loader object at 0x00000000041B8588>
+self = <SubMenu.SubMenu object at 0x00000000361C0F98>
+loader = <Loader.Loader object at 0x000000001B7F7748>
 name = screenItem
 w = 426.0
 h = 325.0
 checker = None
-addElements = <bound method ScreenTopFrame.__addElements of <ScreenTopFrame.ScreenTopFrame object at 0x0000000036C8EE48>>
+addElements = <bound method ScreenTopFrame.__addElements of <ScreenTopFrame.ScreenTopFrame object at 0x00000000369C9D30>>
 maxNum = 2
 Thread = <class 'threading.Thread'>
-add = <Thread(Thread-43, stopped daemon 7420)>
+add = <Thread(Thread-43, stopped daemon 7928)>
+
+
+**********************************
+*** 2022-09-04 17:43:46.458640 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003631C5F8>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenTester
+w = 400
+h = 320.0
+checker = None
+addElements = <bound method ScreenTopTester.__addElements of <ScreenTopTester.ScreenTopTester object at 0x000000003630BCF8>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-46, stopped daemon 8244)>
+
+
+**********************************
+*** 2022-09-04 17:43:58.929354 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x00000000363259E8>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenTester
+w = 400
+h = 320.0
+checker = None
+addElements = <bound method ScreenTopTester.__addElements of <ScreenTopTester.ScreenTopTester object at 0x00000000362F0748>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-50, stopped daemon 8496)>
+
+
+**********************************
+*** 2022-09-04 17:44:46.394068 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x00000000369E7128>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenItem
+w = 426.0
+h = 325.0
+checker = None
+addElements = <bound method ScreenTopFrame.__addElements of <ScreenTopFrame.ScreenTopFrame object at 0x00000000369E7B38>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-54, stopped daemon 7184)>
+
+
+**********************************
+*** 2022-09-04 17:44:55.562593 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x00000000363035C0>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenTester
+w = 400
+h = 320.0
+checker = None
+addElements = <bound method ScreenTopTester.__addElements of <ScreenTopTester.ScreenTopTester object at 0x0000000036241C88>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-57, stopped daemon 9380)>
+
+
+**********************************
+*** 2022-09-04 17:45:06.701230 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003630F7B8>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenTester
+w = 400
+h = 320.0
+checker = None
+addElements = <bound method ScreenTopTester.__addElements of <ScreenTopTester.ScreenTopTester object at 0x000000003630FE80>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-61, stopped daemon 2212)>
+
+
+**********************************
+*** 2022-09-04 17:45:18.471903 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003AC50C50>
+loader = <Loader.Loader object at 0x000000001B7F7748>
+name = screenTester
+w = 400
+h = 320.0
+checker = None
+addElements = <bound method ScreenTopTester.__addElements of <ScreenTopTester.ScreenTopTester object at 0x000000003630BE10>>
+maxNum = 2
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-65, stopped daemon 6164)>
 
 

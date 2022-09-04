@@ -98,14 +98,19 @@ class Smoke:
         self.__colorEntries = []
         self.__changerButtons = [{}, {}]
 
+        counter = -2
         for num in range(0,3):
             isItHex = False
+            commands = [self.__changerButtonPressedC0, self.__changerButtonPressedV0,
+                        self.__changerButtonPressedC1, self.__changerButtonPressedV1,]
+
             if num > 0:
 
+                counter += 2
                 self.__changerButtons[num - 1]["value"] = IntVar()
                 self.__changerButtons[num - 1]["constantB"] = self.__createButton(self.__frames[num],
                                                                               "constant", self.__changerButtons[num - 1]["value"],
-                                                                              self.__changerButtonPressedC0, 1
+                                                                              commands[counter], 1
                                                                               )
 
                 isItHex = self.isItHex(self.__data[num+3])
@@ -116,7 +121,7 @@ class Smoke:
 
                 self.__changerButtons[num - 1]["variableB"] = self.__createButton(self.__frames[num],
                                                                               "variable", self.__changerButtons[num - 1]["value"],
-                                                                              self.__changerButtonPressedC0, 2
+                                                                              commands[counter+1], 2
                                                                               )
 
             self.__listBoxes[num]["variable"] = StringVar()
@@ -168,7 +173,30 @@ class Smoke:
                self.__listBoxes[num]["listbox"].select_set(selector)
                if self.__data[num+3] == "#": self.__data[num+3] =\
                    self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
-                
+
+        self.__gradients = [self.__data[6].split("|"), self.__data[7].split("|")]
+        self.__gradientEntries = [[], []]
+
+        for groupNum in range(0, 2):
+            for colorNum in range(0,16):
+                self.__gradientEntries[groupNum].append(HexEntry(self.__loader, self.__frames[groupNum+3], self.__colors, self.__colorDict,
+                                                    self.__smallFont, self.__gradients[groupNum], colorNum, None,
+                                                    self.__changeGradientColorVar))
+
+    def __changeGradientColorVar(self, event):
+        group = 0
+        for groupNum in range(0, 2):
+            for colorNum in range(0,16):
+                if self.__gradientEntries[groupNum][colorNum].getEntry() == event.widget:
+                   group = groupNum
+
+        temp = []
+
+        for colorNum in range(0,16):
+            temp.append(self.__gradientEntries[group][colorNum].getValue())
+
+        self.__data[group + 6] = "|".join(temp)
+        self.__changeData(self.__data)
 
 
     def __createButton(self, frame, textKey, variable, func, val):
@@ -212,8 +240,25 @@ class Smoke:
     def __changerButtonPressedV1(self):
         self.__changerButtonPressed("V", 1)
 
-    def __changerButtonPressed(self, event, typ, num):
-        pass
+    def __changerButtonPressed(self, typ, num):
+        if typ == "C":
+           self.__colorEntries[num].changeState(NORMAL)
+           self.__listBoxes[num+1]["listbox"].config(state = DISABLED)
+           self.__data[num+4] = self.__colorEntries[num].getValue()
+           self.__changeData(self.__data)
+        else:
+           self.__colorEntries[num].changeState(DISABLED)
+           self.__listBoxes[num+1]["listbox"].config(state = NORMAL)
+           self.__listBoxes[num+1]["listbox"].selection_clear(0, END)
+           selector = 0
+           for itemNum in range(0, len(self.__byteVars)):
+               if self.__byteVars[itemNum].split("::")[1] == self.__listBoxes[num+1]["lastSelected"]:
+                  selector = itemNum
+                  break
+
+           self.__listBoxes[num+1]["listbox"].select_set(selector)
+           self.__data[num+4] = self.__byteVars[selector].split("::")[1]
+           self.__changeData(self.__data)
 
     def __changeColorVar(self, event):
         num = 0

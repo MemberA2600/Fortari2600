@@ -704,12 +704,12 @@ class TopBottomEditor:
                 "ChangeFrameColor"  : name + " " + "ChangeFrameColor $00",
                 "EmptyLines"        : name + " " + "EmptyLines 1",
                 "Picture64px"       : name + " " + "Picture64px # 0 0 0",
-                "Indicator"         : name + " " + "Indicator # # # # # # # # # # # # # # # # # # # #",
+                "Indicator"         : name + " " + "Indicator $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
                 "BigSprite"         : name + " " + "BigSprite # # # # # # #",
                 "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
                 "Menu"              : name + " " + "Menu # # # # #",
                 "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19",
-                "SpecialEffect"     : name + " " + "SpecialEffect # # # # # # # # # # # # # # # # # # # #"
+                "SpecialEffect"     : name + " " + "SpecialEffect $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $"
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -957,6 +957,7 @@ class TopBottomEditor:
             for bankNum in range(0, len(self.__codeData[screenPart])):
                 for item in self.__codeData[screenPart][bankNum][2]:
                     item = item.split(" ")
+
                     for setter in item:
                         if setter == "#":
                            self.__loader.fileDialogs.displayError("incompleteItem",

@@ -132,13 +132,14 @@ class Indicator:
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
-                                                             "$00|$00|$02|$00|$02|$04|$06|$06|$06|$04|$02|$02|$00|$02|$00|$00",
-                                                             "$0a|$0a|$08|$0a|$0a|$08|$08|$06|$08|$06|$08|$06|$04|$04|$02|$00"]]
+                                                             "$0a|$0a|$08|$0a|$0a|$08|$08|$06|$08|$06|$08|$06|$04|$04|$02|$00",
+                                                             "$00|$00|$02|$00|$02|$04|$06|$06|$06|$04|$02|$02|$00|$02|$00|$00"
+                                                             ]]
 
             }
 
 
-        if self.__data[2]  == "#":
+        if self.__data[2]  in ("#", "$"):
            self.__data[2]  = self.__indicators[0]
            self.__indicatorListBox.select_set(0)
            for num in range(0, len(self.screenSubs[self.__indicators[0]][1])):

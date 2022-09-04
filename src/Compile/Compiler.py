@@ -276,6 +276,15 @@ class Compiler:
             elif typ == "JukeBox":
                 self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters, self.__jukeBoxes)
 
+            elif typ == "SpecialEffect":
+                subtyp = item[2]
+                fullName += "_" + subtyp
+                data   = item[3:]
+
+                if subtyp == "Smoke":
+                    self.__bankData.append(self.generate_Smoke(fullName,
+                                                                     data, self.__bank))
+
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
 
@@ -305,6 +314,30 @@ class Compiler:
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def generate_Smoke(self, name, data, bank):
+
+        code = self.__loader.io.loadSubModule("Smoke_Kernel")
+        varNum = 0
+        for var in data[0:3]:
+            varNum+=1
+            varName = "#VAR0"+str(varNum)+"#"
+            variable = self.__loader.virtualMemory.getVariableByName2(var)
+            if variable == False:
+               code = code.replace(varName, "#" + var)
+            else:
+               code = code.replace(varName, var)
+
+        gradientSprite  = ""
+        gradientBG      = ""
+
+        for hexa in data[3].split("|"):
+            gradientSprite  += "\tBYTE\t#" + hexa + "\n"
+
+        for hexa in data[4].split("|"):
+            gradientBG      += "\tBYTE\t#" + hexa + "\n"
+
+        return code.replace("!!!GRADIENT1!!!", gradientSprite).replace("!!!GRADIENT2!!!", gradientBG).replace("#NAME#", name)
 
     def generate_JukeBox(self, fullname, data, bank, bankEaters, jukeBoxes):
         locks = self.__loader.virtualMemory.returnBankLocks()
