@@ -326,7 +326,27 @@ class Compiler:
                                                            data, self.__bank))
 
     def generate_Fire(self, name, data, bank):
-        pass
+        fireKernel      = self.__loader.io.loadSubModule("Fire_Kernel")
+        particleKernel  = self.__loader.io.loadSubModule("Fire_Particles_Kernel")
+
+        dataVar = data[0]
+        speed   = data[1]
+        height  = data[2]
+        colors  = data[3].split("|")
+
+        colorTable = ""
+        for item in colors:
+            colorTable += "\tBYTE\t#" + item + "\n"
+
+        fireKernel = fireKernel.replace("#VAR01#", dataVar).replace("!!!FIRE_COLORS!!!", colorTable).replace("#SPEED#", speed)
+        particleKernel = particleKernel.replace("#HEIGHT#", height).replace("#VAR01#", dataVar)
+
+        if int(height) != 0:
+           fireKernel = fireKernel.replace("!!!PARTICLES!!!", particleKernel)
+
+        return fireKernel.replace("#NAME#", name).replace("#BANK#", bank)
+
+
 
     def generate_Smoke(self, name, data, bank):
         code = self.__loader.io.loadSubModule("Smoke_Kernel")

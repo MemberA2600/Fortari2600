@@ -204,6 +204,8 @@ class Fire:
                break
 
         self.__listBox.select_set(selector)
+        if self.__data[3] == "#": self.__data[3] = self.__byteVars[0].split("::")[1]
+
 
         if self.isItNum(self.__data[4]):
            self.__speedVar.set(self.__data[4])

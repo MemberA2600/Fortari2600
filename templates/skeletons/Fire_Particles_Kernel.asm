@@ -1,4 +1,3 @@
-
 *
 *	Particles
 *
@@ -12,7 +11,7 @@
 	LDA	#NAME#_Fire_Color
 	AND	#%11110000
 	STA	temp17
-	LDA	$b0		
+	LDA	#VAR01#	
 	AND	#%00001111
 	STA	temp16
 	LSR
@@ -26,10 +25,12 @@
 	SBC	#8
 	ORA 	temp17
 
+	
 #NAME#_Fire_SaveColor
 	STA	COLUP0
 	STA	COLUP1
 
+	
 	LDA	##HEIGHT#
 	STA	temp12
 
@@ -45,6 +46,7 @@
 	AND	#%10000000
 	ROL
 	ROL
+	ORA	#%00000100
 	STA	NUSIZ0
 
 #NAME#_Fire_ParticleLoop_0
@@ -81,6 +83,7 @@
 	AND	#%10000000
 	ROL
 	ROL
+	ORA	#%00000100
 	STA	NUSIZ1
 
 #NAME#_Fire_ParticleLoop_1
@@ -140,7 +143,7 @@
 	BYTE	#243
 	BYTE	#67
 	BYTE	#196
-	BYTE	#52
+	BYTE	#48
 	BYTE	#115
 	BYTE	#95
 	BYTE	#177
