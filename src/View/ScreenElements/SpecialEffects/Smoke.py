@@ -191,12 +191,17 @@ class Smoke:
                    group = groupNum
 
         temp = []
-
+        wasError = False
         for colorNum in range(0,16):
-            temp.append(self.__gradientEntries[group][colorNum].getValue())
+            if self.isItHex(self.__gradientEntries[group][colorNum].getValue()):
+                temp.append(self.__gradientEntries[group][colorNum].getValue())
+            else:
+                wasError = True
+                break
 
-        self.__data[group + 6] = "|".join(temp)
-        self.__changeData(self.__data)
+        if wasError == False:
+            self.__data[group + 6] = "|".join(temp)
+            self.__changeData(self.__data)
 
 
     def __createButton(self, frame, textKey, variable, func, val):

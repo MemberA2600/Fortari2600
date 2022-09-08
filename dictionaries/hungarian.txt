@@ -333,3 +333,4 @@ missingLockError=#item# a #bank#-n további lefoglalt bankokat igényel! Különben 
 spriteColor=Sprite Színe
 gradientSprite=Sprite Áttûnés
 gradientBack=Háttér Áttûnés
+particles=Részecskék

@@ -128,13 +128,17 @@ class Indicator:
             }
         elif self.__mode == "SpecialEffect":
 
-            from Smoke import Smoke
+            from Smoke      import Smoke
+            from Fire       import Fire
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
                                                              "$0a|$0a|$08|$0a|$0a|$08|$08|$06|$08|$06|$08|$06|$04|$04|$02|$00",
                                                              "$00|$00|$02|$00|$02|$04|$06|$06|$06|$04|$02|$02|$00|$02|$00|$00"
-                                                             ]]
+                                                             ]],
+                "Fire"                  : [Fire,           ["#", "2", "6",
+                                                            "$42|$44|$48|$36|$3a|$18|$1c|$1e|$1e|$1c|$18|$3a|$36|$48|$44|$42|$42|$44|$48|$36|$3a|$18|$1c|$1e|$1e|$1c|$18|$3a|$36|$48|$44|$42"
+                                                            ]]
 
             }
 

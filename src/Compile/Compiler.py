@@ -153,137 +153,7 @@ class Compiler:
         self.__typ = None
 
         for item in self.__screenElements:
-            item = item.split(" ")
-            name = item[0]
-            typ  = item[1]
-            data = item[2:]
-            prevOne = self.__typ
-            self.__typ = typ
-
-            fullName = self.__bank + "_" + name + "_" + typ
-            if   typ == "ChangeFrameColor":
-               self.__bankData.append(
-                   self.generate_ChangeFrameColor(fullName, data)
-               )
-
-            elif typ == "EmptyLines":
-                self.__bankData.append(
-                    self.generate_EmptyLines(fullName, data)
-                )
-            elif typ == "Picture64px":
-                fullName += "_" + data[0]
-                those = self.generate_64px(fullName, data, data[0])
-                self.__bankData.append(those[0])
-                self.__userData[fullName] = those[1]
-                self.__inits.append(those[2])
-
-            elif typ == "Indicator":
-                subtyp = item[2]
-                fullName += "_" + subtyp
-                data   = item[3:]
-                if   subtyp == "FullBar":
-                     those  = self.generate_FullBar(fullName, data, self.__bank)
-                     self.__bankData.append(those[0])
-                     self.__userData[those[1][1]] = those[1][0]
-
-                     self.__userData[self.__bank+"_Bar_Normal"] =\
-                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
-
-                     self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
-
-
-                elif subtyp == "HalfBarWithText":
-                     those  = self.generate_HalfBarWithText(fullName, data, self.__bank)
-                     self.__bankData.append(those[0])
-                     self.__userData[those[1][1]] = those[1][0]
-                     self.__userData[self.__bank+"_Bar_Normal"] =\
-                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
-
-                     self.__routines["HalfBarWithText"] = self.__io.loadSubModule("HalfBarWithText_Kernel").replace("#BANK#", self.__bank)
-                     self.__userData[fullName + "_TextData"] = those[2]
-
-                elif subtyp == "TwoIconsTwoLines":
-                     those  = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
-                     self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                     self.__userData[those[1][1]] = those[1][0]
-                     self.__userData[self.__bank+"_Bar_Normal"] =\
-                        self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
-                     # self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
-                     self.__routines[those[3][0]] = those[3][1]
-                     for key in those[2].keys():
-                         self.__userData[key] = those[2][key]
-
-                elif subtyp == "OneIconWithDigits":
-                    those = self.generate_OneIconWithDigits(fullName, data, self.__bank)
-                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    self.__userData[those[1][1]] = those[1][0]
-                    self.__routines["OneIconWithDigits"] = self.__io.loadSubModule("OneIconWithDigits_Kernel").replace("#BANK#",
-                                                                                                         self.__bank)
-                    for key in those[2].keys():
-                        self.__userData[key] = those[2][key]
-
-                elif subtyp == "SevenDigits":
-                    those = self.generate_SevenDigits(fullName, data, self.__bank)
-                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    self.__userData[those[1][1]] = those[1][0]
-
-                    for key in those[2].keys():
-                        self.__userData[key] = those[2][key]
-
-                    self.__routines[those[3][0]] = those[3][1].replace("#BANK#", self.__bank)
-
-                elif subtyp == "TwelveIconsOrDigits":
-                    those = self.generate_TwelveIconsOrDigits(fullName, data, self.__bank)
-                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    if those[1] != None: self.__userData[those[1][1]] = those[1][0]
-                    self.__routines["TwelveIconsOrDigits"] = self.__io.loadSubModule("TwelveIconsOrDigits_Kernel").replace("#BANK#",
-                                                                                                         self.__bank)
-                    self.__routines["bin2BCD"] = self.__io.loadSubModule("bin2BCD").replace("#BANK#", self.__bank)
-
-                    for key in those[2].keys():
-                        self.__userData[key] = those[2][key]
-
-                elif subtyp == "DigitClock":
-                    those = self.generate_DigitClock(fullName, data, self.__bank)
-                    self.__bankData.append(those[0].replace("#BANK#", self.__bank))
-                    self.__userData[those[1][1]] = those[1][0]
-
-                    for key in those[2].keys():
-                        self.__userData[key] = those[2][key]
-
-                    self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
-                                                                                          self.__bank)
-            elif typ == "BigSprite":
-                those = self.generate_BigSprite(fullName, data, self.__bank)
-                self.__bankData.append(those[0])
-                self.__userData[fullName] = those[1]
-                self.__routines["BigSprite"] = self.__io.loadSubModule("bigSpriteKernel").replace("##BANK##",
-                                                                                             self.__bank)
-
-            elif typ == "DynamicText":
-                those = self.generate_DynamicText(fullName, data, self.__bank)
-                self.__bankData.append(those[0])
-
-                for itemNum in range(0, len(those[1])):
-                    if those[1][itemNum][1] != "":
-                        self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
-
-            elif typ == "Menu":
-                those = self.generate_Menu(fullName, data, self.__bank)
-                self.__bankData.append(those[0])
-                self.__userData[name+"_data" ] = those[1]
-
-            elif typ == "JukeBox":
-                self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters, self.__jukeBoxes)
-
-            elif typ == "SpecialEffect":
-                subtyp = item[2]
-                fullName += "_" + subtyp
-                data   = item[3:]
-
-                if subtyp == "Smoke":
-                    self.__bankData.append(self.generate_Smoke(fullName,
-                                                                     data, self.__bank))
+            self.__processScreenItem(item)
 
         self.__bankData.insert(0, testLine)
         self.__bankData.append(testLine)
@@ -315,8 +185,150 @@ class Compiler:
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
-    def generate_Smoke(self, name, data, bank):
+    def __processScreenItem(self, item):
+        item = item.split(" ")
+        name = item[0]
+        typ = item[1]
+        data = item[2:]
+        prevOne = self.__typ
+        self.__typ = typ
 
+        fullName = self.__bank + "_" + name + "_" + typ
+        if typ == "ChangeFrameColor":
+            self.__bankData.append(
+                self.generate_ChangeFrameColor(fullName, data)
+            )
+
+        elif typ == "EmptyLines":
+            self.__bankData.append(
+                self.generate_EmptyLines(fullName, data)
+            )
+        elif typ == "Picture64px":
+            fullName += "_" + data[0]
+            those = self.generate_64px(fullName, data, data[0])
+            self.__bankData.append(those[0])
+            self.__userData[fullName] = those[1]
+            self.__inits.append(those[2])
+
+        elif typ == "Indicator":
+            subtyp = item[2]
+            fullName += "_" + subtyp
+            data = item[3:]
+            if subtyp == "FullBar":
+                those = self.generate_FullBar(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[those[1][1]] = those[1][0]
+
+                self.__userData[self.__bank + "_Bar_Normal"] = \
+                    self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+
+                self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
+
+
+            elif subtyp == "HalfBarWithText":
+                those = self.generate_HalfBarWithText(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[those[1][1]] = those[1][0]
+                self.__userData[self.__bank + "_Bar_Normal"] = \
+                    self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+
+                self.__routines["HalfBarWithText"] = self.__io.loadSubModule("HalfBarWithText_Kernel").replace("#BANK#",
+                                                                                                               self.__bank)
+                self.__userData[fullName + "_TextData"] = those[2]
+
+            elif subtyp == "TwoIconsTwoLines":
+                those = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
+                self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                self.__userData[those[1][1]] = those[1][0]
+                self.__userData[self.__bank + "_Bar_Normal"] = \
+                    self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
+                # self.__routines["TwoIconsTwoLines"] = self.__io.loadSubModule("TwoIconsTwoLines_Kernel").replace("#BANK#", self.__bank)
+                self.__routines[those[3][0]] = those[3][1]
+                for key in those[2].keys():
+                    self.__userData[key] = those[2][key]
+
+            elif subtyp == "OneIconWithDigits":
+                those = self.generate_OneIconWithDigits(fullName, data, self.__bank)
+                self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                self.__userData[those[1][1]] = those[1][0]
+                self.__routines["OneIconWithDigits"] = self.__io.loadSubModule("OneIconWithDigits_Kernel").replace(
+                    "#BANK#",
+                    self.__bank)
+                for key in those[2].keys():
+                    self.__userData[key] = those[2][key]
+
+            elif subtyp == "SevenDigits":
+                those = self.generate_SevenDigits(fullName, data, self.__bank)
+                self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                self.__userData[those[1][1]] = those[1][0]
+
+                for key in those[2].keys():
+                    self.__userData[key] = those[2][key]
+
+                self.__routines[those[3][0]] = those[3][1].replace("#BANK#", self.__bank)
+
+            elif subtyp == "TwelveIconsOrDigits":
+                those = self.generate_TwelveIconsOrDigits(fullName, data, self.__bank)
+                self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                if those[1] != None: self.__userData[those[1][1]] = those[1][0]
+                self.__routines["TwelveIconsOrDigits"] = self.__io.loadSubModule("TwelveIconsOrDigits_Kernel").replace(
+                    "#BANK#",
+                    self.__bank)
+                self.__routines["bin2BCD"] = self.__io.loadSubModule("bin2BCD").replace("#BANK#", self.__bank)
+
+                for key in those[2].keys():
+                    self.__userData[key] = those[2][key]
+
+            elif subtyp == "DigitClock":
+                those = self.generate_DigitClock(fullName, data, self.__bank)
+                self.__bankData.append(those[0].replace("#BANK#", self.__bank))
+                self.__userData[those[1][1]] = those[1][0]
+
+                for key in those[2].keys():
+                    self.__userData[key] = those[2][key]
+
+                self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
+                                                                                                     self.__bank)
+        elif typ == "BigSprite":
+            those = self.generate_BigSprite(fullName, data, self.__bank)
+            self.__bankData.append(those[0])
+            self.__userData[fullName] = those[1]
+            self.__routines["BigSprite"] = self.__io.loadSubModule("bigSpriteKernel").replace("##BANK##",
+                                                                                              self.__bank)
+
+        elif typ == "DynamicText":
+            those = self.generate_DynamicText(fullName, data, self.__bank)
+            self.__bankData.append(those[0])
+
+            for itemNum in range(0, len(those[1])):
+                if those[1][itemNum][1] != "":
+                    self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
+
+        elif typ == "Menu":
+            those = self.generate_Menu(fullName, data, self.__bank)
+            self.__bankData.append(those[0])
+            self.__userData[name + "_data"] = those[1]
+
+        elif typ == "JukeBox":
+            self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters, self.__jukeBoxes)
+
+        elif typ == "SpecialEffect":
+            subtyp = item[2]
+            fullName += "_" + subtyp
+            data = item[3:]
+
+            if   subtyp == "Smoke":
+                 self.__bankData.append(self.generate_Smoke(fullName,
+                                                           data, self.__bank))
+
+            elif subtyp == "Fire":
+                self.__bankData.append(self.generate_Fire(fullName,
+                                                           data, self.__bank))
+
+    def generate_Fire(self, name, data, bank):
+        pass
+
+    def generate_Smoke(self, name, data, bank):
         code = self.__loader.io.loadSubModule("Smoke_Kernel")
         varNum = 0
         for var in data[0:3]:

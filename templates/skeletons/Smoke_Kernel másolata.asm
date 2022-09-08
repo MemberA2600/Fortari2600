@@ -35,62 +35,11 @@
 	LDA	#79	; 3 (30)
 	STA	temp01		; 3 (33)
 
-	JMP	#NAME#_Smoke_InsideJumpTable
+	JMP	#NAME#_Smoke_OverJumpTable
 	align	256
 
 #NAME#_Smoke_FineAdjustTable256	
-	fill	7
-#NAME#_Smoke_InsideJumpTable
-
-	LDA	#VAR01#
-	BMI	#NAME#_Smoke_Off
-	LDA	#<#NAME#_Smoke_Pattern_0
-	STA	temp19
-	JMP	#NAME#_Smoke_On
-#NAME#_Smoke_Off
-	LDA	#<#NAME#_Smoke_Pattern_1
-	STA	temp19
-#NAME#_Smoke_On
-
-	LDX	#0
-	LDA	counter
-	AND	#%00000111
-	CMP	#%00000111
-	BNE	Bank2_No_Smoke_Counter
-	
-	LDA	#VAR01#
-	AND	#%00001111
-	CMP	#%00001111
-	BEQ	Bank2_No_Smoke_Counter
-	TAY
-	INY
-	STY	temp18
-	LDA	#VAR01#	
-	AND	#%11110000
-	ADC	temp18
-	STA	#VAR01#
-	
-Bank2_No_Smoke_Counter
-
-	LDA	counter
-	AND	#%00111111
-	LSR
-	LSR
-	TAY	
-#NAME#_Smoke_Set_HorPoz
-	LDA	#NAME#_Smoke_PointerNum,y
-	SEC
-	SBC	#6
-
-	CLC
-	ADC	temp01,x
-	STA	temp02,x
-	INX
-	INY
-	CPX	#15	
-	BNE	#NAME#_Smoke_Set_HorPoz
-	JMP	#NAME#_Smoke_Set_HorPoz_Ended	
-
+	fill	79
 
 #NAME#_Smoke_Movement
 	BYTE	#249
@@ -256,6 +205,57 @@ Bank2_No_Smoke_Counter
 	byte	#$a0
 	byte	#$90
 
+#NAME#_Smoke_OverJumpTable
+
+	LDA	#VAR01#
+	BMI	#NAME#_Smoke_Off
+	LDA	#<#NAME#_Smoke_Pattern_0
+	STA	temp19
+	JMP	#NAME#_Smoke_On
+#NAME#_Smoke_Off
+	LDA	#<#NAME#_Smoke_Pattern_1
+	STA	temp19
+#NAME#_Smoke_On
+
+	LDX	#0
+	LDA	counter
+	AND	#%00000111
+	CMP	#%00000111
+	BNE	Bank2_No_Smoke_Counter
+	
+	LDA	#VAR01#
+	AND	#%00001111
+	CMP	#%00001111
+	BEQ	Bank2_No_Smoke_Counter
+	TAY
+	INY
+	STY	temp18
+	LDA	#VAR01#	
+	AND	#%11110000
+	ADC	temp18
+	STA	#VAR01#
+	
+Bank2_No_Smoke_Counter
+
+	LDA	counter
+	AND	#%00111111
+	LSR
+	LSR
+	TAY	
+#NAME#_Smoke_Set_HorPoz
+	LDA	#NAME#_Smoke_PointerNum,y
+	SEC
+	SBC	#6
+
+	CLC
+	ADC	temp01,x
+	STA	temp02,x
+	INX
+	INY
+	CPX	#15	
+	BEQ	#NAME#_Smoke_Set_HorPoz_Ended	
+	JMP	#NAME#_Smoke_Set_HorPoz
+
 #NAME#_Smoke_Set_HorPoz_Ended
 
 	LDA	#VAR01#
@@ -271,7 +271,7 @@ Bank2_No_Smoke_Counter
 
 	LDX	#15
 	LDY	#0
-	
+
 #NAME#_Smoke_Add_Wind_Loop
 	TYA
 	CLC
@@ -284,7 +284,7 @@ Bank2_No_Smoke_Counter
 	DEX
 	BPL	#NAME#_Smoke_Add_Wind_Loop
 
-*****	STA	WSYNC
+	STA	WSYNC
 	LDX	#0
 	LDA	#$08
 	STA	COLUP0

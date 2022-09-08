@@ -333,3 +333,4 @@ missingLockError=#item# on #bank# is missing locks! Compiling would fail!
 spriteColor=Sprite Color
 gradientSprite=Sprite Gradient
 gradientBack=Background Gradient
+particles=Particles

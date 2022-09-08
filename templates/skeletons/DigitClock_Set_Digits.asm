@@ -25,7 +25,7 @@
 
 #NAME#_DigitClock_Set_Digits_No_Frame_Check
 	LDA	#DIGIT_DATA1#
-	BMI	#NAME#_DigitClock_Set_Digits_No_Change
+	BMI	#NAME#_DigitClock_Set_Digits_Changed
 	BIT	#DIGIT_DATA1#
 	BVS	#NAME#_DigitClock_Set_Digits_Decrement
 
