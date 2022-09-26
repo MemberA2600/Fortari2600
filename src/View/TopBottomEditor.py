@@ -709,7 +709,9 @@ class TopBottomEditor:
                 "DynamicText"       : name + " " + "DynamicText # # # # # # # # # # # # $16 $00",
                 "Menu"              : name + " " + "Menu # # # # #",
                 "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19",
-                "SpecialEffect"     : name + " " + "SpecialEffect $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $"
+                "SpecialEffect"     : name + " " + "SpecialEffect $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
+                "Reseter"           : name + " " + "Reseter 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1"
+
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -754,6 +756,8 @@ class TopBottomEditor:
            from Menu                import Menu
            from JukeBox             import JukeBox
            from SpecialEffect       import SpecialEffect
+           from Reseter             import Reseter
+
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -764,7 +768,8 @@ class TopBottomEditor:
                "DynamicText"        : DynamicText,
                "Menu"               : Menu,
                "JukeBox"            : JukeBox,
-               "SpecialEffect"      : Indicator
+               "SpecialEffect"      : Indicator,
+               "Reseter"            : Reseter
            }
 
            self.__listOfNames = []

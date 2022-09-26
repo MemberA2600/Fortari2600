@@ -312,6 +312,9 @@ class Compiler:
         elif typ == "JukeBox":
             self.generate_JukeBox(fullName, data, self.__bank, self.__bankEaters, self.__jukeBoxes)
 
+        elif typ == "Reseter":
+            self.__bankData.append(self.generate_Reseter(fullName, data, self.__bank))
+
         elif typ == "SpecialEffect":
             subtyp = item[2]
             fullName += "_" + subtyp
@@ -324,6 +327,25 @@ class Compiler:
             elif subtyp == "Fire":
                 self.__bankData.append(self.generate_Fire(fullName,
                                                            data, self.__bank))
+
+    def generate_Reseter(self, name, data, bank):
+        code = name + "\n\tLDX\t#0\n\tLDA\tframeColor\n\tSTA\tWSYNC\n"
+        toZero              = ["GRP0", "GRP1", "ENAM0", "ENAM1", "ENABL", "PF0", "PF1", "PF2", "HMCLR"]
+        toFrameColor        = ["COLUPF", "COLUBK", "COLUP0", "COLUP1"]
+
+        counter = -1
+
+        for item in toZero:
+            counter += 1
+            if data[counter] == "1":
+               code += "\tSTX\t"+item+"\n"
+
+        for item in toFrameColor:
+            counter += 1
+            if data[counter] == "1":
+               code += "\tSTA\t"+item+"\n"
+        return code
+
 
     def generate_Fire(self, name, data, bank):
         fireKernel      = self.__loader.io.loadSubModule("Fire_Kernel")

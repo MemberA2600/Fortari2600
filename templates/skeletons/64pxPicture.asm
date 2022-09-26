@@ -254,3 +254,19 @@ pic64px_EvenFrame_Line2
 	BNE	pic64px_EvenFrame_Line1		; 2 (73)
 
 pic64px_Reset
+
+	LDA	frameColor
+	LDX	#0
+	STA	WSYNC
+
+	STA	COLUP0
+	STA	COLUP1
+	STA	COLUPF
+	STA	COLUBK
+
+	STX	GRP0
+	STX	GRP1
+	STX	PF0
+	STX	PF1
+	STX	PF2
+

@@ -450,6 +450,7 @@ class Assembler():
 
 
                     else:
+                        #print(line.raw)
                         second = self.checkIfSectionName(line.raw[1], sections)
                         second = self.starToAddress(line.address, second)
                         second = self.secondByteToNumeric(second, variables, registers, sections)
@@ -607,7 +608,6 @@ class Assembler():
             self.appendBytes(line, second)
 
     def appendBytes(self, line, second):
-
         if second.startswith("0b"):
             line.bytes.append(bytes([int(second, 2)]))
         elif second.startswith("0x"):
