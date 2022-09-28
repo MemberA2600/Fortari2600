@@ -349,3 +349,6 @@ COLUPF=Playfield Színe
 COLUBK=Háttérszín
 COLUP0=Player 0 Színe
 COLUP1=Player 1 Színe
+speedConst=Sebesség Állandók
+sunMoon=Nap és Hold Sprite
+cloud=Felhõ Sprite

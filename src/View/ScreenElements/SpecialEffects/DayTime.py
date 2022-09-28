@@ -59,8 +59,8 @@ class DayTime:
         self.__listOfFrames = []
         self.__labels = []
 
-        frameMax = 4
-        words = ["xPoz", "dataVar", "dataVar", "dataVar"]
+        frameMax = 5
+        words = ["xPoz", "dataVar", "dataVar", "dataVar", "speedConst"]
 
         self.__listBoxes = []
 
@@ -72,7 +72,7 @@ class DayTime:
             f.pack_propagate(False)
             f.pack(side=LEFT, anchor=E, fill=Y)
 
-            self.__dataVars = []
+            self.__byteVars = []
             for address in self.__loader.virtualMemory.memory.keys():
                 for variable in self.__loader.virtualMemory.memory[address].variables.keys():
                     var = self.__loader.virtualMemory.memory[address].variables[variable]
@@ -80,9 +80,10 @@ class DayTime:
                          var.validity == self.__currentBank) and
                             (var.system == False or
                              var.iterable == True or
-                             var.linkable == True)
+                             var.linkable == True) and
+                             var.type     == "byte"
                     ):
-                        self.__dataVars.append(address + "::" + variable)
+                        self.__byteVars.append(address + "::" + variable)
 
             l = Label(f,
                           text=self.__dictionaries.getWordFromCurrentLanguage(words[num]) + ":",
@@ -122,8 +123,8 @@ class DayTime:
                 self.__xConst.pack_propagate(False)
                 self.__xConst.pack(fill=BOTH, side=TOP, anchor=N)
 
-                self.__xConst.bind("<KeyRelease>", self.__changeXConst)
-                self.__xConst.bind("<FocusOut>", self.__changeXConst)
+                self.__xConst.bind("<KeyRelease>", self.__changeConst)
+                self.__xConst.bind("<FocusOut>", self.__changeConst)
 
                 self.__varButton = Radiobutton(f, width=99999,
                                                  text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
@@ -138,38 +139,89 @@ class DayTime:
                 self.__varButton.pack_propagate(False)
                 self.__varButton.pack(fill=X, side=TOP, anchor=N)
 
-            self.__listBoxes.append({})
-            self.__listBoxes[-1]["selected"] = ""
+            if num < 4:
+                self.__listBoxes.append({})
+                self.__listBoxes[-1]["selected"] = ""
 
-            scrollBar = Scrollbar(f)
-            lbox = Listbox(f, width=100000,
-                                            height=1000,
-                                            yscrollcommand=scrollBar.set,
-                                            selectmode=BROWSE,
-                                            exportselection=False,
-                                            font=self.__smallFont,
-                                            justify=LEFT
-                                            )
+                scrollBar = Scrollbar(f)
+                lbox = Listbox(f, width=100000,
+                                                height=1000,
+                                                yscrollcommand=scrollBar.set,
+                                                selectmode=BROWSE,
+                                                exportselection=False,
+                                                font=self.__smallFont,
+                                                justify=LEFT
+                                                )
 
-            lbox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
-            lbox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
-            lbox.pack_propagate(False)
+                lbox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+                lbox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                lbox.pack_propagate(False)
 
-            scrollBar.pack(side=RIGHT, anchor=W, fill=Y)
-            lbox.pack(side=LEFT, anchor=W, fill=BOTH)
+                scrollBar.pack(side=RIGHT, anchor=W, fill=Y)
+                lbox.pack(side=LEFT, anchor=W, fill=BOTH)
 
-            scrollBar.config(command=lbox.yview)
+                scrollBar.config(command=lbox.yview)
 
-            self.__listBoxes[-1]["listBox"] = lbox
-            self.__listBoxes[-1]["scrollBar"] = scrollBar
+                self.__listBoxes[-1]["listBox"] = lbox
+                self.__listBoxes[-1]["scrollBar"] = scrollBar
 
-            for item in self.__dataVars:
-               self.__listBoxes[-1]["listBox"].insert(END, item)
+                for item in self.__byteVars:
+                   self.__listBoxes[-1]["listBox"].insert(END, item)
+            else:
+                l = Label(f,
+                          text=self.__dictionaries.getWordFromCurrentLanguage("sunMoon") + ":",
+                          font=self.__miniFont, fg=self.__colors.getColor("window"),
+                          bg=self.__colors.getColor("font"), justify=CENTER
+                          )
+
+                l.pack_propagate(False)
+                l.pack(side=TOP, anchor=CENTER, fill=BOTH)
+                self.__labels.append(l)
+
+                self.__spriteSpeed1Val = StringVar()
+                self.__spriteSpeed1 = Entry(f,
+                                           bg=self.__colors.getColor("boxBackNormal"),
+                                           fg=self.__colors.getColor("boxFontNormal"),
+                                           width=9999, justify=CENTER,
+                                           textvariable=self.__spriteSpeed1Val,
+                                           font=self.__smallFont
+                                           )
+
+                self.__spriteSpeed1.pack_propagate(False)
+                self.__spriteSpeed1.pack(fill=BOTH, side=TOP, anchor=N)
+
+                self.__spriteSpeed1.bind("<KeyRelease>", self.__changeConst)
+                self.__spriteSpeed1.bind("<FocusOut>", self.__changeConst)
+
+                l = Label(f,
+                          text=self.__dictionaries.getWordFromCurrentLanguage("cloud") + ":",
+                          font=self.__smallFont, fg=self.__colors.getColor("window"),
+                          bg=self.__colors.getColor("font"), justify=CENTER
+                          )
+
+                l.pack_propagate(False)
+                l.pack(side=TOP, anchor=CENTER, fill=BOTH)
+                self.__labels.append(l)
+
+                self.__spriteSpeed2Val = StringVar()
+                self.__spriteSpeed2 = Entry(f,
+                                           bg=self.__colors.getColor("boxBackNormal"),
+                                           fg=self.__colors.getColor("boxFontNormal"),
+                                           width=9999, justify=CENTER,
+                                           textvariable=self.__spriteSpeed2Val,
+                                           font=self.__smallFont
+                                           )
+
+                self.__spriteSpeed2.pack_propagate(False)
+                self.__spriteSpeed2.pack(fill=BOTH, side=TOP, anchor=N)
+
+                self.__spriteSpeed2.bind("<KeyRelease>", self.__changeConst)
+                self.__spriteSpeed2.bind("<FocusOut>", self.__changeConst)
 
         if self.isItNum(self.__data[3]):
            self.__constOrVar.set(1)
            self.__listBoxes[0]["listBox"].config(state = DISABLED)
-           self.__listBoxes[0]["selected"] = self.__dataVars[0].split("::")[1]
+           self.__listBoxes[0]["selected"] = self.__byteVars[0].split("::")[1]
            self.__listBoxes[0]["listBox"].select_set(0)
            self.__xConstVal.set(self.__data[3])
 
@@ -179,26 +231,26 @@ class DayTime:
             self.__xConstVal.set("36")
 
             selector = 0
-            for itemNum in range(0, len(self.__dataVars)):
-                if self.__data[3] == self.__dataVars[itemNum].split("::")[1]:
+            for itemNum in range(0, len(self.__byteVars)):
+                if self.__data[3] == self.__byteVars[itemNum].split("::")[1]:
                    selector = itemNum
                    break
 
-            self.__listBoxes[0]["selected"] = self.__dataVars[selector].split("::")[1]
+            self.__listBoxes[0]["selected"] = self.__byteVars[selector].split("::")[1]
             self.__listBoxes[0]["listBox"].select_set(0)
 
         for num in range(1,4):
             selector = 0
             if self.__data[3 + num] == "#":
-               self.__data[3 + num] = self.__dataVars[0].split("::")[1]
+               self.__data[3 + num] = self.__byteVars[0].split("::")[1]
 
-            for itemNum in range(0, len(self.__dataVars)):
-                if self.__dataVars[itemNum].split("::")[1] == self.__data[3 + num]:
+            for itemNum in range(0, len(self.__byteVars)):
+                if self.__byteVars[itemNum].split("::")[1] == self.__data[3 + num]:
                    selector = itemNum
                    break
 
             self.__listBoxes[num]["listBox"].select_set(selector)
-            self.__listBoxes[num]["selected"] = self.__dataVars[selector].split("::")[1]
+            self.__listBoxes[num]["selected"] = self.__byteVars[selector].split("::")[1]
             self.__data[num + 3] = self.__listBoxes[num]["selected"]
 
         for num in range(0,4):
@@ -206,10 +258,55 @@ class DayTime:
             self.__listBoxes[num]["listBox"].bind("<KeyRelease-Up>", self.__changeListBox)
             self.__listBoxes[num]["listBox"].bind("<KeyRelease-Down>", self.__changeListBox)
 
-    def __changeXConst(self, event):
-        if self.__constOrVar.get() == 2: return
+        self.__spriteSpeed1Val.set(self.__data[7])
+        self.__spriteSpeed2Val.set(self.__data[8])
 
-    def __changeIfConstOrVar(self, event):
+
+    def __changeConst(self, event):
+        pairs = {
+            self.__xConst:          self.__xConstVal,
+            self.__spriteSpeed1:    self.__spriteSpeed1Val,
+            self.__spriteSpeed2:    self.__spriteSpeed2Val
+        }
+
+        if event.widget == self.__xConst:
+            if self.__constOrVar.get() == 2: return
+
+        valueHolder = pairs[event.widget]
+        if self.isItNum(valueHolder.get()) == False:
+            event.widget.config(
+                bg = self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                fg = self.__loader.colorPalettes.getColor("boxFontUnSaved")
+            )
+            return
+
+        event.widget.config(
+            bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+            fg=self.__loader.colorPalettes.getColor("boxFontNormal")
+        )
+
+        num = int(valueHolder.get())
+
+        minMax = {
+            self.__xConst:          [35, 128],
+            self.__spriteSpeed1:    [0, 7],
+            self.__spriteSpeed2:    [0, 7]
+        }
+
+        numberOfData = {
+            self.__xConst:          3,
+            self.__spriteSpeed1:    7,
+            self.__spriteSpeed2:    8
+        }
+
+        if num < minMax[event.widget][0]: num = minMax[event.widget][0]
+        if num > minMax[event.widget][1]: num = minMax[event.widget][1]
+
+        pairs[event.widget].set(str(num))
+        self.__data[numberOfData[event.widget]] = str(num)
+        self.__changeData(self.__data)
+
+    def __changeIfConstOrVar(self):
         if self.__constOrVar.get() == 1:
            self.__listBoxes[0]["listBox"].config(state = DISABLED)
            self.__xConst.config(state = NORMAL)
@@ -221,13 +318,16 @@ class DayTime:
             self.__xConst.config(state=DISABLED)
 
             selector = 0
-            for itemNum in range(0, len(self.__dataVars)):
-                if self.__dataVars[itemNum].split("::")[1] == self.__listBoxes[0]["selected"]:
+            for itemNum in range(0, len(self.__byteVars)):
+                if self.__byteVars[itemNum].split("::")[1] == self.__listBoxes[0]["selected"]:
                     selector = itemNum
                     break
 
-            
+            self.__data[3] = self.__listBoxes[0]["selected"]
+            self.__listBoxes[0]["listBox"].select_clear(0, END)
+            self.__listBoxes[0]["listBox"].select_set(selector)
 
+        self.__changeData(self.__data)
 
     def __changeListBox(self, event):
         numInList = 0
@@ -237,9 +337,9 @@ class DayTime:
                break
 
         if numInList == 0 and self.__constOrVar.get() == 1: return
-        if self.__listBoxes[numInList]["selected"] != self.__dataVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]:
-           self.__listBoxes[numInList]["selected"] = self.__dataVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]
-           self.__data[3+num] = self.__listBoxes[numInList]["selected"]
+        if self.__listBoxes[numInList]["selected"] != self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]:
+           self.__listBoxes[numInList]["selected"] = self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]
+           self.__data[3+numInList] = self.__listBoxes[numInList]["selected"]
            self.__changeData(self.__data)
 
 

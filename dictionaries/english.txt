@@ -349,3 +349,6 @@ COLUPF=Playfield Color
 COLUBK=Background Color
 COLUP0=Player 0 Color
 COLUP1=Player 1 Color
+speedConst=Speed Constants
+sunMoon=Sun & Moon Sprite
+cloud=Cloud Sprite

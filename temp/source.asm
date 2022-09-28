@@ -1484,43 +1484,13 @@ EnterScreenBank2
 	LDA	#0		; set frame color to black
 	STA	frameColor
 	LDA	#0
-	STA	BLY
-	LDA	#0
-	STA	M0X
-	LDA	#0
-	STA	M0Y
-	LDA	#0
-	STA	M1Y
-	LDA	#0
 	STA	P0Height
 	LDA	#0
 	STA	P0SpriteIndex
 	LDA	#0
-	STA	P0X
-	LDA	#0
 	STA	P0Y
 	LDA	#0
 	STA	P1Height
-	LDA	#0
-	STA	P1X
-	LDA	#0
-	STA	P1Y
-
-**************************
-*Picture Data*
-**************
-Bank2_Picture64px_Picture64px_Queen_picIndex = #0
-Bank2_Picture64px_Picture64px_Queen_picDisplayHeight = #82
-Bank2_Picture64px_Picture64px_Queen_picHeight = 82
-**************************
-
-
-	LDA	#90
-	CMP	Bank2_Picture64px_Picture64px_Queen_picDisplayHeight
-	BCS	64pxPicture_NoINITDec
-	
-
-64pxPicture_NoINITDec
 
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
@@ -1600,6 +1570,8 @@ OverScanBank2
 * This is where the game code
 * begins.
 *
+
+
 
 
 *VSYNC
@@ -1699,12 +1671,30 @@ VBlankEndBank2
 	stx	item
 
 *
-*	#VAR01#:	X position of Sun / Moon
-*	#VAR02#:	Hours, binary, 0-23
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+*
+*	P0Height:	X position of Sun / Moon
+*	P1Height:	Hours, binary, 0-23
 *			0-4: Hours
 *			7  : Auto Increment
 *
-*	#VAR03#:	SpriteNum, auto increment, wind
+*	P0SpriteIndex:	SpriteNum, auto increment, wind
 *			0-3: SpriteNUm
 *			4-6: Wind
 *			7  : Auto Increment
@@ -1712,13 +1702,13 @@ VBlankEndBank2
 *	#var04#:	x Position of first Cloud
 *
 
-Bank2_DayTime_L = 35
-Bank2_DayTime_R = 128
-Bank2_DayTime_Add = 63
-Bank2_DayTime_L2 = 29
-Bank2_DayTime_R2 = 134
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_L = 35
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_R = 128
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Add = 63
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_L2 = 29
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_R2 = 134
 
-Bank2_DayTime_Kernel
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Kernel
 
 	LDA	frameColor
 	LDX	#0
@@ -1748,34 +1738,34 @@ Bank2_DayTime_Kernel
 	STA	NUSIZ1		; 8 (44)
 
 ******* Sun / Moon XPoz
-	LDA	#Bank2_DayTime_L
-	CMP	$b0
-	BCC	Bank2_DayTime_Not_Smaller
-	STA	$b0				; 10 (54)
-Bank2_DayTime_Not_Smaller
-	LDA	#Bank2_DayTime_R
-	CMP	$b0
-	BCS	Bank2_DayTime_Not_Larger
-	STA	$b0				; 10 (64)
-Bank2_DayTime_Not_Larger
+	LDA	#Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_L
+	CMP	P0Height
+	BCC	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Smaller
+	STA	P0Height				; 10 (54)
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Smaller
+	LDA	#Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_R
+	CMP	P0Height
+	BCS	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Larger
+	STA	P0Height				; 10 (64)
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Larger
 
 	LDA	#0
 	STA	CTRLPF
 
-	LDA	$b2
+	LDA	P0SpriteIndex
 	AND	#%11110000
 	STA	temp17
 
 	sta	WSYNC
 	sleep	6
-	LDA	$b0
-Bank2_DayTime_DivideLoop
+	LDA	P0Height
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_DivideLoop
 	sbc	#15
-   	bcs	Bank2_DayTime_DivideLoop
+   	bcs	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_DivideLoop
 	sleep	5
    	sta	RESP1
 	TAY
-   	lda	Bank2_DayTime_FineAdjustTable256,Y
+   	lda	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_FineAdjustTable256,Y
    	sta	HMP1	
 
 	sta	WSYNC
@@ -1785,64 +1775,67 @@ Bank2_DayTime_DivideLoop
 *
 *	Check if hours are between 0-23
 *
-	LDA	$b1
+	LDA	P1Height
 	AND	#%11100000	
 	STA	temp10
-	BPL	Bank2_DayTime_NoTimeINC
-	LDA	$b1
+	BPL	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoTimeINC
+	LDA	P1Height
 	AND	#%00011111
 	TAX
 	LDA	counter
 ******  speed
+1
+
+
 	AND	#%00000111
 	CMP	#%00000111
-	BNE	Bank2_DayTime_NoTimeINC2
+	BNE	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoTimeINC2
 
 	INX
-Bank2_DayTime_NoTimeINC2
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoTimeINC2
 	TXA
-	STA	$b1
-	JMP	Bank2_DayTime_TimeINCDone
+	STA	P1Height
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_TimeINCDone
 
-Bank2_DayTime_NoTimeINC
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoTimeINC
 	sleep	18	
-	LDA	$b1
+	LDA	P1Height
 	AND	#%00011111
-	STA	$b1
+	STA	P1Height
 
-Bank2_DayTime_TimeINCDone
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_TimeINCDone
 
 	LDA	#23
-	CMP	$b1
-	BCS 	Bank2_DayTime_Not_Larger2
+	CMP	P1Height
+	BCS 	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Larger2
 
 	LDA	#0
-	STA	$b1
-Bank2_DayTime_Not_Larger2
-	LDA	$b1
+	STA	P1Height
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Not_Larger2
+	LDA	P1Height
 	TAX
 *
 *	Set sky pointer to temp04, temp05
 *
-	LDA	Bank2_DayTime_Sky_LOW,x
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_LOW,x
 	STA	temp04
-	LDA	#>Bank2_DayTime_Skies
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Skies
 	STA	temp05
 *
 *	Set the Y on the sky to temp03
 *
 
-	LDA	Bank2_DayTime_Y,x
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Y,x
 	STA	temp03
 
 *
 *	Load cloud basecolor
 *
 
-	LDA	Bank2_DayTime_CloudColors,x
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_CloudColors,x
 	STA	temp14
 
-	LDA	Bank2_DayTime_StarColors,x
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_StarColors,x
 	STA	temp18
 
 	TXA
@@ -1853,63 +1846,64 @@ Bank2_DayTime_Not_Larger2
 *	Set sprite pointer to temp05 - temp06
 *	Set color  pointer to temp07 - temp08
 *
-	LDA	$b1
+	LDA	P1Height
 
 	CMP	#6
-	BCC	Bank2_DayTime_ItsMoon
+	BCC	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ItsMoon
 
 	CMP	#19
-	BCS	Bank2_DayTime_ItsMoon
+	BCS	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ItsMoon
 
-	LDA	#<Bank2_Sun_DayTime_Sprite
+	LDA	#<Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_Sprite
 	STA	temp06
-	LDA	#>Bank2_Sun_DayTime_Sprite
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_Sprite
 	STA	temp07
 	
-	LDA	#<Bank2_Sun_DayTime_SpriteColor
+	LDA	#<Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_SpriteColor
 	STA	temp08
-	LDA	#>Bank2_Sun_DayTime_SpriteColor
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_SpriteColor
 	STA	temp09
 
-	JMP 	Bank2_DayTime_ItWasSun
-Bank2_DayTime_ItsMoon
+	JMP 	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ItWasSun
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ItsMoon
 
 	sleep	3
-	LDA	#<Bank2_Moon_DayTime_Sprite
+	LDA	#<Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_Sprite
 	STA	temp06
-	LDA	#>Bank2_Moon_DayTime_Sprite
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_Sprite
 	STA	temp07
 	
-	LDA	#<Bank2_Moon_DayTime_SpriteColor
+	LDA	#<Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_SpriteColor
 	STA	temp08
-	LDA	#>Bank2_Moon_DayTime_SpriteColor
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_SpriteColor
 	STA	temp09
 
-Bank2_DayTime_ItWasSun
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ItWasSun
 ******  Controller
-	LDA	$b2
-	BPL	Bank2_DayTime_NoIncr
+	LDA	P0SpriteIndex
+	BPL	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoIncr
 	AND	#%00001111
 	TAX
 
 	LDA	counter
 ******  speed
+1
 	AND	#%00000111
 	CMP	#%00000111
-	BNE	Bank2_DayTime_NoIncr_Again	
+	BNE	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoIncr_Again	
 
 	INX
-Bank2_DayTime_NoIncr_Again
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoIncr_Again
 	TXA
 	AND	#%00001111
 	ORA	temp17
-	STA	$b2
+	STA	P0SpriteIndex
 
-	JMP	Bank2_DayTime_INCRDone
-Bank2_DayTime_NoIncr
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_INCRDone
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoIncr
 	sleep	27
 
-Bank2_DayTime_INCRDone
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_INCRDone
 *
 *	Data already in A, drop high nibble 
 *	and multiply by 8. 
@@ -1925,13 +1919,13 @@ Bank2_DayTime_INCRDone
 	LDA	#0
 	STA	HMP1
 
-	LDA	$b1
+	LDA	P1Height
 	ORA	temp10
-	STA	$b1
+	STA	P1Height
 *
 *	Set Cloud things!
 *
-	LDA	$b2
+	LDA	P0SpriteIndex
 	LSR
 	LSR
 	LSR
@@ -1942,10 +1936,10 @@ Bank2_DayTime_INCRDone
 *	Set first Clouds's X
 *
 	TAY
-	LDA	Bank2_DayTime_Wind_X,y
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Wind_X,y
 	CLC
-	ADC	$b3
-	STA	$b3
+	ADC	P0Y
+	STA	P0Y
 *
 *	If larger than 4, clouds more right 
 *	and should be mirrored
@@ -1957,21 +1951,21 @@ Bank2_DayTime_INCRDone
 *
 *	Set cloud sprite
 *
-	LDA	#<Bank2_Cloud_DayTime_Sprite
+	LDA	#<Bank2_SpecialEffect_SpecialEffect_DayTime_Cloud_DayTime_Sprite
 	STA	temp12
-	LDA	#>Bank2_Cloud_DayTime_Sprite
+	LDA	#>Bank2_SpecialEffect_SpecialEffect_DayTime_Cloud_DayTime_Sprite
 	STA	temp13
 
 	LDA	temp11
 	TAX
-	LDY	Bank2_DayTime_Wind_Sprite_Wait,x	
+	LDY	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Wind_Sprite_Wait,x	
 	
 	LDA	counter
 	LSR
-Bank2_DayTime_Sprite_Wait
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sprite_Wait
 	LSR
 	DEY	
-	BPL	Bank2_DayTime_Sprite_Wait
+	BPL	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sprite_Wait
 
 	ASL
 	ASL
@@ -1982,7 +1976,7 @@ Bank2_DayTime_Sprite_Wait
 	LDY	#15
 	STY	temp19
 
-	LDA	$b3
+	LDA	P0Y
 
 	STA	temp10
 	STA	temp11
@@ -1992,14 +1986,14 @@ Bank2_DayTime_Sprite_Wait
 	STA	temp17
 
 	LDA	(temp04),y		
-	JMP	Bank2_DayTime_Loop
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Loop
 
 	align	256
 
-Bank2_DayTime_FineAdjustTable256
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_FineAdjustTable256
 	fill	3
 
-Bank2_DayTime_Star_X
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Star_X
 	BYTE	#7
 	BYTE	#23
 	BYTE	#31
@@ -2009,7 +2003,7 @@ Bank2_DayTime_Star_X
 	BYTE	#12
 	BYTE	#19
 
-Bank2_DayTime_Wind_X
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Wind_X
 	BYTE	#253
 	BYTE	#254
 	BYTE	#255
@@ -2019,7 +2013,7 @@ Bank2_DayTime_Wind_X
 	BYTE	#3
 	BYTE	#3
 
-Bank2_DayTime_Wind_Sprite_Wait
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Wind_Sprite_Wait
 	BYTE	#0
 	BYTE	#1
 	BYTE	#2
@@ -2029,7 +2023,7 @@ Bank2_DayTime_Wind_Sprite_Wait
 	BYTE	#0
 	BYTE	#0
 
-Bank2_Moon_DayTime_Sprite
+Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_Sprite
 	byte	#%00111100	; (0)
 	byte	#%01111110
 	byte	#%11111111
@@ -2159,7 +2153,7 @@ Bank2_Moon_DayTime_Sprite
 	byte	#%01111110
 	byte	#%00111100
 
-Bank2_Moon_DayTime_SpriteColor
+Bank2_SpecialEffect_SpecialEffect_DayTime_Moon_DayTime_SpriteColor
 	byte	#$08
 	byte	#$0A
 	byte	#$0C
@@ -2169,34 +2163,34 @@ Bank2_Moon_DayTime_SpriteColor
 	byte	#$0A
 	byte	#$08
 
-Bank2_DayTime_Sky_LOW
-	BYTE	#<Bank2_DayTime_Sky_00
-	BYTE	#<Bank2_DayTime_Sky_00
-	BYTE	#<Bank2_DayTime_Sky_00
-	BYTE	#<Bank2_DayTime_Sky_01
-	BYTE	#<Bank2_DayTime_Sky_01
-	BYTE	#<Bank2_DayTime_Sky_02
-	BYTE	#<Bank2_DayTime_Sky_02
-	BYTE	#<Bank2_DayTime_Sky_03
-	BYTE	#<Bank2_DayTime_Sky_03
-	BYTE	#<Bank2_DayTime_Sky_04
-	BYTE	#<Bank2_DayTime_Sky_04
-	BYTE	#<Bank2_DayTime_Sky_05	; 12
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_LOW
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_01
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_01
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_02
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_02
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_03
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_03
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_04
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_04
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_05	; 12
 
-	BYTE	#<Bank2_DayTime_Sky_05
-	BYTE	#<Bank2_DayTime_Sky_04
-	BYTE	#<Bank2_DayTime_Sky_04
-	BYTE	#<Bank2_DayTime_Sky_06
-	BYTE	#<Bank2_DayTime_Sky_06
-	BYTE	#<Bank2_DayTime_Sky_07
-	BYTE	#<Bank2_DayTime_Sky_07
-	BYTE	#<Bank2_DayTime_Sky_01
-	BYTE	#<Bank2_DayTime_Sky_01
-	BYTE	#<Bank2_DayTime_Sky_00
-	BYTE	#<Bank2_DayTime_Sky_00
-	BYTE	#<Bank2_DayTime_Sky_00	; 24
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_05
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_04
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_04
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_06
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_06
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_07
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_07
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_01
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_01
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
+	BYTE	#<Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00	; 24
 
-Bank2_DayTime_Y
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Y
 	BYTE	#10
 	BYTE	#12
 	BYTE	#14
@@ -2224,7 +2218,7 @@ Bank2_DayTime_Y
 	BYTE	#10		; 25
 
 
-Bank2_Cloud_DayTime_Sprite
+Bank2_SpecialEffect_SpecialEffect_DayTime_Cloud_DayTime_Sprite
 	byte	#%01110110	; (0)
 	byte	#%11111111
 	byte	#%01110110
@@ -2245,13 +2239,13 @@ Bank2_Cloud_DayTime_Sprite
 	byte	#%01101110
 	BYTE	#0
 
-Bank2_Cloud_DayTime_SpriteColor
+Bank2_SpecialEffect_SpecialEffect_DayTime_Cloud_DayTime_SpriteColor
 	byte	#$00
 	byte	#$02
 	byte	#$04
 	byte	#$04	
 
-Bank2_Sun_DayTime_SpriteColor
+Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_SpriteColor
 	byte	#$0E
 	byte	#$1A
 	byte	#$1C
@@ -2261,7 +2255,7 @@ Bank2_Sun_DayTime_SpriteColor
 	byte	#$1C
 	byte	#$1A
 
-Bank2_DayTime_FineAdjustTable
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_FineAdjustTable
 	byte	#$80
 	byte	#$70
 	byte	#$60
@@ -2281,7 +2275,7 @@ Bank2_DayTime_FineAdjustTable
 
 	_align	152
 
-Bank2_Sun_DayTime_Sprite
+Bank2_SpecialEffect_SpecialEffect_DayTime_Sun_DayTime_Sprite
 	byte	#%00000000	; (0)
 	byte	#%01010100
 	byte	#%00111000
@@ -2411,7 +2405,7 @@ Bank2_Sun_DayTime_Sprite
 	byte	#%01010100
 	byte	#%00111000
 
-Bank2_DayTime_CloudColors
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_CloudColors
 	BYTE	#$02
 	BYTE	#$02
 	BYTE	#$02
@@ -2440,8 +2434,8 @@ Bank2_DayTime_CloudColors
 
 	_align	130
 
-Bank2_DayTime_Skies
-Bank2_DayTime_Sky_00
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Skies
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_00
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
@@ -2458,7 +2452,7 @@ Bank2_DayTime_Sky_00
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
-Bank2_DayTime_Sky_01
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_01
 	BYTE	#$02
 	BYTE	#$04
 	BYTE	#$02
@@ -2475,7 +2469,7 @@ Bank2_DayTime_Sky_01
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
-Bank2_DayTime_Sky_02
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_02
 	BYTE	#$64
 	BYTE	#$64
 	BYTE	#$62
@@ -2492,7 +2486,7 @@ Bank2_DayTime_Sky_02
 	BYTE	#$60
 	BYTE	#$60
 	BYTE	#$60
-Bank2_DayTime_Sky_03
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_03
 	BYTE	#$84
 	BYTE	#$84
 	BYTE	#$86
@@ -2509,7 +2503,7 @@ Bank2_DayTime_Sky_03
 	BYTE	#$80
 	BYTE	#$80
 	BYTE	#$80
-Bank2_DayTime_Sky_03
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_03
 	BYTE	#$88
 	BYTE	#$8a
 	BYTE	#$8a
@@ -2526,7 +2520,7 @@ Bank2_DayTime_Sky_03
 	BYTE	#$80
 	BYTE	#$82
 	BYTE	#$80
-Bank2_DayTime_Sky_04
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_04
 	BYTE	#$84
 	BYTE	#$86
 	BYTE	#$88
@@ -2543,7 +2537,7 @@ Bank2_DayTime_Sky_04
 	BYTE	#$86
 	BYTE	#$84
 	BYTE	#$84
-Bank2_DayTime_Sky_05
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_05
 	BYTE	#$84
 	BYTE	#$86
 	BYTE	#$84
@@ -2560,7 +2554,7 @@ Bank2_DayTime_Sky_05
 	BYTE	#$8C
 	BYTE	#$8A
 	BYTE	#$88
-Bank2_DayTime_Sky_06
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_06
 	BYTE	#$38
 	BYTE	#$38
 	BYTE	#$36
@@ -2577,7 +2571,7 @@ Bank2_DayTime_Sky_06
 	BYTE	#$42
 	BYTE	#$44
 	BYTE	#$42
-Bank2_DayTime_Sky_07
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Sky_07
 	BYTE	#$34
 	BYTE	#$34
 	BYTE	#$32
@@ -2597,7 +2591,7 @@ Bank2_DayTime_Sky_07
 
 	_align	24
 
-Bank2_DayTime_StarColors
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_StarColors
 	BYTE	#$0e
 	BYTE	#$0c
 	BYTE	#$0a
@@ -2623,34 +2617,34 @@ Bank2_DayTime_StarColors
 	BYTE	#$0c
 	BYTE	#$0e
 
-	align	256	
+	_align	215	
 
-Bank2_DayTime_Loop
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Loop
 	STA	WSYNC
 
 	STA	COLUBK			; 3 
 	LDA	#7			; 2 (5)
 	DCP	temp03			; 5 (10)
-	BCS	Bank2_Draw_Sun_Moon	; 2 (12)
+	BCS	Bank2_SpecialEffect_SpecialEffect_DayTime_Draw_Sun_Moon	; 2 (12)
 	LDA	#0			; 2 (14)
 	
 	sleep	11
 
-	JMP	Bank2_Done_Sun_Moon	; 3 (25)
-Bank2_Draw_Sun_Moon	
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_Done_Sun_Moon	; 3 (25)
+Bank2_SpecialEffect_SpecialEffect_DayTime_Draw_Sun_Moon	
 	LDY	temp03			; 3 (15)
 	LDA	(temp08),y		; 5 (20)
 	STA	COLUP1			; 3 (23)
 	LDA	(temp06),y		; 5 (28)
-Bank2_Done_Sun_Moon	
+Bank2_SpecialEffect_SpecialEffect_DayTime_Done_Sun_Moon	
 	STA	GRP1			; 3 (31)
 
-	LDA	#Bank2_DayTime_L2	; 2 (33)
+	LDA	#Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_L2	; 2 (33)
 	CMP	temp10			; 3 (36)
-	BCC	Bank2_DayTime_CloudX_Not_Smaller ; 2 (38)
-Bank2_DayTime_ZeroCloudSprite
+	BCC	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_CloudX_Not_Smaller ; 2 (38)
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ZeroCloudSprite
 	sleep	7
-Bank2_DayTime_ZeroCloudSprite2
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ZeroCloudSprite2
 	sleep	4
 	LDA	temp19			; 3 
 	AND	#%00000011		; 2 
@@ -2658,11 +2652,11 @@ Bank2_DayTime_ZeroCloudSprite2
 
 	LDX	#0			; 2 (40)
 	STX	temp11
-	JMP	Bank2_DayTime_SaveCloudSprite	; 3 (69)
-Bank2_DayTime_CloudX_Not_Smaller
-	LDA	#Bank2_DayTime_R2	; 2 (40)
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_SaveCloudSprite	; 3 (69)
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_CloudX_Not_Smaller
+	LDA	#Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_R2	; 2 (40)
 	CMP	temp10			; 3 (43)
-	BCC	Bank2_DayTime_ZeroCloudSprite2	; 2 (45)
+	BCC	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ZeroCloudSprite2	; 2 (45)
 
 	LDA	temp19			; 3 (48)
 	AND	#%00000011		; 2 (50)
@@ -2672,34 +2666,34 @@ Bank2_DayTime_CloudX_Not_Smaller
 	LDA	temp15
 	NOP
 	STA	COLUP0			; 3 (67)	
-Bank2_DayTime_SaveCloudSprite
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_SaveCloudSprite
 	STX	GRP0			; 3 (70)
 
 	STA	WSYNC
 	CPY	#3
-	BNE	Bank2_DayTime_SkipNewX
+	BNE	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_SkipNewX
 
 	sleep	2
 	LDA	temp11
-Bank2_DayTime_DivideLoop2
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_DivideLoop2
 	sbc	#15
-   	bcs	Bank2_DayTime_DivideLoop2
+   	bcs	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_DivideLoop2
 	sleep	5
    	sta	RESP0
 	TAY
-   	lda	Bank2_DayTime_FineAdjustTable256,Y
+   	lda	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_FineAdjustTable256,Y
    	sta	HMP0
-	JMP	Bank2_DayTime_NoZeroIt
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoZeroIt
 
-Bank2_DayTime_SkipNewX
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_SkipNewX
 
 	LDA	#0
 	STA	ENABL
 	LDX	temp16
-	LDA	Bank2_DayTime_Star_X,x
-Bank2_DayTime_StarXLoop
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Star_X,x
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_StarXLoop
 	SBC	#4
-	BCS	Bank2_DayTime_StarXLoop	
+	BCS	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_StarXLoop	
 	STA	RESBL
 	LDA	temp18
 	STA	COLUPF
@@ -2714,21 +2708,21 @@ Bank2_DayTime_StarXLoop
 	LDA	#0
 	STA	HMP0
 
-Bank2_DayTime_NoZeroIt
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoZeroIt
 	STA	WSYNC
 	STA	HMOVE			; 3
 
 	LDY	#0		
 	CPY	temp18					
-	BNE	Bank2_DayTime_ThereAreStars
+	BNE	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ThereAreStars
 	STY	ENABL
 	STY	temp17
-	JMP	Bank2_DayTime_NoStars
-Bank2_DayTime_ThereAreStars
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoStars
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ThereAreStars
 	LDA	temp17
 	STA	ENABL
 	STY	temp17
-Bank2_DayTime_NoStars
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoStars
 
 	LDY	temp19
 	DEY	
@@ -2738,24 +2732,24 @@ Bank2_DayTime_NoStars
 	AND	#%00000011
 	TAX
 
-	LDA	Bank2_Cloud_DayTime_SpriteColor,x
+	LDA	Bank2_SpecialEffect_SpecialEffect_DayTime_Cloud_DayTime_SpriteColor,x
 	ADC	temp14
 	STA	temp15
 
 	LDA	temp19
 	AND	#%00000011
 	CMP	#3
-	BEQ	Bank2_DayTime_ToNewX
+	BEQ	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ToNewX
 
 	sleep	7
-	JMP	Bank2_DayTime_NoNewX
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoNewX
 
-Bank2_DayTime_ToNewX
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_ToNewX
 	LDA	temp10
 	CLC	
 	ADC	#63
 	STA	temp10
-Bank2_DayTime_NoNewX
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_NoNewX
 
 	LDA	temp10
 	STA	temp11
@@ -2764,11 +2758,11 @@ Bank2_DayTime_NoNewX
 	LDA	(temp04),y		; 5 
 
 	CPY	#255		
-	BEQ 	Bank2_DayTime_Reset
-	JMP	Bank2_DayTime_Loop
+	BEQ 	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Reset
+	JMP	Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Loop
 
 
-Bank2_DayTime_Reset
+Bank2_SpecialEffect_SpecialEffect_DayTime_DayTime_Reset
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
@@ -2779,8 +2773,37 @@ Bank2_DayTime_Reset
 
 	STX	GRP0
 	STX	GRP1
+	STX	ENABL
 	STX	HMCLR
 	STX	REFP1
+
+	ldx	item
+	txs
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
 
 	ldx	item
 	txs
@@ -2854,7 +2877,6 @@ ScreenBottomBank2
 *
 
 	align	256
-
 
 
 

@@ -328,6 +328,32 @@ class Compiler:
                 self.__bankData.append(self.generate_Fire(fullName,
                                                            data, self.__bank))
 
+            elif subtyp == "DayTime":
+                self.__bankData.append(self.generate_DayTime(fullName,
+                                                           data, self.__bank))
+
+    def generate_DayTime(self, name, data, bank):
+        mainKernel      = self.__loader.io.loadSubModule("DayTime_Kernel")
+        subKernel       = self.__loader.io.loadSubModule("DayTime_Kernel_SunMoonX")
+
+        xVar = self.__loader.virtualMemory.getVariableByName2(data[0])
+        if xVar == False:
+           mainKernel = mainKernel.replace("!!!SunMoonX!!!", "")
+        else:
+           mainKernel = mainKernel.replace("!!!SunMoonX!!!", subKernel)
+
+        dataVars = data[0:4]
+        for num in range(0,4):
+            var         = "#VAR0"+str(num+1)+"#"
+            mainKernel  = mainKernel.replace(var, dataVars[num])
+
+        mainKernel = mainKernel.replace("!!!LSRs!!!", data[4]).replace("!!!LSRs2!!!", data[5])\
+                     .replace("#NAME#", name).replace("#BANK#", bank)
+
+
+
+        return(mainKernel)
+
     def generate_Reseter(self, name, data, bank):
         code = name + "\n\tLDX\t#0\n\tLDA\tframeColor\n\tSTA\tWSYNC\n"
         toZero              = ["GRP0", "GRP1", "ENAM0", "ENAM1", "ENABL", "PF0", "PF1", "PF2", "HMCLR"]
