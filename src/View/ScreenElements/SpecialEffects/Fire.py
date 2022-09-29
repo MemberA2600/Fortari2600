@@ -56,7 +56,7 @@ class Fire:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__nibbleVars = []
+        # self.__nibbleVars = []
         self.__byteVars   = []
 
         for address in self.__loader.virtualMemory.memory.keys():
@@ -66,10 +66,10 @@ class Fire:
                         (var.validity == "global" or
                          var.validity == self.__currentBank) and
                         (var.system == False or
-                         var.iterable == True or
-                         var.linkable == True)
+                         var.iterable == True )
+
                 ):
-                    self.__nibbleVars.append(address + "::" + variable)
+                  #  self.__nibbleVars.append(address + "::" + variable)
                     if var.type == "byte": self.__byteVars.append(address + "::" + variable)
 
 

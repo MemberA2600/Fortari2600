@@ -351,7 +351,6 @@ class Compiler:
                      .replace("#NAME#", name).replace("#BANK#", bank)
 
 
-
         return(mainKernel)
 
     def generate_Reseter(self, name, data, bank):

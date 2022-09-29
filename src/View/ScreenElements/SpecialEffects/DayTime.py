@@ -64,6 +64,28 @@ class DayTime:
 
         self.__listBoxes = []
 
+        self.__byteVars = []
+        self.__iterVars = []
+
+        for address in self.__loader.virtualMemory.memory.keys():
+            for variable in self.__loader.virtualMemory.memory[address].variables.keys():
+                var = self.__loader.virtualMemory.memory[address].variables[variable]
+                if ((var.validity == "global" or
+                     var.validity == self.__currentBank) and
+                        (var.system == False or
+                         var.iterable == True or
+                         var.linkable == True) and
+                        var.type == "byte"
+                ):
+                    self.__byteVars.append(address + "::" + variable)
+                if ((var.type == "byte" or var.type == "nibble") and
+                        (var.validity == "global" or
+                         var.validity == self.__currentBank) and
+                        (var.system == False or
+                         var.iterable == True)
+                ):
+                    self.__iterVars.append(address + "::" + variable)
+
         for num in range(0, frameMax):
             f = Frame(self.__uniqueFrame, width=self.__w // frameMax,
                                        bg=self.__loader.colorPalettes.getColor("window"),
@@ -71,19 +93,6 @@ class DayTime:
 
             f.pack_propagate(False)
             f.pack(side=LEFT, anchor=E, fill=Y)
-
-            self.__byteVars = []
-            for address in self.__loader.virtualMemory.memory.keys():
-                for variable in self.__loader.virtualMemory.memory[address].variables.keys():
-                    var = self.__loader.virtualMemory.memory[address].variables[variable]
-                    if ((var.validity == "global" or
-                         var.validity == self.__currentBank) and
-                            (var.system == False or
-                             var.iterable == True or
-                             var.linkable == True) and
-                             var.type     == "byte"
-                    ):
-                        self.__byteVars.append(address + "::" + variable)
 
             l = Label(f,
                           text=self.__dictionaries.getWordFromCurrentLanguage(words[num]) + ":",
@@ -165,8 +174,12 @@ class DayTime:
                 self.__listBoxes[-1]["listBox"] = lbox
                 self.__listBoxes[-1]["scrollBar"] = scrollBar
 
-                for item in self.__byteVars:
-                   self.__listBoxes[-1]["listBox"].insert(END, item)
+                if num == 0:
+                    for item in self.__byteVars:
+                       self.__listBoxes[-1]["listBox"].insert(END, item)
+                else:
+                    for item in self.__iterVars:
+                       self.__listBoxes[-1]["listBox"].insert(END, item)
             else:
                 l = Label(f,
                           text=self.__dictionaries.getWordFromCurrentLanguage("sunMoon") + ":",
@@ -242,15 +255,15 @@ class DayTime:
         for num in range(1,4):
             selector = 0
             if self.__data[3 + num] == "#":
-               self.__data[3 + num] = self.__byteVars[0].split("::")[1]
+               self.__data[3 + num] = self.__iterVars[0].split("::")[1]
 
-            for itemNum in range(0, len(self.__byteVars)):
-                if self.__byteVars[itemNum].split("::")[1] == self.__data[3 + num]:
+            for itemNum in range(0, len(self.__iterVars)):
+                if self.__iterVars[itemNum].split("::")[1] == self.__data[3 + num]:
                    selector = itemNum
                    break
 
             self.__listBoxes[num]["listBox"].select_set(selector)
-            self.__listBoxes[num]["selected"] = self.__byteVars[selector].split("::")[1]
+            self.__listBoxes[num]["selected"] = self.__iterVars[selector].split("::")[1]
             self.__data[num + 3] = self.__listBoxes[num]["selected"]
 
         for num in range(0,4):
@@ -337,10 +350,16 @@ class DayTime:
                break
 
         if numInList == 0 and self.__constOrVar.get() == 1: return
-        if self.__listBoxes[numInList]["selected"] != self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]:
-           self.__listBoxes[numInList]["selected"] = self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]
-           self.__data[3+numInList] = self.__listBoxes[numInList]["selected"]
-           self.__changeData(self.__data)
+        if numInList == 0:
+            if self.__listBoxes[numInList]["selected"] != self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]:
+               self.__listBoxes[numInList]["selected"] = self.__byteVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]
+               self.__data[3+numInList] = self.__listBoxes[numInList]["selected"]
+               self.__changeData(self.__data)
+        else:
+            if self.__listBoxes[numInList]["selected"] != self.__iterVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]:
+               self.__listBoxes[numInList]["selected"] = self.__iterVars[self.__listBoxes[numInList]["listBox"].curselection()[0]].split("::")[1]
+               self.__data[3+numInList] = self.__listBoxes[numInList]["selected"]
+               self.__changeData(self.__data)
 
 
     def isItHex(self, num):

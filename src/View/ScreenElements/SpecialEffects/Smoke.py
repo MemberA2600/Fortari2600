@@ -58,6 +58,7 @@ class Smoke:
 
         self.__nibbleVars = []
         self.__byteVars   = []
+        self.__iterVars   = []
 
         for address in self.__loader.virtualMemory.memory.keys():
             for variable in self.__loader.virtualMemory.memory[address].variables.keys():
@@ -71,6 +72,14 @@ class Smoke:
                 ):
                     self.__nibbleVars.append(address + "::" + variable)
                     if var.type == "byte": self.__byteVars.append(address + "::" + variable)
+                if ((var.type == "byte" or var.type == "nibble") and
+                        (var.validity == "global" or
+                         var.validity == self.__currentBank) and
+                        (var.system == False or
+                         var.iterable == True )
+                ):
+                    self.__iterVars.append(address + "::" + variable)
+
 
         self.__frames = []
         self.__words = ["dataVar", "spriteColor", "backColor", "gradientSprite", "gradientBack"]
@@ -149,8 +158,12 @@ class Smoke:
             self.__listBoxes[num]["listbox"].bind("<KeyRelease-Up>", self.__clickedListBox)
             self.__listBoxes[num]["listbox"].bind("<KeyRelease-Down>", self.__clickedListBox)
 
-            for item in self.__byteVars:
-                self.__listBoxes[num]["listbox"].insert(END, item)
+            if num != 0:
+                for item in self.__byteVars:
+                    self.__listBoxes[num]["listbox"].insert(END, item)
+            else:
+                for item in self.__iterVars:
+                    self.__listBoxes[num]["listbox"].insert(END, item)
 
             if isItHex == True:
                self.__changerButtons[num-1]["value"].set(1)
@@ -164,15 +177,28 @@ class Smoke:
                    self.__listBoxes[num]["listbox"].config(state=NORMAL)
 
                selector = 0
-               for num2 in range(0, len(self.__byteVars)):
-                   if self.__byteVars[num2].split("::")[1] == self.__data[num+3]:
-                      selector = num2
-                      break
+               if num > 0:
+                   for num2 in range(0, len(self.__byteVars)):
+                       if self.__byteVars[num2].split("::")[1] == self.__data[num+3]:
+                          selector = num2
+                          break
 
-               self.__listBoxes[num]["lastSelected"] = self.__byteVars[selector].split("::")[-1]
+                   self.__listBoxes[num]["lastSelected"] = self.__byteVars[selector].split("::")[-1]
+
+               else:
+                   for num2 in range(0, len(self.__iterVars)):
+                       if self.__iterVars[num2].split("::")[1] == self.__data[num+3]:
+                          selector = num2
+                          break
+                   self.__listBoxes[num]["lastSelected"] = self.__iterVars[selector].split("::")[-1]
+
                self.__listBoxes[num]["listbox"].select_set(selector)
-               if self.__data[num+3] == "#": self.__data[num+3] =\
-                   self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
+               if num > 0:
+                   if self.__data[num+3] == "#": self.__data[num+3] =\
+                       self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
+               else:
+                   if self.__data[num+3] == "#": self.__data[num+3] =\
+                       self.__iterVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
 
         self.__gradients = [self.__data[6].split("|"), self.__data[7].split("|")]
         self.__gradientEntries = [[], []]
@@ -182,6 +208,9 @@ class Smoke:
                 self.__gradientEntries[groupNum].append(HexEntry(self.__loader, self.__frames[groupNum+3], self.__colors, self.__colorDict,
                                                     self.__smallFont, self.__gradients[groupNum], colorNum, None,
                                                     self.__changeGradientColorVar))
+
+       # self.__listBoxes[0]["listbox"].itemconfig(0, fg = self.__loader.colorPalettes.getColor("fontDisabled"))
+       # self.__listBoxes[0]["listbox"].itemconfig(1, fg = self.__loader.colorPalettes.getColor("fontDisabled"))
 
     def __changeGradientColorVar(self, event):
         group = 0
@@ -223,11 +252,14 @@ class Smoke:
     def __clickedListBox(self, event):
         name = str(event.widget).split(".")[-1]
         num  = self.__words.index(name)
+        this = None
 
         if num > 0:
            if self.__changerButtons[num-1]["value"].get() == 1: return
+           this = self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
+        else:
+           this = self.__iterVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
 
-        this = self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
         if this != self.__listBoxes[num]["lastSelected"]:
            self.__listBoxes[num]["lastSelected"]    = this
            self.__data[num+3]                       = this
