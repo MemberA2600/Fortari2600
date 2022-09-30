@@ -222,6 +222,10 @@ class VirtualMemory:
                 self.getVariableByName(key, "bank1").iterable = False
             if d[key].split(",")[2].replace(" ","").replace("\t", "") == "non-link":
                 self.getVariableByName(key, "bank1").linkable = False
+            if d[key].split(",")[3].replace(" ","").replace("\t", "") == "BCD":
+                self.getVariableByName(key, "bank1").bcd = True
+            if d[key].split(",")[4].replace(" ","").replace("\t", "") == "colorVar":
+                self.getVariableByName(key, "bank1").colorVar = True
 
     def addArray(self, name):
         self.arrays[name] = {}

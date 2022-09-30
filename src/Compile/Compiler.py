@@ -332,6 +332,22 @@ class Compiler:
                 self.__bankData.append(self.generate_DayTime(fullName,
                                                            data, self.__bank))
 
+            elif subtyp == "Space":
+                self.__bankData.append(self.generate_Space(fullName,
+                                                           data, self.__bank))
+
+
+    def generate_Space(self, name, data, bank):
+        mainKernel      = self.__loader.io.loadSubModule("Space_Kernel").replace("#VAR01#", data[0])
+
+        var = self.__loader.virtualMemory.getVariableByName2(data[1])
+        if var == False:
+           data[1] = "#" + data[1]
+
+        mainKernel = mainKernel.replace("#VAR02#", data[1]).replace("#NAME#", name).replace("#BANK#", bank)
+        return mainKernel
+
+
     def generate_DayTime(self, name, data, bank):
         mainKernel      = self.__loader.io.loadSubModule("DayTime_Kernel")
         subKernel       = self.__loader.io.loadSubModule("DayTime_Kernel_SunMoonX")

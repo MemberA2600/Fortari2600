@@ -8,4 +8,5 @@ class Variable:
         self.iterable  = True
         self.linkable  = True
             #"global", bank{2-8}
-
+        self.bcd       = False
+        self.colorVar  = False

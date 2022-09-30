@@ -78,7 +78,7 @@ class DayTime:
                         var.type == "byte"
                 ):
                     self.__byteVars.append(address + "::" + variable)
-                if ((var.type == "byte" or var.type == "nibble") and
+                if ((var.type == "byte") and
                         (var.validity == "global" or
                          var.validity == self.__currentBank) and
                         (var.system == False or
