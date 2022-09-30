@@ -103,7 +103,7 @@ class Space:
         self.__label1.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
         self.__label2 = Label(self.__frame2,
-                  text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
+                  text=self.__dictionaries.getWordFromCurrentLanguage("colorVar") + ":",
                   font=self.__smallFont, fg=self.__colors.getColor("font"),
                   bg=self.__colors.getColor("window"), justify=CENTER
                   )

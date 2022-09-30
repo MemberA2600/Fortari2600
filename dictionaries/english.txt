@@ -354,3 +354,6 @@ sunMoon=Sun & Moon Sprite
 cloud=Cloud Sprite
 direction=Direction
 numOfLines=Number of Lines
+baseColor=Base Color
+rainbow=Rainbow
+oneColor=One Color

@@ -354,3 +354,6 @@ sunMoon=Nap és Hold Sprite
 cloud=Felhõ Sprite
 direction=Irány
 numOfLines=Sorok Száma:
+baseColor=Alapszín
+rainbow=Szivárvány
+oneColor=Egyszínû

@@ -132,6 +132,7 @@ class Indicator:
             from Fire       import Fire
             from DayTime    import DayTime
             from Space      import Space
+            from Gradient   import Gradient
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
@@ -143,7 +144,8 @@ class Indicator:
                                                             ]],
                 "DayTime"              : [DayTime,        ["36", "#", "#", "#", "1", "1"
                                                             ]],
-                "Space"                : [Space,          ["#", "%01111010"]]
+                "Space"                : [Space,          ["#", "%01111010"]],
+                "Gradient"             : [Gradient,       ["#", "15", "$FF", "#"]]
             }
 
 
