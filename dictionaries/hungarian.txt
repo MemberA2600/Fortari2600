@@ -357,3 +357,4 @@ numOfLines=Sorok Száma:
 baseColor=Alapszín
 rainbow=Szivárvány
 oneColor=Egyszínû
+colorVar=Színváltozó

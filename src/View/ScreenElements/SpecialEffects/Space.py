@@ -353,8 +353,13 @@ class Space:
                 }
 
         maximum = {
-            self.__lineConst : 31,
+            self.__lineConst : 32,
             self.__speedConst: 7
+                }
+
+        minimum = {
+            self.__lineConst : 1,
+            self.__speedConst: 0
                 }
 
         val = values[event.widget].get()
@@ -371,7 +376,7 @@ class Space:
             )
 
         val = int(val)
-        if val < 0: val = 0
+        if val < minimum[event.widget]: val = minimum[event.widget]
         if val > maximum[event.widget]: val = maximum[event.widget]
 
         values[event.widget].set(val)
@@ -438,7 +443,7 @@ class Space:
                lastPart = key
                break
 
-        firstPart = bin(int(self.__lineConstVar.get())).replace("0b", "")
+        firstPart = bin(int(self.__lineConstVar.get())-1).replace("0b", "")
         while len(firstPart) < 5:
             firstPart = "0" + firstPart
 

@@ -331,6 +331,185 @@ class Gradient:
         self.__numOfLines.bind("<KeyRelease>", self.__changeEntry)
         self.__numOfLines.bind("<FocusOut>", self.__changeEntry)
 
+        self.__hexEntries = {}
+        self.__maxNum     = 32
+        self.__hexFrames  = []
+        perLine           = 4
+        numOfLines        = self.__maxNum // perLine
+        self.__hexValues  = []
+
+        for num in range(0, self.__maxNum):
+            self.__hexValues.append("$00")
+
+        for num in range(0, numOfLines):
+
+            h = round((self.__h // numOfLines)*0.5)
+
+            f = Frame(self.__frame3, width=self.__w,
+                      bg=self.__loader.colorPalettes.getColor("window"),
+                      height= h)
+
+            f.pack_propagate(False)
+            f.pack(side=TOP, anchor=N, fill = X)
+
+            self.__hexFrames.append(f)
+
+            f1 = Frame(f, width=self.__w // perLine // 3,
+                       bg=self.__loader.colorPalettes.getColor("window"),
+                       height= h)
+
+            f1.pack_propagate(False)
+            f1.pack(side=LEFT, anchor=E, fill=Y)
+
+            f2 = Frame(f, width=self.__w // perLine // 3,
+                       bg=self.__loader.colorPalettes.getColor("window"),
+                       height= h)
+
+            f2.pack_propagate(False)
+            f2.pack(side=LEFT, anchor=E, fill=Y)
+
+            f3 = Frame(f, width=self.__w // perLine // 3,
+                       bg=self.__loader.colorPalettes.getColor("window"),
+                       height= h)
+
+            f3.pack_propagate(False)
+            f3.pack(side=LEFT, anchor=E, fill=Y)
+
+            f4 = Frame(f, width=self.__w // perLine // 3,
+                       bg=self.__loader.colorPalettes.getColor("window"),
+                       height= h)
+
+            f4.pack_propagate(False)
+            f4.pack(side=LEFT, anchor=E, fill=Y)
+
+            font = self.__smallFont
+
+            hexEntry1 = HexEntry(self.__loader, f1, self.__colors, self.__colorDict,
+                                 font, self.__hexValues, num, None, self.__changeHex2)
+
+            hexEntry2 = HexEntry(self.__loader, f2, self.__colors, self.__colorDict,
+                                 font, self.__hexValues, num + numOfLines, None, self.__changeHex2)
+
+            hexEntry3 = HexEntry(self.__loader, f3, self.__colors, self.__colorDict,
+                                 font, self.__hexValues, num + (numOfLines * 2), None, self.__changeHex2)
+
+            hexEntry4 = HexEntry(self.__loader, f4, self.__colors, self.__colorDict,
+                                 font, self.__hexValues, num + (numOfLines * 3), None, self.__changeHex2)
+
+            self.__hexEntries[num]                    = hexEntry1
+            self.__hexEntries[num +  numOfLines]      = hexEntry2
+            self.__hexEntries[num + (numOfLines * 2)] = hexEntry3
+            self.__hexEntries[num + (numOfLines * 3)] = hexEntry4
+
+        self.__button = Button(
+            self.__frame3, width=self.__w,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font = self.__normalFont,
+            command = self.generatePattern,
+            text = self.__dictionaries.getWordFromCurrentLanguage("generateRandom")
+            )
+
+        self.__button.pack_propagate(False)
+        self.__button.pack(side=TOP, anchor = N)
+
+        if self.__data[6] == "#":
+            self.generatePattern()
+        else:
+            items = self.__data[6].split("|")
+            for itemNum in range(0, len(items)):
+                self.__hexEntries[itemNum].setValue(items[itemNum])
+
+        self.disabler()
+
+    def __changeHex2(self, event):
+        selector = 0
+        for entryNum in range(0, len(self.__hexEntries)):
+            if self.__hexEntries[entryNum].getEntry() == event.widget:
+               selector = entryNum
+               break
+
+        numOfEntry = selector
+        entry = self.__hexEntries[numOfEntry]
+
+        if self.isItHex(entry.getValue()) == False:
+            event.widget.config(
+                bg=self.__colors.getColor("boxBackUnSaved"),
+                fg=self.__colors.getColor("boxFontUnSaved")
+            )
+            return
+
+        v = entry.getValue()
+        v = "$0"+v[2]
+        entry.setValue(v)
+
+        temp = self.__data[6].split("|")
+        if temp[numOfEntry] != entry.getValue():
+            temp[numOfEntry] = entry.getValue()
+            self.__data[6] = "|".join(temp)
+            self.__changeData(self.__data)
+
+    def disabler(self):
+        try:
+            lineNum = int(self.__numOfLinesVar.get())
+
+            for num in range(0, self.__maxNum):
+                if num+1 > lineNum:
+                    self.__hexEntries[num].changeState(DISABLED)
+                else:
+                    self.__hexEntries[num].changeState(NORMAL)
+        except:
+            pass
+
+    def generatePattern(self):
+        numOfLines = int(self.__data[4])
+        from datetime import datetime
+        from random import randint
+
+        time = datetime.now()
+        importantNum = int(str(time).split(".")[-1]) % 2
+
+        patternSize = (numOfLines // 2 + numOfLines % 2) - 1
+
+        patterns = {
+            0: "$00",
+            1: "$02",
+            2: "$04",
+            3: "$06",
+            4: "$08",
+            5: "$0A",
+            6: "$0C",
+            7: "$0E",
+        }
+
+        changer = [[1, 1, 1, -1, -1], [1, 1, -1, -1, -1]]
+
+        currentNum = importantNum * 7
+        changerList = changer[importantNum]
+
+        listOfNums = [patterns[currentNum]]
+
+        for num in range(0, patternSize):
+            r = randint(0, 4)
+            currentNum += changerList[r]
+            if currentNum < 0: currentNum = 1
+            if currentNum > 7: currentNum = 6
+
+            listOfNums.append(patterns[currentNum])
+
+        result = ""
+        if numOfLines % 2 == 0:
+            result = "|".join(listOfNums) + "|" + "|".join(listOfNums[::-1])
+        else:
+            result = "|".join(listOfNums[:-1]) + "|" + "|".join(listOfNums[::-1])
+
+        self.__data[6] = result
+        items = result.split("|")
+        for itemNum in range(0, len(items)):
+            self.__hexEntries[itemNum].setValue(items[itemNum])
+
+        self.__changeData(self.__data)
+
     def __changeEntry(self, event):
         if self.isItNum(self.__numOfLinesVar.get()) == False:
             event.widget.config(
@@ -343,12 +522,13 @@ class Gradient:
             fg=self.__colors.getColor("boxFontNormal")
         )
         num = int(self.__numOfLinesVar.get())
-        if num < 1: num = 1
-        if num > 64: num = 64
+        if num < 1            : num = 1
+        if num > self.__maxNum: num = self.__maxNum
 
         self.__numOfLinesVar.set(str(num))
         self.__data[4] = str(num)
         self.__changeData(self.__data)
+        self.disabler()
 
     def __changeSelected(self, event):
         if self.__constOrVar.get() == 1: return

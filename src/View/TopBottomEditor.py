@@ -790,6 +790,8 @@ class TopBottomEditor:
         return self.__codeData
 
     def __changeData(self, data):
+        if "#" in data: return
+
         section = self.__codeData[self.__activePart][self.getBankNum()]
         section[1] = True
 

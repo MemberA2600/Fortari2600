@@ -357,3 +357,4 @@ numOfLines=Number of Lines
 baseColor=Base Color
 rainbow=Rainbow
 oneColor=One Color
+colorVar=Color Variable
