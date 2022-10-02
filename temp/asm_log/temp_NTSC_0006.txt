@@ -3876,11 +3876,11 @@
 03783  21a9 85 02                                   2 ['STA', 'WSYNC']                   
 03784  21ab 85 09                                   2 ['STA', 'COLUBK']                  
 03785  21ad >>Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient
-03785  21ad a5 80                                   2 ['LDA', 'random']                  
+03785  21ad a5 81                                   2 ['LDA', 'counter']                 
 03786  21af 85 82                                   2 ['STA', 'temp01']                  
 03787  21b1 a9 0f                                   2 ['LDA', '#15']                     
 03788  21b3 85 83                                   2 ['STA', 'temp02']                  
-03789  21b5 a9 ff                                   2 ['LDA', '#$FF']                    
+03789  21b5 a9 40                                   2 ['LDA', '#$40']                    
 03790  21b7 85 84                                   2 ['STA', 'temp03']                  
 03791  21b9 a9 db                                   2 ['LDA', '#<Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Back']
 03792  21bb 85 85                                   2 ['STA', 'temp04']                  

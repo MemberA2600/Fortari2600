@@ -333,19 +333,52 @@ class Compiler:
                                                            data, self.__bank))
 
             elif subtyp == "Space":
-                self.__bankData.append(self.generate_Space(fullName,
-                                                           data, self.__bank))
+                those = self.generate_Space(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__routines["Space"] = those[1]
 
+            elif subtyp == "Gradient":
+                those = self.generate_Gradient(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__routines["Space"] = those[1]
+
+    def generate_Gradient(self, name, data, bank):
+        routine      = self.__loader.io.loadSubModule("Gradient_Kernel").replace("#BANK#", bank)
+        toplevel     = self.__loader.io.loadSubModule("Gradient_TopLevel")
+
+        dataVar = self.__loader.virtualMemory.getVariableByName2(data[0])
+        if dataVar.type != "byte":
+           toplevel = toplevel.replace("!!!to8bits!!!", self.convertAnyTo8Bits(dataVar.usedBits))
+
+        toplevel = toplevel.replace("#VAR01#", data[0]).replace("#VAR02#", data[1])
+        colorVar = self.__loader.virtualMemory.getVariableByName2(data[2])
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR03#", "#" + data[2])
+        else:
+           toplevel = toplevel.replace("#VAR03#", data[2])
+           if colorVar.type == "nibble":
+               toplevel = toplevel.replace("!!!shiftToRight!!!", self.moveVarToTheRight(colorVar.usedBits, True))
+
+        pData = ""
+        pattern = data[3].split("|")
+        for item in pattern:
+            pData += "\tBYTE\t#"+ item + "\n"
+
+        toplevel = toplevel.replace("!!!gradient!!!", pData).replace("#NAME#", name).replace("#BANK#", bank)
+
+        return (toplevel, routine)
 
     def generate_Space(self, name, data, bank):
-        mainKernel      = self.__loader.io.loadSubModule("Space_Kernel").replace("#VAR01#", data[0])
+        routine      = self.__loader.io.loadSubModule("Space_Kernel")
+        screenItem   = self.__loader.io.loadSubModule("Space_Kernel_Item")
 
         var = self.__loader.virtualMemory.getVariableByName2(data[1])
         if var == False:
            data[1] = "#" + data[1]
 
-        mainKernel = mainKernel.replace("#VAR02#", data[1]).replace("#NAME#", name).replace("#BANK#", bank)
-        return mainKernel
+        screenItem = screenItem.replace("#VAR02#", data[1]).replace("#VAR01#", data[0]).replace("#NAME#", name).replace("#BANK#", bank)
+        routine = routine.replace("#BANK#", bank)
+        return (screenItem, routine)
 
 
     def generate_DayTime(self, name, data, bank):

@@ -531,7 +531,7 @@ class Gradient:
         self.disabler()
 
     def __changeSelected(self, event):
-        if self.__constOrVar.get() == 1: return
+        if self.__constOrVar.get() == 1 and event.widget == self.__listBox2: return
 
         lists   = [self.__listBox1, self.__listBox2]
         values  = [self.__dataVars, self.__colorVars]

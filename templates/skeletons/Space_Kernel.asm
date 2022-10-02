@@ -1,9 +1,10 @@
 
-	JMP	#NAME#_Space
+#BANK#_Space_JMP
+	JMP	#BANK#_Space
 	_align	135
 
-#NAME#_Space
-#NAME#_Space_FineAdjustTable256
+#BANK#_Space
+#BANK#_Space_FineAdjustTable256
 	LDX	#0
 	STA	WSYNC		; 76
 
@@ -28,25 +29,25 @@
 
 ****** 	direction
 
-	LDA	#VAR02#		; 3 (36)		
+	LDA	temp06		; 3 (36)		
 	AND	#%00000111	; 2 (38)
 	TAX			; 2 (40)
-	LDA	#NAME#_Space_Adder,x  ; 5 (45)
+	LDA	#BANK#_Space_Adder,x  ; 5 (45)
 	CLC			; 2 (47)
 ******  first X 
-	ADC	#VAR01#		; 3 (50)
-	STA	#VAR01#		; 3 (53)
+	ADC	temp05		; 3 (50)
+	STA	temp05		; 3 (53)
 	STA	temp01		; 3 (56)
 
 ******  number of lines
 
-	LDA	#VAR02#		; 3 
+	LDA	temp06		; 3 
 	LSR			
 	LSR
 	LSR	
 	TAY			; 8 
 
-#NAME#_Space_Loop
+#BANK#_Space_Loop
 ****	STA	WSYNC
 
 	LDA	temp01		; 3 (24)
@@ -56,18 +57,18 @@
 	
 	LDA	#18		; 2 (35)
 	CMP	temp01		; 3 (38)
-	BCC	#NAME#_Space_NotSmaller	; 2 (40)
-#NAME#_Space_Zero_X
+	BCC	#BANK#_Space_NotSmaller	; 2 (40)
+#BANK#_Space_Zero_X
 	sleep	7
-#NAME#_Space_Zero_X2
+#BANK#_Space_Zero_X2
 	LDA	#0			
-	JMP	#NAME#_Space_Zeroed
-#NAME#_Space_NotSmaller
+	JMP	#BANK#_Space_Zeroed
+#BANK#_Space_NotSmaller
 	LDA	#134		; 2 (42)
 	CMP	temp01		; 3 (45)
-	BCC	#NAME#_Space_Zero_X2
+	BCC	#BANK#_Space_Zero_X2
 	LDA	temp01
-#NAME#_Space_Zeroed
+#BANK#_Space_Zeroed
 	
 	STA	temp02		; 3
  
@@ -78,16 +79,16 @@
 	BYTE	#$1D
 	BYTE	#$00	; STA	ENAM0
 
-#NAME#_Space_HorPosLoop		
+#BANK#_Space_HorPosLoop		
    	lda	temp02
-#NAME#_Space_DivideLoop
+#BANK#_Space_DivideLoop
 	sbc	#15
-   	bcs	#NAME#_Space_DivideLoop
+   	bcs	#BANK#_Space_DivideLoop
 	sleep	5
 	STA	RESM0
 
 	TAX
-   	lda	#NAME#_Space_FineAdjustTable256,x
+   	lda	#BANK#_Space_FineAdjustTable256,x
    	sta	HMM0			
 	STA	WSYNC		; 76
 	STA	HMOVE		; 3
@@ -97,21 +98,21 @@
 	LSR
 	LSR
 	TAX
-	LDA	#NAME#_Space_Star_Color,x
+	LDA	#BANK#_Space_Star_Color,x
 	STA	COLUP0		; 3 
 	
 	LDA	#2		; 2 
 	STA	ENAM0		; 3 
 
 	DEY			; 2 (16)
-	BMI	#NAME#_Space_Reset_Jump	; 2 (18)
-	JMP 	#NAME#_Space_Loop	; 3 (21)
+	BMI	#BANK#_Space_Reset_Jump	; 2 (18)
+	JMP 	#BANK#_Space_Loop	; 3 (21)
 
-#NAME#_Space_Reset_Jump
-	JMP	#NAME#_Space_Reset	
+#BANK#_Space_Reset_Jump
+	JMP	#BANK#_Space_Reset	
 
 	fill	77
-#NAME#_Space_Adder
+#BANK#_Space_Adder
 	BYTE	#253
 	BYTE	#254
 	BYTE	#255
@@ -121,7 +122,7 @@
 	BYTE	#3
 	BYTE	#3
 
-#NAME#_Space_Star_Color
+#BANK#_Space_Star_Color
 	BYTE	#$00	; 8	
 	BYTE	#$00	; 16
 	BYTE	#$02	; 24
@@ -141,7 +142,7 @@
 	BYTE	#$02	; 134
 	BYTE	#$00	; 142
 
-#NAME#_Space_FineAdjustTable
+#BANK#_Space_FineAdjustTable
 	byte	#$80
 	byte	#$70
 	byte	#$60
@@ -159,7 +160,7 @@
 	byte	#$a0
 	byte	#$90	
 
-#NAME#_Space_Reset
+#BANK#_Space_Reset
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC		; 76
@@ -168,5 +169,4 @@
 	STA	COLUP0		
 	STX	HMCLR		
 
-	ldx	item
-	txs
+	JMP	(temp03)
