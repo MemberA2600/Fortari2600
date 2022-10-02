@@ -1,11 +1,12 @@
 *
 *	temp01:		DataVar
-*	temp02: 	Direction
+*	temp02: 	Number of Lines
 *	temp03+temp04:	Gradient Pointer
 *	temp05+temp06:	Back Pointer
+*	temp07:		Direction
 *
 	_align	125
-Bank2_Horizontal_Rainbow
+#BANK#_Horizontal_Rainbow
 
 	LDA	frameColor
 	LDX	#0
@@ -17,17 +18,17 @@ Bank2_Horizontal_Rainbow
 	STX	GRP0	
 	STX	GRP1
 
-	LDY	#8
+	LDY	temp02
 
 ****	direction
-	LDA	temp02
+	LDA	temp07
 	CMP	#0
-	BEQ	Bank2_Horizontal_Rainbow_Loop_ASC_Start
-	JMP	Bank2_Horizontal_Rainbow_Loop_DESC_Start
+	BEQ	#BANK#_Horizontal_Rainbow_Loop_ASC_Start
+	JMP	#BANK#_Horizontal_Rainbow_Loop_DESC_Start
 
-Bank2_Horizontal_Rainbow_Loop_ASC
+#BANK#_Horizontal_Rainbow_Loop_ASC
 	DEY					; 2 (8)
-	BMI	Bank2_Horizontal_Rainbow_Reset	; 2 (10)
+	BMI	#BANK#_Horizontal_Rainbow_Reset	; 2 (10)
 
 	LDA	(temp03),y	; 5
 	ADC	temp01		; 3
@@ -62,13 +63,13 @@ Bank2_Horizontal_Rainbow_Loop_ASC
 	INX		; 4 (68)
 	STX	COLUBK	; 3 (72)
 
-Bank2_Horizontal_Rainbow_Loop_ASC_Start
+#BANK#_Horizontal_Rainbow_Loop_ASC_Start
 	STA	WSYNC
-	JMP	Bank2_Horizontal_Rainbow_Loop_ASC
+	JMP	#BANK#_Horizontal_Rainbow_Loop_ASC
 
-Bank2_Horizontal_Rainbow_Loop_DESC
+#BANK#_Horizontal_Rainbow_Loop_DESC
 	DEY					; 2 (8)
-	BMI	Bank2_Horizontal_Rainbow_Reset	; 2 (10)
+	BMI	#BANK#_Horizontal_Rainbow_Reset	; 2 (10)
 
 	LDA	(temp03),y	; 5
 
@@ -107,11 +108,11 @@ Bank2_Horizontal_Rainbow_Loop_DESC
 	DEX		; 4 (68)
 	STX	COLUBK	; 3 (72)
 
-Bank2_Horizontal_Rainbow_Loop_DESC_Start
+#BANK#_Horizontal_Rainbow_Loop_DESC_Start
 	STA	WSYNC
-	JMP	Bank2_Horizontal_Rainbow_Loop_DESC
+	JMP	#BANK#_Horizontal_Rainbow_Loop_DESC
 
-Bank2_Horizontal_Rainbow_Reset
+#BANK#_Horizontal_Rainbow_Reset
 	LDA	frameColor
 	STA	COLUBK
 

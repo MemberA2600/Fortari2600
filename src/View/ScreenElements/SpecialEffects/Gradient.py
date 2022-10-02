@@ -164,6 +164,96 @@ class Gradient:
         self.__numOfLines.pack_propagate(False)
         self.__numOfLines.pack(fill=Y, side=TOP, anchor=N)
 
+        self.__label5 = Label(self.__frame2,
+                  text=self.__dictionaries.getWordFromCurrentLanguage("direction") + ":",
+                  font=self.__smallFont, fg=self.__colors.getColor("font"),
+                  bg=self.__colors.getColor("window"), justify=CENTER
+                  )
+
+        self.__label5.pack_propagate(False)
+        self.__label5.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        hDiv = 9
+
+        self.__subFrameX = Frame(self.__frame2, width=self.__w // 3,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  height=self.__h//hDiv)
+
+        self.__subFrameX.pack_propagate(False)
+        self.__subFrameX.pack(side=TOP, anchor=N, fill=X)
+
+        self.__subFrame1X = Frame(self.__subFrameX, width=self.__w // 6,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  height=self.__h//hDiv)
+
+        self.__subFrame1X.pack_propagate(False)
+        self.__subFrame1X.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__subFrame2X = Frame(self.__subFrameX, width=self.__w // 6,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  height=self.__h//hDiv)
+
+        self.__subFrame2X.pack_propagate(False)
+        self.__subFrame2X.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__oh = IntVar()
+        self.__oh.set(int(self.__data[7]))
+
+        self.__verButton = Radiobutton(self.__subFrame1X, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("vertical"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__oh,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.__changeDirection
+                                         )
+
+        self.__verButton.pack_propagate(False)
+        self.__verButton.pack(fill=X, side=TOP, anchor=N)
+
+        self.__horButton = Radiobutton(self.__subFrame2X, width=99999,
+                                         text=self.__dictionaries.getWordFromCurrentLanguage("horizontal"),
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__oh,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=2, command=self.__changeDirection
+                                         )
+
+        self.__horButton.pack_propagate(False)
+        self.__horButton.pack(fill=X, side=TOP, anchor=N)
+
+        self.__leftOrRight = IntVar()
+        self.__leftOrRight.set(int(self.__data[8]))
+
+        self.__leftButton = Radiobutton(self.__subFrame1X, width=99999,
+                                         text="<<",
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__leftOrRight,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=1, command=self.__changeDirection
+                                         )
+
+        self.__leftButton.pack_propagate(False)
+        self.__leftButton.pack(fill=X, side=TOP, anchor=N)
+
+        self.__rightButton = Radiobutton(self.__subFrame2X, width=99999,
+                                         text=">>",
+                                         bg=self.__colors.getColor("window"),
+                                         fg=self.__colors.getColor("font"),
+                                         justify=LEFT, font=self.__smallFont,
+                                         variable=self.__leftOrRight,
+                                         activebackground=self.__colors.getColor("highLight"),
+                                         value=2, command=self.__changeDirection
+                                         )
+
+        self.__rightButton.pack_propagate(False)
+        self.__rightButton.pack(fill=X, side=TOP, anchor=N)
+
         self.__label4 = Label(self.__frame2,
                   text=self.__dictionaries.getWordFromCurrentLanguage("color") + ":",
                   font=self.__smallFont, fg=self.__colors.getColor("font"),
@@ -186,8 +276,6 @@ class Gradient:
 
         self.__constButton.pack_propagate(False)
         self.__constButton.pack(fill=X, side=TOP, anchor=N)
-
-        hDiv = 9
 
         self.__subFrame = Frame(self.__frame2, width=self.__w // 3,
                   bg=self.__loader.colorPalettes.getColor("window"),
@@ -322,6 +410,8 @@ class Gradient:
             self.__lastSelecteds.append(self.__colorVars[selector].split("::")[1])
             self.__listBox2.select_set(selector)
 
+
+
         self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
         self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
         self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
@@ -421,6 +511,7 @@ class Gradient:
                 self.__hexEntries[itemNum].setValue(items[itemNum])
 
         self.disabler()
+        self.XYZ()
 
     def __changeHex2(self, event):
         selector = 0
@@ -448,6 +539,37 @@ class Gradient:
             temp[numOfEntry] = entry.getValue()
             self.__data[6] = "|".join(temp)
             self.__changeData(self.__data)
+
+    def __changeDirection(self):
+        self.__data[7] = str(self.__oh.get())
+        self.__data[8] = str(self.__leftOrRight.get())
+
+        self.XYZ()
+        self.__changeData(self.__data)
+
+    def XYZ(self):
+        if self.__oh.get() == 1:
+           self.__leftButton.config(state = DISABLED)
+           self.__rightButton.config(state = DISABLED)
+           self.__constButton.config(state = NORMAL)
+           self.__varButton.config(state = NORMAL)
+
+           self.__changeIfConstOrVar()
+        else:
+            self.__constButton.config(state=DISABLED)
+            self.__varButton.config(state=DISABLED)
+            self.__rainbowButton.config(state=DISABLED)
+            self.__oneColorButton.config(state=DISABLED)
+            self.__oneColorEntry.changeState(DISABLED)
+            self.__listBox2.config(state=DISABLED)
+
+            self.__constOrVar.set(1)
+            self.__rainbowOrOther.set(1)
+            self.__data[5] = "$FF"
+
+            self.__leftButton.config(state=NORMAL)
+            self.__rightButton.config(state=NORMAL)
+
 
     def disabler(self):
         try:

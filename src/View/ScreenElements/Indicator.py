@@ -145,7 +145,7 @@ class Indicator:
                 "DayTime"              : [DayTime,        ["36", "#", "#", "#", "1", "1"
                                                             ]],
                 "Space"                : [Space,          ["#", "%01111010"]],
-                "Gradient"             : [Gradient,       ["#", "15", "$FF", "#"]]
+                "Gradient"             : [Gradient,       ["#", "15", "$FF", "#", "1", "1"]]
             }
 
 

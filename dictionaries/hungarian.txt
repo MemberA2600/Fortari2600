@@ -358,3 +358,5 @@ baseColor=Alapszín
 rainbow=Szivárvány
 oneColor=Egyszínû
 colorVar=Színváltozó
+horizontal=Vízszintes
+vertical=Függõleges

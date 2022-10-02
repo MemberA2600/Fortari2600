@@ -340,11 +340,21 @@ class Compiler:
             elif subtyp == "Gradient":
                 those = self.generate_Gradient(fullName, data, self.__bank)
                 self.__bankData.append(those[0])
-                self.__routines["Space"] = those[1]
+                if data[4] == "0":
+                    self.__routines["Gradient_Ver"] = those[1]
+                else:
+                    self.__routines["Gradient_Hor"] = those[1]
+
 
     def generate_Gradient(self, name, data, bank):
-        routine      = self.__loader.io.loadSubModule("Gradient_Kernel").replace("#BANK#", bank)
-        toplevel     = self.__loader.io.loadSubModule("Gradient_TopLevel")
+        routine  = ""
+        toplevel = ""
+        if data[4] == "1":
+            routine      = self.__loader.io.loadSubModule("Gradient_Kernel").replace("#BANK#", bank)
+            toplevel     = self.__loader.io.loadSubModule("Gradient_TopLevel")
+        else:
+            routine      = self.__loader.io.loadSubModule("Horizontal_Rainbow_Kernel").replace("#BANK#", bank)
+            toplevel     = self.__loader.io.loadSubModule("Horizontal_Rainbow_TopLevel")
 
         dataVar = self.__loader.virtualMemory.getVariableByName2(data[0])
         if dataVar.type != "byte":
@@ -363,6 +373,9 @@ class Compiler:
         pattern = data[3].split("|")
         for item in pattern:
             pData += "\tBYTE\t#"+ item + "\n"
+
+        if data[4] == "2":
+            toplevel = toplevel.replace("#VAR04#", str(int(data[5])-1))
 
         toplevel = toplevel.replace("!!!gradient!!!", pData).replace("#NAME#", name).replace("#BANK#", bank)
 
