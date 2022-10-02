@@ -7,7 +7,7 @@
 *
 *
 
-	align	256
+	_align	60
 
 #BANK#_Gradient
 	LDA	frameColor

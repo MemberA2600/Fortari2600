@@ -1484,6 +1484,23 @@ EnterScreenBank2
 	LDA	#0		; set frame color to black
 	STA	frameColor
 
+
+**************************
+*Picture Data*
+**************
+Bank2_Picture64px_Picture64px_Queen_picIndex = #0
+Bank2_Picture64px_Picture64px_Queen_picDisplayHeight = #82
+Bank2_Picture64px_Picture64px_Queen_picHeight = 82
+**************************
+
+
+	LDA	#90
+	CMP	Bank2_Picture64px_Picture64px_Queen_picDisplayHeight
+	BCS	64pxPicture_NoINITDec
+	
+
+64pxPicture_NoINITDec
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1562,8 +1579,6 @@ OverScanBank2
 * This is where the game code
 * begins.
 *
-
-
 
 
 *VSYNC
@@ -1662,96 +1677,144 @@ VBlankEndBank2
 	tsx
 	stx	item
 
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
 	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
-Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient
-	LDA	counter
-
 	STA	temp01
 
-	LDA	#15
+	LDA	#1
 	STA	temp02
 
-	LDA	#$90
-
+	LDA	#<TEST_Gradient
 	STA	temp03
-
-	LDA	#<Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Back
+	LDA	#>TEST_Gradient
 	STA	temp04
-	LDA	#>Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Back
-	STA	temp05
 
-	LDA	#<Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Pattern
-	STA	temp06
-	LDA	#>Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Pattern
-	STA	temp07
-
-	JMP	Bank2_Gradient
-
-Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Pattern
+	JMP	Bank2_Horizontal_Rainbow
+TEST_Gradient
 	BYTE	#$00
 	BYTE	#$02
 	BYTE	#$04
 	BYTE	#$06
-	BYTE	#$06
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$06
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$00
+	BYTE	#$08
+	BYTE	#$0A
+	BYTE	#$0C
+	BYTE	#$0E
 
-
-Bank2_SpecialEffect_SpecialEffect_Gradient_Gradient_Back
-
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
-	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
+	align	256
+Bank2_Horizontal_Rainbow
 
 	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	LDX	#0
+	STA	WSYNC
+	STA	COLUBK		
+	STX	PF0		
+	STX	PF1	
+	STX	PF2
+	STX	GRP0	
+	STX	GRP1
+
+	LDY	#8
+
+****	direction
+	LDA	temp02
+	CMP	#0
+	BEQ	Bank2_Horizontal_Rainbow_Loop_ASC_Start
+	JMP	Bank2_Horizontal_Rainbow_Loop_DESC_Start
+
+Bank2_Horizontal_Rainbow_Loop_ASC
+	DEY					; 2 (8)
+	BMI	Bank2_Horizontal_Rainbow_Reset	; 2 (10)
+
+	LDA	(temp03),y	; 5
+	ADC	temp01		; 3
+	STA	COLUBK		; 3
+	TAX			; 3 (13)
+
+	INX		
+	INX		; 4 (26)
+	STX	COLUBK	; 3 (29)
+	
+	INX		
+	INX		; 4 (33)
+	STX	COLUBK	; 3 (36)
+
+	INX		
+	INX		; 4 (40)
+	STX	COLUBK	; 3 (43)
+
+	INX		
+	INX		; 4 (47)
+	STX	COLUBK	; 3 (50)
+
+	INX		
+	INX		; 4 (54)
+	STX	COLUBK	; 3 (57)
+
+	INX		
+	INX		; 4 (61)
+	STX	COLUBK	; 3 (64)
+
+	INX		
+	INX		; 4 (68)
+	STX	COLUBK	; 3 (72)
+
+Bank2_Horizontal_Rainbow_Loop_ASC_Start
+	STA	WSYNC
+	JMP	Bank2_Horizontal_Rainbow_Loop_ASC
+
+Bank2_Horizontal_Rainbow_Loop_DESC
+	DEY					; 2 (8)
+	BMI	Bank2_Horizontal_Rainbow_Reset	; 2 (10)
+
+	LDA	(temp03),y	; 5
+
+	BYTE	#$6D
+	BYTE	#temp01
+	BYTE	#0		; ADC with temp01, forced to 4 cycles
+
+	STA	COLUBK		; 3
+	TAX			; 3 (13)
+	
+	DEX		
+	DEX		; 4 (26)
+	STX	COLUBK	; 3 (29)
+	
+	DEX		
+	DEX		; 4 (33)
+	STX	COLUBK	; 3 (36)
+
+	DEX		
+	DEX		; 4 (40)
+	STX	COLUBK	; 3 (43)
+
+	DEX		
+	DEX		; 4 (47)
+	STX	COLUBK	; 3 (50)
+
+	DEX		
+	DEX		; 4 (54)
+	STX	COLUBK	; 3 (57)
+
+	DEX		
+	DEX		; 4 (61)
+	STX	COLUBK	; 3 (64)
+
+	DEX		
+	DEX		; 4 (68)
+	STX	COLUBK	; 3 (72)
+
+Bank2_Horizontal_Rainbow_Loop_DESC_Start
+	STA	WSYNC
+	JMP	Bank2_Horizontal_Rainbow_Loop_DESC
+
+
+Bank2_Horizontal_Rainbow_Reset
+	LDA	frameColor
+	STA	COLUBK
+	STA	WSYNC
 
 	ldx	item
 	txs
+
 
 *SkipIfNoGameSet
 *---------------------------------
@@ -1826,6 +1889,7 @@ ScreenBottomBank2
 
 
 
+
 ###End-Bank2
 *Routine Section
 *---------------------------------
@@ -1833,62 +1897,7 @@ ScreenBottomBank2
 * used by the developer.
 *
 
-*
-*	temp01:		DataVar
-*	temp02:		Number of Lines
-*	temp03:		ColorVar
-*	temp04+temp05:	Back Pointer
-*	temp06+temp07:  Gradient Pattern
-*
-*
 
-	align	256
-
-Bank2_Gradient
-	LDA	frameColor
-	LDX	#0
-	STA	WSYNC
-	STA	COLUBK
-	STX	PF0
-	STX	GRP0
-	STX	GRP1
-	STX	PF1
-	STX	PF2
-
-	LDY	temp02
-	DEY
-
-Bank2_Gradient_Loop
-	LDA	(temp06),y	; 5
-	CLC			; 2 (7)
-	ADC	temp01		; 3 (10)
-	TAX			; 2 (12)
-	LDA	temp03		; 3 (15)
-	CMP	#255		; 2 (17)
-	BNE	Bank2_Gradient_Change ; 2 (19)
-	TXA			; 2 (21)
-	sleep	7
-	
-	JMP	Bank2_Gradient_Changed	; 3 (31)
-Bank2_Gradient_Change
-	AND	#%11110000	; 2 (21)
-	STA	temp19		; 3 (24)
-	TXA			; 2 (26)
-	AND	#%00001111	; 2 (28)
-	ORA	temp19		; 3 (31)
-Bank2_Gradient_Changed	
-	STA	WSYNC		; 76
-	STA	COLUBK		; 3
-	DEY			; 2
-	BPL	Bank2_Gradient_Loop	; 2
-
-Bank2_Gradient_Reset
-	LDA 	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
-Bank2_Gradient_Back
-	JMP	(temp04)
 	
 
 	saveFreeBytes
