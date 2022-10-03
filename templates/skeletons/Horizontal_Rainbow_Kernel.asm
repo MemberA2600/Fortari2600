@@ -5,7 +5,7 @@
 *	temp05+temp06:	Back Pointer
 *	temp07:		Direction
 *
-	_align	125
+	_align	127
 #BANK#_Horizontal_Rainbow
 
 	LDA	frameColor
@@ -17,6 +17,7 @@
 	STX	PF2
 	STX	GRP0	
 	STX	GRP1
+	STA	COLUPF
 
 	LDY	temp02
 

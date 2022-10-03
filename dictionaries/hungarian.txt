@@ -360,3 +360,4 @@ oneColor=Egyszínû
 colorVar=Színváltozó
 horizontal=Vízszintes
 vertical=Függõleges
+alterLastFrameColor=Utolsó Képernyõelem Keretszínének Felülírása

@@ -7,7 +7,7 @@
 *
 *
 
-	_align	60
+	_align	62
 
 #BANK#_Gradient
 	LDA	frameColor
@@ -19,6 +19,7 @@
 	STX	GRP1
 	STX	PF1
 	STX	PF2
+	STA	COLUPF
 
 	LDY	temp02
 	DEY

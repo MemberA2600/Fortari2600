@@ -199,6 +199,9 @@ class Compiler:
                 self.generate_ChangeFrameColor(fullName, data)
             )
 
+            if data[1] == "1":
+               self.__changeLastFrameColor(self.__bankData, data[0])
+
         elif typ == "EmptyLines":
             self.__bankData.append(
                 self.generate_EmptyLines(fullName, data)
@@ -345,6 +348,22 @@ class Compiler:
                 else:
                     self.__routines["Gradient_Hor"] = those[1]
 
+    def __changeLastFrameColor(self, bankData, new):
+        if len(bankData) == 1: return
+
+        lastLines = bankData[-2].split("\n")
+
+        if "::" not in new:
+           new = "#" + new
+        else:
+           new = new.split("::")[1]
+
+        for num in range(len(lastLines)-1, -1, -1):
+            if ("LDA" in lastLines[num].upper()) and ("frameColor" in lastLines[num]):
+                lastLines[num] = lastLines[num].replace("frameColor", new)
+                break
+
+        bankData[-2] = "\n".join(lastLines)
 
     def generate_Gradient(self, name, data, bank):
         routine  = ""

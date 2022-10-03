@@ -51,6 +51,22 @@ class ChangeFrameColor:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__check = IntVar()
+        self.__check.set(int(self.__data[3]))
+
+        self.__checkBox = Checkbutton(self.__uniqueFrame, width=99999,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("alterLastFrameColor"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__smallFont,
+                                       variable=self.__check,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       command=self.__changeBox
+                                       )
+
+        self.__checkBox.pack_propagate(False)
+        self.__checkBox.pack(fill=X, side=TOP, anchor=N)
+
         self.__constantVar  = StringVar()
         self.__variableVar  = StringVar()
 
@@ -221,3 +237,7 @@ class ChangeFrameColor:
             return True
         except:
             return False
+
+    def __changeBox(self):
+        self.__data[3] = str(self.__check.get())
+        self.__changeData(self.__data)
