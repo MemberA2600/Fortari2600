@@ -114,8 +114,6 @@
 	JMP	#BANK#_Horizontal_Rainbow_Loop_DESC
 
 #BANK#_Horizontal_Rainbow_Reset
-	LDA	frameColor
-	STA	COLUBK
 
 *****	STA	WSYNC
 	JMP	(temp05)

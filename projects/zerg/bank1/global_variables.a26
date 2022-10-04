@@ -2,5 +2,10 @@
 zerg=nibble
 terran=nibble
 protoss=byte
+test1=byte
+test2=byte
+test3=byte
+test4=byte
+test5=byte
 races=array(zerg,protoss)
 WarCraft=array(protoss,temp04)

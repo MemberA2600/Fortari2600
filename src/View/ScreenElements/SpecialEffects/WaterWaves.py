@@ -260,6 +260,51 @@ class WaterWaves:
                              self.__normalFont, self.__hexValues, num, None,  self.__changeHex)
             self.__hexEntries.append(hexEntry)
 
+        self.__label4 = Label(self.__frame3,
+                  text=self.__dictionaries.getWordFromCurrentLanguage("speed"),
+                  font=self.__smallFont, fg=self.__colors.getColor("font"),
+                  bg=self.__colors.getColor("window"), justify=CENTER
+                  )
+
+        self.__label4.pack_propagate(False)
+        self.__label4.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__speedVar = StringVar()
+        self.__speedVar.set(self.__data[6])
+        self.__speed = Entry(self.__frame3,
+                              bg=self.__colors.getColor("boxBackNormal"),
+                              fg=self.__colors.getColor("boxFontNormal"),
+                              width=9999, justify=CENTER,
+                              textvariable=self.__speedVar,
+                              font=self.__smallFont
+                              )
+
+        self.__speed.pack_propagate(False)
+        self.__speed.pack(fill=Y, side=TOP, anchor=N)
+
+        self.__speed.bind("<KeyRelease>", self.__changeEntry)
+        self.__speed.bind("<FocusOut>", self.__changeEntry)
+
+    def __changeEntry(self, event):
+        if self.isItNum(self.__speedVar.get()) == False:
+            event.widget.config(
+                bg=self.__colors.getColor("boxBackUnSaved"),
+                fg=self.__colors.getColor("boxFontUnSaved")
+            )
+            return
+
+        event.widget.config(
+            bg=self.__colors.getColor("boxBackNormal"),
+            fg=self.__colors.getColor("boxFontNormal")
+        )
+        num = int(self.__speedVar.get())
+        if num < 0: num = 0
+        if num > 7: num = 7
+
+        self.__speedVar.set(str(num))
+        self.__data[6] = self.__speedVar.get()
+        self.__changeData(self.__data)
+
     def __changeSelected(self, event):
         if event.widget == self.__listBox2 and self.__constOrVar.get() == 1: return
 

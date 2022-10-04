@@ -7,7 +7,7 @@
 ##NAME##_BigSprite_1
 	byte	#%00000000
 	byte	#%00000001
-	byte	#%00000011
+	byte	#%01000011
 	byte	#%00000110
 	byte	#%00000100
 	byte	#%00011100
@@ -149,4 +149,18 @@
 	byte	#$34
 	byte	#$32
 	byte	#$30
+
+##NAME##_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
 

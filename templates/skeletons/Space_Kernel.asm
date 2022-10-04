@@ -161,12 +161,5 @@
 	byte	#$90	
 
 #BANK#_Space_Reset
-	LDA	frameColor
-	LDX	#0
-	STA	WSYNC		; 76
-
-	STX	ENAM0
-	STA	COLUP0		
-	STX	HMCLR		
 
 	JMP	(temp03)

@@ -1,0 +1,7 @@
+	LDA	frameColor
+	LDX	#0
+	STA	WSYNC		; 76
+
+	STX	ENAM0
+	STA	COLUP0		
+	STX	HMCLR

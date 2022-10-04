@@ -49,9 +49,5 @@
 	BPL	#BANK#_Gradient_Loop	; 2
 
 #BANK#_Gradient_Reset
-	LDA 	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
 #BANK#_Gradient_Back
 	JMP	(temp04)

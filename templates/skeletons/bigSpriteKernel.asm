@@ -400,14 +400,5 @@
 	JMP	##BANK##_BigSprite_MainLoop ; 3 (73)
 
 ##BANK##_BigSprite_DrawEnd	
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-	STA	COLUP0
-	STA	COLUP1
-	STA	GRP0
-	STA	GRP1
-	STA	REFP0
-	STA	REFP1
 
 	JMP	(temp01)

@@ -7,6 +7,7 @@
 *	temp09+temp10:  Back Pointer
 *
 	LDA	#VAR01#
+!!!to8bits!!!
 !!!LSRs!!!
 	STA	temp01
 

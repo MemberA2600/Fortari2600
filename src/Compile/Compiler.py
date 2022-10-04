@@ -140,6 +140,8 @@ class Compiler:
         self.__initCode        = self.__data[3]
         self.__overScanCode    = self.__data[4]
 
+
+        self.__lastRoutine     = None
         self.__bankData = []
         # In this case, there is no top or bottom, all tested goes to top.
         self.__routines = {}
@@ -192,6 +194,7 @@ class Compiler:
         data = item[2:]
         prevOne = self.__typ
         self.__typ = typ
+        dictKey = None
 
         fullName = self.__bank + "_" + name + "_" + typ
         if typ == "ChangeFrameColor":
@@ -200,7 +203,8 @@ class Compiler:
             )
 
             if data[1] == "1":
-               self.__changeLastFrameColor(self.__bankData, data[0])
+               if self.__lastRoutine in (None, "BigSprite", "Space", "Gradient", "Gradient_Hor", "WaterWaves"):
+                  self.__changeLastFrameColor(self.__bankData, data[0])
 
         elif typ == "EmptyLines":
             self.__bankData.append(
@@ -226,7 +230,7 @@ class Compiler:
                     self.__io.loadSubModule("BarPixels").replace("#BANK#", self.__bank)
 
                 self.__routines["FullBar"] = self.__io.loadSubModule("FullBar_Kernel").replace("#BANK#", self.__bank)
-
+                dictKey = "FullBar"
 
             elif subtyp == "HalfBarWithText":
                 those = self.generate_HalfBarWithText(fullName, data, self.__bank)
@@ -238,6 +242,8 @@ class Compiler:
                 self.__routines["HalfBarWithText"] = self.__io.loadSubModule("HalfBarWithText_Kernel").replace("#BANK#",
                                                                                                                self.__bank)
                 self.__userData[fullName + "_TextData"] = those[2]
+                dictKey = "HalfBarWithText"
+
 
             elif subtyp == "TwoIconsTwoLines":
                 those = self.generate_TwoIconsTwoLines(fullName, data, self.__bank)
@@ -250,6 +256,9 @@ class Compiler:
                 for key in those[2].keys():
                     self.__userData[key] = those[2][key]
 
+                dictKey = "TwoIconsTwoLines"
+
+
             elif subtyp == "OneIconWithDigits":
                 those = self.generate_OneIconWithDigits(fullName, data, self.__bank)
                 self.__bankData.append(those[0].replace("#BANK#", self.__bank))
@@ -260,6 +269,9 @@ class Compiler:
                 for key in those[2].keys():
                     self.__userData[key] = those[2][key]
 
+                dictKey = "OneIconWithDigits"
+
+
             elif subtyp == "SevenDigits":
                 those = self.generate_SevenDigits(fullName, data, self.__bank)
                 self.__bankData.append(those[0].replace("#BANK#", self.__bank))
@@ -269,6 +281,8 @@ class Compiler:
                     self.__userData[key] = those[2][key]
 
                 self.__routines[those[3][0]] = those[3][1].replace("#BANK#", self.__bank)
+                dictKey = "SevenDigits"
+
 
             elif subtyp == "TwelveIconsOrDigits":
                 those = self.generate_TwelveIconsOrDigits(fullName, data, self.__bank)
@@ -278,6 +292,7 @@ class Compiler:
                     "#BANK#",
                     self.__bank)
                 self.__routines["bin2BCD"] = self.__io.loadSubModule("bin2BCD").replace("#BANK#", self.__bank)
+                dictKey = "TwelveIconsOrDigits"
 
                 for key in those[2].keys():
                     self.__userData[key] = those[2][key]
@@ -294,10 +309,11 @@ class Compiler:
                                                                                                      self.__bank)
         elif typ == "BigSprite":
             those = self.generate_BigSprite(fullName, data, self.__bank)
-            self.__bankData.append(those[0])
+            self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_BigSprite") )
             self.__userData[fullName] = those[1]
             self.__routines["BigSprite"] = self.__io.loadSubModule("bigSpriteKernel").replace("##BANK##",
                                                                                               self.__bank)
+            dictKey = "BigSprite"
 
         elif typ == "DynamicText":
             those = self.generate_DynamicText(fullName, data, self.__bank)
@@ -306,6 +322,7 @@ class Compiler:
             for itemNum in range(0, len(those[1])):
                 if those[1][itemNum][1] != "":
                     self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
+
 
         elif typ == "Menu":
             those = self.generate_Menu(fullName, data, self.__bank)
@@ -337,16 +354,65 @@ class Compiler:
 
             elif subtyp == "Space":
                 those = self.generate_Space(fullName, data, self.__bank)
-                self.__bankData.append(those[0])
+                self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Space")
+                                       )
                 self.__routines["Space"] = those[1]
+
+                dictKey = "Space"
+
 
             elif subtyp == "Gradient":
                 those = self.generate_Gradient(fullName, data, self.__bank)
-                self.__bankData.append(those[0])
                 if data[4] == "0":
+                    self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Gradient"))
                     self.__routines["Gradient_Ver"] = those[1]
+                    dictKey = "Gradient_Ver"
+
                 else:
+                    self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Gradient_Hor"))
                     self.__routines["Gradient_Hor"] = those[1]
+                    dictKey = "Gradient_Hor"
+
+
+            elif subtyp == "WaterWaves":
+                those = self.generate_WaterWaves(fullName, data, self.__bank)
+                self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Water_Waves"))
+                self.__routines["WaterWaves"] = those[1]
+                self.__userData["WaterWaves"] = self.__loader.io.loadSubModule("Water_Waves").replace("#BANK#", self.__bank)
+                dictKey = "WaterWaves"
+
+
+        self.__lastRoutine = dictKey
+
+    def generate_WaterWaves(self, name, data, bank):
+        routine = self.__loader.io.loadSubModule("Water_Waves_Kernel").replace("#BANK#", bank)
+        toplevel = self.__loader.io.loadSubModule("Water_Waves_TopLevel")
+
+        toplevel = toplevel.replace("#VAR01#", data[0])
+        dataVar = self.__loader.virtualMemory.getVariableByName2(data[0])
+        if dataVar.type != "byte":
+           toplevel = toplevel.replace("!!!to8bits!!!", self.convertAnyTo8Bits(dataVar.usedBits))
+
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(data[1])
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR02#", "#" + data[1])
+        else:
+           toplevel = toplevel.replace("#VAR02#", data[1])
+           if colorVar.type == "nibble":
+               toplevel = toplevel.replace("!!!shiftToRight!!!", self.moveVarToTheRight(colorVar.usedBits, True))
+
+        toplevel = toplevel.replace("!!!LSRs!!!", "" + "\tLSR\n"*int(data[3]))
+
+        grad = data[2].split("|")
+        gradList = "\tBYTE\t#$00\n" * 2
+
+        for item in grad:
+            gradList = "\tBYTE\t#"+item + "\n" + gradList
+
+        toplevel = toplevel.replace("!!!gradient!!!", gradList).replace("#NAME#", name).replace("#BANK#", bank)
+
+        return (toplevel, routine)
 
     def __changeLastFrameColor(self, bankData, new):
         if len(bankData) == 1: return
@@ -359,9 +425,15 @@ class Compiler:
            new = new.split("::")[1]
 
         for num in range(len(lastLines)-1, -1, -1):
-            if ("LDA" in lastLines[num].upper()) and ("frameColor" in lastLines[num]):
-                lastLines[num] = lastLines[num].replace("frameColor", new)
-                break
+            #The reset line shouldn't be passed!
+            try:
+                if lastLines[num][0] != " " and lastLines[num][0] != "\t" and ("RESET" in lastLines[num].upper()):
+                    break
+                if ("LDA" in lastLines[num].upper()) and ("frameColor" in lastLines[num]):
+                    lastLines[num] = lastLines[num].replace("frameColor", new)
+                    break
+            except:
+                pass
 
         bankData[-2] = "\n".join(lastLines)
 

@@ -664,7 +664,7 @@ class Assembler():
         try:
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
         except:
-            # print(raw)
+            #print(raw)
             changeTo = re.findall(r'[a-fA-F0-9]{3}', raw.replace("(",""))[0]
             raw = raw.replace(changeTo, "0"+changeTo)
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
