@@ -1483,10 +1483,7 @@ EnterScreenBank2
 
 	LDA	#0		; set frame color to black
 	STA	frameColor
-	LDA	#0
-	STA	protoss
-
-		
+	
 	JMP	WaitUntilOverScanTimerEndsBank2
 
 *Leave Bank
@@ -1564,8 +1561,6 @@ OverScanBank2
 * This is where the game code
 * begins.
 *
-
-
 
 
 *VSYNC
@@ -1665,496 +1660,252 @@ VBlankEndBank2
 	stx	item
 
 *
-*	Testline
+*	temp01:		Controller
+*	temp02:		BaseColor
+*	temp03+temp04:  PF Pointer
+*	temp05+temp06:  PF Color Pointer
+* 	temp07+temp08:  PF Inverted Pointer
 *
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
 
 	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
+	LSR
+	LSR
+	STA	temp01
 
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire
+	LDA	#$80
+	STA	temp02
+
+	LDA	#<TestGradient
+	STA	temp05
+	LDA	#>TestGradient
+	STA	temp06
+
+	JMP	Bank2_Water_Waves
+TestGradient
+	byte	#$02
+	byte	#$04
+	byte	#$06
+	byte	#$0A
+	byte	#$0C
+	byte	#$0E
+	byte	#$00
+	byte	#$00
+
+Bank2_Water_Waves
 	LDA	frameColor
 	LDX	#0
-	STA	WSYNC		; 76
+	STA	WSYNC
+	STA	COLUBK
 	
-	STA	COLUBK		
-	STA	COLUPF		
-	STX	GRP0
-	STX	GRP1	
-	STX	ENAM0	
 	STX	PF0
+	STX	GRP0
+	STX	GRP1
 	STX	PF1
-	STX	PF2		; 24
+	STX	PF2
+	STA	COLUPF	
+	STX	ENAM0	
+	STX	ENAM1
 
-	LDA	frameColor
-	AND	#%11111110
-	STA	temp19
-
-	LDA	#%00000001
+	LDA	#1
 	STA	CTRLPF
 
-	LDY	#0
-	LDA	protoss
-	BPL	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Up
-	AND	#%00001111
-	CMP	#%00000000
+	LDA	#<Bank2_Water_Waves_Data
+	STA	temp03
+	LDA	#>Bank2_Water_Waves_Data
+	STA	temp04
 
-	BEQ	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_NoFire	
-	TAY
-	LDA	counter	
-	AND 	#%00000011
-	CMP	#%00000011
-	BNE	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoINY
-	DEY
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoINY
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_NoFire	
-	LDY	#15
-	sleep	21
+	LDA	#<Bank2_Water_Waves_Inverted_Data
+	STA	temp07
+	LDA	#>Bank2_Water_Waves_Inverted_Data
+	STA	temp08
 
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_DoneBullShit
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Up
-	AND	#%00001111
-	CMP	#%00001111
-
-	BEQ	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoBullShit
-	TAY
-	LDA	counter	
-	AND 	#%00000011
-	CMP	#%00000011
-	BNE	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoINY
-	INY
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoINY
-	STY	temp18
-	LDA	protoss
-	AND	#%11110000
-	ORA	temp18
-	STA	protoss
-	LDA	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Inverted,y	
-	TAY
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_DoneBullShit
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_NoBullShit
-	sleep	26
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_DoneBullShit
-	STY	temp18
-
-	LDY	#0
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_BG
-	STA	WSYNC
-	
-	LDA	temp19				; 3	
-	AND	#%00001111			; 2 (5)
-	CMP	#0				; 2 (7)
-	BEQ	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_BG_END	; 2 (9)
-	LDX	temp19				; 3 (12)
-	DEX					; 2 (14)
-	DEX					; 2 (16)
-	STX	COLUBK				; 3 (19)
-	STX	temp19				; 3 (22)
-	INY
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_BG		
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_BG_END
-	STA	WSYNC
-	LDA	#$00
-	STA	COLUBK
-	STA	COLUPF
-	INY
-	CPY	#8
-	BNE	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_FadeOut_BG_END	
-
-
-
-*
-*	This is where the flames begin
-*
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Flames
-	LDA	counter
-	LDY	#2
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Speed_Setter
-	DEY
-	BMI	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Speed_Setter_END
-	LSR
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Speed_Setter
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Speed_Setter_END	
-
-	CLC
-	AND	#%00001111
-	STA	temp19
-	LDA	#32
-	SEC
-	SBC	temp19	
+	LDA	temp01
+	AND	#%00000111
+	ASL
+	ASL
+	ASL
 	TAX
-
-	LDA	#>Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_0
-	STA	temp02
-	STA	temp04	
-	STA	temp06	
-
+	ADC	temp03
+	STA	temp03
 	TXA
-	AND	#15
-	TAY
-	LDA	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shapes,y
-	SEC
-	ADC	temp18
-	STA	temp01	
-
-	TXA
-	ADC	#3
-	AND	#15
-	TAY
-	LDA	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shapes,y
-	SEC
-	ADC	temp18
-	STA	temp03	
-
-	TXA
-	ADC	#6
-	AND	#15
-	TAY
-	LDA	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shapes,y
-	SEC
-	ADC	temp18
-	STA	temp05	
-
-	LDY	#15
-
-	LDA	(temp01),y		
-	STA	temp07			
-	LDA	(temp03),y		
-	STA	temp08		
-	LDA	(temp05),y		
-	STA	temp09		
-
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Loop
-
-	_align	210
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Inverted
-	BYTE	#15
-	BYTE	#14
-	BYTE	#13
-	BYTE	#12
-	BYTE	#11
-	BYTE	#10
-	BYTE	#9
-	BYTE	#8
-	BYTE	#7
-	BYTE	#6
-	BYTE	#5
-	BYTE	#4
-	BYTE	#3
-	BYTE	#2
-	BYTE	#1
-	BYTE	#0
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Color
-	BYTE	#$42
-	BYTE	#$44
-	BYTE	#$48
-	BYTE	#$36
-	BYTE	#$3a
-	BYTE	#$18
-	BYTE	#$1c
-	BYTE	#$1e
-	BYTE	#$1e
-	BYTE	#$1c
-	BYTE	#$18
-	BYTE	#$3a
-	BYTE	#$36
-	BYTE	#$48
-	BYTE	#$44
-	BYTE	#$42
-	BYTE	#$42
-	BYTE	#$44
-	BYTE	#$48
-	BYTE	#$36
-	BYTE	#$3a
-	BYTE	#$18
-	BYTE	#$1c
-	BYTE	#$1e
-	BYTE	#$1e
-	BYTE	#$1c
-	BYTE	#$18
-	BYTE	#$3a
-	BYTE	#$36
-	BYTE	#$48
-	BYTE	#$44
-	BYTE	#$42
-
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shapes
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_0
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_1
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_2
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_3
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_4
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_5
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_6
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_7
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_7
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_6
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_5
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_4
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_3
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_2
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_1
-	BYTE	#<Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_0
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_0
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000001
-	byte	#%00000011
-	byte	#%00000111
-	byte	#%10000011
-	byte	#%10000011
-	byte	#%11000011
-	byte	#%11100001
-	byte	#%11110000
-	byte	#%11111000
-	byte	#%11111100
-	byte	#%11111100
-	byte	#%11111110
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_1
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000001
-	byte	#%00000011
-	byte	#%00000011
-	byte	#%00000111
-	byte	#%10000111
-	byte	#%10000111
-	byte	#%11000011
-	byte	#%11100001
-	byte	#%11110001
-	byte	#%11111001
-	byte	#%11111101
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_2
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000001
-	byte	#%00000011
-	byte	#%00000011
-	byte	#%00000111
-	byte	#%00000111
-	byte	#%10000111
-	byte	#%11000011
-	byte	#%11000011
-	byte	#%11100001
-	byte	#%11110001
-	byte	#%11111001
-	byte	#%11111011
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_3
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000001
-	byte	#%10000001
-	byte	#%10000011
-	byte	#%10000011
-	byte	#%10000011
-	byte	#%11000011
-	byte	#%11000011
-	byte	#%11100111
-	byte	#%11110111
-	byte	#%11110111
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_4
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%10000000
-	byte	#%10000000
-	byte	#%10000000
-	byte	#%11000001
-	byte	#%11000001
-	byte	#%11000001
-	byte	#%11000011
-	byte	#%11000111
-	byte	#%11100111
-	byte	#%11101111
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_5
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11000000
-	byte	#%11000000
-	byte	#%11100000
-	byte	#%11100000
-	byte	#%11100000
-	byte	#%11100001
-	byte	#%11000001
-	byte	#%11000011
-	byte	#%11000111
-	byte	#%11011111
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_6
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%10000000
-	byte	#%11000000
-	byte	#%11100000
-	byte	#%11110000
-	byte	#%11110000
-	byte	#%11110000
-	byte	#%11100000
-	byte	#%11100001
-	byte	#%11100011
-	byte	#%11000111
-	byte	#%10001111
-	byte	#%10111111
-	byte	#%11111111
-	byte	#%11111111
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Shape_7
-	byte	#%00000000
-	byte	#%00000000	
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%10000000
-	byte	#%11000000
-	byte	#%11100000
-	byte	#%11100000
-	byte	#%11100001
-	byte	#%11000011
-	byte	#%11000111
-	byte	#%10001111
-	byte	#%00011111
-	byte	#%01111111
-	byte	#%11111111
-	byte	#%11111111
-
-	_align	170
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Loop
-	STA	WSYNC
-	LDA	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Color,x	; 5
-	STA	COLUBK			; 3 (8)
-
-	LDA	#255			; 2 (10)
-	CMP	temp18			; 3 (13)
-	BEQ	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_No_Black	; 2 (15)
-	LDA	#0			; 2 (17)
-	STA	COLUBK			; 3 (20)
-	DEC	temp18			; 5 (25)
-
-	sleep	5
-
-	JMP	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Nothing
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_No_Black
-	LDA	temp07			; 3 (18)
-	STA	PF0			; 3 (21)
-	LDA	temp08			; 3 (24)
-	STA	PF1			; 3 (27)
-	LDA	temp09			; 3 (30)
-	STA	PF2			; 3 (33)
-
-
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Nothing
-
-	STA	WSYNC
-
-	DEX	
-	DEY
-
-	LDA	(temp05),y		
-	STA	temp09	
-
-	LDA	(temp03),y		
-	STA	temp08	
-
-	LDA	(temp01),y		
+	ADC	temp07
 	STA	temp07	
 
-	CPY	#255
-	BNE	Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Loop
+	LDY	#7
 
-Bank2_SpecialEffect_SpecialEffect_Fire_Fire_Reset
+	JMP	Bank2_Water_Waves_Loop
 
+	align	_128
+
+Bank2_Water_Waves_Data
+	byte	#%11111111	; (0)
+	byte	#%11111111
+	byte	#%11011111
+	byte	#%10001111
+	byte	#%00000111
+	byte	#%00000111
+	byte	#%00000010
+	byte	#%00000000
+	byte	#%11111111	; (1)
+	byte	#%11101111
+	byte	#%10001111
+	byte	#%00000110
+	byte	#%00000110
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (2)
+	byte	#%11110111
+	byte	#%11100011
+	byte	#%01100011
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (3)
+	byte	#%11110011
+	byte	#%11110001
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (4)
+	byte	#%11111111
+	byte	#%11111110
+	byte	#%01111100
+	byte	#%00110000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (5)
+	byte	#%11111111
+	byte	#%01111100
+	byte	#%00111000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (6)
+	byte	#%10111111
+	byte	#%00011100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111	; (7)
+	byte	#%11111111
+	byte	#%10011111
+	byte	#%00001110
+	byte	#%00000110
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+
+Bank2_Water_Waves_Inverted_Data
+	byte	#%11111111
+	byte	#%11111111
+	byte	#%11111011
+	byte	#%11110001
+	byte	#%11100000
+	byte	#%11100000
+	byte	#%01000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11110111
+	byte	#%11110001
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11101111
+	byte	#%11000111
+	byte	#%11000110
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11001111
+	byte	#%10001111
+	byte	#%00000110
+	byte	#%00000110
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11111111
+	byte	#%01111111
+	byte	#%00111110
+	byte	#%00001100
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11111111
+	byte	#%00111110
+	byte	#%00011100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11111101
+	byte	#%00111000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%11111111
+	byte	#%11111111
+	byte	#%11111001
+	byte	#%01110000
+	byte	#%01100000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+
+	align	256
+
+Bank2_Water_Waves_Loop
+	STA	WSYNC			; 3
+	STA	COLUPF			; 3 (6)
+	LDA	(temp03),y		; 5 (11)
+	STA	PF0			; 3 (14)
+	STA	PF2			; 3 (17)
+	TAX				; 2 (19) 
+	LDA	(temp07),y		; 5 (24)
+	STA	PF1			; 3 (27)
+	
+	sleep	20
+	STA	PF2			; 3 (43)
+	STX	PF1			; 3 (46)
+	STA	PF0			; 3 (49)
+
+	DEY				; 2 (51)
+	LDA	(temp05),y		; 5 (56)
+	ADC	temp02			; 3 (59)
+	CPY	#255			; 2 (61)
+	BEQ	Bank2_Water_Waves_Reset ; 2 (63)
+	JMP	Bank2_Water_Waves_Loop  ; 3 (66)
+
+Bank2_Water_Waves_Reset
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
 	STA	COLUBK
-	STA	COLUPF
 	STX	PF0
 	STX	PF1
 	STX	PF2
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
-	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	STA	CTRLPF
 
 	ldx	item
 	txs
+
 
 *SkipIfNoGameSet
 *---------------------------------
@@ -2225,6 +1976,7 @@ ScreenBottomBank2
 *
 
 	align	256
+
 
 
 

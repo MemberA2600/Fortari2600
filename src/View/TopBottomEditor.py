@@ -701,7 +701,7 @@ class TopBottomEditor:
             bank = self.getBankNum()
 
             defaultDatas = {
-                "ChangeFrameColor"  : name + " " + "ChangeFrameColor $00 0",
+                "ChangeFrameColor"  : name + " " + "ChangeFrameColor $00 1",
                 "EmptyLines"        : name + " " + "EmptyLines 1",
                 "Picture64px"       : name + " " + "Picture64px # 0 0 0",
                 "Indicator"         : name + " " + "Indicator $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",

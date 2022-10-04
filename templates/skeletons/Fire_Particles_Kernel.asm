@@ -53,7 +53,6 @@
 	sta	WSYNC
 	LDA	#0
 	STA	ENAM0
-#NAME#_Fire_ParticleLoop_0	
 	lda	$008f	; Force to read temp14 in 4 cycles
 #NAME#_Fire_ParticleLoop_DivideLoop_0
 	sbc	#15
@@ -90,7 +89,6 @@
 	sta	WSYNC
 	LDA	#0
 	STA	ENAM1
-#NAME#_Fire_ParticleLoop_1	
 	lda	$008f	; Force to read temp14 in 4 cycles
 #NAME#_Fire_ParticleLoop_DivideLoop_1
 	sbc	#15
@@ -135,16 +133,16 @@
 
 #NAME#_Fire_Particle_Data
 	BYTE	#87
-	BYTE	#212
+	BYTE	#147
 	BYTE	#43
-	BYTE	#119
-	BYTE	#157
-	BYTE	#55
-	BYTE	#243
+	BYTE	#199
+	BYTE	#77
+	BYTE	#112
+	BYTE	#210
 	BYTE	#67
 	BYTE	#196
 	BYTE	#48
-	BYTE	#115
+	BYTE	#155
 	BYTE	#95
 	BYTE	#177
 	BYTE	#36
