@@ -402,7 +402,7 @@ class Compiler:
            if colorVar.type == "nibble":
                toplevel = toplevel.replace("!!!shiftToRight!!!", self.moveVarToTheRight(colorVar.usedBits, True))
 
-        toplevel = toplevel.replace("!!!LSRs!!!", "" + "\tLSR\n"*int(data[3]))
+        toplevel = toplevel.replace("!!!LSRs!!!", "" + "\tLSR\n"*(int(data[3])-1))
 
         grad = data[2].split("|")
         gradList = "\tBYTE\t#$00\n" * 2

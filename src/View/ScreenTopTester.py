@@ -257,6 +257,7 @@ class ScreenTopTester:
         mode = "dec"
         if   self.__lines[num]["value"].get().startswith("$"): mode = "hex"
         elif self.__lines[num]["value"].get().startswith("%"): mode = "bin"
+        elif self.__lines[num]["value"].get().startswith("/-"): mode = "decr"
         elif self.__lines[num]["value"].get().startswith("/"): mode = "inc"
 
         try:
@@ -265,8 +266,12 @@ class ScreenTopTester:
                 val = int(self.__lines[num]["value"].get())
             elif mode == "hex":
                 val = int(self.__lines[num]["value"].get().replace("$", "0x"), 16)
-            elif mode == "inc":
-                val = int(self.__lines[num]["value"].get()[1:])
+            elif mode in ("inc", "decr"):
+                if mode == "inc":
+                    val = int(self.__lines[num]["value"].get()[1:])
+                else:
+                    val = int(self.__lines[num]["value"].get()[2:])
+
                 if val == 0: val = 1
                 if val != 1:
                     val -=1
@@ -281,17 +286,19 @@ class ScreenTopTester:
 
                     val = val[:firstOne] + "1" * (8-firstOne)
                     val = int("0b"+val, 2) + 1
+
             else:
                 val = int(self.__lines[num]["value"].get().replace("%", "0b"), 2)
 
             self.__lines[num]["entry"].config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                                               fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
         except Exception as e:
+            #print(str(e))
             self.__lines[num]["entry"].config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                               fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
             return
 
-        maxValues = { "bit": 1, "doubleBit": 3, "nibble": 15, "byte": 255 }
+        maxValues = { "bit": 1, "doubleBit": 3, "tripleBit": 7, "nibble": 15, "byte": 255 }
 
         if val < 0: val = 0
 
@@ -300,6 +307,8 @@ class ScreenTopTester:
 
         if   mode == "dec": self.__lines[num]["value"].set(str(val))
         elif mode == "inc": self.__lines[num]["value"].set("/"+str(val))
+        elif mode == "decr": self.__lines[num]["value"].set("/-"+str(val))
+
         elif mode == "hex":
             temp = hex(val).replace("0x", "")
             if len(temp) == 1: temp = "0" + temp
@@ -337,14 +346,24 @@ class ScreenTopTester:
 
             else:
                 tempText = "\tLDA\tcounter\n"
-                incrementer = int(self.__variableList[variable][1][1:])-1
+                incrementer = 0
+                if self.__variableList[variable][1].startswith("/-"):
+                    incrementer = int(self.__variableList[variable][1][2:])-1
+                else:
+                    incrementer = int(self.__variableList[variable][1][1:])-1
+
                 if incrementer > 0:
                    tempText += "\tAND\t#"+str(incrementer)+"\n\tCMP\t#"+str(incrementer) + "\n"
                    label = "ThisIsAReallyImportantLabel_"+str(testCounter)
                    testCounter += 1
-
-                   tempText += "\tBNE\t"+label+"\n" + "\tINC\t"+ variableName + "\n" + label + "\n"
+                   if self.__variableList[variable][1].startswith("/-"):
+                       tempText += "\tBNE\t" + label + "\n" + "\tDEC\t" + variableName + "\n" + label + "\n"
+                   else:
+                       tempText += "\tBNE\t"+label+"\n" + "\tINC\t"+ variableName + "\n" + label + "\n"
                 else:
+                   if self.__variableList[variable][1].startswith("/-"):
+                      tempText += "\tSTA\titem\n\tLDA\t#255\n\tSEC\n\tSBC\titem\n"
+
                    tempText += "\tSTA\t" + variableName + "\n"
 
                 xxx += tempText

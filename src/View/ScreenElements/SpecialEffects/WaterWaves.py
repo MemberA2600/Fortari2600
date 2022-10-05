@@ -298,8 +298,8 @@ class WaterWaves:
             fg=self.__colors.getColor("boxFontNormal")
         )
         num = int(self.__speedVar.get())
-        if num < 0: num = 0
-        if num > 7: num = 7
+        if num < 1: num = 1
+        if num > 8: num = 8
 
         self.__speedVar.set(str(num))
         self.__data[6] = self.__speedVar.get()
