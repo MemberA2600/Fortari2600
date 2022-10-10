@@ -361,3 +361,4 @@ colorVar=Színváltozó
 horizontal=Vízszintes
 vertical=Függõleges
 alterLastFrameColor=Utolsó Képernyõelem Keretszínének Felülírása
+container=Konténer

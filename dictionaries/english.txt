@@ -361,3 +361,4 @@ colorVar=Color Variable
 horizontal=Horizontal
 vertical=Vertical
 alterLastFrameColor=Alter Last Sceen Element's FrameColor
+container=Container

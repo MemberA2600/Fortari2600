@@ -1,4 +1,4 @@
-*Init Section
+8*Init Section
 *---------------------------
 * This is were variables and
 * constants are asigned.
@@ -197,11 +197,6 @@ MusicPointerBackUp1_HI = $db
 zerg = $dc
 terran = $dc
 protoss = $dd
-test1 = $de
-test2 = $df
-test3 = $e0
-test4 = $e1
-test5 = $e2
 
 
 *Bank2
@@ -210,14 +205,14 @@ test5 = $e2
 
 *Bank3
 *---------
-Pocok = $e3
+Pocok = $de
 
 
 *Bank4
 *---------
-Reggeli = $e3
-vacsora = $e4
-Csiga = $e5
+Reggeli = $de
+vacsora = $df
+Csiga = $e0
 
 
 *Bank5
@@ -1488,8 +1483,7 @@ EnterScreenBank2
 
 	LDA	#0		; set frame color to black
 	STA	frameColor
-
-		
+	
 	JMP	WaitUntilOverScanTimerEndsBank2
 
 *Leave Bank
@@ -1567,14 +1561,6 @@ OverScanBank2
 * This is where the game code
 * begins.
 *
-
-	LDA	counter
-	STA	item
-	LDA	#255
-	SEC
-	SBC	item
-	STA	test1
-
 
 
 *VSYNC
@@ -1674,103 +1660,392 @@ VBlankEndBank2
 	stx	item
 
 *
-*	Testline
+*	temp01:		 BaseData
+*	temp02:		 BaseColor
+*	temp03:		 BaseBackColor
+*	temp04:		 FineAdjustment
+*	temp05:		 Pattern Number
+*	temp06 + temp07: Pattern Pointer
+*	temp08 + temp09: Background Gradient Pointer
+*	temp10 	       : ENAM Const
+*	temp12	       : BackCounter	
 *
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
+Name_Number_Of_Lines = 15
 
 	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
+	STA	temp01
+
+	LDA	#$00
+	AND	#%00001111
+	ASL
+	ASL
+	ASL
+	ASL
+	STA	temp02
+
+	LDA	#$80
+	AND	#%11110000
+	STA	temp03
+
+	LDA	#<Bank2_SnowFlakes_Sky_Gradient
+	STA	temp08
+	LDA	#>Bank2_SnowFlakes_Sky_Gradient
+	STA	temp09
+
+	LDA	counter
+	AND	#%00000011
+	CMP	#%00000011
+	BNE	Name_NoChange1
+
+	LDA	$f0
+	AND	#%11100000
+	STA	temp19
+
+	LDA	$f0
+	AND	#%01100000
+	ROL
+	ROL
+	ROL
+	ROL
+	STA	temp05
+
+	LDA	$f0
+	AND	#%00011111
+	CMP	#Name_Number_Of_Lines
+	BEQ	Name_NoChange2
+	TAX
+	INX
+	TXA
+	ORA	temp19
+	STA	$f0
+	JMP	Name_Changed
+Name_NoChange1
+	sleep	17
+Name_NoChange2
+	sleep	15
+Name_Changed
+	LDA	$f0
+	AND	#%00001111
+	ADC	#1
+	STA	temp12
+
+	LDX	#2
+	LDA	$f0
+	BMI	Name_Negative_Stuff
+	LDX	#0
+Name_Negative_Stuff
+	STX	temp10
+
+	JMP	Bank2_SnowFlakes_Kernel
+Bank2_SnowFlakes_Sky_Gradient
+	BYTE	#$0C
+	BYTE	#$0E
+	BYTE	#$0c
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$0A
+	BYTE	#$08
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$06
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$00
+	BYTE	#$00
+
+Bank2_SnowFlakes_Kernel
+	LDX	#0
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK
+	STX	GRP0
+	STX	GRP1
+	STX	PF0
+	STX	PF1
+	STX	PF2
+	STX	ENAM0
+	STX	ENAM1
+	STX	ENABL
+	STX	NUSIZ0
+	
+	LDA	temp05
+	AND	#%00000011
+	ASL
+	TAX
+	LDA	Bank2_SnowFlakes_Patterns,x
+	STA	temp06
+	LDA	Bank2_SnowFlakes_Patterns+1,x	
+	STA	temp07
 
-*
-*	temp01:		Controller
-*	temp02:		BaseColor
-*	temp03+temp04:  PF Pointer
-*	temp05+temp06:  PF Color Pointer
-* 	temp07+temp08:  PF Inverted Pointer
-*	temp09+temp10:  Back Pointer
-*
-	LDA	test1
-
+	LDA	temp01
 	LSR
 	LSR
-	LSR
-
+	AND	#%00001111
 	STA	temp01
 
-	LDA	#$80
-	STA	temp02
+*
+*	Y has the lines
+*	X has the offset
+*
 
-	LDA	#<Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Gradient
-	STA	temp05
-	LDA	#>Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Gradient
-	STA	temp06
+	TAX
+	TAY
+	LDA	(temp06),y
+	STA	temp04
 
-	LDA	#<Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Back
-	STA	temp09
-	LDA	#>Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Back
-	STA	temp10
+	LDY	#Name_Number_Of_Lines
 
-	JMP	Bank2_Water_Waves
-Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Gradient
-	BYTE	#$04
-	BYTE	#$06
-	BYTE	#$08
-	BYTE	#$0A
-	BYTE	#$0C
+	TXA
+	AND	#%00000011
+	TAX
+	TXS
+
+	LDA	#$03
+	STA	NUSIZ0
+
+	JMP	Bank2_SnowFlakes_Loop
+
+	align	256
+Bank2_SnowFlakes_Kernel_FineAdjustment256
+	fill	17
+Bank2_SnowFlakes_Loop
+
+	LDA	Bank2_SnowFlakes_Base_X0,x	
+	CLC
+	ADC	temp04				
+	STA	temp18				; 13
+
+	DEX			
+	TXA
+	AND	#%00000011
+	TAX
+
+	LDA	Bank2_SnowFlakes_Base_X1,x	
+	CLC
+	ADC	temp04				
+	STA	temp19				; 13
+
+	TXS
+
+	DEC	temp12
+	BPL	Bank2_SnowFlakes_Still_Counts
+	LDA	temp10
+	JMP	Bank2_SnowFlakes_Still_JumpHere
+Bank2_SnowFlakes_Still_Counts
+	LDA	temp10
+	EOR	#2
+Bank2_SnowFlakes_Still_JumpHere
+	STA	temp17
+
+	LDA	Bank2_SnowFlakes_SnowColorBase,y
+	CMP	#$08
+	BCC	Bank2_SnowFlakes_Smaller_Than_8
+
+	ADC	temp02
+	JMP	Bank2_SnowFlakes_SaveColors
+Bank2_SnowFlakes_Smaller_Than_8
+	sleep	3
+	ADC	temp03
+Bank2_SnowFlakes_SaveColors
+	STA	COLUP0
+	STA	COLUP1
+
+	LDA	#0
+Bank2_SnowFlakes_Set_X0
+	sta	WSYNC
+	STA	ENAM0
+	STA	ENAM1	
+
+  	LDA	temp18
+Bank2_SnowFlakes_Set_X0_Loop
+	SBC	#15
+	BCS	Bank2_SnowFlakes_Set_X0_Loop
+	sleep	3
+	TAX
+	STA	RESM0
+	LDA	Bank2_SnowFlakes_Kernel_FineAdjustment256,x
+Bank2_SnowFlakes_Set_X1
+	STA	WSYNC
+	STA	HMM0
+	sleep	3
+
+	LDA	temp19
+Bank2_SnowFlakes_Set_X1_Loop
+	SBC	#15
+	BCS	Bank2_SnowFlakes_Set_X1_Loop	
+	TAX
+	sleep	3
+	STA	RESM1
+	LDA	Bank2_SnowFlakes_Kernel_FineAdjustment256,x
+	STA	HMM1
+
+	STA	WSYNC
+	STA	HMOVE
+	
+	TSX
+	LDA	(temp08),y		; 5 
+	ADC	temp03			; 3 
+	STA	COLUBK			; 3 
+
+	LDA	temp17
+	STA	ENAM0
+	STA	ENAM1
+
+	DEY	
+	BMI	Bank2_SnowFlakes_Loop_End_Jumper
+	JMP	Bank2_SnowFlakes_Loop
+Bank2_SnowFlakes_Loop_End_Jumper
+	JMP	Bank2_SnowFlakes_Loop_End
+
+Bank2_SnowFlakes_SnowColorBase
 	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$0A
+	BYTE	#$08	
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$02
 	BYTE	#$00
-	BYTE	#$00
 
+Bank2_SnowFlakes_Base_X0
+	BYTE	#24
+	BYTE	#32
+	BYTE	#104
+	BYTE	#112
 
-Bank2_SpecialEffect_SpecialEffect_WaterWaves_Water_Waves_Back
+Bank2_SnowFlakes_Base_X1
+	BYTE	#72
+	BYTE	#88
+	BYTE	#80
+	BYTE	#96
 
+Bank2_SnowFlakes_Patterns
+	BYTE	#<Bank2_SnowFlakes_Adder1
+	BYTE	#>Bank2_SnowFlakes_Adder1
+	BYTE	#<Bank2_SnowFlakes_Adder2
+	BYTE	#>Bank2_SnowFlakes_Adder2
+	BYTE	#<Bank2_SnowFlakes_Adder3
+	BYTE	#>Bank2_SnowFlakes_Adder3
+	BYTE	#<Bank2_SnowFlakes_Adder4
+	BYTE	#>Bank2_SnowFlakes_Adder4
+
+Bank2_SnowFlakes_Adder1
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#3		; 16
+
+Bank2_SnowFlakes_Adder2
+	BYTE	#3
+	BYTE	#3
+	BYTE	#2
+	BYTE	#2
+	BYTE	#1
+	BYTE	#1
+	BYTE	#2
+	BYTE	#2
+	BYTE	#3
+	BYTE	#3
+	BYTE	#4
+	BYTE	#4
+	BYTE	#5
+	BYTE	#5
+	BYTE	#4
+	BYTE	#4		; 16
+
+Bank2_SnowFlakes_Adder3
+	BYTE	#3
+	BYTE	#3
+	BYTE	#2
+	BYTE	#2
+	BYTE	#3
+	BYTE	#3
+	BYTE	#4
+	BYTE	#4
+	BYTE	#3
+	BYTE	#2
+	BYTE	#1
+	BYTE	#2
+	BYTE	#3
+	BYTE	#4
+	BYTE	#5
+	BYTE	#4		; 16
+
+Bank2_SnowFlakes_Adder4
+	BYTE	#1
+	BYTE	#2
+	BYTE	#3
+	BYTE	#4
+	BYTE	#5
+	BYTE	#6
+	BYTE	#7
+	BYTE	#8
+	BYTE	#7
+	BYTE	#6
+	BYTE	#5
+	BYTE	#4
+	BYTE	#3
+	BYTE	#2
+	BYTE	#1
+	BYTE	#0		; 16
+
+Bank2_SnowFlakes_Kernel_FineAdjustment
+	byte	#$80
+	byte	#$70
+	byte	#$60
+	byte	#$50
+	byte	#$40
+	byte	#$30
+	byte	#$20
+	byte	#$10
+	byte	#$00
+	byte	#$f0
+	byte	#$e0
+	byte	#$d0
+	byte	#$c0
+	byte	#$b0
+	byte	#$a0
+	byte	#$90		; 16
+	
+
+Bank2_SnowFlakes_Loop_End
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
 	STA	COLUBK
-	STX	PF0
-	STX	PF1
-	STX	PF2
-	STA	CTRLPF
-
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
-	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
 	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	STA	COLUP1
+	STX	ENAM0
+	STX	ENAM1
+
 
 	ldx	item
 	txs
+
+
+
 
 *SkipIfNoGameSet
 *---------------------------------
@@ -1843,140 +2118,6 @@ ScreenBottomBank2
 	align	256
 
 
-	align	256
-
-
-Bank2_Water_Waves_Data
-	byte	#%11111111	; (0)
-	byte	#%11111111
-	byte	#%11011111
-	byte	#%10001111
-	byte	#%00000111
-	byte	#%00000111
-	byte	#%00000010
-	byte	#%00000000
-	byte	#%11111111	; (1)
-	byte	#%11101111
-	byte	#%10001111
-	byte	#%00000110
-	byte	#%00000110
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (2)
-	byte	#%11110111
-	byte	#%11100011
-	byte	#%01100011
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (3)
-	byte	#%11110011
-	byte	#%11110001
-	byte	#%01100000
-	byte	#%01100000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (4)
-	byte	#%11111111
-	byte	#%11111110
-	byte	#%01111100
-	byte	#%00110000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (5)
-	byte	#%11111111
-	byte	#%01111100
-	byte	#%00111000
-	byte	#%00011000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (6)
-	byte	#%10111111
-	byte	#%00011100
-	byte	#%00011000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111	; (7)
-	byte	#%11111111
-	byte	#%10011111
-	byte	#%00001110
-	byte	#%00000110
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-
-Bank2_Water_Waves_Inverted_Data
-	byte	#%11111111
-	byte	#%11111111
-	byte	#%11111011
-	byte	#%11110001
-	byte	#%11100000
-	byte	#%11100000
-	byte	#%01000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11110111
-	byte	#%11110001
-	byte	#%01100000
-	byte	#%01100000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11101111
-	byte	#%11000111
-	byte	#%11000110
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11001111
-	byte	#%10001111
-	byte	#%00000110
-	byte	#%00000110
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11111111
-	byte	#%01111111
-	byte	#%00111110
-	byte	#%00001100
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11111111
-	byte	#%00111110
-	byte	#%00011100
-	byte	#%00011000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11111101
-	byte	#%00111000
-	byte	#%00011000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%11111111
-	byte	#%11111111
-	byte	#%11111001
-	byte	#%01110000
-	byte	#%01100000
-	byte	#%00000000
-	byte	#%00000000
-	byte	#%00000000
 
 
 
@@ -1987,87 +2128,6 @@ Bank2_Water_Waves_Inverted_Data
 * used by the developer.
 *
 
-*
-*	temp01:		Controller
-*	temp02:		BaseColor
-*	temp03+temp04:  PF Pointer
-*	temp05+temp06:  PF Color Pointer
-* 	temp07+temp08:  PF Inverted Pointer
-*	temp09+temp10:  Back Pointer
-*
-
-Bank2_Water_Waves
-	LDA	frameColor
-	LDX	#0
-	STA	WSYNC
-	STA	COLUBK
-	
-	STX	PF0
-	STX	GRP0
-	STX	GRP1
-	STX	PF1
-	STX	PF2
-	STA	COLUPF	
-	STX	ENAM0	
-	STX	ENAM1
-
-	LDA	#1
-	STA	CTRLPF
-
-	LDA	#<Bank2_Water_Waves_Data
-	STA	temp03
-	LDA	#>Bank2_Water_Waves_Data
-	STA	temp04
-
-	LDA	#<Bank2_Water_Waves_Inverted_Data
-	STA	temp07
-	LDA	#>Bank2_Water_Waves_Inverted_Data
-	STA	temp08
-
-	LDA	temp01
-	AND	#%00000111
-	ASL
-	ASL
-	ASL
-	TAX
-	ADC	temp03
-	STA	temp03
-	TXA
-	ADC	temp07
-	STA	temp07	
-
-	LDY	#7
-
-	JMP	Bank2_Water_Waves_Loop
-
-	_align	45
-
-Bank2_Water_Waves_Loop
-	STA	WSYNC			; 3
-	STA	COLUPF			; 3 (6)
-	LDA	(temp03),y		; 5 (11)
-	STA	PF0			; 3 (14)
-	STA	PF2			; 3 (17)
-	TAX				; 2 (19) 
-	LDA	(temp07),y		; 5 (24)
-	STA	PF1			; 3 (27)
-	
-	sleep	20
-	STA	PF2			; 3 (43)
-	STX	PF1			; 3 (46)
-	STA	PF0			; 3 (49)
-
-	DEY				; 2 (51)
-	LDA	(temp05),y		; 5 (56)
-	ADC	temp02			; 3 (59)
-	CPY	#255			; 2 (61)
-	BEQ	Bank2_Water_Waves_Reset ; 2 (63)
-	JMP	Bank2_Water_Waves_Loop  ; 3 (66)
-
-Bank2_Water_Waves_Reset
-
-
-	JMP	(temp09)
 
 	
 

@@ -134,6 +134,7 @@ class Indicator:
             from Space      import Space
             from Gradient   import Gradient
             from WaterWaves import WaterWaves
+            from SnowFlakes import SnowFlakes
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
@@ -147,8 +148,8 @@ class Indicator:
                                                             ]],
                 "Space"                : [Space,          ["#", "%01111010"]],
                 "Gradient"             : [Gradient,       ["#", "15", "$FF", "#", "1", "1"]],
-                "WaterWaves"           : [WaterWaves,     ["#", "$80", "$0E|$0C|$0A|$08|$06|$04", "3"]]
-
+                "WaterWaves"           : [WaterWaves,     ["#", "$80", "$0E|$0C|$0A|$08|$06|$04", "3"]],
+                "SnowFlakes"           : [SnowFlakes,     ["#", "$80|$00", "#", "15", "#"]]
             }
 
 
