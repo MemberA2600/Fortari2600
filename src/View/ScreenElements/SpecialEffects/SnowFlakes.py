@@ -79,7 +79,10 @@ class SnowFlakes:
 
         numOf = 4
         self.__framesAndLabels = []
-        self.__labels = ["dataVar", "colorVar", "container", "numOfLines"]
+        self.__labels    = ["dataVar", "colorVar", "numOfLines", "gradient"]
+        self.__listBoxes = []
+
+        from HexEntry import HexEntry
 
         for num in range(0, numOf):
             f = Frame(self.__uniqueFrame, width=self.__w // numOf,
@@ -101,3 +104,290 @@ class SnowFlakes:
             l.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
             self.__framesAndLabels.append([f, l])
+
+            if num == 0:
+                self.__listBoxes.append({})
+
+                s = Scrollbar(f)
+                l = Listbox(f, width=100000,
+                                          height=1000,
+                                          yscrollcommand=s.set,
+                                          selectmode=BROWSE,
+                                          exportselection=False,
+                                          font=self.__smallFont,
+                                          justify=LEFT
+                                          )
+
+                l.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+                l.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                l.pack_propagate(False)
+
+                s.pack(side=RIGHT, anchor=W, fill=Y)
+                l.pack(side=LEFT, anchor=W, fill=BOTH)
+
+                for item in self.__dataVars:
+                    l.insert(END, item)
+
+                self.__listBoxes[-1]["listBox"]     = l
+                self.__listBoxes[-1]["selected"]    = ""
+                self.__listBoxes[-1]["scrollBar"]   = s
+                self.__listBoxes[-1]["dataList"]    = self.__dataVars
+
+            elif num == 1:
+                self.__listBoxes.append({})
+                self.__constOrVar = IntVar()
+                self.__constButton = Radiobutton(f, width=99999,
+                                                 text=self.__dictionaries.getWordFromCurrentLanguage("constant"),
+                                                 bg=self.__colors.getColor("window"),
+                                                 fg=self.__colors.getColor("font"),
+                                                 justify=LEFT, font=self.__smallFont,
+                                                 variable=self.__constOrVar,
+                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 value=1, command=self.__changeIfConstOrVar
+                                                 )
+
+                self.__constButton.pack_propagate(False)
+                self.__constButton.pack(fill=X, side=TOP, anchor=N)
+
+                text = self.__dictionaries.getWordFromCurrentLanguage("baseColor")
+                if text.endswith(":") == False: text = text + ":"
+
+                l1 = Label(f, text=text,
+                          font=self.__smallFont, fg=self.__colors.getColor("font"),
+                          bg=self.__colors.getColor("window"), justify=CENTER
+                          )
+
+                l1.pack_propagate(False)
+                l1.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+                self.__staticColors = ["$00", "$80"]
+                self.__hexEntry = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
+                                           self.__normalFont, self.__staticColors, 0, None, self.__changeHex)
+
+                text = self.__dictionaries.getWordFromCurrentLanguage("backColor")
+                if text.endswith(":") == False: text = text + ":"
+
+                l2 = Label(f, text=text,
+                          font=self.__smallFont, fg=self.__colors.getColor("font"),
+                          bg=self.__colors.getColor("window"), justify=CENTER
+                          )
+
+                l2.pack_propagate(False)
+                l2.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+                self.__hexEntry = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
+                                           self.__normalFont, self.__staticColors, 1, None, self.__changeHex)
+
+                self.__varButton = Radiobutton(f, width=99999,
+                                                 text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
+                                                 bg=self.__colors.getColor("window"),
+                                                 fg=self.__colors.getColor("font"),
+                                                 justify=LEFT, font=self.__smallFont,
+                                                 variable=self.__constOrVar,
+                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 value=2, command=self.__changeIfConstOrVar
+                                                 )
+
+                self.__varButton.pack_propagate(False)
+                self.__varButton.pack(fill=X, side=TOP, anchor=N)
+
+                s = Scrollbar(f)
+                l = Listbox(f, width=100000,
+                                          height=1000,
+                                          yscrollcommand=s.set,
+                                          selectmode=BROWSE,
+                                          exportselection=False,
+                                          font=self.__smallFont,
+                                          justify=LEFT
+                                          )
+
+                l.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+                l.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                l.pack_propagate(False)
+
+                s.pack(side=RIGHT, anchor=W, fill=Y)
+                l.pack(side=LEFT, anchor=W, fill=BOTH)
+
+                for item in self.__colorVars:
+                    l.insert(END, item)
+
+                self.__listBoxes[-1]["listBox"]     = l
+                self.__listBoxes[-1]["selected"]    = ""
+                self.__listBoxes[-1]["scrollBar"]   = s
+                self.__listBoxes[-1]["dataList"]    = self.__colorVars
+
+                self.__framesAndLabels.append(l1)
+                self.__framesAndLabels.append(l2)
+
+
+            elif num == 2:
+                self.__listBoxes.append({})
+
+                self.__numOfLines = StringVar()
+                self.__numOfLines = Entry(f,
+                                          name="speed",
+                                          bg=self.__colors.getColor("boxBackNormal"),
+                                          fg=self.__colors.getColor("boxFontNormal"),
+                                          width=9999, justify=CENTER,
+                                          textvariable=self.__numOfLines,
+                                          font=self.__normalFont
+                                          )
+
+                self.__numOfLines.pack_propagate(False)
+                self.__numOfLines.pack(fill=X, side=TOP, anchor=N)
+
+                self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
+                self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
+
+                text = self.__dictionaries.getWordFromCurrentLanguage("container")
+                if text.endswith(":") == False: text = text + ":"
+
+                l3 = Label(f, text=text,
+                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           bg=self.__colors.getColor("window"), justify=CENTER
+                           )
+
+                l3.pack_propagate(False)
+                l3.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+                s = Scrollbar(f)
+                l = Listbox(f, width=100000,
+                            height=1000,
+                            yscrollcommand=s.set,
+                            selectmode=BROWSE,
+                            exportselection=False,
+                            font=self.__smallFont,
+                            justify=LEFT
+                            )
+
+                l.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+                l.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+                l.pack_propagate(False)
+
+                s.pack(side=RIGHT, anchor=W, fill=Y)
+                l.pack(side=LEFT, anchor=W, fill=BOTH)
+
+                for item in self.__containers:
+                    l.insert(END, item)
+
+                self.__listBoxes[-1]["listBox"] = l
+                self.__listBoxes[-1]["selected"] = ""
+                self.__listBoxes[-1]["scrollBar"] = s
+                self.__listBoxes[-1]["dataList"] = self.__containers
+                self.__framesAndLabels.append(l3)
+
+            elif num == 3:
+                h = self.__h // 24
+                w = self.__w // 8
+
+                self.__hexEntries = {}
+                self.__hexValues  = []
+                for num2 in range(0, 32):
+                    self.__hexValues.append("$00")
+
+                for num2 in range(0, 16):
+                    subF = Frame(f, width=self.__w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height= h)
+
+                    subF.pack_propagate(False)
+                    subF.pack(side=TOP, anchor=N, fill=X)
+
+                    subF1 = Frame(subF, width=w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height= h)
+
+                    subF1.pack_propagate(False)
+                    subF1.pack(side=LEFT, anchor=E, fill=Y)
+
+                    subF2 = Frame(subF, width=w,
+                              bg=self.__loader.colorPalettes.getColor("window"),
+                              height= h)
+
+                    subF2.pack_propagate(False)
+                    subF2.pack(side=LEFT, anchor=E, fill=Y)
+
+                    self.__framesAndLabels.append(subF)
+                    self.__framesAndLabels.append(subF1)
+                    self.__framesAndLabels.append(subF1)
+
+                    self.__hexEntries[num2]     = {}
+                    self.__hexEntries[num2+16]  = {}
+
+                    hexEntry1 = HexEntry(self.__loader, subF1, self.__colors, self.__colorDict,
+                                        self.__normalFont, self.__hexValues, num2, None, self.__changeHex)
+
+                    hexEntry2 = HexEntry(self.__loader, subF2, self.__colors, self.__colorDict,
+                                        self.__normalFont, self.__hexValues, num2+15, None, self.__changeHex)
+
+                self.__button = Button(
+                        f, width=self.__w,
+                        bg=self.__colors.getColor("window"),
+                        fg=self.__colors.getColor("font"),
+                        font=self.__normalFont,
+                        command=self.__generatePattern,
+                        text=self.__dictionaries.getWordFromCurrentLanguage("generateRandom")
+                    )
+
+                self.__button.pack_propagate(False)
+                self.__button.pack(side=TOP, anchor=N)
+
+        if self.__data[3] == "#":
+           self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][0].split("::")[1]
+
+        selector = 0
+        for itemNum in range(0, len(self.__listBoxes[0]["dataList"])):
+            if self.__listBoxes[0]["selected"] == self.__listBoxes[0]["dataList"][itemNum].split("::")[1]:
+                selector = itemNum
+                break
+
+        self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][selector].split("::")[1]
+        self.__data[3] = self.__listBoxes[0]["selected"]
+        self.__listBoxes[0]["listBox"].select_set(selector)
+
+    def __chamgeConst(self, event):
+        pass
+
+    def __changeHex(self, event):
+        pass
+
+    def __changeIfConstOrVar(self):
+        pass
+
+    def __generatePattern(self):
+        numOfLines = int(self.__data[4])
+        from datetime import datetime
+        from random import randint
+
+        time = datetime.now()
+        importantNum = int(str(time).split(".")[-1]) % 2
+
+
+
+    def isItBin(self, num):
+        if num[0] != "%": return False
+
+        try:
+            teszt = int("0b" + num[1:], 2)
+            return True
+        except:
+            return False
+
+    def isItHex(self, num):
+        if num[0] != "$": return False
+
+        try:
+            teszt = int("0x" + num[1:], 16)
+            return True
+        except:
+            return False
+
+    def isItNum(self, num):
+        try:
+            num = int(num)
+            return True
+        except:
+            return False
+
+
+

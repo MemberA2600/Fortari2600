@@ -2,36 +2,163 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/SnowFlakes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-10-05_060338.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0005.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0005.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0006.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0006.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0007.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0007.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0008.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0008.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0009.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0009.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0010.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0010.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0011.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0011.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0005.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0005.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0006.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0006.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0007.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0007.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0008.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0008.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0009.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0009.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0010.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0010.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0011.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0011.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/free.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" afterPath="$PROJECT_DIR$/temp/source.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-10-10_070335.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/SnowFlakes.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/SnowFlakes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0005.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0006.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0007.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0008.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0009.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0010.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0011.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0012.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0013.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0014.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0015.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0016.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0017.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0018.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0019.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0020.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0021.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0022.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0023.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0024.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0025.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0026.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0027.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0028.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0029.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0030.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0031.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0032.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0033.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0034.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0035.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0036.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0037.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0038.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0039.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0040.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0041.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0042.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0043.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0044.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0045.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0046.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0047.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0048.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0049.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0050.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0051.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0052.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0053.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0054.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0055.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0056.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0057.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0058.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0059.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0060.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0061.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0062.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0063.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0064.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0065.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0066.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0067.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0068.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0069.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0070.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0071.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0072.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0073.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0074.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0075.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0076.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0005.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0006.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0007.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0008.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0009.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0010.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0011.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0012.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0013.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0014.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0015.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0016.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0017.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0018.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0019.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0020.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0021.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0022.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0023.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0024.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0025.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0026.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0027.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0028.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0029.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0030.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0031.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0032.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0033.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0034.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0035.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0036.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0037.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0038.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0039.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0040.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0041.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0042.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0043.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0044.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0045.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0046.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0047.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0048.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0049.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0050.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0051.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0052.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0053.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0054.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0055.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0056.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0057.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0058.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0059.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0060.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0061.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0062.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0063.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0064.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0065.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0066.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0067.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0068.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0069.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0070.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0071.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0072.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0073.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0074.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0075.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0076.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -68,7 +195,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1665378214672" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1665463611679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -195,35 +322,35 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="70" />
+          <entry key="project.closed" value="72" />
           <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.3" value="25" />
-          <entry key="project.open.time.4" value="63" />
-          <entry key="project.opened" value="91" />
+          <entry key="project.open.time.4" value="65" />
+          <entry key="project.opened" value="93" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="1" />
-          <entry key="py" value="114" />
+          <entry key="py" value="118" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="114" />
+          <entry key="Python" value="118" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="29606" />
+          <entry key="py" value="30979" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="29606" />
+          <entry key="Python" value="30979" />
         </counts>
       </usages-collector>
     </session>
@@ -236,7 +363,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
+            <state relative-caret-position="967">
               <caret line="367" selection-start-line="367" selection-end-line="406" selection-end-column="33" />
               <folding>
                 <marker date="1664942615042" expanded="true" signature="15638:16870" ph="..." />
@@ -250,11 +377,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/SnowFlakes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="903">
-              <caret line="102" column="49" lean-forward="true" selection-start-line="102" selection-start-column="49" selection-end-line="102" selection-end-column="49" />
+            <state relative-caret-position="603">
+              <caret line="345" column="58" selection-start-line="345" selection-start-column="58" selection-end-line="345" selection-end-column="58" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
+                <marker date="1665463611675" expanded="true" signature="15656:15662" ph="..." />
+                <marker date="1665463611675" expanded="true" signature="15691:15710" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="695">
+              <caret line="151" column="89" selection-start-line="151" selection-start-column="86" selection-end-line="151" selection-end-column="89" />
             </state>
           </provider>
         </entry>
@@ -262,8 +400,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/WaterWaves.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="114" column="82" lean-forward="true" selection-start-line="114" selection-start-column="23" selection-end-line="114" selection-end-column="82" />
+            <state relative-caret-position="243">
+              <caret line="358" column="26" selection-start-line="358" selection-start-column="21" selection-end-line="358" selection-end-column="26" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
                 <marker date="1664942527050" expanded="true" signature="12572:13195" ph="..." />
@@ -275,10 +413,19 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Fire.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="711">
-              <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
+            <state relative-caret-position="227">
+              <caret line="144" selection-start-line="144" selection-end-line="158" selection-end-column="66" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="251">
+              <caret line="585" selection-start-line="585" selection-end-line="632" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -294,12 +441,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>HexEntry</find>
-      <find>__maxNum</find>
-      <find>change</find>
-      <find>gradient</find>
-      <find>generate_Gradient</find>
-      <find>byte</find>
       <find>shift</find>
       <find>moveVarToTheRight</find>
       <find>data[5</find>
@@ -324,6 +465,12 @@
       <find>/</find>
       <find>un</find>
       <find>dec</find>
+      <find>list</find>
+      <find>constant</find>
+      <find>hex</find>
+      <find>entry</find>
+      <find>HexEntry</find>
+      <find>Button</find>
     </findStrings>
     <replaceStrings>
       <replace>__closeWindow</replace>
@@ -700,19 +847,19 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6550436" visible="true" weight="0.16110398" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6550436" visible="true" weight="0.16495506" />
       <window_info id="Structure" order="1" sideWeight="0.34495643" side_tool="true" weight="0.16752246" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.8042362" weight="0.23231357" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.80359435" weight="0.23231357" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.1957638" side_tool="true" weight="0.23231357" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.19640565" side_tool="true" visible="true" weight="0.23231357" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -778,13 +925,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/Switch.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="88" selection-start-line="88" selection-end-line="95" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/DataItem.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -983,13 +1123,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Smoke.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="77" column="47" lean-forward="true" selection-start-line="77" selection-start-column="47" selection-end-line="77" selection-end-column="47" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/HalfBarWithText.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7920">
@@ -1060,13 +1193,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="526" selection-start-line="526" selection-end-line="529" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="745">
@@ -1088,9 +1214,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/ColorPalettes.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Smoke.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="283">
+          <caret line="302" column="48" selection-start-line="302" selection-start-column="43" selection-end-line="302" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
+        <state relative-caret-position="967">
           <caret line="367" selection-start-line="367" selection-end-line="406" selection-end-column="33" />
           <folding>
             <marker date="1664942615042" expanded="true" signature="15638:16870" ph="..." />
@@ -1100,17 +1240,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Fire.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/WaterWaves.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="114" column="82" lean-forward="true" selection-start-line="114" selection-start-column="23" selection-end-line="114" selection-end-column="82" />
+        <state relative-caret-position="243">
+          <caret line="358" column="26" selection-start-line="358" selection-start-column="21" selection-end-line="358" selection-end-column="26" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
             <marker date="1664942527050" expanded="true" signature="12572:13195" ph="..." />
@@ -1122,17 +1255,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="711">
-          <caret line="152" column="13" lean-forward="true" selection-start-line="152" selection-start-column="13" selection-end-line="152" selection-end-column="13" />
+        <state relative-caret-position="695">
+          <caret line="151" column="89" selection-start-line="151" selection-start-column="86" selection-end-line="151" selection-end-column="89" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Fire.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="144" selection-start-line="144" selection-end-line="158" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="585" selection-start-line="585" selection-end-line="632" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/SnowFlakes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="903">
-          <caret line="102" column="49" lean-forward="true" selection-start-line="102" selection-start-column="49" selection-end-line="102" selection-end-column="49" />
+        <state relative-caret-position="603">
+          <caret line="345" column="58" selection-start-line="345" selection-start-column="58" selection-end-line="345" selection-end-column="58" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
+            <marker date="1665463611675" expanded="true" signature="15656:15662" ph="..." />
+            <marker date="1665463611675" expanded="true" signature="15691:15710" ph="..." />
           </folding>
         </state>
       </provider>
