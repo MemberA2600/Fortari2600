@@ -161,7 +161,7 @@ class SnowFlakes:
                 l1.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
                 self.__staticColors = ["$00", "$80"]
-                self.__hexEntry = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
+                self.__hexEntry1 = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
                                            self.__normalFont, self.__staticColors, 0, None, self.__changeHex)
 
                 text = self.__dictionaries.getWordFromCurrentLanguage("backColor")
@@ -175,7 +175,7 @@ class SnowFlakes:
                 l2.pack_propagate(False)
                 l2.pack(side=TOP, anchor=CENTER, fill=BOTH)
 
-                self.__hexEntry = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
+                self.__hexEntry2 = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
                                            self.__normalFont, self.__staticColors, 1, None, self.__changeHex)
 
                 self.__varButton = Radiobutton(f, width=99999,
@@ -223,13 +223,13 @@ class SnowFlakes:
             elif num == 2:
                 self.__listBoxes.append({})
 
-                self.__numOfLines = StringVar()
+                self.__numOfLinesVal = StringVar()
                 self.__numOfLines = Entry(f,
                                           name="speed",
                                           bg=self.__colors.getColor("boxBackNormal"),
                                           fg=self.__colors.getColor("boxFontNormal"),
                                           width=9999, justify=CENTER,
-                                          textvariable=self.__numOfLines,
+                                          textvariable=self.__numOfLinesVal,
                                           font=self.__normalFont
                                           )
 
@@ -311,14 +311,14 @@ class SnowFlakes:
                     self.__framesAndLabels.append(subF1)
                     self.__framesAndLabels.append(subF1)
 
-                    self.__hexEntries[num2]     = {}
-                    self.__hexEntries[num2+16]  = {}
-
                     hexEntry1 = HexEntry(self.__loader, subF1, self.__colors, self.__colorDict,
                                         self.__normalFont, self.__hexValues, num2, None, self.__changeHex)
 
                     hexEntry2 = HexEntry(self.__loader, subF2, self.__colors, self.__colorDict,
                                         self.__normalFont, self.__hexValues, num2+15, None, self.__changeHex)
+
+                    self.__hexEntries[num2]     = hexEntry1
+                    self.__hexEntries[num2+16]  = hexEntry2
 
                 self.__button = Button(
                         f, width=self.__w,
@@ -345,6 +345,51 @@ class SnowFlakes:
         self.__data[3] = self.__listBoxes[0]["selected"]
         self.__listBoxes[0]["listBox"].select_set(selector)
 
+        isItHex = False
+
+        try:
+            if self.isItHex(self.__data[4].split("|")[0]): isItHex = True
+        except:
+            pass
+
+        if isItHex:
+           self.__constOrVar.set(1)
+           hexes = self.__data[4].split("|")
+           self.__hexEntry1.setValue(hexes[0])
+           self.__hexEntry2.setValue(hexes[1])
+
+           self.__listBoxes[1]["selected"] = self.__listBoxes[1]["dataList"][0].split("::")[1]
+           self.__listBoxes[1]["listBox"].config(state = DISABLED)
+
+        else:
+           self.__constOrVar.set(2)
+           self.__hexEntry1.changeState(DISABLED)
+           self.__hexEntry2.changeState(DISABLED)
+
+           selector = 0
+           for itemNum in range(0, len(self.__listBoxes[1]["dataList"])):
+               if self.__listBoxes[1]["dataList"][itemNum].split("::")[1] == self.__data[4]:
+                  selector = itemNum
+                  break
+
+           self.__listBoxes[1]["selected"] = self.__listBoxes[1]["dataList"][selector].split("::")[1]
+           self.__listBoxes[1]["listBox"].select_set(selector)
+
+        self.__numOfLinesVal.set(self.__data[6])
+        if self.__data[5] == "#": self.__data[5] = self.__listBoxes[2]["dataList"][0].split("::")[1]
+
+        selector = 0
+        for itemNum in range(0, len(self.__listBoxes[2]["dataList"])):
+            if self.__listBoxes[2]["dataList"][itemNum].split("::")[1] == self.__data[5]:
+               selector = itemNum
+               break
+
+        self.__listBoxes[2]["selected"] = self.__listBoxes[2]["dataList"][selector].split("::")[1]
+        self.__listBoxes[2]["listBox"].select_set(selector)
+
+        if self.__data[7] == "#": self.__generatePattern()
+        self.turnOnOff()
+
     def __chamgeConst(self, event):
         pass
 
@@ -354,14 +399,56 @@ class SnowFlakes:
     def __changeIfConstOrVar(self):
         pass
 
+    def turnOnOff(self):
+        numOfLines = int(self.__data[6])
+
+        for num in range(0, 32):
+            if num < numOfLines:
+               self.__hexEntries[num].changeState(NORMAL)
+            else:
+               self.__hexEntries[num].changeState(DISABLED)
+
     def __generatePattern(self):
-        numOfLines = int(self.__data[4])
-        from datetime import datetime
+        numOfLines = int(self.__data[6])
         from random import randint
 
-        time = datetime.now()
-        importantNum = int(str(time).split(".")[-1]) % 2
+        patterns = {
+            0: "$00",
+            1: "$02",
+            2: "$04",
+            3: "$06",
+            4: "$08",
+            5: "$0A",
+            6: "$0C",
+            7: "$0E",
+        }
 
+        lenOfPattern = numOfLines - 2
+        pattern = ["$00", "$00"]
+
+        lastOne = 0
+
+        changer = [1, 1, 1, -1, -1]
+        for num in range(0, lenOfPattern):
+            newNum = lastOne + changer[randint(0,4)]
+            if newNum < 0: newNum = 1
+            if newNum > 7 : newNum = 6
+
+            lastOne = newNum
+            pattern.append(patterns[lastOne])
+
+        xxx = []
+        if self.__data[7] == "#":
+           for num in range(0, 32):
+               xxx.append("$00")
+        else:
+            xxx = self.__data[7].split("|")
+
+        for num in range(0, len(pattern)):
+            xxx[num] = pattern[num]
+            self.__hexEntries[num].setValue(pattern[num])
+
+        self.__data[7] = "|".join(xxx)
 
 
     def isItBin(self, num):

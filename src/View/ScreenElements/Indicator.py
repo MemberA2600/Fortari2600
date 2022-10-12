@@ -149,7 +149,7 @@ class Indicator:
                 "Space"                : [Space,          ["#", "%01111010"]],
                 "Gradient"             : [Gradient,       ["#", "15", "$FF", "#", "1", "1"]],
                 "WaterWaves"           : [WaterWaves,     ["#", "$80", "$0E|$0C|$0A|$08|$06|$04", "3"]],
-                "SnowFlakes"           : [SnowFlakes,     ["#", "$80|$00", "#", "15", "#"]]
+                "SnowFlakes"           : [SnowFlakes,     ["#", "$00|$80", "#", "15", "#"]]
             }
 
 
