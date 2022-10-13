@@ -332,6 +332,11 @@ class SnowFlakes:
                 self.__button.pack_propagate(False)
                 self.__button.pack(side=TOP, anchor=N)
 
+            if num < 3:
+                l.bind("<ButtonRelease-1>", self.__changeSelected)
+                l.bind("<KeyRelease-Up>", self.__changeSelected)
+                l.bind("<KeyRelease-Down>", self.__changeSelected)
+
         if self.__data[3] == "#":
            self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][0].split("::")[1]
 
@@ -390,11 +395,78 @@ class SnowFlakes:
         if self.__data[7] == "#": self.__generatePattern()
         self.turnOnOff()
 
+    def __changeSelected(self, event):
+        num = 0
+        for itemNum in range(0,3):
+            if self.__listBoxes[itemNum]["listBox"] == event.widget:
+               num = itemNum
+               break
+
+        if self.__constOrVar.get() == 2 and num == 1: return
+        dataNum = 3 + num
+
+        if self.__listBoxes[num]["selected"] != self.__listBoxes[num]["dataList"][self.__listBoxes[num]["listBox"].curselection()[0]].split("::")[1]:
+           self.__listBoxes[num]["selected"] = self.__listBoxes[num]["dataList"][self.__listBoxes[num]["listBox"].curselection()[0]].split("::")[1]
+           self.__data[dataNum]              = self.__listBoxes[num]["selected"]
+           self.__changeData(self.__data)
+
     def __chamgeConst(self, event):
-        pass
+        temp = self.__numOfLines.get()
+        if self.isItNum(temp) == False:
+            event.widget.config(
+                bg=self.__colors.getColor("boxBackUnSaved"),
+                fg=self.__colors.getColor("boxFontUnSaved")
+            )
+            return
+        event.widget.config(
+            bg=self.__colors.getColor("boxBackNormal"),
+            fg=self.__colors.getColor("boxFontNormal")
+        )
+
+        num = int(temp)
+        if num < 1 : num = 1
+        if num > 32: num = 32
+
+        num -= 1
+        num = bin(num).replace("0b", "")
+        num = num.replace("0", "1")
+        num = str(int("0b" + num, 2)+1)
+
+        self.__data[6] = num
+        self.__changeData(self.__data)
+        self.__numOfLinesVal.set(num)
+        self.turnOnOff()
 
     def __changeHex(self, event):
-        pass
+        if event.widget in [self.__hexEntry1.getEntry(), self.__hexEntry2.getEntry()]:
+           if self.__constOrVar.get() == 2: return
+           num = [self.__hexEntry1.getEntry(), self.__hexEntry2.getEntry()].index(event.widget)
+           entries = [self.__hexEntry1, self.__hexEntry2]
+
+           colorVar = entries[num].getValue()
+           if self.isItHex(colorVar):
+              data = self.__data[4].split("|")
+              colorVar = colorVar[:2] + "0"
+              entries[num].setValue(colorVar)
+              data[num] = colorVar
+              self.__data[4] = "|".join(data)
+              self.__changeData(self.__data)
+
+        else:
+            num = 0
+            for itemNum in range(0, 32):
+                if event.widget == self.__hexEntries[itemNum].getEntry():
+                   num = itemNum
+                   break
+
+            colorVar = self.__hexEntries[num].getValue()
+            if self.isItHex(colorVar):
+               data = self.__data[7].split("|")
+               colorVar = "0" + colorVar[2]
+               self.__hexEntries[num].setValue(colorVar)
+               data[num] = colorVar
+               self.__data[7] = "|".join(data)
+               self.__changeData(self.__data)
 
     def __changeIfConstOrVar(self):
         pass
