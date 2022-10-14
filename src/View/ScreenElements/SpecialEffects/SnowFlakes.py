@@ -208,13 +208,13 @@ class SnowFlakes:
                 s.pack(side=RIGHT, anchor=W, fill=Y)
                 l.pack(side=LEFT, anchor=W, fill=BOTH)
 
-                for item in self.__colorVars:
+                for item in self.__dataVars:
                     l.insert(END, item)
 
                 self.__listBoxes[-1]["listBox"]     = l
                 self.__listBoxes[-1]["selected"]    = ""
                 self.__listBoxes[-1]["scrollBar"]   = s
-                self.__listBoxes[-1]["dataList"]    = self.__colorVars
+                self.__listBoxes[-1]["dataList"]    = self.__dataVars
 
                 self.__framesAndLabels.append(l1)
                 self.__framesAndLabels.append(l2)
@@ -339,6 +339,8 @@ class SnowFlakes:
 
         if self.__data[3] == "#":
            self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][0].split("::")[1]
+        else:
+           self.__listBoxes[0]["selected"] = self.__data[3]
 
         selector = 0
         for itemNum in range(0, len(self.__listBoxes[0]["dataList"])):
@@ -392,7 +394,13 @@ class SnowFlakes:
         self.__listBoxes[2]["selected"] = self.__listBoxes[2]["dataList"][selector].split("::")[1]
         self.__listBoxes[2]["listBox"].select_set(selector)
 
-        if self.__data[7] == "#": self.__generatePattern()
+        if self.__data[7] == "#":
+            self.__generatePattern()
+        else:
+            pattern = self.__data[7].split("|")
+            for num in range(0, len(pattern)):
+                self.__hexEntries[num].setValue(pattern[num])
+
         self.turnOnOff()
 
     def __changeSelected(self, event):
@@ -402,7 +410,7 @@ class SnowFlakes:
                num = itemNum
                break
 
-        if self.__constOrVar.get() == 2 and num == 1: return
+        if self.__constOrVar.get() == 1 and num == 1: return
         dataNum = 3 + num
 
         if self.__listBoxes[num]["selected"] != self.__listBoxes[num]["dataList"][self.__listBoxes[num]["listBox"].curselection()[0]].split("::")[1]:
@@ -462,14 +470,48 @@ class SnowFlakes:
             colorVar = self.__hexEntries[num].getValue()
             if self.isItHex(colorVar):
                data = self.__data[7].split("|")
-               colorVar = "0" + colorVar[2]
+               colorVar = "$0" + colorVar[2]
                self.__hexEntries[num].setValue(colorVar)
                data[num] = colorVar
                self.__data[7] = "|".join(data)
                self.__changeData(self.__data)
 
     def __changeIfConstOrVar(self):
-        pass
+        if self.__constOrVar.get() == 1:
+           self.__hexEntry1.changeState(NORMAL)
+           self.__hexEntry2.changeState(NORMAL)
+
+           self.__listBoxes[1]["listBox"].config(state = DISABLED)
+
+           data1 = self.__hexEntry1.getValue()
+           data2 = self.__hexEntry2.getValue()
+
+           if self.isItHex(data1) == False:
+              data1 = "$00"
+
+           if self.isItHex(data2) == False:
+              data2 = "$80"
+
+           self.__data[4] = data1 + "|" + data2
+           self.__changeData(self.__data)
+
+        else:
+           self.__hexEntry1.changeState(DISABLED)
+           self.__hexEntry2.changeState(DISABLED)
+           self.__listBoxes[1]["listBox"].config(state=NORMAL)
+
+           selector = 0
+           for itemNum in range(0, len(self.__listBoxes[1]["dataList"])):
+               if self.__listBoxes[1]["selected"] == self.__listBoxes[1]["dataList"][itemNum].split("::")[1]:
+                  selector = itemNum
+                  break
+
+           self.__listBoxes[1]["selected"] = self.__listBoxes[1]["dataList"][selector].split("::")[1]
+           self.__data[4]                  = self.__listBoxes[1]["selected"]
+           self.__listBoxes[1]["listBox"].select_clear(0, END)
+           self.__listBoxes[1]["listBox"].select_set(selector)
+
+           self.__changeData(self.__data)
 
     def turnOnOff(self):
         numOfLines = int(self.__data[6])
@@ -521,7 +563,7 @@ class SnowFlakes:
             self.__hexEntries[num].setValue(pattern[num])
 
         self.__data[7] = "|".join(xxx)
-
+        self.__changeData(self.__data)
 
     def isItBin(self, num):
         if num[0] != "%": return False

@@ -12,6 +12,7 @@
 	STX	ENAM1
 	STX	ENABL
 	STX	NUSIZ0
+	STX	HMCLR
 	
 	LDA	temp05
 	AND	#%00000011
@@ -22,23 +23,31 @@
 	LDA	#BANK#_SnowFlakes_Patterns+1,x	
 	STA	temp07
 
+
 	LDA	temp01
 	LSR
 	LSR
-	AND	#%00001111
-*******	STA	temp01
-
 *
 *	Y has the lines
 *	X has the offset
 *
-
+	AND	#%00011111
 	TAX
-	TAY
+	AND	#%00001111
+	TAY	
+
 	LDA	(temp06),y
 	STA	temp04
 
 	LDY	temp11
+	
+	LDA	#>#BANK#_SnowFlakes_SnowColorBase
+	STA	temp16
+	LDA	#30
+	SEC
+	SBC	temp11
+	ADC	#<#BANK#_SnowFlakes_SnowColorBase
+	STA	temp15
 
 	TXA
 	AND	#%00000011
@@ -49,10 +58,12 @@
 	STA	NUSIZ0
 
 	JMP	#BANK#_SnowFlakes_Loop
+#BANK#_SnowFlakes_Loop_End
+	JMP	(temp13)
 
 	align	256
 #BANK#_SnowFlakes_Kernel_FineAdjustment256
-	fill	17
+	fill	2
 #BANK#_SnowFlakes_Loop
 
 	LDA	#BANK#_SnowFlakes_Base_X0,x	
@@ -82,7 +93,7 @@
 #BANK#_SnowFlakes_Still_JumpHere
 	STA	temp17
 
-	LDA	#BANK#_SnowFlakes_SnowColorBase,y
+	LDA	(temp15),y
 	CMP	#$08
 	BCC	#BANK#_SnowFlakes_Smaller_Than_8
 
@@ -143,6 +154,22 @@
 	JMP	#BANK#_SnowFlakes_Loop_End
 
 #BANK#_SnowFlakes_SnowColorBase
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
+	BYTE	#$0E
+	BYTE	#$0E	
 	BYTE	#$0E
 	BYTE	#$0E	
 	BYTE	#$0E
@@ -272,15 +299,3 @@
 	byte	#$a0
 	byte	#$90		; 16
 	
-
-#BANK#_SnowFlakes_Loop_End
-	LDA	frameColor
-	LDX	#0
-	STA	WSYNC
-	STA	COLUBK
-	STA	COLUP0
-	STA	COLUP1
-	STX	ENAM0
-	STX	ENAM1
-
-	JMP	(temp13)

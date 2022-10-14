@@ -203,7 +203,7 @@ class Compiler:
             )
 
             if data[1] == "1":
-               if self.__lastRoutine in (None, "BigSprite", "Space", "Gradient", "Gradient_Hor", "WaterWaves"):
+               if self.__lastRoutine in (None, "BigSprite", "Space", "Gradient", "Gradient_Hor", "WaterWaves", "SnowFlakes"):
                   self.__changeLastFrameColor(self.__bankData, data[0])
 
         elif typ == "EmptyLines":
@@ -381,8 +381,47 @@ class Compiler:
                 self.__userData["WaterWaves"] = self.__loader.io.loadSubModule("Water_Waves").replace("#BANK#", self.__bank)
                 dictKey = "WaterWaves"
 
+            elif subtyp == "SnowFlakes":
+                those = self.generate_SnowFlakes(fullName, data, self.__bank)
+                self.__bankData.append(those[1])
+                self.__routines["SnowFlakes"] = those[0]
+                dictKey = "SnowFlakes"
 
         self.__lastRoutine = dictKey
+
+    def generate_SnowFlakes(self, name, data, bank):
+        routine = self.__loader.io.loadSubModule("SnowFlakes_Kernel").replace("#BANK#", bank)
+        toplevel = self.__loader.io.loadSubModule("SnowFlakes_TopLevel")
+
+        dataVar = self.__loader.virtualMemory.getVariableByName2(data[0])
+        toplevel = toplevel.replace("#VAR01#", data[0])
+
+        if dataVar.type != "byte":
+           toplevel = toplevel.replace("!!!convertTo8bits!!!", self.convertAnyTo8Bits(dataVar.usedBits))
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(data[1])
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR02#", "#$" + data[1][5]+data[1][1])
+        else:
+           toplevel = toplevel.replace("#VAR02#", data[1])
+
+        toplevel = toplevel.replace("#VAR03#", data[2])
+
+        toplevel = toplevel.replace("#CON02#", data[3]).replace("#CON01#", str(int(data[3])-1))
+
+        gradientText = ""
+        g = data[4].split("|")
+
+        for itemNum in range(int(data[3])-1, -1, -1):
+            gradientText += "\tBYTE\t#"+g[itemNum]+"\n"
+
+        toplevel = toplevel.replace("!!!GRADIENT!!!", gradientText)
+
+        return(
+            routine.replace("#BANK#", bank).replace("#NAME#", name),
+            toplevel.replace("#BANK#", bank).replace("#NAME#", name)
+        )
+
 
     def generate_WaterWaves(self, name, data, bank):
         routine = self.__loader.io.loadSubModule("Water_Waves_Kernel").replace("#BANK#", bank)

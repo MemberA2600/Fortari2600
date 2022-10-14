@@ -48,6 +48,10 @@
 	STA	temp07	
 
 	LDY	#7
+	LDA	(temp05),y
+	CLC		
+	ADC	temp02	
+	STA	COLUPF		
 
 	JMP	#BANK#_Water_Waves_Loop
 
@@ -76,6 +80,5 @@
 	JMP	#BANK#_Water_Waves_Loop  ; 3 (66)
 
 #BANK#_Water_Waves_Reset
-
 
 	JMP	(temp09)
