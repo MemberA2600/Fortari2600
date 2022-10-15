@@ -11,6 +11,7 @@
 *	temp09:		 Controller Saved	
 *	temp10 + temp11: Shitty Pointer
 *	temp12 + temp13: JumpBack Pointer
+*	temp14	       : Controller	
 *
 
 *
@@ -22,14 +23,18 @@
 #NAME#_FinishNum    = #CON01#
 #NAME#_LenOfPattern = #CON02# 
 
+	LDA	#1
+	STA	CTRLPF
 
 	LDA	#VAR02#
 !!!ShiftToRight!!!
 	STA	temp08
 
+	LDA	#VAR01#
 !!!ConvertControllerIfNeeded!!!
+	STA	temp14
 
-	BIT	#VAR01#
+	BIT	temp14
 	BMI	#NAME#_BottomTop
 
 	LDA	##NAME#_StartingNum
@@ -68,7 +73,7 @@
 	STA	temp11
 
 	LDA	#$20
-	BIT	#VAR01#
+	BIT	temp14
 	BEQ	#NAME#_XYZXYZ
 	LDA	#<Bank2_3D_Thing_PF0
 	JMP	#NAME#_ZYXZYX
@@ -84,7 +89,7 @@
 	AND	temp02
 	STA	temp05
 
-	LDA	#VAR01#
+	LDA	temp14
 	STA	temp09	
 
 	LDA	#<#NAME#_JumpBack
@@ -92,7 +97,7 @@
 	LDA	#>#NAME#_JumpBack
 	STA	temp13	
 
-	JMP	Bank2_3D_Thing
+	JMP	Bank2_3D_Thing_Loop
 #NAME#_Gradient
 	_align	#CON03#
 !!!GRADIENT!!!

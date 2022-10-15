@@ -444,10 +444,14 @@ class _3DLandScape:
                 l.bind("<KeyRelease-Up>", self.__changeSelected)
                 l.bind("<KeyRelease-Down>", self.__changeSelected)
 
+        self.setFields()
+
+    def setFields(self):
         if self.isItBin(self.__data[3]) == False:
+
             selector = 0
             for itemNum in range(0, len(self.__listBoxes[0]["dataList"])):
-                if self.__data[3] != self.__listBoxes[0]["dataList"][itemNum].split("::")[1]:
+                if self.__data[3] == self.__listBoxes[0]["dataList"][itemNum].split("::")[1]:
                    #self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][self.__listBoxes[0]["listBox"].curselection()[0]]
                    selector = itemNum
                    break
@@ -460,13 +464,12 @@ class _3DLandScape:
             self.__curved.config(state = DISABLED)
             self.__gaps.config(state = DISABLED)
             self.__constOrVar2.set(2)
-
         else:
             datas = self.__data[3][1:5]
-            self.__topBottomVar.set(int(datas[1]))
-            self.__moveBackVar.set(int(datas[2]))
-            self.__curvedVar.set(int(datas[3]))
-            self.__gapsVar.set(int(datas[4]))
+            self.__topBottomVar.set(int(datas[0]))
+            self.__moveBackVar.set(int(datas[1]))
+            self.__curvedVar.set(int(datas[2]))
+            self.__gapsVar.set(int(datas[3]))
 
             self.__listBoxes[0]["listBox"].config(state = DISABLED)
             self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][0].split("::")[1]
@@ -486,7 +489,7 @@ class _3DLandScape:
 
            selector = 0
            for itemNum in range(0, len(self.__listBoxes[1]["dataList"])):
-               if self.__data[4] != self.__listBoxes[1]["dataList"][itemNum].split("::")[1]:
+               if self.__data[4] == self.__listBoxes[1]["dataList"][itemNum].split("::")[1]:
                    selector = itemNum
                    break
 

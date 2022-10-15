@@ -203,7 +203,8 @@ class Compiler:
             )
 
             if data[1] == "1":
-               if self.__lastRoutine in (None, "BigSprite", "Space", "Gradient", "Gradient_Hor", "WaterWaves", "SnowFlakes"):
+               if self.__lastRoutine in (None, "BigSprite", "Space", "Gradient",
+                                         "Gradient_Hor", "WaterWaves", "SnowFlakes", "3DLandScape"):
                   self.__changeLastFrameColor(self.__bankData, data[0])
 
         elif typ == "EmptyLines":
@@ -387,7 +388,49 @@ class Compiler:
                 self.__routines["SnowFlakes"] = those[0]
                 dictKey = "SnowFlakes"
 
+            elif subtyp == "_3DLandScape":
+                those = self.generate_3DLandScape(fullName, data, self.__bank)
+                self.__bankData.append(those[1])
+                self.__routines["3DLandScape"] = those[0]
+                dictKey = "3DLandScape"
+
+
         self.__lastRoutine = dictKey
+
+    def generate_3DLandScape(self, name, data, bank):
+        routine = self.__loader.io.loadSubModule("3DLandScape_Kernel").replace("#BANK#", bank)
+        toplevel = self.__loader.io.loadSubModule("3DLandScape_TopLevel")
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(data[1])
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR02#", "#" + data[1])
+        else:
+           toplevel = toplevel.replace("#VAR02#", data[1]).replace("!!!ShiftToRight!!!",
+                                       self.moveVarToTheRight(colorVar.usedBits, True))
+
+        dataVar = self.__loader.virtualMemory.getVariableByName2(data[0])
+        if dataVar == False:
+           toplevel = toplevel.replace("#VAR01#", "#" + data[0])
+        else:
+           toplevel = toplevel.replace("#VAR01#", data[0]).replace("!!!ConvertControllerIfNeeded!!!",
+                                       self.convertAnyTo8Bits(dataVar.usedBits))
+
+        toplevel = toplevel.replace("#CON01#", str(int(data[2])+1)).replace("#CON02#", str(int(data[3])-1)).replace("#CON03#", data[3])
+
+        gradientText = ""
+        g = data[4].split("|")
+
+        for itemNum in range(int(data[3])-1, -1, -1):
+            gradientText += "\tBYTE\t#"+g[itemNum]+"\n"
+
+        toplevel = toplevel.replace("!!!GRADIENT!!!", gradientText)
+        toplevel = toplevel.replace("!!!SLOWDOWN!!!", "\tLSR\n"*int(data[5]))
+
+        return(
+            routine.replace("#BANK#", bank).replace("#NAME#", name),
+            toplevel.replace("#BANK#", bank).replace("#NAME#", name)
+        )
+
 
     def generate_SnowFlakes(self, name, data, bank):
         routine = self.__loader.io.loadSubModule("SnowFlakes_Kernel").replace("#BANK#", bank)
