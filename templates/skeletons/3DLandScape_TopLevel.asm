@@ -28,6 +28,7 @@
 
 	LDA	#VAR02#
 !!!ShiftToRight!!!
+	AND	#%11110000
 	STA	temp08
 
 	LDA	#VAR01#

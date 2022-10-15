@@ -484,6 +484,7 @@ class _3DLandScape:
 
         else:
            self.__hexEntry1.setValue("$40")
+           self.__hexEntry1.changeState(DISABLED)
            self.__listBoxes[1]["listBox"].config(state=NORMAL)
            self.__constOrVar.set(2)
 

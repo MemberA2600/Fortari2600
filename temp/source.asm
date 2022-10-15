@@ -1708,16 +1708,18 @@ VBlankEndBank2
 
 Bank2_SpecialEffect_SpecialEffect__3DLandScape_StartingNum  = 0
 Bank2_SpecialEffect_SpecialEffect__3DLandScape_FinishNum    = 9
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_LenOfPattern = 15 
+Bank2_SpecialEffect_SpecialEffect__3DLandScape_LenOfPattern = 31 
 
 	LDA	#1
 	STA	CTRLPF
 
-	LDA	#$40
+	LDA	counter
+	AND	#%11111111
 
+	AND	#%11110000
 	STA	temp08
 
-	LDA	#%10000000
+	LDA	#%10110000
 
 	STA	temp14
 
@@ -1788,26 +1790,193 @@ Bank2_SpecialEffect_SpecialEffect__3DLandScape_ZYXZYX
 
 	JMP	Bank2_3D_Thing_Loop
 Bank2_SpecialEffect_SpecialEffect__3DLandScape_Gradient
-	_align	16
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$08
+	_align	32
+	BYTE	#$02
+	BYTE	#$02
 	BYTE	#$06
-	BYTE	#$04
 	BYTE	#$0A
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0C
+	BYTE	#$08
+	BYTE	#$02
+	BYTE	#$08
 	BYTE	#$0A
 	BYTE	#$04
 	BYTE	#$08
-	BYTE	#$04
+	BYTE	#$0C
+	BYTE	#$08
+	BYTE	#$02
+	BYTE	#$08
+	BYTE	#$02
 	BYTE	#$00
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$06
+	BYTE	#$0C
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$0C
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$0A
+	BYTE	#$08
+	BYTE	#$0C
+	BYTE	#$0E
 
 
 Bank2_SpecialEffect_SpecialEffect__3DLandScape_JumpBack
+	LDA	frameColor
+	LDX	#0
+	STA	WSYNC
+	STA	COLUBK
+	STX	PF0
+	STX	PF1
+	STX	PF2
+	STA	CTRLPF
+
+
+*
+*	Number of lines = sum of to numbers from 1 to N, "4" = 1 + 2 + 3 + 4 = 10
+*
+*	temp01:		 Starting Num
+*	temp02: 	 Len of Gradient Pattern (multiply of 2 - 1!)
+*	temp03 + temp04: Pattern Pointer
+*	temp05:		 Pattern Index	
+*	temp06:		 Adder (1, if from top to bottom, 254 otherwise)
+*	temp07:		 Goal Num
+*	temp08:		 BaseColor	
+*	temp09:		 Controller Saved	
+*	temp10 + temp11: Shitty Pointer
+*	temp12 + temp13: JumpBack Pointer
+*	temp14	       : Controller	
+*
+
+*
+*	Valid ones: 	0-1  -X-Y-0 (INCR)
+*			X-255-0-Y-Y (DECR)
+*
+
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum  = 0
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum    = 9
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern = 31 
+
+	LDA	#1
+	STA	CTRLPF
+
+	LDA	counter
+	AND	#%11111111
+
+	AND	#%11110000
+	STA	temp08
+
+	LDA	#%01110000
+
+	STA	temp14
+
+	BIT	temp14
+	BMI	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_BottomTop
+
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum
+	STA	temp01
+
+	LDA	#1
+	STA	temp06
+
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum
+	STA	temp07
+
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern
+	STA	temp02
+
+	JMP	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_TopBottomJump
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_BottomTop
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum
+	STA	temp01
+
+	LDA	#255
+	STA	temp06
+
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum
+	STA	temp07
+
+	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern
+	STA	temp02
+
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_TopBottomJump
+	LDA	#<Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
+	STA	temp03	
+	LDA	#>Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
+	STA	temp04	
+
+	LDA	#>Bank2_3D_Thing_PF0
+	STA	temp11
+
+	LDA	#$20
+	BIT	temp14
+	BEQ	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_XYZXYZ
+	LDA	#<Bank2_3D_Thing_PF0
+	JMP	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_ZYXZYX
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_XYZXYZ
+	sleep	3
+	LDA	#<Bank2_3D_Thing_Empty
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_ZYXZYX
+	STA	temp10
+
+	LDA 	counter
+****	speed
+	LSR
+	LSR
+
+	AND	temp02
+	STA	temp05
+
+	LDA	temp14
+	STA	temp09	
+
+	LDA	#<Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
+	STA	temp12	
+	LDA	#>Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
+	STA	temp13	
+
+	JMP	Bank2_3D_Thing_Loop
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
+	_align	32
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$0A
+	BYTE	#$04
+	BYTE	#$08
+	BYTE	#$0C
+	BYTE	#$06
+	BYTE	#$00
+	BYTE	#$06
+	BYTE	#$0C
+	BYTE	#$08
+	BYTE	#$0C
+	BYTE	#$0C
+	BYTE	#$0E
+	BYTE	#$0A
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$06
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$00
+	BYTE	#$02
+	BYTE	#$00
+	BYTE	#$04
+	BYTE	#$08
+	BYTE	#$0E
+	BYTE	#$08
+	BYTE	#$02
+	BYTE	#$06
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$00
+
+
+Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
