@@ -367,3 +367,4 @@ verticalMir=Függõlegesen Tükrözött
 moveBack=Hátrafele mozgás
 curved=Hajlított
 gaps=Rések
+none=Üres

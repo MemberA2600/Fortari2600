@@ -367,3 +367,4 @@ verticalMir=Vertically Mirrored
 moveBack=Move Backwards
 curved=Curved
 gaps=Gaps
+none=None

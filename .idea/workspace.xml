@@ -2,12 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/View/ScreenElements/Wall.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-10-15_092317.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/_3DLandScape.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/_3DLandScape.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/free.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" afterPath="$PROJECT_DIR$/temp/source.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/3DLandScape_TopLevel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/3DLandScape_TopLevel.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-10-15_191115.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/TopBottomEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/TopBottomEditor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,7 +44,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1665853875287" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1665931664477" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -58,6 +58,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$LockFrame.coverage" NAME="LockFrame Coverage Results" MODIFIED="1626496617534" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$listUnUsed.coverage" NAME="listUnUsed Coverage Results" MODIFIED="1646555393544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$PlayfieldEditor.coverage" NAME="PlayfieldEditor Coverage Results" MODIFIED="1627069290081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
+    <SUITE FILE_PATH="coverage/Fortari2600$Wall.coverage" NAME="Wall Coverage Results" MODIFIED="1665922121638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View/ScreenElements" />
     <SUITE FILE_PATH="coverage/Fortari2600$VirtualMemory.coverage" NAME="VirtualMemory Coverage Results" MODIFIED="1619683310789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/DataHolders" />
     <SUITE FILE_PATH="coverage/Fortari2600$Dictionary.coverage" NAME="Dictionary Coverage Results" MODIFIED="1618066138203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Logger.coverage" NAME="Logger Coverage Results" MODIFIED="1619599026374" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
@@ -171,35 +172,35 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="83" />
+          <entry key="project.closed" value="84" />
           <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.3" value="25" />
-          <entry key="project.open.time.4" value="76" />
-          <entry key="project.opened" value="104" />
+          <entry key="project.open.time.4" value="78" />
+          <entry key="project.opened" value="106" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="1" />
-          <entry key="py" value="126" />
+          <entry key="py" value="135" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="126" />
+          <entry key="Python" value="135" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="38739" />
+          <entry key="py" value="42601" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="38739" />
+          <entry key="Python" value="42601" />
         </counts>
       </usages-collector>
     </session>
@@ -209,35 +210,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Wall.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="451">
-              <caret line="427" selection-start-line="427" selection-end-line="427" />
+            <state relative-caret-position="531">
+              <caret line="490" column="65" selection-start-line="490" selection-start-column="65" selection-end-line="490" selection-end-column="65" />
               <folding>
-                <marker date="1665818596920" expanded="true" signature="16244:17766" ph="..." />
-                <marker date="1665818596920" expanded="true" signature="19124:20356" ph="..." />
-                <marker date="1665818596920" expanded="true" signature="20404:21142" ph="..." />
-                <marker date="1665818596920" expanded="true" signature="21188:21197" ph="..." />
+                <element signature="e#0#21#0" expanded="true" />
+                <marker date="1665931644826" expanded="true" signature="2118:3213" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="3238:3247" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="22113:23426" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="23467:23928" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="26688:27775" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="28860:29603" ph="..." />
+                <marker date="1665931644826" expanded="true" signature="29626:29635" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/BigSprite.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2784">
-              <caret line="180" column="45" selection-start-line="180" selection-start-column="45" selection-end-line="180" selection-end-column="45" />
+            <state relative-caret-position="1120">
+              <caret line="76" selection-start-line="76" selection-end-line="82" selection-end-column="59" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/_3DLandScape.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="489" lean-forward="true" selection-start-line="489" selection-end-line="489" />
+            <state relative-caret-position="9600">
+              <caret line="605" selection-start-line="605" selection-end-line="613" selection-end-column="9" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
                 <marker date="1665853875279" expanded="true" signature="24620:24626" ph="..." />
@@ -246,6 +251,24 @@
                 <marker date="1665853875279" expanded="true" signature="25263:26432" ph="..." />
                 <marker date="1665853875279" expanded="true" signature="26466:27152" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="11344">
+              <caret line="713" column="52" selection-start-line="713" selection-start-column="52" selection-end-line="713" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="10032">
+              <caret line="632" column="37" selection-start-line="632" selection-start-column="31" selection-end-line="632" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -261,25 +284,13 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Entry</find>
-      <find>UnSAv</find>
-      <find>data[6</find>
-      <find>__changeLastFrameColor</find>
-      <find>prevOne</find>
-      <find>dictKey</find>
-      <find>/</find>
-      <find>un</find>
-      <find>dec</find>
-      <find>list</find>
       <find>constant</find>
-      <find>hex</find>
       <find>entry</find>
       <find>HexEntry</find>
       <find>Button</find>
       <find>__numOfLines</find>
       <find>__numOfLinesVal</find>
       <find>UnSA</find>
-      <find>bind</find>
       <find>__chamgeConst</find>
       <find>generat</find>
       <find>turnOnOff</find>
@@ -291,9 +302,20 @@
       <find>__changeHex</find>
       <find>isItBin</find>
       <find>colorV</find>
+      <find>hex</find>
+      <find>lineNum</find>
+      <find>generate</find>
+      <find>data</find>
+      <find>bind</find>
+      <find>__listBoxes[4]</find>
+      <find>changeH</find>
+      <find>24</find>
+      <find>Reseter</find>
+      <find>event.widget</find>
+      <find>__hasSpriteOrNone</find>
+      <find>listBox</find>
     </findStrings>
     <replaceStrings>
-      <replace>__closeWindow</replace>
       <replace>waveform</replace>
       <replace>waveOutput</replace>
       <replace>entryFrame</replace>
@@ -323,6 +345,7 @@
       <replace>colorFrame</replace>
       <replace>__changeConst</replace>
       <replace>__byteVars</replace>
+      <replace>__listBoxes[6]</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -331,7 +354,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/SevenDigits.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicators/OneIconWithDigits.py" />
         <option value="$PROJECT_DIR$/src/View/MemoryManagerWindow.py" />
         <option value="$PROJECT_DIR$/venv/tempSearch.py" />
@@ -372,7 +394,6 @@
         <option value="$PROJECT_DIR$/venv/pattern.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py" />
         <option value="$PROJECT_DIR$/venv/ooo.py" />
-        <option value="$PROJECT_DIR$/src/View/TopBottomEditor.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenTopTester.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/WaterWaves.py" />
@@ -382,6 +403,8 @@
         <option value="$PROJECT_DIR$/src/View/ScreenElements/Indicator.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/_3DLandScape.py" />
+        <option value="$PROJECT_DIR$/src/View/TopBottomEditor.py" />
+        <option value="$PROJECT_DIR$/src/View/ScreenElements/Wall.py" />
       </list>
     </option>
   </component>
@@ -515,7 +538,7 @@
     </option>
   </component>
   <component name="RunManager" selected="Python.main">
-    <configuration name="Compiler" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Wall" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -523,12 +546,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/Compile" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/View/ScreenElements" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/View/ScreenElements/Wall.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -627,18 +650,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.Compiler" />
       <item itemvalue="Python.firePatternTest" />
       <item itemvalue="Python.pattern" />
       <item itemvalue="Python.ooo" />
+      <item itemvalue="Python.Wall" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.Wall" />
         <item itemvalue="Python.ooo" />
         <item itemvalue="Python.pattern" />
         <item itemvalue="Python.firePatternTest" />
-        <item itemvalue="Python.Compiler" />
       </list>
     </recent_temporary>
   </component>
@@ -667,7 +690,7 @@
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6425903" visible="true" weight="0.18613607" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6425903" visible="true" weight="0.18998717" />
       <window_info id="Structure" order="1" sideWeight="0.35740972" side_tool="true" weight="0.18421052" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -691,22 +714,22 @@
       <window_info anchor="right" id="Coverage" order="5" side_tool="true" />
     </layout>
     <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6550436" visible="true" weight="0.16752246" />
-      <window_info id="Structure" order="1" sideWeight="0.34495643" side_tool="true" visible="true" weight="0.16752246" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.6425903" visible="true" weight="0.18806162" />
+      <window_info id="Structure" order="1" sideWeight="0.35740972" side_tool="true" weight="0.18421052" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.8183569" visible="true" weight="0.23231357" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.7952503" weight="0.23231357" />
       <window_info anchor="bottom" id="Debug" order="4" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.18164313" side_tool="true" visible="true" weight="0.23231357" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.20474967" side_tool="true" weight="0.23231357" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49807444" weight="0.3298279" />
-      <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49743262" weight="0.3298279" />
+      <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -745,20 +768,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Menu.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="249">
-          <caret line="197" column="65" selection-start-line="197" selection-start-column="65" selection-end-line="197" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Lock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="9" column="33" lean-forward="true" selection-start-line="9" selection-start-column="33" selection-end-line="9" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Converters/VGMConverter.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1920" />
@@ -834,20 +843,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/JukeBox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="115">
-          <caret line="360" selection-start-line="360" selection-end-line="372" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/BigSprite.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-32">
-          <caret line="43" column="39" selection-start-line="43" selection-start-column="39" selection-end-line="43" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenTopFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2128">
@@ -869,13 +864,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="516">
           <caret line="95" selection-start-line="95" selection-end-line="96" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwelveIconsOrDigits.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="817" selection-start-line="817" selection-end-line="821" selection-end-column="18" />
         </state>
       </provider>
     </entry>
@@ -996,13 +984,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="297">
-          <caret line="703" column="74" selection-start-line="703" selection-start-column="74" selection-end-line="703" selection-end-column="74" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenTopTester.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="635">
@@ -1039,13 +1020,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="227">
-          <caret line="580" column="21" selection-start-line="580" selection-start-column="21" selection-end-line="580" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="724">
@@ -1071,26 +1045,65 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="451">
           <caret line="427" selection-start-line="427" selection-end-line="427" />
-          <folding>
-            <marker date="1665818596920" expanded="true" signature="16244:17766" ph="..." />
-            <marker date="1665818596920" expanded="true" signature="19124:20356" ph="..." />
-            <marker date="1665818596920" expanded="true" signature="20404:21142" ph="..." />
-            <marker date="1665818596920" expanded="true" signature="21188:21197" ph="..." />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/TwelveIconsOrDigits.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="560">
+          <caret line="91" column="13" lean-forward="true" selection-start-line="91" selection-start-column="13" selection-end-line="104" selection-end-column="94" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Menu.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="58" selection-start-line="58" selection-end-line="68" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2784">
+        <state relative-caret-position="1255">
           <caret line="180" column="45" selection-start-line="180" selection-start-column="45" selection-end-line="180" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/JukeBox.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1760">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Wall.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="531">
+          <caret line="490" column="65" selection-start-line="490" selection-start-column="65" selection-end-line="490" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1665931644826" expanded="true" signature="2118:3213" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="3238:3247" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="22113:23426" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="23467:23928" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="26688:27775" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="28860:29603" ph="..." />
+            <marker date="1665931644826" expanded="true" signature="29626:29635" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/BigSprite.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1120">
+          <caret line="76" selection-start-line="76" selection-end-line="82" selection-end-column="59" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/_3DLandScape.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="489" lean-forward="true" selection-start-line="489" selection-end-line="489" />
+        <state relative-caret-position="9600">
+          <caret line="605" selection-start-line="605" selection-end-line="613" selection-end-column="9" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
             <marker date="1665853875279" expanded="true" signature="24620:24626" ph="..." />
@@ -1099,6 +1112,20 @@
             <marker date="1665853875279" expanded="true" signature="25263:26432" ph="..." />
             <marker date="1665853875279" expanded="true" signature="26466:27152" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/TopBottomEditor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="11344">
+          <caret line="713" column="52" selection-start-line="713" selection-start-column="52" selection-end-line="713" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/Gradient.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10032">
+          <caret line="632" column="37" selection-start-line="632" selection-start-column="31" selection-end-line="632" selection-end-column="37" />
         </state>
       </provider>
     </entry>
