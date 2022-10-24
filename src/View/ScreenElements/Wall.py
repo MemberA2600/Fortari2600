@@ -83,7 +83,16 @@ class Wall:
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "bigSprites/"):
             for file in files:
                 if file.endswith(".asm"):
-                    self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
+                    f = open(root + "/" + file)
+                    text = f.read().replace("\r", "").split("\n")
+                    f.close()
+
+                    try:
+                        mode = text[3].split("Mode=")[1]
+                    except:
+                        mode = None
+                    if mode in ("simple", "overlay"):
+                        self.__listOfPictures.append(file.replace(".asm", "") + "_(Big)")
 
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + "sprites/"):
             for file in files:
@@ -230,6 +239,35 @@ class Wall:
                 self.__hexEntry1 = HexEntry(self.__loader, f, self.__colors, self.__colorDict,
                                             self.__normalFont, self.__staticColors, 0, None, self.__changeHex)
 
+                text = self.__dictionaries.getWordFromCurrentLanguage("index")
+                if text.endswith(":") == False: text = text + ":"
+
+                l2 = Label(f,         text=text,
+                                      font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                      bg=self.__colors.getColor("window"), justify=CENTER
+                                      )
+
+                l2.pack_propagate(False)
+                l2.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+                self.__framesAndLabels.append(l2)
+
+                self.__indexNumVal = StringVar()
+                self.__indexNum = Entry(f,
+                                          name="indexNum",
+                                          bg=self.__colors.getColor("boxBackNormal"),
+                                          fg=self.__colors.getColor("boxFontNormal"),
+                                          width=9999, justify=CENTER,
+                                          textvariable=self.__indexNumVal,
+                                          font=self.__normalFont
+                                          )
+
+                self.__indexNum.pack_propagate(False)
+                self.__indexNum.pack(fill=X, side=TOP, anchor=N)
+
+                self.__indexNum.bind("<FocusOut>", self.__chamgeConst)
+                self.__indexNum.bind("<KeyRelease>", self.__chamgeConst)
+
                 self.__varButton = Radiobutton(f, width=99999,
                                                  text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
                                                  bg=self.__colors.getColor("window"),
@@ -262,13 +300,13 @@ class Wall:
                 s.pack(side=RIGHT, anchor=W, fill=Y)
                 l.pack(side=LEFT, anchor=W, fill=BOTH)
 
-                for item in self.__colorVars:
+                for item in self.__byteVars:
                     l.insert(END, item)
 
                 self.__listBoxes[-1]["listBox"] = l
                 self.__listBoxes[-1]["selected"] = ""
                 self.__listBoxes[-1]["scrollBar"] = s
-                self.__listBoxes[-1]["dataList"] = self.__colorVars
+                self.__listBoxes[-1]["dataList"] = self.__byteVars
 
             elif num == 4:
                 f = Frame(self.__uniqueFrame, width=self.__w // maxFrames,
@@ -315,7 +353,6 @@ class Wall:
 
                 l.pack_propagate(False)
                 l.pack(side=TOP, anchor=CENTER, fill=BOTH)
-
 
                 self.__numOfLinesVal = StringVar()
                 self.__numOfLines = Entry(f,
@@ -431,9 +468,12 @@ class Wall:
         if self.isItHex(self.__data[8]) == True:
             self.__listBoxes[6]["listBox"].config(state = DISABLED)
             self.__hexEntry1.changeState(NORMAL)
-            self.__hexEntry1.setValue(self.__data[8])
+            self.__hexEntry1.setValue(self.__data[8][:2]+"0")
             self.__listBoxes[6]["selected"] = self.__listBoxes[6]["dataList"][0].split("::")[1]
             self.__constOrVar.set(1)
+
+            self.__indexNum.config(state = NORMAL)
+            self.__indexNumVal.set(str(int("0x" + self.__data[8][2], 16)))
 
         else:
             self.__listBoxes[6]["listBox"].config(state = NORMAL)
@@ -448,6 +488,9 @@ class Wall:
 
             self.__listBoxes[6]["selected"] = self.__listBoxes[6]["dataList"][selector].split("::")[1]
             self.__listBoxes[6]["listBox"].select_set(selector)
+            self.__indexNum.config(state = DISABLED)
+            self.__indexNumVal.set("0")
+
             self.__constOrVar.set(2)
 
         if self.__data[9] == "*None*":
@@ -593,11 +636,14 @@ class Wall:
         if self.__constOrVar.get() == 1:
            self.__hexEntry1.changeState(NORMAL)
            self.__listBoxes[6]["listBox"].config(state = DISABLED)
-           self.__data[8] = self.__hexEntry1.getValue()
+           self.__indexNum.config(state = NORMAL)
+           self.__data[8] = self.__hexEntry1.getValue()[:2] + hex(int(self.__indexNumVal.get())).replace("0x", "")
+
         else:
            self.__hexEntry1.changeState(DISABLED)
            self.__listBoxes[6]["listBox"].config(state=NORMAL)
            self.__data[8] = self.__listBoxes[6]["selected"]
+           self.__indexNum.config(state = DISABLED)
 
            selector = 0
            for itemNum in range(0, len(self.__listBoxes[6]["dataList"])):
@@ -651,7 +697,7 @@ class Wall:
               colorVar = colorVar[:2] + "0"
               self.__hexEntry1.setValue(colorVar)
               self.__staticColors[0] = colorVar
-              self.__data[8] = colorVar
+              self.__data[8] = colorVar[:2] + hex(int(self.__indexNumVal.get())).replace("0x", "")
               self.__changeData(self.__data)
 
         else:
@@ -671,28 +717,50 @@ class Wall:
                self.__changeData(self.__data)
 
     def __chamgeConst(self, event):
-        if self.__hasSprite.get() == 2: return
+        if event.widget == self.__numOfLines:
+            if self.__hasSprite.get() == 2: return
 
-        if self.isItNum(self.__numOfLinesVal.get()) == False:
+            if self.isItNum(self.__numOfLinesVal.get()) == False:
+                event.widget.config(
+                    bg=self.__colors.getColor("boxBackUnSaved"),
+                    fg=self.__colors.getColor("boxFontUnSaved")
+                )
+                return
             event.widget.config(
-                bg=self.__colors.getColor("boxBackUnSaved"),
-                fg=self.__colors.getColor("boxFontUnSaved")
+                bg=self.__colors.getColor("boxBackNormal"),
+                fg=self.__colors.getColor("boxFontNormal")
             )
-            return
-        event.widget.config(
-            bg=self.__colors.getColor("boxBackNormal"),
-            fg=self.__colors.getColor("boxFontNormal")
-        )
 
-        num = int(self.__numOfLinesVal.get())
+            num = int(self.__numOfLinesVal.get())
 
-        if num < 1: num = 1
-        if num > self.__maxNum : num = self.__maxNum
+            if num < 1: num = 1
+            if num > self.__maxNum : num = self.__maxNum
 
-        self.__numOfLinesVal.set(str(num))
-        self.__data[10] = self.__numOfLinesVal.get()
-        self.__changeData(self.__data)
-        self.turnOnOff()
+            self.__numOfLinesVal.set(str(num))
+            self.__data[10] = self.__numOfLinesVal.get()
+            self.__changeData(self.__data)
+            self.turnOnOff()
+        else:
+            if self.__constOrVar.get() == 2: return
+            if self.isItNum(self.__indexNumVal.get()) == False:
+                event.widget.config(
+                    bg=self.__colors.getColor("boxBackUnSaved"),
+                    fg=self.__colors.getColor("boxFontUnSaved")
+                )
+                return
+            event.widget.config(
+                bg=self.__colors.getColor("boxBackNormal"),
+                fg=self.__colors.getColor("boxFontNormal")
+            )
+
+            num = int(self.__indexNumVal.get())
+
+            if num < 0: num = 0
+            if num > 15: num = 15
+
+            self.__indexNumVal.set(str(num))
+            self.__data[8] = self.__hexEntry1.getValue()[:2] + hex(int(self.__indexNumVal.get())).replace("0x", "")
+            self.__changeData(self.__data)
 
     def isItBin(self, num):
         if num[0] != "%": return False

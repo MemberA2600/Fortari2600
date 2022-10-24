@@ -169,6 +169,8 @@ class Compiler:
                                                         self.__bankEaters[key])
             self.changePointerToZero(key)
 
+        labelsToChange = self.__removeDoublesFromDict(self.__userData)
+
         for key in self.__jukeBoxes.keys():
             self.__mainCode = self.__mainCode.replace("!!!JUKEBOX_BANK"+key[-1]+"!!!", self.__jukeBoxes[key])
 
@@ -182,10 +184,55 @@ class Compiler:
         self.__mainCode = self.registerMemory(self.__mainCode)
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
+        for keys in labelsToChange.keys():
+            origKey = keys
+            keys = keys.split(" ")
+            for num in range(0, len(keys)):
+                self.__mainCode = self.__mainCode.replace(keys[num], labelsToChange[origKey][num])
+
         self.doSave("temp/")
 
         from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+    def __removeDoublesFromDict(self, userData):
+        from copy import deepcopy
+
+        bigData         = {}
+        otherWayAround  = {}
+        keysToBeChanged = {}
+
+        for key in userData.keys():
+            dataItem = userData[key]
+            lines    = dataItem.split("\n")
+            bigData[key] = {}
+            bigData[key]["original"] = dataItem
+            bigData[key]["labels"] = []
+            for line in lines:
+                if  (line.startswith("*")      == False
+                and  line.startswith("#")      == False
+                and  line.startswith("\t")     == False
+                and  line.startswith(" ")      == False
+                and line.startswith("\n")      == False
+                ):
+                    if line != "" and ("BYTE" not in line.upper()): bigData[key]["labels"].append(line)
+
+            bigData[key]["withoutLabels"]  = dataItem
+            bigData[key]["labelsToChange"] = []
+            for label in bigData[key]["labels"]:
+                bigData[key]["withoutLabels"] = bigData[key]["withoutLabels"].replace(label, "")
+
+            otherWayAround[bigData[key]["withoutLabels"]] = bigData[key]["labels"]
+            #otherWayAround[bigData[key]["withoutLabels"]] = key
+
+        for key in bigData.keys():
+            if bigData[key]['labels'] not in otherWayAround.values():
+               # if " ".join(otherWayAround[bigData[key]["withoutLabels"]]) not in keysToBeChanged.keys():
+               #   keysToBeChanged[ " ".join(otherWayAround[bigData[key]["withoutLabels"]] )] = []
+               keysToBeChanged[ " ".join(otherWayAround[bigData[key]["withoutLabels"]] ) ] =  bigData[key]['labels']
+               del userData[key]
+
+        return keysToBeChanged
 
     def __processScreenItem(self, item):
         item = item.split(" ")
@@ -379,7 +426,7 @@ class Compiler:
                 those = self.generate_WaterWaves(fullName, data, self.__bank)
                 self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Water_Waves"))
                 self.__routines["WaterWaves"] = those[1]
-                self.__userData["WaterWaves"] = self.__loader.io.loadSubModule("Water_Waves").replace("#BANK#", self.__bank)
+                self.__userData[name + "_Data"] = self.__loader.io.loadSubModule("Water_Waves").replace("#BANK#", self.__bank)
                 dictKey = "WaterWaves"
 
             elif subtyp == "SnowFlakes":
@@ -394,8 +441,71 @@ class Compiler:
                 self.__routines["3DLandScape"] = those[0]
                 dictKey = "3DLandScape"
 
+        elif typ == "Wall":
+            those = self.generate_Wall(fullName, data, self.__bank)
+            self.__bankData.append(those[0])
+            self.__routines["Wall"] = those[1]
+            self.__userData[name + "_Data"] = those[2]
+            dictKey = "Wall"
 
         self.__lastRoutine = dictKey
+
+    def generate_Wall(self, name, data, bank):
+        PF1_L           = data[0]
+        PF2_L           = data[1]
+        PF1_R           = data[2]
+        PF2_R           = data[3]
+        PF0             = data[4]
+        spritePositions = data[5]
+        colorAndIndex   = data[6]
+        spriteName      = data[7]
+        numberOfLines   = data[8]
+        gradient        = data[9]
+
+        routine = self.__loader.io.loadSubModule("Wall_Kernel").replace("#BANK#", bank)
+        toplevel = self.__loader.io.loadSubModule("Wall_TopLevel")
+        gradientText = ""
+        pictureData  = ""
+
+        if spriteName == "*None*":
+           toplevel = toplevel.replace("!!!NoSpriteTemp19Code!!!", "\tLDA\t#$F0\n")\
+                              .replace("#CON01#", numberOfLines).replace("#CON03#", str(int(numberOfLines)+1))
+           pictureData = "##NAME##_Empty\n" + "\tBYTE\t#0\n" * int(numberOfLines)
+
+        else:
+           picName = spriteName.split("_(")[0]
+           picType = spriteName.split("_(")[1][:-1]
+
+           pictureData = self.loadPictureData(bank, picName, picType).replace("\r", "")
+           pictureLines = pictureData.split("\n")
+
+           pictureName = ""
+           for line in pictureLines:
+               if "_BigSprite" in line:
+                   pictureName = line.split("_BigSprite")[0]
+                   break
+
+           numberOfLines = pictureLines[0].split("=")[1]
+           mode = pictureLines[3].split("=")[1]
+           mode = mode[0].upper()+mode[1:]
+           toplevel = toplevel.replace("!!!SetSpriteIfExists!!!", self.__loader.io.loadSubModule("Wall_Sprite_"+mode))\
+                              .replace("#CON01#", numberOfLines).replace("#CON03#", str(int(numberOfLines)+1))
+
+           toplevel = toplevel.replace("##NAME##_BigSprite", pictureName + "_BigSprite").replace("##NAME##_Empty", pictureName + "_Empty")
+
+        gradient = gradient.split("|")
+        for num in range(0, int(numberOfLines)):
+            gradientText += "\tBYTE\t#"+gradient[num]+"\n"
+
+        toplevel = toplevel.replace("!!!GRADIENTS!!!", gradientText)
+        for num in range(0, 7):
+            toplevel = toplevel.replace("#VAR0" + str(num+1) + "#", data[num])
+
+        return(
+            toplevel.replace("##NAME##", name).replace("#NAME#", name).replace("#BANK#", bank),
+            routine.replace("##NAME##", name).replace("#NAME#", name).replace("#BANK#", bank),
+            pictureData.replace("##NAME##", name).replace("#NAME#", name).replace("#BANK#", bank)
+        )
 
     def generate_3DLandScape(self, name, data, bank):
         routine = self.__loader.io.loadSubModule("3DLandScape_Kernel").replace("#BANK#", bank)

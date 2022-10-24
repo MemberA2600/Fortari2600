@@ -1489,6 +1489,39 @@ EnterScreenBank2
 	LDA	#0		; set frame color to black
 	STA	frameColor
 
+**************************
+*Picture Data*
+**************
+Bank2_Picture64px_Picture64px_Elzevir_Logo_picIndex = #0
+Bank2_Picture64px_Picture64px_Elzevir_Logo_picDisplayHeight = #27
+Bank2_Picture64px_Picture64px_Elzevir_Logo_picHeight = 27
+**************************
+
+
+	LDA	#90
+	CMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_picDisplayHeight
+	BCS	64pxPicture_NoINITDec
+	
+
+64pxPicture_NoINITDec
+
+
+**************************
+*Picture Data*
+**************
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picIndex = #0
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picDisplayHeight = #27
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picHeight = 27
+**************************
+
+
+	LDA	#90
+	CMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picDisplayHeight
+	BCS	64pxPicture_NoINITDec
+	
+
+64pxPicture_NoINITDec
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1685,306 +1718,556 @@ VBlankEndBank2
 	STA	WSYNC
 	STA	COLUBK
 
-*
-*	Number of lines = sum of to numbers from 1 to N, "4" = 1 + 2 + 3 + 4 = 10
-*
-*	temp01:		 Starting Num
-*	temp02: 	 Len of Gradient Pattern (multiply of 2 - 1!)
-*	temp03 + temp04: Pattern Pointer
-*	temp05:		 Pattern Index	
-*	temp06:		 Adder (1, if from top to bottom, 254 otherwise)
-*	temp07:		 Goal Num
-*	temp08:		 BaseColor	
-*	temp09:		 Controller Saved	
-*	temp10 + temp11: Shitty Pointer
-*	temp12 + temp13: JumpBack Pointer
-*	temp14	       : Controller	
-*
 
-*
-*	Valid ones: 	0-1  -X-Y-0 (INCR)
-*			X-255-0-Y-Y (DECR)
-*
+Bank2_Picture64px_Picture64px_Elzevir_Logo
+Bank2_Picture64px_Picture64px_Elzevir_Logo_KernelStart
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	HMCLR		; 3
+	STA	COLUBK		; 3 (6)
+	STA	COLUP0		; 3 (9)
+	STA	COLUP1		; 3 (12)
+	STA	COLUPF		; 3 (15)
 
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_StartingNum  = 0
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_FinishNum    = 9
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_LenOfPattern = 31 
+	LDA	#0		; 2 (17)
+	STA	PF0		; 3 (20)
+	STA	PF1		; 3 (23)
+	STA	PF2		; 3 (26)
+	STA	GRP0		; 3 (29)
+	STA	GRP1		; 3 (32)
+	STA	VDELP0		; 3 (35)
+	STA	VDELP1		; 3 (38)
 
-	LDA	#1
-	STA	CTRLPF
+	LDA	#$02		; 2 (40)
+	STA	NUSIZ0		; 3 (43)
+	STA	NUSIZ1		; 3 (46) 
 
-	LDA	counter
-	AND	#%11111111
+	LDA	#%00000001	; mirrored pf with regular colors 2 (48)
+ 	STA	CTRLPF		; 3 (51)
 
-	AND	#%11110000
-	STA	temp08
+	LDA	#Bank2_Picture64px_Picture64px_Elzevir_Logo_picHeight	; height of the picture 3 (53)
+	SEC			; 2 (55)
+	SBC	Bank2_Picture64px_Picture64px_Elzevir_Logo_picIndex	; index of scrolling 3 (58)
+	STA	temp01		; starting point 3 (61)
+	TAY			; 2 (63)
+	SEC			; 2 (65)
+	SBC 	Bank2_Picture64px_Picture64px_Elzevir_Logo_picDisplayHeight ; 3 (68)
+	STA 	temp02		; displayed height (stops if Y gets here) 3 (71)
+	STA	WSYNC		; (76)	- One line wasted
 
-	LDA	#%10110000
+	_sleep	26
+	sleep 3
 
-	STA	temp14
+	STA	RESP0		; 3 (32)
+	sleep	3		;   (35)	
+	STA	RESP1		; 3 (38) Set the X pozition of sprites.
 
-	BIT	temp14
-	BMI	Bank2_SpecialEffect_SpecialEffect__3DLandScape_BottomTop
+	DEY			; 2 (40)
 
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_StartingNum
-	STA	temp01
+	LDA	counter		; 3 (43)
+	AND	#%00000001	; 2 (45)
+	CMP	#%00000001	; 2 (47)
+	BNE	Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrameJMP  ; 2 (49)
+	JMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame ; 3 (52)	
+Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrameJMP
+	JMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame  ; 3 (52)
 
-	LDA	#1
-	STA	temp06
+******	align	256
+	_align	80
 
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_FinishNum
-	STA	temp07
+Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame
+	STA	WSYNC
+	STA	WSYNC
 
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_LenOfPattern
-	STA	temp02
+	LDA	#0				; 2
+	STA	GRP0				; 3 (5)
+	STA	GRP1				; 3 (8)
 
-	JMP	Bank2_SpecialEffect_SpecialEffect__3DLandScape_TopBottomJump
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_BottomTop
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_FinishNum
-	STA	temp01
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4 (12)
+		
+	LDA	#$00				; 2 (14)
+	STA 	HMP0				; 3 (17) 
+	LDA	#$20				; 2 (19)
+	STA 	HMP1				; 3 (22)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (26)
+	STA	GRP0				; 3 (29)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (33)
+	STA	GRP1				; 3 (36)
 
-	LDA	#255
-	STA	temp06
+	STA	WSYNC
+Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame_LineDummy
+	STA	HMOVE				; 3 
 
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_StartingNum
-	STA	temp07
+	sleep	7
+						; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	frameColor
+	sleep	2
+	STA	COLUPF				; 3 (24)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
 
-	LDA	#Bank2_SpecialEffect_SpecialEffect__3DLandScape_LenOfPattern
-	STA	temp02
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
 
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_TopBottomJump
-	LDA	#<Bank2_SpecialEffect_SpecialEffect__3DLandScape_Gradient
-	STA	temp03	
-	LDA	#>Bank2_SpecialEffect_SpecialEffect__3DLandScape_Gradient
-	STA	temp04	
+	STX	GRP1				; 3 (58)
 
-	LDA	#>Bank2_3D_Thing_PF0
-	STA	temp11
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
+	JMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame_Line2
 
-	LDA	#$20
-	BIT	temp14
-	BEQ	Bank2_SpecialEffect_SpecialEffect__3DLandScape_XYZXYZ
-	LDA	#<Bank2_3D_Thing_PF0
-	JMP	Bank2_SpecialEffect_SpecialEffect__3DLandScape_ZYXZYX
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_XYZXYZ
+Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame_Line1
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		; 4 (21)
+	STA	COLUPF				; 3 (24)
+		
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_Color,y			; 4 (28)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
+
+	STX	GRP1				; 3 (58)
+
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame_Line2
+	STA 	WSYNC
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_03,y			; 4 
+	STA	GRP1				; 3 
+
+	DEY
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4
+
+	INY
+
+	sleep	12
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y			; 4 
+	STA	GRP0				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y			; 4 
+	STA	GRP1				; 3 
+
+						; (56, but 52?!)
+	LDA	#$00				; 2 (58)
+	STA 	HMP0				; 3 (61)
+	STA 	HMP1				; 3 (64)
+	DEY					; 2 (66)
+	CPY	temp02				; 3 (69)
+	BEQ	Bank2_Picture64px_Picture64px_Elzevir_Logo_Reset			; 2 (71)	
+	JMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_OddFrame_Line1		; 3 (74)
+	
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame
+	_sleep	30
 	sleep	3
-	LDA	#<Bank2_3D_Thing_Empty
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_ZYXZYX
-	STA	temp10
 
-	LDA 	counter
-****	speed
-	LSR
-	LSR
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
 
-	AND	temp02
-	STA	temp05
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y
+	TXS
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y
 
-	LDA	temp14
-	STA	temp09	
+	LDA	#$00				
+	STA 	HMP0				
+	LDA	#$20				
+	STA 	HMP1
 
-	LDA	#<Bank2_SpecialEffect_SpecialEffect__3DLandScape_JumpBack
-	STA	temp12	
-	LDA	#>Bank2_SpecialEffect_SpecialEffect__3DLandScape_JumpBack
-	STA	temp13	
+Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame_LineDummy	
+	STA 	WSYNC
+	STA	HMOVE
+	_sleep	50
+	sleep	3
 
-	JMP	Bank2_3D_Thing_Loop
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_Gradient
-	_align	32
-	BYTE	#$02
-	BYTE	#$02
-	BYTE	#$06
-	BYTE	#$0A
-	BYTE	#$08
-	BYTE	#$02
-	BYTE	#$08
-	BYTE	#$0A
-	BYTE	#$04
-	BYTE	#$08
-	BYTE	#$0C
-	BYTE	#$08
-	BYTE	#$02
-	BYTE	#$08
-	BYTE	#$02
-	BYTE	#$00
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$02
-	BYTE	#$06
-	BYTE	#$0C
-	BYTE	#$06
-	BYTE	#$08
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$0A
-	BYTE	#$08
-	BYTE	#$0C
-	BYTE	#$0E
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		
+	STA	COLUPF	
 
+	LDA	#$00				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+	JMP	Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame_Line2
 
-Bank2_SpecialEffect_SpecialEffect__3DLandScape_JumpBack
+Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame_Line1			
+	STA 	WSYNC				; 76
+	STA	HMOVE				; 3
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	sleep	5
+		
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_Color,y			; 4 
+	STA	COLUP0				; 3 
+	STA	COLUP1				; 3 (34 - 31)
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_03,y			; 4 
+
+	STA	GRP1				; 3 
+	STX	GRP0				; 3 
+	TSX					; 2
+	STX	GRP1				; 3
+
+	sleep	8
+
+						; (66)
+	LDA	#$00				; 2 (68)
+	STA 	HMP0				; 3 (71)
+	STA 	HMP1				; 3 (74)
+Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame_Line2
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 
+	STA	GRP1				; 3 
+	
+	DEY
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y	
+	TXS
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y
+	INY
+
+	LDA	#$80				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+
+	sleep	6
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4 
+	STA	GRP1				; 3 
+
+	DEY
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		
+	STA	COLUPF
+
+	CPY	temp02				; 3 (71)
+	BNE	Bank2_Picture64px_Picture64px_Elzevir_Logo_EvenFrame_Line1		; 2 (73)
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_Reset
+
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
+
+	STA	COLUP0
+	STA	COLUP1
+	STA	COLUPF
 	STA	COLUBK
+
+	STX	GRP0
+	STX	GRP1
 	STX	PF0
 	STX	PF1
 	STX	PF2
-	STA	CTRLPF
 
 
-*
-*	Number of lines = sum of to numbers from 1 to N, "4" = 1 + 2 + 3 + 4 = 10
-*
-*	temp01:		 Starting Num
-*	temp02: 	 Len of Gradient Pattern (multiply of 2 - 1!)
-*	temp03 + temp04: Pattern Pointer
-*	temp05:		 Pattern Index	
-*	temp06:		 Adder (1, if from top to bottom, 254 otherwise)
-*	temp07:		 Goal Num
-*	temp08:		 BaseColor	
-*	temp09:		 Controller Saved	
-*	temp10 + temp11: Shitty Pointer
-*	temp12 + temp13: JumpBack Pointer
-*	temp14	       : Controller	
-*
 
-*
-*	Valid ones: 	0-1  -X-Y-0 (INCR)
-*			X-255-0-Y-Y (DECR)
-*
 
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum  = 0
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum    = 9
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern = 31 
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_KernelStart
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	HMCLR		; 3
+	STA	COLUBK		; 3 (6)
+	STA	COLUP0		; 3 (9)
+	STA	COLUP1		; 3 (12)
+	STA	COLUPF		; 3 (15)
 
-	LDA	#1
-	STA	CTRLPF
+	LDA	#0		; 2 (17)
+	STA	PF0		; 3 (20)
+	STA	PF1		; 3 (23)
+	STA	PF2		; 3 (26)
+	STA	GRP0		; 3 (29)
+	STA	GRP1		; 3 (32)
+	STA	VDELP0		; 3 (35)
+	STA	VDELP1		; 3 (38)
 
-	LDA	counter
-	AND	#%11111111
+	LDA	#$02		; 2 (40)
+	STA	NUSIZ0		; 3 (43)
+	STA	NUSIZ1		; 3 (46) 
 
-	AND	#%11110000
-	STA	temp08
+	LDA	#%00000001	; mirrored pf with regular colors 2 (48)
+ 	STA	CTRLPF		; 3 (51)
 
-	LDA	#%01110000
+	LDA	#Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picHeight	; height of the picture 3 (53)
+	SEC			; 2 (55)
+	SBC	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picIndex	; index of scrolling 3 (58)
+	STA	temp01		; starting point 3 (61)
+	TAY			; 2 (63)
+	SEC			; 2 (65)
+	SBC 	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_picDisplayHeight ; 3 (68)
+	STA 	temp02		; displayed height (stops if Y gets here) 3 (71)
+	STA	WSYNC		; (76)	- One line wasted
 
-	STA	temp14
+	_sleep	26
+	sleep 3
 
-	BIT	temp14
-	BMI	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_BottomTop
+	STA	RESP0		; 3 (32)
+	sleep	3		;   (35)	
+	STA	RESP1		; 3 (38) Set the X pozition of sprites.
 
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum
-	STA	temp01
+	DEY			; 2 (40)
 
-	LDA	#1
-	STA	temp06
+	LDA	counter		; 3 (43)
+	AND	#%00000001	; 2 (45)
+	CMP	#%00000001	; 2 (47)
+	BNE	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrameJMP  ; 2 (49)
+	JMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame ; 3 (52)	
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrameJMP
+	JMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame  ; 3 (52)
 
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum
-	STA	temp07
+******	align	256
+	_align	80
 
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern
-	STA	temp02
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame
+	STA	WSYNC
+	STA	WSYNC
 
-	JMP	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_TopBottomJump
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_BottomTop
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_FinishNum
-	STA	temp01
+	LDA	#0				; 2
+	STA	GRP0				; 3 (5)
+	STA	GRP1				; 3 (8)
 
-	LDA	#255
-	STA	temp06
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4 (12)
+		
+	LDA	#$00				; 2 (14)
+	STA 	HMP0				; 3 (17) 
+	LDA	#$20				; 2 (19)
+	STA 	HMP1				; 3 (22)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (26)
+	STA	GRP0				; 3 (29)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (33)
+	STA	GRP1				; 3 (36)
 
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_StartingNum
-	STA	temp07
+	STA	WSYNC
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame_LineDummy
+	STA	HMOVE				; 3 
 
-	LDA	#Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_LenOfPattern
-	STA	temp02
+	sleep	7
+						; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	frameColor
+	sleep	2
+	STA	COLUPF				; 3 (24)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
 
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_TopBottomJump
-	LDA	#<Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
-	STA	temp03	
-	LDA	#>Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
-	STA	temp04	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
 
-	LDA	#>Bank2_3D_Thing_PF0
-	STA	temp11
+	STX	GRP1				; 3 (58)
 
-	LDA	#$20
-	BIT	temp14
-	BEQ	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_XYZXYZ
-	LDA	#<Bank2_3D_Thing_PF0
-	JMP	Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_ZYXZYX
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_XYZXYZ
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
+	JMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame_Line2
+
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame_Line1
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		; 4 (21)
+	STA	COLUPF				; 3 (24)
+		
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_Color,y			; 4 (28)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
+
+	STX	GRP1				; 3 (58)
+
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
+
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame_Line2
+	STA 	WSYNC
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_03,y			; 4 
+	STA	GRP1				; 3 
+
+	DEY
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4
+
+	INY
+
+	sleep	12
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y			; 4 
+	STA	GRP0				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y			; 4 
+	STA	GRP1				; 3 
+
+						; (56, but 52?!)
+	LDA	#$00				; 2 (58)
+	STA 	HMP0				; 3 (61)
+	STA 	HMP1				; 3 (64)
+	DEY					; 2 (66)
+	CPY	temp02				; 3 (69)
+	BEQ	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_Reset			; 2 (71)	
+	JMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_OddFrame_Line1		; 3 (74)
+	
+
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame
+	_sleep	30
 	sleep	3
-	LDA	#<Bank2_3D_Thing_Empty
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_ZYXZYX
-	STA	temp10
 
-	LDA 	counter
-****	speed
-	LSR
-	LSR
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
 
-	AND	temp02
-	STA	temp05
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y
+	TXS
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y
 
-	LDA	temp14
-	STA	temp09	
+	LDA	#$00				
+	STA 	HMP0				
+	LDA	#$20				
+	STA 	HMP1
 
-	LDA	#<Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
-	STA	temp12	
-	LDA	#>Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
-	STA	temp13	
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame_LineDummy	
+	STA 	WSYNC
+	STA	HMOVE
+	_sleep	50
+	sleep	3
 
-	JMP	Bank2_3D_Thing_Loop
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_Gradient
-	_align	32
-	BYTE	#$08
-	BYTE	#$06
-	BYTE	#$0A
-	BYTE	#$04
-	BYTE	#$08
-	BYTE	#$0C
-	BYTE	#$06
-	BYTE	#$00
-	BYTE	#$06
-	BYTE	#$0C
-	BYTE	#$08
-	BYTE	#$0C
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0A
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$06
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$00
-	BYTE	#$04
-	BYTE	#$08
-	BYTE	#$0E
-	BYTE	#$08
-	BYTE	#$02
-	BYTE	#$06
-	BYTE	#$02
-	BYTE	#$02
-	BYTE	#$00
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		
+	STA	COLUPF	
 
+	LDA	#$00				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+	JMP	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame_Line2
 
-Bank2_SpecialEffect_0_SpecialEffect__3DLandScape_JumpBack
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame_Line1			
+	STA 	WSYNC				; 76
+	STA	HMOVE				; 3
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	sleep	5
+		
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_Color,y			; 4 
+	STA	COLUP0				; 3 
+	STA	COLUP1				; 3 (34 - 31)
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_03,y			; 4 
+
+	STA	GRP1				; 3 
+	STX	GRP0				; 3 
+	TSX					; 2
+	STX	GRP1				; 3
+
+	sleep	8
+
+						; (66)
+	LDA	#$00				; 2 (68)
+	STA 	HMP0				; 3 (71)
+	STA 	HMP1				; 3 (74)
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame_Line2
+	STA	HMOVE				; 3 
+
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_00,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_02,y			; 4 
+	STA	GRP1				; 3 
+	
+	DEY
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_07,y	
+	TXS
+	LAX	Bank2_Picture64px_Picture64px_Elzevir_Logo_05,y
+	INY
+
+	LDA	#$80				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+
+	sleep	6
+	
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_04,y			; 4 
+	STA	GRP0				; 3 
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_06,y			; 4 
+	STA	GRP1				; 3 
+
+	DEY
+	LDA	Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor,y		
+	STA	COLUPF
+
+	CPY	temp02				; 3 (71)
+	BNE	Bank2_Picture64px_0_Picture64px_Elzevir_Logo_EvenFrame_Line1		; 2 (73)
+
+Bank2_Picture64px_0_Picture64px_Elzevir_Logo_Reset
+
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
+
+	STA	COLUP0
+	STA	COLUP1
+	STA	COLUPF
 	STA	COLUBK
+
+	STX	GRP0
+	STX	GRP1
 	STX	PF0
 	STX	PF1
 	STX	PF2
-	STA	CTRLPF
+
 
 
 *
@@ -2087,6 +2370,362 @@ ScreenBottomBank2
 	align	256
 
 
+	align	256
+
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_data
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_00
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000011
+	BYTE	#%00000111
+	BYTE	#%00001110
+	BYTE	#%00001110
+	BYTE	#%00001110
+	BYTE	#%00011100
+	BYTE	#%00011100
+	BYTE	#%00011100
+	BYTE	#%00011100
+	BYTE	#%00011100
+	BYTE	#%00011110
+	BYTE	#%00001110
+	BYTE	#%00001110
+	BYTE	#%00000111
+	BYTE	#%00000011
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 27
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_01
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00001111
+	BYTE	#%01111111
+	BYTE	#%11000001
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00011100
+	BYTE	#%00111110
+	BYTE	#%01111001
+	BYTE	#%11110000
+	BYTE	#%11000000
+	BYTE	#%00000000
+	BYTE	#%00001000
+	BYTE	#%00011000
+	BYTE	#%10111000
+	BYTE	#%11111000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 54
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_02
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%11000000
+	BYTE	#%00110000
+	BYTE	#%00011000
+	BYTE	#%00110011
+	BYTE	#%00010001
+	BYTE	#%00010000
+	BYTE	#%00010000
+	BYTE	#%00010011
+	BYTE	#%00010000
+	BYTE	#%00010000
+	BYTE	#%00110000
+	BYTE	#%00010000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 81
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_03
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00010010
+	BYTE	#%00000000
+	BYTE	#%11100110
+	BYTE	#%00000100
+	BYTE	#%10001100
+	BYTE	#%01000100
+	BYTE	#%11100101
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 108
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_04
+	BYTE	#%00000000
+	BYTE	#%00000010
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10010000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00011000
+	BYTE	#%10011000
+	BYTE	#%10110001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 135
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_05
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00100000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000111
+	BYTE	#%00110011
+	BYTE	#%00100011
+	BYTE	#%00100011
+	BYTE	#%00100011
+	BYTE	#%10100011
+	BYTE	#%00000011
+	BYTE	#%00100011
+	BYTE	#%00100111
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 162
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_06
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%10000011
+	BYTE	#%10000110
+	BYTE	#%00001111
+	BYTE	#%00011000
+	BYTE	#%00110000
+	BYTE	#%11100000
+	BYTE	#%00010000
+	BYTE	#%00011000
+	BYTE	#%00011000
+	BYTE	#%00111000
+	BYTE	#%11000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 189
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_07
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11111000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 216
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_Color
+	BYTE	#$00
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$0c
+	BYTE	#$08
+	BYTE	#$0a
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0c
+	BYTE	#$0a
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0a
+	BYTE	#$0c
+	BYTE	#$0c
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 243
+
+	align	256
+
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_PF
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%00110000
+	BYTE	#%00110000
+	BYTE	#%00100101
+	BYTE	#%11000000
+	BYTE	#%11011011
+	BYTE	#%11100010
+	BYTE	#%10000010
+	BYTE	#%01010100
+	BYTE	#%10000000
+	BYTE	#%11100000
+	BYTE	#%00001000
+	BYTE	#%11110000
+	BYTE	#%00000000
+	BYTE	#%00001110
+	BYTE	#%00011010
+	BYTE	#%00000000
+	BYTE	#%00001000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 27
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_PFColor
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$b0
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$02
+	BYTE	#$b0
+	BYTE	#$06
+	BYTE	#$b0
+	BYTE	#$02
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 54
+
+Bank2_Picture64px_Picture64px_Elzevir_Logo_BGColor
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 81
+
 
 
 ###End-Bank2
@@ -2097,78 +2736,6 @@ ScreenBottomBank2
 *
 
 
-	_align	100
-
-Bank2_3D_Thing_PF0
-	BYTE	#%11110000
-	BYTE	#%01110000
-	BYTE	#%00110000
-	BYTE	#%00010000
-Bank2_3D_Thing_Empty
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-
-Bank2_3D_Thing_Loop
-	LDA	temp01	
-	CLC
-	ADC	temp06
-	STA	temp01
-	CMP	temp07
-	BEQ	Bank2_3D_Thing_Reset
-	TAX
-
-	LDY	#0
-	LDA	temp01
-	CMP	#4
-	BCS	Bank2_3D_Thing_NostSmaller4
-	TAY
-	LDA	(temp10),y
-	TAY
-Bank2_3D_Thing_NostSmaller4
-	STY	temp19
-
-	BIT	temp09
-	BVS	Bank2_3D_Thing_BackWards	
-	LDA	temp05
-	CLC
-	ADC	#1
-	JMP	Bank2_3D_Thing_Forwarded
-Bank2_3D_Thing_BackWards
-	sleep	3
-	LDA	temp05
-	SEC
-	SBC	#1
-Bank2_3D_Thing_Forwarded
-	AND	temp02
-	STA	temp05
-	TAY
-
-Bank2_3D_Thing_SubLoop	
-	STA	WSYNC
-
-	LDA	temp19		; 3 
-	STA	PF0		; 3 
-	LDA	(temp03),y	; 5
-	ADC	temp08		; 3
-	STA	COLUBK		; 3
-
-	DEX
-	BPL	Bank2_3D_Thing_SubLoop
-
-	LDA	#$10
-	BIT	temp09
-	BEQ	Bank2_3D_Thing_NoGap
-	LDA	frameColor
-
-	STA	WSYNC
-	STA	COLUBK
-Bank2_3D_Thing_NoGap
-	JMP	Bank2_3D_Thing_Loop	
-	
-Bank2_3D_Thing_Reset
-	JMP	(temp12)
 	
 
 	saveFreeBytes
