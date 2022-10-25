@@ -258,7 +258,6 @@ pic64px_Reset
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
-
 	STA	COLUP0
 	STA	COLUP1
 	STA	COLUPF
@@ -270,3 +269,9 @@ pic64px_Reset
 	STX	PF1
 	STX	PF2
 
+	LDA	counter
+	AND	#1
+	CMP	#1
+	BNE	pic64px_NoFiller
+	STA	WSYNC
+pic64px_NoFiller

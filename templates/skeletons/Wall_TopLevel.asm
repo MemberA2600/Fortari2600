@@ -76,6 +76,11 @@
 	LDA	#>#NAME#_JumpBack
 	STA	temp14	
 
+	LDA	#<#NAME#_Wall_Gradient
+	STA	temp17
+	LDA	#>#NAME#_Wall_Gradient
+	STA	temp18	
+
 	LDX	##NAME#_Number_Of_Lines
 	TXS
 

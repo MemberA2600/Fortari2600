@@ -213,8 +213,17 @@
 	LDA	temp14
 	STA	temp18
 
+	LDA	temp19
+	CMP	#$F0
+	BNE	#BANK#_Wall_NoJump2
+
 	LDA	(temp17),y	; 5
-	ADC	temp05		; 3 
+	ADC	temp08		; 3 
+
+	JMP	#BANK#_Wall_Loop_NoSprite
+#BANK#_Wall_NoJump2
+	LDA	(temp17),y	; 5
+	ADC	temp08		; 3 
 
 	JMP	#BANK#_Wall_Loop
 
@@ -255,14 +264,14 @@
 	BYTE	#2
 	BYTE	#2
 	BYTE	#2	; 4
-	BYTE	#1	
+	BYTE	#2	
 	BYTE	#1
 	BYTE	#1
 	BYTE	#1
 	BYTE	#1
 	BYTE	#1
 	BYTE	#1	; 12
-	BYTE	#0
+	BYTE	#1
 	BYTE	#0	
 	BYTE	#0
 	BYTE	#0
@@ -285,7 +294,42 @@
 	byte	#$b0
 	byte	#$a0
 	byte	#$90
+
+	_align	42
 	
+#BANK#_Wall_Loop_NoSprite
+	STA	WSYNC		; 76
+	STA	COLUPF		; 3 
+	LDA	temp05		; 3 (6)
+	STA	PF0		; 3 (9)
+
+	LDA	temp01		; 3 (12)
+	STA	PF1		; 3 (15)
+
+	LDA	temp02		; 3 (18)
+	STA	PF2		; 3 (21)
+	
+	NOP
+	
+	DEY			; 2 (25)
+	BPL	#BANK#_Wall_Loop_NoSprite_NoEnd ; 2 (27)
+	JMP	#BANK#_Wall_Last_Ones	; 3 (30)
+#BANK#_Wall_Loop_NoSprite_NoEnd
+	LDA	temp06		; 3 (33)
+	STA	PF0		; 3 (36)
+
+	NOP
+
+	LDA	temp03		; 3 (41)
+	STA	PF1		; 3 (44)
+
+	LDA	temp04		; 3 (47)
+	STA	PF2		; 3 (50)
+	
+	LDA	(temp17),y	; 5 
+	ADC	temp08		; 3 
+	JMP	#BANK#_Wall_Loop_NoSprite ; 3 
+
 	_align	105
 
 #BANK#_Wall_Loop
@@ -357,9 +401,8 @@
 	STA	COLUP1 		; 3 (61)
 	
 	LDA	(temp17),y	; 5 (66)
-	ADC	temp05		; 3 (69)
+	ADC	temp08		; 3 (69)
 	JMP	#BANK#_Wall_Loop ; 3 (72)
-
 
 #BANK#_Wall_Last_Ones
 	LDA	temp06		; 3 

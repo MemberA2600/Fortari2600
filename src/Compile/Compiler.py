@@ -469,7 +469,7 @@ class Compiler:
 
         if spriteName == "*None*":
            toplevel = toplevel.replace("!!!NoSpriteTemp19Code!!!", "\tLDA\t#$F0\n")\
-                              .replace("#CON01#", numberOfLines).replace("#CON03#", str(int(numberOfLines)+1))
+                              .replace("#CON01#", str(int(numberOfLines)-1)).replace("#CON02#", str(int(numberOfLines)+1))
            pictureData = "##NAME##_Empty\n" + "\tBYTE\t#0\n" * int(numberOfLines)
 
         else:
@@ -486,10 +486,13 @@ class Compiler:
                    break
 
            numberOfLines = pictureLines[0].split("=")[1]
-           mode = pictureLines[3].split("=")[1]
+           try:
+               mode = pictureLines[3].split("=")[1]
+           except:
+               mode = "simple"
            mode = mode[0].upper()+mode[1:]
            toplevel = toplevel.replace("!!!SetSpriteIfExists!!!", self.__loader.io.loadSubModule("Wall_Sprite_"+mode))\
-                              .replace("#CON01#", numberOfLines).replace("#CON03#", str(int(numberOfLines)+1))
+                              .replace("#CON01#", str(int(numberOfLines)-1)).replace("#CON02#", str(int(numberOfLines)+1))
 
            toplevel = toplevel.replace("##NAME##_BigSprite", pictureName + "_BigSprite").replace("##NAME##_Empty", pictureName + "_Empty")
 
@@ -499,7 +502,19 @@ class Compiler:
 
         toplevel = toplevel.replace("!!!GRADIENTS!!!", gradientText)
         for num in range(0, 7):
-            toplevel = toplevel.replace("#VAR0" + str(num+1) + "#", data[num])
+            isItHex = False
+            if data[num].startswith("$"):
+               try:
+                   teszt = int("0x" + data[num][1:], 16)
+                   isItHex = True
+               except:
+                   pass
+
+            if isItHex == False:
+                toplevel = toplevel.replace("#VAR0" + str(num+1) + "#", data[num])
+            else:
+                toplevel = toplevel.replace("#VAR0" + str(num+1) + "#", "#" + data[num])
+
 
         return(
             toplevel.replace("##NAME##", name).replace("#NAME#", name).replace("#BANK#", bank),
