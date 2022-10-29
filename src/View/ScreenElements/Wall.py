@@ -189,6 +189,7 @@ class Wall:
 
                     s.pack(side=RIGHT, anchor=W, fill=Y)
                     l.pack(side=LEFT, anchor=W, fill=BOTH)
+                    s.config(command=l.yview)
 
                     for item in self.__byteVars:
                         l.insert(END, item)
@@ -298,6 +299,8 @@ class Wall:
                 l.pack_propagate(False)
 
                 s.pack(side=RIGHT, anchor=W, fill=Y)
+                s.config(command=l.yview)
+
                 l.pack(side=LEFT, anchor=W, fill=BOTH)
 
                 for item in self.__byteVars:

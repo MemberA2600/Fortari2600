@@ -394,7 +394,7 @@ class Assembler():
                         num = int(num, 10)
                     line.bytes.append(bytes([num]))
                 except Exception as e:
-                    #print(line.raw[1])
+                    # print(line.raw[1])
                     second = self.checkIfSectionName(line.raw[1], sections)
                     second = self.starToAddress(currentAddress, second)
                     second = self.secondByteToNumeric(second, variables, registers, sections)

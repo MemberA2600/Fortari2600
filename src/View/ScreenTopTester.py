@@ -13,6 +13,8 @@ class ScreenTopTester:
         self.dead = False
         self.__caller   = caller
         self.__codeData = codeData
+        self.__counter = 0
+        self.__lastEvent = None
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -34,9 +36,20 @@ class ScreenTopTester:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
         self.__sizes = [self.__screenSize[0] // 4, self.__screenSize[1] // 3.75]
+        c = Thread(target = self.decrementCounter)
+        c.daemon = True
+        c.start()
+
         self.__window = SubMenu(self.__loader, "screenTester", self.__sizes[0], self.__sizes[1], None, self.__addElements,
                                 2)
         self.dead = True
+
+    def decrementCounter(self):
+        while self.dead == False and self.__mainWindow.dead == False:
+            if self.__counter > 0 : self.__counter -= 1
+            if self.__counter == 1:
+                self.checkEntry(self.__lastEvent)
+            sleep(0.01)
 
     def __closeWindow(self):
         self.dead = True
@@ -133,6 +146,7 @@ class ScreenTopTester:
                     )
             entry.pack_propagate(False)
             entry.pack(side=TOP, anchor=N, fill=BOTH)
+            entry.bind("<KeyPress>", self.startCounter)
             entry.bind("<KeyRelease>", self.checkEntry)
             entry.bind("<FocusOut>", self.checkEntry)
 
@@ -214,6 +228,10 @@ class ScreenTopTester:
 
         self.__fillStuff()
 
+    def startCounter(self, event):
+        self.__lastEvent = event
+        self.__counter = 80
+
     def __fillStuff(self):
         if self.__Y == 0: self.__prevButton.config(state = DISABLED)
         else: self.__prevButton.config(state = NORMAL)
@@ -249,8 +267,11 @@ class ScreenTopTester:
         self.__Y += 4
         self.__fillStuff()
 
-
     def checkEntry(self, event):
+        if "KeyRelease" in str(event) and self.__counter > 1:
+            self.__lastEvent = event
+            return
+
         num = int(str(event.widget).split(".")[-1].split("_")[-1])
         if self.__lines[num]["state"] == DISABLED: return
 

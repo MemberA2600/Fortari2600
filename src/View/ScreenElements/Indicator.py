@@ -56,9 +56,8 @@ class Indicator:
         self.__indicators = []
         import os
 
-        if   self.__mode == "Indicator":
-            groot = os.getcwd() + "\src\View\ScreenElements\Indicators"
-        elif self.__mode == "SpecialEffect":
+        groot = os.getcwd() + "\src\View\ScreenElements\Indicators"
+        if  self.__mode == "SpecialEffect":
             groot = os.getcwd() + "\src\View\ScreenElements\SpecialEffects"
 
         #print(groot)
@@ -128,15 +127,15 @@ class Indicator:
             }
         elif self.__mode == "SpecialEffect":
 
-            from Smoke       import Smoke
-            from Fire        import Fire
-            from DayTime     import DayTime
-            from Space       import Space
-            from Gradient    import Gradient
-            from WaterWaves  import WaterWaves
-            from SnowFlakes  import SnowFlakes
+            from Smoke        import Smoke
+            from Fire         import Fire
+            from DayTime      import DayTime
+            from Space        import Space
+            from Gradient     import Gradient
+            from WaterWaves   import WaterWaves
+            from SnowFlakes   import SnowFlakes
             from _3DLandScape import _3DLandScape
-
+            from Earth        import Earth
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
@@ -152,7 +151,8 @@ class Indicator:
                 "Gradient"             : [Gradient,       ["#", "15", "$FF", "#", "1", "1"]],
                 "WaterWaves"           : [WaterWaves,     ["#", "$80", "$0E|$0C|$0A|$08|$06|$04", "3"]],
                 "SnowFlakes"           : [SnowFlakes,     ["#", "$00|$80", "#", "16", "#"]],
-                "_3DLandScape"         : [_3DLandScape,   ["#", "$40", "8", "16", "#", "2"]]
+                "_3DLandScape"         : [_3DLandScape,   ["#", "$40", "8", "16", "#", "2"]],
+                "Earth"                : [Earth,          ["#", "$D8", "#"]]
             }
 
 

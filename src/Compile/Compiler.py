@@ -441,6 +441,12 @@ class Compiler:
                 self.__routines["3DLandScape"] = those[0]
                 dictKey = "3DLandScape"
 
+            elif subtyp == "Earth":
+                those = self.generate_Earth(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[name + "_Data"] = those[1]
+                dictKey = "Earth"
+
         elif typ == "Wall":
             those = self.generate_Wall(fullName, data, self.__bank)
             self.__bankData.append(those[0])
@@ -449,6 +455,35 @@ class Compiler:
             dictKey = "Wall"
 
         self.__lastRoutine = dictKey
+
+    def generate_Earth(self, name, data, bank):
+        container = data[0]
+        color     = data[1]
+        gradient  = data[2]
+
+        toplevel = self.__loader.io.loadSubModule("Earth_Kernel")
+        userData = self.__loader.io.loadSubModule("Earth_Data")
+
+        toplevel = toplevel.replace("#VAR01#", container)
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(color)
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR02", "#" + color)
+        else:
+           toplevel = toplevel.replace("#VAR02#", color).replace("!!!ShiftToRight!!!",
+                                        self.moveVarToTheRight(colorVar.usedBits, True))
+
+        gradient = gradient.split("|")
+
+        grad = ""
+        for item in gradient:
+            grad += "\tBYTE\t#"+item+"\n"
+
+        toplevel = toplevel.replace("!!!Earth_BG_Color!!!", grad)
+
+        return(
+            toplevel.replace("#NAME#", name).replace("#BANK#", bank), userData.replace("#NAME#", name).replace("#BANK#", bank)
+        )
 
     def generate_Wall(self, name, data, bank):
         PF1_L           = data[0]
@@ -2272,6 +2307,38 @@ class Compiler:
     def __reAlignDataSection(self, text):
         if text == "": return ""
 
+        text = text.replace("\r", "").split("\n")
+        temp = []
+        byteCounter = 0
+        first = True
+        lastIndex   = 0
+        for line in text:
+            if ("ALIGN" not in line.upper()) and line.replace(" ", "").replace("\t", "") != "" and\
+               line.startswith("*") == False and line.startswith("#") == False:
+                if line.startswith(" ")  == False and\
+                   line.startswith("\t") == False and\
+                   ("=" not in line):
+                    if first == False:
+                       temp[lastIndex] = "\n\t_align\t" + str(byteCounter) + "\n"
+                    else:
+                       first = False
+                    byteCounter = 0
+                    temp.append("!!!ALIGN!!!\n")
+                    lastIndex = len(temp) - 1
+                    temp.append(line)
+
+                elif line.startswith(" ") == False and\
+                   line.startswith("\t")  == False and\
+                   ("=" in line):
+                    temp.append(line)
+                else:
+                    temp.append(line)
+                    byteCounter += 1
+
+        temp[lastIndex] = "\t_align\t" + str(byteCounter) + "\n"
+        return("\n".join(temp))
+
+        """
         text = self.preAlign(text)
 
         text = text.split("\n")
@@ -2314,8 +2381,7 @@ class Compiler:
         for item in last:
             for subItem in item:
                 txt += subItem + "\n"
-
-        return txt
+        """
 
     def testMenu(self):
         from copy import deepcopy
