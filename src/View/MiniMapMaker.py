@@ -9,7 +9,7 @@ class MiniMapMaker:
         self.__mainWindow = self.__loader.mainWindow
 
         self.dead = False
-        self.changed = False
+        self.__changed = False
         self.__loader.stopThreads.append(self)
 
         self.__config = self.__loader.config
@@ -47,7 +47,7 @@ class MiniMapMaker:
         self.dead = True
 
     def __closeWindow(self):
-        if self.changed == True:
+        if self.__changed == True:
             answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
             if answer == "Yes":
                 pass
@@ -361,12 +361,12 @@ class MiniMapMaker:
         self.__colorsFrame.pack_propagate(False)
         self.__colorsFrame.pack(side=LEFT, anchor=E, fill=Y)
 
-        labels             = ["COLUPF", "COLUBK", "spriteColor", "testColor", "ballColor"]
+        labels             = ["spritePF", "COLUBK", "testColor", "ballColor"]
         self.__colorLabels = []
         self.__hexEntries  = []
-        self.__hexValues   = ["$40","$04","$48","$00", "$0e"]
+        self.__hexValues   = ["$40","$04","$00", "$0e"]
 
-        for num in range(0,5):
+        for num in range(0,4):
             text = self.__dictionaries.getWordFromCurrentLanguage(labels[num])
             if text.endswith(":") == False: text += ":"
 
@@ -806,6 +806,7 @@ class MiniMapMaker:
                self.__dimensionEntry1.config(state = NORMAL)
                self.__dimensionEntry2.config(state = NORMAL)
                self.__loadPlayField.config(state = NORMAL)
+               self.__changed = False
 
             if self.__finished:
                if self.__indexY > 0:
@@ -828,9 +829,8 @@ class MiniMapMaker:
                else:
                    self.__rightButton.config(state = DISABLED)
 
-               if self.changed == False:
+               if self.__changed == False:
                    self.__spriteLoader.disableSave()
-
                else:
                    self.__spriteLoader.enableSave()
 
@@ -965,10 +965,70 @@ class MiniMapMaker:
                                       )
 
     def __openMM(self):
-        pass
+        compatibles = {
+            "common": ["common"]
+
+        }
+
+        if self.__finished == False: return
+
+        if self.__finished == True:
+            if self.__changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__saveMM()
+                elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
+                    return
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "bigSprites/")
+            if fpath == "":
+                return
 
     def __saveMM(self):
-        pass
+        if self.__finished == False:
+            return
+
+        name1 = self.__loader.mainWindow.projectPath + "minimaps/"+self.__spriteLoader.getValue()+".a26"
+        name2 = self.__loader.mainWindow.projectPath + "minimaps/"+self.__spriteLoader.getValue()+".asm"
+
+        import os
+        if os.path.exists(name1):
+            answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            if answer == "No":
+                return
+
+        txt = self.__loader.virtualMemory.kernel + "\n" + \
+              self.__dimensionEntryVal1.get()    + " "  + \
+              self.__dimensionEntryVal2.get()    + "\n" + \
+              self.__numOfLinesVal.get()         + "\n" + \
+              " ".join(self.__hexValues)         + "\n"
+
+        for line in self.__dataMatrix:
+            for item in line:
+                txt += str(item) + " "
+            txt = txt[:-1] + "\n"
+
+        file = open(name1, "w")
+        file.write(txt)
+        file.close()
+
+        from Compiler import Compiler
+
+        asmData        = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getMiniMapData",
+                        [self.__dataMatrix, self.__matrix, self.__numOfLinesVal.get()]).convertedData
+
+        file = open(name2, "w")
+        file.write(asmData)
+        file.close()
+
+        self.__soundPlayer.playSound("Success")
+        self.__changed = False
+
 
     def __loadTest(self):
         pass

@@ -375,3 +375,4 @@ region=Regió
 ballColor=Labda Színe
 dimensions=Dimenziók
 fillThru=Y tengelyen engedélyezett túlcsordulás
+spritePF=Sprite / Playfield Színe

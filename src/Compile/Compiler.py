@@ -68,6 +68,70 @@ class Compiler:
                 self.testScreenElements()
             elif self.__mode == "save8bitsToAny":
                 self.__save8bitsToAnyInit()
+            elif self.__mode == "getMiniMapData":
+                self.__getMiniMapASM()
+
+    def __getMiniMapASM(self):
+        dataMatrix          = self.__data[0]
+        matrixDimensions    = self.__data[1][::-1]
+        stepX               = 16
+        stepY               = int(self.__data[2])
+
+        dataOrganized       = []
+        """
+        for startIndexX in range(0, matrixDimensions[1] * stepX, stepX):
+            dataOrganized.append([])
+
+            for startIndexY in range(0, matrixDimensions[0] * stepY, stepY):
+                dataOrganized[-1].append([])
+                for indexY in range(startIndexY, startIndexY + stepY):
+                   text = ""
+                   for number in dataMatrix[indexY][startIndexX:startIndexX + stepX]:
+                       text += str(number)
+
+                   dataOrganized[-1][-1].append(text)
+        """
+        for startIndexY in range(0, matrixDimensions[0] * stepY, stepY):
+            dataOrganized.append([])
+
+            for startIndexX in range(0, matrixDimensions[1] * stepX, stepX):
+                dataOrganized[-1].append([])
+                for indexY in range(startIndexY, startIndexY + stepY):
+                   text = ""
+                   for number in dataMatrix[indexY][startIndexX:startIndexX + stepX]:
+                       text += str(number)
+
+                   dataOrganized[-1][-1].append(text)
+
+        theText = "\n#NAME#_MiniMap_X_Max = " + str(matrixDimensions[1] * 2) + "\n" + \
+                  "#NAME#_MiniMap_Y_Max = " + str(matrixDimensions[0]) + "\n" + \
+                  "#NAME#_MiniMap_StepY = " + str(stepY) + "\n\n"
+
+        theText = "\n\t_align\t"+str(matrixDimensions[1] * 4) + "\n" + \
+                  "#NAME#_MiniMap_PointerTable\n"
+
+        for theX in range(0, matrixDimensions[1]):
+            theText += "\tBYTE\t#<#NAME#_MiniMap_" + str(theX) + "_Sprite_0\n" + \
+                       "\tBYTE\t#>#NAME#_MiniMap_" + str(theX) + "_Sprite_0\n" + \
+                       "\tBYTE\t#<#NAME#_MiniMap_" + str(theX) + "_Sprite_1\n" + \
+                       "\tBYTE\t#>#NAME#_MiniMap_" + str(theX) + "_Sprite_1\n"
+
+
+        for theX in range(0, len(dataOrganized[0])):
+            text0 = "\n\t_align\t" + str(stepY*matrixDimensions[0]) + "\n"
+            text0+= "#NAME#_MiniMap_" + str(theX) + "_Sprite_0\n"
+
+            text1 = "\n\t_align\t" + str(stepY*matrixDimensions[0]) + "\n"
+            text1+= "#NAME#_MiniMap_" + str(theX) + "_Sprite_1\n"
+
+            for theY in range(0, len(dataOrganized)):
+                for subY in range(stepY-1, -1, -1):
+                    text0 += "\tBYTE\t#%" + dataOrganized[theY][theX][subY][0:8]  + "\n"
+                    text1 += "\tBYTE\t#%" + dataOrganized[theY][theX][subY][8:16] + "\n"
+
+            theText += text0 + text1
+
+        self.convertedData = theText
 
     def __save8bitsToAnyInit(self):
         name     = self.__data[0]
@@ -2261,6 +2325,7 @@ class Compiler:
 
         return(text)
 
+    """
     def preAlign(self, text):
         text = text.split("\n")
         tempText = "\n"
@@ -2303,6 +2368,7 @@ class Compiler:
                 text += segment.text
 
         return text
+        """
 
     def __reAlignDataSection(self, text):
         if text == "": return ""
@@ -2336,7 +2402,8 @@ class Compiler:
                     byteCounter += 1
 
         temp[lastIndex] = "\t_align\t" + str(byteCounter) + "\n"
-        return("\n".join(temp))
+
+        return(self.__preAlign2("\n".join(temp)))
 
         """
         text = self.preAlign(text)
@@ -2382,6 +2449,59 @@ class Compiler:
             for subItem in item:
                 txt += subItem + "\n"
         """
+    def __preAlign2(self, text):
+        textData = text.split("_align")
+        newData = [textData[0]]
+
+        collection = {}
+
+        for item in textData[1:]:
+            byteNum = int(item.split("\n")[0].replace('\t', "").replace(" ", ""))
+            data    = "\n".join(item.split("\n")[1:])
+
+            if byteNum not in collection.keys():
+               collection[byteNum] = []
+
+            collection[byteNum].append(data)
+
+        try:
+            del collection[0]
+        except:
+            pass
+
+        keys = list(collection.keys())
+        keys.sort(reverse=True)
+
+        bytesLeft  = 256
+        while True:
+            selected = None
+            print(bytesLeft)
+            for key in keys:
+                if key <= bytesLeft:
+                   selected = key
+                   break
+
+            if selected == None: break
+
+            newData.append("\t_align\t" + str(selected) + "\n" + collection[selected][0])
+            collection[selected].pop(0)
+            if collection[selected] == []:
+               del collection[selected]
+               keys.remove(selected)
+
+            bytesLeft -= selected
+            isThereASmallerOne = False
+
+            for key in keys:
+                if key > bytesLeft: continue
+                isThereASmallerOne = True
+
+            if isThereASmallerOne == False: bytesLeft = 256
+
+        #print("".join(newData))
+
+        return("".join(newData))
+
 
     def testMenu(self):
         from copy import deepcopy
