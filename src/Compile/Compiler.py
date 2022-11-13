@@ -70,6 +70,8 @@ class Compiler:
                 self.__save8bitsToAnyInit()
             elif self.__mode == "getMiniMapData":
                 self.__getMiniMapASM()
+            elif self.__mode == "miniMapTest":
+                self.__testMiniMap()
 
     def __getMiniMapASM(self):
         dataMatrix          = self.__data[0]
@@ -131,7 +133,47 @@ class Compiler:
 
             theText += text0 + text1
 
-        self.convertedData = theText
+        theText += "\n\t_align\t" + str(stepY) + "\n#NAME#_MiniMap_Gradient\n" + self.__generateMiniMapGradient(stepY)
+
+        self.convertedData = "* Matrix="+str(matrixDimensions[0]) + "," + str(matrixDimensions[1]) + "\n" +\
+                             "* StepY="+str(stepY)+"\n" + theText
+
+    def __generateMiniMapGradient(self, Y):
+        patternLen = Y // 2
+        step = 8 // patternLen
+        if step < 1: step = 1
+
+        patterns = {
+            0: "$00",
+            1: "$02",
+            2: "$04",
+            3: "$06",
+            4: "$08",
+            5: "$0A",
+            6: "$0C",
+            7: "$0E",
+        }
+
+        pattern = {}
+
+        for num in range(0, 8, step):
+            pattern[num] = 1
+
+        if step == 1:
+            add = patternLen - 8
+            keyNum = -1
+            while add > 0:
+                keyNum += 1
+                if keyNum > 7: keyNum = 0
+                add -= 1
+
+                pattern[keyNum] += 1
+
+        patternText = ""
+        for key in pattern.keys():
+            patternText += ("\tBYTE\t#" + patterns[key] + "\n") * pattern[key]
+
+        return (patternText + "\n".join(patternText.split("\n")[::-1]))
 
     def __save8bitsToAnyInit(self):
         name     = self.__data[0]
@@ -197,13 +239,44 @@ class Compiler:
                            "\tORA\t"   + varName + "\n\tSTA\t" + varName + "\n"
         return(text)
 
+    def __testMiniMap(self):
+        self.__name            = self.__data[0]
+        self.__tv              = self.__data[1]
+        self.__bank            = self.__data[2]
+        self.__theData         = self.__data[3]
+        self.__bankData        = []
+        self.__routines        = {}
+        self.__userData        = {}
+
+        self.__mainCode = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        those = self.generateMiniMap(self.__name, self.__theData, self.__bank, True)
+
+        self.__bankData.append(those[0])
+        self.__routines["MiniMap"] = those[1]
+        self.__userData[self.__name + "_Data"] = those[2]
+        self.__overScanCode = those[3]
+        self.__enterCode    = those[4]
+
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", "\n".join(self.__bankData))
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
+        self.__mainCode = self.__mainCode.replace("!!!ROUTINES_BANK2!!!", "\n".join(self.__routines.values()))
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection("\n".join(self.__userData.values())))
+
+        # self.__mainCode = self.registerMemory(self.__mainCode)
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        from Assembler import Assembler
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
     def testScreenElements(self):
         self.__screenElements  = self.__data[0]
         self.__tv              = self.__data[1]
         self.__bank            = self.__data[2]
         self.__initCode        = self.__data[3]
         self.__overScanCode    = self.__data[4]
-
 
         self.__lastRoutine     = None
         self.__bankData = []
@@ -518,6 +591,13 @@ class Compiler:
             self.__userData[name + "_Data"] = those[2]
             dictKey = "Wall"
 
+        elif typ == "MiniMap":
+            those = self.generateMiniMap(fullName, data, self.__bank, False)
+            self.__bankData.append(those[0])
+            self.__routines["MiniMap"] = those[1]
+            self.__userData[name + "_Data"] = those[2]
+            dictKey = "MiniMap"
+
         self.__lastRoutine = dictKey
 
     def generate_Earth(self, name, data, bank):
@@ -548,6 +628,142 @@ class Compiler:
         return(
             toplevel.replace("#NAME#", name).replace("#BANK#", bank), userData.replace("#NAME#", name).replace("#BANK#", bank)
         )
+
+
+    def generateMiniMap(self, fullName, data, bank, testMode):
+        fileName    = data[0]
+        #stepY       = data[0]
+        matrixPoz   = data[1:3]
+        PFColor     = data[3]
+        BGColor     = data[4]
+        BallColor   = data[5]
+        BallX       = data[6]
+        BallY       = data[7]
+
+        testBG      = "$00"
+        try:
+            testBG  = data[8]
+        except:
+            pass
+
+        #fileName    = data[8]
+
+        routine = self.__loader.io.loadSubModule("MiniMap_Kernel")
+        toplevel = self.__loader.io.loadSubModule("MiniMap_TopLevel")
+        if testMode == False:
+            userData = self.__loader.io.loadWholeText(self.__loader.mainWindow.projectPath + "minimaps/"+fileName +".asm")
+        else:
+            f = open("temp/temp.asm", "r")
+            userData = f.read()
+            f.close()
+
+        overScan = None
+        enterCode = None
+
+        matrix = userData.split("\n")[0].replace("\r","").split("=")[1].split(",")
+        stepY  = int(userData.split("\n")[1].replace("\r","").split("=")[1])
+
+        constants = [str(stepY), str(int(matrix[0])-1), str(int(matrix[1])-1)]
+        for num in range(0,3):
+            con = "#CON0" + str(num + 1) + "#"
+            toplevel = toplevel.replace(con, constants[num])
+
+        if testMode == False:
+           xVar = self.__loader.virtualMemory.getVariableByName2(matrixPoz[0])
+           if xVar == False:
+              toplevel = toplevel.replace("#VAR01#", "#" + matrixPoz[0])
+           else:
+              toplevel = toplevel.replace("#VAR01#", matrixPoz[0])
+
+              if xVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR01-LSRS!!!", self.convertAnyTo8Bits(xVar.usedBits))
+
+           yVar = self.__loader.virtualMemory.getVariableByName2(matrixPoz[1])
+           if yVar == False:
+              toplevel = toplevel.replace("#VAR02#", "#" + matrixPoz[1])
+           else:
+              toplevel = toplevel.replace("#VAR02#", matrixPoz[1])
+
+              if yVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR02-LSRS!!!", self.convertAnyTo8Bits(yVar.usedBits))
+
+           PFColorVar = self.__loader.virtualMemory.getVariableByName2(PFColor)
+           if PFColorVar == False:
+              toplevel = toplevel.replace("#VAR03#", "#" + PFColor)
+           else:
+              toplevel = toplevel.replace("#VAR03#", PFColor)
+              if PFColorVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR03-SHIFT!!!", self.moveVarToTheRight(PFColorVar.usedBits, True))
+
+           BGColorVar = self.__loader.virtualMemory.getVariableByName2(BGColor)
+           if BGColorVar == False:
+              toplevel = toplevel.replace("#VAR04#", "#" + BGColor)
+           else:
+              toplevel = toplevel.replace("#VAR04#", BGColor)
+              if BGColorVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR04-SHIFT!!!", self.moveVarToTheRight(BGColorVar.usedBits, True))
+
+           BallColorVar = self.__loader.virtualMemory.getVariableByName2(BallColor)
+           if BallColorVar == False:
+              toplevel = toplevel.replace("#VAR05#", "#" + BallColor)
+           else:
+              toplevel = toplevel.replace("#VAR05#", BallColor)
+              if BallColorVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR05-SHIFT!!!", self.moveVarToTheRight(BallColorVar.usedBits, True))
+
+           ballXVar = self.__loader.virtualMemory.getVariableByName2(BallX)
+           if ballXVar == False:
+              toplevel = toplevel.replace("#VAR06#", "#" + BallX)
+           else:
+              toplevel = toplevel.replace("#VAR06#", BallX)
+
+              if ballXVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR06-LSRS!!!", self.convertAnyTo8Bits(ballXVar.usedBits))
+
+           ballYVar = self.__loader.virtualMemory.getVariableByName2(BallY)
+           if ballYVar == False:
+              toplevel = toplevel.replace("#VAR07#", "#" + BallY)
+           else:
+              toplevel = toplevel.replace("#VAR07#", BallY)
+
+              if ballYVar.type != "byte":
+                 toplevel = toplevel.replace("!!!VAR07-LSRS!!!", self.convertAnyTo8Bits(ballYVar.usedBits))
+
+        else:
+            overScan  = self.__loader.io.loadTestElementPlain("minimap_Test_OverScan")
+            enterCode = self.__loader.io.loadTestElementPlain("minimap_Test_Enter")
+
+            for num in range(0, 7):
+                var = "$E" + str(num)
+                sub = "#VAR0" + str(num+1) + "#"
+                toplevel = toplevel.replace(sub, var)
+                overScan = overScan.replace(sub, var)
+                enterCode = enterCode.replace(sub, var)
+
+            colors = [PFColor, BGColor, BallColor, testBG]
+            for num in range(0, 4):
+                color     = colors[num]
+                sub       = "#COLOR"+str(num+1) + "#"
+                enterCode = enterCode.replace(sub, "#" + color)
+
+            matrixMinus = [str(int(matrix[0])-1), str(int(matrix[1])-1)]
+
+            for num in range(0,2):
+                m        = "#MATRIX" + str(num+1) + "#"
+                m2       = "#MATRIX" + str(num+3) + "#"
+
+                overScan = overScan.replace(m,  matrix[num]     )
+                overScan = overScan.replace(m2, matrixMinus[num])
+
+
+            overScan = overScan.replace("#STEPY-1#", str(int(stepY)-1)).replace("#STEPY#", str(stepY))
+
+        return (toplevel.replace("#BANK#", bank).replace("#NAME#", fullName),
+                routine.replace("#BANK#", bank).replace("#NAME#", fullName),
+                userData.replace("#BANK#", bank).replace("#NAME#", fullName),
+                overScan.replace("#BANK#", bank).replace("#NAME#", fullName),
+                enterCode.replace("#BANK#", bank).replace("#NAME#", fullName)
+                )
 
     def generate_Wall(self, name, data, bank):
         PF1_L           = data[0]
@@ -2475,7 +2691,7 @@ class Compiler:
         bytesLeft  = 256
         while True:
             selected = None
-            print(bytesLeft)
+            #print(bytesLeft)
             for key in keys:
                 if key <= bytesLeft:
                    selected = key

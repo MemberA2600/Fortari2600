@@ -972,8 +972,7 @@ class MiniMapMaker:
 
         if self.__finished == False: return
 
-        if self.__finished == True:
-            if self.__changed == True:
+        if self.__changed == True:
                 answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
                 if answer == "Yes":
                     self.__saveMM()
@@ -981,10 +980,59 @@ class MiniMapMaker:
                     self.__topLevelWindow.deiconify()
                     self.__topLevelWindow.focus()
                     return
-            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
-                                                      self.__loader.mainWindow.projectPath + "bigSprites/")
-            if fpath == "":
-                return
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "minimaps/")
+        if fpath == "":
+            return
+
+        try:
+            f = open(fpath, "r")
+            text = f.readlines()
+            f.close()
+
+            if text[0].replace("\n", "").replace("\r", "") not in compatibles[self.__loader.virtualMemory.kernel]:
+                if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
+                    return
+
+            matrixData = text[1].replace("\n", "").replace("\r", "").split(" ")
+            self.__dimensionEntryVal1.set(matrixData[0])
+            self.__dimensionEntryVal2.set(matrixData[1])
+
+            self.__matrix = [int(matrixData[0]), int(matrixData[1])]
+            self.__numOfLinesVal.set(text[2].replace("\n", "").replace("\r", ""))
+            self.__stepY = int(self.__numOfLinesVal.get())
+            self.__offsetVal1.set("0")
+            self.__offsetVal2.set("0")
+            self.__indexX = 0
+            self.__indexY = 0
+            self.__regionEntryVal1.set("0")
+            self.__regionEntryVal2.set("0")
+
+            colors = text[3].replace("\n", "").replace("\r", "").split(" ")
+            for colorNum in range(0, len(colors)):
+                self.__hexValues[colorNum] = colors[colorNum]
+                self.__hexEntries[colorNum].setValue(colors[colorNum])
+
+            theY = -1
+            for line in text[4:]:
+                theY += 1
+                line = line.replace("\n", "").replace("\r", "").split(" ")
+                for theX in range(0, len(line)):
+                    self.__dataMatrix[theY][theX] = int(line[theX])
+
+        except Exception as e:
+            print(str(e))
+
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
+        self.__createDataMatrix()
+        self.__turnOnOff()
+        self.__soundPlayer.playSound("Success")
+        self.__changed = False
+        self.__spriteLoader.setValue(".".join(fpath.replace("\\", "/").split("/")[-1].split(".")[:-1]))
 
     def __saveMM(self):
         if self.__finished == False:
@@ -1026,12 +1074,45 @@ class MiniMapMaker:
         file.write(asmData)
         file.close()
 
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
         self.__soundPlayer.playSound("Success")
         self.__changed = False
 
 
     def __loadTest(self):
-        pass
+        t = Thread(target=self.loadThread)
+        t.daemon = True
+        t.start()
+
+    def loadThread(self):
+        from Compiler import Compiler
+
+        asmData        = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getMiniMapData",
+                        [self.__dataMatrix, self.__matrix, self.__numOfLinesVal.get()]).convertedData
+
+        file = open("temp/temp.asm", "w")
+        file.write(asmData)
+        file.close()
+
+        data = ["Test",
+                "NTSC",
+                "Bank2",
+                [
+                    self.__spriteLoader.getValue(),
+                    "0", "0",
+                    self.__hexValues[0],
+                    self.__hexValues[1],
+                    self.__hexValues[3],
+                    "0", "0",
+                    self.__hexValues[2]
+                ]
+                ]
+
+        testing = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "miniMapTest",
+                           data)
+
 
     def __drawTable(self):
         for theY in range(0, self.__ver):
