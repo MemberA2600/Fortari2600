@@ -102,5 +102,26 @@
 
 #NAME#_XxXxX
 	STX	#VAR02#
-
+	
 #NAME#_Nothing
+
+
+	BIT 	INPT4
+	BMI	#NAME#_NoColorChange1
+*	LDA	#VAR03#
+*	ADC	#$10
+*	STA	#VAR03#
+	INC	#VAR03#
+#NAME#_NoColorChange1
+
+	LDA	#$01
+	BIT 	SWCHB
+	BNE	#NAME#_NoColorChange2
+	INC	#VAR04#
+#NAME#_NoColorChange2
+
+	LDA	#$02
+	BIT 	SWCHB
+	BNE	#NAME#_NoColorChange3
+	INC	#VAR05#
+#NAME#_NoColorChange3
