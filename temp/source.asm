@@ -1668,9 +1668,10 @@ Test_Nothing
 
 	BIT 	INPT4
 	BMI	Test_NoColorChange1
-	LDA	$E2
-	ADC	#$10
-	STA	$E2
+*	LDA	$E2
+*	ADC	#$10
+*	STA	$E2
+	INC	$E2
 Test_NoColorChange1
 
 	LDA	#$01
@@ -2140,8 +2141,8 @@ Test_MiniMap_0_Sprite_0
 	BYTE	#%10000000
 	BYTE	#%10000000
 	BYTE	#%11100010
-	BYTE	#%10001110
-	BYTE	#%11110110
+	BYTE	#%10001010
+	BYTE	#%11111110
 	BYTE	#%11111111
 	BYTE	#%10000010
 	BYTE	#%10000000
@@ -2376,6 +2377,7 @@ Bank2_MiniMap_Kernel_MainLoop
 	STA	WSYNC		; 76
 
 	DEY			; 2
+	CLC
 	LDA	(temp13),y	; 5
 	ADC	temp04		; 3 
 	STA	temp19		; 3 (15)
@@ -2392,7 +2394,7 @@ Bank2_MiniMap_Kernel_Enabled2
 
 	INY      		; 2 
 
-	sleep	4
+	sleep	2
 	
 	LDX	temp06
 	LDA	temp05		
