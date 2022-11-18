@@ -634,11 +634,13 @@ class Compiler:
         fileName    = data[0]
         #stepY       = data[0]
         matrixPoz   = data[1:3]
-        PFColor     = data[3]
-        BGColor     = data[4]
-        BallColor   = data[5]
-        BallX       = data[6]
-        BallY       = data[7]
+        BallX       = data[3]
+        BallY       = data[4]
+        PFColor     = data[5]
+        BGColor     = data[6]
+        BallColor   = data[7]
+
+        path = self.__loader.mainWindow.projectPath + "minimaps/"+fileName +".asm"
 
         testBG      = "$00"
         try:
@@ -651,7 +653,7 @@ class Compiler:
         routine = self.__loader.io.loadSubModule("MiniMap_Kernel")
         toplevel = self.__loader.io.loadSubModule("MiniMap_TopLevel")
         if testMode == False:
-            userData = self.__loader.io.loadWholeText(self.__loader.mainWindow.projectPath + "minimaps/"+fileName +".asm")
+            userData = self.__loader.io.loadWholeText(path)
         else:
             f = open("temp/temp.asm", "r")
             userData = f.read()
@@ -660,8 +662,17 @@ class Compiler:
         overScan = None
         enterCode = None
 
-        matrix = userData.split("\n")[0].replace("\r","").split("=")[1].split(",")
-        stepY  = int(userData.split("\n")[1].replace("\r","").split("=")[1])
+        try:
+            matrix = userData.split("\n")[0].replace("\r","").split("=")[1].split(",")
+            stepY  = int(userData.split("\n")[1].replace("\r","").split("=")[1])
+        except:
+            f = open(path.replace("asm", "a26"), "r")
+            tryAgain = f.read().replace("\r", "").split("\n")
+            f.close()
+            matrix = tryAgain[1].split(" ")
+            stepY  = int(tryAgain[2])
+
+
 
         constants = [str(stepY), str(int(matrix[0])-1), str(int(matrix[1])-1)]
         for num in range(0,3):
@@ -758,12 +769,18 @@ class Compiler:
 
             overScan = overScan.replace("#STEPY-1#", str(int(stepY)-1)).replace("#STEPY#", str(stepY))
 
-        return (toplevel.replace("#BANK#", bank).replace("#NAME#", fullName),
-                routine.replace("#BANK#", bank).replace("#NAME#", fullName),
-                userData.replace("#BANK#", bank).replace("#NAME#", fullName),
-                overScan.replace("#BANK#", bank).replace("#NAME#", fullName),
-                enterCode.replace("#BANK#", bank).replace("#NAME#", fullName)
-                )
+        if testMode == True:
+            return (toplevel.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    routine.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    userData.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    overScan.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    enterCode.replace("#BANK#", bank).replace("#NAME#", fullName)
+                    )
+        else:
+            return (toplevel.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    routine.replace("#BANK#", bank).replace("#NAME#", fullName),
+                    userData.replace("#BANK#", bank).replace("#NAME#", fullName)
+                    )
 
     def generate_Wall(self, name, data, bank):
         PF1_L           = data[0]

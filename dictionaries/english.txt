@@ -376,3 +376,4 @@ ballColor=Ball Color
 dimensions=Dimensions
 fillThru=Fill thru regions on Y axis
 spritePF=Sprite / Playfield Color
+minimap=MiniMap

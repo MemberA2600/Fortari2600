@@ -711,7 +711,8 @@ class TopBottomEditor:
                 "JukeBox"           : name + " " + "JukeBox # temp16 temp17 temp18 temp19",
                 "SpecialEffect"     : name + " " + "SpecialEffect $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
                 "Reseter"           : name + " " + "Reseter 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
-                "Wall"              : name + " " + "Wall # # # # # # $20 *None* 8 #"
+                "Wall"              : name + " " + "Wall # # # # # # $20 *None* 8 #",
+                "MiniMap"           : name + " " + "MiniMap # # # # # # # #"
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -758,6 +759,7 @@ class TopBottomEditor:
            from SpecialEffect       import SpecialEffect
            from Reseter             import Reseter
            from Wall                import Wall
+           from MiniMap             import MiniMap
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -770,7 +772,8 @@ class TopBottomEditor:
                "JukeBox"            : JukeBox,
                "SpecialEffect"      : Indicator,
                "Reseter"            : Reseter,
-               "Wall"               : Wall
+               "Wall"               : Wall,
+               "MiniMap"            : MiniMap
            }
 
            self.__listOfNames = []

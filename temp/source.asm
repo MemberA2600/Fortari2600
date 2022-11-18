@@ -172,6 +172,36 @@ PAL_Display  =  244
 
 *Global
 *---------
+pf0PointerLO = $98
+pf1PointerLO = $9a
+pf2PointerLO = $9c
+pfColorPointerLO = $9e
+bkColorPointerLO = $a0
+pfLines = $a4
+P0SpritePointerLO = $a6
+P0ColorPointerLO = $a8
+P1SpritePointerLO = $aa
+P1ColorPointerLO = $ac
+TileSetPointerHI = $c0
+TileColorPointerHI = $cf
+MusicPointer0_LO = $d1
+MusicPointer0_HI = $d2
+MusicPointer1_LO = $d3
+MusicPointer1_HI = $d4
+MusicDuration0 = $d5
+MusicDuration1 = $d6
+MusicPointerBackUp0_LO = $d8
+MusicPointerBackUp0_HI = $d9
+MusicPointerBackUp1_LO = $da
+MusicPointerBackUp1_HI = $db
+zerg = $dc
+terran = $dc
+protoss = $dd
+test1 = $de
+test2 = $df
+test3 = $e0
+test4 = $e1
+test5 = $e2
 
 
 *Bank2
@@ -180,10 +210,14 @@ PAL_Display  =  244
 
 *Bank3
 *---------
+Pocok = $e3
 
 
 *Bank4
 *---------
+Reggeli = $e3
+vacsora = $e4
+Csiga = $e5
 
 
 *Bank5
@@ -1448,36 +1482,20 @@ start_bank1
 
 EnterScreenBank2
 
-*
-*	$E0:	Current X Position on Matrix	
-*	$E1:	Current Y Position on Matrix
-*	$E2:	Foreground color (PF and sprites)
-*	$E3:	Background Color (Background under the minimap)
-*	$E4:	Ball Color (basically PF at sprite region)
-*	$E5:	Ball's current X
-*	$E6:	Ball's current Y
-*
-
-	LDA	#0
-	STA	$E0
-	STA	$E1
-	STA	$E5
-	STA	$E6
-
-	LDA	#$40
-	STA	$E2
-
-	LDA	#$04
-	STA	$E3
-
-	LDA	#$0e
-	STA	$E4
 
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
-	LDA	#$00	
+	LDA	#0		; set frame color to black
 	STA	frameColor
+	LDA	#0
+	STA	test1
+	LDA	#0
+	STA	test2
+	LDA	#0
+	STA	test3
+	LDA	#0
+	STA	test4
 
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
@@ -1558,133 +1576,6 @@ OverScanBank2
 * begins.
 *
 
-*
-*	$E0:	Current X Position on Matrix	
-*	$E1:	Current Y Position on Matrix
-*	$E2:	Foreground color (PF and sprites)
-*	$E3:	Background Color (Background under the minimap)
-*	$E4:	Ball Color (basically PF at sprite region)
-*	$E5:	Ball's current X
-*	$E6:	Ball's current Y
-*
-
-	LDA	counter
-	AND	#1
-	CMP	#1
-	BEQ	Test_DoIt
-	JMP	Test_Nothing
-
-Test_DoIt
-	LDX	$E6
-	LDA	#$10
-	BIT 	SWCHA
-	BNE	Test_Up_Not_Pressed
-	INX
-	JMP	Test_UpDown_Done
-Test_Up_Not_Pressed
-	LDA	#$20
-	BIT 	SWCHA
-	BNE	Test_UpDown_Done
-	DEX
-
-Test_UpDown_Done
-
-	LDY	$E1
-	CPX	#255
-	BNE	Test_No_Top
-	LDX	#7	
-	INY
-
-	JMP	Test_TopTop
-Test_No_Top
-	CPX	#8
-	BNE	Test_TopTop
-
-	LDX	#0
-	DEY	
-	
-Test_TopTop
-	STY	$E1
-	STX	$E6
-
-	LDX	$E5
-	LDA	#$80
-	BIT 	SWCHA
-	BNE	Test_Left_Not_Pressed
-	INX
-	JMP	Test_LeftRight_Done
-Test_Left_Not_Pressed
-	LDA	#$40
-	BIT 	SWCHA
-	BNE	Test_LeftRight_Done
-	DEX
-
-Test_LeftRight_Done
-
-	LDY	$E0
-	CPX	#255
-	BNE	Test_No_Decrement_By_1
-	DEY	
-	LDX	#30
-	JMP	Test_End_Wandering
-Test_No_Decrement_By_1
-	CPX	#31
-	BNE	Test_End_Wandering
-	LDX	#0
-	INY
-Test_End_Wandering
-	STX	$E5
-
-	LDX	$E1
-	CPY	#255
-	BNE	Test_No_Decrement_By_1_Y
-	LDY	#2
-	DEX
-	JMP	Test_KecskeSajt
-Test_No_Decrement_By_1_Y
-	CPY	#3
-	BNE	Test_KecskeSajt
-
-	LDY	#0
-	INX
-Test_KecskeSajt
-	STY	$E0
-
-	CPX	#255
-	BNE	Test_Mehhh
-	LDX	#2
-
-	JMP	Test_XxXxX
-Test_Mehhh
-	CPX	#3
-	BNE	Test_XxXxX
-	LDX	#0
-
-Test_XxXxX
-	STX	$E1
-	
-Test_Nothing
-
-
-	BIT 	INPT4
-	BMI	Test_NoColorChange1
-*	LDA	$E2
-*	ADC	#$10
-*	STA	$E2
-	INC	$E2
-Test_NoColorChange1
-
-	LDA	#$01
-	BIT 	SWCHB
-	BNE	Test_NoColorChange2
-	INC	$E3
-Test_NoColorChange2
-
-	LDA	#$02
-	BIT 	SWCHB
-	BNE	Test_NoColorChange3
-	INC	$E4
-Test_NoColorChange3
 
 
 
@@ -1785,6 +1676,24 @@ VBlankEndBank2
 	stx	item
 
 *
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+*
 *	temp01:		 stepY
 *	temp02:		 MatrixX (Decremented by one)
 *	temp03:		 MatrixY (Decremented by one)
@@ -1801,54 +1710,54 @@ VBlankEndBank2
 *
 
 
-Test_MiniMap_TestingSettings
+Bank2_MiniMap_MiniMap_MiniMap_TestingSettings
 
-	LDA	$E0
+	LDA	test1
 !!!VAR01-LSRS!!!
 	STA	temp02
 
-	LDA	$E1
+	LDA	test2
 !!!VAR02-LSRS!!!
 	STA	temp03
 
 	LDY	#8
 	STY	temp01	
 	
-	LDA	$E2
+	LDA	counter
 !!!VAR03-SHIFT!!!
 	STA	temp04
 
-	LDA	$E3
+	LDA	#$02
 !!!VAR04-SHIFT!!!
 	STA	temp05
 
-	LDA	$E4
+	LDA	#$1e
 !!!VAR05-SHIFT!!!
 	STA	temp06
 
-	LDA	$E5
+	LDA	test3
 !!!VAR06-LSRS!!!
 	STA 	temp11
 
-	LDA	$E6
+	LDA	test4
 !!!VAR07-LSRS!!!
 	STA	temp12
 
 *
 *	(Matrix - 1)
 *
-Test_MiniMap_MaxX = 2
-Test_MiniMap_MaxY = 2
+Bank2_MiniMap_MiniMap_MiniMap_MaxX = 2
+Bank2_MiniMap_MiniMap_MiniMap_MaxY = 2
 
-Test_MiniMap_Toplevel
+Bank2_MiniMap_MiniMap_MiniMap_Toplevel
 *
 *	Should be between 0 and 30!
 *
 	LDA	temp11
 	CMP	#30
-	BCC	Test_MiniMap_NotLarger_30
+	BCC	Bank2_MiniMap_MiniMap_MiniMap_NotLarger_30
 	LDA	#30
-Test_MiniMap_NotLarger_30
+Bank2_MiniMap_MiniMap_MiniMap_NotLarger_30
 	CLC
 	ADC	#73
 	STA	temp11
@@ -1859,51 +1768,51 @@ Test_MiniMap_NotLarger_30
 
 	LDA	temp12
 	CMP	temp19
-	BCC	Test_MiniMap_NotLarger_temp12
+	BCC	Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp12
 	LDA	temp19
-Test_MiniMap_NotLarger_temp12
+Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp12
 	STA	temp12
 
-	LDA	#Test_MiniMap_MaxX
+	LDA	#Bank2_MiniMap_MiniMap_MiniMap_MaxX
 	CMP	temp02
-	BCS	Test_MiniMap_NotLarger_temp02
+	BCS	Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp02
 	STA	temp02
-Test_MiniMap_NotLarger_temp02
+Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp02
 
 	LDA	temp02
 	ASL
 	ASL
 	TAX
-	LDA	Test_MiniMap_PointerTable,x
+	LDA	Bank2_MiniMap_MiniMap_MiniMap_PointerTable,x
 	STA	temp07
-	LDA	Test_MiniMap_PointerTable+1,x
+	LDA	Bank2_MiniMap_MiniMap_MiniMap_PointerTable+1,x
 	STA	temp08
 
 	LDA	temp02
 	ASL
 	ASL
 	TAX
-	LDA	Test_MiniMap_PointerTable+2,x
+	LDA	Bank2_MiniMap_MiniMap_MiniMap_PointerTable+2,x
 	STA	temp09
-	LDA	Test_MiniMap_PointerTable+3,x
+	LDA	Bank2_MiniMap_MiniMap_MiniMap_PointerTable+3,x
 	STA	temp10
 
-	LDA	#Test_MiniMap_MaxY
+	LDA	#Bank2_MiniMap_MiniMap_MiniMap_MaxY
 	CMP	temp03
-	BCS	Test_MiniMap_NotLarger_temp03
+	BCS	Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp03
 	STA	temp03
-Test_MiniMap_NotLarger_temp03
+Bank2_MiniMap_MiniMap_MiniMap_NotLarger_temp03
 
 	LDX	temp03
 	LDA	#0
 	CLC
-Test_MiniMap_Loop_DimensionY
+Bank2_MiniMap_MiniMap_MiniMap_Loop_DimensionY
 	DEX
-	BMI	Test_MiniMap_Loop_DimensionY_Ended
+	BMI	Bank2_MiniMap_MiniMap_MiniMap_Loop_DimensionY_Ended
 	ADC	temp01
-	JMP	Test_MiniMap_Loop_DimensionY
+	JMP	Bank2_MiniMap_MiniMap_MiniMap_Loop_DimensionY
 
-Test_MiniMap_Loop_DimensionY_Ended
+Bank2_MiniMap_MiniMap_MiniMap_Loop_DimensionY_Ended
 	STA	temp19
 	ADC	temp07
 	STA	temp07
@@ -1912,12 +1821,12 @@ Test_MiniMap_Loop_DimensionY_Ended
 	ADC	temp09
 	STA	temp09
 
-	LDA	#<Test_MiniMap_Gradient
+	LDA	#<Bank2_MiniMap_MiniMap_MiniMap_Gradient
 	STA	temp13
-	LDA	#>Test_MiniMap_Gradient
+	LDA	#>Bank2_MiniMap_MiniMap_MiniMap_Gradient
 	STA	temp14
 
-Test_MiniMap_Kernel
+Bank2_MiniMap_MiniMap_MiniMap_Kernel
 	LDA	frameColor
 	LDX	#0
 	STA	WSYNC
@@ -1970,34 +1879,34 @@ Test_MiniMap_Kernel
 	STA	temp19
 
 	CPY 	temp12
-	BNE	Test_MiniMap_Kernel_Not_Enabled
+	BNE	Bank2_MiniMap_MiniMap_MiniMap_Kernel_Not_Enabled
 	LDA	#2
-	JMP	Test_MiniMap_Kernel_Enabled
-Test_MiniMap_Kernel_Not_Enabled
+	JMP	Bank2_MiniMap_MiniMap_MiniMap_Kernel_Enabled
+Bank2_MiniMap_MiniMap_MiniMap_Kernel_Not_Enabled
 	sleep	3
 	LDA	#0
-Test_MiniMap_Kernel_Enabled
+Bank2_MiniMap_MiniMap_MiniMap_Kernel_Enabled
 	STA	temp15
 
 	STA	WSYNC
 	sleep	6
 	LDA	temp11
 
-Test_MiniMap_Kernel_BallX_Loop
+Bank2_MiniMap_MiniMap_MiniMap_Kernel_BallX_Loop
 	SBC	#15
-	BCS	Test_MiniMap_Kernel_BallX_Loop
+	BCS	Bank2_MiniMap_MiniMap_MiniMap_Kernel_BallX_Loop
 	sleep	5
 	STA	RESBL
 	ADC	#16
 	TAX
-	LDA	Test_Kernel_FineAdjustTable,x	
+	LDA	Bank2_MiniMap_MiniMap_Kernel_FineAdjustTable,x	
 	STA	HMBL	
 	STA	WSYNC
 	STA	HMOVE
 
-	LDA	#<Test_MiniMap_Kernel_Reset
+	LDA	#<Bank2_MiniMap_MiniMap_MiniMap_Kernel_Reset
 	STA	temp16
-	LDA	#>Test_MiniMap_Kernel_Reset
+	LDA	#>Bank2_MiniMap_MiniMap_MiniMap_Kernel_Reset
 	STA	temp17
 
 	_sleep	26	
@@ -2013,7 +1922,7 @@ Test_MiniMap_Kernel_BallX_Loop
 
 	_align	16
 
-Test_Kernel_FineAdjustTable
+Bank2_MiniMap_MiniMap_Kernel_FineAdjustTable
 	byte	#$80
 	byte	#$70
 	byte	#$60
@@ -2031,7 +1940,7 @@ Test_Kernel_FineAdjustTable
 	byte	#$a0
 	byte	#$90
 
-Test_MiniMap_Kernel_Reset
+Bank2_MiniMap_MiniMap_MiniMap_Kernel_Reset
 	LDA	frameColor
 	STA	WSYNC		
 	STA	COLUBK
@@ -2041,6 +1950,24 @@ Test_MiniMap_Kernel_Reset
 	STA	COLUP0
 	STA	COLUP1
 	STX	PF2
+
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
 
 
 	LDA	frameColor
@@ -2126,7 +2053,7 @@ ScreenBottomBank2
 
 		_align	24
 
-Test_MiniMap_0_Sprite_0
+Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_0
 	BYTE	#%11111110
 	BYTE	#%10010000
 	BYTE	#%10010011
@@ -2141,7 +2068,7 @@ Test_MiniMap_0_Sprite_0
 	BYTE	#%10000000
 	BYTE	#%10000000
 	BYTE	#%11100010
-	BYTE	#%10001010
+	BYTE	#%10001110
 	BYTE	#%11111110
 	BYTE	#%11111111
 	BYTE	#%10000010
@@ -2154,7 +2081,7 @@ Test_MiniMap_0_Sprite_0
 
 		_align	24
 
-Test_MiniMap_0_Sprite_1
+Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_1
 	BYTE	#%01111111
 	BYTE	#%00010001
 	BYTE	#%11110001
@@ -2182,7 +2109,7 @@ Test_MiniMap_0_Sprite_1
 
 		_align	24
 
-Test_MiniMap_1_Sprite_0
+Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_0
 	BYTE	#%11111111
 	BYTE	#%10000010
 	BYTE	#%11100010
@@ -2210,7 +2137,7 @@ Test_MiniMap_1_Sprite_0
 
 		_align	24
 
-Test_MiniMap_1_Sprite_1
+Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_1
 	BYTE	#%11111111
 	BYTE	#%00001001
 	BYTE	#%01111001
@@ -2238,7 +2165,7 @@ Test_MiniMap_1_Sprite_1
 
 		_align	24
 
-Test_MiniMap_2_Sprite_0
+Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_0
 	BYTE	#%11111110
 	BYTE	#%10010000
 	BYTE	#%10010000
@@ -2266,7 +2193,7 @@ Test_MiniMap_2_Sprite_0
 
 		_align	24
 
-Test_MiniMap_2_Sprite_1
+Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_1
 	BYTE	#%01111001
 	BYTE	#%00001001
 	BYTE	#%00001001
@@ -2293,23 +2220,23 @@ Test_MiniMap_2_Sprite_1
 	BYTE	#%11111111
 		_align	12
 
-Test_MiniMap_PointerTable
-	BYTE	#<Test_MiniMap_0_Sprite_0
-	BYTE	#>Test_MiniMap_0_Sprite_0
-	BYTE	#<Test_MiniMap_0_Sprite_1
-	BYTE	#>Test_MiniMap_0_Sprite_1
-	BYTE	#<Test_MiniMap_1_Sprite_0
-	BYTE	#>Test_MiniMap_1_Sprite_0
-	BYTE	#<Test_MiniMap_1_Sprite_1
-	BYTE	#>Test_MiniMap_1_Sprite_1
-	BYTE	#<Test_MiniMap_2_Sprite_0
-	BYTE	#>Test_MiniMap_2_Sprite_0
-	BYTE	#<Test_MiniMap_2_Sprite_1
-	BYTE	#>Test_MiniMap_2_Sprite_1
+Bank2_MiniMap_MiniMap_MiniMap_PointerTable
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_0
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_0
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_1
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_0_Sprite_1
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_0
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_0
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_1
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_1_Sprite_1
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_0
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_0
+	BYTE	#<Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_1
+	BYTE	#>Bank2_MiniMap_MiniMap_MiniMap_2_Sprite_1
 
 		_align	8
 
-Test_MiniMap_Gradient
+Bank2_MiniMap_MiniMap_MiniMap_Gradient
 	BYTE	#$00
 	BYTE	#$04
 	BYTE	#$08
