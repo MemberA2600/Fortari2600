@@ -48,7 +48,7 @@ class MemoryManagerWindow:
         self.__changeArrBoxes = True
 
         self.__sizes = {
-            "common": [round(self.__screenSize[0] / 1.3), round(self.__screenSize[1]/2  - 25)]
+            "common": [round(self.__screenSize[0] / 1.3), round(self.__screenSize[1]/1.50  - 25)]
         }
 
 
@@ -383,19 +383,22 @@ class MemoryManagerWindow:
         self.__typeListBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
         self.__typeListBox.pack_propagate(False)
         self.__typeListBox.pack(fill=BOTH)
+
+        self.__typeListBox.bind("<ButtonRelease-1>", self.__changeVarType)
+        self.__typeListBox.bind("<KeyRelease-Up>", self.__changeVarType)
+        self.__typeListBox.bind("<KeyRelease-Down>", self.__changeVarType)
+
         self.__varTypes = self.__virtualMemory.types
 
         for item in self.__varTypes:
             self.__typeListBox.insert(END, item)
 
-        #THIS
         self.__varWWW = Frame(self.__varOOO, bg="black",
                       width=9999999,
                       height=self.__topLevel.getTopLevelDimensions()[1] // 19)
 
         self.__varWWW.pack_propagate(False)
         self.__varWWW.pack(side=LEFT, anchor=E, fill=BOTH)
-
 
         self.__varIndicatorsFrame = Frame(self.__varWWW, bg=self.__loader.colorPalettes.getColor("window"),
                       width=(self.__topLevel.getTopLevelDimensions()[0] - self.__variableHeader.winfo_width()-self.__varNameLabel.winfo_width()),
@@ -431,6 +434,7 @@ class MemoryManagerWindow:
         self.__varIndicatorFrameBits.pack_propagate(False)
         self.__varIndicatorFrameBits.pack(side=LEFT, anchor=E, fill=BOTH)
 
+
         self.__varIndicatorBits = Label(self.__varIndicatorFrameBits,
                                                 bg=self.__loader.colorPalettes.getColor("fontDisabled"),
                                            text = self.__dictionaries.getWordFromCurrentLanguage("usedBits"),
@@ -447,6 +451,42 @@ class MemoryManagerWindow:
 
         self.__varIndicators2Frame.pack_propagate(False)
         self.__varIndicators2Frame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__varCheckBoxes = Frame(self.__varWWW, bg=self.__loader.colorPalettes.getColor("window"),
+                      width=(self.__topLevel.getTopLevelDimensions()[0] - self.__variableHeader.winfo_width()-self.__varNameLabel.winfo_width()),
+                      height=self.__topLevel.getTopLevelDimensions()[1] // 19)
+
+        self.__varCheckBoxes.pack_propagate(False)
+        self.__varCheckBoxes.pack(side=TOP, anchor=N, fill=X)
+
+        self.__colorVarMode = IntVar()
+        self.__bcdMode      = IntVar()
+
+        self.__colorButton = Checkbutton(self.__varCheckBoxes, width=len(self.__dictionaries.getWordFromCurrentLanguage("colorVar")),
+                                             text=self.__dictionaries.getWordFromCurrentLanguage("colorVar"),
+                                             bg=self.__colors.getColor("window"),
+                                             fg=self.__colors.getColor("font"),
+                                             justify=LEFT, font=self.__smallFont,
+                                             variable=self.__colorVarMode,
+                                             activebackground=self.__colors.getColor("highLight"),
+                                             command=None
+                                             )
+
+        self.__colorButton.pack_propagate(False)
+        self.__colorButton.pack(fill=Y, side=LEFT, anchor=E)
+
+        self.__bcdButton = Checkbutton(self.__varCheckBoxes, width=len(self.__dictionaries.getWordFromCurrentLanguage("bcd")),
+                                             text=self.__dictionaries.getWordFromCurrentLanguage("bcd"),
+                                             bg=self.__colors.getColor("window"),
+                                             fg=self.__colors.getColor("font"),
+                                             justify=LEFT, font=self.__smallFont,
+                                             variable=self.__bcdMode,
+                                             activebackground=self.__colors.getColor("highLight"),
+                                             command=None
+                                             )
+
+        self.__bcdButton.pack_propagate(False)
+        self.__bcdButton.pack(fill=Y, side=LEFT, anchor=E)
 
         self.__address = StringVar()
         self.__bits    = StringVar()
@@ -847,6 +887,16 @@ class MemoryManagerWindow:
         t.daemon = True
         t.start()
 
+    def __changeVarType(self, event):
+        if self.__virtualMemory.types[list(self.__virtualMemory.types.keys())[self.__typeListBox.curselection()[0]]] < 4:
+           self.__colorButton.config(state = DISABLED)
+           self.__bcdButton.config(state = DISABLED)
+           self.__colorVarMode.set(0)
+           self.__bcdMode.set(0)
+        else:
+           self.__colorButton.config(state=NORMAL)
+           self.__bcdButton.config(state=NORMAL)
+
     def restoreBank(self):
         if self.__selectedSlot == "global":
             self.__memory.moveMemorytoVariables("bank1")
@@ -1052,7 +1102,7 @@ class MemoryManagerWindow:
         self.__virtualMemory.archieve()
         success = self.__virtualMemory.addVariable(self.__varName.get(),
                                   self.__typeListBox.get(self.__typeListBox.curselection()[0]),
-                                  self.__selectedSlot
+                                  self.__selectedSlot, self.__colorVarMode.get(), self.__bcdMode.get()
                                   )
         if success == True:
             self.__changed = True
@@ -1114,6 +1164,26 @@ class MemoryManagerWindow:
                        address, __bits, list(self.__varTypes.keys()).index(self.__memory[address].variables[variable].type)
                    ]
                    self.__varName.set(self.__selectedVar.split(" ")[0])
+
+                   if self.__memory[address].variables[variable].color == True:
+                      self.__colorVarMode.set(1)
+                   else:
+                      self.__colorVarMode.set(0)
+
+                   if self.__memory[address].variables[variable].bcd   == True:
+                      self.__bcdMode.set(1)
+                   else:
+                      self.__bcdMode.set(0)
+
+                   if len(self.__memory[address].variables[variable].usedBits) < 4:
+                      self.__bcdMode.set(0)
+                      self.__colorVarMode.set(0)
+                      self.__colorButton.config(state = DISABLED)
+                      self.__bcdButton.config(state = DISABLED)
+                   else:
+                      self.__colorButton.config(state=NORMAL)
+                      self.__bcdButton.config(state=NORMAL)
+
                    self.__createButton.config(state=DISABLED)
                    self.__modifyButton.config(state=NORMAL)
                    self.__deleteButton.config(state=NORMAL)

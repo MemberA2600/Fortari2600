@@ -4,6 +4,7 @@ from MemoryItem import MemoryItem
 from threading import Thread
 from tkinter import END
 from copy import deepcopy
+from ObjectMaster import ObjectMaster
 
 class VirtualMemory:
 
@@ -17,6 +18,7 @@ class VirtualMemory:
         self.kernel_types = []
         self.kernel = "common"
         self.changedCodes = {}
+        self.objectMaster = ObjectMaster(loader)
 
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
@@ -44,6 +46,7 @@ class VirtualMemory:
         self.types = {
             "bit": 1,
             "doubleBit": 2,
+            "tripleBit": 3,
             "nibble": 4,
             "byte": 8
         }
@@ -100,6 +103,7 @@ class VirtualMemory:
 
         return(forReturn)
 
+    """
     def changeKernelMemory(self, old, new):
         from copy import deepcopy
         oldVirtualMemory = deepcopy(self.memory)
@@ -156,6 +160,7 @@ class VirtualMemory:
                                                    data, None
                                                    )
 
+    """
     def getArcPrev(self):
         self.cursor-=1
         self.__goToState()
@@ -216,7 +221,7 @@ class VirtualMemory:
         d = self.__loader.dataReader.readDataFile("templates"+os.sep+self.kernel+"_system_variables.a26")
         for key in d:
             #print(key, d[key])
-            self.addVariable(key, d[key].split(",")[0], "global")
+            self.addVariable(key, d[key].split(",")[0], "global", False, False)
             self.getVariableByName(key, "bank1").system=True
             if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
                 self.getVariableByName(key, "bank1").iterable = False
@@ -296,7 +301,7 @@ class VirtualMemory:
         return(False)
 
 
-    def addVariable(self, name, type, validity):
+    def addVariable(self, name, type, validity, color, bcd):
         neededBits = self.types[type]
         success = False
 
@@ -310,7 +315,7 @@ class VirtualMemory:
                         self.memory[memoryAddress].removeBitsFromGlobalAddress(bits)
                     else:
                         self.memory[memoryAddress].removeBitsFromBankAddress(bits, validity)
-                    self.memory[memoryAddress].addVariable(name, type, bits, validity)
+                    self.memory[memoryAddress].addVariable(name, type, bits, validity, color, bcd)
                     #print(name, memoryAddress, type)
 
                     success = True
@@ -412,15 +417,31 @@ class VirtualMemory:
 
                 if self.checkIfExists(name, validity):
                     continue
-                TYPE = data[1].replace("\n","").replace("\r","")
+
+                subData = data[1].replace("\n","").replace("\r","").split(",")
+                TYPE    = subData[0]
+                color   = subData[1]
+                bcd     = subData[2]
+
+                if color == "color":
+                   color = True
+                else:
+                   color = False
+
+                if bcd == "BCD":
+                   bcd = True
+                else:
+                   bcd = False
+
                 if (TYPE in self.types.keys()):
-                    self.addVariable(name, TYPE, validity)
+                    self.addVariable(name, TYPE, validity, color, bcd)
                 else:
                     self.addArray(name)
                     data = TYPE[6:-1].split(",")
                     for item in data:
                         self.addItemsToArray(name, item, self.getVariableByName(item, bank))
             except Exception as e:
+               # print(str(e))
                 self.__loader.logger.errorLog(e)
 
 
@@ -439,7 +460,17 @@ class VirtualMemory:
             for variable in self.memory[address].variables.keys():
                 if self.memory[address].variables[variable].validity != validate:
                     continue
-                string += variable + "=" + self.memory[address].variables[variable].type + os.linesep
+
+                color = "non-Color"
+                bcd   = "binary"
+
+                if self.memory[address].variables[variable].color == True: color = "Color"
+                if self.memory[address].variables[variable].bcd   == True: bcd   = "BCD"
+
+                string += variable + "=" + self.memory[address].variables[variable].type\
+                                         + color + "," +\
+                                         + bcd   + "," +\
+                                         + os.linesep
 
         for array in self.arrays.keys():
             if self.getArrayValidity(array) == validate:

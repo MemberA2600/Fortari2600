@@ -377,3 +377,4 @@ dimensions=Dimenziók
 fillThru=Y tengelyen engedélyezett túlcsordulás
 spritePF=Sprite / Playfield Színe
 minimap=MiniMap
+bcd=Binárisan Kódolt Decimális

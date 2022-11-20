@@ -94,9 +94,9 @@ class TopBottomEditor:
         codes = self.__loader.virtualMemory.codes
         for num in range(2,9):
             bankNum = "bank"+str(num)
-            for key in codes.keys():
-                if   key == "screen_top":
-                   self.__codeData["Top"][num - 2][0] = codes[bankNum][key]
+            for key in codes[bankNum].keys():
+                if key == "screen_top":
+                   self.__codeData["Top"][num - 2][0] = codes[bankNum][key].code
                    for line in self.__codeData["Top"][num - 2][0].split("\n"):
                        line = line.replace("\r", "")
                        if line.startswith("*") or line.startswith("#"):
@@ -104,7 +104,7 @@ class TopBottomEditor:
 
                        self.__codeData["Top"][num - 2][2].append(line)
                 elif key == "screen_bottom":
-                    self.__codeData["Bottom"][num - 2][0] = codes[bankNum][key]
+                    self.__codeData["Bottom"][num - 2][0] = codes[bankNum][key].code
                     for line in self.__codeData["Bottom"][num - 2][0].split("\n"):
                         line = line.replace("\r", "")
                         if line.startswith("*") or line.startswith("#"):
@@ -124,7 +124,12 @@ class TopBottomEditor:
         if isThereChange == True:
             answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
             if answer == "Yes":
-                self.__saveAll()
+                self.__closeMode = True
+                self.__saveAllChanges()
+                if self.__saved == True:
+                   self.__closeMode = False
+
+
             elif answer == "Cancel":
                 self.__topLevelWindow.deiconify()
                 self.__topLevelWindow.focus()
@@ -596,26 +601,7 @@ class TopBottomEditor:
         self.__redoButton.pack_propagate(False)
         self.__redoButton.pack(fill=BOTH, side = LEFT, anchor = E)
 
-        """
-        self.__saveButton = Button(frame3, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image=self.__saveImage,
-                                   width= frame1.winfo_width(), height = frame1.winfo_height(),
-                                   state=DISABLED,
-                                   command=self.__saveChanges)
-
-        self.__saveButton.pack_propagate(False)
-        self.__saveButton.pack(fill=BOTH, side = TOP, anchor = N)
-
-        self.__saveAllButton = Button(frame4, bg=self.__loader.colorPalettes.getColor("window"),
-                                   image=self.__saveAllImage,
-                                   width= frame1.winfo_width(), height = frame1.winfo_height(),
-                                   state=DISABLED,
-                                   command=self.__saveAllChanges)
-
-        self.__saveAllButton.pack_propagate(False)
-        self.__saveAllButton.pack(fill=BOTH, side = TOP, anchor = N)
-        """
-
+        self.__closeMode = False
         self.__okButton = Button(   frame3, bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("font"),
                                     text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
@@ -678,7 +664,43 @@ class TopBottomEditor:
            self.setTheSetter(data[0], data[1])
 
     def __saveAllChanges(self):
-        pass
+        self.__saved = False
+        if self.__checkIncomplete() == True: return
+
+        screenPartsInMemory = ["screen_top", "screen_bottom"]
+        screenPartsInEditor = ["Top", "Bottom"]
+
+        wasSaved = False
+
+        from datetime import datetime
+
+        for num in range(0,7):
+            bankNum = "bank" + str(num+2)
+            for num2 in range(0,2):
+                inMemory = screenPartsInMemory[num2]
+                inEditor = screenPartsInEditor[num2]
+
+                section = self.__codeData[inEditor][num]
+                if section[1] == True:
+                    wasSaved = True
+                    newCode = ["*** Date modified: " + str(datetime.now())]
+
+                    section[1] = False
+                    for item in section[2]:
+                        newCode.append(item)
+
+                    section[0] = "\n".join(newCode)
+                    self.__loader.virtualMemory.codes[bankNum][inMemory].code = section[0]
+                    self.__loader.virtualMemory.codes[bankNum][inMemory].changed = True
+
+        if wasSaved: self.__soundPlayer.playSound("Success")
+
+        self.__saved = True
+        if self.__closeMode == False:
+            self.dead = True
+            self.__topLevelWindow.destroy()
+            self.__loader.topLevels.remove(self.__topLevelWindow)
+
 
     def __addNew(self):
         from ScreenTopFrame import ScreenTopFrame
@@ -840,7 +862,7 @@ class TopBottomEditor:
         while len(self.__buffer) > self.__poz+1:
            self.__buffer.pop(-1)
 
-        if len(self.__buffer) > 24:
+        if len(self.__buffer) > int(self.__config.getValueByKey("maxUndo")):
            self.__buffer.pop(0)
 
         self.__buffer.append(
@@ -1137,6 +1159,3 @@ class TopBottomEditor:
         self.__lastBank = None
         self.__lastSelected = None
         self.setEditorFrame()
-
-    def __saveAll(self):
-        pass

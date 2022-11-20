@@ -377,3 +377,4 @@ dimensions=Dimensions
 fillThru=Fill thru regions on Y axis
 spritePF=Sprite / Playfield Color
 minimap=MiniMap
+bcd=Binary Coded Decimal

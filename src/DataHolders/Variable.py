@@ -1,6 +1,6 @@
 class Variable:
 
-    def __init__(self, type, bits, validity):
+    def __init__(self, type, bits, validity, color, bcd):
         self.type      = type
         self.usedBits  = bits
         self.validity  = validity
@@ -8,5 +8,5 @@ class Variable:
         self.iterable  = True
         self.linkable  = True
             #"global", bank{2-8}
-        self.bcd       = False
-        self.colorVar  = False
+        self.bcd       = bcd
+        self.color     = color

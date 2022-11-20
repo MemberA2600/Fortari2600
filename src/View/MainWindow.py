@@ -568,6 +568,7 @@ class MainWindow:
 
     def openProject(self, path):
         try:
+        #if True:
             projectPath=path.replace("\\", "/")
             from re import sub
             projectPath = sub("/+", "/", projectPath)
@@ -590,6 +591,7 @@ class MainWindow:
             self.__soundPlayer.playSound("Success")
             self.__bigFrame.setMode("empty")
 
+
         except Exception as e:
             self.__fileDialogs.displayError("projectOpenError", "projectOpenErrorText",
                                             {
@@ -607,7 +609,8 @@ class MainWindow:
     def __setVirtualMemoryItem(self, bank, variable):
         path = str(self.projectPath+bank+os.sep+variable+".a26")
         item = self.__loader.virtualMemory.codes[bank][variable]
-        item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
+        # item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
+        item.code = self.__loader.io.loadWholeText(path)
         if bank=="bank1" and variable =="bank_configurations":
             old = self.__loader.virtualMemory.kernel
             for line in item.code.split(os.linesep):
@@ -627,7 +630,7 @@ class MainWindow:
             BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
             if bank == "bank1" or variable == "local_variables":
                 self.__loader.virtualMemory.setVariablesFromMemory(bank)
-            file.write(self.__changeFirstValidDeliminator(self.__loader.virtualMemory.codes[bank][variable].code, variable))
+            file.write(self.__loader.virtualMemory.codes[bank][variable].code, variable)
             file.close()
             self.__loader.virtualMemory.codes[bank][variable].changed = False
             #self.__loader.virtualMemory.emptyArchieved()
@@ -642,6 +645,7 @@ class MainWindow:
                                             str(e)
                                             )
 
+    """
     def __changeFirstValidDeliminator(self, text, section):
         if section not in ["subroutines","vblank", "enter", "leave", "overscan", "screen_bottom"]:
             return (text)
@@ -663,11 +667,13 @@ class MainWindow:
                             break
                 newText.append(line)
 
-
+    
 
         return(os.linesep.join(newText))
 
         #return(self.__config.getValueByKey("deliminator"))
+
+    """
 
     def __saveProject(self):
         self.__saveOnlyOne("bank1", "bank_configurations")
