@@ -1,11 +1,21 @@
 import re
 
+
 class Command:
 
-    def __init__(self, loader, string):
+    def __init__(self, loader, name, string):
         self.__loader = loader
+        self.__name   = name
         data = string.split(",")
         self.alias = data[0][1:-1].split(" ")
+        if data[3].lower() == "end":
+           newName  = "end-"+name
+           newAlias = []
+           for a in self.alias:
+               newAlias.append("end-"+a)
+
+           newString = "["+" ".join(newAlias) +"]"+"," + data[1] + "," + "end-command" + "," + "None"
+           self.__loader.syntaxList[newName] = Command(loader, newName, newString)
 
     def changeAliasToName(self, name, text):
         newText = []

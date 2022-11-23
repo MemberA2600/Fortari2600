@@ -187,7 +187,7 @@ class MainWindow:
          self.__controllerMenu.pack_propagate(False)
          self.__controllerMenu.pack(side=TOP, anchor = N, fill=X)
 
-         self.__changerButtons = []
+         self.changerButtons = []
 
          for num in range(1,9):
              f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//8,
@@ -209,7 +209,7 @@ class MainWindow:
              b.pack_propagate(False)
              b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-             self.__changerButtons.append(b)
+             self.changerButtons.append(b)
 
          __keys = list(self.__loader.virtualMemory.codes["bank2"].keys())
          __keys.remove('local_variables')
@@ -223,7 +223,7 @@ class MainWindow:
          self.__controllerMenu2.pack_propagate(False)
          self.__controllerMenu2.pack(side=TOP, anchor = N, fill=X)
 
-         self.__sectionButtons = []
+         self.sectionButtons = []
 
          for num in range(0, len(__keys)):
              f = Frame(self.__controllerMenu2, width=self.getWindowSize()[0]//len(__keys),
@@ -245,7 +245,7 @@ class MainWindow:
              b.pack_propagate(False)
              b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-             self.__changerButtons.append(b)
+             self.changerButtons.append(b)
 
          from EditorBigFrame import EditorBigFrame
 
@@ -589,7 +589,7 @@ class MainWindow:
             self.__loader.virtualMemory.setVariablesFromMemory("all")
             self.__loader.virtualMemory.archieve()
             self.__soundPlayer.playSound("Success")
-            self.__bigFrame.setMode("empty")
+            self.__bigFrame.setMode("job")
 
 
         except Exception as e:

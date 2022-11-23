@@ -1,3 +1,1 @@
-do=[foreach perform],[common],command
-end-do=[end-perform end-foreach],[common],command
-write=[print display],[common],command
+do=[foreach perform],[common],command,end

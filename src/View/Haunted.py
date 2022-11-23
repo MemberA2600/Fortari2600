@@ -188,14 +188,16 @@ class Haunted:
 
         from time import sleep
         while self.__parent.dead == False and self.__loader.mainWindow.dead == False:
+
             counter += 1
             if counter > 3: counter = 0
 
             self.setEyePoses()
 
             try:
+
                 self.__color = colors[counter]
-                self.__canvas.clipboard_clear()
+                #self.__canvas.clipboard_clear()
                 self.__canvas.delete("all")
 
                 self.drawPixelOval()
@@ -206,10 +208,10 @@ class Haunted:
 
             try:
                 if (
-                    self.__keys["Left"] ==  True or
-                    self.__keys["Right"] == True or
-                    self.__keys["Up"] == True or
-                    self.__keys["Down"] == True
+                    self.__keys["Left"]  ==  True or
+                    self.__keys["Right"] ==  True or
+                    self.__keys["Up"]    ==  True or
+                    self.__keys["Down"]  ==  True
                 ):
                     if self.__cooldown == 0:
                         self.__loader.soundPlayer.playSound("walk")
@@ -265,7 +267,7 @@ class Haunted:
                     print(str(e))
 
 
-            sleep(0.00005)
+            sleep(0.002)
 
 
     def drawPixelOval(self):

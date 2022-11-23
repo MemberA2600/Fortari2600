@@ -746,6 +746,7 @@ class TopBottomEditor:
         self.__topLevelWindow.focus()
 
     def setTheSetter(self, name, typ):
+        #print(name, self.__lastSelected)
 
         try:
             if name != self.__listBoxItems[self.__itemListBox.curselection()[0]]:

@@ -16,29 +16,55 @@ class PitFallHarry:
 
         self.__bg = "gold"
         self.__spriteNum = 0
+
+        self.__mainFrame = master.getTopLevel()
+        self.__master    = master
+        """
         self.__harryFrame = Frame(master.getTopLevel(),
                                   width=master.getTopLevelDimensions()[0], height=10000)
         self.__harryFrame.pack(side=TOP, anchor=N, fill=Y)
         self.__harryFrame.pack_propagate(False)
         self.__harryFrame.config(bg=self.__bg)
+        """
 
-        self.__h = self.__harryFrame.winfo_height()
-        self.__w = round(self.__h*0.76)
+        t = Thread(target=self.initMe)
+        t.daemon = True
+        t.start()
+
+        m = Thread(target=self.__move)
+        m.daemon = True
+        m.start()
+
+    def initMe(self):
+        self.__finished = False
+
+        self.__canvas = Canvas(self.__mainFrame, bg = self.__bg,
+                               height=9999, width=self.__master.getTopLevelDimensions()[0])
+        self.__canvas.pack_propagate(False)
+        self.__canvas.grid_propagate(False)
+        self.__canvas.pack(side=TOP, fill=BOTH, anchor=N)
+        self.__canvas.config(bd=0, highlightthickness=0, relief='ridge')
+
+        while self.__canvas.winfo_height() < 2:
+            from time import sleep
+            sleep(0.0005)
+
+        self.__h = self.__canvas.winfo_height()
+        self.__w = round(self.__h * 0.76)
 
         self.__spriteCounter = 0
-        self.__harryPoz = self.__master.getTopLevelDimensions()[0]/2-self.__w/2
+        self.__harryPoz = self.__master.getTopLevelDimensions()[0] / 2 - self.__w / 2
 
         self.__getDifference()
 
-        self.__harryLabel = Label(self.__harryFrame, bg=self.__bg)
+        # self.__harryLabel = Label(self.__harryFrame, bg=self.__bg)
         self.__setSprite(1)
 
-        self.__harryMaxX = self.__master.getTopLevelDimensions()[0]-self.__w
+        self.__harryMaxX = self.__master.getTopLevelDimensions()[0] - self.__w
         self.__placer()
 
-
-        m = Thread(target=self.__move)
-        m.start()
+        self.__drawHarry()
+        self.__finished = True
 
     def setBuffer(self):
         self.__imageBuffer = []
@@ -48,7 +74,8 @@ class PitFallHarry:
     def __placer(self):
         if self.__window.dead==False and self.stopThread==False:
             try:
-                self.__harryLabel.place(x=self.__harryPoz, y=0)
+                # self.__harryLabel.place(x=self.__harryPoz, y=0)
+                pass
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
@@ -61,11 +88,14 @@ class PitFallHarry:
                 self.__img = ImageTk.PhotoImage(i.transpose(thisIsTheImage.FLIP_LEFT_RIGHT))
             else:
                 self.__img = ImageTk.PhotoImage(i)
+
+            """    
             try:
                 self.__harryLabel.config(image = self.__img)
+
             except Exception as e:
                 self.__loader.logger.errorLog(e)
-
+            """
 
     def __getDifference(self):
         import mouse
@@ -92,11 +122,25 @@ class PitFallHarry:
         self.__harryPoz += num
         self.__placer()
 
-    def __move(self):
-        while self.__window.dead == False and self.stopThread==False:
-            from time import sleep
+    def __drawHarry(self):
+        try:
+            self.__canvas.delete("all")
+            self.__canvas.create_image(
+                self.__harryPoz, 0, image=self.__img, anchor=NW
+            )
+        except:
+            pass
 
-            while self.__harryLabel.winfo_width()==1:
+    def __move(self):
+        from time import sleep
+
+        while self.__finished == False:
+            sleep(0.5)
+
+        while self.__window.dead == False and self.stopThread==False:
+
+            """
+            while self.__harryLabel.winfo_width() < (self.__h * 0.76) * 0.9:
                 try:
                     self.__harryLabel.config(width=self.__harryFrame.winfo_height(),
                                              height=round(self.__h * 0.76))
@@ -104,6 +148,7 @@ class PitFallHarry:
                     self.__harryLabel.place(x=self.__harryPoz, y=0)
                 except:
                     pass
+            """
 
             self.__getDifference()
             if abs(self.__difference)<15:
@@ -124,5 +169,5 @@ class PitFallHarry:
             elif self.__harryPoz<0:
                 self.__harryPoz = 0
 
-
+            self.__drawHarry()
             sleep(0.04)

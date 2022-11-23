@@ -1,0 +1,112 @@
+**********************************
+*** 2022-11-23 05:52:04.268579 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = src/View\ET.py
+self = <ET.ET object at 0x0000000037709F28>
+mouse = <module 'mouse' from 'D:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2022-11-23 05:52:05.714661 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x00000000376DE160>
+loader = <Loader.Loader object at 0x0000000004985908>
+name = open
+w = 533.3333333333334
+h = 355.0
+checker = None
+addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x00000000376DE9B0>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-31, stopped daemon 6436)>
+
+
+**********************************
+*** 2022-11-23 05:52:06.501706 ***
+**********************************
+
+Exception: 'NewProjectWindow' object has no attribute '_NewProjectWindow__folderEntryWithButton'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewProjectWindow
+__file__ = src/View\NewProjectWindow.py
+self = <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>
+sleep = <built-in function sleep>
+os = <module 'os' from 'C:\\Users\\Member\\AppData\\Local\\Programs\\Python\\Python37\\lib\\os.py'>
+
+
+**********************************
+*** 2022-11-23 05:52:06.552709 ***
+**********************************
+
+Exception: 'NewProjectWindow' object has no attribute '_NewProjectWindow__folderEntryWithButton'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewProjectWindow
+__file__ = src/View\NewProjectWindow.py
+self = <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>
+sleep = <built-in function sleep>
+os = <module 'os' from 'C:\\Users\\Member\\AppData\\Local\\Programs\\Python\\Python37\\lib\\os.py'>
+
+
+**********************************
+*** 2022-11-23 05:52:06.602712 ***
+**********************************
+
+Exception: 'NewProjectWindow' object has no attribute '_NewProjectWindow__projectEntryWithButton'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewProjectWindow
+__file__ = src/View\NewProjectWindow.py
+self = <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>
+sleep = <built-in function sleep>
+os = <module 'os' from 'C:\\Users\\Member\\AppData\\Local\\Programs\\Python\\Python37\\lib\\os.py'>
+
+
+**********************************
+*** 2022-11-23 05:52:06.655715 ***
+**********************************
+
+Exception: 'NewProjectWindow' object has no attribute '_NewProjectWindow__projectEntryWithButton'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = NewProjectWindow
+__file__ = src/View\NewProjectWindow.py
+self = <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>
+sleep = <built-in function sleep>
+os = <module 'os' from 'C:\\Users\\Member\\AppData\\Local\\Programs\\Python\\Python37\\lib\\os.py'>
+
+
+**********************************
+*** 2022-11-23 05:52:08.776837 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x0000000037939AC8>
+loader = <Loader.Loader object at 0x0000000004985908>
+name = new
+w = 533.3333333333334
+h = 275.0
+checker = <bound method NewProjectWindow.__checker of <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>>
+addElements = <bound method NewProjectWindow.__addElements of <NewProjectWindow.NewProjectWindow object at 0x00000000376DEEB8>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+check = <Thread(Thread-38, started daemon 4972)>
+add = <Thread(Thread-39, stopped daemon 1948)>
+
+

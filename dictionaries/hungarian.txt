@@ -378,3 +378,5 @@ fillThru=Y tengelyen engedélyezett túlcsordulás
 spritePF=Sprite / Playfield Színe
 minimap=MiniMap
 bcd=Binárisan Kódolt Decimális
+delimiterInName=Elválasztó található a névben!
+startWithBank=Változónév nem kezdõdhet 'Bank'-kal!

@@ -87,6 +87,7 @@ class ScreenSetterFrameBase:
 
         self.registerError("segmentName")
         self.registerError("nameAlready")
+        self.registerError("delimiterInName")
 
         self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
         self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
@@ -129,9 +130,29 @@ class ScreenSetterFrameBase:
                 bg=self.__colors.getColor("boxBackUnSaved"),
                 fg=self.__colors.getColor("boxFontUnSaved"))
 
+        delimiters1 = self.__loader.config.getValueByKey("validObjDelimiters")
+        delimiters2 = self.__loader.config.getValueByKey("validLineDelimiters")
+
+        for d in delimiters1:
+           if d in self.__name.get():
+               self.__errors["delimiterInName"] = True
+               noError = False
+               self.__nameEntry.config(
+                    bg=self.__colors.getColor("boxBackUnSaved"),
+                    fg=self.__colors.getColor("boxFontUnSaved"))
+
+        for d in delimiters2:
+           if d in self.__name.get():
+               self.__errors["delimiterInName"] = True
+               noError = False
+               self.__nameEntry.config(
+                    bg=self.__colors.getColor("boxBackUnSaved"),
+                    fg=self.__colors.getColor("boxFontUnSaved"))
 
         if noError == True:
             self.__errors["segmentName"] = False
+            self.__errors["delimiterInName"] = False
+
             self.__nameEntry.config(
                 bg = self.__colors.getColor("boxBackNormal"),
                 fg=self.__colors.getColor("boxFontNormal")
@@ -154,6 +175,10 @@ class ScreenSetterFrameBase:
             self.__name.set(newName)
 
         if newName == oldName: return
+
+        for error in self.__errors.keys():
+            if self.__errors[error] == True:
+               return
 
         self.__data[0] = newName
         self.__changeName(oldName, newName)

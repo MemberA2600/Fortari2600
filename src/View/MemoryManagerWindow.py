@@ -1296,6 +1296,15 @@ class MemoryManagerWindow:
                 for alias in self.__loader.syntaxList[command].alias:
                     if alias == name: return "commandName"
 
+        for delimiter in self.__loader.config.getValueByKey("validObjDelimiters").replace("\r", "").split(" "):
+            if delimiter in name: return "delimiterInName"
+
+        for delimiter in self.__loader.config.getValueByKey("validLineDelimiters").replace("\r", "").split(" "):
+            if delimiter in name: return "delimiterInName"
+
+
+        if name.lower().startswith("bank"): return "startWithBank"
+
         return(None)
 
     def loop(self):

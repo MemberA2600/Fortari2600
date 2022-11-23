@@ -10,3 +10,4 @@ debug=True
 keepLogs=0
 codeBoxFont=14
 validObjDelimiters=% . ::
+validLineDelimiters=! ;

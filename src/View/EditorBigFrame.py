@@ -62,6 +62,9 @@ class EditorBigFrame:
         # Valid modes: intro, editor, locked, empty
         self.__selectedMode = "intro"
 
+        self.__bankButtons    = self.__editor.changerButtons
+        self.__sectionButtons = self.__editor.sectionButtons
+
         from threading import Thread
 
 
@@ -84,6 +87,9 @@ class EditorBigFrame:
                   self.__createIntroScreen()
                elif  self.__selectedMode == "empty":
                   pass
+               elif  self.__selectedMode == "job":
+                  self.__createJobWindows()
+
 
             sleep(0.0005)
 
@@ -119,3 +125,11 @@ class EditorBigFrame:
 
     def getMode(self):
         return self.activeMode
+
+    def __createJobWindows(self):
+        from tkinter import scrolledtext
+
+        self.__codeBox = scrolledtext.ScrolledText(self.__mainFrame, width=999999, height=9999999, wrap=WORD)
+        self.__codeBox.pack(fill=BOTH)
+        self.__codeBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                        fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
