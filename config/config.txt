@@ -11,3 +11,4 @@ keepLogs=0
 codeBoxFont=14
 validObjDelimiters=% . ::
 validLineDelimiters=! ;
+validNotEQ=!= /= ~= <> NOT=

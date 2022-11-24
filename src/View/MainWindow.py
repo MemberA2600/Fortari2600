@@ -189,8 +189,8 @@ class MainWindow:
 
          self.changerButtons = []
 
-         for num in range(1,9):
-             f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//8,
+         for num in range(2,9):
+             f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//7,
                                    height=self.getWindowSize()[1]//30,
                                    bg=self.__colors.getColor("window"))
              f.pack_propagate(False)

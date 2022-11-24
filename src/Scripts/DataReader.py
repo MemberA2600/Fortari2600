@@ -21,7 +21,7 @@ class DataReader:
             line = line.replace("\r", "").replace("\n", "")
             if line != "":
                 try:
-                    __dict[line.split("=")[0]] = line.split("=", 2)[1]
+                    __dict[line.split("=")[0]] = "=".join(line.split("=")[1:])
                 except:
                     pass
 
