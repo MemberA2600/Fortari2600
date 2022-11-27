@@ -7,3 +7,6 @@ boxBackUnSaved=red
 boxFontUnSaved=yellow
 comment=green
 highLight=yellow
+command=cornflowerblue
+bracket=orange
+bracketSelected=orangered

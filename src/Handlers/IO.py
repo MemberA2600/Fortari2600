@@ -64,7 +64,9 @@ class IO:
     def loadSyntax(self):
         from Command import Command
         for item in self.loadWholeText("config"+os.sep+"syntax.txt").split("\n"):
-            self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=")[0], item.split("=",2)[1].replace("\n","").replace("\r",""))
+            self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=")[0], "=".join(item.split("=")[1:]).replace("\n","").replace("\r",""))
+
+
 
     def loadSubModule(self, name):
         return(open("templates/skeletons/"+name+".asm", "r").read())

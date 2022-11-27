@@ -198,6 +198,7 @@ class EmptyLines:
 
                self.__varListBox.select_clear(0, END)
                self.__varListBox.select_set(selector)
+               self.__varListBox.yview(selector)
                self.__data[2] = self.__varList[selector]
                self.__changeData(self.__data)
 

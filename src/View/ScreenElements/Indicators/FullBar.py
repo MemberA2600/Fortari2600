@@ -158,6 +158,8 @@ class FullBar:
         if self.__data[3] == "#":
            self.__data[3] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox.select_set(0)
+           self.__dataVarListBox.yview(0)
+
         else:
 
            selector = 0
@@ -167,6 +169,8 @@ class FullBar:
                   break
 
            self.__dataVarListBox.select_set(selector)
+           self.__dataVarListBox.yview(selector)
+
 
         self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
         self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
@@ -330,6 +334,8 @@ class FullBar:
                   selector = itemNum
                   break
            self.__colorVarListBox.select_set(selector)
+           self.__colorVarListBox.yview(selector)
+
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
@@ -444,6 +450,7 @@ class FullBar:
                   break
 
            self.__colorVarListBox.select_set(selector)
+           self.__colorVarListBox.yview(selector)
 
            self.__changedColorVar(None)
 

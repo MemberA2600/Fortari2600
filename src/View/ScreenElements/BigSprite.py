@@ -128,6 +128,7 @@ class BigSprite:
             self.__data[2] = sprite
 
         self.__varListBox.select_set(selector)
+        self.__varListBox.yview(selector)
         self.__lastSprite = self.__listOfPictures[selector]
         self.__getBasicDataOfPicture()
 
@@ -323,6 +324,7 @@ class BigSprite:
                   break
            self.__lastSelectedspriteSettings[0] = self.__nibbleVars[selector].split("::")[1]
            self.__spriteSettingsVarListBox.select_set(selector)
+           self.__spriteSettingsVarListBox.yview(selector)
            self.__spriteSettingsEntry.config(state = DISABLED)
            self.__mirroredButton1.config(state = DISABLED)
            self.__nusizEntry.config(state = DISABLED)
@@ -388,6 +390,7 @@ class BigSprite:
                   break
            self.__lastBackColorSelected[0] = self.__nibbleVars[selector].split("::")[1]
            self.__backColorListBox.select_set(selector)
+           self.__backColorListBox.yview(selector)
            self.__constantHex.changeState(DISABLED)
            self.__options[1]["option"].set(2)
 
@@ -444,6 +447,7 @@ class BigSprite:
            self.__options[2]["option"].set(2)
            self.__xEntry.config(state = DISABLED)
            self.__xSettingsVarListBox.select_set(0)
+           self.__xSettingsVarListBox.yview(0)
            self.__data[5] = vars[2]
            self.__xVal.set("127")
 
@@ -463,6 +467,7 @@ class BigSprite:
 
                self.__options[2]["option"].set(2)
                self.__xEntry.config(state = DISABLED)
+               self.__xSettingsVarListBox.select_set(selector)
                self.__xSettingsVarListBox.select_set(selector)
                self.__lastXSelected[0] = self.__byteVars[selector].split("::")[1]
                self.__xVal.set("127")
@@ -840,6 +845,7 @@ class BigSprite:
 
             lboxes[num].select_clear(0, END)
             lboxes[num].select_set(selector)
+            lboxes[num].yview(selector)
             self.__data[3+num] = lasts[num][0]
             self.__changeData(self.__data)
 

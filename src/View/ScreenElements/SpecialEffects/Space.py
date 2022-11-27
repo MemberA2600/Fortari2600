@@ -278,6 +278,8 @@ class Space:
         self.__lastSelecteds = []
         self.__lastSelecteds.append(self.__iterVars[selector].split("::")[1])
         self.__listBox1.select_set(selector)
+        self.__listBox1.yview(selector)
+
         self.__data[3] = self.__lastSelecteds[-1]
 
         self.__dirAndPower = {
@@ -308,6 +310,7 @@ class Space:
 
            self.__lastSelecteds.append(self.__byteVars[0].split("::")[1])
            self.__listBox2.select_set(0)
+           self.__listBox2.yview(0)
 
            self.__constOrVar.set(1)
 
@@ -326,6 +329,7 @@ class Space:
            self.__lastSelecteds.append(self.__byteVars[selector].split("::")[1])
            self.__data[4] = self.__lastSelecteds[-1]
            self.__listBox2.select_set(selector)
+           self.__listBox2.yview(selector)
 
            self.__leftOrRight.set(1)
            self.__lineConstVar.set("15")
@@ -430,6 +434,8 @@ class Space:
 
             self.__data[4] = self.__lastSelecteds[1]
             self.__listBox2.select_set(selector)
+            self.__listBox2.yview(selector)
+
             self.__changeData(self.__data)
 
     def __changeDirection(self):

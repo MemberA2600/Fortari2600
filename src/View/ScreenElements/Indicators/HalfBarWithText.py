@@ -175,6 +175,8 @@ class HalfBarWithText:
         if self.__data[3] == "#":
             self.__data[3] = self.__dataVars[0].split("::")[1]
             self.__dataVarListBox.select_set(0)
+            self.__dataVarListBox.yview(0)
+
         else:
             selector = 0
             for itemNum in range(0, len(self.__dataVars)):
@@ -183,6 +185,8 @@ class HalfBarWithText:
                     break
 
             self.__dataVarListBox.select_set(selector)
+            self.__dataVarListBox.yview(selector)
+
 
         self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
         self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
@@ -302,6 +306,7 @@ class HalfBarWithText:
                     selector = itemNum
                     break
             self.__colorVarListBox.select_set(selector)
+            self.__colorVarListBox.yview(selector)
 
 
         from GradientFrame import GradientFrame
@@ -439,6 +444,7 @@ class HalfBarWithText:
                     break
 
             self.__textColorVarListBox.select_set(selector)
+            self.__textColorVarListBox.yview(selector)
 
 
         self.__lastConst2 = deepcopy(self.__textColor)
@@ -556,6 +562,8 @@ class HalfBarWithText:
                     break
 
             self.__colorVarListBox.select_set(selector)
+            self.__colorVarListBox.yview(selector)
+
             self.__changedColorVar(None)
 
     def XXX2(self):
@@ -584,6 +592,8 @@ class HalfBarWithText:
                     break
 
             self.__textColorVarListBox.select_set(selector)
+            self.__textColorVarListBox.yview(selector)
+
             self.__changedColorVar2(None)
 
     def __changedDataVar(self, event):

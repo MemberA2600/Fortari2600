@@ -225,6 +225,8 @@ class OneIconWithDigits:
 
         if self.__data[3] == "#":
            self.__picListBox1.select_set(0)
+           self.__picListBox1.yview(0)
+
            self.__lastSelectedPictures[0] = self.__listOfPictures[0]
            self.__data[3] = self.__listOfPictures[0]
 
@@ -232,6 +234,8 @@ class OneIconWithDigits:
            for itemNum in range(0, len(self.__listOfPictures)):
                if self.__data[3] == self.__listOfPictures[itemNum]:
                   self.__picListBox1.select_set(itemNum)
+                  self.__picListBox1.yview(itemNum)
+
                   self.__lastSelectedPictures[0] = self.__listOfPictures[itemNum]
                   break
 
@@ -343,6 +347,8 @@ class OneIconWithDigits:
                if self.__data[4] == self.__colorVars[itemNum].split("::")[1]:
                   self.__lastSelectedColors[0] = self.__data[4]
                   self.__colorVarListBox1.select_set(itemNum)
+                  self.__colorVarListBox1.yview(itemNum)
+
                   break
 
 
@@ -447,18 +453,24 @@ class OneIconWithDigits:
         if self.__data[7] == "#":
            self.__data[7] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox1.select_set(0)
+           self.__dataVarListBox1.yview(0)
+
         else:
            for itemNum in range(0, len(self.__dataVars)):
                if self.__dataVars[itemNum].split("::")[1] == self.__data[7]:
                   self.__dataVarListBox1.select_set(itemNum)
+                  self.__dataVarListBox1.yview(itemNum)
 
         if self.__data[8] == "#":
            self.__data[8] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox2.select_set(0)
+           self.__dataVarListBox2.yview(0)
+
         else:
            for itemNum in range(0, len(self.__dataVars)):
                if self.__dataVars[itemNum].split("::")[1] == self.__data[8]:
                   self.__dataVarListBox2.select_set(itemNum)
+                  self.__dataVarListBox2.yview(itemNum)
 
         self.__picSettingsOption1 = IntVar()
 
@@ -619,6 +631,8 @@ class OneIconWithDigits:
 
            self.__lastSelectedPictureVars[0] = self.__data[5]
            self.__picVarListBox1.select_set(selector)
+           self.__picVarListBox1.yview(selector)
+
 
         self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
         self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
@@ -791,6 +805,8 @@ class OneIconWithDigits:
                     for itemNum in range(0, len(self.__listOfPictures2)):
                         if self.__listOfPictures2[itemNum] == self.__data[9]:
                            self.__fontVarListBox1.select_set(itemNum)
+                           self.__fontVarListBox1.yview(itemNum)
+
                            self.__fontListSelect[0] = self.__data[9]
                            foundIt = True
                            break
@@ -891,7 +907,10 @@ class OneIconWithDigits:
         self.__data[8] = listBox2Vars[selectNums[1]].split("::")[1]
 
         self.__dataVarListBox1.select_set(selectNums[0])
+        self.__dataVarListBox1.yview(selectNums[0])
+
         self.__dataVarListBox2.select_set(selectNums[1])
+        self.__dataVarListBox2.yview(selectNums[1])
 
         if change == True: self.__changeData(self.__data)
 
@@ -927,6 +946,8 @@ class OneIconWithDigits:
                 break
 
         self.__fontVarListBox1.select_set(selector)
+        self.__fontVarListBox1.yview(selector)
+
         self.__data[9] = self.__fontListSelect[0]
         self.__changeData(self.__data)
 
@@ -960,6 +981,8 @@ class OneIconWithDigits:
                break
 
         colorVarListBox.select_set(selector)
+        colorVarListBox.yview(selector)
+
         self.__data[dataNum] = lastSelected[lastSelectedNum]
         self.__changeData(self.__data)
 
@@ -1035,6 +1058,8 @@ class OneIconWithDigits:
                break
 
         picVarListBox.select_set(selector)
+        picVarListBox.yview(selector)
+
         self.__data[dataNum] = variables[selector].split("::")[1]
         self.__changeData(self.__data)
 

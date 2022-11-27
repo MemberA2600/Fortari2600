@@ -307,6 +307,8 @@ class Picture64px:
                    break
             self.__varListBox1.select_clear(0, END)
             self.__varListBox1.select_set(selected)
+            self.__varListBox1.yview(selected)
+
             self.__tempSaved[0] = selected
 
         self.__constantButton2 = Radiobutton(self.__column3, width=99999,
@@ -388,6 +390,8 @@ class Picture64px:
                    break
             self.__varListBox2.select_clear(0, END)
             self.__varListBox2.select_set(selected)
+            self.__varListBox2.yview(selected)
+
             self.__tempSaved[1] = selected
 
         self.__vars = [
@@ -463,6 +467,8 @@ class Picture64px:
                self.__data[4+num] = self.__tempSaved[num]
                self.__vars[num]["listBox"].select_clear(0, END)
                self.__vars[num]["listBox"].select_set(selector)
+               self.__vars[num]["listBox"].yview(selector)
+
                if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
 
            else:
@@ -587,6 +593,8 @@ class Picture64px:
 
             self.__varListBox.select_clear(0, END)
             self.__varListBox.select_set(num)
+            self.__varListBox.yview(num)
+
             #if self.__data[3] != '0' and self.__data[4] != '0': self.__changeData(self.__data)
             self.__maxH = self.getMaxHeight()
             self.__forceMaxHeight()

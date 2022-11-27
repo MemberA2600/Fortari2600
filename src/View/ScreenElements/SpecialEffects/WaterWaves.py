@@ -218,6 +218,7 @@ class WaterWaves:
         self.__data[3] = self.__lastSelecteds[0]
 
         self.__listBox1.select_set(selector)
+        self.__listBox1.yview(selector)
 
         if self.isItHex(self.__data[4]):
            self.__constOrVar.set(1)
@@ -241,6 +242,7 @@ class WaterWaves:
            self.__lastSelecteds.append(self.__colorVars[selector].split("::")[1])
            self.__data[4] = self.__lastSelecteds[1]
            self.__listBox2.select_set(selector)
+           self.__listBox2.yview(selector)
 
         self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
         self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
@@ -367,6 +369,8 @@ class WaterWaves:
                   break
 
            self.__listBox2.select_set(selector)
+           self.__listBox2.yview(selector)
+
            self.__lastSelecteds[1] = self.__colorVars[selector].split("::")[1]
            self.__data[4]          = self.__lastSelecteds[1]
 

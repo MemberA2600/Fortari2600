@@ -204,6 +204,8 @@ class Fire:
                break
 
         self.__listBox.select_set(selector)
+        self.__listBox.yview(selector)
+
         if self.__data[3] == "#": self.__data[3] = self.__byteVars[0].split("::")[1]
 
 

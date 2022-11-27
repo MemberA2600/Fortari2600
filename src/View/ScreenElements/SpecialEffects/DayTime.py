@@ -236,6 +236,8 @@ class DayTime:
            self.__listBoxes[0]["listBox"].config(state = DISABLED)
            self.__listBoxes[0]["selected"] = self.__byteVars[0].split("::")[1]
            self.__listBoxes[0]["listBox"].select_set(0)
+           self.__listBoxes[0]["listBox"].yview(0)
+
            self.__xConstVal.set(self.__data[3])
 
         else:
@@ -251,6 +253,8 @@ class DayTime:
 
             self.__listBoxes[0]["selected"] = self.__byteVars[selector].split("::")[1]
             self.__listBoxes[0]["listBox"].select_set(0)
+            self.__listBoxes[0]["listBox"].yview(0)
+
 
         for num in range(1,4):
             selector = 0
@@ -263,6 +267,8 @@ class DayTime:
                    break
 
             self.__listBoxes[num]["listBox"].select_set(selector)
+            self.__listBoxes[num]["listBox"].yview(selector)
+
             self.__listBoxes[num]["selected"] = self.__iterVars[selector].split("::")[1]
             self.__data[num + 3] = self.__listBoxes[num]["selected"]
 
@@ -339,6 +345,7 @@ class DayTime:
             self.__data[3] = self.__listBoxes[0]["selected"]
             self.__listBoxes[0]["listBox"].select_clear(0, END)
             self.__listBoxes[0]["listBox"].select_set(selector)
+            self.__listBoxes[0]["listBox"].yview(selector)
 
         self.__changeData(self.__data)
 

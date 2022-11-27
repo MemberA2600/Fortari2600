@@ -467,6 +467,8 @@ class Wall:
 
             self.__listBoxes[num]["selected"] = self.__listBoxes[num]["dataList"][selector].split("::")[1]
             self.__listBoxes[num]["listBox"].select_set(selector)
+            self.__listBoxes[num]["listBox"].yview(selector)
+
 
         if self.isItHex(self.__data[8]) == True:
             self.__listBoxes[6]["listBox"].config(state = DISABLED)
@@ -491,6 +493,8 @@ class Wall:
 
             self.__listBoxes[6]["selected"] = self.__listBoxes[6]["dataList"][selector].split("::")[1]
             self.__listBoxes[6]["listBox"].select_set(selector)
+            self.__listBoxes[6]["listBox"].yview(selector)
+
             self.__indexNum.config(state = DISABLED)
             self.__indexNumVal.set("0")
 
@@ -502,6 +506,8 @@ class Wall:
 
            self.__numOfLinesVal.set(self.__data[10])
            self.__listBoxes[7]["listBox"].select_set(0)
+           self.__listBoxes[7]["listBox"].yview(0)
+
            self.__listBoxes[7]["selected"] = self.__listBoxes[7]["dataList"][0]
            self.__listBoxes[7]["listBox"].config(state = DISABLED)
 
@@ -518,6 +524,7 @@ class Wall:
 
            self.__listBoxes[7]["selected"] = self.__listBoxes[7]["dataList"][selector]
            self.__listBoxes[7]["listBox"].select_set(selector)
+           self.__listBoxes[7]["listBox"].yview(selector)
 
            self.__numOfLinesVal.set(str(self.__loadAndGetLineSize(self.__listBoxes[7]["selected"])))
 
@@ -659,6 +666,7 @@ class Wall:
 
            self.__listBoxes[6]["listBox"].select_clear(0, END)
            self.__listBoxes[6]["listBox"].select_set(selector)
+           self.__listBoxes[6]["listBox"].yview(selector)
 
            self.__data[8] = self.__listBoxes[6]["selected"]
 
@@ -685,6 +693,7 @@ class Wall:
 
            self.__listBoxes[7]["listBox"].select_clear(0, END)
            self.__listBoxes[7]["listBox"].select_set(selector)
+           self.__listBoxes[7]["listBox"].yview(selector)
 
            self.__data[9]  = self.__listBoxes[7]["selected"]
            self.__data[10] = str(self.__loadAndGetLineSize(self.__data[9]))

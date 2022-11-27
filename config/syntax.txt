@@ -1,1 +1,1 @@
-do=[foreach perform],[common],command,end
+do=[foreach perform],[common],command,end,brackets

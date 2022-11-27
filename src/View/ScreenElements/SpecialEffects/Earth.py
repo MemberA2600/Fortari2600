@@ -214,6 +214,8 @@ class Earth:
                break
 
         self.__listBoxes[0]["listBox"].select_set(selector)
+        self.__listBoxes[0]["listBox"].yview(selector)
+
         self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][selector].split("::")[1]
 
         if self.isItHex(self.__data[4]) == True:
@@ -235,6 +237,8 @@ class Earth:
                    break
 
            self.__listBoxes[1]["listBox"].select_set(selector)
+           self.__listBoxes[1]["listBox"].yview(selector)
+
            self.__listBoxes[1]["selected"] = self.__listBoxes[1]["dataList"][selector].split("::")[1]
 
         data = []
@@ -308,6 +312,8 @@ class Earth:
                    break
 
             self.__listBoxes[1]["listBox"].select_set(selector)
+            self.__listBoxes[1]["listBox"].yview(selector)
+
             self.__data[4] = self.__listBoxes[1]["selected"]
 
         self.__changeData(self.__data)

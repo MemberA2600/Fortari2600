@@ -193,6 +193,8 @@ class Smoke:
                    self.__listBoxes[num]["lastSelected"] = self.__iterVars[selector].split("::")[-1]
 
                self.__listBoxes[num]["listbox"].select_set(selector)
+               self.__listBoxes[num]["listbox"].yview(selector)
+
                if num > 0:
                    if self.__data[num+3] == "#": self.__data[num+3] =\
                        self.__byteVars[self.__listBoxes[num]["listbox"].curselection()[0]].split("::")[1]
@@ -294,6 +296,8 @@ class Smoke:
                   break
 
            self.__listBoxes[num+1]["listbox"].select_set(selector)
+           self.__listBoxes[num+1]["listbox"].yview(selector)
+
            self.__data[num+4] = self.__byteVars[selector].split("::")[1]
            self.__changeData(self.__data)
 

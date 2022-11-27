@@ -352,6 +352,7 @@ class MiniMap:
                break
 
         self.__listBoxes[0]["listBox"].select_set(selector)
+        self.__listBoxes[0]["listBox"].yview(selector)
 
         matrixX = int(self.__listOfPictures[self.__listBoxes[0]["dataList"][selector]]["matrix"][0])
         matrixY = int(self.__listOfPictures[self.__listBoxes[0]["dataList"][selector]]["matrix"][1])
@@ -388,7 +389,7 @@ class MiniMap:
                self.__data[num + 7]                  = self.__listBoxes[num + 5]["selected"]
                self.__buttonVars[num].set(2)
                self.__listBoxes[num + 5]["listBox"].select_set(selector)
-
+               self.__listBoxes[num + 5]["listBox"].yview(selector)
 
     def __generateListBoxes(self, limits):
         for num in range(0, 4):
@@ -418,6 +419,7 @@ class MiniMap:
             self.__listBoxes[num + 1]["selected"] = self.__listBoxes[num + 1]["dataList"][selector].split("::")[1]
             self.__data[3 + num] = self.__listBoxes[num + 1]["selected"]
             self.__listBoxes[num + 1]["listBox"].select_set(selector)
+            self.__listBoxes[num + 1]["listBox"].yview(selector)
 
             self.__changeData(self.__data)
 
@@ -510,6 +512,8 @@ class MiniMap:
 
                 self.__listBoxes[num + 5]["listBox"].select_clear(0, END)
                 self.__listBoxes[num + 5]["listBox"].select_set(selector)
+                self.__listBoxes[num + 5]["listBox"].yview(selector)
+
                 self.__data[num + 7] = self.__listBoxes[num + 5]["dataList"][selector].split("::")[1]
 
                 forceSelect = selector
@@ -521,6 +525,7 @@ class MiniMap:
            self.__listBoxes[num + 5]["listBox"].config(state = NORMAL)
            self.__listBoxes[num + 5]["listBox"].select_clear(0, END)
            self.__listBoxes[num + 5]["listBox"].select_set(forceSelect)
+           self.__listBoxes[num + 5]["listBox"].yview(forceSelect)
 
         self.__changeData(self.__data)
 

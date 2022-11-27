@@ -19,13 +19,17 @@ class EditorBigFrame:
         self.__memory = self.__loader.virtualMemory.memory
         self.__arrays = self.__loader.virtualMemory.arrays
         self.__virtualMemory = self.__loader.virtualMemory
+        self.__syntaxList = self.__loader.syntaxList
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
         self.__counter    = 0
+        self.__counter2    = 0
+
         self.__cursorPoz  = [1,0]
 
         self.__destroyables = {}
+        self.__lastButton   = None
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -97,7 +101,12 @@ class EditorBigFrame:
             if self.__counter > 0:
                self.__counter -= 1
 
+            if self.__counter2 > 0:
+               self.__counter2 -= 1
+
             if self.__counter == 1: self.__counterEnded()
+            if self.__counter2 == 1: self.__counterEnded2()
+
             sleep(0.005)
 
     def __removeSlaves(self):
@@ -145,7 +154,9 @@ class EditorBigFrame:
         self.__codeBox.bind("<KeyRelease>", self.__keyReleased)
         self.__codeBox.bind("<MouseWheel>", self.__mouseWheel)
         self.__codeBox.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
-        self.__codeBox.bind("<FocusOut>", self.__loader.mainWindow.focusOut)
+        self.__codeBox.bind("<FocusOut>", self.focusOut)
+        self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
+
 
         self.__currentBank    = "bank2"
         self.__currentSection = "overscan"
@@ -157,6 +168,10 @@ class EditorBigFrame:
         ]
 
         self.__getFont()
+
+    def focusOut(self, event):
+        self.__setTinting("whole")
+        self.__loader.mainWindow.focusOut(event)
 
     def __loadFromMemory(self, bank, section):
         if self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed == True:
@@ -176,25 +191,196 @@ class EditorBigFrame:
 
     def __tintingThread(self, mode):
         text = self.__codeBox.get(0.0, END).split("\n")
+        if self.__lastButton == "Enter": mode = "whole"
+
         if mode == "whole":
            for num in range (1, len(text)+1):
                self.__lineTinting(num, text[num-1])
         else:
             self.__lineTinting(mode, text[mode-1])
 
+        for bracket in (")", "("):
+            if bracket in text[self.__cursorPoz[0]-1][self.__cursorPoz[1]-1:self.__cursorPoz[1]+1]:
+               index = text[self.__cursorPoz[0]-1][self.__cursorPoz[1]-1:self.__cursorPoz[1]+1].index(bracket)
+               #nextBracketPoz = self.__findBracketPairs(bracket, self.__cursorPoz[1]-1+index, self.__cursorPoz[0]-1, text)
+
+               error = True
+               bracketPairs = self.__getBracketPairs(text)
+               thePairs = []
+
+               for pair in bracketPairs:
+                   if str(self.__cursorPoz[0]) + "." + str(self.__cursorPoz[1] - (1-index)) in pair:
+                       if len(pair) == 2:
+                          thePairs = pair
+                          error    = False
+                       break
+
+               if error != True:
+                   theY1  = int(thePairs[0].split(".")[0])
+                   theX1  = int(thePairs[0].split(".")[1])
+                   theY2  = int(thePairs[1].split(".")[0])
+                   theX2  = int(thePairs[1].split(".")[1])
+
+                   self.removeTag(theY1, theX1, theX1+1, "error")
+                   self.removeTag(theY2, theX2, theX2+1, "error")
+
+                   self.__codeBox.tag_add("bracketSelected",     str(theY1) + "." + str(theX1),
+                                                                 str(theY1) + "." + str(theX1 + 1))
+
+                   self.__codeBox.tag_add("bracketSelected",     str(theY2) + "." + str(theX2),
+                                                                 str(theY2) + "." + str(theX2 + 1))
+
+               else:
+
+                   poz = [
+                       str(self.__cursorPoz[0]), str(self.__cursorPoz[1] - (1-index)),
+                       str(self.__cursorPoz[1] - (1-index) + 1)
+                   ]
+
+                   self.removeTag(poz[0], poz[1], poz[2], None)
+                   self.__codeBox.tag_add("error",     str(poz[0]) + "." + str(poz[1]),
+                                                       str(poz[0]) + "." + str(poz[2]))
+
+    def removeTag(self, Y, X1, X2, tags):
+        if tags == None:
+            for tag in self.__codeBox.tag_names():
+                self.__codeBox.tag_remove(tag,
+                                          str(Y) + "." + str(X1),
+                                          str(Y) + "." + str(X2)
+                                          )
+        elif type(tags) == str:
+            self.__codeBox.tag_remove(tags,
+                                      str(Y) + "." + str(X1),
+                                      str(Y) + "." + str(X2)
+                                      )
+        else:
+            for tag in tags:
+                self.__codeBox.tag_remove(tag,
+                                          str(Y) + "." + str(X1),
+                                          str(Y) + "." + str(X2)
+                                          )
+
+    def __getBracketPairs(self, text):
+        pairs = []
+        level = 0
+
+        for theY in range(0, len(text)):
+            line = text[theY]
+            for theX in range(0, len(line)):
+                if line[theX] == "(":
+                   pairs.append(
+                       [
+                            str(theY + 1) + "." + str(theX)
+                       ]
+                   )
+                   level += 1
+                elif line[theX] == ")":
+                    if level > 0:
+                       index = 0-level
+                       pairs[index].append(str(theY + 1) + "." + str(theX))
+                       level -= 1
+
+        return pairs
+
+    """
+    def __findBracketPairs(self, bracket, X, Y, text):
+        lineLen = 9999
+
+        brackets = {
+            "(": {
+                "fromXFirst":   X,
+                "fromX":        0,
+                "toX":          lineLen,
+                "byXY":         1,
+                "fromY":        Y,
+                "toY":          len(text),
+                "lineLenKey":   "toX",
+                "lineLenAdd":   0,
+                "pair":         ")"
+            },
+            ")": {
+                "fromXFirst":   X,
+                "fromX":        lineLen-1,
+                "toX":          -1,
+                "byXY":         -1,
+                "fromY":        Y,
+                "toY":          -1,
+                "lineLenKey":   "fromX",
+                "lineLenAdd":   -1,
+                "pair":         "("
+            }
+        }
+
+        first = True
+
+        pointer = brackets[bracket]
+
+        for theY in range( pointer["fromY"],
+                           pointer["toY"],
+                           pointer["byXY"]
+                           ):
+            line    = text[Y]
+            lineLen = len(line)
+
+            pointer[pointer["lineLenKey"]] = lineLen + pointer["lineLenAdd"]
+
+            fromX = None
+            if first == True:
+               fromX = pointer["fromXFirst"]
+               first = False
+            else:
+               fromX = pointer["fromX"]
+
+
+            for theX in range( fromX,
+                               pointer["toX"],
+                               pointer["byXY"]
+                               ):
+
+                               try:
+                                   if text[theY][theX] == pointer["pair"]:
+                                      return (theY+1, theX)
+                               except:
+                                   pass
+
+    """
+
     def __lineTinting(self, lineNum, line):
         for tag in self.__codeBox.tag_names():
             self.__codeBox.tag_remove(tag,
                                       str(lineNum)+".0",
-                                      str(lineNum) + "." + str(len(line))
+                                      str(lineNum) + "." + str(len(line)+1)
                                       )
 
         if line.startswith("*") or line.startswith("#"):
            self.__codeBox.tag_add("comment", str(lineNum) + ".0", str(lineNum) + "." + str(len(line)))
 
-        xxx = self.getFirstValidDelimiterPoz(line)
-        if xxx != None:
-           self.__codeBox.tag_add("comment", str(lineNum) + "."+ str(xxx), str(lineNum) + "." + str(len(line)))
+        else:
+            xxx = self.getFirstValidDelimiterPoz(line)
+            if xxx != None:
+               self.__codeBox.tag_add("comment", str(lineNum) + "."+ str(xxx), str(lineNum) + "." + str(len(line)))
+
+            for key in self.__syntaxList.keys():
+                command = self.__syntaxList[key]
+
+                theString = key
+                if command.bracketNeeded == True:
+                   theString += "("
+
+                for startIndex in range(0, len(line) - len(theString)+1):
+                    if line[startIndex:startIndex+len(theString)] == theString:
+                        endIndex = startIndex + len(theString)
+                        if command.bracketNeeded == True: endIndex -= 1
+
+                        self.__codeBox.tag_add("command", str(lineNum) + "." + str(startIndex),
+                                               str(lineNum) + "." + str(endIndex))
+
+            for index in range(0, len(line)):
+                if line[index] in ("(", ")", "[", "]"):
+                   self.__codeBox.tag_add("bracket", str(lineNum) + "." + str(index),
+                                          str(lineNum) + "." + str(index+1))
+
+        #self.__highLightWord = "code"
 
         if self.__highLightWord != None:
             highLightPositions = self.stringInLine(line, self.__highLightWord)
@@ -236,6 +422,18 @@ class EditorBigFrame:
 
         self.__codeBox.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
 
+        self.__codeBox.tag_config("command",
+                                  foreground=self.__loader.colorPalettes.getColor("command"),
+                                  font=self.__boldFont)
+
+        self.__codeBox.tag_config("bracketSelected", background=self.__loader.colorPalettes.getColor("bracketSelected"))
+        self.__codeBox.tag_config("error", background=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                           foreground=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
+
+        self.__codeBox.tag_config("bracket",
+                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
+                                  font=self.__boldFont)
+
 
         self.__codeBox.config(font=self.__normalFont)
 
@@ -253,17 +451,30 @@ class EditorBigFrame:
         self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
         self.__setTinting(self.__cursorPoz[0])
 
+    def clicked(self, event):
+        self.__counterEnded2()
+
+    def __counterEnded2(self):
+        self.setCurzorPoz()
+        self.__setTinting("whole")
+
     def __keyPressed(self, event):
         if (event.keysym == "Control_L" or event.keysym == "Control_R"):
             self.__ctrl = True
 
     def __keyReleased(self, event):
-        self.__counter   = 100
-        __cursorPoz = self.__codeBox.index(INSERT)
-        self.__cursorPoz = [int(__cursorPoz.split(".")[0]), int(__cursorPoz.split(".")[1])]
+        self.__lastButton = event.keysym
+        self.__counter   = 25
+        self.__counter2   = 250
+
+        self.setCurzorPoz()
 
         if (event.keysym == "Control_L" or event.keysym == "Control_R"):
             self.__ctrl = False
+
+    def setCurzorPoz(self):
+        __cursorPoz = self.__codeBox.index(INSERT)
+        self.__cursorPoz = [int(__cursorPoz.split(".")[0]), int(__cursorPoz.split(".")[1])]
 
     def __mouseWheel(self, event):
         if event.delta > 0 and int(self.__config.getValueByKey("codeBoxFont")) < 36:

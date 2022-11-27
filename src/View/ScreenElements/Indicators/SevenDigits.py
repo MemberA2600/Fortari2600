@@ -574,6 +574,7 @@ class SevenDigits:
                   break
 
            self.__colorVarListBox1.select_set(selector)
+           self.__colorVarListBox1.yview(selector)
 
 
     def colorSettingsChange1(self):
@@ -596,6 +597,8 @@ class SevenDigits:
                break
 
         self.__colorVarListBox1.select_set(selected)
+        self.__colorVarListBox1.yview(selected)
+
         self.__data[self.__lastDigit+3] = self.__nibbleVars[selected].split("::")[1]
         self.__changeData(self.__data)
 
@@ -649,6 +652,8 @@ class SevenDigits:
             for itemNum in range(0, len(self.__listOfPictures)):
                 if self.__listOfPictures[itemNum] == self.__fontVarListBoxSelected:
                    self.__fontVarListBox1.select_set(itemNum)
+                   self.__fontVarListBox1.yview(itemNum)
+
                    self.__data[self.__lastDigit+4] = data
                    foundIt = True
                    break
@@ -827,6 +832,8 @@ class SevenDigits:
 
             if num < last:
                 myList.select_set(selectNum)
+                myList.yview(selectNum)
+
                 self.__lastSelecteds[num] = lists[typ][selectNum].split("::")[1]
                 self.__data[3+num]        = self.__lastSelecteds[num]
 

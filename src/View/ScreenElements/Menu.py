@@ -116,6 +116,8 @@ class Menu:
             self.__data[2] = self.__listOfPictures[0]
 
         self.__varListBox.select_set(selector)
+        self.__varListBox.yview(selector)
+
         self.__lastSprite = self.__listOfPictures[selector]
 
         self.__menuColors = []
@@ -223,6 +225,8 @@ class Menu:
                    break
 
         self.__dataVarListBox.select_set(selector)
+        self.__dataVarListBox.yview(selector)
+
         self.__setColorDataFromData()
 
         self.__hexEntries = {

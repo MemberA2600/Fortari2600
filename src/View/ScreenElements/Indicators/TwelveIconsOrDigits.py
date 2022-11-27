@@ -272,6 +272,8 @@ class TwelveIconsOrDigits:
         if icon == "#":
            self.__lastSelectedPicture = self.__listOfPictures[0]
            self.__picListBox1.select_set(0)
+           self.__picListBox1.yview(0)
+
            self.__data[3] = self.__lastSelectedPicture
         else:
            selector = 0
@@ -282,6 +284,7 @@ class TwelveIconsOrDigits:
 
            self.__lastSelectedPicture = self.__listOfPictures[selector]
            self.__picListBox1.select_set(selector)
+           self.__picListBox1.yview(selector)
 
         self.__label2 = Label(self.__frame2,
                               text=self.__dictionaries.getWordFromCurrentLanguage("dataVar") + ":",
@@ -330,6 +333,8 @@ class TwelveIconsOrDigits:
 
         if dataVar == "#":
            self.__dataVarListBox.select_set(0)
+           self.__dataVarListBox.yview(0)
+
            self.__lastDataVar = self.__dataVars[0].split("::")[1]
            self.__data[4] = self.__lastDataVar
         else:
@@ -340,6 +345,8 @@ class TwelveIconsOrDigits:
                   break
 
            self.__dataVarListBox.select_set(selector)
+           self.__dataVarListBox.yview(selector)
+
            self.__lastDataVar = self.__dataVars[selector].split("::")[1]
 
         self.__sameColor = IntVar()
@@ -766,6 +773,8 @@ class TwelveIconsOrDigits:
                     break
 
             self.__picVarListBox1.select_set(selector)
+            self.__picVarListBox1.yview(selector)
+
             self.__lastSelectedPictureVar = self.__colorVars[selector].split("::")[1]
 
         self.__init     = False
@@ -804,6 +813,8 @@ class TwelveIconsOrDigits:
                     break
 
             self.__picVarListBox1.select_set(selector)
+            self.__picVarListBox1.yview(selector)
+
             self.__data[9] = self.__colorVars[selector].split("::")[1]
 
         self.__changeData(self.__data)
@@ -880,6 +891,7 @@ class TwelveIconsOrDigits:
                 selector = itemNum
                 break
         self.__fontVarListBox1.select_set(selector)
+        self.__fontVarListBox1.yview(selector)
 
         self.__data[6]   = self.__lastSelectedFont
         self.__lastFont  = self.__lastSelectedFont

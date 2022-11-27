@@ -14,8 +14,14 @@ class Command:
            for a in self.alias:
                newAlias.append("end-"+a)
 
-           newString = "["+" ".join(newAlias) +"]"+"," + data[1] + "," + "end-command" + "," + "None"
+           newString = "["+" ".join(newAlias) +"]"+"," + data[1] + "," + "end-command" + ",None,None"
            self.__loader.syntaxList[newName] = Command(loader, newName, newString)
+
+        if data[4] == "brackets":
+            self.bracketNeeded = True
+        else:
+            self.bracketNeeded = False
+
 
     def changeAliasToName(self, name, text):
         newText = []

@@ -242,7 +242,11 @@ class TwoIconsTwoLines:
 
         if self.__data[3] == "#":
            self.__picListBox1.select_set(0)
+           self.__picListBox1.yview(0)
+
            self.__picListBox2.select_set(0)
+           self.__picListBox2.yview(0)
+
            self.__lastSelectedPictures[0] = self.__listOfPictures[0]
            self.__lastSelectedPictures[1] = self.__listOfPictures[0]
            self.__data[3] = self.__listOfPictures[0]
@@ -254,10 +258,14 @@ class TwoIconsTwoLines:
                if self.__data[3] == self.__listOfPictures[itemNum]:
                   bothSet[0] = True
                   self.__picListBox1.select_set(itemNum)
+                  self.__picListBox1.yview(itemNum)
+
                   self.__lastSelectedPictures[0] = self.__listOfPictures[itemNum]
                if self.__data[7] == self.__listOfPictures[itemNum]:
                   bothSet[1] = True
                   self.__picListBox2.select_set(itemNum)
+                  self.__picListBox2.yview(itemNum)
+
                   self.__lastSelectedPictures[1] = self.__listOfPictures[itemNum]
 
                if False in bothSet == False:
@@ -537,6 +545,8 @@ class TwoIconsTwoLines:
                if self.__data[4] == self.__colorVars[itemNum].split("::")[1]:
                   self.__lastSelectedColors[0] = self.__data[4]
                   self.__colorVarListBox1.select_set(itemNum)
+                  self.__colorVarListBox1.yview(itemNum)
+
                   break
 
         if self.isItHex(self.__data[8]) == True:
@@ -553,6 +563,8 @@ class TwoIconsTwoLines:
                if self.__data[8] == self.__colorVars[itemNum].split("::")[1]:
                   self.__lastSelectedColors[1] = self.__data[8]
                   self.__colorVarListBox2.select_set(itemNum)
+                  self.__colorVarListBox2.yview(itemNum)
+
                   break
 
         self.__labelData1 = Label(self.__frame3,
@@ -653,18 +665,24 @@ class TwoIconsTwoLines:
         if self.__data[12] == "#":
            self.__data[12] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox1.select_set(0)
+           self.__dataVarListBox1.yview(0)
+
         else:
            for itemNum in range(0, len(self.__dataVars)):
                if self.__dataVars[itemNum].split("::")[1] == self.__data[12]:
                   self.__dataVarListBox1.select_set(itemNum)
+                  self.__dataVarListBox1.yview(itemNum)
 
         if self.__data[13] == "#":
            self.__data[13] = self.__dataVars[0].split("::")[1]
            self.__dataVarListBox2.select_set(0)
+           self.__dataVarListBox2.yview(0)
+
         else:
            for itemNum in range(0, len(self.__dataVars)):
                if self.__dataVars[itemNum].split("::")[1] == self.__data[13]:
                   self.__dataVarListBox2.select_set(itemNum)
+                  self.__dataVarListBox2.yview(itemNum)
 
         self.__picSettingsOption1 = IntVar()
 
@@ -937,6 +955,7 @@ class TwoIconsTwoLines:
                   break
 
            self.__picVarListBox1.select_set(selector)
+           self.__picVarListBox1.yview(selector)
 
         if self.__data[9][0] == "%":
            self.__picSettingsOption2.set(1)
@@ -970,6 +989,7 @@ class TwoIconsTwoLines:
                   break
 
            self.__picVarListBox2.select_set(selector)
+           self.__picVarListBox2.yview(selector)
 
 
         self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
@@ -1061,6 +1081,8 @@ class TwoIconsTwoLines:
         for itemNum in range(0, len(variables)):
             if variables[itemNum].split("::")[1] == lastSelected[lastSelectedNum]:
                colorVarListBox.select_set(itemNum)
+               colorVarListBox.yview(itemNum)
+
                self.__data[dataNum] = lastSelected[lastSelectedNum]
                self.__changeData(self.__data)
                break
@@ -1230,6 +1252,8 @@ class TwoIconsTwoLines:
         for itemNum in range(0, len(variables)):
             if lastSelected[selectNum] == variables[itemNum].split("::")[1]:
                picVarListBox.select_set(itemNum)
+               picVarListBox.yview(itemNum)
+
                self.__data[dataNum] = variables[itemNum].split("::")[1]
                self.__changeData(self.__data)
                break

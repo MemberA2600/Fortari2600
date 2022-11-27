@@ -378,6 +378,7 @@ class Gradient:
         self.__lastSelecteds = []
         self.__lastSelecteds.append(self.__dataVars[selector].split("::")[1])
         self.__listBox1.select_set(selector)
+        self.__listBox1.yview(selector)
 
         self.__numOfLinesVar.set(self.__data[4])
 
@@ -409,7 +410,7 @@ class Gradient:
                    break
             self.__lastSelecteds.append(self.__colorVars[selector].split("::")[1])
             self.__listBox2.select_set(selector)
-
+            self.__listBox2.yview(selector)
 
 
         self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
@@ -694,6 +695,8 @@ class Gradient:
            self.__lastSelecteds[1] = self.__data[5]
            self.__listBox2.select_clear(0, END)
            self.__listBox2.select_set(selector)
+           self.__listBox2.yview(selector)
+
         else:
            self.__oneColorButton.config(state=NORMAL)
            self.__rainbowButton.config(state=NORMAL)

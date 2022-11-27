@@ -445,6 +445,9 @@ class JukeBox:
                    selector = n
 
             listBox.select_set(selector)
+            listBox.yview(selector)
+
+            listBox.yview(selector)
             self.__panelsFrames[-1]["listbox"]   = listBox
             self.__panelsFrames[-1]["selected"]  = data
             self.__panelsFrames[-1]["scrollbar"] = scrollBar
@@ -764,6 +767,7 @@ class JukeBox:
                    break
 
            self.__availableListBox.select_set(selector)
+           self.__availableListBox.yview(selector)
 
         if self.__selecteds["addedList"] != "":
             selector = 0
@@ -773,6 +777,7 @@ class JukeBox:
                     break
 
             self.__addedListBox.select_set(selector)
+            self.__addedListBox.yview(selector)
 
         self.__setButtonsAndErros()
 

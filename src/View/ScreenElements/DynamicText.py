@@ -170,6 +170,7 @@ class DynamicText:
                    break
 
             self.__dataListBoxes[num]["listBox"].select_set(selector)
+            self.__dataListBoxes[num]["listBox"].yview(selector)
             self.__dataListBoxes[num]["lastSelected"] = self.__byteVars[selector].split("::")[1]
 
             listBox.bind("<ButtonRelease-1>", self.__changeDataListBox)
@@ -291,6 +292,7 @@ class DynamicText:
                       break
 
                listBox.select_set(selector)
+               listBox.yview(selector)
                self.__colorData[num]["lastSelected"] = self.__nibbleVars[selector].split("::")[1]
             listBox.bind("<ButtonRelease-1>", self.__changeColorListBox)
             listBox.bind("<KeyRelease-Up>", self.__changeColorListBox)
@@ -359,6 +361,7 @@ class DynamicText:
                     break
 
             listBox.select_set(selector)
+            listBox.yview(selector)
             self.__data[14+num] = self.__nibbleVars[selector].split("::")[1]
             self.__changeData(self.__data)
 

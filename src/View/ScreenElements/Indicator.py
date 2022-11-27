@@ -159,12 +159,15 @@ class Indicator:
         if self.__data[2]  in ("#", "$"):
            self.__data[2]  = self.__indicators[0]
            self.__indicatorListBox.select_set(0)
+           self.__indicatorListBox.yview(0)
+
            for num in range(0, len(self.screenSubs[self.__indicators[0]][1])):
                self.__data[3 + num] = self.screenSubs[self.__indicators[0]][1][num]
         else:
            for itemNum in range(0, len(self.__indicators)):
                if self.__indicators[itemNum] == self.__data[2]:
                   self.__indicatorListBox.select_set(itemNum)
+                  self.__indicatorListBox.yview(itemNum)
 
         self.__lastSelected = self.__indicatorListBox.curselection()[0]
 

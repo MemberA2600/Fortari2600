@@ -277,6 +277,8 @@ class DigitClock:
                 self.__varsAndLists[counter]["listbox"].pack(side=LEFT, anchor=W, fill=BOTH)
 
             self.__varsAndLists[counter]["listbox"].select_set(selector)
+            self.__varsAndLists[counter]["listbox"].yview(selector)
+
 
             self.__varsAndLists[counter]["listbox"].bind("<ButtonRelease-1>", self.__changeDataVar)
             self.__varsAndLists[counter]["listbox"].bind("<KeyRelease-Up>", self.__changeDataVar)
@@ -413,6 +415,7 @@ class DigitClock:
            self.__colorSettings.set(1)
            self.__colorVarListBox1.config(state = DISABLED)
            self.__colorVarListBox1.select_set(0)
+           self.__colorVarListBox1.yview(0)
 
         else:
            self.__colorSettings.set(2)
@@ -426,6 +429,7 @@ class DigitClock:
                   break
 
            self.__colorVarListBox1.select_set(selector)
+           self.__colorVarListBox1.yview(selector)
 
         self.__fontLabel = Label(self.__frame4,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
@@ -573,6 +577,8 @@ class DigitClock:
             for itemNum in range(0, len(self.__listOfPictures)):
                 if self.__listOfPictures[itemNum] == self.__fontVarListBoxSelected:
                    self.__fontVarListBox1.select_set(itemNum)
+                   self.__fontVarListBox1.yview(itemNum)
+
                    self.__data[7] = data
                    foundIt = True
                    break
@@ -628,6 +634,8 @@ class DigitClock:
                break
 
         self.__colorVarListBox1.select_set(selector)
+        self.__colorVarListBox1.yview(selector)
+
         self.__data[6] = self.__nibbleVars[selector].split("::")[1]
         self.__changeData(self.__data)
 
