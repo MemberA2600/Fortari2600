@@ -10,5 +10,13 @@ debug=True
 keepLogs=0
 codeBoxFont=14
 validObjDelimiters=% . ::
-validLineDelimiters=! ;
-validNotEQ=!= /= ~= <> NOT=
+validLineDelimiters=! ; .
+validNotEQ=!= /= ~= <> NOT= .NEQ.
+validEQ=.EQ. ==
+validLargerThan=> .GT.
+validSmallerThan=< .LT.
+validLargerThanOrEQ=>= .GE.
+validSmallerThanOrEQ=<= .LE.
+validStringDelimiters=' " `
+validBinarySigns=% b
+validHexSigns=$ z x

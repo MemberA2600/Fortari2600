@@ -14,6 +14,8 @@ class ObjectMaster:
             bankNum = "bank"+str(num)
             self.objects[bankNum] = {}
 
+        self.objects["currentBank"] = self.objects["bank2"]
+
         for root, dirs, files in os.walk("templates/objects/Game"):
             for dir in dirs:
                 path = self.__pathToListOfObj(root + "/" + dir)
@@ -44,6 +46,12 @@ class ObjectMaster:
                            objRoot[objName] = {}
                            objRoot = objRoot[objName]
         #print(self.objects)
+
+    def __changeCurrentBankPointer(self, bankNum):
+        if type(bankNum) == int:
+           bankNum = "bank" + str(int)
+
+        self.objects["currentBank"] = self.objects[bankNum]
 
     def __pathToListOfObj(self, path):
         return path.replace("\\", "/").replace("templates/objects/Game/", "").split("/")
@@ -114,6 +122,8 @@ class ObjectMaster:
                                       procedure = name + "(" + listOfParams + ")"
                                       
                                       self.objects[bankKey][name][procedure] = txtToSave
+
+        self.objects["currentBank"] = self.objects[self.__loader.bigFrame.getCurrentBank()]
 
     def returnNextLevelOrProcesses(self, fullLine):
         delimiter = "%"

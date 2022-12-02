@@ -1,1 +1,7 @@
-do=[foreach perform],[common],command,end,brackets
+do=[foreach perform],[common],command,end,None
+do-while=[foreach-while perform-while],[common],command,end,brackets
+do-until=[foreach-until perform-until],[common],command,end,brackets
+do-times=[foreach-until perform-until],[common],command,end,brackets
+do-frames=[foreach-until perform-until],[common],command,end,brackets
+cycle=[continue],[common],command,None,None
+exit=[break],[common],command,None,None
