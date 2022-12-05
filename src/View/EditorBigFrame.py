@@ -20,6 +20,7 @@ class EditorBigFrame:
         self.__arrays = self.__loader.virtualMemory.arrays
         self.__virtualMemory = self.__loader.virtualMemory
         self.__syntaxList = self.__loader.syntaxList
+        self.__objectMaster = self.__loader.virtualMemory.objectMaster
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -80,6 +81,12 @@ class EditorBigFrame:
         t.daemon = True
         t.start()
 
+    def __insertPressed(self, event):
+        self.__insertSelectedFromBox()
+
+    def __insertSelectedFromBox(self):
+        pass
+
     def getCurrentBank(self):
         return self.__currentBank
 
@@ -92,6 +99,7 @@ class EditorBigFrame:
                    self.__removeSlaves()
 
                self.activeMode = self.__selectedMode
+               self.__editor.editor.unbind("<Insert>")
 
                if self.__selectedMode == "intro":
                   self.__createIntroScreen()
@@ -159,6 +167,7 @@ class EditorBigFrame:
         self.__codeBox.bind("<FocusOut>", self.focusOut)
         self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
 
+        self.__editor.editor.bind("<Insert>", self.__insertPressed)
 
         self.__currentBank    = "bank2"
         self.__currentSection = "overscan"
@@ -170,6 +179,51 @@ class EditorBigFrame:
         ]
 
         self.__getFont()
+        sizes = (0.20, 0.60, 0.20)
+
+        self.__button = Button(
+            self.__rightFrame, width=round(self.__editor.getWindowSize()[0]*sizes[2]),
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__normalFont, state = DISABLED,
+            command=self.__insertSelectedFromBox,
+            text=self.__dictionaries.getWordFromCurrentLanguage("insertItem")
+        )
+
+        self.__button.pack_propagate(False)
+        self.__button.pack(side=BOTTOM, anchor=S, fill=X)
+
+        text = self.__dictionaries.getWordFromCurrentLanguage("recommendations")
+        if text.endswith(":") == False: text += ":"
+
+        self.__labelOnTheRight = Label(self.__rightFrame, text=text,
+                  font=self.__smallFont, fg=self.__colors.getColor("font"),
+                  bg=self.__colors.getColor("window"), justify=CENTER
+                  )
+
+        self.__labelOnTheRight.pack_propagate(False)
+        self.__labelOnTheRight.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        s = Scrollbar(self.__rightFrame)
+        l = Listbox(self.__rightFrame, width=100000,
+                    height=1000,
+                    yscrollcommand=s.set,
+                    selectmode=BROWSE,
+                    exportselection=False,
+                    font=self.__smallFont,
+                    justify=LEFT
+                    )
+
+        l.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        l.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        l.pack_propagate(False)
+
+        s.pack(side=RIGHT, anchor=W, fill=Y)
+        l.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__scrollBarOnTheRight = s
+        self.__listBoxOnTheRight   = l
+
 
     def focusOut(self, event):
         self.__setTinting("whole")
@@ -195,11 +249,14 @@ class EditorBigFrame:
         text = self.__codeBox.get(0.0, END).split("\n")
         if self.__lastButton == "Enter": mode = "whole"
 
+        objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
+        objectList.append("game")
+
         if mode == "whole":
            for num in range (1, len(text)+1):
-               self.__lineTinting(num, text[num-1])
+               self.__lineTinting(num, text[num-1], objectList, processList)
         else:
-            self.__lineTinting(mode, text[mode-1])
+            self.__lineTinting(mode, text[mode-1], objectList, processList)
 
         for bracket in (")", "("):
             if bracket in text[self.__cursorPoz[0]-1][self.__cursorPoz[1]-1:self.__cursorPoz[1]+1]:
@@ -268,24 +325,10 @@ class EditorBigFrame:
 
         commandPairs = self.getCommandPairs(text)
 
-        """
-        for command in self.__loader.syntaxList.keys():
-            commandText, commandEndText, commandLen = self.commandPrepare(command)
-            if commandText in text[self.__cursorPoz[0] - 1][
-                              self.__cursorPoz[1] - commandLen:self.__cursorPoz[1] + commandLen
-                              ]:
-                index = text[self.__cursorPoz[0] - 1][
-                        self.__cursorPoz[1] - commandLen:self.__cursorPoz[1] + commandLen
-                        ].index(commandText)
-
-                error = True
-                theList = commandPairs[commandText]
-                
-                if str(self.__cursorPoz[0]) + "." + str(self.__cursorPoz[1] - (len(commandText)-index))
-        """
-
         line = text[self.__cursorPoz[0]-1].replace("\t", " ")
-        words = line.split(" ")
+        xxx = self.getFirstValidDelimiterPoz(line)
+
+        words = line[:xxx].split(" ")
         index = 0
 
         for word in words:
@@ -304,6 +347,7 @@ class EditorBigFrame:
                     continue
 
                 if commandEndText == None: break
+                if (self.__currentSection in commandVal.sectionsAllowed) == False: break
 
                 theList = commandPairs[compWord]
                 # wordStartPoz = str(self.__cursorPoz[0]) + "." + str(index)
@@ -355,6 +399,73 @@ class EditorBigFrame:
                                                    str(theY1) + "." + str(theX1End + 1))
             index += (len(word) + 1)
 
+        try:
+            self.__setListBoxOnTheRight(text)
+        except Exception as e:
+           # print(str(e))
+           pass
+
+    def __setListBoxOnTheRight(self, text):
+        selector = 0
+        try:
+            selector = self.__listBoxOnTheRight.curselection()[0]
+        except:
+            pass
+
+        self.__listBoxOnTheRight.select_clear(0, END)
+        self.__listBoxOnTheRight.delete(0, END)
+
+        line = text[self.__cursorPoz[0]-1]
+        xxx = self.getFirstValidDelimiterPoz(line)
+        line = line[:xxx]
+
+        words = line.split(" ")
+
+        index = 0
+        currentWord = ""
+
+        for word in words:
+            endPoz = index + len(word)
+            if self.__cursorPoz[1] == endPoz:
+                currentWord = word
+                break
+            index += endPoz + 1
+
+        if currentWord == "": return
+
+        forTheList = {}
+
+        typ = None
+
+        if typ == None:
+            for command in self.__syntaxList.keys():
+                if command.startswith(currentWord): forTheList[command] = "command"
+
+            # Object stuff are callable with call / exec, while using variables depends on if the command writes or reads.
+
+            """
+            objList = self.__objectMaster.objects.keys()
+            for item in objList:
+                if item.startswith("bank") == False and item.startswith(currentWord): forTheList[item] = "object"
+
+            """
+
+            """
+            writable, readOnly, all = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+            for var in writable:
+                if var.startswith(currentWord): forTheList[var] = "variable"
+            """
+
+        keys = list(forTheList.keys())
+        keys.sort()
+
+        for item in keys:
+            self.__listBoxOnTheRight.insert(END, item)
+            self.__listBoxOnTheRight.itemconfig(END, fg = self.__loader.colorPalettes.getColor(forTheList[item]))
+
+        if len(list(forTheList.keys())) - 1 < selector: selector = len(list(forTheList.keys())) - 1
+        self.__listBoxOnTheRight.select_set(selector)
+        self.__listBoxOnTheRight.yview(selector)
 
     def commandPrepare(self, command):
         commandVal = self.__loader.syntaxList[command]
@@ -377,6 +488,8 @@ class EditorBigFrame:
 
         for theY in range(0, len(text)):
             line = text[theY]
+            xxx = self.getFirstValidDelimiterPoz(line)
+            line = line[:xxx]
 
             if line.startswith("*") or line.startswith("#"): continue
             lenght = len(line)
@@ -423,7 +536,7 @@ class EditorBigFrame:
                                        break
 
                 index += 1 + len(word)
-        print(pairs)
+        # print(pairs)
         return pairs
 
     def getStringDelimiterPair(self, text):
@@ -485,6 +598,9 @@ class EditorBigFrame:
 
         for theY in range(0, len(text)):
             line = text[theY]
+            xxx  = self.getFirstValidDelimiterPoz(line)
+            line = line[:xxx]
+
             if line.startswith("*") or line.startswith("#"): continue
 
             lenght = len(line)
@@ -508,7 +624,8 @@ class EditorBigFrame:
 
         return pairs
 
-    def __lineTinting(self, lineNum, line):
+    def __lineTinting(self, lineNum, line, objectList, processList):
+
         for tag in self.__codeBox.tag_names():
             self.__codeBox.tag_remove(tag,
                                       str(lineNum)+".0",
@@ -530,20 +647,78 @@ class EditorBigFrame:
                 if command.bracketNeeded == True:
                    theString += "("
 
-                for startIndex in range(0, len(line) - len(theString)+1):
+                for startIndex in range(0, len(line[:xxx]) - len(theString)+1):
                     if line[startIndex:startIndex+len(theString)] == theString:
                         endIndex = startIndex + len(theString)
                         if command.bracketNeeded == True: endIndex -= 1
 
-                        self.__codeBox.tag_add("command", str(lineNum) + "." + str(startIndex),
+                        if self.__currentSection in command.sectionsAllowed:
+                            self.__codeBox.tag_add("command", str(lineNum) + "." + str(startIndex),
+                                               str(lineNum) + "." + str(endIndex))
+                        else:
+                            self.__codeBox.tag_add("error", str(lineNum) + "." + str(startIndex),
                                                str(lineNum) + "." + str(endIndex))
 
-            for index in range(0, len(line)):
-                if line[index] in ("(", ")", "[", "]"):
+            for index in range(0, len(line[:xxx])):
+                if line[index] in ("(", ")"):
                    self.__codeBox.tag_add("bracket", str(lineNum) + "." + str(index),
                                           str(lineNum) + "." + str(index+1))
 
-        #self.__highLightWord = "code"
+
+            words = line[:xxx].split(" ")
+            index = 0
+            for word in words:
+                delimiter = "%"
+                foundOne = False
+                for d in self.__config.getValueByKey("validObjDelimiters").split(" "):
+                    if d in word:
+                       delimiter = d
+                       foundOne  = True
+                       break
+
+                if foundOne == True:
+                   subIndex = 0
+                   subLine  = word.split(delimiter)
+
+                   for subWord in subLine:
+                       if subWord in objectList:
+                           self.__codeBox.tag_add("object", str(lineNum) + "." + str(subIndex + index),
+                                                            str(lineNum) + "." + str(subIndex + index + len(subWord)))
+                       elif subWord in processList:
+                           self.__codeBox.tag_add("process", str(lineNum) + "." + str(subIndex + index),
+                                                             str(lineNum) + "." + str(subIndex + index + len(subWord)))
+
+                       subIndex += (len(subWord) + 1)
+
+                index += (len(word) + 1)
+
+            listOfNumbers = self.findNumbersInALine(line, lineNum)
+            for pair in listOfNumbers:
+                X1 = int(pair[0].split(".")[1])
+                X2 = int(pair[1].split(".")[1])
+
+                self.removeTag(lineNum, X1, X2, None)
+                self.__codeBox.tag_add("number", pair[0], pair[1])
+
+            writable, readOnly, all = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+
+            for variable in all:
+                for startIndex in range(0, len(line[:xxx])-len(variable)+1):
+                    endIndex = startIndex + len(variable)
+
+                    if line[startIndex:endIndex].upper() == variable.upper():
+                       self.removeTag(lineNum, startIndex, endIndex+1, None)
+                       self.__codeBox.tag_add("variable", str(lineNum) + "." + str(startIndex),
+                                         str(lineNum) + "." + str(endIndex))
+
+            for array in self.__virtualMemory.arrays.keys():
+                for startIndex in range(0, len(line[:xxx])-len(array)+1):
+                    endIndex = startIndex + len(array)
+
+                    if line[startIndex:endIndex].upper() == array.upper():
+                       self.removeTag(lineNum, startIndex, endIndex+1, None)
+                       self.__codeBox.tag_add("array", str(lineNum) + "." + str(startIndex),
+                                         str(lineNum) + "." + str(endIndex))
 
         if self.__highLightWord != None:
             highLightPositions = self.stringInLine(line, self.__highLightWord)
@@ -583,6 +758,26 @@ class EditorBigFrame:
                                   foreground=self.__loader.colorPalettes.getColor("comment"),
                                   font=self.__italicFont)
 
+        self.__codeBox.tag_config("object",
+                                  foreground=self.__loader.colorPalettes.getColor("object"),
+                                  font=self.__boldFont)
+
+        self.__codeBox.tag_config("variable",
+                                  foreground=self.__loader.colorPalettes.getColor("variable"),
+                                  font=self.__boldUnderlinedFont)
+
+        self.__codeBox.tag_config("array",
+                                  foreground=self.__loader.colorPalettes.getColor("array"),
+                                  font=self.__boldUnderlinedFont)
+
+        self.__codeBox.tag_config("number",
+                                  foreground=self.__loader.colorPalettes.getColor("number"),
+                                  font=self.__italicFont)
+
+        self.__codeBox.tag_config("process",
+                                  foreground=self.__loader.colorPalettes.getColor("process"),
+                                  font=self.__boldFont)
+
         self.__codeBox.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
 
         self.__codeBox.tag_config("command",
@@ -608,6 +803,54 @@ class EditorBigFrame:
 
         self.__codeBox.config(font=self.__normalFont)
 
+    def findNumbersInALine(self, line, lineNum):
+        import re
+
+        numberPozisions = []
+        numberRegexes = {"dec": r'\d{1,3}',
+                         "bin": r'[b|%][0-1]{1,8}',
+                         "hex": r'[$|z|h][0-9a-f]{1,2}'
+                         }
+
+        listOfRegex  = [[],[],[]]
+
+        listOfRegex[0] = re.findall(numberRegexes["dec"], line, re.IGNORECASE)
+        listOfRegex[1] = re.findall(numberRegexes["bin"], line, re.IGNORECASE)
+        listOfRegex[2] = re.findall(numberRegexes["hex"], line, re.IGNORECASE)
+
+        xxx = self.getFirstValidDelimiterPoz(line)
+        line = line[:xxx]
+
+        for listNum in range(0, 3):
+            for item in listOfRegex[listNum]:
+                for startIndex in range(0, len(line) - len(item) +1):
+                    endIndex = startIndex + len(item)
+
+                    if line[startIndex:endIndex].upper() == item.upper():
+
+                       val = 256
+                       if item[0] in self.__config.getValueByKey("validBinarySigns").split(" "):
+                          val = int("0b" + item[1:],2)
+                       elif item[0] in self.__config.getValueByKey("validHexSigns").split(" "):
+                          val = int("0x" + item[1:], 16)
+                       else:
+                          val = int(item, 10)
+
+                       if val > 255: continue
+
+                       newItem = []
+                       newItem.append(
+                           str(lineNum) + "." + str(startIndex)
+                       )
+                       newItem.append(
+                           str(lineNum) + "." + str(endIndex)
+                       )
+
+                       numberPozisions.append(newItem)
+
+        return numberPozisions
+
+
     def getFirstValidDelimiterPoz(self, line):
         level = 0
         validDelimiters = self.__config.getValueByKey("validLineDelimiters").split(" ")
@@ -618,6 +861,8 @@ class EditorBigFrame:
             if line[charNum] == "(": level += 1
             if line[charNum] == ")": level -= 1
             if level < 0     : level = 0
+
+        return(len(line))
 
     def __counterEnded(self):
         self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True

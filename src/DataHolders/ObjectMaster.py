@@ -25,9 +25,25 @@ class ObjectMaster:
                        objRoot[objName] = {}
                     objRoot = objRoot[objName]
 
-
             for file in files:
                 path = self.__pathToListOfObj(root + "/" + file)
+                objRoot = self.objects
+
+                for objName in path:
+                    if objName.endswith(".asm") == False:
+                       objRoot = objRoot[objName]
+                    else:
+                       text = self.__loader.io.loadWholeText(root + "/" + file)
+                       name = objName.split(".")[0]
+                       f = open((root + "/" + file), "r")
+                       firstLine = f.read().replace("\r", "").split("\n")[0]
+                       f.close()
+
+                       listOfParams = firstLine.split("=")[1]
+                       key = name + "(" + listOfParams + ")"
+                       objRoot[key] = text
+
+                """
                 objRoot = self.objects
                 for objName in path:
                     if objName not in objRoot:
@@ -45,7 +61,8 @@ class ObjectMaster:
                        else:
                            objRoot[objName] = {}
                            objRoot = objRoot[objName]
-        #print(self.objects)
+                """
+        # print(self.objects)
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -155,5 +172,32 @@ class ObjectMaster:
             return False
 
 
+    def getObjectsAndProcessesValidForGlobalAndBank(self):
+        # It assumes there are up to 3 levels
 
+        objectList  = []
+        processList = []
+
+        ignored = []
+
+        for keyNum in range(2, 9):
+            bankNum = "bank" + str(keyNum)
+            ignored.append(bankNum)
+
+        for lvl1Key in self.objects.keys():
+            if lvl1Key in ignored: continue
+
+            objectList.append(lvl1Key)
+
+            for lvl2Key in self.objects[lvl1Key]:
+
+                objectList.append(lvl2Key)
+
+                if type(self.objects[lvl1Key][lvl2Key]) == {}:
+                    for lvl3Key in self.objects[lvl1Key][lvl2Key]:
+                        processList.append(lvl3Key.split("(")[0])
+                else:
+                   processList.append(lvl2Key.split("(")[0])
+
+        return objectList, processList
 

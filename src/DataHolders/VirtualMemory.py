@@ -468,8 +468,8 @@ class VirtualMemory:
                 if self.memory[address].variables[variable].bcd   == True: bcd   = "BCD"
 
                 string += variable + "=" + self.memory[address].variables[variable].type\
-                                         + color + "," +\
-                                         + bcd   + "," +\
+                                         + color + "," \
+                                         + bcd   + "," \
                                          + os.linesep
 
         for array in self.arrays.keys():
@@ -546,3 +546,26 @@ class VirtualMemory:
             return(True)
         else:
             return(False)
+
+    def returnVariablesForBank(self, bankNum):
+        readOnly  = []
+        writatble = []
+        all       = []
+
+        if type(bankNum) == int:
+           bankNum = "bank" + str(bankNum)
+
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                var = self.memory[address].variables[variable]
+                if  (var.validity == "global" or
+                     var.validity == bankNum):
+                     if var.system == False or var.iterable == True:
+                        all.append(variable)
+                        writatble.append(variable)
+                     elif var.linkable == True:
+                        all.append(variable)
+                        readOnly.append(variable)
+
+        return writatble, readOnly, all
+

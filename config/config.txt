@@ -15,8 +15,8 @@ validNotEQ=!= /= ~= <> NOT= .NEQ.
 validEQ=.EQ. ==
 validLargerThan=> .GT.
 validSmallerThan=< .LT.
-validLargerThanOrEQ=>= .GE.
-validSmallerThanOrEQ=<= .LE.
+validLargerThanOrEQ=>= => .GE.
+validSmallerThanOrEQ=<= =< .LE.
 validStringDelimiters=' " `
 validBinarySigns=% b
 validHexSigns=$ z x

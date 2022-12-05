@@ -380,3 +380,4 @@ minimap=MiniMap
 bcd=Binárisan Kódolt Decimális
 delimiterInName=Elválasztó található a névben!
 startWithBank=Változónév nem kezdõdhet 'Bank'-kal!
+recommendations=Javaslatok

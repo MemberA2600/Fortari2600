@@ -24,6 +24,7 @@ class MemoryManagerWindow:
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
+        self.__lastBullShit = None
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -899,9 +900,9 @@ class MemoryManagerWindow:
 
     def restoreBank(self):
         if self.__selectedSlot == "global":
-            self.__memory.moveMemorytoVariables("bank1")
+            self.__virtualMemory.moveMemorytoVariables("bank1")
         else:
-            self.__memory.moveMemorytoVariables(self.__selectedSlot)
+            self.__virtualMemory.moveMemorytoVariables(self.__selectedSlot)
 
         self.__changedBanks.remove(self.__selectedSlot)
         if len(self.__changedBanks) == 0:
@@ -909,22 +910,22 @@ class MemoryManagerWindow:
 
     def saveOneBank(self):
         if self.__selectedSlot == "global":
-            self.__memory.moveVariablesToMemory("bank1")
+            self.__virtualMemory.moveVariablesToMemory("bank1")
         else:
-            self.__memory.moveVariablesToMemory(self.__selectedSlot)
+            self.__virtualMemory.moveVariablesToMemory(self.__selectedSlot)
 
         self.__changedBanks.remove(self.__selectedSlot)
         if len(self.__changedBanks) == 0:
             self.__changed = False
-        self.__memory.archieve()
+        self.__virtualMemory.archieve()
 
     def saveAllBank(self):
         for num in range(1,9):
-            self.__memory.moveVariablesToMemory("bank"+str(num))
+            self.__virtualMemory.moveVariablesToMemory("bank"+str(num))
 
         self.__changed = False
         self.__changedBanks.clear()
-        self.__memory.archieve()
+        self.__virtualMemory.archieve()
 
     def __removeSelect(self, event):
         other = {
@@ -938,6 +939,7 @@ class MemoryManagerWindow:
     def __createArr(self):
         self.__virtualMemory.addArray(self.__arrName.get())
         name = self.__arrName.get()
+        self.__activeArr = name
         for variable in self.__included:
             varName = variable.split(" ")[0]
             self.__loader.virtualMemory.addItemsToArray(
@@ -975,6 +977,7 @@ class MemoryManagerWindow:
 
     def __deleteArr(self):
         name = self.__arrName.get()
+        self.__activeArr = name
 
         bank = self.__loader.virtualMemory.getArrayValidity(name)
         self.__loader.virtualMemory.removeArray(name)
@@ -1235,8 +1238,9 @@ class MemoryManagerWindow:
                self.__arrCreateButton.config(state=DISABLED)
                self.__arrModifyButton.config(state=NORMAL)
                self.__arrDeleteButton.config(state=NORMAL)
-               if self.__changeArrBoxes:
+               if self.__changeArrBoxes and self.__lastBullShit != self.__activeArr:
                     self.fillArrListBoxes()
+               self.__lastBullShit = self.__activeArr
 
            else:
                if variables[name][1] == "var":
@@ -1245,12 +1249,15 @@ class MemoryManagerWindow:
                    self.__createButton.config(state=NORMAL)
                    self.__modifyButton.config(state=DISABLED)
                    self.__deleteButton.config(state=DISABLED)
+
                else:
                    self.__arrCreateButton.config(state=NORMAL)
                    self.__arrModifyButton.config(state=DISABLED)
                    self.__arrDeleteButton.config(state=DISABLED)
-                   if self.__changeArrBoxes:
+                   if self.__changeArrBoxes and self.__lastBullShit != "new":
                        self.fillArrListBoxes()
+                   self.__lastBullShit = "new"
+
 
         else:
             variables[name][3].config(
