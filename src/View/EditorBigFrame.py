@@ -429,7 +429,8 @@ class EditorBigFrame:
             if self.__cursorPoz[1] == endPoz:
                 currentWord = word
                 break
-            index += endPoz + 1
+            else:
+                index += endPoz + 1
 
         if currentWord == "": return
 
@@ -437,18 +438,37 @@ class EditorBigFrame:
 
         typ = None
 
+        delimiter = ""
+        for d in self.__config.getValueByKey("validObjDelimiters"):
+            if d in currentWord:
+               delimiter = d
+               typ = "object"
+               break
+
         if typ == None:
             for command in self.__syntaxList.keys():
                 if command.startswith(currentWord): forTheList[command] = "command"
 
             # Object stuff are callable with call / exec, while using variables depends on if the command writes or reads.
 
-            """
-            objList = self.__objectMaster.objects.keys()
-            for item in objList:
-                if item.startswith("bank") == False and item.startswith(currentWord): forTheList[item] = "object"
+        elif typ == "object":
+            if currentWord[-1] == delimiter:
+                lastOne = currentWord.split(delimiter)[-2]
 
-            """
+                if lastOne.upper() == "game".upper():
+                    firstLevel = self.__objectMaster.objects.keys()
+                    for item in firstLevel:
+                        if item.startswith("bank") == False:
+                            forTheList[item] = "object"
+                else:
+                    nextLevel = self.__objectMaster.returnNextLevel(lastOne)
+                    for item in nextLevel:
+                        askName = item
+                        if "(" in item:
+                            askName = item.split("(")[0]
+
+                        forTheList[askName] = self.__objectMaster.returnOcjectOrProcess(item)
+
 
             """
             writable, readOnly, all = self.__virtualMemory.returnVariablesForBank(self.__currentBank)

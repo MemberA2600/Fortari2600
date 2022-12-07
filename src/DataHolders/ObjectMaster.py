@@ -171,6 +171,28 @@ class ObjectMaster:
         else:
             return False
 
+    def returnNextLevel(self, name):
+        for lvl1 in self.objects.keys():
+            if name.upper() == lvl1.upper(): return list(self.objects[lvl1].keys())
+            for lvl2 in self.objects[lvl1].keys():
+                if name.upper() == lvl2.upper():
+                   if type(self.objects[lvl1][lvl2]) == dict:
+                      return list(self.objects[lvl1][lvl2].keys())
+
+        return([])
+
+    def returnOcjectOrProcess(self, name):
+        for lvl1 in self.objects.keys():
+            if name.upper() == lvl1.upper(): return "object"
+            for lvl2 in self.objects[lvl1].keys():
+                if name.upper() == lvl2.upper():
+                   if type(self.objects[lvl1][lvl2]) == dict:
+                      return "object"
+                   else:
+                      return "process"
+                if type(self.objects[lvl1][lvl2]) == dict:
+                   for lvl3 in self.objects[lvl1][lvl2].keys():
+                       if self.objects[lvl1][lvl2][lvl3].upper() == name.upper(): return "process"
 
     def getObjectsAndProcessesValidForGlobalAndBank(self):
         # It assumes there are up to 3 levels
