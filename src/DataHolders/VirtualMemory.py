@@ -249,6 +249,8 @@ class VirtualMemory:
             if name in self.arrays[array]:
                 self.arrays[array].pop(name)
 
+
+
     def getAddressOnVariableIsStored(self, name, bank):
         section="local_variables"
         if bank == "bank1":
@@ -415,33 +417,41 @@ class VirtualMemory:
                 data = line.split("=")
                 name=data[0]
 
-                if self.checkIfExists(name, validity):
-                    continue
+                if data[1].upper().startswith("ARRAY") == False:
+                    if self.checkIfExists(name, validity):
+                        continue
 
-                subData = data[1].replace("\n","").replace("\r","").split(",")
-                TYPE    = subData[0]
-                color   = subData[1]
-                bcd     = subData[2]
+                    subData = data[1].replace("\n","").replace("\r","").split(",")
+                    TYPE    = subData[0]
+                    color   = subData[1]
+                    bcd     = subData[2]
 
-                if color == "color":
-                   color = True
-                else:
-                   color = False
 
-                if bcd == "BCD":
-                   bcd = True
-                else:
-                   bcd = False
+                    if color == "color":
+                       color = True
+                    else:
+                       color = False
 
-                if (TYPE in self.types.keys()):
-                    self.addVariable(name, TYPE, validity, color, bcd)
+                    if bcd == "BCD":
+                       bcd = True
+                    else:
+                       bcd = False
+
+                    if (TYPE in self.types.keys()):
+                        self.addVariable(name, TYPE, validity, color, bcd)
+                    else:
+                        self.addArray(name)
+                        data = TYPE[6:-1].split(",")
+                        for item in data:
+                            self.addItemsToArray(name, item, self.getVariableByName(item, bank))
                 else:
                     self.addArray(name)
-                    data = TYPE[6:-1].split(",")
+                    data = data[1][6:-1].split(",")
                     for item in data:
                         self.addItemsToArray(name, item, self.getVariableByName(item, bank))
+
             except Exception as e:
-               # print(str(e))
+                #print(str(e))
                 self.__loader.logger.errorLog(e)
 
 
@@ -551,6 +561,7 @@ class VirtualMemory:
         readOnly  = []
         writatble = []
         all       = []
+        nonSystem = []
 
         if type(bankNum) == int:
            bankNum = "bank" + str(bankNum)
@@ -560,12 +571,61 @@ class VirtualMemory:
                 var = self.memory[address].variables[variable]
                 if  (var.validity == "global" or
                      var.validity == bankNum):
-                     if var.system == False or var.iterable == True:
+                     if var.system == False:
+                        all.append(variable)
+                        nonSystem.append(variable)
+                     elif var.iterable == True:
                         all.append(variable)
                         writatble.append(variable)
                      elif var.linkable == True:
                         all.append(variable)
                         readOnly.append(variable)
 
-        return writatble, readOnly, all
+        return writatble, readOnly, all, nonSystem
 
+    def returnArraysOnValidity(self, bank):
+        all = []
+        writable = []
+        readonly = []
+
+        if type(bank) == int: bank = "bank" + str(bank)
+
+        for array in self.arrays.keys():
+            if self.getArrayValidity(array) in (bank, "global"):
+                all.append(array)
+                if self.hasArrayReadOnly(array) == True:
+                   readonly.append(array)
+                else:
+                    writable.append(array)
+
+
+                """
+                readonlyTempVar = []
+                writableTempVar = []
+
+                for variable in self.arrays[array]:
+                    for address in self.memory.keys():
+                        if variable in self.memory[address].variables.keys():
+                            var = self.memory[address].variables[variable]
+                            if var.system == False or var.iterable == True:
+                                all.append(variable)
+                                writableTempVar.append(variable)
+                            elif var.linkable == True:
+                                all.append(variable)
+                                readonlyTempVar.append(variable)
+                if len(readonlyTempVar) > 0:
+                   readonly.append(array)
+                else:
+                    writable.append(array)
+                """
+
+        return writable, readonly, all
+
+    def hasArrayReadOnly(self, array):
+        for variable in self.arrays[array]:
+            for address in self.memory.keys():
+                if variable in self.memory[address].variables.keys():
+                    var = self.memory[address].variables[variable]
+                    if var.iterable == False:
+                       return True
+        return False

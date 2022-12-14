@@ -26,6 +26,7 @@ class EditorBigFrame:
         self.__screenSize = self.__loader.screenSize
         self.__counter    = 0
         self.__counter2    = 0
+        self.firstTry = True
 
         self.__cursorPoz  = [1,0]
 
@@ -223,7 +224,7 @@ class EditorBigFrame:
 
         self.__scrollBarOnTheRight = s
         self.__listBoxOnTheRight   = l
-
+        self.firstTry = True
 
     def focusOut(self, event):
         self.__setTinting("whole")
@@ -246,7 +247,7 @@ class EditorBigFrame:
         t.start()
 
     def __tintingThread(self, mode):
-        text = self.__codeBox.get(0.0, END).split("\n")
+        text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
         if self.__lastButton == "Enter": mode = "whole"
 
         objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
@@ -399,13 +400,72 @@ class EditorBigFrame:
                                                    str(theY1) + "." + str(theX1End + 1))
             index += (len(word) + 1)
 
-        try:
-            self.__setListBoxOnTheRight(text)
-        except Exception as e:
-           # print(str(e))
-           pass
+        errorTintingDoItems = self.getNestedDoItems(commandPairs)
+        print(errorTintingDoItems)
 
-    def __setListBoxOnTheRight(self, text):
+        forceTyp = [None, None]
+
+        soMuchData = self.getCommandTheCursorStandsInside(text, None)
+
+        if soMuchData[0] != "":
+           forceTyp = [
+               "param",
+               soMuchData
+           ]
+
+        if self.firstTry == True:
+            try:
+                self.__setListBoxOnTheRight(text, forceTyp)
+                self.firstTry = False
+            except Exception as e:
+               #print(str(e))
+               pass
+        else:
+            self.__setListBoxOnTheRight(text, forceTyp)
+
+    def getNestedDoItems(self, commandPairs):
+
+        try:
+            theList1 = commandPairs["do-items("]
+        except:
+            theList1 = []
+
+        try:
+            theList2 = commandPairs["perform-items("]
+        except:
+            theList2 = []
+
+        try:
+            theList3 = commandPairs["for-items("]
+        except:
+            theList3 = []
+
+        theList1.extend(theList2)
+        theList1.extend(theList3)
+        theList1.sort()
+
+        forErrorTinting = []
+
+        if len(theList1) > 1:
+            for pairNum in range(0, len(theList1)-1):
+                for compareNum in range(pairNum+1, len(theList1)):
+
+                    if len(theList1[pairNum])    < 2: break
+                    if len(theList1[compareNum]) < 2: continue
+
+                    start1 = int(theList1[pairNum][0].replace(".", ""))
+                    end1   = int(theList1[pairNum][1].replace(".", ""))
+
+                    start2 = int(theList1[compareNum][0].replace(".", ""))
+                    end2   = int(theList1[compareNum][1].replace(".", ""))
+
+                    if start2 > end1: break
+
+                    if start1 < start2 and end1 > end2: forErrorTinting.append(theList1[compareNum])
+
+        return forErrorTinting
+
+    def __setListBoxOnTheRight(self, text, forceTyp):
         selector = 0
         try:
             selector = self.__listBoxOnTheRight.curselection()[0]
@@ -445,6 +505,8 @@ class EditorBigFrame:
                typ = "object"
                break
 
+        if forceTyp[0] != None: typ = forceTyp[0]
+
         if typ == None:
             for command in self.__syntaxList.keys():
                 if command.startswith(currentWord): forTheList[command] = "command"
@@ -470,11 +532,46 @@ class EditorBigFrame:
                         forTheList[askName] = self.__objectMaster.returnOcjectOrProcess(item)
 
 
-            """
-            writable, readOnly, all = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-            for var in writable:
-                if var.startswith(currentWord): forTheList[var] = "variable"
-            """
+        elif typ == "param":
+            paramCommandName       = forceTyp[1][0]
+            paramCommand           = forceTyp[1][1]
+            paramCommandDimensions = forceTyp[1][2]
+            paramPosition          = forceTyp[1][3]
+            paramType              = forceTyp[1][4]
+            paramDimension         = forceTyp[1][5]
+
+            paramY                 = paramDimension[2]
+            paramX1                = paramDimension[0]
+            paramX2                = paramDimension[1]
+
+            paramCommandLevel      = forceTyp[1][6]
+
+            if paramType.startswith("{"): paramType = paramType[1:-1]
+            paramTypes = paramType.split("|")
+
+            for param in paramTypes:
+                #
+                # The compiler will reject write to protected variables!
+                #
+
+                if param == "variable":
+                    writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+                    do = {
+                        "read"  : all,
+                        "write" : writable,
+                        "store" : nonSystem
+                    }
+
+                    for var in do[paramCommand.does]:
+                        forTheList[var] = "variable"
+                elif param == "array":
+                    writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
+                    do = {
+                        False  : all,
+                        True   : writable
+                    }
+                    for arr in do[self.isItemWritingBack(text)]:
+                        forTheList[arr] = "array"
 
         keys = list(forTheList.keys())
         keys.sort()
@@ -487,7 +584,222 @@ class EditorBigFrame:
         self.__listBoxOnTheRight.select_set(selector)
         self.__listBoxOnTheRight.yview(selector)
 
+    def isItemWritingBack(self, text):
+        # firstLine = True
+        level     = 0
+
+        pairs = self.getCommandPairs(text)
+        whatWeNeed = [[],[],[]]
+
+        try:
+            whatWeNeed[0] = pairs["do-items("]
+        except:
+            pass
+
+        try:
+            whatWeNeed[1] = pairs["perform-items("]
+        except:
+            pass
+
+        try:
+            whatWeNeed[2] = pairs["for-items("]
+        except:
+            pass
+
+        fromTo = [None, None]
+
+        for group in whatWeNeed:
+            if fromTo[1] != None: break
+
+            for pair in group:
+                if fromTo[1] != None: break
+
+                start   = pair[0].split(".")
+                startY  = int(start[0]) - 1
+                startX  = int(start[1])
+
+                # print(startY, self.__cursorPoz[0]-1)
+
+                if startY != self.__cursorPoz[0]-1:
+                   continue
+
+                fromTo[0] = startY
+
+                notThisOne = False
+                for theX in range(self.__cursorPoz[1]-1, -1, -1):
+                    # print(theX, startX)
+                    if text[startY][theX] == ")":
+                       notThisOne = True
+                       break
+                    elif theX == startX:
+                       break
+
+                if notThisOne: continue
+
+                if len(pairs) != 1:
+                    end = pair[1].split(".")
+                    endY = int(end[0]) - 1
+                    endX = int(end[3])
+
+                    fromTo[1] = endY
+                else:
+                    fromTo[1] = len(text) - 1
+
+        if fromTo[1] == None:
+           return False
+
+        for theY in range(fromTo[0], fromTo[1] + 1):
+            if "ITEM" in text[theY].upper():
+                for theX in range(0, len(text[theY]) - 4):
+                    if text[theY][theX:theX+4].upper() == "ITEM":
+                       try:
+                           if text[theY][theX-1:theX + 5].upper() == "-ITEMS":
+                               continue
+                       except:
+                           pass
+                       soMuchData = self.getCommandTheCursorStandsInside(text, [theY, theX])
+                       command    = soMuchData[1]
+                       if command.does.upper() == "WRITE": return True
+
+
+        return False
+
+    def getCommandTheCursorStandsInside(self, text, middlePoz):
+        command = None
+        commandName = ""
+        startPoz = []
+        endPoz = []
+        paramNum = -1
+        paramTyp = None
+        sliceXStartEnd = []
+
+        firstOne = True
+
+        if middlePoz == None:
+           middlePoz = [self.__cursorPoz[0] - 1, self.__cursorPoz[1]]
+
+        delimiter = False
+        for lineNum in range(middlePoz[0], -1, -1):
+            s = None
+            if firstOne == True:
+                s = middlePoz[1] - 1
+                firstOne = False
+            else:
+                s = self.getFirstValidDelimiterPoz(text[lineNum]) - 1
+
+            for charNum in range(s, -1, -1):
+                try:
+                    if text[lineNum][charNum] == "(":
+                        startPoz = [lineNum, charNum]
+                        break
+                    elif text[lineNum][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
+                        delimiter = True
+                        break
+                except:
+                    delimiter = True
+                    break
+
+            if startPoz != [] or delimiter == True: break
+
+        delimiter = False
+        firstOne = True
+        for lineNum in range(middlePoz[0], len(text)):
+            s = None
+            if firstOne == True:
+                s = middlePoz[1]
+                firstOne = False
+            else:
+                s = 0
+
+            for charNum in range(s, self.getFirstValidDelimiterPoz(text[lineNum])):
+                if text[lineNum][charNum] == ")":
+                    endPoz = [lineNum, charNum]
+                    break
+                elif text[lineNum][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
+                    delimiter = True
+                    break
+
+            if endPoz != [] or delimiter == True: break
+
+        if endPoz == []:
+            endPoz = [middlePoz[0], middlePoz[1]]
+
+        commandStart = None
+        if startPoz != []:
+            for charNum in range(startPoz[1], -1, -1):
+                if text[startPoz[0]][charNum] == " ":
+                    commandStart = charNum + 1
+                    break
+
+                elif charNum == 0:
+                    commandStart = 0
+                    break
+
+                elif text[startPoz[0]][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
+                    delimiter = True
+                    break
+
+            if delimiter == False:
+                commandName = text[startPoz[0]][commandStart:startPoz[1]]
+                if commandName in self.__syntaxList.keys():
+                    command = self.__syntaxList[commandName]
+
+        inside = False
+        level = 0
+
+        if startPoz != [] and endPoz != []:
+            paramNum = 0
+            first = True
+            for lineNum in range(startPoz[0], endPoz[0] + 1):
+                if lineNum > middlePoz[0]: break
+
+                xxx = self.getFirstValidDelimiterPoz(text[lineNum])
+                if first == True:
+                    s = startPoz[1]
+                    first = False
+                else:
+                    s = 0
+
+                inside = False
+                doBreak = False
+                for charNum in range(s, xxx):
+                    if lineNum == middlePoz[0] and charNum >= middlePoz[1]:
+                        doBreak = True
+
+                    if text[lineNum][charNum] == "(":
+                        sliceXStartEnd = [charNum, charNum, lineNum]
+                        inside = True
+                        level += 1
+
+                    elif text[lineNum][charNum] == ")":
+                        inside = False
+                        level -= 1
+
+                        if doBreak == True:
+                            sliceXStartEnd[1] = charNum
+                            break
+
+                    elif text[lineNum][charNum] == ",":
+                        if doBreak == True:
+                            sliceXStartEnd[1] = charNum - 1
+                            break
+                        else:
+                            sliceXStartEnd[0] = charNum
+                            paramNum += 1
+
+        #print((commandName, command, [startPoz, endPoz], paramNum, "?", sliceXStartEnd, level))
+        if paramNum != -1 and commandName != "" and command == None: print(commandName, "!!!")
+        if paramNum != -1 and commandName != "" and command != None:
+            params = command.params
+            try:
+                paramTyp = params[paramNum]
+            except:
+                paramTyp = None
+
+        return (commandName, command, [startPoz, endPoz], paramNum, paramTyp, sliceXStartEnd, level)
+
     def commandPrepare(self, command):
+        command    = command.replace("\t", " ").replace(" ","")
         commandVal = self.__loader.syntaxList[command]
         commandText = command
         commandLen = len(command)
@@ -519,23 +831,69 @@ class EditorBigFrame:
 
             words = line[:lenght].replace("\t", " ").split(" ")
             index = 0
+            for wordNum in range(0, len(words)):
+                words[wordNum] = words[wordNum].split("(")[0]
+
             for word in words:
                 found = False
+                word = word.split("(")[0]
+
                 for command in self.__loader.syntaxList.keys():
                     if found == True: break
-                    #print(command)
 
-                    if command in line:
+                    if command == word:
+                  #  if command in line:
                         commandText, commandEndText, commandLen, commandVal = self.commandPrepare(command)
 
+                        if len(commandStack) > 0:
+                           lastCommand    = commandStack[-1][0]
+                           lastEndCommand = commandStack[-1][1]
+                        else:
+                           lastCommand    = None
+                           lastEndCommand = None
+
+                        compareText = commandText
+                        if commandVal.bracketNeeded == True and compareText.endswith("(") == False:
+                           compareText += "("
+
                         if commandEndText != None:
+                            if compareText.endswith("("): word += "("
+                            if word == compareText:
+                               commandStack.append([commandText, commandEndText])
+
+                               if commandText not in pairs.keys():
+                                  pairs[commandText] = []
+                               if compareText.endswith("(") == True:
+                                   pairs[commandText].append([
+                                      str(theY + 1) + "." + str(index) + "." + str(index + len(word)-1)
+                                       ])
+                               else:
+                                   pairs[commandText].append([
+                                      str(theY + 1) + "." + str(index) + "." + str(index + len(word))
+                                       ])
+                               found = True
+
+                        elif compareText == lastEndCommand:
+                             commandStack.pop(-1)
+                             for pairNum in range(len(pairs[lastCommand]) - 1, -1, -1):
+                                if len(pairs[lastCommand][pairNum]) == 1:
+                                    pairs[lastCommand][pairNum].append(
+                                        str(theY + 1) + "." + str(index) + "." + str(index + len(word))
+                                    )
+                                    found = True
+                                    break
+
+                        # if commandEndText != None:
+
+                        """
+                        if True:
                             compareText = commandText
                             if commandVal.bracketNeeded == True and compareText.endswith("(") == False:
                                 compareText += "("
 
-
                             if word == compareText:
-                               commandStack.append(commandText)
+                               commandStack.append([commandText, commandEndText])
+
                                if commandText not in pairs.keys():
                                   pairs[commandText] = []
                                pairs[commandText].append([
@@ -544,16 +902,18 @@ class EditorBigFrame:
                                ])
                                found = True
 
-                            elif word == commandEndText:
-                                lastCommand = commandStack[-1]
-                                commandStack.pop(-1)
-                                for pairNum in range(len(pairs[lastCommand])-1, -1, -1):
-                                    if len(pairs[lastCommand][pairNum]) == 1:
-                                       pairs[lastCommand][pairNum].append(
-                                           str(theY + 1) + "." + str(index) + "." + str(index + len(word))
-                                       )
-                                       found = True
-                                       break
+                            elif len(commandStack) > 0:
+                                if word == lastEndCommand:
+                                    commandStack.pop(-1)
+                                    for pairNum in range(len(pairs[lastCommand])-1, -1, -1):
+                                        if len(pairs[lastCommand][pairNum]) == 1:
+                                           pairs[lastCommand][pairNum].append(
+                                               str(theY + 1) + "." + str(index) + "." + str(index + len(word))
+                                           )
+                                           found = True
+                                           break
+
+                            """
 
                 index += 1 + len(word)
         # print(pairs)
@@ -720,16 +1080,24 @@ class EditorBigFrame:
                 self.removeTag(lineNum, X1, X2, None)
                 self.__codeBox.tag_add("number", pair[0], pair[1])
 
-            writable, readOnly, all = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+            writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
 
             for variable in all:
+                # print(variable)
                 for startIndex in range(0, len(line[:xxx])-len(variable)+1):
                     endIndex = startIndex + len(variable)
 
+                    try:
+                        if variable.upper() == "ITEM" and line[startIndex-1] == "-" and line[endIndex].upper() == "S":
+                           continue
+                    except:
+                        pass
+
                     if line[startIndex:endIndex].upper() == variable.upper():
-                       self.removeTag(lineNum, startIndex, endIndex+1, None)
+                       self.removeTag(lineNum, startIndex, endIndex, None)
                        self.__codeBox.tag_add("variable", str(lineNum) + "." + str(startIndex),
                                          str(lineNum) + "." + str(endIndex))
+
 
             for array in self.__virtualMemory.arrays.keys():
                 for startIndex in range(0, len(line[:xxx])-len(array)+1):
