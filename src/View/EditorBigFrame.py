@@ -401,7 +401,36 @@ class EditorBigFrame:
             index += (len(word) + 1)
 
         errorTintingDoItems = self.getNestedDoItems(commandPairs)
-        print(errorTintingDoItems)
+        for pair in errorTintingDoItems:
+            theY1 = int(pair[0].split(".")[0])
+            theY2 = int(pair[1].split(".")[0])
+
+            theX1 = int(pair[0].split(".")[1])
+            theX2 = int(pair[1].split(".")[1])
+
+            theX1End = int(pair[0].split(".")[2])
+            theX2End = int(pair[1].split(".")[2])
+
+            self.removeTag(theY1, theX1, theX1End, None)
+            self.removeTag(theY2, theX2, theX2End, None)
+
+            self.__codeBox.tag_add("error", str(theY1) + "." + str(theX1),
+                                   str(theY1) + "." + str(theX1End))
+
+            self.__codeBox.tag_add("error", str(theY2) + "." + str(theX2),
+                                   str(theY2) + "." + str(theX1End))
+
+        selectCaseSelecteds = self.getUnselectedForSelect(text)
+
+        for pair in selectCaseSelecteds:
+            theY1    = int(pair[0].split(".")[0])
+            theX1    = int(pair[0].split(".")[1])
+            theX1End = int(pair[1].split(".")[1])
+
+            self.removeTag(theY1, theX1, theX1End, None)
+            self.__codeBox.tag_add("commandBack", str(theY1) + "." + str(theX1),
+                                   str(theY1) + "." + str(theX1End))
+
 
         forceTyp = [None, None]
 
@@ -413,6 +442,7 @@ class EditorBigFrame:
                soMuchData
            ]
 
+
         if self.firstTry == True:
             try:
                 self.__setListBoxOnTheRight(text, forceTyp)
@@ -422,6 +452,142 @@ class EditorBigFrame:
                pass
         else:
             self.__setListBoxOnTheRight(text, forceTyp)
+
+    def getUnselectedForSelect(self, text):
+        from copy import deepcopy
+
+        selectedForThings = []
+
+        beginList  = deepcopy(self.__syntaxList["select"].alias)
+        caseList   = deepcopy(self.__syntaxList["case"].alias)
+        endingList = deepcopy(self.__syntaxList["end-select"].alias)
+        beginList.append("select")
+        caseList.append("case")
+        endingList.append("end-select")
+
+        soMuchData = self.getCommandOnly(text, None)
+        # (commandName, command, [startPoz, endPoz], paramNum, paramTyp, sliceXStartEnd, level)
+
+        commandName = soMuchData[0]
+        command     = soMuchData[1]
+        commandPoz  = soMuchData[2]
+
+        if commandName != "":
+            selectAppend = [str(self.__cursorPoz[0]) + "." + str(commandPoz[0]),
+                            str(self.__cursorPoz[0]) + "." + str(commandPoz[1]),
+                            ]
+            startPozUp     = [self.__cursorPoz[0] - 1, commandPoz[0]]
+            startPozDown   = [self.__cursorPoz[0] - 1, commandPoz[1]]
+
+            #print(selectAppend, startPoz)
+
+            if commandName in beginList:
+               selectedForThings.append(selectAppend)
+               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "down",
+                                          startPozDown, selectedForThings)
+               #print(commandName)
+
+            elif commandName in caseList:
+               selectedForThings.append(selectAppend)
+               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "up",
+                                          startPozUp, selectedForThings)
+               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "down",
+                                          startPozDown, selectedForThings)
+               #print(commandName)
+
+            elif commandName in endingList:
+               selectedForThings.append(selectAppend)
+               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "up",
+                                          startPozUp, selectedForThings)
+               #print(commandName)
+
+        ABCDE = []
+        for item in selectedForThings:
+            if item not in ABCDE:
+               ABCDE.append(item)
+
+        return ABCDE
+
+    def getCommandOnly(self, text, position):
+
+        if position == None:
+           position = [self.__cursorPoz[0] - 1, self.__cursorPoz[1]]
+
+        commandName = ""
+        command     = None
+        commandPoz  = []
+
+        line  = text[position[0]].replace("\t", " ")
+        words = line.split(" ")
+
+        currentX = 0
+        for word in words:
+            if self.__cursorPoz[1] >= currentX and self.__cursorPoz[1] <= currentX + len(word) + 1:
+               compareWord = word.split("(")[0]
+               if compareWord in self.__syntaxList.keys():
+                  commandName = compareWord
+                  command     = self.__syntaxList[compareWord]
+                  commandPoz  = [currentX, currentX + len(commandName)]
+
+            currentX += len(word) + 1
+
+        return commandName, command, commandPoz
+
+    def moveAndGetForEvaluate(self, text, beginList, caseList, endingList, direction, startPoz, selectedForThings):
+        borderList  = None
+        firstLine   = True
+        foundEnding = False
+
+        if direction == "down":
+            borderList = endingList
+
+            lastLine = len(text)
+            adder    = 1
+
+        else:
+            borderList = beginList
+            lastLine = -1
+            adder    = -1
+
+        for theY in range(startPoz[0], lastLine, adder):
+            line = text[theY]
+
+            if line.startswith("*") or line.startswith("#"): continue
+            currentIndex = 0
+
+            if firstLine == True:
+               line = text[theY][startPoz[1]:]
+               firstLine = False
+               currentIndex = startPoz[1]
+
+            xxx  = self.getFirstValidDelimiterPoz(line)
+            line = line[:xxx].replace("\t", " ")
+            words = line.split(" ")
+
+            for word in words:
+                compareWord = word.split("(")[0]
+
+                if compareWord in caseList:
+                    selectedForThings.append(
+                        [
+                            str(theY + 1) + "." + str(currentIndex),
+                            str(theY + 1) + "." + str(currentIndex + len(compareWord)),
+                        ]
+                    )
+
+                elif compareWord in borderList:
+                    selectedForThings.append(
+                        [
+                            str(theY + 1) + "." + str(currentIndex),
+                            str(theY + 1) + "." + str(currentIndex + len(compareWord)),
+                        ]
+                    )
+                    foundEnding = True
+
+                currentIndex += len(word) + 1
+
+            if foundEnding == True: break
+
 
     def getNestedDoItems(self, commandPairs):
 
@@ -453,17 +619,23 @@ class EditorBigFrame:
                     if len(theList1[pairNum])    < 2: break
                     if len(theList1[compareNum]) < 2: continue
 
-                    start1 = int(theList1[pairNum][0].replace(".", ""))
-                    end1   = int(theList1[pairNum][1].replace(".", ""))
+                    start1 = self.getPozValue(theList1[pairNum][0], 1)
+                    end1   = self.getPozValue(theList1[pairNum][1], 0)
 
-                    start2 = int(theList1[compareNum][0].replace(".", ""))
-                    end2   = int(theList1[compareNum][1].replace(".", ""))
+                    start2 = self.getPozValue(theList1[compareNum][0], 1)
+                    end2   = self.getPozValue(theList1[compareNum][1], 0)
 
                     if start2 > end1: break
-
                     if start1 < start2 and end1 > end2: forErrorTinting.append(theList1[compareNum])
 
         return forErrorTinting
+
+    def getPozValue(self, poz, num):
+        poz = poz.split(".")
+        first  = int(poz[0]) * 100000
+        second = int(poz[num + 1])
+
+        return first + second
 
     def __setListBoxOnTheRight(self, text, forceTyp):
         selector = 0
@@ -546,32 +718,34 @@ class EditorBigFrame:
 
             paramCommandLevel      = forceTyp[1][6]
 
-            if paramType.startswith("{"): paramType = paramType[1:-1]
-            paramTypes = paramType.split("|")
+            if paramType != None:
+                if paramType.startswith("{"): paramType = paramType[1:-1]
+                paramTypes = paramType.split("|")
 
-            for param in paramTypes:
-                #
-                # The compiler will reject write to protected variables!
-                #
+                for param in paramTypes:
+                    #
+                    # The compiler will reject write to protected variables!
+                    #
 
-                if param == "variable":
-                    writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-                    do = {
-                        "read"  : all,
-                        "write" : writable,
-                        "store" : nonSystem
-                    }
+                    if param == "variable":
+                        writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+                        do = {
+                            "read"  : all,
+                            "write" : writable,
+                            "store" : nonSystem
+                        }
 
-                    for var in do[paramCommand.does]:
-                        forTheList[var] = "variable"
-                elif param == "array":
-                    writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
-                    do = {
-                        False  : all,
-                        True   : writable
-                    }
-                    for arr in do[self.isItemWritingBack(text)]:
-                        forTheList[arr] = "array"
+                        for var in do[paramCommand.does]:
+                            forTheList[var] = "variable"
+                    elif param == "array":
+                        writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
+                        do = {
+                            False  : all,
+                            True   : writable
+                        }
+                        for arr in do[self.isItemWritingBack(text)]:
+                            forTheList[arr] = "array"
+
 
         keys = list(forTheList.keys())
         keys.sort()

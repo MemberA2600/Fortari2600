@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="BookmarkManager">
-    <bookmark url="file://$PROJECT_DIR$/src/View/EditorBigFrame.py" line="801" />
+    <bookmark url="file://$PROJECT_DIR$/src/View/EditorBigFrame.py" line="970" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/syntax.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/syntax.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2022-12-07_063110.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/Command.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/Command.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2022-12-14_063001.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/EditorBigFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/EditorBigFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/common_system_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/common_system_variables.a26" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,7 +46,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1670995801212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1671357202387" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -181,12 +178,12 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="173" />
+          <entry key="project.closed" value="176" />
           <entry key="project.open.time.2" value="3" />
           <entry key="project.open.time.3" value="41" />
-          <entry key="project.open.time.4" value="167" />
+          <entry key="project.open.time.4" value="171" />
           <entry key="project.open.time.5" value="4" />
-          <entry key="project.opened" value="215" />
+          <entry key="project.opened" value="219" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -204,13 +201,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="115133" />
+          <entry key="py" value="118602" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="115133" />
+          <entry key="Python" value="118602" />
         </counts>
       </usages-collector>
     </session>
@@ -223,10 +220,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="259">
-              <caret line="454" lean-forward="true" selection-start-line="454" selection-end-line="454" />
+            <state relative-caret-position="467">
+              <caret line="430" column="51" selection-start-line="430" selection-start-column="51" selection-end-line="430" selection-end-column="51" />
               <folding>
-                <marker date="1670995944913" expanded="true" signature="18680:18689" ph="..." />
+                <marker date="1671357095068" expanded="true" signature="20815:21607" ph="..." />
               </folding>
             </state>
           </provider>
@@ -235,8 +232,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="688">
-              <caret line="43" column="20" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="20" />
+            <state relative-caret-position="192">
+              <caret line="12" column="22" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -264,14 +261,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>typ</find>
-      <find>params</find>
-      <find>param</find>
-      <find>validity</find>
-      <find>getArrayValidity</find>
-      <find>onVa</find>
-      <find>linkable</find>
-      <find>&quot;)&quot;</find>
       <find>getArray</find>
       <find>listBox</find>
       <find>&quot;param&quot;</find>
@@ -286,14 +275,22 @@
       <find>commandPairs</find>
       <find>pairs</find>
       <find>commandPrepare</find>
-      <find>forceTyp</find>
-      <find>getCommandTheCursorStandsInside</find>
       <find>text</find>
       <find>&quot;\t&quot;</find>
       <find>variable</find>
-      <find>word</find>
       <find>getCommandPairs</find>
+      <find>getNestedDoItems</find>
+      <find>ali</find>
+      <find>getComman</find>
+      <find>getCommandTheCursorStandsInside</find>
+      <find>__cursorPoz</find>
+      <find>moveAndGetForEvaluate</find>
+      <find>selectedForThings</find>
+      <find>word</find>
       <find>print</find>
+      <find>getUnselectedForSelect</find>
+      <find>forceTyp</find>
+      <find>__setListBoxOnTheRight</find>
     </findStrings>
     <replaceStrings>
       <replace>checker</replace>
@@ -408,6 +405,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -436,7 +434,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -629,19 +626,19 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5977584" visible="true" weight="0.3889602" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5977584" visible="true" weight="0.40949935" />
       <window_info id="Structure" order="1" sideWeight="0.4022416" side_tool="true" weight="0.36136073" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3298279" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.77021825" weight="0.23231357" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.76765084" visible="true" weight="0.23231357" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49807444" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.22978178" side_tool="true" visible="true" weight="0.23231357" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.23234917" side_tool="true" visible="true" weight="0.23231357" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -1030,18 +1027,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="454" lean-forward="true" selection-start-line="454" selection-end-line="454" />
+        <state relative-caret-position="467">
+          <caret line="430" column="51" selection-start-line="430" selection-start-column="51" selection-end-line="430" selection-end-column="51" />
           <folding>
-            <marker date="1670995944913" expanded="true" signature="18680:18689" ph="..." />
+            <marker date="1671357095068" expanded="true" signature="20815:21607" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="688">
-          <caret line="43" column="20" selection-start-line="43" selection-start-column="16" selection-end-line="43" selection-end-column="20" />
+        <state relative-caret-position="192">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="22" />
         </state>
       </provider>
     </entry>
