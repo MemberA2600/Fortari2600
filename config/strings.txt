@@ -1,0 +1,2 @@
+"True"=["true" "TRUE" "yes" "Yes" "YES" "ok" "Ok" "OK"],1
+"False"=["false" "FALSE" "no" "No" "NO"],0

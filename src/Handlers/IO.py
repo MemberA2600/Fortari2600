@@ -66,7 +66,18 @@ class IO:
         for item in self.loadWholeText("config"+os.sep+"syntax.txt").split("\n"):
             self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=")[0], "=".join(item.split("=")[1:]).replace("\n","").replace("\r",""))
 
+        stringConstants = self.__loader.stringConstants
 
+        for item in self.loadWholeText("config"+os.sep+"strings.txt").split("\n"):
+            name = item.split("=")[0]
+            stringConstants[name] = {}
+
+            secondPart = item.split("=")[1].split(",")
+            stringConstants[name]["alias"] = secondPart[0][1:-1].split(" ")
+            stringConstants[name]["value"] = int(secondPart[1])
+
+
+        #print(stringConstants)
 
     def loadSubModule(self, name):
         return(open("templates/skeletons/"+name+".asm", "r").read())

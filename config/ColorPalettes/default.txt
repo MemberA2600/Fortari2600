@@ -18,3 +18,5 @@ process=darkgoldenrod4
 variable=purple2
 number=peachpuff3
 array=brown
+constStringBack=black
+constStringFont=lime

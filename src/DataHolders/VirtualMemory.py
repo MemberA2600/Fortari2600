@@ -571,14 +571,13 @@ class VirtualMemory:
                 var = self.memory[address].variables[variable]
                 if  (var.validity == "global" or
                      var.validity == bankNum):
+                     all.append(variable)
                      if var.system == False:
-                        all.append(variable)
                         nonSystem.append(variable)
+                        writatble.append(variable)
                      elif var.iterable == True:
-                        all.append(variable)
                         writatble.append(variable)
                      elif var.linkable == True:
-                        all.append(variable)
                         readOnly.append(variable)
 
         return writatble, readOnly, all, nonSystem
@@ -596,7 +595,7 @@ class VirtualMemory:
                 if self.hasArrayReadOnly(array) == True:
                    readonly.append(array)
                 else:
-                    writable.append(array)
+                   writable.append(array)
 
 
                 """

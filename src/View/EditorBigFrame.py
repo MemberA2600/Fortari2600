@@ -22,6 +22,9 @@ class EditorBigFrame:
         self.__syntaxList = self.__loader.syntaxList
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
 
+        self.__words = ["lineNum", "level", "command", "param#1", "param#2", "param#3", "comment", "updateRow"]
+
+
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
         self.__counter    = 0
@@ -44,6 +47,7 @@ class EditorBigFrame:
                                    height=self.__editor.getWindowSize()[1],
                                    bg=self.__colors.getColor("window"))
         self.__frame.pack_propagate(False)
+        self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
         self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
 
         sizes = (0.20, 0.60, 0.20)
@@ -156,8 +160,25 @@ class EditorBigFrame:
     def __createJobWindows(self):
         from tkinter import scrolledtext
 
-        self.__codeBox = scrolledtext.ScrolledText(self.__mainFrame, width=999999, height=9999999, wrap=WORD)
-        self.__codeBox.pack(fill=BOTH)
+        per = 25
+
+        self.__codeFrameEditor = Frame(self.__mainFrame, width= self.__mainFrame.winfo_width(),
+                                 height=self.__editor.getWindowSize()[1] // per,
+                                 bg=self.__colors.getColor("window"))
+
+        self.__codeFrameEditor.pack_propagate(False)
+        self.__codeFrameEditor.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__codeFrameHeader = Frame(self.__mainFrame, width= self.__mainFrame.winfo_width(),
+                                 height=self.__editor.getWindowSize()[1] // per,
+                                 bg=self.__colors.getColor("window"))
+
+        self.__codeFrameHeader.pack_propagate(False)
+        self.__codeFrameHeader.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__codeBox = scrolledtext.ScrolledText(self.__mainFrame, width=999999, height=self.__mainFrame.winfo_height(), wrap=WORD)
+        self.__codeBox.pack(fill=BOTH, side=BOTTOM, anchor=S)
+
         self.__codeBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                         fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
@@ -173,14 +194,112 @@ class EditorBigFrame:
         self.__currentBank    = "bank2"
         self.__currentSection = "overscan"
 
-        self.__loadFromMemory(self.__currentBank, self.__currentSection)
-
         self.__validKeys = [
             "enter", "leave", "overscan", "vblank", "subroutines"
         ]
 
         self.__getFont()
         sizes = (0.20, 0.60, 0.20)
+
+        bannerItems = [[self.__dictionaries.getWordFromCurrentLanguage("number")        , 1.5, Label,  None],
+                       [self.__dictionaries.getWordFromCurrentLanguage("level")         , 1.5, Label,  None],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command")       , 2,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#1"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#2"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#3"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("comment")       , 3,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("updateRow")     , 1.5, Button, self.updateTextFromDisplay]
+                       ]
+
+        colors = [[self.__colors.getColor("font"), self.__colors.getColor("window")],
+                  [self.__colors.getColor("window"), self.__colors.getColor("font")]]
+
+        sumItems = 0
+
+        for bannerItem in bannerItems:
+            sumItems += len(bannerItem[0]) * bannerItem[1]
+
+        bannerItemLens = []
+        xUnit = self.__mainFrame.winfo_width() // sumItems
+        self.__labelFrames       = []
+        self.__headerLabels      = []
+        self.__codeEditoritems   = {}
+
+        for item in bannerItems:
+            bannerItemLens.append(
+                int(len(item[0])  * xUnit * item[1])
+            )
+
+            f = Frame(self.__codeFrameHeader, width=bannerItemLens[-1],
+                                         height=99999999,
+                                         bg=self.__colors.getColor("window"))
+            f.pack_propagate(False)
+            f.pack(side=LEFT, anchor = E, fill=Y)
+
+            self.__labelFrames.append(f)
+
+            num = bannerItems.index(item)
+            c = colors[num%2]
+
+            label = Label(f, text=item[0],
+                      font=self.__miniFont, fg=c[0], bg=c[1], justify=CENTER
+                      )
+
+            label.pack_propagate(False)
+            label.pack(side=TOP, anchor=N, fill=BOTH)
+
+            self.__headerLabels.append(label)
+
+            f2 = Frame(self.__codeFrameEditor, width=bannerItemLens[-1],
+                                         height=99999999,
+                                         bg=self.__colors.getColor("window"))
+            f2.pack_propagate(False)
+            f2.pack(side=LEFT, anchor = E, fill=Y)
+
+            self.__labelFrames.append(f2)
+
+            if   bannerItems[num][2] == Label:
+                label = Label(f2, text="-",
+                              font=self.__miniFont,
+                              fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"),
+                              justify=CENTER
+                              )
+
+                label.pack_propagate(False)
+                label.pack(side=TOP, anchor=N, fill=BOTH)
+                self.__codeEditoritems[self.__words[num]] = label
+
+            elif bannerItems[num][2] == Entry:
+                entryVar = StringVar()
+
+                entry = Entry(f2, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=99999,
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable=entryVar, name=self.__words[num],
+                                   font=self.__miniFont, justify=CENTER,
+                                   )
+                entry.pack_propagate()
+                entry.pack(side=TOP, anchor=N, fill=BOTH)
+
+                entry.bind("<KeyRelease>", self.checker)
+                entry.bind("<FocusOut>", self.checker)
+
+                self.__codeEditoritems[self.__words[num]] = [entryVar, entry]
+
+
+            elif bannerItems[num][2] == Button:
+                button = Button(f2,      width=9999999,
+                                         command=bannerItems[num][3],
+                                         state=DISABLED,
+                                         font=self.__tinyFont, fg=self.__colors.getColor("font"),
+                                         bg=self.__colors.getColor("window"),
+                                         text=bannerItems[num][0])
+                button.pack_propagate(False)
+                button.pack(fill=X)
+
+                self.__codeEditoritems[self.__words[num]] = button
+
 
         self.__button = Button(
             self.__rightFrame, width=round(self.__editor.getWindowSize()[0]*sizes[2]),
@@ -226,6 +345,15 @@ class EditorBigFrame:
         self.__listBoxOnTheRight   = l
         self.firstTry = True
 
+        self.getLineStructure(None, None, True)
+        self.__loadFromMemory(self.__currentBank, self.__currentSection)
+
+    def updateTextFromDisplay(self):
+        pass
+
+    def checker(self, event):
+        pass
+
     def focusOut(self, event):
         self.__setTinting("whole")
         self.__loader.mainWindow.focusOut(event)
@@ -248,6 +376,7 @@ class EditorBigFrame:
 
     def __tintingThread(self, mode):
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+
         if self.__lastButton == "Enter": mode = "whole"
 
         objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
@@ -255,877 +384,240 @@ class EditorBigFrame:
 
         if mode == "whole":
            for num in range (1, len(text)+1):
-               self.__lineTinting(num, text[num-1], objectList, processList)
+               self.__lineTinting(text[num-1], objectList, processList, num-1)
         else:
-            self.__lineTinting(mode, text[mode-1], objectList, processList)
+            self.__lineTinting(text[mode-1], objectList, processList, mode-1)
 
-        for bracket in (")", "("):
-            if bracket in text[self.__cursorPoz[0]-1][self.__cursorPoz[1]-1:self.__cursorPoz[1]+1]:
-               index = text[self.__cursorPoz[0]-1][self.__cursorPoz[1]-1:self.__cursorPoz[1]+1].index(bracket)
-               #nextBracketPoz = self.__findBracketPairs(bracket, self.__cursorPoz[1]-1+index, self.__cursorPoz[0]-1, text)
+    def __lineTinting(self, line, objects, processes, lineNum):
+        if len(line) == 0: return
 
-               error = True
-               bracketPairs = self.__getBracketPairs(text)
-               thePairs = []
+        delimiterPoz = self.getFirstValidDelimiterPoz(line)
+        yOnTextBox = lineNum + 1
+        line = line.replace("\t", " ")
 
-               for pair in bracketPairs:
-                   if str(self.__cursorPoz[0]) + "." + str(self.__cursorPoz[1] - (1-index)) in pair:
-                       if len(pair) == 2:
-                          thePairs = pair
-                          error    = False
-                       break
+        self.removeTag(yOnTextBox, 0, len(line), None)
+        text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
-               if error != True:
-                   theY1  = int(thePairs[0].split(".")[0])
-                   theX1  = int(thePairs[0].split(".")[1])
-                   theY2  = int(thePairs[1].split(".")[0])
-                   theX2  = int(thePairs[1].split(".")[1])
+        currentLineStructure = self.getLineStructure(lineNum, text, True)
 
-                   self.removeTag(theY1, theX1, theX1+1, "error")
-                   self.removeTag(theY2, theX2, theX2+1, "error")
+        if lineNum == self.__cursorPoz[0]-1:
+            currentWord = self.getCurrentWord(text[lineNum])
 
-                   self.__codeBox.tag_add("bracketSelected",     str(theY1) + "." + str(theX1),
-                                                                 str(theY1) + "." + str(theX1 + 1))
+        if line[0] in ("*", "#"): delimiterPoz = 0
 
-                   self.__codeBox.tag_add("bracketSelected",     str(theY2) + "." + str(theX2),
-                                                                 str(theY2) + "." + str(theX2 + 1))
-               else:
+        if delimiterPoz != len(line):
+           self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
 
-                   poz = [
-                       str(self.__cursorPoz[0]), str(self.__cursorPoz[1] - (1-index)),
-                       str(self.__cursorPoz[1] - (1-index) + 1)
-                   ]
+        self.updateLineDisplay(currentLineStructure)
 
-                   self.removeTag(poz[0], poz[1], poz[2], None)
-                   self.__codeBox.tag_add("error",     str(poz[0]) + "." + str(poz[1]),
-                                                       str(poz[0]) + "." + str(poz[2]))
+    def getCurrentWord(self, line):
+        startPoz = self.__cursorPoz[1]
+        endPoz   = startPoz
 
-        delimiterPairs = self.getStringDelimiterPair(text)
-
-        for pair in delimiterPairs:
-
-            if len(pair) == 1:
-                poz = [
-                    pair[0].split(".")[0], pair[0].split(".")[1],
-                ]
-
-                self.removeTag(poz[0], poz[1], str(int(poz[1]) + 1), None)
-                self.__codeBox.tag_add("error", str(poz[0]) + "." + str(poz[1]),
-                                       str(poz[0]) + "." + str(int(poz[1]) + 1))
-            else:
-                theY1 = int(pair[0].split(".")[0])
-                theX1 = int(pair[0].split(".")[1])
-                theY2 = int(pair[1].split(".")[0])
-                theX2 = int(pair[1].split(".")[1])
-
-                self.removeTag(theY1, theX1, theX1 + 1, "error")
-                self.removeTag(theY2, theX2, theX2 + 1, "error")
-
-                self.__codeBox.tag_add("string", str(theY1) + "." + str(theX1),
-                                       str(theY2) + "." + str(theX2 + 1))
-
-        commandPairs = self.getCommandPairs(text)
-
-        line = text[self.__cursorPoz[0]-1].replace("\t", " ")
-        xxx = self.getFirstValidDelimiterPoz(line)
-
-        words = line[:xxx].split(" ")
-        index = 0
-
-        for word in words:
-            found = False
-            if commandPairs == None: break
-
-            for compWord in commandPairs.keys():
-                if found: break
-
-                try:
-                    compWord2 = compWord
-                    if compWord2.endswith("("): compWord2 = compWord2[:-1]
-                    commandText, commandEndText, commandLen, commandVal = self.commandPrepare(compWord2)
-                except Exception as e:
-                    #print(str(e))
-                    continue
-
-                if commandEndText == None: break
-                if (self.__currentSection in commandVal.sectionsAllowed) == False: break
-
-                theList = commandPairs[compWord]
-                # wordStartPoz = str(self.__cursorPoz[0]) + "." + str(index)
-                # wordEndPoz = str(self.__cursorPoz[0]) + "." + str(index + len(word) + 1)
-
-                if word in (commandText, commandEndText):
-                   for pair in theList:
-                       if len(pair) > 1:
-                           theY1    = int(pair[0].split(".")[0])
-                           theY2    = int(pair[1].split(".")[0])
-
-                           theX1    = int(pair[0].split(".")[1])
-                           theX2    = int(pair[1].split(".")[1])
-
-                           theX1End = int(pair[0].split(".")[2])
-                           theX2End = int(pair[1].split(".")[2])
-
-                           if (theY1 == self.__cursorPoz[0]              and\
-                                       self.__cursorPoz[1] >= theX1      and \
-                                       self.__cursorPoz[1] <= theX1End   and \
-                                       word == commandText)\
-                               or (theY2 == self.__cursorPoz[0]          and\
-                                       self.__cursorPoz[1] >= theX2      and \
-                                       self.__cursorPoz[1] <= theX2End   and \
-                                       word == commandEndText):
-                                       found = True
-
-                                       if  commandText.endswith("(")\
-                                       and word == commandText: theX1End -= 1
-
-                                       self.removeTag(theY1, theX1, theX1End, None)
-                                       self.removeTag(theY2, theX2, theX2End, None)
-
-                                       self.__codeBox.tag_add("commandBack", str(theY1) + "." + str(theX1),
-                                                                                str(theY1) + "." + str(theX1End + 1))
-                                       self.__codeBox.tag_add("commandBack", str(theY2) + "." + str(theX2),
-                                                                                str(theY2) + "." + str(theX2End + 1))
-
-                       elif len(pair) == 1:
-                           theY1    = int(pair[0].split(".")[0])
-                           theX1    = int(pair[0].split(".")[1])
-                           theX1End = int(pair[0].split(".")[2])
-                           if commandText.endswith("(") \
-                                   and word == commandText: theX1End -= 1
-
-                           self.removeTag(theY1, theX1, theX1End, None)
-                           found = True
-                           self.__codeBox.tag_add("error", str(theY1) + "." + str(theX1),
-                                                   str(theY1) + "." + str(theX1End + 1))
-            index += (len(word) + 1)
-
-        errorTintingDoItems = self.getNestedDoItems(commandPairs)
-        for pair in errorTintingDoItems:
-            theY1 = int(pair[0].split(".")[0])
-            theY2 = int(pair[1].split(".")[0])
-
-            theX1 = int(pair[0].split(".")[1])
-            theX2 = int(pair[1].split(".")[1])
-
-            theX1End = int(pair[0].split(".")[2])
-            theX2End = int(pair[1].split(".")[2])
-
-            self.removeTag(theY1, theX1, theX1End, None)
-            self.removeTag(theY2, theX2, theX2End, None)
-
-            self.__codeBox.tag_add("error", str(theY1) + "." + str(theX1),
-                                   str(theY1) + "." + str(theX1End))
-
-            self.__codeBox.tag_add("error", str(theY2) + "." + str(theX2),
-                                   str(theY2) + "." + str(theX1End))
-
-        selectCaseSelecteds = self.getUnselectedForSelect(text)
-
-        for pair in selectCaseSelecteds:
-            theY1    = int(pair[0].split(".")[0])
-            theX1    = int(pair[0].split(".")[1])
-            theX1End = int(pair[1].split(".")[1])
-
-            self.removeTag(theY1, theX1, theX1End, None)
-            self.__codeBox.tag_add("commandBack", str(theY1) + "." + str(theX1),
-                                   str(theY1) + "." + str(theX1End))
-
-
-        forceTyp = [None, None]
-
-        soMuchData = self.getCommandTheCursorStandsInside(text, None)
-
-        if soMuchData[0] != "":
-           forceTyp = [
-               "param",
-               soMuchData
-           ]
-
-
-        if self.firstTry == True:
-            try:
-                self.__setListBoxOnTheRight(text, forceTyp)
-                self.firstTry = False
-            except Exception as e:
-               #print(str(e))
-               pass
-        else:
-            self.__setListBoxOnTheRight(text, forceTyp)
-
-    def getUnselectedForSelect(self, text):
-        from copy import deepcopy
-
-        selectedForThings = []
-
-        beginList  = deepcopy(self.__syntaxList["select"].alias)
-        caseList   = deepcopy(self.__syntaxList["case"].alias)
-        endingList = deepcopy(self.__syntaxList["end-select"].alias)
-        beginList.append("select")
-        caseList.append("case")
-        endingList.append("end-select")
-
-        soMuchData = self.getCommandOnly(text, None)
-        # (commandName, command, [startPoz, endPoz], paramNum, paramTyp, sliceXStartEnd, level)
-
-        commandName = soMuchData[0]
-        command     = soMuchData[1]
-        commandPoz  = soMuchData[2]
-
-        if commandName != "":
-            selectAppend = [str(self.__cursorPoz[0]) + "." + str(commandPoz[0]),
-                            str(self.__cursorPoz[0]) + "." + str(commandPoz[1]),
-                            ]
-            startPozUp     = [self.__cursorPoz[0] - 1, commandPoz[0]]
-            startPozDown   = [self.__cursorPoz[0] - 1, commandPoz[1]]
-
-            #print(selectAppend, startPoz)
-
-            if commandName in beginList:
-               selectedForThings.append(selectAppend)
-               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "down",
-                                          startPozDown, selectedForThings)
-               #print(commandName)
-
-            elif commandName in caseList:
-               selectedForThings.append(selectAppend)
-               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "up",
-                                          startPozUp, selectedForThings)
-               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "down",
-                                          startPozDown, selectedForThings)
-               #print(commandName)
-
-            elif commandName in endingList:
-               selectedForThings.append(selectAppend)
-               self.moveAndGetForEvaluate(text, beginList, caseList, endingList, "up",
-                                          startPozUp, selectedForThings)
-               #print(commandName)
-
-        ABCDE = []
-        for item in selectedForThings:
-            if item not in ABCDE:
-               ABCDE.append(item)
-
-        return ABCDE
-
-    def getCommandOnly(self, text, position):
-
-        if position == None:
-           position = [self.__cursorPoz[0] - 1, self.__cursorPoz[1]]
-
-        commandName = ""
-        command     = None
-        commandPoz  = []
-
-        line  = text[position[0]].replace("\t", " ")
-        words = line.split(" ")
-
-        currentX = 0
-        for word in words:
-            if self.__cursorPoz[1] >= currentX and self.__cursorPoz[1] <= currentX + len(word) + 1:
-               compareWord = word.split("(")[0]
-               if compareWord in self.__syntaxList.keys():
-                  commandName = compareWord
-                  command     = self.__syntaxList[compareWord]
-                  commandPoz  = [currentX, currentX + len(commandName)]
-
-            currentX += len(word) + 1
-
-        return commandName, command, commandPoz
-
-    def moveAndGetForEvaluate(self, text, beginList, caseList, endingList, direction, startPoz, selectedForThings):
-        borderList  = None
-        firstLine   = True
-        foundEnding = False
-
-        if direction == "down":
-            borderList = endingList
-
-            lastLine = len(text)
-            adder    = 1
-
-        else:
-            borderList = beginList
-            lastLine = -1
-            adder    = -1
-
-        for theY in range(startPoz[0], lastLine, adder):
-            line = text[theY]
-
-            if line.startswith("*") or line.startswith("#"): continue
-            currentIndex = 0
-
-            if firstLine == True:
-               line = text[theY][startPoz[1]:]
-               firstLine = False
-               currentIndex = startPoz[1]
-
-            xxx  = self.getFirstValidDelimiterPoz(line)
-            line = line[:xxx].replace("\t", " ")
-            words = line.split(" ")
-
-            for word in words:
-                compareWord = word.split("(")[0]
-
-                if compareWord in caseList:
-                    selectedForThings.append(
-                        [
-                            str(theY + 1) + "." + str(currentIndex),
-                            str(theY + 1) + "." + str(currentIndex + len(compareWord)),
-                        ]
-                    )
-
-                elif compareWord in borderList:
-                    selectedForThings.append(
-                        [
-                            str(theY + 1) + "." + str(currentIndex),
-                            str(theY + 1) + "." + str(currentIndex + len(compareWord)),
-                        ]
-                    )
-                    foundEnding = True
-
-                currentIndex += len(word) + 1
-
-            if foundEnding == True: break
-
-
-    def getNestedDoItems(self, commandPairs):
-
-        try:
-            theList1 = commandPairs["do-items("]
-        except:
-            theList1 = []
-
-        try:
-            theList2 = commandPairs["perform-items("]
-        except:
-            theList2 = []
-
-        try:
-            theList3 = commandPairs["for-items("]
-        except:
-            theList3 = []
-
-        theList1.extend(theList2)
-        theList1.extend(theList3)
-        theList1.sort()
-
-        forErrorTinting = []
-
-        if len(theList1) > 1:
-            for pairNum in range(0, len(theList1)-1):
-                for compareNum in range(pairNum+1, len(theList1)):
-
-                    if len(theList1[pairNum])    < 2: break
-                    if len(theList1[compareNum]) < 2: continue
-
-                    start1 = self.getPozValue(theList1[pairNum][0], 1)
-                    end1   = self.getPozValue(theList1[pairNum][1], 0)
-
-                    start2 = self.getPozValue(theList1[compareNum][0], 1)
-                    end2   = self.getPozValue(theList1[compareNum][1], 0)
-
-                    if start2 > end1: break
-                    if start1 < start2 and end1 > end2: forErrorTinting.append(theList1[compareNum])
-
-        return forErrorTinting
-
-    def getPozValue(self, poz, num):
-        poz = poz.split(".")
-        first  = int(poz[0]) * 100000
-        second = int(poz[num + 1])
-
-        return first + second
-
-    def __setListBoxOnTheRight(self, text, forceTyp):
-        selector = 0
-        try:
-            selector = self.__listBoxOnTheRight.curselection()[0]
-        except:
-            pass
-
-        self.__listBoxOnTheRight.select_clear(0, END)
-        self.__listBoxOnTheRight.delete(0, END)
-
-        line = text[self.__cursorPoz[0]-1]
-        xxx = self.getFirstValidDelimiterPoz(line)
-        line = line[:xxx]
-
-        words = line.split(" ")
-
-        index = 0
-        currentWord = ""
-
-        for word in words:
-            endPoz = index + len(word)
-            if self.__cursorPoz[1] == endPoz:
-                currentWord = word
-                break
-            else:
-                index += endPoz + 1
-
-        if currentWord == "": return
-
-        forTheList = {}
-
-        typ = None
-
-        delimiter = ""
-        for d in self.__config.getValueByKey("validObjDelimiters"):
-            if d in currentWord:
-               delimiter = d
-               typ = "object"
+        for num in range(startPoz-1, -1, -1):
+            if line[num] == " ":
+               endPoz = num + 1
                break
 
-        if forceTyp[0] != None: typ = forceTyp[0]
-
-        if typ == None:
-            for command in self.__syntaxList.keys():
-                if command.startswith(currentWord): forTheList[command] = "command"
-
-            # Object stuff are callable with call / exec, while using variables depends on if the command writes or reads.
-
-        elif typ == "object":
-            if currentWord[-1] == delimiter:
-                lastOne = currentWord.split(delimiter)[-2]
-
-                if lastOne.upper() == "game".upper():
-                    firstLevel = self.__objectMaster.objects.keys()
-                    for item in firstLevel:
-                        if item.startswith("bank") == False:
-                            forTheList[item] = "object"
-                else:
-                    nextLevel = self.__objectMaster.returnNextLevel(lastOne)
-                    for item in nextLevel:
-                        askName = item
-                        if "(" in item:
-                            askName = item.split("(")[0]
-
-                        forTheList[askName] = self.__objectMaster.returnOcjectOrProcess(item)
+        return line[endPoz:startPoz]
 
 
-        elif typ == "param":
-            paramCommandName       = forceTyp[1][0]
-            paramCommand           = forceTyp[1][1]
-            paramCommandDimensions = forceTyp[1][2]
-            paramPosition          = forceTyp[1][3]
-            paramType              = forceTyp[1][4]
-            paramDimension         = forceTyp[1][5]
+    def getLineStructure(self, lineNum, text, checkLevel):
+        if lineNum == None: lineNum = self.__cursorPoz[0]-1
 
-            paramY                 = paramDimension[2]
-            paramX1                = paramDimension[0]
-            paramX2                = paramDimension[1]
+        if text == None:
+           text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
-            paramCommandLevel      = forceTyp[1][6]
+        line = text[lineNum].replace("\t", " ")
 
-            if paramType != None:
-                if paramType.startswith("{"): paramType = paramType[1:-1]
-                paramTypes = paramType.split("|")
+        lineStructure = {
+            "command": [None, [-1, -1]],
+            "(":        -1,
+            "param#1": [None, [-1, -1]],
+            "param#2": [None, [-1, -1]],
+            "param#3": [None, [-1, -1]],
+            ")":        len(line),
+            "lineNum":  lineNum,
+            "level":    -1,
+            "comment": [None, [-1,-1]]
+        }
+        delimiterPoz = self.getFirstValidDelimiterPoz(line)
 
-                for param in paramTypes:
-                    #
-                    # The compiler will reject write to protected variables!
-                    #
+        lineStructure["comment"] = [
+            line[(delimiterPoz + 1):], [delimiterPoz + 1, len(line) - 1 ]
+        ]
 
-                    if param == "variable":
-                        writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-                        do = {
-                            "read"  : all,
-                            "write" : writable,
-                            "store" : nonSystem
-                        }
+        if delimiterPoz == len(line):
+            lineStructure["comment"][1][0] = len(line)
 
-                        for var in do[paramCommand.does]:
-                            forTheList[var] = "variable"
-                    elif param == "array":
-                        writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
-                        do = {
-                            False  : all,
-                            True   : writable
-                        }
-                        for arr in do[self.isItemWritingBack(text)]:
-                            forTheList[arr] = "array"
+        if lineStructure["comment"][0] == "" or lineStructure["comment"][1][0] > lineStructure["comment"][1][1]:
+           lineStructure["comment"][1][1] = lineStructure["comment"][1][0]
 
+        if len(line) == 0: return  lineStructure
 
-        keys = list(forTheList.keys())
-        keys.sort()
+        if line[0] not in ("*", "#"):
 
-        for item in keys:
-            self.__listBoxOnTheRight.insert(END, item)
-            self.__listBoxOnTheRight.itemconfig(END, fg = self.__loader.colorPalettes.getColor(forTheList[item]))
+            for num in range(0, delimiterPoz):
+                if line[num] == "(":
+                   lineStructure["("] = num
+                   break
 
-        if len(list(forTheList.keys())) - 1 < selector: selector = len(list(forTheList.keys())) - 1
-        self.__listBoxOnTheRight.select_set(selector)
-        self.__listBoxOnTheRight.yview(selector)
+            for num in range(delimiterPoz-1, -1, -1):
+                if line[num] == ")":
+                   lineStructure[")"] = num
+                   break
 
-    def isItemWritingBack(self, text):
-        # firstLine = True
-        level     = 0
+            inside = ""
+            if lineStructure["("] != -1:
+               if lineStructure[")"] != -1:
+                  inside = line[lineStructure["("] + 1 : lineStructure[")"]]
+               else:
+                  inside = line[lineStructure["("] + 1 : lineStructure[delimiterPoz]]
 
-        pairs = self.getCommandPairs(text)
-        whatWeNeed = [[],[],[]]
-
-        try:
-            whatWeNeed[0] = pairs["do-items("]
-        except:
-            pass
-
-        try:
-            whatWeNeed[1] = pairs["perform-items("]
-        except:
-            pass
-
-        try:
-            whatWeNeed[2] = pairs["for-items("]
-        except:
-            pass
-
-        fromTo = [None, None]
-
-        for group in whatWeNeed:
-            if fromTo[1] != None: break
-
-            for pair in group:
-                if fromTo[1] != None: break
-
-                start   = pair[0].split(".")
-                startY  = int(start[0]) - 1
-                startX  = int(start[1])
-
-                # print(startY, self.__cursorPoz[0]-1)
-
-                if startY != self.__cursorPoz[0]-1:
-                   continue
-
-                fromTo[0] = startY
-
-                notThisOne = False
-                for theX in range(self.__cursorPoz[1]-1, -1, -1):
-                    # print(theX, startX)
-                    if text[startY][theX] == ")":
-                       notThisOne = True
-                       break
-                    elif theX == startX:
+            if lineStructure["("] != -1:
+               startX = -1
+               endX   = lineStructure["("] - 1
+               firstNoneSpace = False
+               for num in range(lineStructure["("] - 1, -1, -1):
+                   if line[num] == " " and firstNoneSpace == True:
+                      startX = num + 1
+                      break
+                   elif line[num] != " " and firstNoneSpace == False:
+                      firstNoneSpace = True
+                      endX           = num
+                   elif num == 0:
+                       startX = 0
                        break
 
-                if notThisOne: continue
+               if startX not in [-1, lineStructure["("]]:
+                   lineStructure["command"] = [
+                       line[startX : endX + 1],
+                       [startX, endX]
+                   ]
 
-                if len(pairs) != 1:
-                    end = pair[1].split(".")
-                    endY = int(end[0]) - 1
-                    endX = int(end[3])
-
-                    fromTo[1] = endY
-                else:
-                    fromTo[1] = len(text) - 1
-
-        if fromTo[1] == None:
-           return False
-
-        for theY in range(fromTo[0], fromTo[1] + 1):
-            if "ITEM" in text[theY].upper():
-                for theX in range(0, len(text[theY]) - 4):
-                    if text[theY][theX:theX+4].upper() == "ITEM":
-                       try:
-                           if text[theY][theX-1:theX + 5].upper() == "-ITEMS":
-                               continue
-                       except:
-                           pass
-                       soMuchData = self.getCommandTheCursorStandsInside(text, [theY, theX])
-                       command    = soMuchData[1]
-                       if command.does.upper() == "WRITE": return True
-
-
-        return False
-
-    def getCommandTheCursorStandsInside(self, text, middlePoz):
-        command = None
-        commandName = ""
-        startPoz = []
-        endPoz = []
-        paramNum = -1
-        paramTyp = None
-        sliceXStartEnd = []
-
-        firstOne = True
-
-        if middlePoz == None:
-           middlePoz = [self.__cursorPoz[0] - 1, self.__cursorPoz[1]]
-
-        delimiter = False
-        for lineNum in range(middlePoz[0], -1, -1):
-            s = None
-            if firstOne == True:
-                s = middlePoz[1] - 1
-                firstOne = False
             else:
-                s = self.getFirstValidDelimiterPoz(text[lineNum]) - 1
+                startX = -1
+                endX   = -1
 
-            for charNum in range(s, -1, -1):
-                try:
-                    if text[lineNum][charNum] == "(":
-                        startPoz = [lineNum, charNum]
-                        break
-                    elif text[lineNum][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
-                        delimiter = True
-                        break
-                except:
-                    delimiter = True
-                    break
+                for num in range(0, delimiterPoz + 1):
+                    if num == delimiterPoz: break
+                    elif line[num] != " ":
+                       startX = num
+                       break
 
-            if startPoz != [] or delimiter == True: break
 
-        delimiter = False
-        firstOne = True
-        for lineNum in range(middlePoz[0], len(text)):
-            s = None
-            if firstOne == True:
-                s = middlePoz[1]
-                firstOne = False
-            else:
-                s = 0
+                for num in range(startX, delimiterPoz + 1):
+                    if num == delimiterPoz:
+                       if startX != -1: endX = num -1
+                       break
+                    elif line[num] == " ":
+                       endX = num - 1
+                       break
 
-            for charNum in range(s, self.getFirstValidDelimiterPoz(text[lineNum])):
-                if text[lineNum][charNum] == ")":
-                    endPoz = [lineNum, charNum]
-                    break
-                elif text[lineNum][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
-                    delimiter = True
-                    break
+                if startX != -1 and endX != -1:
+                    lineStructure["command"] = [
+                        line[startX: endX+1],
+                        [startX, endX]
+                    ]
 
-            if endPoz != [] or delimiter == True: break
 
-        if endPoz == []:
-            endPoz = [middlePoz[0], middlePoz[1]]
+            if lineStructure["("] != -1:
+               startX = lineStructure["("] + 1
+               endX   = delimiterPoz
 
-        commandStart = None
-        if startPoz != []:
-            for charNum in range(startPoz[1], -1, -1):
-                if text[startPoz[0]][charNum] == " ":
-                    commandStart = charNum + 1
-                    break
+               if lineStructure[")"] != -1:
+                  endX = lineStructure[")"]
 
-                elif charNum == 0:
-                    commandStart = 0
-                    break
+               paramNum = 0
+               paramStart = startX
+               paramEnd   = -1
 
-                elif text[startPoz[0]][charNum] in self.__config.getValueByKey("validObjDelimiters").split(" "):
-                    delimiter = True
-                    break
+               for num in range(startX, endX):
+                   if line[num] == "," or num == endX - 1:
+                      paramName = "param#" + str(paramNum + 1)
 
-            if delimiter == False:
-                commandName = text[startPoz[0]][commandStart:startPoz[1]]
-                if commandName in self.__syntaxList.keys():
-                    command = self.__syntaxList[commandName]
+                      paramEnd = num
+                      if line[num] == ",":
+                         paramEnd = num - 1
 
-        inside = False
-        level = 0
+                      lineStructure[paramName] = [
+                        line[paramStart : paramEnd + 1],
+                        [paramStart, paramEnd]
+                      ]
 
-        if startPoz != [] and endPoz != []:
-            paramNum = 0
-            first = True
-            for lineNum in range(startPoz[0], endPoz[0] + 1):
-                if lineNum > middlePoz[0]: break
+                      paramNum += 1
+                      if paramNum > 2: break
+                      paramStart = paramEnd + 2
 
-                xxx = self.getFirstValidDelimiterPoz(text[lineNum])
-                if first == True:
-                    s = startPoz[1]
-                    first = False
-                else:
-                    s = 0
+            for key in lineStructure:
+                if type(lineStructure[key]) == list:
+                   if lineStructure[key][0] != None:
+                        cutStart = 0
+                        cutEnd   = 0
 
-                inside = False
-                doBreak = False
-                for charNum in range(s, xxx):
-                    if lineNum == middlePoz[0] and charNum >= middlePoz[1]:
-                        doBreak = True
+                        word = lineStructure[key][0]
 
-                    if text[lineNum][charNum] == "(":
-                        sliceXStartEnd = [charNum, charNum, lineNum]
-                        inside = True
-                        level += 1
+                        for num in range(0, len(word)):
+                            if word[num] == " ":
+                               cutStart  += 1
+                            else:
+                                break
 
-                    elif text[lineNum][charNum] == ")":
-                        inside = False
-                        level -= 1
+                        for num in range(len(word)-1, -1, -1):
+                            if word[num] == " ":
+                                cutEnd   += 1
+                            else:
+                                break
 
-                        if doBreak == True:
-                            sliceXStartEnd[1] = charNum
-                            break
+                        lineStructure[key][0] = word[cutStart : len(word) - cutEnd]
+                        lineStructure[key][1][0] += cutStart
+                        lineStructure[key][1][1] -= cutEnd
 
-                    elif text[lineNum][charNum] == ",":
-                        if doBreak == True:
-                            sliceXStartEnd[1] = charNum - 1
-                            break
-                        else:
-                            sliceXStartEnd[0] = charNum
-                            paramNum += 1
+            if checkLevel == True and lineStructure["command"][0] != None:
+               # lines = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+               level     = 0
+               for compareLineNum in range(0, lineNum):
+                   compareStructure = self.getLineStructure(compareLineNum, text, False)
+                   if compareStructure["command"][0] != None:
+                       if compareStructure["command"][0].split("-")[0].upper() in ["DO", "PERFORM",
+                                                                                   "FOR", "FOREACH",
+                                                                                   "SELECT", "SWITCH",
+                                                                                   "EVALUATE"]:
+                          level += 1
+                       elif compareStructure["command"][0].split("-")[0].upper() == "END":
+                          level -= 1
 
-        #print((commandName, command, [startPoz, endPoz], paramNum, "?", sliceXStartEnd, level))
-        if paramNum != -1 and commandName != "" and command == None: print(commandName, "!!!")
-        if paramNum != -1 and commandName != "" and command != None:
-            params = command.params
-            try:
-                paramTyp = params[paramNum]
-            except:
-                paramTyp = None
+               if lineStructure["command"][0].split("-")[0].upper() == "END": level -= 1
+               if level < 0: level = 0
 
-        return (commandName, command, [startPoz, endPoz], paramNum, paramTyp, sliceXStartEnd, level)
+               #print(lineStructure["command"][0], level)
+               lineStructure["level"] = level
 
-    def commandPrepare(self, command):
-        command    = command.replace("\t", " ").replace(" ","")
-        commandVal = self.__loader.syntaxList[command]
-        commandText = command
-        commandLen = len(command)
-        commandEndText = None
+        if lineNum == self.__cursorPoz[0]-1:
+            self.__lineStructure = lineStructure
 
-        if commandVal.endNeeded == True:
-            commandEndText = "end-" + command.split("-")[0]
+        #print(lineStructure)
+        return(lineStructure)
 
-        if commandVal.bracketNeeded == True:
-            commandText += "("
-            commandLen += 1
+    def updateLineDisplay(self, lineStructure):
+        for key in lineStructure:
+            if key in self.__words:
+               item = self.__codeEditoritems[key]
 
-        return commandText, commandEndText, commandLen, commandVal
+               if type(item)  == Label:
+                  item.config(text = lineStructure[key])
 
-    def getCommandPairs(self, text):
-        pairs = {}
-        commandStack = []
+               elif type(item) == list:
+                  if type(item[0]) == StringVar:
+                     item[0].set(lineStructure[key])
 
-        for theY in range(0, len(text)):
-            line = text[theY]
-            xxx = self.getFirstValidDelimiterPoz(line)
-            line = line[:xxx]
+        self.__checkEditorItems()
 
-            if line.startswith("*") or line.startswith("#"): continue
-            lenght = len(line)
-            delimiterLen = self.getFirstValidDelimiterPoz(line)
-            if delimiterLen != None:
-                lenght = delimiterLen
+    def __checkEditorItems(self):
+        pass
 
-            words = line[:lenght].replace("\t", " ").split(" ")
-            index = 0
-            for wordNum in range(0, len(words)):
-                words[wordNum] = words[wordNum].split("(")[0]
-
-            for word in words:
-                found = False
-                word = word.split("(")[0]
-
-                for command in self.__loader.syntaxList.keys():
-                    if found == True: break
-
-                    if command == word:
-                  #  if command in line:
-                        commandText, commandEndText, commandLen, commandVal = self.commandPrepare(command)
-
-                        if len(commandStack) > 0:
-                           lastCommand    = commandStack[-1][0]
-                           lastEndCommand = commandStack[-1][1]
-                        else:
-                           lastCommand    = None
-                           lastEndCommand = None
-
-                        compareText = commandText
-                        if commandVal.bracketNeeded == True and compareText.endswith("(") == False:
-                           compareText += "("
-
-                        if commandEndText != None:
-                            if compareText.endswith("("): word += "("
-                            if word == compareText:
-                               commandStack.append([commandText, commandEndText])
-
-                               if commandText not in pairs.keys():
-                                  pairs[commandText] = []
-                               if compareText.endswith("(") == True:
-                                   pairs[commandText].append([
-                                      str(theY + 1) + "." + str(index) + "." + str(index + len(word)-1)
-                                       ])
-                               else:
-                                   pairs[commandText].append([
-                                      str(theY + 1) + "." + str(index) + "." + str(index + len(word))
-                                       ])
-                               found = True
-
-                        elif compareText == lastEndCommand:
-                             commandStack.pop(-1)
-                             for pairNum in range(len(pairs[lastCommand]) - 1, -1, -1):
-                                if len(pairs[lastCommand][pairNum]) == 1:
-                                    pairs[lastCommand][pairNum].append(
-                                        str(theY + 1) + "." + str(index) + "." + str(index + len(word))
-                                    )
-                                    found = True
-                                    break
-
-                        # if commandEndText != None:
-
-                        """
-                        if True:
-                            compareText = commandText
-                            if commandVal.bracketNeeded == True and compareText.endswith("(") == False:
-                                compareText += "("
-
-                            if word == compareText:
-                               commandStack.append([commandText, commandEndText])
-
-                               if commandText not in pairs.keys():
-                                  pairs[commandText] = []
-                               pairs[commandText].append([
-                                   str(theY + 1) + "." + str(index) + "." + str(index + len(word))
-
-                               ])
-                               found = True
-
-                            elif len(commandStack) > 0:
-                                if word == lastEndCommand:
-                                    commandStack.pop(-1)
-                                    for pairNum in range(len(pairs[lastCommand])-1, -1, -1):
-                                        if len(pairs[lastCommand][pairNum]) == 1:
-                                           pairs[lastCommand][pairNum].append(
-                                               str(theY + 1) + "." + str(index) + "." + str(index + len(word))
-                                           )
-                                           found = True
-                                           break
-
-                            """
-
-                index += 1 + len(word)
-        # print(pairs)
-        return pairs
-
-    def getStringDelimiterPair(self, text):
-        pairs = []
-        open = True
-        delimiters = self.__loader.config.getValueByKey("validStringDelimiters").split(" ")
-
-        validDelimiter = None
-
-        for theY in range(0, len(text)):
-            line = text[theY]
-            if line.startswith("*") or line.startswith("#"): continue
-
-            lenght = len(line)
-            delimiterLen = self.getFirstValidDelimiterPoz(line)
-            if delimiterLen != None:
-               lenght = delimiterLen
-
-            for theX in range(0, lenght):
-               if line[theX] in delimiters:
-                  if open == True:
-                     open = False
-                     validDelimiter = line[theX]
-                     pairs.append(
-                         [
-                             str(theY + 1) + "." + str(theX)
-                         ]
-                     )
-                  elif open == False and line[theX] == validDelimiter:
-                      validDelimiter = None
-                      open = True
-                      pairs[-1].append(str(theY + 1) + "." + str(theX))
-
-        return pairs
-
+    def addTag(self, Y, X1, X2, tag):
+        self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
     def removeTag(self, Y, X1, X2, tags):
         if tags == None:
@@ -1146,161 +638,56 @@ class EditorBigFrame:
                                           str(Y) + "." + str(X2)
                                           )
 
-    def __getBracketPairs(self, text):
-        pairs = []
+    def getFirstValidDelimiterPoz(self, line):
         level = 0
+        validDelimiters = self.__config.getValueByKey("validLineDelimiters").split(" ")
+        for charNum in range(0, len(line)):
+            if line[charNum] in validDelimiters and level == 0 and\
+               (charNum == 0 or line[charNum-1] in (" ", ")", "\t")): return charNum
 
-        for theY in range(0, len(text)):
-            line = text[theY]
-            xxx  = self.getFirstValidDelimiterPoz(line)
-            line = line[:xxx]
+            if line[charNum] == "(": level += 1
+            if line[charNum] == ")": level -= 1
+            if level < 0           : level  = 0
 
-            if line.startswith("*") or line.startswith("#"): continue
+        return(len(line))
 
-            lenght = len(line)
-            delimiterLen = self.getFirstValidDelimiterPoz(line)
-            if delimiterLen != None:
-               lenght = delimiterLen
+    def __counterEnded(self):
+        self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
+        self.__setTinting(self.__cursorPoz[0])
 
-            for theX in range(0, lenght):
-                if line[theX] == "(":
-                   pairs.append(
-                       [
-                            str(theY + 1) + "." + str(theX)
-                       ]
-                   )
-                   level += 1
-                elif line[theX] == ")":
-                    if level > 0:
-                       index = 0-level
-                       pairs[index].append(str(theY + 1) + "." + str(theX))
-                       level -= 1
+    def clicked(self, event):
+        self.__counterEnded2()
 
-        return pairs
+    def __counterEnded2(self):
+        self.setCurzorPoz()
+        self.__setTinting("whole")
 
-    def __lineTinting(self, lineNum, line, objectList, processList):
+    def __keyPressed(self, event):
+        if (event.keysym == "Control_L" or event.keysym == "Control_R"):
+            self.__ctrl = True
 
-        for tag in self.__codeBox.tag_names():
-            self.__codeBox.tag_remove(tag,
-                                      str(lineNum)+".0",
-                                      str(lineNum) + "." + str(len(line)+1)
-                                      )
+    def __keyReleased(self, event):
+        self.__lastButton = event.keysym
+        self.__counter   = 25
+        self.__counter2   = 250
 
-        if line.startswith("*") or line.startswith("#"):
-           self.__codeBox.tag_add("comment", str(lineNum) + ".0", str(lineNum) + "." + str(len(line)))
+        self.setCurzorPoz()
 
-        else:
-            xxx = self.getFirstValidDelimiterPoz(line)
-            if xxx != None:
-               self.__codeBox.tag_add("comment", str(lineNum) + "."+ str(xxx), str(lineNum) + "." + str(len(line)))
+        if (event.keysym == "Control_L" or event.keysym == "Control_R"):
+            self.__ctrl = False
 
-            for key in self.__syntaxList.keys():
-                command = self.__syntaxList[key]
+    def setCurzorPoz(self):
+        __cursorPoz = self.__codeBox.index(INSERT)
+        self.__cursorPoz = [int(__cursorPoz.split(".")[0]), int(__cursorPoz.split(".")[1])]
 
-                theString = key
-                if command.bracketNeeded == True:
-                   theString += "("
+    def __mouseWheel(self, event):
+        if event.delta > 0 and int(self.__config.getValueByKey("codeBoxFont")) < 36:
+            self.__config.setKey("codeBoxFont", str(int(self.__config.getValueByKey("codeBoxFont")) + 1))
+            self.__getFont()
 
-                for startIndex in range(0, len(line[:xxx]) - len(theString)+1):
-                    if line[startIndex:startIndex+len(theString)] == theString:
-                        endIndex = startIndex + len(theString)
-                        if command.bracketNeeded == True: endIndex -= 1
-
-                        if self.__currentSection in command.sectionsAllowed:
-                            self.__codeBox.tag_add("command", str(lineNum) + "." + str(startIndex),
-                                               str(lineNum) + "." + str(endIndex))
-                        else:
-                            self.__codeBox.tag_add("error", str(lineNum) + "." + str(startIndex),
-                                               str(lineNum) + "." + str(endIndex))
-
-            for index in range(0, len(line[:xxx])):
-                if line[index] in ("(", ")"):
-                   self.__codeBox.tag_add("bracket", str(lineNum) + "." + str(index),
-                                          str(lineNum) + "." + str(index+1))
-
-
-            words = line[:xxx].split(" ")
-            index = 0
-            for word in words:
-                delimiter = "%"
-                foundOne = False
-                for d in self.__config.getValueByKey("validObjDelimiters").split(" "):
-                    if d in word:
-                       delimiter = d
-                       foundOne  = True
-                       break
-
-                if foundOne == True:
-                   subIndex = 0
-                   subLine  = word.split(delimiter)
-
-                   for subWord in subLine:
-                       if subWord in objectList:
-                           self.__codeBox.tag_add("object", str(lineNum) + "." + str(subIndex + index),
-                                                            str(lineNum) + "." + str(subIndex + index + len(subWord)))
-                       elif subWord in processList:
-                           self.__codeBox.tag_add("process", str(lineNum) + "." + str(subIndex + index),
-                                                             str(lineNum) + "." + str(subIndex + index + len(subWord)))
-
-                       subIndex += (len(subWord) + 1)
-
-                index += (len(word) + 1)
-
-            listOfNumbers = self.findNumbersInALine(line, lineNum)
-            for pair in listOfNumbers:
-                X1 = int(pair[0].split(".")[1])
-                X2 = int(pair[1].split(".")[1])
-
-                self.removeTag(lineNum, X1, X2, None)
-                self.__codeBox.tag_add("number", pair[0], pair[1])
-
-            writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-
-            for variable in all:
-                # print(variable)
-                for startIndex in range(0, len(line[:xxx])-len(variable)+1):
-                    endIndex = startIndex + len(variable)
-
-                    try:
-                        if variable.upper() == "ITEM" and line[startIndex-1] == "-" and line[endIndex].upper() == "S":
-                           continue
-                    except:
-                        pass
-
-                    if line[startIndex:endIndex].upper() == variable.upper():
-                       self.removeTag(lineNum, startIndex, endIndex, None)
-                       self.__codeBox.tag_add("variable", str(lineNum) + "." + str(startIndex),
-                                         str(lineNum) + "." + str(endIndex))
-
-
-            for array in self.__virtualMemory.arrays.keys():
-                for startIndex in range(0, len(line[:xxx])-len(array)+1):
-                    endIndex = startIndex + len(array)
-
-                    if line[startIndex:endIndex].upper() == array.upper():
-                       self.removeTag(lineNum, startIndex, endIndex+1, None)
-                       self.__codeBox.tag_add("array", str(lineNum) + "." + str(startIndex),
-                                         str(lineNum) + "." + str(endIndex))
-
-        if self.__highLightWord != None:
-            highLightPositions = self.stringInLine(line, self.__highLightWord)
-            for dim in highLightPositions:
-                self.__codeBox.tag_add("highLight",
-                                       str(lineNum) + "." + str(dim[0]),
-                                       str(lineNum) + "." + str(dim[1])
-                                       )
-
-    def stringInLine(self, line, word):
-        positions = []
-
-        for startIndex in range(0, len(line)-len(word)):
-            tempW = line[startIndex:startIndex+len(word)]
-            if self.__highLightIgnoreCase == True:
-               if tempW.upper() == word.upper(): positions.append((startIndex, startIndex+len(word)))
-            else:
-               if tempW == word: positions.append((startIndex, startIndex + len(word)))
-
-        return(positions)
+        if event.delta < 0 and int(self.__config.getValueByKey("codeBoxFont")) > 12:
+            self.__config.setKey("codeBoxFont", str(int(self.__config.getValueByKey("codeBoxFont")) - 1))
+            self.__getFont()
 
     def __getFont(self):
         baseSize = int(self.__config.getValueByKey("codeBoxFont"))
@@ -1355,7 +742,11 @@ class EditorBigFrame:
                                            foreground=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
 
         self.__codeBox.tag_config("string", background=self.__loader.colorPalettes.getColor("stringBack"),
-                                            foreground=self.__loader.colorPalettes.getColor("stringFont"),
+                                            foreground=self.__loader.colorPalettes.getColor("stringFont")
+                                           )
+
+        self.__codeBox.tag_config("stringConst", background=self.__loader.colorPalettes.getColor("constStringBack"),
+                                            foreground=self.__loader.colorPalettes.getColor("constStringFont")
                                            )
 
         self.__codeBox.tag_config("bracket",
@@ -1364,102 +755,3 @@ class EditorBigFrame:
 
 
         self.__codeBox.config(font=self.__normalFont)
-
-    def findNumbersInALine(self, line, lineNum):
-        import re
-
-        numberPozisions = []
-        numberRegexes = {"dec": r'\d{1,3}',
-                         "bin": r'[b|%][0-1]{1,8}',
-                         "hex": r'[$|z|h][0-9a-f]{1,2}'
-                         }
-
-        listOfRegex  = [[],[],[]]
-
-        listOfRegex[0] = re.findall(numberRegexes["dec"], line, re.IGNORECASE)
-        listOfRegex[1] = re.findall(numberRegexes["bin"], line, re.IGNORECASE)
-        listOfRegex[2] = re.findall(numberRegexes["hex"], line, re.IGNORECASE)
-
-        xxx = self.getFirstValidDelimiterPoz(line)
-        line = line[:xxx]
-
-        for listNum in range(0, 3):
-            for item in listOfRegex[listNum]:
-                for startIndex in range(0, len(line) - len(item) +1):
-                    endIndex = startIndex + len(item)
-
-                    if line[startIndex:endIndex].upper() == item.upper():
-
-                       val = 256
-                       if item[0] in self.__config.getValueByKey("validBinarySigns").split(" "):
-                          val = int("0b" + item[1:],2)
-                       elif item[0] in self.__config.getValueByKey("validHexSigns").split(" "):
-                          val = int("0x" + item[1:], 16)
-                       else:
-                          val = int(item, 10)
-
-                       if val > 255: continue
-
-                       newItem = []
-                       newItem.append(
-                           str(lineNum) + "." + str(startIndex)
-                       )
-                       newItem.append(
-                           str(lineNum) + "." + str(endIndex)
-                       )
-
-                       numberPozisions.append(newItem)
-
-        return numberPozisions
-
-
-    def getFirstValidDelimiterPoz(self, line):
-        level = 0
-        validDelimiters = self.__config.getValueByKey("validLineDelimiters").split(" ")
-        for charNum in range(0, len(line)):
-            if line[charNum] in validDelimiters and level == 0 and\
-               (charNum == 0 or line[charNum-1] in (" ", ")", "\t")): return charNum
-
-            if line[charNum] == "(": level += 1
-            if line[charNum] == ")": level -= 1
-            if level < 0     : level = 0
-
-        return(len(line))
-
-    def __counterEnded(self):
-        self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
-        self.__setTinting(self.__cursorPoz[0])
-
-    def clicked(self, event):
-        self.__counterEnded2()
-
-    def __counterEnded2(self):
-        self.setCurzorPoz()
-        self.__setTinting("whole")
-
-    def __keyPressed(self, event):
-        if (event.keysym == "Control_L" or event.keysym == "Control_R"):
-            self.__ctrl = True
-
-    def __keyReleased(self, event):
-        self.__lastButton = event.keysym
-        self.__counter   = 25
-        self.__counter2   = 250
-
-        self.setCurzorPoz()
-
-        if (event.keysym == "Control_L" or event.keysym == "Control_R"):
-            self.__ctrl = False
-
-    def setCurzorPoz(self):
-        __cursorPoz = self.__codeBox.index(INSERT)
-        self.__cursorPoz = [int(__cursorPoz.split(".")[0]), int(__cursorPoz.split(".")[1])]
-
-    def __mouseWheel(self, event):
-        if event.delta > 0 and int(self.__config.getValueByKey("codeBoxFont")) < 36:
-            self.__config.setKey("codeBoxFont", str(int(self.__config.getValueByKey("codeBoxFont")) + 1))
-            self.__getFont()
-
-        if event.delta < 0 and int(self.__config.getValueByKey("codeBoxFont")) > 12:
-            self.__config.setKey("codeBoxFont", str(int(self.__config.getValueByKey("codeBoxFont")) - 1))
-            self.__getFont()
