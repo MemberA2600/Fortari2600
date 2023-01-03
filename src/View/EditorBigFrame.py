@@ -379,16 +379,17 @@ class EditorBigFrame:
 
         if self.__lastButton == "Enter": mode = "whole"
 
-        objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
+        #objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
+        objectList = self.__objectMaster.getStartingObjects()
         objectList.append("game")
 
         if mode == "whole":
            for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, processList, num-1)
+               self.__lineTinting(text[num-1], objectList, num-1)
         else:
-            self.__lineTinting(text[mode-1], objectList, processList, mode-1)
+            self.__lineTinting(text[mode-1], objectList, mode-1)
 
-    def __lineTinting(self, line, objects, processes, lineNum):
+    def __lineTinting(self, line, objects, lineNum):
         if len(line) == 0: return
 
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
@@ -400,15 +401,66 @@ class EditorBigFrame:
 
         currentLineStructure = self.getLineStructure(lineNum, text, True)
 
-        if lineNum == self.__cursorPoz[0]-1:
-            currentWord = self.getCurrentWord(text[lineNum])
-
         if line[0] in ("*", "#"): delimiterPoz = 0
 
         if delimiterPoz != len(line):
            self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
 
-        self.updateLineDisplay(currentLineStructure)
+        if currentLineStructure["command"][0] in self.__syntaxList.keys():
+           self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+                                   currentLineStructure["command"][1][1]+1, "command")
+
+        elif currentLineStructure["command"][0] not in (None, "None", ""):
+           foundObjects = self.findObjects(currentLineStructure["command"], objects)
+
+           print(foundObjects)
+
+        if lineNum == self.__cursorPoz[0]-1:
+           currentWord = self.getCurrentWord(text[lineNum])
+           self.updateLineDisplay(currentLineStructure)
+
+    def findObjects(self, structureItem, firstObjects):
+        from copy import deepcopy
+
+        delimiter = "%"
+        delimiters = self.__config.getValueByKey("validObjDelimiters").split(" ")
+
+        for d in delimiters:
+            if d in structureItem[0]:
+               delimiter = d
+               break
+
+        listOfPotentialObjects = structureItem[0].split(delimiter)
+        objects                = {}
+        startIndex             = 0
+        lastObj                = None
+        listOfNextLevel        = deepcopy(firstObjects)
+
+        maxNum = 3
+        if len(listOfPotentialObjects) < maxNum: maxNum = len(listOfPotentialObjects)
+
+        for num in range(0, maxNum):
+
+            currentPossibleObject = listOfPotentialObjects[num]
+
+            if currentPossibleObject in listOfNextLevel:
+               objects[currentPossibleObject] = [
+                   [startIndex + structureItem[1][0],
+                    startIndex + structureItem[1][0] + len(currentPossibleObject) - 1
+                    ], self.__objectMaster.returnOcjectOrProcess(currentPossibleObject)
+               ]
+
+               lastObj         = currentPossibleObject
+               startIndex     += len(lastObj) + 1
+               listOfNextLevel = self.__objectMaster.returnNextLevel(lastObj)
+               for itemNum in range(0, len(listOfNextLevel)):
+                   if "(" in listOfNextLevel[itemNum]:
+                       listOfNextLevel[itemNum] = listOfNextLevel[itemNum].split("(")[0]
+
+            else:
+               break
+
+        return objects
 
     def getCurrentWord(self, line):
         startPoz = self.__cursorPoz[1]
@@ -446,6 +498,12 @@ class EditorBigFrame:
         lineStructure["comment"] = [
             line[(delimiterPoz + 1):], [delimiterPoz + 1, len(line) - 1 ]
         ]
+
+        if delimiterPoz == 0:
+           lineStructure["comment"] = [
+               line[1:],
+               [1, len(line) - 1]
+            ]
 
         if delimiterPoz == len(line):
             lineStructure["comment"][1][0] = len(line)
@@ -605,11 +663,11 @@ class EditorBigFrame:
                item = self.__codeEditoritems[key]
 
                if type(item)  == Label:
-                  item.config(text = lineStructure[key])
+                  item.config(text = str(lineStructure[key]))
 
                elif type(item) == list:
                   if type(item[0]) == StringVar:
-                     item[0].set(lineStructure[key])
+                     item[0].set(lineStructure[key][0])
 
         self.__checkEditorItems()
 
@@ -639,6 +697,9 @@ class EditorBigFrame:
                                           )
 
     def getFirstValidDelimiterPoz(self, line):
+        if len(line) == 0: return 0
+        if line[0] in ("*", "#"): return 0
+
         level = 0
         validDelimiters = self.__config.getValueByKey("validLineDelimiters").split(" ")
         for charNum in range(0, len(line)):

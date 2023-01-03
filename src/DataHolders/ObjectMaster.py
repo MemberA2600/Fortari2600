@@ -172,6 +172,8 @@ class ObjectMaster:
             return False
 
     def returnNextLevel(self, name):
+        if name == "game": return list(self.objects.keys())
+
         for lvl1 in self.objects.keys():
             if name.upper() == lvl1.upper(): return list(self.objects[lvl1].keys())
             for lvl2 in self.objects[lvl1].keys():
@@ -182,17 +184,19 @@ class ObjectMaster:
         return([])
 
     def returnOcjectOrProcess(self, name):
+        if name == "game": return "object"
+
         for lvl1 in self.objects.keys():
             if name.upper() == lvl1.upper(): return "object"
             for lvl2 in self.objects[lvl1].keys():
-                if name.upper() == lvl2.upper():
+                if name.upper() == lvl2.split("(")[0].upper():
                    if type(self.objects[lvl1][lvl2]) == dict:
                       return "object"
                    else:
                       return "process"
                 if type(self.objects[lvl1][lvl2]) == dict:
                    for lvl3 in self.objects[lvl1][lvl2].keys():
-                       if self.objects[lvl1][lvl2][lvl3].upper() == name.upper(): return "process"
+                       if self.objects[lvl1][lvl2][lvl3].split("(")[0].upper() == name.upper(): return "process"
 
     def getObjectsAndProcessesValidForGlobalAndBank(self):
         # It assumes there are up to 3 levels
@@ -223,3 +227,15 @@ class ObjectMaster:
 
         return objectList, processList
 
+    def getStartingObjects(self):
+        objectList  = []
+        ignored = []
+        for keyNum in range(2, 9):
+            bankNum = "bank" + str(keyNum)
+            ignored.append(bankNum)
+
+        for lvl1Key in self.objects.keys():
+            if lvl1Key in ignored: continue
+            objectList.append(lvl1Key)
+
+        return objectList
