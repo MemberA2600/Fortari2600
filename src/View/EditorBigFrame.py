@@ -406,18 +406,212 @@ class EditorBigFrame:
         if delimiterPoz != len(line):
            self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
 
+        hasValidCommand = False
+
         if currentLineStructure["command"][0] in self.__syntaxList.keys():
            self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                                    currentLineStructure["command"][1][1]+1, "command")
 
+           hasValidCommand = True
+           addError        = False
+
+           if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
+                endFound = self.__findEnd(currentLineStructure, lineNum, text)
+                if endFound == False: addError = True
+
+           elif currentLineStructure["command"][0].startswith("end-") == True:
+               startFound = self.__findStart(currentLineStructure, lineNum, text)
+               if startFound == False: addError = True
+
+           elif currentLineStructure["command"][0] == "case" or currentLineStructure["command"][0] in\
+                self.__syntaxList["case"].alias:
+
+                foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
+                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False: addError = True
+
+           elif currentLineStructure["default"][0] == "case" or currentLineStructure["command"][0] in \
+                   self.__syntaxList["default"].alias:
+
+               foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text,
+                                                                                    False)
+
+               if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault[
+                   "end-select"] == False or foundAllRelatedForCaseDefault["numOfDefaults"] > 1 or \
+                       foundAllRelatedForCaseDefault["numOfCases"] == 0: addError = True
+
+           if addError == True:
+               self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
+                              currentLineStructure["command"][1][1] + 1, None)
+               self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+                           currentLineStructure["command"][1][1] + 1, "error")
+
+
         elif currentLineStructure["command"][0] not in (None, "None", ""):
            foundObjects = self.findObjects(currentLineStructure["command"], objects)
 
-           print(foundObjects)
+           self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+                        currentLineStructure["command"][1][1] + 1, "error")
+
+           asList = list(foundObjects.keys())
+           for keyNum in range(0, len(asList)):
+              key = asList[keyNum]
+
+              adder = 1
+              if key == asList[-1]: adder = 0
+              self.removeTag(yOnTextBox, foundObjects[key][0][0],
+                          foundObjects[key][0][1] + 1 + adder,
+                          None)
+
+              self.addTag(yOnTextBox, foundObjects[key][0][0],
+                          foundObjects[key][0][1] + 1,
+                          foundObjects[key][1])
+
+              if foundObjects[key][1] == "process": hasValidCommand = True
+
+        if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
+             self.addTag(yOnTextBox, currentLineStructure["("],
+                                     currentLineStructure["("] + 1,
+                                     "error")
+        elif currentLineStructure["("] == -1 and currentLineStructure[")"] != -1:
+             self.addTag(yOnTextBox, currentLineStructure[")"],
+                                     currentLineStructure[")"] + 1,
+                                     "error")
+        elif currentLineStructure["("] != -1 and currentLineStructure[")"] != -1:
+            self.addTag(yOnTextBox, currentLineStructure[")"],
+                        currentLineStructure[")"] + 1,
+                        "bracket")
+
+            self.addTag(yOnTextBox, currentLineStructure["("],
+                        currentLineStructure["("] + 1,
+                        "bracket")
+
+        if  currentLineStructure["("] != -1 and currentLineStructure["param#1"] not in [None, "None", ""]\
+        and hasValidCommand == True:
+            paramColoring = self.__checkParams(currentLineStructure["param#1"],
+                                               currentLineStructure["param#2"],
+                                               currentLineStructure["param#3"],
+                                               line, currentLineStructure["command"][0])
+
+            print(paramColoring)
 
         if lineNum == self.__cursorPoz[0]-1:
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
+
+    def foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
+        sendBack = {
+            "select"         : False,
+            "end-select"     : False,
+            "numOfDefaults"  : 0,
+            "numOfCases"     : 0,
+            "default"        : False,
+            "cases"          : []
+        }
+
+
+
+
+        return sendBack
+
+    def __findEnd(self, currentLineStructure, lineNum, text):
+        endCommand = "end-" + currentLineStructure["command"][0]
+
+        return self.__finderLoop(currentLineStructure,
+                                 lineNum, text, "down", endCommand,
+                                 currentLineStructure["level"],
+                                 None, None
+                                 )
+
+    def __findStart(self, currentLineStructure, lineNum, text):
+        startCommand = currentLineStructure["command"][0].split("-")[1]
+
+        return self.__finderLoop(currentLineStructure,
+                                 lineNum, text, "up", startCommand,
+                                 currentLineStructure["level"],
+                                 "-", 0
+                                 )
+
+    def __finderLoop(self, currentLineStructure, startPoz, text, direction, compareWord, level, splitBy, splitPoz):
+        if direction == "down":
+           endPoz = len(text)
+           adder  = 1
+        else:
+           endPoz = -1
+           adder  = -1
+
+        for compareLineNum in range(startPoz, endPoz, adder):
+
+            compareLineStructure = self.getLineStructure(compareLineNum, text, True)
+            ehhWord = compareLineStructure["command"][0]
+            if ehhWord == None: continue
+            if splitBy != None:
+               ehhWord = ehhWord.split(splitBy)[splitPoz]
+
+            if ehhWord == compareWord and level == compareLineStructure["level"]:
+               return [compareLineStructure["lineNum"], compareLineStructure["command"][1]]
+
+        return False
+
+    def __checkParams(self, param1, param2, param3, line, command):
+        params   = self.__syntaxList[command].params
+        ioMethod = self.__syntaxList[command].does
+
+        returnBack = []
+        noneList   = ["None", None, ""]
+        ppp        = [param1, param2, param3]
+
+        for paramNum in range(0,3):
+            param    = ppp[paramNum][0]
+            try:
+                paramType = params[paramNum]
+
+            except:
+                paramType = None
+
+            if   param in noneList     and paramType in noneList: break
+            elif param not in noneList and paramType in noneList:
+                 returnBack.append(["error", ppp[paramNum][1]])
+            elif param in noneList     and paramType in noneList:
+                 returnBack.append(["error", ppp[paramNum][1]])
+            else:
+                foundIt = False
+
+                paramTypeList = paramType.split("|")
+                for pType in paramTypeList:
+
+                    if foundIt == True: break
+                    if param in noneList: continue
+
+                    if pType == "variable":
+                        writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+
+                        if param in all:
+                            foundIt = True
+
+                            if ioMethod == "write" and (param in readOnly):
+                                returnBack.append(["error", ppp[paramNum][1]])
+                            else:
+                                returnBack.append(["variable", ppp[paramNum][1]])
+                            break
+                    elif pType == "number":
+                        import re
+
+                        numberRegexes = {"dec": r'\d{1,3}',
+                                         "bin": r'[b|%][0-1]{1,8}',
+                                         "hex": r'[$|z|h][0-9a-f]{1,2}'
+                                         }
+
+                        for key in numberRegexes.keys():
+                            test = re.findall(numberRegexes[key], param)
+                            if len(test) > 0:
+                               foundIt = True
+                               returnBack.append(["number", ppp[paramNum][1]])
+
+
+
+                if foundIt == False: returnBack.append(["error", ppp[paramNum][1]])
+
+        return returnBack
 
     def findObjects(self, structureItem, firstObjects):
         from copy import deepcopy
@@ -463,13 +657,17 @@ class EditorBigFrame:
         return objects
 
     def getCurrentWord(self, line):
+
         startPoz = self.__cursorPoz[1]
         endPoz   = startPoz
 
-        for num in range(startPoz-1, -1, -1):
-            if line[num] == " ":
-               endPoz = num + 1
-               break
+        try:
+            for num in range(startPoz-1, -1, -1):
+                if line[num] == " ":
+                   endPoz = num + 1
+                   break
+        except:
+            print(line)
 
         return line[endPoz:startPoz]
 
@@ -488,7 +686,7 @@ class EditorBigFrame:
             "param#1": [None, [-1, -1]],
             "param#2": [None, [-1, -1]],
             "param#3": [None, [-1, -1]],
-            ")":        len(line),
+            ")":        -1,
             "lineNum":  lineNum,
             "level":    -1,
             "comment": [None, [-1,-1]]
@@ -530,7 +728,7 @@ class EditorBigFrame:
                if lineStructure[")"] != -1:
                   inside = line[lineStructure["("] + 1 : lineStructure[")"]]
                else:
-                  inside = line[lineStructure["("] + 1 : lineStructure[delimiterPoz]]
+                  inside = line[lineStructure["("] + 1 : delimiterPoz]
 
             if lineStructure["("] != -1:
                startX = -1
@@ -648,7 +846,6 @@ class EditorBigFrame:
                if lineStructure["command"][0].split("-")[0].upper() == "END": level -= 1
                if level < 0: level = 0
 
-               #print(lineStructure["command"][0], level)
                lineStructure["level"] = level
 
         if lineNum == self.__cursorPoz[0]-1:
@@ -684,6 +881,13 @@ class EditorBigFrame:
                                           str(Y) + "." + str(X1),
                                           str(Y) + "." + str(X2)
                                           )
+        elif tags == "nonError":
+            for tag in self.__codeBox.tag_names():
+                if tag == "error":
+                    self.__codeBox.tag_remove(tag,
+                                              str(Y) + "." + str(X1),
+                                              str(Y) + "." + str(X2)
+                                              )
         elif type(tags) == str:
             self.__codeBox.tag_remove(tags,
                                       str(Y) + "." + str(X1),
@@ -784,9 +988,9 @@ class EditorBigFrame:
                                   foreground=self.__loader.colorPalettes.getColor("number"),
                                   font=self.__italicFont)
 
-        self.__codeBox.tag_config("process",
-                                  foreground=self.__loader.colorPalettes.getColor("process"),
-                                  font=self.__boldFont)
+       # self.__codeBox.tag_config("process",
+       #                           foreground=self.__loader.colorPalettes.getColor("process"),
+       #                           font=self.__boldFont)
 
         self.__codeBox.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
 
@@ -794,11 +998,14 @@ class EditorBigFrame:
                                   foreground=self.__loader.colorPalettes.getColor("command"),
                                   font=self.__boldFont)
 
+        self.__codeBox.tag_config("process",
+                                  foreground=self.__loader.colorPalettes.getColor("command"),
+                                  font=self.__boldFont)
+
         self.__codeBox.tag_config("commandBack", background=self.__loader.colorPalettes.getColor("commandBack"),
                                                  foreground=self.__loader.colorPalettes.getColor("command"),
                                                  font = self.__boldFont)
 
-        self.__codeBox.tag_config("bracketSelected", background=self.__loader.colorPalettes.getColor("bracketSelected"))
         self.__codeBox.tag_config("error", background=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                            foreground=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
 
