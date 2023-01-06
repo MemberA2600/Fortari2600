@@ -429,7 +429,9 @@ class EditorBigFrame:
                 foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
                 if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False: addError = True
 
-           elif currentLineStructure["default"][0] == "case" or currentLineStructure["command"][0] in \
+                #print(foundAllRelatedForCaseDefault)
+
+           elif currentLineStructure["command"][0] == "default" or currentLineStructure["command"][0] in \
                    self.__syntaxList["default"].alias:
 
                foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text,
@@ -438,6 +440,19 @@ class EditorBigFrame:
                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault[
                    "end-select"] == False or foundAllRelatedForCaseDefault["numOfDefaults"] > 1 or \
                        foundAllRelatedForCaseDefault["numOfCases"] == 0: addError = True
+
+
+           elif currentLineStructure["command"][0] in ["cycle", "exit"] or \
+                currentLineStructure["command"][0] in self.__syntaxList["cycle"].alias or \
+                currentLineStructure["command"][0] in self.__syntaxList["exit"].alias:
+
+                pass
+
+
+           if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
+                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
+               (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
+               self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False): addError = True
 
            if addError == True:
                self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
@@ -498,28 +513,73 @@ class EditorBigFrame:
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
 
-    def foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
+    def __foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
         sendBack = {
             "select"         : False,
             "end-select"     : False,
             "numOfDefaults"  : 0,
             "numOfCases"     : 0,
-            "default"        : False,
+            "defaults"        : [],
             "cases"          : []
         }
 
+        sendBack["select"] = self.__findWahWah("select", lineNum,
+                             "up", text, currentLineStructure["level"], "-", 0, None, currentLineStructure)
 
+        if sendBack["select"] != False:
+           sendBack["end-select"] = self.__findWahWah("end-select", lineNum,
+                               "down", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
+        if sendBack["end-select"] != False:
+           sendBack["cases"] = self.__listAllCommandFromTo("case", text, currentLineStructure["level"],
+                              sendBack["select"][0], sendBack["end-select"][0] + 1
+                                                          )
+           sendBack["defaults"] = self.__listAllCommandFromTo("default", text, currentLineStructure["level"],
+                              sendBack["select"][0], sendBack["end-select"][0] + 1
+                                                          )
+           sendBack["numOfCases"] = len(sendBack["cases"])
+           sendBack["numOfDefaults"] = len(sendBack["defaults"])
 
         return sendBack
 
+    def __listAllCommandFromTo(self, searchWord, text, level, fromY, toY):
+        sendBack = []
+
+        commandList = [searchWord]
+        commandList.extend(self.__syntaxList[searchWord].alias)
+
+        for lineNum in range(fromY, toY):
+            lineStruct = self.getLineStructure(lineNum, text, True)
+
+            if lineStruct["command"][0] in commandList and lineStruct["level"] == level:
+                sendBack.append(lineStruct)
+
+        return sendBack
+
+    def __findWahWah(self, key, startPoz, direction, text, level, splitBy, splitPoz, forceEndPoz, currentLineStructure):
+
+        send = False
+        searchItems = [key]
+        searchItems.extend(self.__syntaxList[searchItems[0]].alias)
+
+
+        for item in searchItems:
+            if send != False: return send
+
+            send = self.__finderLoop(currentLineStructure, startPoz, text, direction, item,
+                              level - 1, splitBy, splitPoz, forceEndPoz, False)
+
+        return False
+
+
+
     def __findEnd(self, currentLineStructure, lineNum, text):
-        endCommand = "end-" + currentLineStructure["command"][0]
+        endCommand = "end-" + currentLineStructure["command"][0].split("-")[0]
 
         return self.__finderLoop(currentLineStructure,
                                  lineNum, text, "down", endCommand,
                                  currentLineStructure["level"],
-                                 None, None
+                                 None, None, None, False
                                  )
 
     def __findStart(self, currentLineStructure, lineNum, text):
@@ -528,16 +588,19 @@ class EditorBigFrame:
         return self.__finderLoop(currentLineStructure,
                                  lineNum, text, "up", startCommand,
                                  currentLineStructure["level"],
-                                 "-", 0
+                                 "-", 0, None, False
                                  )
 
-    def __finderLoop(self, currentLineStructure, startPoz, text, direction, compareWord, level, splitBy, splitPoz):
+    def __finderLoop(self, currentLineStructure, startPoz, text, direction, compareWord, level, splitBy, splitPoz, forceEndPoz, printMe):
         if direction == "down":
            endPoz = len(text)
            adder  = 1
         else:
            endPoz = -1
            adder  = -1
+
+        if forceEndPoz != None:
+           endPoz = forceEndPoz
 
         for compareLineNum in range(startPoz, endPoz, adder):
 
@@ -546,6 +609,9 @@ class EditorBigFrame:
             if ehhWord == None: continue
             if splitBy != None:
                ehhWord = ehhWord.split(splitBy)[splitPoz]
+
+            if printMe == True:
+               print(compareWord, compareLineNum, ehhWord, ehhWord == compareWord, level == compareLineStructure["level"])
 
             if ehhWord == compareWord and level == compareLineStructure["level"]:
                return [compareLineStructure["lineNum"], compareLineStructure["command"][1]]
@@ -667,7 +733,7 @@ class EditorBigFrame:
                    endPoz = num + 1
                    break
         except:
-            print(line)
+            pass
 
         return line[endPoz:startPoz]
 
