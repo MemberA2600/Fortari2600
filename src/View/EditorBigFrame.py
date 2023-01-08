@@ -383,13 +383,20 @@ class EditorBigFrame:
         objectList = self.__objectMaster.getStartingObjects()
         objectList.append("game")
 
+        selectPosizions = []
+
         if mode == "whole":
            for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1)
-        else:
-            self.__lineTinting(text[mode-1], objectList, mode-1)
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions)
 
-    def __lineTinting(self, line, objects, lineNum):
+               for item in selectPosizions:
+                   self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
+                   self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
+
+        else:
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions)
+
+    def __lineTinting(self, line, objects, lineNum, selectPosizions):
         if len(line) == 0: return
 
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
@@ -407,21 +414,35 @@ class EditorBigFrame:
            self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
 
         hasValidCommand = False
+        addError        = False
 
         if currentLineStructure["command"][0] in self.__syntaxList.keys():
            self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                                    currentLineStructure["command"][1][1]+1, "command")
 
            hasValidCommand = True
-           addError        = False
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                 endFound = self.__findEnd(currentLineStructure, lineNum, text)
                 if endFound == False: addError = True
+                else:
+                    if self.__cursorPoz[0] == yOnTextBox:
+
+                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(endFound))
+                       self.addToSelectPosizions(selectPosizions,
+                                                 self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+
 
            elif currentLineStructure["command"][0].startswith("end-") == True:
                startFound = self.__findStart(currentLineStructure, lineNum, text)
                if startFound == False: addError = True
+               else:
+                   if self.__cursorPoz[0] == yOnTextBox:
+
+                      self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(startFound))
+                      self.addToSelectPosizions(selectPosizions,
+                                                self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+
 
            elif currentLineStructure["command"][0] == "case" or currentLineStructure["command"][0] in\
                 self.__syntaxList["case"].alias:
@@ -430,6 +451,16 @@ class EditorBigFrame:
                 if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False: addError = True
 
                 #print(foundAllRelatedForCaseDefault)
+                if addError == False and self.__cursorPoz[0] == yOnTextBox:
+
+                   self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["select"]))
+                   self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["end-select"]))
+
+                   for item in foundAllRelatedForCaseDefault["cases"]:
+                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+
+                   for item in foundAllRelatedForCaseDefault["defaults"]:
+                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
            elif currentLineStructure["command"][0] == "default" or currentLineStructure["command"][0] in \
                    self.__syntaxList["default"].alias:
@@ -441,25 +472,50 @@ class EditorBigFrame:
                    "end-select"] == False or foundAllRelatedForCaseDefault["numOfDefaults"] > 1 or \
                        foundAllRelatedForCaseDefault["numOfCases"] == 0: addError = True
 
+               if addError == False and self.__cursorPoz[0] == yOnTextBox:
+
+                   self.addToSelectPosizions(selectPosizions,
+                                             self.convertToX1X2Y(foundAllRelatedForCaseDefault["select"]))
+                   self.addToSelectPosizions(selectPosizions,
+                                             self.convertToX1X2Y(foundAllRelatedForCaseDefault["end-select"]))
+
+                   for item in foundAllRelatedForCaseDefault["cases"]:
+                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+
+                   for item in foundAllRelatedForCaseDefault["defaults"]:
+                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
            elif currentLineStructure["command"][0] in ["cycle", "exit"] or \
                 currentLineStructure["command"][0] in self.__syntaxList["cycle"].alias or \
                 currentLineStructure["command"][0] in self.__syntaxList["exit"].alias:
 
-                pass
+                foundAllRelatedForDoAndEndDo = self.__foundAllRelatedForDoAndEndDo(currentLineStructure, lineNum, text)
 
+                if foundAllRelatedForDoAndEndDo["start"] == False or foundAllRelatedForDoAndEndDo["end"] == False: addError = True
+
+                if addError == False and self.__cursorPoz[0] == yOnTextBox:
+                    self.addToSelectPosizions(selectPosizions,
+                                              self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["start"]))
+                    self.addToSelectPosizions(selectPosizions,
+                                              self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["end"]))
+                    self.addToSelectPosizions(selectPosizions,
+                                              self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                 self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
                (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
-               self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False): addError = True
+               self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
+                    addError = True
+
+           if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed:
+              addError = True
+
 
            if addError == True:
                self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
                               currentLineStructure["command"][1][1] + 1, None)
                self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                            currentLineStructure["command"][1][1] + 1, "error")
-
 
         elif currentLineStructure["command"][0] not in (None, "None", ""):
            foundObjects = self.findObjects(currentLineStructure["command"], objects)
@@ -512,6 +568,45 @@ class EditorBigFrame:
         if lineNum == self.__cursorPoz[0]-1:
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
+
+    def getXYfromCommand(self, command):
+        return [command["lineNum"], command["command"][1]]
+
+    def convertToX1X2Y(self, params):
+        return [params[1][0], params[1][1], params[0]]
+
+
+    def addToSelectPosizions(self, selectPosizions, data):
+        if data not in selectPosizions:
+           selectPosizions.append(data)
+
+    def __foundAllRelatedForDoAndEndDo(self, currentLineStructure, lineNum, text):
+        sendBack = {
+            "start": False,
+            "end"  : False
+        }
+
+        starters = ["do"]
+        starters.extend(self.__syntaxList["do"].alias)
+
+        ender = None
+
+        for word in starters:
+            sendBack["start"] = self.__findWahWah(word, lineNum,
+                                                   "up", text, currentLineStructure["level"], "-", 0, None,
+                                                   currentLineStructure)
+
+            if sendBack["start"] != False:
+                ender = "end-"+word
+                break
+
+        if ender != None:
+            sendBack["end"] = self.__findWahWah(ender, lineNum,
+                                                   "down", text, currentLineStructure["level"], None, None, None,
+                                                   currentLineStructure)
+
+        return sendBack
+
 
     def __foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
         sendBack = {
@@ -950,6 +1045,13 @@ class EditorBigFrame:
         elif tags == "nonError":
             for tag in self.__codeBox.tag_names():
                 if tag == "error":
+                    self.__codeBox.tag_remove(tag,
+                                              str(Y) + "." + str(X1),
+                                              str(Y) + "." + str(X2)
+                                              )
+        elif tags == "background":
+            for tag in self.__codeBox.tag_names():
+                if "back" in tag.lower():
                     self.__codeBox.tag_remove(tag,
                                               str(Y) + "." + str(X1),
                                               str(Y) + "." + str(X2)

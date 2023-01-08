@@ -5,7 +5,8 @@ class Command:
 
     def __init__(self, loader, name, string):
         self.__loader = loader
-        self.__name   = name
+        self.name   = name
+
         data = string.split(",")
         if data[0]!= "[]":
             self.alias = data[0][1:-1].split(" ")
