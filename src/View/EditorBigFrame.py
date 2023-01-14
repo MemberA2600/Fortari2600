@@ -384,19 +384,24 @@ class EditorBigFrame:
         objectList.append("game")
 
         selectPosizions = []
+        errorPositions  = []
 
         if mode == "whole":
            for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions)
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions)
 
                for item in selectPosizions:
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
 
-        else:
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions)
+               for item in errorPositions:
+                   self.removeTag(item[2] + 1, item[0], item[1] + 1, None)
+                   self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
-    def __lineTinting(self, line, objects, lineNum, selectPosizions):
+        else:
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions)
+
+    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions):
         if len(line) == 0: return
 
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
@@ -415,12 +420,14 @@ class EditorBigFrame:
 
         hasValidCommand = False
         addError        = False
+        commandParams   = []
 
         if currentLineStructure["command"][0] in self.__syntaxList.keys():
            self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                                    currentLineStructure["command"][1][1]+1, "command")
 
            hasValidCommand = True
+           commandParams   = self.__syntaxList[currentLineStructure["command"][0]].params
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                 endFound = self.__findEnd(currentLineStructure, lineNum, text)
@@ -428,8 +435,8 @@ class EditorBigFrame:
                 else:
                     if self.__cursorPoz[0] == yOnTextBox:
 
-                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(endFound))
-                       self.addToSelectPosizions(selectPosizions,
+                       self.addToPosizions(selectPosizions, self.convertToX1X2Y(endFound))
+                       self.addToPosizions(selectPosizions,
                                                  self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
 
@@ -439,8 +446,8 @@ class EditorBigFrame:
                else:
                    if self.__cursorPoz[0] == yOnTextBox:
 
-                      self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(startFound))
-                      self.addToSelectPosizions(selectPosizions,
+                      self.addToPosizions(selectPosizions, self.convertToX1X2Y(startFound))
+                      self.addToPosizions(selectPosizions,
                                                 self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
 
@@ -453,14 +460,14 @@ class EditorBigFrame:
                 #print(foundAllRelatedForCaseDefault)
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
 
-                   self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["select"]))
-                   self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["end-select"]))
+                   self.addToPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["select"]))
+                   self.addToPosizions(selectPosizions, self.convertToX1X2Y(foundAllRelatedForCaseDefault["end-select"]))
 
                    for item in foundAllRelatedForCaseDefault["cases"]:
-                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+                       self.addToPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
                    for item in foundAllRelatedForCaseDefault["defaults"]:
-                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+                       self.addToPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
            elif currentLineStructure["command"][0] == "default" or currentLineStructure["command"][0] in \
                    self.__syntaxList["default"].alias:
@@ -474,32 +481,62 @@ class EditorBigFrame:
 
                if addError == False and self.__cursorPoz[0] == yOnTextBox:
 
-                   self.addToSelectPosizions(selectPosizions,
+                   self.addToPosizions(selectPosizions,
                                              self.convertToX1X2Y(foundAllRelatedForCaseDefault["select"]))
-                   self.addToSelectPosizions(selectPosizions,
+                   self.addToPosizions(selectPosizions,
                                              self.convertToX1X2Y(foundAllRelatedForCaseDefault["end-select"]))
 
                    for item in foundAllRelatedForCaseDefault["cases"]:
-                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+                       self.addToPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
                    for item in foundAllRelatedForCaseDefault["defaults"]:
-                       self.addToSelectPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
+                       self.addToPosizions(selectPosizions, self.convertToX1X2Y(self.getXYfromCommand(item)))
 
            elif currentLineStructure["command"][0] in ["cycle", "exit"] or \
                 currentLineStructure["command"][0] in self.__syntaxList["cycle"].alias or \
                 currentLineStructure["command"][0] in self.__syntaxList["exit"].alias:
 
-                foundAllRelatedForDoAndEndDo = self.__foundAllRelatedForDoAndEndDo(currentLineStructure, lineNum, text)
+                foundAllRelatedForDoAndEndDo = self.__foundAllRelatedForDoAndEndDo(currentLineStructure, lineNum, text, "do")
 
                 if foundAllRelatedForDoAndEndDo["start"] == False or foundAllRelatedForDoAndEndDo["end"] == False: addError = True
 
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
-                    self.addToSelectPosizions(selectPosizions,
+                    self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["start"]))
-                    self.addToSelectPosizions(selectPosizions,
+                    self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["end"]))
-                    self.addToSelectPosizions(selectPosizions,
+                    self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+
+           if currentLineStructure["command"][0] == "do-items" or\
+              currentLineStructure["command"][0] in self.__syntaxList["do-items"].alias:
+
+              firstPoz  = []
+              lastPoz   = []
+
+              if currentLineStructure["level"] == 0:
+                 firstPoz = lineNum
+                 lastPoz  = self.__findEnd(currentLineStructure, lineNum, text)
+
+              else:
+                 from copy import deepcopy
+
+                 copied = deepcopy(currentLineStructure)
+                 copied["level"] = 0
+
+                 xyz = self.__foundAllRelatedForDoAndEndDo(copied, lineNum, text, "do-items")
+
+                 firstPoz = xyz["start"]
+                 lastPoz  = xyz["end"]
+
+              if firstPoz != False and type(firstPoz) != int: firstPoz = firstPoz[0]
+              if lastPoz  != False:                           lastPoz  = lastPoz[0]
+
+              listOfDoItems = self.__listAllCommandFromTo("do-items", text, None, firstPoz, lastPoz + 1)
+              if len(listOfDoItems) > 1:
+                 for item in listOfDoItems:
+                     self.addToPosizions(errorPositions,
+                                         self.convertToX1X2Y(self.getXYfromCommand(item)))
 
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                 self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
@@ -537,7 +574,13 @@ class EditorBigFrame:
                           foundObjects[key][0][1] + 1,
                           foundObjects[key][1])
 
-              if foundObjects[key][1] == "process": hasValidCommand = True
+              if foundObjects[key][1] == "process":
+                 hasValidCommand = True
+
+                 commandNum      = len(self.__objectMaster.returnParamsForProcess(currentLineStructure["command"][0]))
+                 for num in range(0, commandNum):
+                     commandParams.append("variable")
+
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
              self.addTag(yOnTextBox, currentLineStructure["("],
@@ -563,11 +606,108 @@ class EditorBigFrame:
                                                currentLineStructure["param#3"],
                                                line, currentLineStructure["command"][0])
 
-            print(paramColoring)
+            for item in paramColoring:
+                if item[1][0] != -1:
+                   self.removeTag(yOnTextBox, item[1][0],
+                                              item[1][1] + 1,
+                                              None)
+                   self.addTag(   yOnTextBox, item[1][0],
+                                              item[1][1] + 1,
+                                              item[0])
 
-        if lineNum == self.__cursorPoz[0]-1:
+        for ind in range(0, len(currentLineStructure["commas"])):
+            if ind > len(commandParams) - 2:
+               self.addTag(yOnTextBox, currentLineStructure["commas"][ind],
+                                       currentLineStructure["commas"][ind] + 1,
+                                       "error")
+
+        if yOnTextBox == self.__cursorPoz[0]:
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
+           self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line)
+
+
+    def __updateListBoxFromCodeEditor(self, currentWord, lineStructure, paramTypes, line):
+        from copy import deepcopy
+
+        cursorIn     = None
+        wordsForList = []
+        noneList     = ["", None, "None"]
+
+        for key in lineStructure:
+            if key.startswith("param") or key == "command":
+               if lineStructure[key][1][0] != -1 and lineStructure[key][1][1] >= lineStructure[key][1][0]:
+                  if self.__cursorPoz[1] >= lineStructure[key][1][0] and  self.__cursorPoz[1] <= lineStructure[key][1][1]+1:
+                     cursorIn = key
+
+        if cursorIn == None:
+            if lineStructure["("] == -1:
+                cursorIn = "command"
+
+            elif self.__cursorPoz[1] <= lineStructure["("]:
+                cursorIn = "command"
+
+            elif self.__cursorPoz[1] > lineStructure[")"] and lineStructure[")"] != -1:
+                cursorIn = "overIt"
+            else:
+                param = 1
+                cursorIn = "param#1"
+
+                for commaNum in range(0, len(lineStructure["commas"])):
+                    if self.__cursorPoz[1] > lineStructure["commas"][commaNum]:
+                        param = commaNum + 1
+                    else:
+                        cursorIn = "param#" + str(param)
+                        break
+
+        if len(currentWord) > 0:
+            if currentWord[-1] in ["(", ")", ","]:
+               currentWord = ""
+
+        listType = cursorIn
+
+        if  cursorIn == "overIt":
+            listType  = None
+
+        elif (currentWord in noneList and lineStructure[cursorIn] not in noneList) or \
+              currentWord == lineStructure[cursorIn][0]:
+
+        #elif currentWord == lineStructure[cursorIn][0]:
+           if cursorIn == "command" and len(currentWord) > 0:
+               if currentWord[-1] in self.__config.getValueByKey("validObjDelimiters").split(" "):
+                  listType = "nextObject"
+
+           elif cursorIn.startswith("param#"):
+               paramNum = int(cursorIn[-1]) - 1
+
+               params, ioMethod = self.returnParamsOfObjects(lineStructure["command"][0])
+               if paramNum > len(params) - 1:
+                  listType = None
+               else:
+                  thisParam = params[paramNum]
+
+                  paramType = params[paramNum]
+                  dimension = lineStructure[cursorIn][1]
+
+                  mustHave = True
+                  if paramType[0] == "{":
+                      paramType = paramType[1:-1]
+                      mustHave = False
+
+                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, thisParam,
+                                                                            ioMethod, None,
+                                                                            dimension, mustHave)
+                  if foundIt == True:
+                     listType = paramTypeAndDimension[0]
+                  else:
+                     listType = paramType.split("|")[0]
+
+
+
+        wordsForList.sort()
+        print(listType, lineStructure)
+        # print(cursorIn, currentWord, lineStructure)
+
 
     def getXYfromCommand(self, command):
         return [command["lineNum"], command["command"][1]]
@@ -575,19 +715,18 @@ class EditorBigFrame:
     def convertToX1X2Y(self, params):
         return [params[1][0], params[1][1], params[0]]
 
+    def addToPosizions(self, posizions, data):
+        if data not in posizions:
+           posizions.append(data)
 
-    def addToSelectPosizions(self, selectPosizions, data):
-        if data not in selectPosizions:
-           selectPosizions.append(data)
-
-    def __foundAllRelatedForDoAndEndDo(self, currentLineStructure, lineNum, text):
+    def __foundAllRelatedForDoAndEndDo(self, currentLineStructure, lineNum, text, word):
         sendBack = {
             "start": False,
             "end"  : False
         }
 
-        starters = ["do"]
-        starters.extend(self.__syntaxList["do"].alias)
+        starters = [word]
+        starters.extend(self.__syntaxList[word].alias)
 
         ender = None
 
@@ -597,7 +736,7 @@ class EditorBigFrame:
                                                    currentLineStructure)
 
             if sendBack["start"] != False:
-                ender = "end-"+word
+                ender = "end-"+word.split("-")[0]
                 break
 
         if ender != None:
@@ -646,7 +785,7 @@ class EditorBigFrame:
         for lineNum in range(fromY, toY):
             lineStruct = self.getLineStructure(lineNum, text, True)
 
-            if lineStruct["command"][0] in commandList and lineStruct["level"] == level:
+            if lineStruct["command"][0] in commandList and (lineStruct["level"] == level or level == None):
                 sendBack.append(lineStruct)
 
         return sendBack
@@ -713,19 +852,158 @@ class EditorBigFrame:
 
         return False
 
+    def returnParamsOfObjects(self, command):
+
+        listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
+
+        objectCommand = False
+        for d in listOfValidDelimiters:
+            if d in command:
+               objectCommand = True
+               break
+
+        if objectCommand == False:
+            if command in self.__syntaxList.keys():
+               params   = self.__syntaxList[command].params
+               ioMethod = self.__syntaxList[command].does
+            else:
+               params   = []
+               ioMethod = None
+        else:
+            params   = []
+            ioMethod = []
+            paramNum = len(self.__objectMaster.returnParamsForProcess(command))
+            for num in range(0, paramNum):
+                params.append("variable")
+                ioMethod.append("read")
+
+        return params, ioMethod
+
+    def __checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave):
+        foundIt = False
+        noneList   = ["None", None, ""]
+
+        sendBack   = False
+        if returnBack == None:
+           returnBack  = []
+           sendBack    = True
+
+        paramTypeList = paramType.split("|")
+        for pType in paramTypeList:
+
+            if foundIt == True: break
+            if param in noneList: continue
+
+            if pType == "variable":
+                writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+
+                if param in all:
+                    foundIt = True
+
+                    if ioMethod == "write" and (param in readOnly):
+                       returnBack.append(["error", dimension])
+                    else:
+                       returnBack.append(["variable", dimension])
+                    break
+            elif pType == "number":
+                import re
+
+                numberRegexes = {"dec": r'\d{1,3}',
+                                 "bin": r'[b|%][0-1]{1,8}',
+                                 "hex": r'[$|z|h][0-9a-f]{1,2}'
+                                 }
+
+                for key in numberRegexes.keys():
+                    test = re.findall(numberRegexes[key], param)
+                    if len(test) > 0:
+                        foundIt = True
+                        returnBack.append(["number", dimension])
+
+
+            elif pType == "array":
+                if foundIt == True: break
+
+                writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
+                if param in all:
+                    foundIt = True
+
+                    if ioMethod == "write" and (param in readOnly):
+                       returnBack.append(["error", dimension])
+                    else:
+                       returnBack.append(["variable", dimension])
+                    break
+
+            elif pType == "string" or "stringConst":
+                delimiters = self.__config.getValueByKey("validStringDelimiters")
+                errorLevel = -1
+
+                if param[0] in delimiters:
+                    delimiter = param[0]
+
+                    if param[-1] != delimiter:
+                       returnBack.append(["error", dimension])
+                       errorLevel = 1
+                       foundIt = True
+
+                    else:
+                       if delimiter in param[1:-1]:
+                          returnBack.append(["error", dimension])
+                          errorLevel = 2
+                          foundIt = True
+
+                       else:
+                          stringConst = False
+                          for key in self.__loader.stringConstants.keys():
+                              if stringConst == True:
+                                 break
+
+                              testWord = param.replace(delimiter, '"')
+                              if testWord == key or testWord in self.__loader.stringConstants[key]["alias"]:
+                                 stringConst = True
+
+                          if stringConst == True:
+                             foundIt = True
+                             returnBack.append(["stringConst", dimension])
+                          else:
+                             if pType == "string":
+                                foundIt = True
+                                returnBack.append(["string", dimension])
+                             else:
+                                foundIt = True
+                                returnBack.append(["error", dimension])
+
+
+                else:
+                    errorLevel = 0
+                    returnBack.append(["error", dimension])
+                    foundIt = True
+
+        # TODO should add the other types!
+
+        if foundIt == False:
+           if mustHave == False and param in noneList:
+              returnBack.append(["missing", dimension])
+           else:
+              returnBack.append(["error", dimension])
+
+        if sendBack: return foundIt, returnBack[-1]
+
     def __checkParams(self, param1, param2, param3, line, command):
-        params   = self.__syntaxList[command].params
-        ioMethod = self.__syntaxList[command].does
+
+        params, ioMethod = self.returnParamsOfObjects(command)
 
         returnBack = []
         noneList   = ["None", None, ""]
         ppp        = [param1, param2, param3]
 
         for paramNum in range(0,3):
-            param    = ppp[paramNum][0]
+            param         = ppp[paramNum][0]
+            mustHave      = True
             try:
                 paramType = params[paramNum]
-
+                if paramType[0] == "{":
+                   paramType = paramType[1:-1]
+                   mustHave  = False
             except:
                 paramType = None
 
@@ -735,43 +1013,11 @@ class EditorBigFrame:
             elif param in noneList     and paramType in noneList:
                  returnBack.append(["error", ppp[paramNum][1]])
             else:
-                foundIt = False
+                 self.__checkIfParamIsOK(paramType, param,
+                                         ioMethod, returnBack,
+                                         ppp[paramNum][1], mustHave)
 
-                paramTypeList = paramType.split("|")
-                for pType in paramTypeList:
-
-                    if foundIt == True: break
-                    if param in noneList: continue
-
-                    if pType == "variable":
-                        writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-
-                        if param in all:
-                            foundIt = True
-
-                            if ioMethod == "write" and (param in readOnly):
-                                returnBack.append(["error", ppp[paramNum][1]])
-                            else:
-                                returnBack.append(["variable", ppp[paramNum][1]])
-                            break
-                    elif pType == "number":
-                        import re
-
-                        numberRegexes = {"dec": r'\d{1,3}',
-                                         "bin": r'[b|%][0-1]{1,8}',
-                                         "hex": r'[$|z|h][0-9a-f]{1,2}'
-                                         }
-
-                        for key in numberRegexes.keys():
-                            test = re.findall(numberRegexes[key], param)
-                            if len(test) > 0:
-                               foundIt = True
-                               returnBack.append(["number", ppp[paramNum][1]])
-
-
-
-                if foundIt == False: returnBack.append(["error", ppp[paramNum][1]])
-
+        #print("fuck", params, returnBack)
         return returnBack
 
     def findObjects(self, structureItem, firstObjects):
@@ -850,9 +1096,11 @@ class EditorBigFrame:
             ")":        -1,
             "lineNum":  lineNum,
             "level":    -1,
-            "comment": [None, [-1,-1]]
+            "comment": [None, [-1,-1]],
+            "commas": []
         }
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
+        validDelimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
 
         lineStructure["comment"] = [
             line[(delimiterPoz + 1):], [delimiterPoz + 1, len(line) - 1 ]
@@ -879,8 +1127,18 @@ class EditorBigFrame:
                    lineStructure["("] = num
                    break
 
+            inString   = False
+            stringDel  = None
+
             for num in range(delimiterPoz-1, -1, -1):
-                if line[num] == ")":
+                if line[num] in validDelimiters:
+                    if inString == False:
+                        inString = True
+                        stringDel = line[num]
+                    elif line[num] == stringDel:
+                        inString = False
+
+                if line[num] == ")" and inString == False:
                    lineStructure[")"] = num
                    break
 
@@ -911,6 +1169,7 @@ class EditorBigFrame:
                        line[startX : endX + 1],
                        [startX, endX]
                    ]
+
 
             else:
                 startX = -1
@@ -945,12 +1204,26 @@ class EditorBigFrame:
                if lineStructure[")"] != -1:
                   endX = lineStructure[")"]
 
-               paramNum = 0
+               paramNum   = 0
                paramStart = startX
                paramEnd   = -1
+               inString   = False
+               stringDel  = None
 
                for num in range(startX, endX):
-                   if line[num] == "," or num == endX - 1:
+                   if line[num] in validDelimiters:
+                      if   inString == False:
+                           inString  = True
+                           stringDel = line[num]
+                      elif line[num] == stringDel:
+                           inString = False
+
+                   #print(line[num], inString, stringDel)
+
+                   if (line[num] == "," or num == endX - 1) and inString == False:
+                      if line[num] == ",":
+                         lineStructure["commas"].append(num)
+
                       paramName = "param#" + str(paramNum + 1)
 
                       paramEnd = num
@@ -967,7 +1240,7 @@ class EditorBigFrame:
                       paramStart = paramEnd + 2
 
             for key in lineStructure:
-                if type(lineStructure[key]) == list:
+                if type(lineStructure[key]) == list and key != "commas":
                    if lineStructure[key][0] != None:
                         cutStart = 0
                         cutEnd   = 0

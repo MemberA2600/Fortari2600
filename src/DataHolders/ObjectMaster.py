@@ -183,6 +183,40 @@ class ObjectMaster:
 
         return([])
 
+    def returnParamsForProcess(self, line):
+        if line == None: return []
+
+        delimiter = "%"
+        listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
+        for symbol in listOfValidDelimiters:
+            if symbol in line:
+               delimiter = symbol
+               break
+
+        data = line.split(delimiter)
+        if data[0] == "game":
+           data.pop(0)
+
+        while "" in data:
+            data.remove("")
+
+        word = None
+        base = None
+
+        if   len(data) == 2:
+           base = self.objects[data[0]]
+        elif len(data) == 3:
+           base = self.objects[data[0]][data[1]]
+        else:
+           return []
+
+        for key in base.keys():
+            if type(base[key]) != dict:
+                if key.split("(")[0] == data[-1]:
+                   return key.split("(")[1][:-1].split(",")
+
+        return []
+
     def returnOcjectOrProcess(self, name):
         if name == "game": return "object"
 
