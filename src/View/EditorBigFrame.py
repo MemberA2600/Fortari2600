@@ -386,7 +386,11 @@ class EditorBigFrame:
         selectPosizions = []
         errorPositions  = []
 
+        from copy import deepcopy
+        self.__constants = deepcopy(self.__loader.stringConstants)
+
         if mode == "whole":
+
            for num in range (1, len(text)+1):
                self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions)
 
@@ -601,10 +605,10 @@ class EditorBigFrame:
 
         if  currentLineStructure["("] != -1 and currentLineStructure["param#1"] not in [None, "None", ""]\
         and hasValidCommand == True:
-            paramColoring = self.__checkParams(currentLineStructure["param#1"],
+            paramColoring = self.checkParams(currentLineStructure["param#1"],
                                                currentLineStructure["param#2"],
                                                currentLineStructure["param#3"],
-                                               line, currentLineStructure["command"][0])
+                                               currentLineStructure, currentLineStructure["command"][0])
 
             for item in paramColoring:
                 if item[1][0] != -1:
@@ -889,9 +893,10 @@ class EditorBigFrame:
            sendBack    = True
 
         paramTypeList = paramType.split("|")
-        for pType in paramTypeList:
 
+        for pType in paramTypeList:
             if foundIt == True: break
+
             if param in noneList: continue
 
             if pType == "variable":
@@ -916,8 +921,8 @@ class EditorBigFrame:
                 for key in numberRegexes.keys():
                     test = re.findall(numberRegexes[key], param)
                     if len(test) > 0:
-                        foundIt = True
-                        returnBack.append(["number", dimension])
+                       foundIt = True
+                       returnBack.append(["number", dimension])
 
 
             elif pType == "array":
@@ -953,12 +958,12 @@ class EditorBigFrame:
 
                        else:
                           stringConst = False
-                          for key in self.__loader.stringConstants.keys():
+                          for key in self.__constants.keys():
                               if stringConst == True:
                                  break
 
                               testWord = param.replace(delimiter, '"')
-                              if testWord == key or testWord in self.__loader.stringConstants[key]["alias"]:
+                              if testWord == key or testWord in self.__constants[key]["alias"]:
                                  stringConst = True
 
                           if stringConst == True:
@@ -975,8 +980,8 @@ class EditorBigFrame:
 
                 else:
                     errorLevel = 0
-                    returnBack.append(["error", dimension])
-                    foundIt = True
+                    # returnBack.append(["error", dimension])
+                    # foundIt = True
 
         # TODO should add the other types!
 
@@ -988,7 +993,7 @@ class EditorBigFrame:
 
         if sendBack: return foundIt, returnBack[-1]
 
-    def __checkParams(self, param1, param2, param3, line, command):
+    def checkParams(self, param1, param2, param3, currentLineStructure, command):
 
         params, ioMethod = self.returnParamsOfObjects(command)
 
@@ -1018,7 +1023,46 @@ class EditorBigFrame:
                                          ppp[paramNum][1], mustHave)
 
         #print("fuck", params, returnBack)
+
+        if command == "const" or command in self.__syntaxList["const"].alias:
+           if returnBack[0][0] == "string" and returnBack[1][0] == "number":
+              if param1[0] in self.__constants.keys():
+                 returnBack[0][0] = "error"
+              else:
+                 self.__constants[param1[0]] = {
+                    "alias": [param1[0].upper(), param1[0].lower()],
+                    "value": param2[0]
+                 }
+           elif returnBack[0][0] == "stringConst":
+               returnBack[0][0] = "error"
+
+        elif command == "select" or command in self.__syntaxList["select"].alias:
+            if returnBack[0][0] == "stringConst" and\
+               self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) not in [0, 1]:
+               returnBack[0][0] = "error"
+            elif returnBack[0][0] == "number" and self.convertStringNumToNumber(param1[0]) not in [0, 1]:
+               returnBack[0][0] = "error"
+
         return returnBack
+
+    def convertStringNumToNumber(self, num):
+        if type(num) == int  : return num
+        if type(num) == float: return int(num)
+
+        binSigns = self.__config.getValueByKey("validBinarySigns").split(" ")
+        hexSigns = self.__config.getValueByKey("validHexSigns").split(" ")
+
+        mode = 10
+        if   num[0] in binSigns:
+             mode = 2
+             num  = "0b" + num[1:]
+        elif num[0] in hexSigns:
+             mode = 16
+             num  = "0x" + num[1:]
+
+        print(num, mode)
+
+        return(int(num, mode))
 
     def findObjects(self, structureItem, firstObjects):
         from copy import deepcopy
