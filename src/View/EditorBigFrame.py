@@ -700,7 +700,7 @@ class EditorBigFrame:
 
                   foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, thisParam,
                                                                             ioMethod, None,
-                                                                            dimension, mustHave)
+                                                                            dimension, mustHave, cursorIn, lineStructure)
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
@@ -714,12 +714,12 @@ class EditorBigFrame:
 
         self.__listBoxOnTheRight.delete(0, END)
 
-        wordsForList = self.setupList(currentWord, listType)
+        wordsForList = self.setupList(currentWord, listType, lineStructure, cursorIn)
 
         print(listType, lineStructure)
         # print(cursorIn, currentWord, lineStructure)
 
-    def setupList(self, currentWord, listType):
+    def setupList(self, currentWord, listType, lineStructure, cursorIn):
         wordsForList = []
         if   listType == None:
             wordsForList = []
@@ -738,7 +738,7 @@ class EditorBigFrame:
             delimiter = None
 
             for d in dels:
-                if d in isItObj:
+                if d in currentWord:
                    isItObj   = True
                    delimiter = d
                    break
@@ -765,11 +765,56 @@ class EditorBigFrame:
                        wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
                        if wordsForList[-1][1] == "process": wordsForList[-1][1] = "command"
 
+        elif listType == "variable":
+            writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+            if self.doesItWriteInParam(lineStructure, cursorIn):
+               varList = writable
+            else:
+               varList = all
 
-                # TODO: more things!!
+            for word in varList:
+                if word.startswith(currentWord) or currentWord == "":
+                    wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
 
-            wordsForList.sort()
-            return(wordsForList)
+        elif listType == "array":
+            pass
+
+        elif listType == "stringConst":
+            pass
+
+        # Maybe "statement" will be important here to??
+
+        wordsForList.sort()
+        return(wordsForList)
+
+    def collectConstantsFromEnter(self):
+        from copy import deepcopy
+
+        constants = {}
+        constants["True"] = self.__constants["True"]
+        constants["False"] = self.__constants["False"]
+
+
+
+        return constants
+
+    def doesItWriteInParam(self, linstructure, cursorIn):
+        params = self.__syntaxList[linstructure["command"][0]].params
+        paramNum = int(cursorIn.split("#")[1]) - 1
+        canBeThese = []
+        try:
+            canBeThese = params[paramNum].split("|")
+
+        except:
+            print("error:", params, paramNum )
+            return(False)
+
+        if len(canBeThese) > 0: return False
+
+        if self.__syntaxList[linstructure["command"][0]].does == "write":
+           return True
+        else:
+           return False
 
     def getXYfromCommand(self, command):
         return [command["lineNum"], command["command"][1]]
@@ -860,12 +905,23 @@ class EditorBigFrame:
         searchItems = [key]
         searchItems.extend(self.__syntaxList[searchItems[0]].alias)
 
+        if direction.endswith("All"):
+           if direction.startswith("up"):
+              direction = "up"
+           else:
+              direction = "down"
 
-        for item in searchItems:
-            if send != False: return send
+           numList = range(level - 1, -1, -1)
 
-            send = self.__finderLoop(currentLineStructure, startPoz, text, direction, item,
-                              level - 1, splitBy, splitPoz, forceEndPoz, False)
+        else:
+           numList = [level - 1]
+
+        for lvlNum in numList:
+            for item in searchItems:
+                if send != False: return send
+
+                send = self.__finderLoop(currentLineStructure, startPoz, text, direction, item,
+                                         lvlNum, splitBy, splitPoz, forceEndPoz, False)
 
         return False
 
@@ -946,7 +1002,7 @@ class EditorBigFrame:
 
         return params, ioMethod
 
-    def __checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave):
+    def __checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure):
         foundIt = False
         noneList   = ["None", None, ""]
 
@@ -956,6 +1012,9 @@ class EditorBigFrame:
            sendBack    = True
 
         paramTypeList = paramType.split("|")
+
+        if self.doesItWriteInParam(lineStructure, cursorIn) == False:
+           ioMethod = "read"
 
         for pType in paramTypeList:
             if foundIt == True: break
@@ -1083,7 +1142,7 @@ class EditorBigFrame:
             else:
                  self.__checkIfParamIsOK(paramType, param,
                                          ioMethod, returnBack,
-                                         ppp[paramNum][1], mustHave)
+                                         ppp[paramNum][1], mustHave, "param#"+str(paramNum), currentLineStructure)
 
         #print("fuck", params, returnBack)
 
@@ -1120,7 +1179,7 @@ class EditorBigFrame:
                temp      = []
 
                self.__checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
-                                       "read", temp, None, True)
+                                       "read", temp, None, True, "param#1", currentLineStructure)
 
                if (temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst"]) or\
                   (temp[0][0] in ["stringConst", "number"] and returnBack[0][0] not in ["statement"]) :
@@ -1128,7 +1187,7 @@ class EditorBigFrame:
 
         if "item" in [param1[0], param2[0], param3[0]]:
             startFound = self.__findWahWah("do-items", currentLineStructure["lineNum"],
-                             "up", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+                             "upAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
             if startFound == False:
                returnBack[0][0] = "error"
@@ -1141,7 +1200,7 @@ class EditorBigFrame:
 
                if readOnly == True:
                   endFound = self.__findWahWah("end-do", currentLineStructure["lineNum"],
-                             "down", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+                             "downAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
                   if endFound != False:
                      endDoNum  = endFound[0]
@@ -1157,7 +1216,12 @@ class EditorBigFrame:
 
                              for key in self.__syntaxList.keys():
                                  if key == c or c in self.__syntaxList[key].alias:
-                                    if self.__syntaxList[key].does == "write":
+                                    if self.doesItWriteInParam(thisLineStructure, "param#" +\
+                                                                                  str([thisLineStructure["param#1"],
+                                                                                       thisLineStructure["param#2"],
+                                                                                       thisLineStructure["param#3"]].index("item"))
+
+                                                               ):
                                        isOneWriting = True
                                        break
                          if isOneWriting == True:
@@ -1165,8 +1229,6 @@ class EditorBigFrame:
                              break
                   else:
                       returnBack[0][0] = "error"
-
-
 
         return returnBack
 
