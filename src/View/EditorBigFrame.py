@@ -608,7 +608,7 @@ class EditorBigFrame:
             paramColoring = self.checkParams(currentLineStructure["param#1"],
                                                currentLineStructure["param#2"],
                                                currentLineStructure["param#3"],
-                                               currentLineStructure, currentLineStructure["command"][0])
+                                               currentLineStructure, currentLineStructure["command"][0], text)
 
             for item in paramColoring:
                 if item[1][0] != -1:
@@ -706,12 +706,70 @@ class EditorBigFrame:
                   else:
                      listType = paramType.split("|")[0]
 
+        selection = 0
+        try:
+            selection = self.__listBoxOnTheRight.curselection()[0]
+        except:
+            pass
 
+        self.__listBoxOnTheRight.delete(0, END)
 
-        wordsForList.sort()
+        wordsForList = self.setupList(currentWord, listType)
+
         print(listType, lineStructure)
         # print(cursorIn, currentWord, lineStructure)
 
+    def setupList(self, currentWord, listType):
+        wordsForList = []
+        if   listType == None:
+            wordsForList = []
+        elif listType == "nextObject":
+            objList = self.__objectMaster.returnNextLevel(currentWord[:-1])
+            if objList == False: objList = []
+
+            for word in objList:
+                wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
+                if wordsForList[-1][1] == "process": wordsForList[-1][1] = "command"
+
+        elif listType == "command":
+            dels = self.__config.getValueByKey("validObjDelimiters").split(" ")
+            isItObj = False
+
+            delimiter = None
+
+            for d in dels:
+                if d in isItObj:
+                   isItObj   = True
+                   delimiter = d
+                   break
+
+            if isItObj == False:
+                for key in self.__syntaxList.keys():
+                    if key.startswith(currentWord) or currentWord == None:
+                       wordsForList.append([key, "command"])
+
+                starters = self.__objectMaster.getStartingObjects()
+                for obj in starters:
+                    if obj.startswith(currentWord) or currentWord == None:
+                        wordsForList.append([obj, "object"])
+
+            else:
+                line     = delimiter.join(currentWord.split(delimiter)[:-1])
+                lastPart = currentWord.split(delimiter)[-1]
+
+                objList = self.__objectMaster.returnNextLevel(line)
+                if objList == False: objList = []
+
+                for word in objList:
+                    if word.startswith(lastPart) or lastPart == "":
+                       wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
+                       if wordsForList[-1][1] == "process": wordsForList[-1][1] = "command"
+
+
+                # TODO: more things!!
+
+            wordsForList.sort()
+            return(wordsForList)
 
     def getXYfromCommand(self, command):
         return [command["lineNum"], command["command"][1]]
@@ -791,6 +849,8 @@ class EditorBigFrame:
 
             if lineStruct["command"][0] in commandList and (lineStruct["level"] == level or level == None):
                 sendBack.append(lineStruct)
+            elif searchWord == None:
+                sendBack.append(lineStruct)
 
         return sendBack
 
@@ -821,7 +881,10 @@ class EditorBigFrame:
                                  )
 
     def __findStart(self, currentLineStructure, lineNum, text):
-        startCommand = currentLineStructure["command"][0].split("-")[1]
+        try:
+            startCommand = currentLineStructure["command"][0].split("-")[1]
+        except:
+            startCommand = currentLineStructure["command"][0]
 
         return self.__finderLoop(currentLineStructure,
                                  lineNum, text, "up", startCommand,
@@ -913,9 +976,9 @@ class EditorBigFrame:
             elif pType == "number":
                 import re
 
-                numberRegexes = {"dec": r'\d{1,3}',
-                                 "bin": r'[b|%][0-1]{1,8}',
-                                 "hex": r'[$|z|h][0-9a-f]{1,2}'
+                numberRegexes = {"dec": r'^\d{1,3}$',
+                                 "bin": r'^[b|%][0-1]{1,8}$',
+                                 "hex": r'^[$|z|h][0-9a-f]{1,2}$'
                                  }
 
                 for key in numberRegexes.keys():
@@ -935,7 +998,7 @@ class EditorBigFrame:
                     if ioMethod == "write" and (param in readOnly):
                        returnBack.append(["error", dimension])
                     else:
-                       returnBack.append(["variable", dimension])
+                       returnBack.append(["array", dimension])
                     break
 
             elif pType == "string" or "stringConst":
@@ -983,7 +1046,7 @@ class EditorBigFrame:
                     # returnBack.append(["error", dimension])
                     # foundIt = True
 
-        # TODO should add the other types!
+        # TODO Need to add statement... Somehow. :(
 
         if foundIt == False:
            if mustHave == False and param in noneList:
@@ -993,7 +1056,7 @@ class EditorBigFrame:
 
         if sendBack: return foundIt, returnBack[-1]
 
-    def checkParams(self, param1, param2, param3, currentLineStructure, command):
+    def checkParams(self, param1, param2, param3, currentLineStructure, command, text):
 
         params, ioMethod = self.returnParamsOfObjects(command)
 
@@ -1037,11 +1100,73 @@ class EditorBigFrame:
                returnBack[0][0] = "error"
 
         elif command == "select" or command in self.__syntaxList["select"].alias:
-            if returnBack[0][0] == "stringConst" and\
-               self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) not in [0, 1]:
+            if returnBack[0][0] == "stringConst":
+               if self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) not in [0, 1]:
+                   returnBack[0][0] = "error"
+            elif returnBack[0][0] == "number":
+                if self.convertStringNumToNumber(param1[0]) not in [0, 1]:
+                   returnBack[0][0] = "error"
+
+        elif command == "case" or command in self.__syntaxList["case"].alias:
+
+            startFound = self.__findWahWah("select", currentLineStructure["lineNum"],
+                             "up", text, currentLineStructure["level"], "-", 0, None, currentLineStructure)
+
+            if startFound != False:
+               selectNum = startFound[0]
+               selectLineStructure = self.getLineStructure(selectNum, text, False)
+
+               paramType = self.__syntaxList["select"].params[0]
+               temp      = []
+
+               self.__checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
+                                       "read", temp, None, True)
+
+               if (temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst"]) or\
+                  (temp[0][0] in ["stringConst", "number"] and returnBack[0][0] not in ["statement"]) :
+                   returnBack[0][0] = "error"
+
+        if "item" in [param1[0], param2[0], param3[0]]:
+            startFound = self.__findWahWah("do-items", currentLineStructure["lineNum"],
+                             "up", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+
+            if startFound == False:
                returnBack[0][0] = "error"
-            elif returnBack[0][0] == "number" and self.convertStringNumToNumber(param1[0]) not in [0, 1]:
-               returnBack[0][0] = "error"
+            else:
+               doNum = startFound[0]
+               doLineStructure = self.getLineStructure(doNum, text, False)
+
+               array    = doLineStructure["param#1"][0]
+               readOnly = self.__virtualMemory.hasArrayReadOnly(array)
+
+               if readOnly == True:
+                  endFound = self.__findWahWah("end-do", currentLineStructure["lineNum"],
+                             "down", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+
+                  if endFound != False:
+                     endDoNum  = endFound[0]
+                     listOfCommands = self.__listAllCommandFromTo(None, text, None, doNum, endDoNum + 1)
+
+                     isOneWriting = False
+                     for thisLineStructure in listOfCommands:
+                         if "item" in [
+                             thisLineStructure["param#1"],
+                             thisLineStructure["param#2"],
+                             thisLineStructure["param#3"]]:
+                             c = thisLineStructure["command"]
+
+                             for key in self.__syntaxList.keys():
+                                 if key == c or c in self.__syntaxList[key].alias:
+                                    if self.__syntaxList[key].does == "write":
+                                       isOneWriting = True
+                                       break
+                         if isOneWriting == True:
+                             returnBack[0][0] = "error"
+                             break
+                  else:
+                      returnBack[0][0] = "error"
+
+
 
         return returnBack
 
@@ -1092,7 +1217,7 @@ class EditorBigFrame:
                objects[currentPossibleObject] = [
                    [startIndex + structureItem[1][0],
                     startIndex + structureItem[1][0] + len(currentPossibleObject) - 1
-                    ], self.__objectMaster.returnOcjectOrProcess(currentPossibleObject)
+                    ], self.__objectMaster.returnObjectOrProcess(currentPossibleObject)
                ]
 
                lastObj         = currentPossibleObject
@@ -1355,17 +1480,20 @@ class EditorBigFrame:
     def removeTag(self, Y, X1, X2, tags):
         if tags == None:
             for tag in self.__codeBox.tag_names():
+                if tag == "sel": continue
+
                 self.__codeBox.tag_remove(tag,
                                           str(Y) + "." + str(X1),
                                           str(Y) + "." + str(X2)
                                           )
         elif tags == "nonError":
             for tag in self.__codeBox.tag_names():
-                if tag == "error":
-                    self.__codeBox.tag_remove(tag,
-                                              str(Y) + "." + str(X1),
-                                              str(Y) + "." + str(X2)
-                                              )
+                if tag in [ "sel" , "error"]: continue
+
+                self.__codeBox.tag_remove(tag,
+                                          str(Y) + "." + str(X1),
+                                          str(Y) + "." + str(X2)
+                                          )
         elif tags == "background":
             for tag in self.__codeBox.tag_names():
                 if "back" in tag.lower():
@@ -1380,6 +1508,8 @@ class EditorBigFrame:
                                       )
         else:
             for tag in tags:
+                if tag == "sel": continue
+
                 self.__codeBox.tag_remove(tag,
                                           str(Y) + "." + str(X1),
                                           str(Y) + "." + str(X2)

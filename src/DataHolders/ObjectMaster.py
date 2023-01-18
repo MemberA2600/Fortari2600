@@ -217,7 +217,7 @@ class ObjectMaster:
 
         return []
 
-    def returnOcjectOrProcess(self, name):
+    def returnObjectOrProcess(self, name):
         if name == "game": return "object"
 
         for lvl1 in self.objects.keys():
