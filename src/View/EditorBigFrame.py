@@ -387,7 +387,11 @@ class EditorBigFrame:
         errorPositions  = []
 
         from copy import deepcopy
+
         self.__constants = deepcopy(self.__loader.stringConstants)
+        if self.__currentSection in self.__syntaxList["const"].sectionsAllowed:
+            self.__constants = self.collectConstantsFromSections()
+
 
         if mode == "whole":
 
@@ -581,9 +585,19 @@ class EditorBigFrame:
               if foundObjects[key][1] == "process":
                  hasValidCommand = True
 
+                 """
                  commandNum      = len(self.__objectMaster.returnParamsForProcess(currentLineStructure["command"][0]))
                  for num in range(0, commandNum):
                      commandParams.append("variable")
+                 """
+                 validOnes = ["variable", "string", "stringConst", "number"]
+
+                 params          = self.__objectMaster.returnParamsForProcess(currentLineStructure["command"][0])
+                 for p in params:
+                     if p in validOnes:
+                        commandParams.append(p)
+                     else:
+                        commandParams.append("variable")
 
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
@@ -628,10 +642,10 @@ class EditorBigFrame:
         if yOnTextBox == self.__cursorPoz[0]:
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
-           self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line)
+           self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
 
 
-    def __updateListBoxFromCodeEditor(self, currentWord, lineStructure, paramTypes, line):
+    def __updateListBoxFromCodeEditor(self, currentWord, lineStructure, paramTypes, line, text):
         from copy import deepcopy
 
         cursorIn     = None
@@ -655,14 +669,15 @@ class EditorBigFrame:
                 cursorIn = "overIt"
             else:
                 param = 1
-                cursorIn = "param#1"
-
                 for commaNum in range(0, len(lineStructure["commas"])):
                     if self.__cursorPoz[1] > lineStructure["commas"][commaNum]:
-                        param = commaNum + 1
+                        param += 1
                     else:
-                        cursorIn = "param#" + str(param)
                         break
+                cursorIn = "param#" + str(param)
+
+        if self.getFirstValidDelimiterPoz(line) != len(line):
+           if self.__cursorPoz[1] >= self.getFirstValidDelimiterPoz(line) + 1: cursorIn = "overIt"
 
         if len(currentWord) > 0:
             if currentWord[-1] in ["(", ")", ","]:
@@ -688,7 +703,6 @@ class EditorBigFrame:
                if paramNum > len(params) - 1:
                   listType = None
                else:
-                  thisParam = params[paramNum]
 
                   paramType = params[paramNum]
                   dimension = lineStructure[cursorIn][1]
@@ -698,13 +712,13 @@ class EditorBigFrame:
                       paramType = paramType[1:-1]
                       mustHave = False
 
-                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, thisParam,
+                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, paramType,
                                                                             ioMethod, None,
                                                                             dimension, mustHave, cursorIn, lineStructure)
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
-                     listType = paramType.split("|")[0]
+                     listType = paramType.split("|")
 
         selection = 0
         try:
@@ -714,12 +728,18 @@ class EditorBigFrame:
 
         self.__listBoxOnTheRight.delete(0, END)
 
-        wordsForList = self.setupList(currentWord, listType, lineStructure, cursorIn)
+        if type(listType) == list:
+            wordsForList = []
+            for typ in listType:
+                tempList = self.setupList(currentWord, typ, lineStructure, cursorIn, text)
+                for word in tempList:
+                    wordsForList.append(word)
+        else:
+            wordsForList = self.setupList(currentWord, listType, lineStructure, cursorIn, text)
 
-        print(listType, lineStructure)
-        # print(cursorIn, currentWord, lineStructure)
+        #print(currentWord, listType, wordsForList)
 
-    def setupList(self, currentWord, listType, lineStructure, cursorIn):
+    def setupList(self, currentWord, listType, lineStructure, cursorIn, text):
         wordsForList = []
         if   listType == None:
             wordsForList = []
@@ -774,27 +794,72 @@ class EditorBigFrame:
 
             for word in varList:
                 if word.startswith(currentWord) or currentWord == "":
-                    wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
+                    wordsForList.append([word, "variable"])
 
         elif listType == "array":
-            pass
+            all, writable, readonly = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
+
+            endFound = self.__findWahWah("end-do", lineStructure["lineNum"],
+                                         "downAll", text, lineStructure["level"], None, None, None,
+                                         lineStructure)
+
+            if endFound == False:
+               last      = len(text)
+            else:
+               last      = endFound[0] + 1
+
+            allCommands = self.__listAllCommandFromTo(None, text, None, lineStructure["lineNum"], last)
+
+            willItWrite = False
+            for command in allCommands:
+                params = [command["param#1"][0], command["param#2"][0],command["param#3"][0]]
+
+                if "item" in params:
+                    paramNum = "param#" + str(params.index("item"))
+                    if self.doesItWriteInParam(command, paramNum) == True:
+                       willItWrite = True
+                       break
+
+            if willItWrite == True:
+               arrayList    = writable
+            else:
+               arrayList    = all
+
+            for array in arrayList:
+                if array.startswith(currentWord) or currentWord == "":
+                   wordsForList.append([array, "array"])
 
         elif listType == "stringConst":
-            pass
+             constantList = self.collectConstantsFromSections()
+             for word in constantList:
+                 if word.startswith(currentWord) or currentWord == "":
+                     wordsForList.append([word, "stringConst"])
 
         # Maybe "statement" will be important here to??
 
         wordsForList.sort()
         return(wordsForList)
 
-    def collectConstantsFromEnter(self):
+    def collectConstantsFromSections(self):
         from copy import deepcopy
 
         constants = {}
-        constants["True"] = self.__constants["True"]
-        constants["False"] = self.__constants["False"]
+        constants['"True"'] = self.__loader.stringConstants['"True"']
+        constants['"False"'] = self.__loader.stringConstants['"False"']
 
+        for section in self.__syntaxList["const"].sectionsAllowed:
+            code = self.__virtualMemory.codes[self.__currentBank][section].code.replace("\r", "").replace("\t", "").split("\n")
 
+            for lineNum in range(0, len(code)):
+                lineStructure = self.getLineStructure(lineNum, code, False)
+                if lineStructure["command"][0] == "const" or lineStructure["command"][0] in self.__syntaxList["const"].alias:
+                   param1 = lineStructure["param#1"]
+                   param2 = lineStructure["param#2"]
+
+                   constants[param1[0]] = {
+                       "alias": [param1[0].upper(), param1[0].lower()],
+                       "value": param2[0]
+                   }
 
         return constants
 
@@ -886,16 +951,18 @@ class EditorBigFrame:
     def __listAllCommandFromTo(self, searchWord, text, level, fromY, toY):
         sendBack = []
 
-        commandList = [searchWord]
-        commandList.extend(self.__syntaxList[searchWord].alias)
+        if searchWord != None:
+            commandList = [searchWord]
+            commandList.extend(self.__syntaxList[searchWord].alias)
+        else:
+            commandList = []
 
         for lineNum in range(fromY, toY):
             lineStruct = self.getLineStructure(lineNum, text, True)
 
-            if lineStruct["command"][0] in commandList and (lineStruct["level"] == level or level == None):
-                sendBack.append(lineStruct)
-            elif searchWord == None:
-                sendBack.append(lineStruct)
+            if (lineStruct["level"] == level or level == None):
+                if (lineStruct["command"][0] in commandList) or searchWord == None:
+                    sendBack.append(lineStruct)
 
         return sendBack
 
@@ -995,9 +1062,21 @@ class EditorBigFrame:
         else:
             params   = []
             ioMethod = []
+            """
             paramNum = len(self.__objectMaster.returnParamsForProcess(command))
             for num in range(0, paramNum):
                 params.append("variable")
+                ioMethod.append("read")
+            """
+
+            validOnes = ["variable", "string", "stringConst", "number"]
+
+            pList = self.__objectMaster.returnParamsForProcess(command)
+            for p in pList:
+                if p in validOnes:
+                    params.append(p)
+                else:
+                    params.append("variable")
                 ioMethod.append("read")
 
         return params, ioMethod
@@ -1021,7 +1100,10 @@ class EditorBigFrame:
 
             if param in noneList: continue
 
+            printMe = False
+
             if pType == "variable":
+                if printMe: print(pType)
                 writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
 
                 if param in all:
@@ -1033,6 +1115,8 @@ class EditorBigFrame:
                        returnBack.append(["variable", dimension])
                     break
             elif pType == "number":
+                if printMe: print(pType)
+
                 import re
 
                 numberRegexes = {"dec": r'^\d{1,3}$',
@@ -1048,6 +1132,8 @@ class EditorBigFrame:
 
 
             elif pType == "array":
+                if printMe: print(pType)
+
                 if foundIt == True: break
 
                 writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
@@ -1060,7 +1146,9 @@ class EditorBigFrame:
                        returnBack.append(["array", dimension])
                     break
 
-            elif pType == "string" or "stringConst":
+            elif pType in ["string", "stringConst"]:
+                if printMe: print(pType)
+
                 delimiters = self.__config.getValueByKey("validStringDelimiters")
                 errorLevel = -1
 
@@ -1105,7 +1193,16 @@ class EditorBigFrame:
                     # returnBack.append(["error", dimension])
                     # foundIt = True
 
-        # TODO Need to add statement... Somehow. :(
+            elif pType == "statement":
+                if printMe: print(pType)
+
+                needComprassion = True
+                if lineStructure["command"][0] == "calc" or lineStructure["command"][0] in self.__syntaxList["calc"].alias:
+                   needComprassion = False
+
+                addIndex = lineStructure[cursorIn][1][0]
+                statementData = self.getStatementStructure(param, needComprassion, addIndex)
+
 
         if foundIt == False:
            if mustHave == False and param in noneList:
@@ -1114,6 +1211,133 @@ class EditorBigFrame:
               returnBack.append(["error", dimension])
 
         if sendBack: return foundIt, returnBack[-1]
+
+    def getStatementStructure(self, param, needComprassion, addIndex):
+        statementData = []
+
+        startIndex = 0
+        inside     = False
+        currentDel = None
+
+        delimiters  = self.__config.getValueByKey("validStringDelimiters").split(" ")
+        arithmetics = self.__config.getValueByKey("validArithmetics").split(" ")
+
+        for charNum in range(0, len(param)):
+            if inside == False:
+                if param[charNum] in (" ", "(", ")") or\
+                   param[charNum] in arithmetics     or\
+                   charNum == len(param) - 1:
+
+                   endIndex = charNum
+                   if charNum == len(param) - 1:
+                      endIndex +=1
+
+                   if endIndex != startIndex:
+                       statementData.append(
+                           {
+                               "word"    : param[startIndex:endIndex],
+                               "type"    : ""                            ,
+                               "position": [startIndex + addIndex, endIndex + addIndex],
+                               "relative": [startIndex           , endIndex]
+                           }
+
+                       )
+                   startIndex = endIndex + 1
+                   if param[charNum] in ("(", ")"):
+                      statementData.append(
+                                {
+                                    "word": param[charNum],
+                                    "type": "bracket",
+                                    "position": [charNum + addIndex, charNum + addIndex + 1],
+                                    "relative": [charNum           , charNum + 1]
+                                }
+
+                            )
+                      startIndex = endIndex + 1
+                   elif param[charNum] in arithmetics:
+                       statementData.append(
+                           {
+                               "word": param[charNum],
+                               "type": "arithmetic",
+                               "position": [charNum + addIndex, charNum + addIndex + 1],
+                               "relative": [charNum, charNum + 1]
+                           }
+
+                       )
+                   else:
+                      statementData[-1]["type"] = self.getType(statementData[-1]["word"])
+                elif param[charNum] in delimiters:
+                     inside = True
+                     currentDel = param[charNum]
+            else:
+                if  charNum == len(param) - 1:
+                    endIndex = charNum
+                    if charNum == len(param) - 1:
+                        endIndex += 1
+
+                    if endIndex != startIndex:
+                        statementData.append(
+                            {
+                                "word": param[startIndex:endIndex],
+                                "type": "",
+                                "position": [startIndex + addIndex, endIndex + addIndex],
+                                "relative": [startIndex, endIndex]
+                            }
+
+                        )
+                    startIndex = endIndex + 1
+
+                elif param[charNum] == currentDel:
+                     inside = False
+                     currentDel = None
+
+        print(statementData)
+
+    def getType(self, word):
+        writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+
+        for var in all:
+            if var.startswith(word): return("variable")
+
+        import re
+
+        numberRegexes = {"dec": r'^\d{1,3}$',
+                         "bin": r'^[b|%][0-1]{1,8}$',
+                         "hex": r'^[$|z|h][0-9a-f]{1,2}$'
+                         }
+
+        for key in numberRegexes.keys():
+            test = re.findall(numberRegexes[key], word)
+            if len(test) > 0:
+               return("number")
+
+        delimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
+
+        if word[0] in delimiters:
+           for key in self.__loader.stringConstants.keys():
+               if key.startswith(word): return("stringConst")
+           return "string"
+
+        comprassDict = self.getComprassionDict()
+
+        for c in comprassDict:
+            if c.startswith(word): return "comprass"
+
+        return "error"
+
+    def getComprassionDict(self):
+        comprassionKeys = ["validNotEQ", "validEQ",
+                           "validLargerThan", "validSmallerThan",
+                           "validLargerThanOrEQ", "validSmallerThanOrEQ"]
+
+        comprassionDict = {"all": []}
+
+        for key in comprassionKeys:
+            comprassionDict[key] = self.__config.getValueByKey(key)
+            for item in comprassionDict[key]:
+                comprassionDict["all"].append(item)
+
+        return comprassionDict
 
     def checkParams(self, param1, param2, param3, currentLineStructure, command, text):
 
@@ -1196,7 +1420,11 @@ class EditorBigFrame:
                doLineStructure = self.getLineStructure(doNum, text, False)
 
                array    = doLineStructure["param#1"][0]
-               readOnly = self.__virtualMemory.hasArrayReadOnly(array)
+               if array in self.__virtualMemory.arrays.keys():
+                  readOnly = self.__virtualMemory.hasArrayReadOnly(array)
+               else:
+                  returnBack[0][0] = "error"
+                  readOnly         = False
 
                if readOnly == True:
                   endFound = self.__findWahWah("end-do", currentLineStructure["lineNum"],
@@ -1247,7 +1475,7 @@ class EditorBigFrame:
              mode = 16
              num  = "0x" + num[1:]
 
-        print(num, mode)
+        #print(num, mode)
 
         return(int(num, mode))
 
@@ -1296,18 +1524,45 @@ class EditorBigFrame:
 
     def getCurrentWord(self, line):
 
+        """
         startPoz = self.__cursorPoz[1]
         endPoz   = startPoz
 
         try:
             for num in range(startPoz-1, -1, -1):
-                if line[num] == " ":
+                if line[num] in (" ", "(", ","):
                    endPoz = num + 1
                    break
         except:
             pass
 
         return line[endPoz:startPoz]
+        """
+
+        delimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
+
+        endPoz = self.__cursorPoz[1]
+        startPoz = 0
+        inside   = False
+        stringD  = None
+
+        for charNum in range(0, endPoz):
+            if inside == True and line[charNum] == stringD:
+               stringD = None
+               inside  = False
+            else:
+               if inside == False:
+                  if   len(line) - 1 > charNum: break
+                  if   line[charNum] in delimiters:
+                       stringD  = line[charNum]
+                       inside   = True
+                       startPoz = charNum
+                  elif line[charNum] in ("(", ",", " "):
+                       startPoz = charNum + 1
+
+        # print(line[startPoz:endPoz])
+        return line[startPoz:endPoz]
+
 
 
     def getLineStructure(self, lineNum, text, checkLevel):
@@ -1360,6 +1615,7 @@ class EditorBigFrame:
 
             inString   = False
             stringDel  = None
+
 
             for num in range(delimiterPoz-1, -1, -1):
                 if line[num] in validDelimiters:
@@ -1585,7 +1841,8 @@ class EditorBigFrame:
         validDelimiters = self.__config.getValueByKey("validLineDelimiters").split(" ")
         for charNum in range(0, len(line)):
             if line[charNum] in validDelimiters and level == 0 and\
-               (charNum == 0 or line[charNum-1] in (" ", ")", "\t")): return charNum
+               (charNum == 0 or line[charNum-1] in (" ", ")", "\t")):
+                return charNum
 
             if line[charNum] == "(": level += 1
             if line[charNum] == ")": level -= 1

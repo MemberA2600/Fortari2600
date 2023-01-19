@@ -20,3 +20,4 @@ validSmallerThanOrEQ=<= =< .LE.
 validStringDelimiters=' " `
 validBinarySigns=% b
 validHexSigns=$ z x
+validArithmetics=+ - * / %
