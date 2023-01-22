@@ -10,6 +10,7 @@ highLight=yellow
 command=cornflowerblue
 commandBack=snow3
 bracket=orange
+bracketSelected=darkorange4
 stringFont=azure
 stringBack=coral2
 object=goldenrod1

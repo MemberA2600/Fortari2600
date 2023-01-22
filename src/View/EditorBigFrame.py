@@ -712,7 +712,7 @@ class EditorBigFrame:
                       paramType = paramType[1:-1]
                       mustHave = False
 
-                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, paramType,
+                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, lineStructure[cursorIn][0],
                                                                             ioMethod, None,
                                                                             dimension, mustHave, cursorIn, lineStructure)
                   if foundIt == True:
@@ -871,7 +871,7 @@ class EditorBigFrame:
             canBeThese = params[paramNum].split("|")
 
         except:
-            print("error:", params, paramNum )
+            # print("error:", params, paramNum )
             return(False)
 
         if len(canBeThese) > 0: return False
@@ -1197,12 +1197,20 @@ class EditorBigFrame:
                 if printMe: print(pType)
 
                 needComprassion = True
+                stringAllowed   = False
                 if lineStructure["command"][0] == "calc" or lineStructure["command"][0] in self.__syntaxList["calc"].alias:
                    needComprassion = False
 
-                addIndex = lineStructure[cursorIn][1][0]
-                statementData = self.getStatementStructure(param, needComprassion, addIndex)
+                #If the screenItem stuff will be available, set it here!
 
+                addIndex = lineStructure[cursorIn][1][0]
+                statementData = self.getStatementStructure(param, needComprassion, stringAllowed, addIndex, lineStructure)
+                foundIt = True
+
+                # if cursorIn == "param#1": raise ValueError
+
+                for item in statementData:
+                    returnBack.append([item["type"], item["position"]])
 
         if foundIt == False:
            if mustHave == False and param in noneList:
@@ -1212,7 +1220,8 @@ class EditorBigFrame:
 
         if sendBack: return foundIt, returnBack[-1]
 
-    def getStatementStructure(self, param, needComprassion, addIndex):
+    def getStatementStructure(self, param, needComprassion, stringAllowed, addIndex, lineStructure):
+
         statementData = []
 
         startIndex = 0
@@ -1232,13 +1241,17 @@ class EditorBigFrame:
                    if charNum == len(param) - 1:
                       endIndex +=1
 
-                   if endIndex != startIndex:
+                   if endIndex != startIndex                         and\
+                       param[startIndex:endIndex] not in ["(", ")"]  and\
+                       param[startIndex:endIndex] not in arithmetics:
+
+
                        statementData.append(
                            {
                                "word"    : param[startIndex:endIndex],
-                               "type"    : ""                            ,
-                               "position": [startIndex + addIndex, endIndex + addIndex],
-                               "relative": [startIndex           , endIndex]
+                               "type"    : self.getType(param[startIndex:endIndex])                            ,
+                               "position": [startIndex + addIndex, endIndex + addIndex-1],
+                               "relative": [startIndex           , endIndex-1]
                            }
 
                        )
@@ -1247,9 +1260,9 @@ class EditorBigFrame:
                       statementData.append(
                                 {
                                     "word": param[charNum],
-                                    "type": "bracket",
-                                    "position": [charNum + addIndex, charNum + addIndex + 1],
-                                    "relative": [charNum           , charNum + 1]
+                                    "type": "invalidBracket",
+                                    "position": [charNum + addIndex, charNum + addIndex],
+                                    "relative": [charNum           , charNum]
                                 }
 
                             )
@@ -1259,13 +1272,12 @@ class EditorBigFrame:
                            {
                                "word": param[charNum],
                                "type": "arithmetic",
-                               "position": [charNum + addIndex, charNum + addIndex + 1],
-                               "relative": [charNum, charNum + 1]
+                               "position": [charNum + addIndex, charNum + addIndex],
+                               "relative": [charNum, charNum]
                            }
 
                        )
-                   else:
-                      statementData[-1]["type"] = self.getType(statementData[-1]["word"])
+
                 elif param[charNum] in delimiters:
                      inside = True
                      currentDel = param[charNum]
@@ -1279,19 +1291,106 @@ class EditorBigFrame:
                         statementData.append(
                             {
                                 "word": param[startIndex:endIndex],
-                                "type": "",
-                                "position": [startIndex + addIndex, endIndex + addIndex],
-                                "relative": [startIndex, endIndex]
+                                "type": self.getType(param[startIndex:endIndex]),
+                                "position": [startIndex + addIndex, endIndex + addIndex-1],
+                                "relative": [startIndex, endIndex-1]
                             }
 
                         )
                     startIndex = endIndex + 1
 
+
                 elif param[charNum] == currentDel:
                      inside = False
                      currentDel = None
 
-        print(statementData)
+        numberOfCompares = 0
+        lastOne          = None
+        inValidPairs     = [
+            ["arithmetic" , "comprass"   ],
+            ["string"     , "variable"   ],
+            ["stringConst", "variable"   ],
+            ["string"     , "stringConst"]
+        ]
+
+
+        for item in statementData:
+            if item["type"] == "comprass":
+               if numberOfCompares > 0:
+                  item["type"] = "error"
+               numberOfCompares += 1
+
+            if "string" in item["type"] and stringAllowed == False:
+                item["type"] = "error"
+
+            if [item["type"], lastOne]   in inValidPairs or \
+               [lastOne, item["type"]]   in inValidPairs or \
+               (lastOne == item["type"] and item["type"] not in ("bracket", "invalidBracket")):
+               item["type"] = "error"
+
+            if stringAllowed == True and ((item["type"] == "bracket"     or item["type"] == "comprass" or
+                                           item["type"] == "arithmetic") and item["word"] != "+"):
+               item["type"] = "error"
+
+            lastOne = item["type"]
+
+        level     = 0
+
+        #print("1", statementData)
+
+        bracketPairs = []
+
+        for itemNum in range(0, len(statementData)):
+            item      = statementData[itemNum]
+            compLevel = level
+            foundPair = False
+
+            if numberOfCompares == 0 and needComprassion == True:
+               item["type"] = "error"
+            elif item["word"] == "(":
+               level += 1
+               if   item["type"] == "invalidBracket":
+                   foundPair = self.findPairOfBracket(itemNum, len(statementData), 1, statementData, 0, ")")
+                   if foundPair != False:
+                       item["type"] = "bracket"
+                       statementData[foundPair]["type"] = "bracket"
+                       bracketPairs.append([itemNum, foundPair])
+                   else:
+                       item["type"] = "error"
+            elif item["word"] and item["type"] == "invalidBracket" == ")":
+                level -= 1
+
+        if lineStructure["lineNum"] == self.__cursorPoz[0]-1:
+           for item in bracketPairs:
+               if self.__cursorPoz[1] in [statementData[item[0]]["position"][0]  ,
+                                          statementData[item[1]]["position"][0]  ,
+                                          statementData[item[0]]["position"][0]+1,
+                                          statementData[item[1]]["position"][0]+1]:
+
+                  statementData[item[0]]["type"] = "bracketSelected"
+                  statementData[item[1]]["type"] = "bracketSelected"
+
+
+        #print("2", statementData)
+        return(statementData)
+
+    def findPairOfBracket(self, itemNum, end, adder, statementData, level, theOneWeNeed):
+        compLevel = level
+
+        if theOneWeNeed == "(": compLevel += 1
+
+        for pairNum in range(itemNum, end, adder):
+            pair = statementData[pairNum]
+            if pair["word"] == "(":
+                compLevel += 1
+                if level == compLevel and theOneWeNeed == pair["word"]:
+                    return pairNum
+            elif pair["word"] == ")":
+                compLevel -= 1
+                if level == compLevel and theOneWeNeed == pair["word"]:
+                   return pairNum
+
+        return False
 
     def getType(self, word):
         writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
@@ -1366,7 +1465,7 @@ class EditorBigFrame:
             else:
                  self.__checkIfParamIsOK(paramType, param,
                                          ioMethod, returnBack,
-                                         ppp[paramNum][1], mustHave, "param#"+str(paramNum), currentLineStructure)
+                                         ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure)
 
         #print("fuck", params, returnBack)
 
@@ -1955,5 +2054,9 @@ class EditorBigFrame:
                                   foreground=self.__loader.colorPalettes.getColor("bracket"),
                                   font=self.__boldFont)
 
+        self.__codeBox.tag_config("bracketSelected",
+                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
+                                  background=self.__loader.colorPalettes.getColor("bracketSelected"),
+                                  font=self.__boldFont)
 
         self.__codeBox.config(font=self.__normalFont)

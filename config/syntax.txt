@@ -15,3 +15,5 @@ case=[when],[common],command,None,brackets,[],[variable|number|statement|stringC
 default=[other else],[common],command,None,brackets,[],[variable|number|statement|stringConst],read
 asm=[assembly],[common],command,None,brackets,[],[string {string}],None
 calc=[calculate compute comp],[common],command,None,brackets,[],[variable statement],write
+incr=[increment],[common],command,None,brackets,[],[variable],write
+decr=[decrement],[common],command,None,brackets,[],[variable],write
