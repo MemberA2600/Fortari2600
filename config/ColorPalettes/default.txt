@@ -19,3 +19,4 @@ number=peachpuff3
 array=brown
 constStringBack=black
 constStringFont=lime
+subroutine=cyan

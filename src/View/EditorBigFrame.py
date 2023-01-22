@@ -23,7 +23,7 @@ class EditorBigFrame:
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
 
         self.__words = ["lineNum", "level", "command", "param#1", "param#2", "param#3", "comment", "updateRow"]
-
+        self.__subroutines = []
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -388,10 +388,13 @@ class EditorBigFrame:
 
         from copy import deepcopy
 
+        self.__subroutines = []
         self.__constants = deepcopy(self.__loader.stringConstants)
         if self.__currentSection in self.__syntaxList["const"].sectionsAllowed:
             self.__constants = self.collectConstantsFromSections()
 
+        if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
+            self.__subroutines = self.collectSubroutinesFromSections()
 
         if mode == "whole":
 
@@ -515,6 +518,7 @@ class EditorBigFrame:
                                               self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["end"]))
                     self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+
 
            if currentLineStructure["command"][0] == "do-items" or\
               currentLineStructure["command"][0] in self.__syntaxList["do-items"].alias:
@@ -835,6 +839,9 @@ class EditorBigFrame:
                  if word.startswith(currentWord) or currentWord == "":
                      wordsForList.append([word, "stringConst"])
 
+        elif listType == "subroutine":
+            wordsForList = self.collectSubroutinesFromSections()
+
         # Maybe "statement" will be important here to??
 
         wordsForList.sort()
@@ -862,6 +869,19 @@ class EditorBigFrame:
                    }
 
         return constants
+
+    def collectSubroutinesFromSections(self):
+        subroutines = []
+
+        for section in self.__syntaxList["subroutine"].sectionsAllowed:
+            code = self.__virtualMemory.codes[self.__currentBank][section].code.replace("\r", "").replace("\t", "").split("\n")
+
+            for lineNum in range(0, len(code)):
+                lineStructure = self.getLineStructure(lineNum, code, False)
+                if lineStructure["command"][0] == "subroutine" or lineStructure["command"][0] in self.__syntaxList["subroutine"].alias:
+                   subroutines.append(lineStructure["param#1"])
+
+        return subroutines
 
     def doesItWriteInParam(self, linstructure, cursorIn):
         params = self.__syntaxList[linstructure["command"][0]].params
@@ -1134,8 +1154,6 @@ class EditorBigFrame:
             elif pType == "array":
                 if printMe: print(pType)
 
-                if foundIt == True: break
-
                 writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
                 if param in all:
                     foundIt = True
@@ -1145,6 +1163,13 @@ class EditorBigFrame:
                     else:
                        returnBack.append(["array", dimension])
                     break
+
+            elif pType == "subroutine":
+                if printMe: print(pType)
+
+                if param in self.__subroutines:
+                    returnBack.append(["subroutine", dimension])
+                    foundIt = True
 
             elif pType in ["string", "stringConst"]:
                 if printMe: print(pType)
@@ -1480,6 +1505,38 @@ class EditorBigFrame:
                  }
            elif returnBack[0][0] == "stringConst":
                returnBack[0][0] = "error"
+
+        elif command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
+           if returnBack[0][0] == "string":
+              if param1[0] in self.__subroutines:
+                 returnBack[0][0] = "error"
+              else:
+                 self.__subroutines.append(param1[0])
+
+           elif returnBack[0][0] == "subroutine":
+                returnBack[0][0] = "error"
+
+        elif command == "call" or command in self.__syntaxList["call"].alias:
+            if returnBack[0][0] == "subroutine":
+               if param1[0] not in self.__subroutines:
+                  returnBack[0][0] = "error"
+
+        elif command == "goto" or command in self.__syntaxList["goto"].alias:
+            valid  = False
+            number = None
+            if returnBack[0][0] == "stringConst":
+               number = self.__constants[param1[0]]
+               valid  = True
+            elif returnBack[0][0] == "number":
+               if int(param1[0]) > 1 and int(param1[0]) < 9:
+                   number = param1[0]
+                   valid  = True
+
+            if valid == True:
+               if self.__virtualMemory.locks["bank"+str(number)] != None:
+                  returnBack[0][0] = "error"
+            else:
+                returnBack[0][0] = "error"
 
         elif command == "select" or command in self.__syntaxList["select"].alias:
             if returnBack[0][0] == "stringConst":
@@ -2054,9 +2111,21 @@ class EditorBigFrame:
                                   foreground=self.__loader.colorPalettes.getColor("bracket"),
                                   font=self.__boldFont)
 
+        self.__codeBox.tag_config("comprass",
+                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
+                                  font=self.__boldFont)
+
+        self.__codeBox.tag_config("arithmetic",
+                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
+                                  font=self.__boldFont)
+
         self.__codeBox.tag_config("bracketSelected",
                                   foreground=self.__loader.colorPalettes.getColor("bracket"),
                                   background=self.__loader.colorPalettes.getColor("bracketSelected"),
                                   font=self.__boldFont)
+
+        self.__codeBox.tag_config("subroutine",
+                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
+                                  font=self.__boldUnderlinedFont)
 
         self.__codeBox.config(font=self.__normalFont)
