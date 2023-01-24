@@ -128,21 +128,6 @@ module sleeping
        !print '("Time = ",f6.3," seconds.")',start, finish
     end subroutine
 
-    subroutine sleepMicroSeconds(microseconds)
-       real, intent(in) :: microseconds
-       real :: iteral
-       real :: ooo
-       character(2) :: ccc
-       integer :: uuu
-
-       ccc = "A0"
-
-       do iteral = 0, microseconds * 1.4, 1.0
-          do uuu = 1, 75, 1
-             read(ccc, "(Z2)") ooo
-          end do
-       end do
-    end subroutine
 end module
 
 module VGMPlayer
@@ -158,7 +143,7 @@ module VGMPlayer
 
     !!! This part is needed for the LoadLibrary part
     INTEGER(C_INTPTR_T) :: module_handle
-    TYPE(C_FUNPTR) :: proc_address
+    TYPE(C_FUNPTR) :: proc_address, proc_address2, proc_address3
 
     ABSTRACT INTERFACE
     Subroutine Out32 (PortAddress, portData) BIND(C)
@@ -168,9 +153,30 @@ module VGMPlayer
 
     END SUBROUTINE
     END INTERFACE
+
+    ABSTRACT INTERFACE
+    function Inp32 (PortAddress) BIND(C) result(portData)
+      use, intrinsic :: ISO_C_BINDING
+      implicit none
+      integer(c_short), intent(in) :: PortAddress
+      integer(c_short)             :: portData!
+
+    END function
+    END INTERFACE
+
+    ABSTRACT INTERFACE
+    function IsInpOutDriverOpen() BIND(C) result(isIt)
+      use, intrinsic :: ISO_C_BINDING
+      implicit none
+      integer(c_bool) :: isIt
+
+    END function
+    END INTERFACE
     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     PROCEDURE(Out32), BIND(C), POINTER :: doOut32
+    PROCEDURE(Inp32),  BIND(C), POINTER :: doInp32
+    PROCEDURE(IsInpOutDriverOpen),  BIND(C), POINTER :: isOpen
 
     contains
 
@@ -191,10 +197,16 @@ module VGMPlayer
         IF (module_handle == 0) STOP 'Unable to load DLL'
 
         proc_address = GetProcAddress( module_handle, C_CHAR_'Out32' // C_NULL_CHAR)
-        IF (.NOT. C_ASSOCIATED(proc_address))  &
-             STOP 'Unable to obtain procedure address'
-
+        IF (.NOT. C_ASSOCIATED(proc_address)) STOP 'Unable to obtain procedure address'
         CALL C_F_PROCPOINTER(proc_address, doOut32)
+
+        proc_address2 = GetProcAddress( module_handle, C_CHAR_'Inp32' // C_NULL_CHAR)
+        IF (.NOT. C_ASSOCIATED(proc_address2)) STOP 'Unable to obtain procedure address'
+        CALL C_F_PROCPOINTER(proc_address2, doInp32)
+
+        proc_address3 = GetProcAddress( module_handle, C_CHAR_'IsInpOutDriverOpen' // C_NULL_CHAR)
+        IF (.NOT. C_ASSOCIATED(proc_address2)) STOP 'Unable to obtain procedure address'
+        CALL C_F_PROCPOINTER(proc_address3, isOpen)
 
     end subroutine
 
@@ -202,7 +214,7 @@ module VGMPlayer
         use, intrinsic :: ISO_C_Binding
         integer, intent(in) :: register, dataToWrite
         integer           :: num
-        integer(c_short) :: port, dat
+        integer(c_short) :: port, dat, filler
         integer(kind = 2), dimension(3) :: values
 
         values = (/ 12, 8, 12 /)
@@ -219,7 +231,9 @@ module VGMPlayer
            call doOut32(port, dat)
         end do
 
-        call sleepMicroSeconds(3.3)
+        do num = 1, 6, 1
+           filler = doInp32(port)
+        end do
 
         ! Set data
         port = lptDataPort
@@ -232,7 +246,9 @@ module VGMPlayer
            call doOut32(port, values(num))
         end do
 
-        call sleepMicroSeconds(23.0)
+        do num = 1, 35, 1
+           filler = doInp32(port)
+        end do
 
     end subroutine
 
@@ -244,6 +260,14 @@ module VGMPlayer
            call writeReg(reg, dat)
         end do
 
+    end subroutine
+
+    subroutine testPort()
+       integer(c_short) :: port, dat
+       port  = Z'0378'
+       dat   = 255
+       call doOut32(port, dat)
+       write(*,*) "Test done. All data ports should be set to high."
     end subroutine
 
 end module
@@ -411,6 +435,9 @@ program OPL2LPTPlayer
 
     end do
     call initChip()
+
+    write(*,"(L)") isOpen()
+    call testPort()
 
 end program
 
