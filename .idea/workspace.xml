@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/ColorPalettes/default.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/ColorPalettes/default.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/syntax.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/syntax.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2023-01-22_113925.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/EditorBigFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/EditorBigFrame.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -178,25 +175,25 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="224" />
+          <entry key="project.closed" value="228" />
           <entry key="project.open.time.2" value="3" />
-          <entry key="project.open.time.3" value="47" />
-          <entry key="project.open.time.4" value="223" />
+          <entry key="project.open.time.3" value="48" />
+          <entry key="project.open.time.4" value="226" />
           <entry key="project.open.time.5" value="5" />
           <entry key="project.open.time.68" value="1" />
-          <entry key="project.opened" value="280" />
+          <entry key="project.opened" value="284" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="6" />
-          <entry key="py" value="344" />
+          <entry key="py" value="346" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="6" />
-          <entry key="Python" value="344" />
+          <entry key="Python" value="346" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
@@ -218,7 +215,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="195">
@@ -235,10 +232,28 @@
           </provider>
         </entry>
       </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Converters/VGMConverter.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="331">
+              <caret line="189" column="55" selection-start-line="189" selection-start-column="47" selection-end-line="189" selection-end-column="55" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Scripts/YM3812.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="507">
+              <caret line="389" column="23" lean-forward="true" selection-start-line="389" selection-start-column="23" selection-end-line="389" selection-end-column="23" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
+            <state relative-caret-position="688">
               <caret line="43" selection-start-line="43" selection-end-line="43" />
             </state>
           </provider>
@@ -247,7 +262,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="579">
+            <state relative-caret-position="1216">
               <caret line="77" selection-start-line="77" selection-end-line="77" />
             </state>
           </provider>
@@ -256,7 +271,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
+            <state relative-caret-position="8400">
               <caret line="531" column="25" selection-start-line="531" selection-start-column="20" selection-end-line="531" selection-end-column="25" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -288,12 +303,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>position</find>
-      <find>addIndex</find>
-      <find>&quot;position&quot;</find>
-      <find>getStatementStructure</find>
-      <find>paramTypeAndDimension</find>
-      <find>bracketSelected</find>
       <find>cursorIn</find>
       <find>print</find>
       <find>__checkIfParamIsOK</find>
@@ -318,6 +327,12 @@
       <find>&quot;subroutine&quot;</find>
       <find>returnParamsOfObjects</find>
       <find>locks</find>
+      <find>vgm2textThread</find>
+      <find>__setRegister08</find>
+      <find>YM812</find>
+      <find>freq</find>
+      <find>__vgmHeader</find>
+      <find>constant</find>
     </findStrings>
     <replaceStrings>
       <replace>alreadyDone</replace>
@@ -448,13 +463,13 @@
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="DataHolders" type="462c0819:PsiDirectoryNode" />
+              <item name="Handlers" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="Handlers" type="462c0819:PsiDirectoryNode" />
+              <item name="Scripts" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
@@ -657,9 +672,10 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.53420806" visible="true" weight="0.295625" />
-      <window_info id="Structure" order="1" sideWeight="0.46579194" side_tool="true" visible="true" weight="0.295625" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5304592" visible="true" weight="0.295625" />
+      <window_info id="Structure" order="1" sideWeight="0.46954077" side_tool="true" visible="true" weight="0.295625" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
@@ -708,20 +724,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="194" column="43" selection-start-line="194" selection-start-column="33" selection-end-line="194" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/DynamicText.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="171" column="59" selection-start-line="171" selection-start-column="49" selection-end-line="171" selection-end-column="59" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/EmptyLines.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="259">
@@ -994,16 +996,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2912">
-          <caret line="185" column="30" selection-start-line="185" selection-start-column="8" selection-end-line="185" selection-end-column="30" />
-          <folding>
-            <marker date="1674016652389" expanded="true" signature="8710:8714" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../Fortari2600ArchievedSrc/EditorBigFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="9680">
@@ -1015,36 +1007,47 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="232">
           <caret line="54" column="45" selection-start-line="54" selection-start-column="45" selection-end-line="54" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-            <marker date="1674404634382" expanded="true" signature="3336:3641" ph="..." />
-            <marker date="1674404634382" expanded="true" signature="7054:7063" ph="..." />
-            <marker date="1674404634382" expanded="true" signature="7054:7133" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
+        <state relative-caret-position="688">
           <caret line="43" selection-start-line="43" selection-end-line="43" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="579">
+        <state relative-caret-position="1216">
           <caret line="77" selection-start-line="77" selection-end-line="77" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
+        <state relative-caret-position="8400">
           <caret line="531" column="25" selection-start-line="531" selection-start-column="20" selection-end-line="531" selection-end-column="25" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2912">
+          <caret line="185" column="30" selection-start-line="185" selection-start-column="8" selection-end-line="185" selection-end-column="30" />
+          <folding>
+            <marker date="1674016652389" expanded="true" signature="8710:8714" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Scripts/YM3812.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="507">
+          <caret line="389" column="23" lean-forward="true" selection-start-line="389" selection-start-column="23" selection-end-line="389" selection-end-column="23" />
         </state>
       </provider>
     </entry>
@@ -1060,6 +1063,13 @@
             <marker date="1674407851203" expanded="true" signature="58401:59391" ph="..." />
             <marker date="1674407851203" expanded="true" signature="59420:59892" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Converters/VGMConverter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="189" column="55" selection-start-line="189" selection-start-column="47" selection-end-line="189" selection-end-column="55" />
         </state>
       </provider>
     </entry>

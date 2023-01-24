@@ -18,4 +18,4 @@ calc=[calculate compute comp],[common],command,None,brackets,[],[variable statem
 incr=[increment],[common],command,None,brackets,[],[variable],write
 decr=[decrement],[common],command,None,brackets,[],[variable],write
 leave=[],[common],command,None,None,[overscan],None,None
-goto=[],[common],command,None,None,[leave],[number|stringConst],None
+goto=[],[common],command,None,None,[leave],[number|stringConst|variable],None

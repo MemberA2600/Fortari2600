@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="OPL2LPTPlayer" />
+		<Option pch_mode="2" />
+		<Option compiler="gfortran" />
+		<Build>
+			<Target title="Release">
+				<Option output="bin/Release/OPL2LPTPlayer" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gfortran" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/inpout32.lib" />
+					<Add library="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/inpoutx64.lib" />
+					<Add directory="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/" />
+					<LinkerExe value="Linker" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Linker>
+			<Add library="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/inpout32.lib" />
+			<Add library="D:/Fortran(CodeBlocks)/projects/OPL2LPTPlayer/inpoutx64.lib" />
+		</Linker>
+		<Unit filename="inpout32.lib" />
+		<Unit filename="inpoutx64.lib" />
+		<Unit filename="main.f90">
+			<Option weight="0" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
