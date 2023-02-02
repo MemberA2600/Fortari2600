@@ -387,3 +387,4 @@ command=Command
 param=Param
 comment=Comment
 updateRow=Update Row
+build=Build Project

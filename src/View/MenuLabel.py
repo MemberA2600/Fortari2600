@@ -45,7 +45,14 @@ class MenuLabel:
 
     def __placer(self):
         c = self.__loader.mainWindow.getConstant()
-        self.__label.place(x=(self.__loader.mainWindow.getConstant()*self.__XPoz*1.5)+ 5, y = c*1.04+12)
+        try:
+
+            x = (self.__loader.mainWindow.getConstant()*self.__XPoz*1.5)+ 5
+            y = c*1.04+12
+
+            self.__label.place(x=x, y = y)
+        except Exception as e:
+            print(str(e))
 
     def __setFont(self):
         self.__font = self.__fontManager.getFont("normal", False, False, False)

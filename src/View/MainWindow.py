@@ -245,7 +245,7 @@ class MainWindow:
              b.pack_propagate(False)
              b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-             self.changerButtons.append(b)
+             self.sectionButtons.append(b)
 
          from EditorBigFrame import EditorBigFrame
 
@@ -265,151 +265,98 @@ class MainWindow:
         #                                 99999, 150, 400, 60)
 
         self.__places = {}
-        __vals = [0, 6.5, 11, 19.5]
+        __vals = [0]
 
         self.__buttonMaker = ButtonMaker(self.__loader, self.__buttonMenu, self.__createLabel, self.__destroyLabel)
 
-        self.__newButton = self.__buttonMaker.createButton("new", 0,
+        currentPoz = [0]
+
+        self.__newButton = self.__buttonMaker.createButton("new", currentPoz,
                                       self.__newButtonFunction, "projectPath" ,
                                        True, None, self.__places, __vals[0])
-        self.__openButton = self.__buttonMaker.createButton("open", 1,
+        self.__openButton = self.__buttonMaker.createButton("open", currentPoz,
                                        self.__openButtonFunction, "projectPath",
                                         True, None, self.__places,  __vals[0])
-        self.__saveButton = self.__buttonMaker.createButton("save", 2,
+        self.__saveButton = self.__buttonMaker.createButton("save", currentPoz,
                                        self.__saveButtonFunction, "projectPath",
                                         False, None, self.__places,  __vals[0])
-        self.__saveAllButton = self.__buttonMaker.createButton("saveAll", 3,
+        self.__saveAllButton = self.__buttonMaker.createButton("saveAll", currentPoz,
                                           self.__saveAllButtonFunction, "projectPath",
                                             False, None, self.__places,  __vals[0])
-        self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", 4,
+        self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", currentPoz,
                                           self.__closeProjectButtonFunction, "projectPath",
                                             False, None, self.__places,  __vals[0])
-        self.__archiveButton = self.__buttonMaker.createButton("archive", 5,
+        self.__archiveButton = self.__buttonMaker.createButton("archive", currentPoz,
                                           self.__achiveButtonFunction, "projectPath",
                                             False, None, self.__places,  __vals[0])
+        self.__buildProjectButton    = self.__buttonMaker.createButton("build", currentPoz,
+                                          self.__buildProject, "projectPath",
+                                            False, None, self.__places, __vals[0])
 
+        currentPoz[0] += 0.5
+        __vals.append(currentPoz[0])
 
-        self.__copyButton = self.__buttonMaker.createButton("copy", 6.5,
+        self.__copyButton = self.__buttonMaker.createButton("copy", currentPoz,
                                           self.__copyButtonFunction, None,
                                             False, self.setCopyButton, self.__places,  __vals[1])
-        self.__pasteButton = self.__buttonMaker.createButton("paste", 7.5,
+        self.__pasteButton = self.__buttonMaker.createButton("paste", currentPoz,
                                           self.__pasteButtonFunction, None,
                                             False, self.setPasteButton, self.__places, __vals[1])
-        self.__undoButton = self.__buttonMaker.createButton("undo", 8.5,
+        self.__undoButton = self.__buttonMaker.createButton("undo", currentPoz,
                                           self.__undoButtonFunction, None,
                                             False, self.__undoButtonHandler, self.__places, __vals[1])
-        self.__redoButton = self.__buttonMaker.createButton("redo", 9.5,
+        self.__redoButton = self.__buttonMaker.createButton("redo", currentPoz,
                                           self.__redoButtonFunction, None,
                                             False, self.__redoButtonHandler, self.__places, __vals[1])
+        currentPoz[0] += 0.5
+        __vals.append(currentPoz[0])
 
-        self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", 11,
+        self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", currentPoz,
                                           self.__openSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", 12,
+        self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", currentPoz,
                                           self.__openPFEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__musicButton = self.__buttonMaker.createButton("music", 13,
+        self.__musicButton = self.__buttonMaker.createButton("music", currentPoz,
                                           self.__openMusicComposer, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", 14,
+        self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", currentPoz,
                                           self.__openPictureConverter, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", 15,
+        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", currentPoz,
                                           self.__openSoundPlayer, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", 16,
+        self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", currentPoz,
                                           self.__openBigSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__menuMaker = self.__buttonMaker.createButton("menuMaker", 17,
+        self.__menuMaker = self.__buttonMaker.createButton("menuMaker", currentPoz,
                                           self.__openMenuMaker, "projectPath",
                                             False, None, self.__places, __vals[2])
 
-        self.__miniMapMaker = self.__buttonMaker.createButton("minimap", 18,
+        self.__miniMapMaker = self.__buttonMaker.createButton("minimap", currentPoz,
                                           self.__openMiniMapMaker, "projectPath",
                                             False, None, self.__places, __vals[2])
+        currentPoz[0] += 0.5
+        __vals.append(currentPoz[0])
 
-        """
-        self.__lockManagerButton = self.__buttonMaker.createButton("lockManager", 18.5,
-                                          self.__openLockManager, "projectPath",
-                                            False, None, self.__places, __vals[3])
-        """
-
-        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", 19.5,
+        self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", currentPoz,
                                           self.openMemoryManager, "projectPath",
                                             False, None, self.__places, __vals[3])
 
-        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", 20.5,
+        self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", currentPoz,
                                           self.__openScreenTopBottom, "projectPath",
                                             False, None, self.__places, __vals[3])
+
 
         self.__menuLabel    = []
         self.__menuLabel.append(MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager))
         self.__created      = True
-
-    """
-    def __createSelectorFrame(self):
-        self.__selectMenu1 = FrameContent(self.__loader, "bankMenu",
-                                         self.getWindowSize()[0] / 7, self.getWindowSize()[1] / 5, 5,
-                                         self.__buttonMenu.getFrameSize()[1]+10,
-                                         99999, 550, 80, 100)
-
-        from SelectLabel import SelectLabel
-        from NewListBoxInFrame import NewListBoxInFrame
-
-
-        self.__bankLabel = SelectLabel(self.__loader, self.__selectMenu1,
-                                       self.__dictionaries.getWordFromCurrentLanguage("selectedBank"),
-                                        self.__fontManager
-                                       )
-        listBoxItems = []
-        for num in range(1,9):
-            listBoxItems.append("bank"+str(num))
-
-        self.__bankBox = NewListBoxInFrame("bankBox", self.__loader,
-                            self.__selectMenu1, listBoxItems, self.checkIfBankChanged, LEFT)
-
-
-        self.__selectMenu2 = FrameContent(self.__loader, "sectionMenu",
-                                         self.getWindowSize()[0] / 6, self.getWindowSize()[1] / 5,
-                                         self.__selectMenu1.getFrameSize()[0]+10 ,
-                                         self.__buttonMenu.getFrameSize()[1]+10,
-                                         99999, 550, 80, 100)
-
-        self.__sectionLabel = SelectLabel(self.__loader, self.__selectMenu2,
-                                       self.__dictionaries.getWordFromCurrentLanguage("selectedSection"),
-                                        self.__fontManager
-                                       )
-
-        self.__tempList = []
-        for item in self.__loader.sections:
-            if item != "special_read_only":
-                self.__tempList.append(item)
-
-        self.__sectionBox = NewListBoxInFrame("sectionBox", self.__loader,
-                            self.__selectMenu2, self.__tempList, self.checkIfSectionChanged, LEFT)
-
-
-        self.__lockMenu = FrameContent(self.__loader, "lockMenu",
-                                         self.getWindowSize()[0] / 8, self.getWindowSize()[1] / 5,
-                                       (self.__selectMenu1.getFrameSize()[0]+10)*2.25 ,
-                                         self.__buttonMenu.getFrameSize()[1]+10,
-                                         99999, 550, 80, 100)
-
-        from LockFrame import LockFrame
-        self.__lockFrame = LockFrame(self.__loader, self, self.__lockMenu, self.__fontManager)
-
-
-
-        self.__changedSelection = Thread(target=self.__listBoxChanges)
-        self.__changedSelection.daemon = True
-        self.__changedSelection.start()
-    """
 
 
     def __loopColorThread(self):
@@ -438,6 +385,7 @@ class MainWindow:
 
 
     def __createLabel(self, event):
+
         if self.__created == False: return
 
         try:
@@ -451,7 +399,7 @@ class MainWindow:
             self.__menuLabel[0].setText(self.__dictionaries.getWordFromCurrentLanguage(name))
             self.__menuLabel[0].changePlace(self.__places[name])
 
-        except:
+        except Exception as e:
             try:
                 self.__menuLabel[0].setText("")
                 self.__menuLabel[0].dead = True
@@ -459,9 +407,9 @@ class MainWindow:
                 pass
 
             try:
-                self.__menuLabel[0]  = [MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)]
+                self.__menuLabel[0]  = MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)
             except:
-                self.__menuLabel.append([MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager)])
+                self.__menuLabel.append(MenuLabel(self.__loader, self.__buttonMenu, "", 0, self.__fontManager))
 
     def setMode(self, mode):
         self.__bigFrame.setMode(mode)
@@ -770,6 +718,15 @@ class MainWindow:
         MiniMapMaker(self.__loader)
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()
+
+    def __buildProject(self):
+        #from BuildProjectWindow import BuildProjectWindow
+
+        #BuildProjectWindow(self.__loader)
+        #self.__loader.tk.deiconify()
+        #self.__loader.tk.focus()
+
+        pass
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])

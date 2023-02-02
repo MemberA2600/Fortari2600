@@ -22,7 +22,8 @@ class EditorBigFrame:
         self.__syntaxList = self.__loader.syntaxList
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
 
-        self.__words = ["lineNum", "level", "command", "param#1", "param#2", "param#3", "comment", "updateRow"]
+        self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
+                        "param#1", "param#2", "param#3", "comment", "updateRow"]
         self.__subroutines = []
 
         self.__focused = None
@@ -86,6 +87,7 @@ class EditorBigFrame:
         t.daemon = True
         t.start()
 
+
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
 
@@ -122,7 +124,29 @@ class EditorBigFrame:
             if self.__counter == 1: self.__counterEnded()
             if self.__counter2 == 1: self.__counterEnded2()
 
-            sleep(0.005)
+            if self.activeMode == "job":
+                for bankNum in range(2,9):
+                    key = "bank" + str(bankNum)
+                    if self.__virtualMemory.locks[key] == None:
+                        self.__bankButtons[bankNum - 2].config(state=NORMAL)
+                    else:
+                        self.__bankButtons[bankNum - 2].config(state=DISABLED)
+
+                if self.__virtualMemory.locks[self.__currentBank] == None:
+                   state = NORMAL
+                else:
+                   state = DISABLED
+
+
+                for button in self.__sectionButtons:
+                    button.config(state = state)
+            else:
+                for button in self.__sectionButtons:
+                    button.config(state = DISABLED)
+                for button in self.__bankButtons:
+                    button.config(state = DISABLED)
+
+            sleep(0.05)
 
     def __removeSlaves(self):
         self.__mainFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
@@ -203,7 +227,9 @@ class EditorBigFrame:
 
         bannerItems = [[self.__dictionaries.getWordFromCurrentLanguage("number")        , 1.5, Label,  None],
                        [self.__dictionaries.getWordFromCurrentLanguage("level")         , 1.5, Label,  None],
-                       [self.__dictionaries.getWordFromCurrentLanguage("command")       , 2,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#1", 1.75,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#2", 1.75,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#3", 1.75,   Entry,  NORMAL],
                        [self.__dictionaries.getWordFromCurrentLanguage("param") + "#1"  , 2,   Entry,  DISABLED],
                        [self.__dictionaries.getWordFromCurrentLanguage("param") + "#2"  , 2,   Entry,  DISABLED],
                        [self.__dictionaries.getWordFromCurrentLanguage("param") + "#3"  , 2,   Entry,  DISABLED],
@@ -220,7 +246,7 @@ class EditorBigFrame:
             sumItems += len(bannerItem[0]) * bannerItem[1]
 
         bannerItemLens = []
-        xUnit = self.__mainFrame.winfo_width() // sumItems
+        xUnit = round((self.__mainFrame.winfo_width() / sumItems))
         self.__labelFrames       = []
         self.__headerLabels      = []
         self.__codeEditoritems   = {}
@@ -286,7 +312,6 @@ class EditorBigFrame:
                 entry.bind("<FocusOut>", self.checker)
 
                 self.__codeEditoritems[self.__words[num]] = [entryVar, entry]
-
 
             elif bannerItems[num][2] == Button:
                 button = Button(f2,      width=9999999,
@@ -399,7 +424,7 @@ class EditorBigFrame:
         if mode == "whole":
 
            for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions)
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting")
 
                for item in selectPosizions:
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
@@ -410,31 +435,39 @@ class EditorBigFrame:
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
         else:
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions)
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting")
 
-    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions):
+    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller):
         if len(line) == 0: return
 
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
         yOnTextBox = lineNum + 1
         line = line.replace("\t", " ")
 
-        self.removeTag(yOnTextBox, 0, len(line), None)
+        if caller == "lineTinting":
+           self.removeTag(yOnTextBox, 0, len(line), None)
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
-        currentLineStructure = self.getLineStructure(lineNum, text, True)
+        currentLineStructure = None
+        if  caller == "lineTinting":
+            currentLineStructure = self.getLineStructure(lineNum, text, True)
+        elif caller == "lineEditor":
+            currentLineStructure = self.getLineStructure(0, [line], True)
+            currentLineStructure["lineNum"] = lineNum
 
         if line[0] in ("*", "#"): delimiterPoz = 0
 
         if delimiterPoz != len(line):
-           self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
+           if caller == "lineTinting":
+              self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
 
         hasValidCommand = False
         addError        = False
         commandParams   = []
 
         if currentLineStructure["command"][0] in self.__syntaxList.keys():
-           self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+           if caller == "lineTinting":
+              self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                                    currentLineStructure["command"][1][1]+1, "command")
 
            hasValidCommand = True
@@ -561,15 +594,17 @@ class EditorBigFrame:
 
 
            if addError == True:
-               self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
+               if caller == "lineTinting":
+                  self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
                               currentLineStructure["command"][1][1] + 1, None)
-               self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+                  self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                            currentLineStructure["command"][1][1] + 1, "error")
 
         elif currentLineStructure["command"][0] not in (None, "None", ""):
            foundObjects = self.findObjects(currentLineStructure["command"], objects)
 
-           self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
+           if caller == "lineTinting":
+              self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
                         currentLineStructure["command"][1][1] + 1, "error")
 
            asList = list(foundObjects.keys())
@@ -578,11 +613,12 @@ class EditorBigFrame:
 
               adder = 1
               if key == asList[-1]: adder = 0
-              self.removeTag(yOnTextBox, foundObjects[key][0][0],
+              if caller == "lineTinting":
+                 self.removeTag(yOnTextBox, foundObjects[key][0][0],
                           foundObjects[key][0][1] + 1 + adder,
                           None)
 
-              self.addTag(yOnTextBox, foundObjects[key][0][0],
+                 self.addTag(yOnTextBox, foundObjects[key][0][0],
                           foundObjects[key][0][1] + 1,
                           foundObjects[key][1])
 
@@ -605,19 +641,22 @@ class EditorBigFrame:
 
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
-             self.addTag(yOnTextBox, currentLineStructure["("],
+             if caller == "lineTinting":
+                self.addTag(yOnTextBox, currentLineStructure["("],
                                      currentLineStructure["("] + 1,
                                      "error")
         elif currentLineStructure["("] == -1 and currentLineStructure[")"] != -1:
-             self.addTag(yOnTextBox, currentLineStructure[")"],
+             if caller == "lineTinting":
+                self.addTag(yOnTextBox, currentLineStructure[")"],
                                      currentLineStructure[")"] + 1,
                                      "error")
         elif currentLineStructure["("] != -1 and currentLineStructure[")"] != -1:
-            self.addTag(yOnTextBox, currentLineStructure[")"],
+            if caller == "lineTinting":
+               self.addTag(yOnTextBox, currentLineStructure[")"],
                         currentLineStructure[")"] + 1,
                         "bracket")
 
-            self.addTag(yOnTextBox, currentLineStructure["("],
+               self.addTag(yOnTextBox, currentLineStructure["("],
                         currentLineStructure["("] + 1,
                         "bracket")
 
@@ -630,20 +669,22 @@ class EditorBigFrame:
 
             for item in paramColoring:
                 if item[1][0] != -1:
-                   self.removeTag(yOnTextBox, item[1][0],
+                   if caller == "lineTinting":
+                      self.removeTag(yOnTextBox, item[1][0],
                                               item[1][1] + 1,
                                               None)
-                   self.addTag(   yOnTextBox, item[1][0],
+                      self.addTag(   yOnTextBox, item[1][0],
                                               item[1][1] + 1,
                                               item[0])
 
         for ind in range(0, len(currentLineStructure["commas"])):
             if ind > len(commandParams) - 2:
-               self.addTag(yOnTextBox, currentLineStructure["commas"][ind],
+               if caller == "lineTinting":
+                  self.addTag(yOnTextBox, currentLineStructure["commas"][ind],
                                        currentLineStructure["commas"][ind] + 1,
                                        "error")
 
-        if yOnTextBox == self.__cursorPoz[0]:
+        if yOnTextBox == self.__cursorPoz[0] and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
            self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
@@ -1679,22 +1720,6 @@ class EditorBigFrame:
         return objects
 
     def getCurrentWord(self, line):
-
-        """
-        startPoz = self.__cursorPoz[1]
-        endPoz   = startPoz
-
-        try:
-            for num in range(startPoz-1, -1, -1):
-                if line[num] in (" ", "(", ","):
-                   endPoz = num + 1
-                   break
-        except:
-            pass
-
-        return line[endPoz:startPoz]
-        """
-
         delimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
 
         endPoz = self.__cursorPoz[1]
@@ -1942,11 +1967,147 @@ class EditorBigFrame:
                elif type(item) == list:
                   if type(item[0]) == StringVar:
                      item[0].set(lineStructure[key][0])
+                     if item[0].get() == "None": item[0].set("")
 
-        self.__checkEditorItems()
+            elif key == "command":
+                delimiter = "%"
+                dels      = self.__config.getValueByKey('validObjDelimiters').split(" ")
 
-    def __checkEditorItems(self):
-        pass
+                string = lineStructure["command"][0]
+                if string in ("None", None): string = ""
+
+                for d in dels:
+                    if d in string:
+                       delimiter = d
+                       break
+
+                commandParts = string.split(delimiter)
+                self.__codeEditoritems["command#1"][0].set("")
+                self.__codeEditoritems["command#2"][0].set("")
+                self.__codeEditoritems["command#3"][0].set("")
+
+                for num in range(0, len(commandParts)):
+                    data = commandParts[num]
+
+                    if data not in [None, "None", ""]:
+                       self.__codeEditoritems["command#" + str(num+1)][0].set(data)
+
+
+        self.__codeEditoritems["updateRow"].config(state = DISABLED)
+        self.__checkEditorItems(lineStructure)
+
+    def __checkEditorItems(self, lineStructure):
+
+        textToPrint = self.__getFakeLine()
+
+        selectPosizions = []
+        errorPositions  = []
+
+        objectList = self.__objectMaster.getStartingObjects()
+        objectList.append("game")
+
+        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor")
+
+    def __getFakeLine(self):
+
+        noneList = [None, "None", ""]
+
+        try:
+            level = int(self.__codeEditoritems["level"][0].get())
+        except:
+            level = 0
+
+        lineText = "\t" * level
+        dominantObjDelimiter = self.getDominantDelimiter()
+
+        if self.__codeEditoritems["command#1"][0].get() not in noneList:
+           lineText = lineText + self.__codeEditoritems["command#1"][0].get()
+
+        if self.__codeEditoritems["command#2"][0].get() not in noneList:
+           lineText = lineText + dominantObjDelimiter +  self.__codeEditoritems["command#2"][0].get()
+
+        if self.__codeEditoritems["command#3"][0].get() not in noneList:
+           lineText = lineText + dominantObjDelimiter +  self.__codeEditoritems["command#3"][0].get()
+
+        if (self.__codeEditoritems["param#1"][0].get() not in noneList or
+            self.__codeEditoritems["param#2"][0].get() not in noneList or
+            self.__codeEditoritems["param#3"][0].get() not in noneList):
+            lineText = lineText + "("
+
+        if self.__codeEditoritems["param#1"][0].get() not in noneList:
+           lineText = lineText + "\t" + self.__codeEditoritems["param#1"][0].get()
+
+        if self.__codeEditoritems["param#2"][0].get() not in noneList:
+           lineText = lineText + ",\t" + self.__codeEditoritems["param#2"][0].get()
+
+        if self.__codeEditoritems["param#3"][0].get() not in noneList:
+           lineText = lineText + ",\t" + self.__codeEditoritems["param#3"][0].get()
+
+        if (self.__codeEditoritems["param#1"][0].get() not in noneList or
+            self.__codeEditoritems["param#2"][0].get() not in noneList or
+            self.__codeEditoritems["param#3"][0].get() not in noneList):
+            lineText = lineText + ")"
+
+        if self.__codeEditoritems["comment"][0].get() not in noneList:
+           lineText = lineText + " " + self.getDominantDelimiter() + "\t" + self.__codeEditoritems["comment"][0].get()
+
+        return lineText
+
+    def getDominantObjDelimiter(self):
+        text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+
+        delimiterKeys = self.__config.getValueByKey("validObjDelimiters").split(" ")
+
+        delimiters = {}
+
+        for key in delimiterKeys:
+            delimiters[key] = 0
+
+        for lineNum in range(0, len(text)):
+            line = text(lineNum)
+            lineStruct = self.getLineStructure(lineNum, text, False)
+
+            currentDel = None
+            for d in delimiterKeys:
+                if d in lineStruct["command"][0]:
+                   currentDel = d
+                   break
+
+            if currentDel != None:
+               delimiters[currentDel] += 1
+
+        largest  = "%"
+        largeNum = 0
+        for key in delimiterKeys:
+            if delimiters[key] > largeNum:
+               largeNum = delimiters[key]
+               largest  = key
+
+        return largest
+
+    def getDominantDelimiter(self):
+        text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+
+        delimiterKeys = self.__config.getValueByKey("validLineDelimiters").split(" ")
+
+        delimiters = {}
+
+        for key in delimiterKeys:
+            delimiters[key] = 0
+
+        for line in text:
+            poz = self.getFirstValidDelimiterPoz(line)
+            if poz == 0 or poz == len(line): continue
+            delimiters[line[poz]] += 1
+
+        largest  = "!"
+        largeNum = 0
+        for key in delimiterKeys:
+            if delimiters[key] > largeNum:
+               largeNum = delimiters[key]
+               largest  = key
+
+        return largest
 
     def addTag(self, Y, X1, X2, tag):
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
@@ -2076,7 +2237,7 @@ class EditorBigFrame:
 
         self.__codeBox.tag_config("number",
                                   foreground=self.__loader.colorPalettes.getColor("number"),
-                                  font=self.__italicFont)
+                                  font=self.__normalFont)
 
        # self.__codeBox.tag_config("process",
        #                           foreground=self.__loader.colorPalettes.getColor("process"),

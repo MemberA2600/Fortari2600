@@ -387,3 +387,4 @@ command=Parancs
 param=Param
 comment=Megjegyzés
 updateRow=Sor Módosítása
+build=Projekt Lefordítása
