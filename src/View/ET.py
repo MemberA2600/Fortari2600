@@ -95,9 +95,20 @@ class ET:
         self.__first = False
         #self.__forestCanvas.clipboard_clear()
         #self.__forestCanvas.delete("all")
+
+
+        while self.__forestImg.height() == 1:
+            self.__forest = IMAGE.open("others/img/etForest.png").resize(
+                (self.__forestFrame.winfo_width(),
+                 self.__forestFrame.winfo_height()
+                 ), IMAGE.ANTIALIAS)
+
+            self.__forestImg = ImageTk.PhotoImage(self.__forest)
+
         self.__forestOfSteel = self.__forestCanvas.create_image(
             0, 0, image=self.__forestImg, anchor=NW
         )
+
         self.getETSprite(self.__spriteCounter + 1, self.__mirroring)
 
         self.__et = self.__forestCanvas.create_image(

@@ -183,6 +183,35 @@ class ObjectMaster:
 
         return([])
 
+    def returnObjListLike(self, lvl1Obj, lvl2Obj, lvl3Obj, lvlAskedFor):
+        items = self.returnAllCombinations()
+        returnThese = []
+
+        for item in items:
+            if (item[0].startswith(lvl1Obj) or lvl1Obj == "") and \
+               (item[1].startswith(lvl2Obj) or lvl2Obj == "") and \
+               (item[2].startswith(lvl3Obj) or lvl3Obj == ""):
+
+               returnThese.append(item[lvlAskedFor - 1])
+
+        return returnThese
+
+    def returnAllCombinations(self):
+        items = []
+
+        for lvl1 in self.objects.keys():
+            for lvl2 in self.objects[lvl1].keys():
+                if "(" in lvl2:
+                    lvl2 = lvl2.split("(")[0]
+                    items.append([lvl1, lvl2, ""])
+                else:
+                    for lvl3 in self.objects[lvl1][lvl2]:
+                        lvl3 = lvl3.split("(")[0]
+                        items.append([lvl1, lvl2, lvl3])
+
+        return items
+
+
     def returnParamsForProcess(self, line):
         if line == None: return []
 
