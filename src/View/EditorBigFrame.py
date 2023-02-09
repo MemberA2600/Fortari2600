@@ -95,6 +95,17 @@ class EditorBigFrame:
 
     def __focusIn(self, event):
         self.__focused = event.widget
+        textToPrint = self.__getFakeLine()
+
+        selectPosizions = []
+        errorPositions = []
+
+        objectList = self.__objectMaster.getStartingObjects()
+        objectList.append("game")
+
+        self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
+                           selectPosizions, errorPositions, "lineEditor")
+
 
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
@@ -642,7 +653,6 @@ class EditorBigFrame:
                lineEditorTempDict["comment#1"] = "error"
 
            asList = list(foundObjects.keys())
-
            for keyNum in range(0, len(asList)):
               key = asList[keyNum]
 
@@ -658,10 +668,10 @@ class EditorBigFrame:
                           foundObjects[key][0][1] + 1,
                           foundObjects[key][1])
 
-
               elif caller == "lineEditor":
                   self.configTheItem("command#"+str(keyNum+1), foundObjects[key][1])
                   lineEditorTempDict["command#"+str(keyNum+1)] = foundObjects[key][1]
+
 
               if foundObjects[key][1] == "process":
                  hasValidCommand = True
@@ -721,7 +731,6 @@ class EditorBigFrame:
                       self.configTheItem("param#" + str(paramNum), item[0])
                       lineEditorTempDict["param#" + str(paramNum)] = item[0]
 
-
         for ind in range(0, len(currentLineStructure["commas"])):
             if ind > len(commandParams) - 2:
                if caller == "lineTinting":
@@ -736,12 +745,18 @@ class EditorBigFrame:
            self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
         elif caller == "lineEditor":
 
+            for word in ["command", "param"]:
+                for num in range(1, 4):
+                    key = word + "#" + str(num)
+                    if key not in lineEditorTempDict and self.__codeEditorItems[key][0].get() != "":
+                       lineEditorTempDict[key] = "error"
+
             if "command#1" in lineEditorTempDict.keys():
                 if lineEditorTempDict["command#1"] in ["command", "error"]:
                    for secondNum in range(2, 4):
                        secondWord = "command#" + str(secondNum)
                        if secondWord in lineEditorTempDict:
-                           if lineEditorTempDict[secondWord][0].get() != "":
+                           if lineEditorTempDict[secondWord] != "":
                               self.configTheItem(secondWord, "error")
                               lineEditorTempDict[secondWord] = "error"
 
@@ -750,9 +765,11 @@ class EditorBigFrame:
                          self.configTheItem("command#2", "error")
                          lineEditorTempDict["command#2"] = "error"
 
-                     elif "command#2" not in ("object", "process"):
+
+                     elif lineEditorTempDict["command#2"] not in ("object", "process"):
                          self.configTheItem("command#2", "error")
                          lineEditorTempDict["command#2"] = "error"
+
 
                      if lineEditorTempDict["command#2"] == "object":
                          if "command#3" not in lineEditorTempDict.keys():
@@ -763,6 +780,9 @@ class EditorBigFrame:
                    "command#3" in lineEditorTempDict:
                     if lineEditorTempDict["command#2"] == "process" and \
                        lineEditorTempDict["command#3"] != "":
+                       self.configTheItem("command#3", "error")
+                       lineEditorTempDict["command#3"] = "error"
+                    elif lineEditorTempDict["command#3"] != "process":
                        self.configTheItem("command#3", "error")
                        lineEditorTempDict["command#3"] = "error"
 
@@ -780,9 +800,9 @@ class EditorBigFrame:
                     self.configTheItem("command#3", "error")
                     lineEditorTempDict["command#3"] = "error"
 
-            self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict)
+            self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
 
-    def updateListBoxFromLineEditor(self, currentLineStructure, commandParams, lineEditorTempDict):
+    def updateListBoxFromLineEditor(self, currentLineStructure, commandParams, lineEditorTempDict, text):
         wordList = []
 
         currentWord = ""
@@ -805,7 +825,6 @@ class EditorBigFrame:
               if entryNum == 1:
                  if ("command#2" not in lineEditorTempDict) and ("command#3") not in lineEditorTempDict:
 
-
                      for command in self.__syntaxList.keys():
                          if command.startswith(currentWord):
                             listOfItems.append([command, "command"])
@@ -819,31 +838,58 @@ class EditorBigFrame:
                      for item in listOfItems:
                          if    "command#1" not in lineEditorTempDict.keys():
                                wordList.append(item)
-                         elif  item.startswith(lineEditorTempDict["command#1"]):
+                         elif  item[0].startswith(lineEditorTempDict["command#1"] or item[0] == ""):
                                wordList.append(item)
 
+
               if listOfItems == []:
-
-                  try:
-                      item1 = lineEditorTempDict["command#1"]
-                  except:
-                      item1 = ""
-
-                  try:
-                      item2 = lineEditorTempDict["command#2"]
-                  except:
-                      item2 = ""
-
-                  try:
-                      item3 = lineEditorTempDict["command#3"]
-                  except:
-                      item3 = ""
-
                   listOfItems = self.__objectMaster.returnObjListLike(
-                     item1, item2, item3, entryNum
+                     self.__codeEditorItems["command#1"][0].get(),
+                     self.__codeEditorItems["command#2"][0].get(),
+                     self.__codeEditorItems["command#3"][0].get(), entryNum
                   )
+
            elif entryType == "param":
-               pass
+               mustHave = True
+               try:
+                   listType = commandParams[entryNum - 1]
+               except:
+                   listType = None
+                   mustHave = False
+
+               if listType != None:
+                  if listType.startswith("{"):
+                     listType = listType[1:-1]
+                     mustHave  = False
+
+                  commandString = ""
+                  for num in range(1,4):
+                      key = "command#" + str(num)
+                      if key in lineEditorTempDict.keys():
+                         if num > 1: commandString += "%"
+                         commandString += self.__codeEditorItems[key][0].get()
+
+                  dummy, ioMethod = self.returnParamsOfObjects(commandString)
+                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(listType, currentWord,
+                                                                            ioMethod, None,
+                                                                            "dummy", mustHave, selectedType, currentLineStructure)
+                  if foundIt == True:
+                     listType = paramTypeAndDimension[0]
+                  else:
+                     listType = listType.split("|")
+
+               if type(listType) == list:
+                   listOfItems = []
+                   for typ in listType:
+                       tempList = self.setupList(currentWord, typ, currentLineStructure, selectedType, text)
+                       for word in tempList:
+                           listOfItems.append(word)
+
+               else:
+                   listOfItems = self.setupList(currentWord, listType, currentLineStructure, selectedType, text)
+
+           listOfItems.sort()
+           self.fillListBox(listOfItems)
 
     def reAlignCommandsAndParams(self):
         noneList = ("", None, "None")
@@ -979,8 +1025,13 @@ class EditorBigFrame:
         self.__listBoxOnTheRight.select_clear(0, END)
         self.__listBoxOnTheRight.delete(0, END)
 
+
+
         for item in wordsForList:
             endIndex = self.__listBoxOnTheRight.index(END)
+
+            if item[0] in self.__listOfItems: continue
+
             self.__listBoxOnTheRight.insert(END, item[0])
             self.__listOfItems.append(item[0])
 

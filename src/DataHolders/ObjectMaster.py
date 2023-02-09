@@ -188,11 +188,13 @@ class ObjectMaster:
         returnThese = []
 
         for item in items:
-            if (item[0].startswith(lvl1Obj) or lvl1Obj == "") and \
-               (item[1].startswith(lvl2Obj) or lvl2Obj == "") and \
-               (item[2].startswith(lvl3Obj) or lvl3Obj == ""):
+            if (item[0][0].startswith(lvl1Obj) or lvl1Obj == "") and \
+               (item[1][0].startswith(lvl2Obj) or lvl2Obj == "") and \
+               (item[2][0].startswith(lvl3Obj) or lvl3Obj == ""):
 
-               returnThese.append(item[lvlAskedFor - 1])
+               if lvlAskedFor >  1 and item[0][0] == "": continue
+               if lvlAskedFor == 3 and item[1][0] == "": continue
+               if item[lvlAskedFor-1][0] != "": returnThese.append(item[lvlAskedFor - 1])
 
         return returnThese
 
@@ -200,14 +202,22 @@ class ObjectMaster:
         items = []
 
         for lvl1 in self.objects.keys():
+            if lvl1.startswith("bank"): continue
+
+            found = False
             for lvl2 in self.objects[lvl1].keys():
                 if "(" in lvl2:
                     lvl2 = lvl2.split("(")[0]
-                    items.append([lvl1, lvl2, ""])
+                    items.append([[lvl1, "object"], [lvl2, "process"], ["", ""]])
+                    found = True
+
                 else:
-                    for lvl3 in self.objects[lvl1][lvl2]:
+                    for lvl3 in self.objects[lvl1][lvl2].keys():
                         lvl3 = lvl3.split("(")[0]
-                        items.append([lvl1, lvl2, lvl3])
+                        items.append([[lvl1, "object"], [lvl2, "object"], [lvl3, "process"]])
+                        found = True
+
+            if found == False: items.append([[lvl1, "object"], ["", ""], ["", ""]])
 
         return items
 
@@ -233,9 +243,15 @@ class ObjectMaster:
         base = None
 
         if   len(data) == 2:
-           base = self.objects[data[0]]
+           try:
+               base = self.objects[data[0]]
+           except:
+               return []
         elif len(data) == 3:
-           base = self.objects[data[0]][data[1]]
+           try:
+               base = self.objects[data[0]][data[1]]
+           except:
+               return []
         else:
            return []
 

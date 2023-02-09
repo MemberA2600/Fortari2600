@@ -49,9 +49,32 @@ class ET:
 
         from threading import Thread
 
+        forest = Thread(target=self.__forestD)
+        forest.daemon = True
+        forest.start()
+
         draw = Thread(target=self.drawET)
         draw.daemon = True
         draw.start()
+
+    def __forestD(self):
+        from time import sleep
+
+        while self.__forestFrame.winfo_width()<2 or self.__forestCanvas.winfo_width() < 2:
+           sleep(0.0001)
+
+        while self.__forestImg.height() < 2:
+            self.__forest = IMAGE.open("others/img/etForest.png").resize(
+                (self.__forestFrame.winfo_width(),
+                 self.__forestFrame.winfo_height()
+                 ), IMAGE.ANTIALIAS)
+
+            self.__forestImg = ImageTk.PhotoImage(self.__forest)
+            sleep(0.0001)
+
+        self.__forestOfSteel = self.__forestCanvas.create_image(
+            0, 0, image=self.__forestImg, anchor=NW
+        )
 
     def __setBuffer(self):
         self.__imageBufferLeft=[]
@@ -91,19 +114,11 @@ class ET:
 
 
             sleep(0.05)
+
     def draw(self):
         self.__first = False
         #self.__forestCanvas.clipboard_clear()
         #self.__forestCanvas.delete("all")
-
-
-        while self.__forestImg.height() == 1:
-            self.__forest = IMAGE.open("others/img/etForest.png").resize(
-                (self.__forestFrame.winfo_width(),
-                 self.__forestFrame.winfo_height()
-                 ), IMAGE.ANTIALIAS)
-
-            self.__forestImg = ImageTk.PhotoImage(self.__forest)
 
         self.__forestOfSteel = self.__forestCanvas.create_image(
             0, 0, image=self.__forestImg, anchor=NW
