@@ -104,7 +104,7 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                           selectPosizions, errorPositions, "lineEditor")
+                           selectPosizions, errorPositions, "lineEditor", None)
 
 
     def __insertPressed(self, event):
@@ -396,7 +396,30 @@ class EditorBigFrame:
         self.__loadFromMemory(self.__currentBank, self.__currentSection)
 
     def updateTextFromDisplay(self):
-        pass
+        if self.__codeEditorItems["updateRow"].cget("state") == DISABLED: return
+
+        line = self.__getFakeLine()
+
+        currentLineNum   = self.__cursorPoz[0]
+        text = self.__codeBox.get(0.0, END).split("\n")
+
+        text[currentLineNum-1] = line
+
+        self.__codeBox.delete(0.0, END)
+        self.__codeBox.insert(0.0, "\n".join(text))
+
+        self.__codeBox.see(str(currentLineNum) + ".0")
+
+        selectPosizions = []
+        errorPositions  = []
+        objectList = self.__objectMaster.getStartingObjects()
+        objectList.append("game")
+
+        self.__codeBox.mark_set(INSERT, str(currentLineNum)+"."+ str(len(line)))
+        self.__codeEditorItems["updateRow"].config(state = DISABLED)
+        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True)
+
+        self.__codeBox.focus()
 
     def checker(self, event):
         pass
@@ -424,7 +447,8 @@ class EditorBigFrame:
     def __tintingThread(self, mode):
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
-        if self.__lastButton == "Enter": mode = "whole"
+        if self.__lastButton == "Return":
+            mode = "whole"
 
         #objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
         objectList = self.__objectMaster.getStartingObjects()
@@ -444,9 +468,9 @@ class EditorBigFrame:
             self.__subroutines = self.collectSubroutinesFromSections()
 
         if mode == "whole":
-
-           for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting")
+            self.__codeEditorItems["updateRow"].config(state=DISABLED)
+            for num in range (1, len(text)+1):
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True)
 
                for item in selectPosizions:
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
@@ -457,21 +481,23 @@ class EditorBigFrame:
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
         else:
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting")
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None)
 
-    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller):
+    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole):
 
         lineEditorTempDict = {}
 
-        if len(line) == 0: return
-
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
         yOnTextBox = lineNum + 1
+
         line = line.replace("\t", " ")
 
         if caller == "lineTinting":
            self.removeTag(yOnTextBox, 0, len(line), None)
-        text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+        text = self.__codeBox.get(1.0, END).replace("\t", " ").split("\n")
+        if lineNum >= len(text): return
+
+        if line == "": line = " "
 
         currentLineStructure = None
         if  caller == "lineTinting":
@@ -738,9 +764,8 @@ class EditorBigFrame:
                                        currentLineStructure["commas"][ind] + 1,
                                        "error")
 
-        if yOnTextBox == self.__cursorPoz[0] and caller == "lineTinting":
+        if (yOnTextBox == self.__cursorPoz[0])  and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
-
            self.updateLineDisplay(currentLineStructure)
            self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
         elif caller == "lineEditor":
@@ -2276,7 +2301,7 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__theNumOfLine = lineStructure["lineNum"]
-        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor")
+        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None)
 
     def __focusOut(self, event):
         #print(event.type)
@@ -2284,6 +2309,8 @@ class EditorBigFrame:
         if event.widget in self.__focusOutItems:
            if event.type == "FocusOut":
               self.__focused = None
+           else:
+              self.__codeEditorItems["updateRow"].config(state = NORMAL)
            textToPrint = self.__getFakeLine()
 
            selectPosizions = []
@@ -2293,7 +2320,7 @@ class EditorBigFrame:
            objectList.append("game")
 
            self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                              selectPosizions, errorPositions, "lineEditor")
+                              selectPosizions, errorPositions, "lineEditor", None)
 
 
     def __getFakeLine(self):
@@ -2325,13 +2352,13 @@ class EditorBigFrame:
             lineText = lineText + "("
 
         if self.__codeEditorItems["param#1"][0].get() not in noneList:
-           lineText = lineText + "\t" + self.__codeEditorItems["param#1"][0].get()
+           lineText = lineText + self.__codeEditorItems["param#1"][0].get()
 
         if self.__codeEditorItems["param#2"][0].get() not in noneList:
-           lineText = lineText + ",\t" + self.__codeEditorItems["param#2"][0].get()
+           lineText = lineText + ", " + self.__codeEditorItems["param#2"][0].get()
 
         if self.__codeEditorItems["param#3"][0].get() not in noneList:
-           lineText = lineText + ",\t" + self.__codeEditorItems["param#3"][0].get()
+           lineText = lineText + ", " + self.__codeEditorItems["param#3"][0].get()
 
         if (self.__codeEditorItems["param#1"][0].get() not in noneList or
             self.__codeEditorItems["param#2"][0].get() not in noneList or
@@ -2339,7 +2366,11 @@ class EditorBigFrame:
             lineText = lineText + ")"
 
         if self.__codeEditorItems["comment"][0].get() not in noneList:
-           lineText = lineText + " " + self.getDominantDelimiter() + "\t" + self.__codeEditorItems["comment"][0].get()
+           if self.__codeEditorItems["command#1"][0].get() not in noneList or \
+              self.__codeEditorItems["param#1"][0].get() not in noneList:
+              lineText = lineText + " " + self.getDominantDelimiter() + "\t" + self.__codeEditorItems["comment"][0].get()
+           else:
+              lineText = "*" +  self.__codeEditorItems["comment"][0].get()
 
         return lineText
 
