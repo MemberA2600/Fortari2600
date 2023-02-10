@@ -37,6 +37,9 @@ class EditorBigFrame:
 
         self.__destroyables = {}
         self.__lastButton   = None
+        self.__focused2 = None
+
+        self.__lbFocused = False
 
         miniSize = 0.65
 
@@ -94,7 +97,9 @@ class EditorBigFrame:
         t.start()
 
     def __focusIn(self, event):
-        self.__focused = event.widget
+        self.__focused  = event.widget
+        self.__focused2 = event.widget
+
         textToPrint = self.__getFakeLine()
 
         selectPosizions = []
@@ -106,12 +111,53 @@ class EditorBigFrame:
         self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
                            selectPosizions, errorPositions, "lineEditor", None)
 
-
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
 
     def __insertSelectedFromBox(self):
-        pass
+        try:
+            selected = self.__listOfItems[self.__listBoxOnTheRight.curselection()[0]]
+        except:
+            return
+
+        if self.__focused2 == None:
+           return
+
+        if self.__focused2 == self.__codeBox:
+           text = self.__codeBox.get(0.0, END).split("\n")
+           theLine = text[self.__cursorPoz[0]-1]
+           currentWord = self.getCurrentWord(theLine)
+
+           cutPoz = self.__cursorPoz[1] - len(currentWord)
+
+           theLine = theLine[:cutPoz] + selected + theLine[self.__cursorPoz[1]:]
+           text[self.__cursorPoz[0]-1] = theLine
+
+           self.__codeBox.delete(0.0, END)
+           self.__codeBox.insert(INSERT, "\n".join(text))
+           self.__codeBox.focus()
+           self.__codeBox.mark_set(INSERT, str(self.__cursorPoz[0])+"."+ str(cutPoz + len(selected)))
+
+           self.__tintingThread("whole")
+        else:
+           for itemName in self.__codeEditorItems.keys():
+               item = self.__codeEditorItems[itemName]
+               if type(item) == list:
+                  if item[1] == self.__focused2:
+                     item[0].set(selected)
+                     item[1].focus()
+                     item[1].icursor(len(selected))
+
+                     self.__codeEditorItems["updateRow"].config(state=NORMAL)
+                     textToPrint = self.__getFakeLine()
+
+                     selectPosizions = []
+                     errorPositions = []
+                     objectList = self.__objectMaster.getStartingObjects()
+
+                     self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
+                                        selectPosizions, errorPositions, "lineEditor", None)
+                     break
 
     def getCurrentBank(self):
         return self.__currentBank
@@ -164,6 +210,16 @@ class EditorBigFrame:
                     button.config(state = DISABLED)
                 for button in self.__bankButtons:
                     button.config(state = DISABLED)
+
+            curSel = None
+            try:
+                curSel = self.__listBoxOnTheRight.curselection()[0]
+                self.__button.config(state = NORMAL)
+            except:
+                try:
+                    self.__button.config(state = DISABLED)
+                except:
+                    pass
 
             sleep(0.05)
 
@@ -388,12 +444,26 @@ class EditorBigFrame:
         s.pack(side=RIGHT, anchor=W, fill=Y)
         l.pack(side=LEFT, anchor=W, fill=BOTH)
 
+        s.config(command=l.yview)
+
+
         self.__scrollBarOnTheRight = s
         self.__listBoxOnTheRight   = l
         self.firstTry = True
 
+        self.__listBoxOnTheRight.bind("<FocusIn>", self.__lbFocusIn)
+        self.__listBoxOnTheRight.bind("<FocusOut>", self.__lbFocusOut)
+
         self.getLineStructure(None, None, True)
         self.__loadFromMemory(self.__currentBank, self.__currentSection)
+
+    def __lbFocusIn(self, widget):
+        self.__lbFocused = True
+
+    def __lbFocusOut(self, widget):
+        self.__lbFocused = False
+
+
 
     def updateTextFromDisplay(self):
         if self.__codeEditorItems["updateRow"].cget("state") == DISABLED: return
@@ -446,6 +516,7 @@ class EditorBigFrame:
 
     def __tintingThread(self, mode):
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+        self.__focused2 = self.__codeBox
 
         if self.__lastButton == "Return":
             mode = "whole"
@@ -1050,8 +1121,6 @@ class EditorBigFrame:
         self.__listBoxOnTheRight.select_clear(0, END)
         self.__listBoxOnTheRight.delete(0, END)
 
-
-
         for item in wordsForList:
             endIndex = self.__listBoxOnTheRight.index(END)
 
@@ -1075,6 +1144,10 @@ class EditorBigFrame:
             if selected in self.__listOfItems:
                selection = self.__listOfItems.index(selected)
 
+        self.__listBoxOnTheRight.select_set(selection)
+
+        if self.__lbFocused:
+           self.__listBoxOnTheRight.focus()
 
 
         # print(currentWord, listType, wordsForList)
@@ -2317,7 +2390,7 @@ class EditorBigFrame:
            errorPositions  = []
 
            objectList = self.__objectMaster.getStartingObjects()
-           objectList.append("game")
+           #objectList.append("game")
 
            self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
                               selectPosizions, errorPositions, "lineEditor", None)
@@ -2495,6 +2568,7 @@ class EditorBigFrame:
         self.__setTinting(self.__cursorPoz[0])
 
     def clicked(self, event):
+        self.__focused2 = event.widget
         self.__counterEnded2()
 
     def __counterEnded2(self):
