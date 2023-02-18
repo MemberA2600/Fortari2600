@@ -84,6 +84,7 @@ class EmptyLines:
                                              justify=LEFT, font=self.__normalFont,
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 1, command = self.XXX
         )
 
@@ -94,6 +95,7 @@ class EmptyLines:
                                              justify=LEFT, font=self.__normalFont,
                                              variable = self.__option,
                                              activebackground=self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 2, command = self.XXX
         )
 

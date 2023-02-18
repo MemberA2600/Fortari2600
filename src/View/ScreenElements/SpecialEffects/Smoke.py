@@ -243,6 +243,7 @@ class Smoke:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=variable,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=val, command=func
                                          )
 

@@ -318,6 +318,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__dotMode1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__dotsChanged1
                                        )
 
@@ -365,6 +366,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__dotMode2,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__dotsChanged2
                                        )
 
@@ -414,6 +416,7 @@ class TwoIconsTwoLines:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__picOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX1
                                          )
 
@@ -437,6 +440,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picOption1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX2
                                        )
 
@@ -452,6 +456,7 @@ class TwoIconsTwoLines:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__picOption2,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX3
                                          )
 
@@ -468,6 +473,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picOption2,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX4
                                        )
 
@@ -693,6 +699,7 @@ class TwoIconsTwoLines:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__picSettingsOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX5
                                          )
 
@@ -728,6 +735,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__mirrored1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__mirroredChanged1
                                        )
 
@@ -741,6 +749,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picSettingsOption1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX6
                                        )
 
@@ -756,6 +765,7 @@ class TwoIconsTwoLines:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__picSettingsOption2,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX7
                                          )
 
@@ -791,6 +801,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__mirrored2,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__mirroredChanged2
                                        )
 
@@ -804,6 +815,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picSettingsOption2,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX8
                                        )
 
@@ -1016,6 +1028,7 @@ class TwoIconsTwoLines:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__rightVal,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__changeJustify
                                        )
 
@@ -1151,16 +1164,7 @@ class TwoIconsTwoLines:
                        self.__colorVarListBox2,
                        8,
                        self.__colorVars)
-        '''
-        self.__constEntry2.changeState(state = DISABLED)
-        self.__colorVarListBox2.config(state = NORMAL)
-        for itemNum in range(1, len(self.__colorVars)):
-            if self.__colorVars[itemNum].split("::")[1] == self.__lastSelectedColors[1]:
-               self.__colorVarListBox2.select_set(itemNum)
-               self.__data[8] = self.__lastSelectedColors[1]
-               self.__changeData(self.__data)
-               break
-        '''
+
 
     def XXX_changeToPicSettingsConst(self, mirrored, indexEntry, indexVal, lastSelected, listBox, selectNum, dataNum, mirroredButton, nusizFrame):
         mirroredButton.config(state=NORMAL)
@@ -1182,23 +1186,6 @@ class TwoIconsTwoLines:
 
 
     def XXX5(self):
-        '''
-        self.__mirrored1.config(state = NORMAL)
-        self.__indexEntry1.config(state = NORMAL)
-
-        self.__lastSelectedPictureVars[0] = self.__colorVars[self.__picVarListBox1.curselection()[0]].split("::")[1]
-        self.__picVarListBox1.config(state = DISABLED)
-
-        mirrored = str(self.__mirrored1.get())
-        try:
-            indexNum = bin(int(self.__indexVal1.get())).replace("0b", "")
-            while len(indexNum) < 4: indexNum = "0" + indexNum
-
-            self.__data[5] = "%" + indexNum + mirrored + "000"
-            self.__changeData(self.__data)
-        except:
-            pass
-        '''
 
         self.XXX_changeToPicSettingsConst(self.__mirrored1,
                                           self.__indexEntry1,

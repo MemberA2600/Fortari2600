@@ -38,6 +38,7 @@ class EditorBigFrame:
         self.__destroyables = {}
         self.__lastButton   = None
         self.__focused2 = None
+        #self.__searchLine = 0
 
         self.__lbFocused = False
 
@@ -100,7 +101,7 @@ class EditorBigFrame:
         self.__focused  = event.widget
         self.__focused2 = event.widget
 
-        textToPrint = self.__getFakeLine()
+        textToPrint = self.__getFakeLine(self.__codeEditorItems)
 
         selectPosizions = []
         errorPositions = []
@@ -133,12 +134,7 @@ class EditorBigFrame:
            theLine = theLine[:cutPoz] + selected + theLine[self.__cursorPoz[1]:]
            text[self.__cursorPoz[0]-1] = theLine
 
-           self.__codeBox.delete(0.0, END)
-           self.__codeBox.insert(INSERT, "\n".join(text))
-           self.__codeBox.focus()
-           self.__codeBox.mark_set(INSERT, str(self.__cursorPoz[0])+"."+ str(cutPoz + len(selected)))
-
-           self.__tintingThread("whole")
+           self.updateText(text)
         else:
            for itemName in self.__codeEditorItems.keys():
                item = self.__codeEditorItems[itemName]
@@ -149,7 +145,7 @@ class EditorBigFrame:
                      item[1].icursor(len(selected))
 
                      self.__codeEditorItems["updateRow"].config(state=NORMAL)
-                     textToPrint = self.__getFakeLine()
+                     textToPrint = self.__getFakeLine(self.__codeEditorItems)
 
                      selectPosizions = []
                      errorPositions = []
@@ -186,7 +182,7 @@ class EditorBigFrame:
             if self.__counter2 > 0:
                self.__counter2 -= 1
 
-            if self.__counter == 1: self.__counterEnded()
+            if self.__counter  == 1: self.__counterEnded()
             if self.__counter2 == 1: self.__counterEnded2()
 
             if self.activeMode == "job":
@@ -275,7 +271,10 @@ class EditorBigFrame:
         self.__codeFrameHeader.pack_propagate(False)
         self.__codeFrameHeader.pack(side=BOTTOM, anchor=S, fill=X)
 
-        self.__codeBox = scrolledtext.ScrolledText(self.__mainFrame, width=999999, height=self.__mainFrame.winfo_height(), wrap=WORD)
+        self.__codeBox    = scrolledtext.ScrolledText(self.__mainFrame, width=999999, height=self.__mainFrame.winfo_height(), wrap=NONE)
+        self.__hscrollbar = Scrollbar(self.__mainFrame, orient=HORIZONTAL, command=self.__codeBox.xview)
+        self.__codeBox.config(xscrollcommand=self.__hscrollbar.set)
+        self.__hscrollbar.pack(side=BOTTOM, fill=X, anchor=S)
         self.__codeBox.pack(fill=BOTH, side=BOTTOM, anchor=S)
 
         self.__codeBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
@@ -300,109 +299,10 @@ class EditorBigFrame:
         self.__getFont()
         sizes = (0.20, 0.60, 0.20)
 
-        bannerItems = [[self.__dictionaries.getWordFromCurrentLanguage("number")        , 1.5, Label,  None],
-                       [self.__dictionaries.getWordFromCurrentLanguage("level")         , 1.5, Label,  None],
-                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#1", 1.75,   Entry,  NORMAL],
-                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#2", 1.75,   Entry,  NORMAL],
-                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#3", 1.75,   Entry,  NORMAL],
-                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#1"  , 2,   Entry,  DISABLED],
-                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#2"  , 2,   Entry,  DISABLED],
-                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#3"  , 2,   Entry,  DISABLED],
-                       [self.__dictionaries.getWordFromCurrentLanguage("comment")       , 3,   Entry,  NORMAL],
-                       [self.__dictionaries.getWordFromCurrentLanguage("updateRow")     , 1.5, Button, self.updateTextFromDisplay]
-                       ]
-
-        colors = [[self.__colors.getColor("font"), self.__colors.getColor("window")],
-                  [self.__colors.getColor("window"), self.__colors.getColor("font")]]
-
-        sumItems = 0
-
-        for bannerItem in bannerItems:
-            sumItems += len(bannerItem[0]) * bannerItem[1]
-
-        bannerItemLens = []
-        xUnit = round((self.__mainFrame.winfo_width() / sumItems))
         self.__labelFrames       = []
-        self.__headerLabels      = []
         self.__codeEditorItems   = {}
 
-        for item in bannerItems:
-            bannerItemLens.append(
-                int(len(item[0])  * xUnit * item[1])
-            )
-
-            f = Frame(self.__codeFrameHeader, width=bannerItemLens[-1],
-                                         height=99999999,
-                                         bg=self.__colors.getColor("window"))
-            f.pack_propagate(False)
-            f.pack(side=LEFT, anchor = E, fill=Y)
-
-            self.__labelFrames.append(f)
-
-            num = bannerItems.index(item)
-            c = colors[num%2]
-
-            label = Label(f, text=item[0],
-                      font=self.__miniFont, fg=c[0], bg=c[1], justify=CENTER
-                      )
-
-            label.pack_propagate(False)
-            label.pack(side=TOP, anchor=N, fill=BOTH)
-
-            self.__headerLabels.append(label)
-
-            f2 = Frame(self.__codeFrameEditor, width=bannerItemLens[-1],
-                                         height=99999999,
-                                         bg=self.__colors.getColor("window"))
-            f2.pack_propagate(False)
-            f2.pack(side=LEFT, anchor = E, fill=Y)
-
-            self.__labelFrames.append(f2)
-
-            if   bannerItems[num][2] == Label:
-                label = Label(f2, text="-",
-                              font=self.__miniFont,
-                              fg=self.__colors.getColor("font"),
-                              bg=self.__colors.getColor("window"),
-                              justify=CENTER
-                              )
-
-                label.pack_propagate(False)
-                label.pack(side=TOP, anchor=N, fill=BOTH)
-                self.__codeEditorItems[self.__words[num]] = label
-
-            elif bannerItems[num][2] == Entry:
-                entryVar = StringVar()
-
-                entry = Entry(f2, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                   width=99999,
-                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                                   textvariable=entryVar, name=self.__words[num],
-                                   font=self.__miniFont, justify=CENTER,
-                                   )
-                entry.pack_propagate()
-                entry.pack(side=TOP, anchor=N, fill=BOTH)
-
-                self.__focusOutItems.append(entry)
-
-                entry.bind("<KeyRelease>", self.__focusOut)
-                entry.bind("<FocusOut>", self.__focusOut)
-                entry.bind("<FocusIn>", self.__focusIn)
-
-                self.__codeEditorItems[self.__words[num]] = [entryVar, entry]
-
-            elif bannerItems[num][2] == Button:
-                button = Button(f2,      width=9999999,
-                                         command=bannerItems[num][3],
-                                         state=DISABLED,
-                                         font=self.__tinyFont, fg=self.__colors.getColor("font"),
-                                         bg=self.__colors.getColor("window"),
-                                         text=bannerItems[num][0])
-                button.pack_propagate(False)
-                button.pack(fill=X)
-
-                self.__codeEditorItems[self.__words[num]] = button
-
+        self.createCodeLine(self.__labelFrames, self.__codeEditorItems, True)
 
         self.__button = Button(
             self.__rightFrame, width=round(self.__editor.getWindowSize()[0]*sizes[2]),
@@ -446,7 +346,6 @@ class EditorBigFrame:
 
         s.config(command=l.yview)
 
-
         self.__scrollBarOnTheRight = s
         self.__listBoxOnTheRight   = l
         self.firstTry = True
@@ -454,8 +353,450 @@ class EditorBigFrame:
         self.__listBoxOnTheRight.bind("<FocusIn>", self.__lbFocusIn)
         self.__listBoxOnTheRight.bind("<FocusOut>", self.__lbFocusOut)
 
+        fSize = self.__editor.getWindowSize()[1] // 6
+
+        self.__searchFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
+                                   height=fSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchFrame.pack_propagate(False)
+        self.__searchFrame.pack(side=TOP, anchor = N, fill=X)
+
+        hSize =  fSize // 6
+
+        self.__slabel = Label(self.__searchFrame, text=self.__dictionaries.getWordFromCurrentLanguage("findWord"),
+                      font=self.__normalFont,
+                      fg = self.__loader.colorPalettes.getColor("font"),
+                      bg = self.__loader.colorPalettes.getColor("window"),
+                      justify=CENTER
+                      )
+
+        self.__slabel.pack_propagate(False)
+        self.__slabel.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__searchEntryFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchEntryFrame.pack_propagate(False)
+        self.__searchEntryFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__sentryVar = StringVar()
+
+        self.__sentry = Entry(self.__searchEntryFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                      width=99999,
+                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                      textvariable=self.__sentryVar,
+                      font=self.__smallFont, justify=LEFT,
+                      )
+        self.__sentry.pack_propagate()
+        self.__sentry.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__sentry.bind("<FocusOut>", self.__changeHighLightWord)
+        self.__sentry.bind("<KeyRelease>", self.__changeHighLightWord)
+
+        self.__searchBoxFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchBoxFrame.pack_propagate(False)
+        self.__searchBoxFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__ignoreCase = IntVar()
+        self.__ignoreCaseButton = Checkbutton(self.__searchBoxFrame,
+                                       text=self.__dictionaries.getWordFromCurrentLanguage("ignoreCase"),
+                                       bg=self.__colors.getColor("window"),
+                                       fg=self.__colors.getColor("font"),
+                                       justify=LEFT, font=self.__miniFont,
+                                       variable=self.__ignoreCase,
+                                       activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
+                                       command=self.__ignoreCaseChange
+                                       )
+
+        self.__ignoreCaseButton.pack_propagate(False)
+        self.__ignoreCaseButton.pack(fill=X, side=LEFT, anchor=E)
+
+        self.__searchButtonsFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchButtonsFrame.pack_propagate(False)
+        self.__searchButtonsFrame.pack(side=TOP, anchor = N, fill=X)
+
+        half = round((self.__editor.getWindowSize()[0]*sizes[0]) // 2)
+
+        self.__searchButtonsFrame1 = Frame(self.__searchButtonsFrame, width=half,
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchButtonsFrame1.pack_propagate(False)
+        self.__searchButtonsFrame1.pack(side=LEFT, anchor = E, fill=X)
+
+        self.__searchButtonsFrame2 = Frame(self.__searchButtonsFrame, width=half,
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__searchButtonsFrame2.pack_propagate(False)
+        self.__searchButtonsFrame2.pack(side=LEFT, anchor = E, fill=BOTH)
+
+        self.__searchButton1 = Button(
+            self.__searchButtonsFrame1, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__normalFont, state = DISABLED,
+            command=self.prevFound,
+            text="<<"
+        )
+
+        self.__searchButton1.pack_propagate(False)
+        self.__searchButton1.pack(side=TOP, anchor = N, fill = BOTH)
+
+        self.__searchButton2 = Button(
+            self.__searchButtonsFrame2, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__normalFont, state=DISABLED,
+            command=self.nextFound,
+            text=">>"
+        )
+
+        self.__searchButton2.pack_propagate(False)
+        self.__searchButton2.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__replaceEntryFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__replaceEntryFrame.pack_propagate(False)
+        self.__replaceEntryFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__rentryVal = StringVar()
+        self.__rentry = Entry(self.__replaceEntryFrame, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                      width=99999,
+                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                      textvariable=self.__rentryVal,
+                      font=self.__smallFont, justify=LEFT,
+                      )
+        self.__rentry.pack_propagate()
+        self.__rentry.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__replaceButtonFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__replaceButtonFrame.pack_propagate(False)
+        self.__replaceButtonFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__replaceButtonFrame1 = Frame(self.__replaceButtonFrame, width=half,
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__replaceButtonFrame1.pack_propagate(False)
+        self.__replaceButtonFrame1.pack(side=LEFT, anchor = E, fill=X)
+
+        self.__replaceButtonFrame2 = Frame(self.__replaceButtonFrame, width=half,
+                                   height=hSize,
+                                   bg=self.__colors.getColor("window"))
+        self.__replaceButtonFrame2.pack_propagate(False)
+        self.__replaceButtonFrame2.pack(side=LEFT, anchor = E, fill=BOTH)
+
+
+        self.__replaceButton1 = Button(
+            self.__replaceButtonFrame1, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__smallFont, state = DISABLED,
+            command=self.replaceInLine,
+            text=self.__dictionaries.getWordFromCurrentLanguage("replaceInLine")
+        )
+
+        self.__replaceButton2 = Button(
+            self.__replaceButtonFrame2, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__smallFont, state = DISABLED,
+            command=self.replaceAll,
+            text=self.__dictionaries.getWordFromCurrentLanguage("replaceAll")
+        )
+
+        self.__replaceButton1.pack_propagate(False)
+        self.__replaceButton1.pack(side=TOP, anchor = N, fill = BOTH)
+
+        self.__replaceButton2.pack_propagate(False)
+        self.__replaceButton2.pack(side=TOP, anchor = N, fill = BOTH)
+
+        self.__prettyFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
+                                   height=fSize//2,
+                                   bg=self.__colors.getColor("window"))
+        self.__prettyFrame.pack_propagate(False)
+        self.__prettyFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__prettyButton = Button(
+            self.__prettyFrame, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__smallFont,
+            command=self.reIndent,
+            text=self.__dictionaries.getWordFromCurrentLanguage("reIndent")
+        )
+
+        self.__prettyButton.pack_propagate(False)
+        self.__prettyButton.pack(side=TOP, anchor = N, fill = BOTH)
+
         self.getLineStructure(None, None, True)
         self.__loadFromMemory(self.__currentBank, self.__currentSection)
+
+    def createCodeLine(self, labelFrames, codeEditorItems, appendThem):
+        bannerItems = [[self.__dictionaries.getWordFromCurrentLanguage("number")        , 1.5, Label,  None],
+                       [self.__dictionaries.getWordFromCurrentLanguage("level")         , 1.5, Label,  None],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#1", 1.75,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#2", 1.75,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("command") + "#3", 1.75,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#1"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#2"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("param") + "#3"  , 2,   Entry,  DISABLED],
+                       [self.__dictionaries.getWordFromCurrentLanguage("comment")       , 3,   Entry,  NORMAL],
+                       [self.__dictionaries.getWordFromCurrentLanguage("updateRow")     , 1.5, Button, self.updateTextFromDisplay]
+                       ]
+
+        colors = [[self.__colors.getColor("font"), self.__colors.getColor("window")],
+                  [self.__colors.getColor("window"), self.__colors.getColor("font")]]
+
+        sumItems = 0
+
+        for bannerItem in bannerItems:
+            sumItems += len(bannerItem[0]) * bannerItem[1]
+
+        bannerItemLens = []
+        xUnit = round((self.__mainFrame.winfo_width() / sumItems))
+
+        for item in bannerItems:
+            bannerItemLens.append(
+                int(len(item[0])  * xUnit * item[1])
+            )
+
+            f = Frame(self.__codeFrameHeader, width=bannerItemLens[-1],
+                                         height=99999999,
+                                         bg=self.__colors.getColor("window"))
+            if appendThem:
+                f.pack_propagate(False)
+                f.pack(side=LEFT, anchor = E, fill=Y)
+                labelFrames.append(f)
+
+            num = bannerItems.index(item)
+            c = colors[num%2]
+
+            label = Label(f, text=item[0],
+                      font=self.__miniFont, fg=c[0], bg=c[1], justify=CENTER
+                      )
+
+            if appendThem:
+                label.pack_propagate(False)
+                label.pack(side=TOP, anchor=N, fill=BOTH)
+
+            f2 = Frame(self.__codeFrameEditor, width=bannerItemLens[-1],
+                                         height=99999999,
+                                         bg=self.__colors.getColor("window"))
+            if appendThem:
+                f2.pack_propagate(False)
+                f2.pack(side=LEFT, anchor = E, fill=Y)
+                labelFrames.append(f2)
+
+            if   bannerItems[num][2] == Label:
+                label = Label(f2, text="-",
+                              font=self.__miniFont,
+                              fg=self.__colors.getColor("font"),
+                              bg=self.__colors.getColor("window"),
+                              justify=CENTER
+                              )
+                if appendThem:
+                    label.pack_propagate(False)
+                    label.pack(side=TOP, anchor=N, fill=BOTH)
+
+                codeEditorItems[self.__words[num]] = label
+
+            elif bannerItems[num][2] == Entry:
+                entryVar = StringVar()
+
+                entry = Entry(f2, bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                   width=99999,
+                                   fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                   textvariable=entryVar, name=self.__words[num],
+                                   font=self.__miniFont, justify=CENTER,
+                                   )
+                if appendThem:
+                    entry.pack_propagate(False)
+                    entry.pack(side=TOP, anchor=N, fill=BOTH)
+                    self.__focusOutItems.append(entry)
+
+                entry.bind("<KeyRelease>", self.__focusOut)
+                entry.bind("<FocusOut>", self.__focusOut)
+                entry.bind("<FocusIn>", self.__focusIn)
+
+                codeEditorItems[self.__words[num]] = [entryVar, entry]
+
+            elif bannerItems[num][2] == Button:
+                button = Button(f2,      width=9999999,
+                                         command=bannerItems[num][3],
+                                         state=DISABLED,
+                                         font=self.__tinyFont, fg=self.__colors.getColor("font"),
+                                         bg=self.__colors.getColor("window"),
+                                         text=bannerItems[num][0])
+                if appendThem:
+                    button.pack_propagate(False)
+                    button.pack(fill=X)
+
+                codeEditorItems[self.__words[num]] = button
+
+
+    def reIndent(self):
+        text    = self.__codeBox.get(0.0, END).split("\n")
+        newText = []
+        for lineNum in range(0, len(text)):
+            lineData = self.getLineStructure(lineNum, text, True)
+
+            tempAppendor    = []
+            tempDestination = {}
+
+            self.createCodeLine(tempAppendor, tempDestination, False)
+            self.createFakeCodeEditorItems(lineData, tempDestination)
+            newText.append(self.__getFakeLine(tempDestination))
+
+        self.updateText(newText)
+
+    def updateText(self, text):
+        self.__codeBox.delete(0.0, END)
+        if type(text) == list:
+           self.__codeBox.insert(0.0, "\n".join(text))
+        else:
+           self.__codeBox.insert(0.0, text)
+
+        self.__codeBox.focus()
+        self.__codeBox.mark_set(INSERT,
+                                str(self.__cursorPoz[0]) + ".0"
+                                )
+        self.__codeBox.see(str(self.__cursorPoz[0]) + ".0")
+        self.__tintingThread("whole")
+
+    def createFakeCodeEditorItems(self, lineStructure, destination):
+        for key in lineStructure:
+            if key in self.__words:
+               item = destination[key]
+
+               if type(item)  == Label:
+                  item.config(text = str(lineStructure[key]))
+
+               elif type(item) == list:
+                  if type(item[0]) == StringVar:
+                     item[0].set(lineStructure[key][0])
+                     if item[0].get() == "None": item[0].set("")
+
+            elif key == "command":
+                delimiter = "%"
+                dels      = self.__config.getValueByKey('validObjDelimiters').split(" ")
+
+                string = lineStructure["command"][0]
+                if string in ("None", None): string = ""
+
+                for d in dels:
+                    if d in string:
+                       delimiter = d
+                       break
+
+                commandParts = string.split(delimiter)
+                destination["command#1"][0].set("")
+                destination["command#2"][0].set("")
+                destination["command#3"][0].set("")
+
+                if commandParts[0] == "game": commandParts = commandParts[1:]
+
+
+                for num in range(0, len(commandParts)):
+                    data = commandParts[num]
+
+                    if data not in [None, "None", ""]:
+                       destination["command#" + str(num+1)][0].set(data)
+
+    def replaceInLine(self):
+        text = self.__codeBox.get(0.0, END).split("\n")
+        lineNum = self.__cursorPoz[0]-1
+        text[lineNum] = self.replaceStuff(text[lineNum])
+
+        self.updateText(text)
+
+    def replaceAll(self):
+        text = self.__codeBox.get(0.0, END)
+        self.updateText(self.replaceStuff(text))
+
+    def replaceStuff(self, text):
+        if self.__ignoreCase.get() == 0:
+            return text.replace(
+                   self.__sentryVar.get(),
+                   self.__rentryVal.get()
+                   )
+        else:
+            import re
+            return re.sub(self.__sentryVar.get(),
+                          self.__rentryVal.get(),
+                          text, re.IGNORECASE)
+
+
+    def prevFound(self):
+        self.findTheOne(-1)
+
+    def nextFound(self):
+        self.findTheOne(1)
+
+    def findTheOne(self, step):
+        text = self.__codeBox.get(0.0, END).split("\n")
+        startLine = self.__cursorPoz[0]-1
+
+        if step == 1:
+           thisIsTheWay = [
+               [startLine, len(text)    , 1],
+               [0        , startLine + 1, 1]
+
+           ]
+        else:
+            thisIsTheWay = [
+                [startLine  , -1           , -1],
+                [len(text)-1, startLine - 1, -1]
+            ]
+
+        foundIt   = False
+        foundLine = startLine
+
+        for loopNum in range(0, 2):
+            for lineNum in range(
+                thisIsTheWay[loopNum][0],
+                thisIsTheWay[loopNum][1],
+                thisIsTheWay[loopNum][2]
+                ):
+                line = text[lineNum]
+                if self.__highLightWord in line:
+                   if loopNum == 0 and lineNum == startLine:
+                      continue
+                   else:
+                      foundIt   = True
+                      foundLine = lineNum
+                      break
+
+            if foundIt == True: break
+
+        self.__codeBox.mark_set(INSERT, str(foundLine+1)+".0")
+        self.setCurzorPoz()
+        self.__codeBox.see(str(foundLine + 1) + ".0")
+
+    def __ignoreCaseChange(self):
+        self.__highLightIgnoreCase = self.__ignoreCase.get()
+        self.__changeHighLightWord(None)
+
+    def __changeHighLightWord(self, event):
+        self.__highLightWord = self.__sentryVar.get().replace("\t", " ")
+        self.__tintingThread("whole")
+
+        if self.__highLightWord == "":
+           status = DISABLED
+        else:
+           status = NORMAL
+
+        self.__replaceButton1.config(state = status)
+        self.__replaceButton2.config(state = status)
+
+        self.__searchButton1.config(state = status)
+        self.__searchButton2.config(state = status)
 
     def __lbFocusIn(self, widget):
         self.__lbFocused = True
@@ -464,11 +805,10 @@ class EditorBigFrame:
         self.__lbFocused = False
 
 
-
     def updateTextFromDisplay(self):
         if self.__codeEditorItems["updateRow"].cget("state") == DISABLED: return
 
-        line = self.__getFakeLine()
+        line = self.__getFakeLine(self.__codeEditorItems)
 
         currentLineNum   = self.__cursorPoz[0]
         text = self.__codeBox.get(0.0, END).split("\n")
@@ -835,6 +1175,21 @@ class EditorBigFrame:
                                        currentLineStructure["commas"][ind] + 1,
                                        "error")
 
+        if self.__highLightWord not in ("", None):
+            if len(line) >= len(self.__highLightWord):
+                for startNum in range(0, len(line) - len(self.__highLightWord), 1):
+                    thisWord = line[startNum:startNum + len(self.__highLightWord)]
+                    thatWord = self.__highLightWord
+
+                    if self.__highLightIgnoreCase == True:
+                       thisWord = thisWord.upper()
+                       thatWord = thatWord.upper()
+
+                    if thisWord == thatWord:
+                       self.removeTag(yOnTextBox, startNum, startNum  + len(self.__highLightWord), "background")
+                       self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight")
+
+
         if (yOnTextBox == self.__cursorPoz[0])  and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
@@ -1122,7 +1477,7 @@ class EditorBigFrame:
         self.__listBoxOnTheRight.delete(0, END)
 
         for item in wordsForList:
-            endIndex = self.__listBoxOnTheRight.index(END)
+            #endIndex = self.__listBoxOnTheRight.index(END)
 
             if item[0] in self.__listOfItems: continue
 
@@ -1139,7 +1494,9 @@ class EditorBigFrame:
             except:
                 bg = self.__colors.getColor("boxBackNormal")
 
-            self.__listBoxOnTheRight.itemconfig(endIndex, fg = fg, bg = bg)
+            listBoxItems = list(self.__listBoxOnTheRight.get(0, END))
+
+            self.__listBoxOnTheRight.itemconfig(len(listBoxItems)-1, fg = fg, bg = bg)
 
             if selected in self.__listOfItems:
                selection = self.__listOfItems.index(selected)
@@ -2321,51 +2678,13 @@ class EditorBigFrame:
         return(lineStructure)
 
     def updateLineDisplay(self, lineStructure):
-        for key in lineStructure:
-            if key in self.__words:
-               item = self.__codeEditorItems[key]
-
-               if type(item)  == Label:
-                  item.config(text = str(lineStructure[key]))
-
-               elif type(item) == list:
-                  if type(item[0]) == StringVar:
-                     item[0].set(lineStructure[key][0])
-                     if item[0].get() == "None": item[0].set("")
-
-            elif key == "command":
-                delimiter = "%"
-                dels      = self.__config.getValueByKey('validObjDelimiters').split(" ")
-
-                string = lineStructure["command"][0]
-                if string in ("None", None): string = ""
-
-                for d in dels:
-                    if d in string:
-                       delimiter = d
-                       break
-
-                commandParts = string.split(delimiter)
-                self.__codeEditorItems["command#1"][0].set("")
-                self.__codeEditorItems["command#2"][0].set("")
-                self.__codeEditorItems["command#3"][0].set("")
-
-                if commandParts[0] == "game": commandParts = commandParts[1:]
-
-
-                for num in range(0, len(commandParts)):
-                    data = commandParts[num]
-
-                    if data not in [None, "None", ""]:
-                       self.__codeEditorItems["command#" + str(num+1)][0].set(data)
-
-
+        self.createFakeCodeEditorItems(lineStructure, self.__codeEditorItems)
         self.__codeEditorItems["updateRow"].config(state = DISABLED)
         self.__checkEditorItems(lineStructure)
 
     def __checkEditorItems(self, lineStructure):
 
-        textToPrint = self.__getFakeLine()
+        textToPrint = self.__getFakeLine(self.__codeEditorItems)
 
         selectPosizions = []
         errorPositions  = []
@@ -2384,7 +2703,7 @@ class EditorBigFrame:
               self.__focused = None
            else:
               self.__codeEditorItems["updateRow"].config(state = NORMAL)
-           textToPrint = self.__getFakeLine()
+           textToPrint = self.__getFakeLine(self.__codeEditorItems)
 
            selectPosizions = []
            errorPositions  = []
@@ -2396,54 +2715,59 @@ class EditorBigFrame:
                               selectPosizions, errorPositions, "lineEditor", None)
 
 
-    def __getFakeLine(self):
+    def __getFakeLine(self, source):
 
         self.reAlignCommandsAndParams()
+
+        if source == None: source = self.__codeEditorItems
 
         noneList = [None, "None", ""]
 
         try:
-            level = int(self.__codeEditorItems["level"][0].get())
-        except:
+            level = int(source["level"].cget("text"))
+        except Exception as e:
             level = 0
 
-        lineText = "\t" * level
+        if level == -1:
+           lineText = ""
+        else:
+           lineText = " " * ((level * 4) + 1 )
         dominantObjDelimiter = self.getDominantObjDelimiter()
 
-        if self.__codeEditorItems["command#1"][0].get() not in noneList:
-           lineText = lineText + self.__codeEditorItems["command#1"][0].get()
+        if source["command#1"][0].get() not in noneList:
+           lineText = lineText + source["command#1"][0].get()
 
-        if self.__codeEditorItems["command#2"][0].get() not in noneList:
-           lineText = lineText + dominantObjDelimiter +  self.__codeEditorItems["command#2"][0].get()
+        if source["command#2"][0].get() not in noneList:
+           lineText = lineText + dominantObjDelimiter +  source["command#2"][0].get()
 
-        if self.__codeEditorItems["command#3"][0].get() not in noneList:
-           lineText = lineText + dominantObjDelimiter +  self.__codeEditorItems["command#3"][0].get()
+        if source["command#3"][0].get() not in noneList:
+           lineText = lineText + dominantObjDelimiter +  source["command#3"][0].get()
 
-        if (self.__codeEditorItems["param#1"][0].get() not in noneList or
-            self.__codeEditorItems["param#2"][0].get() not in noneList or
-            self.__codeEditorItems["param#3"][0].get() not in noneList):
+        if (source["param#1"][0].get() not in noneList or
+            source["param#2"][0].get() not in noneList or
+            source["param#3"][0].get() not in noneList):
             lineText = lineText + "("
 
-        if self.__codeEditorItems["param#1"][0].get() not in noneList:
-           lineText = lineText + self.__codeEditorItems["param#1"][0].get()
+        if source["param#1"][0].get() not in noneList:
+           lineText = lineText + source["param#1"][0].get()
 
-        if self.__codeEditorItems["param#2"][0].get() not in noneList:
-           lineText = lineText + ", " + self.__codeEditorItems["param#2"][0].get()
+        if source["param#2"][0].get() not in noneList:
+           lineText = lineText + ", " + source["param#2"][0].get()
 
-        if self.__codeEditorItems["param#3"][0].get() not in noneList:
-           lineText = lineText + ", " + self.__codeEditorItems["param#3"][0].get()
+        if source["param#3"][0].get() not in noneList:
+           lineText = lineText + ", " + source["param#3"][0].get()
 
-        if (self.__codeEditorItems["param#1"][0].get() not in noneList or
-            self.__codeEditorItems["param#2"][0].get() not in noneList or
-            self.__codeEditorItems["param#3"][0].get() not in noneList):
+        if (source["param#1"][0].get() not in noneList or
+            source["param#2"][0].get() not in noneList or
+            source["param#3"][0].get() not in noneList):
             lineText = lineText + ")"
 
-        if self.__codeEditorItems["comment"][0].get() not in noneList:
-           if self.__codeEditorItems["command#1"][0].get() not in noneList or \
-              self.__codeEditorItems["param#1"][0].get() not in noneList:
-              lineText = lineText + " " + self.getDominantDelimiter() + "\t" + self.__codeEditorItems["comment"][0].get()
+        if source["comment"][0].get() not in noneList:
+           if source["command#1"][0].get() not in noneList or \
+              source["param#1"][0].get() not in noneList:
+              lineText = lineText + " " + self.getDominantDelimiter() + "\t" + source["comment"][0].get()
            else:
-              lineText = "*" +  self.__codeEditorItems["comment"][0].get()
+              lineText = "*" +  source["comment"][0].get()
 
         return lineText
 
@@ -2581,8 +2905,8 @@ class EditorBigFrame:
 
     def __keyReleased(self, event):
         self.__lastButton = event.keysym
-        self.__counter   = 15
-        self.__counter2   = 150
+        self.__counter   = 5
+        self.__counter2  = 30
 
         self.setCurzorPoz()
 
@@ -2594,6 +2918,8 @@ class EditorBigFrame:
         self.__cursorPoz = [int(__cursorPoz.split(".")[0]), int(__cursorPoz.split(".")[1])]
 
     def __mouseWheel(self, event):
+        if self.__ctrl == False: return
+
         if event.delta > 0 and int(self.__config.getValueByKey("codeBoxFont")) < 36:
             self.__config.setKey("codeBoxFont", str(int(self.__config.getValueByKey("codeBoxFont")) + 1))
             self.__getFont()

@@ -358,6 +358,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__sameColor,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          command=self.__changeSame
                                          )
 
@@ -375,6 +376,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__constOrVar,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__changeIfConstOrVar
                                          )
 
@@ -416,6 +418,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__constOrVar,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.__changeIfConstOrVar
                                          )
 
@@ -488,6 +491,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__changedFontOption1_1
                                          )
 
@@ -501,6 +505,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.__changedFontOption1_2
                                          )
 
@@ -514,6 +519,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=3, command=self.__changedFontOption1_3
                                          )
 
@@ -611,6 +617,7 @@ class TwelveIconsOrDigits:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__forceDigistsVal,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__changeForce
                                        )
 
@@ -629,6 +636,7 @@ class TwelveIconsOrDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__picSettingsOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__changeIconSettings
                                          )
 
@@ -664,6 +672,7 @@ class TwelveIconsOrDigits:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__mirrored1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__mirroredChanged1
                                        )
 
@@ -678,6 +687,7 @@ class TwelveIconsOrDigits:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picSettingsOption1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.__changeIconSettings
                                        )
 
@@ -715,6 +725,7 @@ class TwelveIconsOrDigits:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__picSettingsOption1,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.__changeIconSettings
                                        )
 

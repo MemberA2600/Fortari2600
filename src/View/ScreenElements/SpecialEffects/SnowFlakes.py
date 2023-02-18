@@ -143,6 +143,7 @@ class SnowFlakes:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=self.__changeIfConstOrVar
                                                  )
 
@@ -185,6 +186,7 @@ class SnowFlakes:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=self.__changeIfConstOrVar
                                                  )
 

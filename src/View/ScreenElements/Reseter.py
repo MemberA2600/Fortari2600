@@ -116,7 +116,8 @@ class Reseter:
                                          fg=self.__colors.getColor("font"),
                                          justify=LEFT, font=self.__normalFont,
                                          variable=d,
-                                         activebackground=self.__colors.getColor("highLight"),
+                                         activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          command=self.__checkPressed
                                          )
 
@@ -144,7 +145,8 @@ class Reseter:
                             fg=self.__colors.getColor("font"),
                             justify=LEFT, font=self.__normalFont,
                             variable=d,
-                            activebackground=self.__colors.getColor("highLight"),
+                            activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                            activeforeground=self.__loader.colorPalettes.getColor("font"),
                             command=self.__checkPressed
                             )
 

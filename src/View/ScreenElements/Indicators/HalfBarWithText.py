@@ -219,6 +219,7 @@ class HalfBarWithText:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorOption,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX
                                          )
 
@@ -243,6 +244,7 @@ class HalfBarWithText:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__colorOption,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX
                                        )
 
@@ -353,6 +355,7 @@ class HalfBarWithText:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__right,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__rightChanged
                                        )
 
@@ -371,6 +374,7 @@ class HalfBarWithText:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__textColorOption,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.XXX2
                                          )
 
@@ -394,6 +398,7 @@ class HalfBarWithText:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__textColorOption,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        value=2, command=self.XXX2
                                        )
 
@@ -465,6 +470,7 @@ class HalfBarWithText:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__dotMode,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__dotsChanged
                                        )
 

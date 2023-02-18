@@ -1,4 +1,5 @@
 from tkinter import *
+from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
 from copy import deepcopy
@@ -205,7 +206,8 @@ class Menu:
                                          bg=self.__colors.getColor("window"),
                                          fg=self.__colors.getColor("font"),
                                          justify=LEFT, font=self.__normalFont,
-                                         activebackground=self.__colors.getColor("highLight"),
+                                         activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          command=self.__setDefaults
                                          )
 

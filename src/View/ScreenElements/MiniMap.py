@@ -266,7 +266,8 @@ class MiniMap:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=__constOrVar,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=functions[num-3]
                                                  )
 
@@ -287,7 +288,8 @@ class MiniMap:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=__constOrVar,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=functions[num-3]
                                                  )
 

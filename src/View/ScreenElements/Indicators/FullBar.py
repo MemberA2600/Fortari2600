@@ -205,6 +205,7 @@ class FullBar:
                                              justify=LEFT, font=self.__smallFont,
                                              variable = self.__colorOption,
                                              activebackground = self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 1, command = self.XXX
         )
 
@@ -264,6 +265,7 @@ class FullBar:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorOption,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.XXX
                                          )
 
@@ -354,24 +356,6 @@ class FullBar:
             self.__lastSet   = self.__colorVars[0]
 
         self.__lastConst = deepcopy(self.__color)
-
-        """
-        self.__dotMode = IntVar()
-        self.__dotModeButton = Checkbutton(self.__frame2, width=99999,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("dots"),
-                                       bg=self.__colors.getColor("window"),
-                                       fg=self.__colors.getColor("font"),
-                                       justify=LEFT, font=self.__smallFont,
-                                       variable=self.__dotMode,
-                                       activebackground=self.__colors.getColor("highLight"),
-                                       command=self.__dotsChanged
-                                       )
-
-        self.__dotModeButton.pack_propagate(False)
-        self.__dotModeButton.pack(fill=X, side=TOP, anchor=N)
-
-        self.__dotMode.set(int(self.__data[7]))
-        """
 
     def __dotsChanged(self):
         self.__data[7] = str(self.__dotMode.get())

@@ -228,7 +228,8 @@ class Wall:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=self.__changeIfConstOrVar
                                                  )
 
@@ -275,7 +276,8 @@ class Wall:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=self.__changeIfConstOrVar
                                                  )
 
@@ -339,7 +341,8 @@ class Wall:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__hasSprite,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=self.__hasSpriteOrNone
                                                  )
 
@@ -379,7 +382,8 @@ class Wall:
                                                  fg=self.__colors.getColor("font"),
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__hasSprite,
-                                                 activebackground=self.__colors.getColor("highLight"),
+                                                 activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=self.__hasSpriteOrNone
                                                  )
 

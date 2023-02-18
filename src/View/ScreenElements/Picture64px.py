@@ -218,7 +218,8 @@ class Picture64px:
                                              fg=self.__colors.getColor("font"),
                                              justify=LEFT, font=self.__normalFont,
                                              variable=self.__varConst1,
-                                             activebackground=self.__colors.getColor("highLight"),
+                                             activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value=1, command=self.XXX1
                                              )
 
@@ -250,7 +251,8 @@ class Picture64px:
                                              fg=self.__colors.getColor("font"),
                                              justify=LEFT, font=self.__normalFont,
                                              variable = self.__varConst1,
-                                             activebackground = self.__colors.getColor("highLight"),
+                                             activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 2, command = self.XXX1
         )
 
@@ -317,7 +319,8 @@ class Picture64px:
                                              fg=self.__colors.getColor("font"),
                                              justify=LEFT, font=self.__normalFont,
                                              variable=self.__varConst2,
-                                             activebackground=self.__colors.getColor("highLight"),
+                                             activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value=1, command=self.XXX2
                                              )
 
@@ -349,7 +352,8 @@ class Picture64px:
                                              fg=self.__colors.getColor("font"),
                                              justify=LEFT, font=self.__normalFont,
                                              variable=self.__varConst2,
-                                             activebackground=self.__colors.getColor("highLight"),
+                                             activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value=2, command=self.XXX2
                                              )
 

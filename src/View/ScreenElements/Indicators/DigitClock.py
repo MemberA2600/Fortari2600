@@ -297,29 +297,13 @@ class DigitClock:
                                              justify=LEFT, font=self.__smallFont,
                                              variable=self.__x24Hours,
                                              activebackground=self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              command=self.__x24HoursChanged
                                              )
 
         self.__x24Hoursb.pack_propagate(False)
         self.__x24Hoursb.pack(fill=X, side=TOP, anchor=N)
 
-        """
-        self.__decrement = IntVar()
-        self.__decrement.set(int(decrement))
-
-        self.__decrementb = Checkbutton(subFrames[1][1], width=99999,
-                                             text=self.__dictionaries.getWordFromCurrentLanguage("decrement"),
-                                             bg=self.__colors.getColor("window"),
-                                             fg=self.__colors.getColor("font"),
-                                             justify=LEFT, font=self.__smallFont,
-                                             variable=self.__decrement,
-                                             activebackground=self.__colors.getColor("highLight"),
-                                             command=self.__decrementChanged
-                                             )
-
-        self.__decrementb.pack_propagate(False)
-        self.__decrementb.pack(fill=X, side=TOP, anchor=N)
-        """
 
         self.__dividerLabel = Label(subFrames[1][1],
                               text=self.__dictionaries.getWordFromCurrentLanguage("divider") + ":",
@@ -359,6 +343,7 @@ class DigitClock:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorSettings,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__colorToConst
                                          )
 
@@ -379,6 +364,7 @@ class DigitClock:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorSettings,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.__colorToVar
                                          )
         self.__colorVarButton.pack_propagate(False)
@@ -470,6 +456,7 @@ class DigitClock:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__changedFontOption1
                                          )
 
@@ -483,6 +470,7 @@ class DigitClock:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.__changedFontOption2
                                          )
 
@@ -496,6 +484,7 @@ class DigitClock:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=3, command=self.__changedFontOption3
                                          )
 

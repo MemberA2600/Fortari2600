@@ -378,6 +378,7 @@ class SevenDigits:
                                              justify=LEFT, font=self.__smallFont,
                                              variable=self.__slotMode,
                                              activebackground=self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              command=self.__slotChanged
                                              )
 
@@ -430,6 +431,7 @@ class SevenDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.__changedFontOption1
                                          )
 
@@ -443,6 +445,7 @@ class SevenDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.__changedFontOption2
                                          )
 
@@ -456,6 +459,7 @@ class SevenDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__fontOption1,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=3, command=self.__changedFontOption3
                                          )
 
@@ -508,6 +512,7 @@ class SevenDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorSettings,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=1, command=self.colorSettingsChange1
                                          )
 
@@ -528,6 +533,7 @@ class SevenDigits:
                                          justify=LEFT, font=self.__smallFont,
                                          variable=self.__colorSettings,
                                          activebackground=self.__colors.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          value=2, command=self.colorSettingsChange2
                                          )
         self.__colorVarButton.pack_propagate(False)

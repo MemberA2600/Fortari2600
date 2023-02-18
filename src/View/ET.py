@@ -39,13 +39,10 @@ class ET:
         self.__etX = 0
         self.__etY = 0
 
-        self.__scale = self.__forestCanvas.winfo_width()/400
         self.__mirroring = False
-        self.__setBuffer()
-
         self.__forestImg = ImageTk.PhotoImage(self.__forest)
 
-        self.centerET()
+        self.__setBuffer()
 
         from threading import Thread
 
@@ -77,20 +74,34 @@ class ET:
         )
 
     def __setBuffer(self):
-        self.__imageBufferLeft=[]
-        self.__imageBufferRight=[]
+        t = Thread(target=self.__setBufferThread)
+        t.daemon = True
+        t.start()
 
-        try:
-            for num in range(1,4):
-                self.__imageBufferLeft.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
-                        round(self.__scale*17)),
-                       IMAGE.ANTIALIAS))
-                self.__imageBufferRight.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
-                        round(self.__scale*17)),
-                       IMAGE.ANTIALIAS).transpose(IMAGE.FLIP_LEFT_RIGHT))
-        except:
-            pass
+    def __setBufferThread(self):
+        from time import sleep
+        self.__imageBufferLeft = []
+        self.__imageBufferRight = []
 
+        while self.__forestCanvas.winfo_width() < 2:
+            sleep(0.000001)
+        self.__scale = self.__forestCanvas.winfo_width()/400
+
+        while len(self.__imageBufferLeft) < 3 or len(self.__imageBufferRight) < 3:
+            self.__imageBufferLeft = []
+            self.__imageBufferRight = []
+            try:
+                for num in range(1,4):
+                    self.__imageBufferLeft.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                            round(self.__scale*17)),
+                           IMAGE.ANTIALIAS))
+                    self.__imageBufferRight.append(IMAGE.open(str("others/img/et" + str(num) + ".png")).resize((round(self.__scale*17),
+                            round(self.__scale*17)),
+                           IMAGE.ANTIALIAS).transpose(IMAGE.FLIP_LEFT_RIGHT))
+            except:
+                sleep(0.00001)
+
+        self.centerET()
 
     def drawET(self):
         from time import sleep

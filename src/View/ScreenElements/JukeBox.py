@@ -234,6 +234,8 @@ class JukeBox:
                                    width= 99999, height = 1,
                                    state=DISABLED,
                                    fg = self.__loader.colorPalettes.getColor("font"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    command=self.__removeSelected)
 
         self.__removeButton.pack_propagate(False)
@@ -244,6 +246,8 @@ class JukeBox:
                                    width= 99999, height = 1,
                                    state=DISABLED,
                                    fg = self.__loader.colorPalettes.getColor("font"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    command=self.__addNew)
 
         self.__addButton.pack_propagate(False)
@@ -366,6 +370,7 @@ class JukeBox:
                                                  justify=LEFT, font=self.__normalFont,
                                                  variable=item["value"], state = DISABLED,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  command = self.__checkBoxFunctions[num-3]
                                             )
 
@@ -378,7 +383,8 @@ class JukeBox:
                                          bg=self.__colors.getColor("window"),
                                          fg=self.__colors.getColor("font"),
                                          justify=LEFT, font=self.__smallFont,
-                                         activebackground=self.__colors.getColor("highLight"),
+                                         activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                         activeforeground=self.__loader.colorPalettes.getColor("font"),
                                          command=self.__autoLock
                                          )
 

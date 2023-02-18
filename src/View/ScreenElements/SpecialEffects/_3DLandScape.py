@@ -116,6 +116,7 @@ class _3DLandScape:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar2,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=self.__changeIfConstOrVar
                                                  )
 
@@ -138,6 +139,7 @@ class _3DLandScape:
                                               justify=LEFT, font=self.__miniFont,
                                               variable=self.__topBottomVar,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               command=self.__changeCheck
                                               )
 
@@ -160,6 +162,7 @@ class _3DLandScape:
                                               justify=LEFT, font=self.__miniFont,
                                               variable=self.__moveBackVar,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               command=self.__changeCheck
                                               )
 
@@ -182,6 +185,7 @@ class _3DLandScape:
                                               justify=LEFT, font=self.__miniFont,
                                               variable=self.__curvedVar,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               command=self.__changeCheck
                                               )
 
@@ -204,6 +208,7 @@ class _3DLandScape:
                                               justify=LEFT, font=self.__miniFont,
                                               variable=self.__gapsVar,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               command=self.__changeCheck
                                               )
 
@@ -217,6 +222,7 @@ class _3DLandScape:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar2,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=self.__changeIfConstOrVar
                                                  )
 
@@ -259,6 +265,7 @@ class _3DLandScape:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=1, command=self.__changeIfConstOrVar
                                                  )
 
@@ -277,6 +284,7 @@ class _3DLandScape:
                                                  justify=LEFT, font=self.__smallFont,
                                                  variable=self.__constOrVar,
                                                  activebackground=self.__colors.getColor("highLight"),
+                                                 activeforeground=self.__loader.colorPalettes.getColor("font"),
                                                  value=2, command=self.__changeIfConstOrVar
                                                  )
 
@@ -433,6 +441,8 @@ class _3DLandScape:
                         f, width=self.__w,
                         bg=self.__colors.getColor("window"),
                         fg=self.__colors.getColor("font"),
+                        activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                        activeforeground=self.__loader.colorPalettes.getColor("font"),
                         font=self.__normalFont,
                         command=self.__generatePattern,
                         text=self.__dictionaries.getWordFromCurrentLanguage("generateRandom")

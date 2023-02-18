@@ -201,6 +201,7 @@ class BigSprite:
                                               justify=LEFT, font=self.__smallFont,
                                               variable=self.__options[-1]["option"],
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=1
                                               )
             self.__options[-1]["constant"].bind("<ButtonRelease-1>", self.__changeSettings)
@@ -215,6 +216,7 @@ class BigSprite:
                                               justify=LEFT, font=self.__smallFont,
                                               variable=self.__options[-1]["option"],
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=2
                                               )
             self.__options[-1]["variable"].bind("<ButtonRelease-1>", self.__changeSettings)
@@ -250,6 +252,7 @@ class BigSprite:
                                              justify=LEFT, font=self.__smallFont,
                                              variable=self.__mirrored1,
                                              activebackground=self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              command=self.__mirroredChanged
                                              )
 

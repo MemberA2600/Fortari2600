@@ -223,6 +223,7 @@ class DynamicText:
                                               justify=LEFT, font=self.__smallFont,
                                               variable=option,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=1
                                               )
             optionButton1.bind("<ButtonRelease-1>", self.__changeColorSettings)
@@ -249,6 +250,7 @@ class DynamicText:
                                               justify=LEFT, font=self.__smallFont,
                                               variable=option,
                                               activebackground=self.__colors.getColor("highLight"),
+                                              activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=2
                                               )
             optionButton2.bind("<ButtonRelease-1>", self.__changeColorSettings)

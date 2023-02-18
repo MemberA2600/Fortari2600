@@ -61,6 +61,7 @@ class ChangeFrameColor:
                                        justify=LEFT, font=self.__smallFont,
                                        variable=self.__check,
                                        activebackground=self.__colors.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        command=self.__changeBox
                                        )
 
@@ -102,6 +103,7 @@ class ChangeFrameColor:
                                              justify=LEFT, font=self.__normalFont,
                                              variable = self.__option,
                                              activebackground = self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 1, command = self.XXX
         )
 
@@ -112,6 +114,7 @@ class ChangeFrameColor:
                                              justify=LEFT, font=self.__normalFont,
                                              variable = self.__option,
                                              activebackground=self.__colors.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              value = 2, command = self.XXX
         )
 

@@ -166,6 +166,7 @@ class Fire:
                                      justify=LEFT, font=self.__normalFont,
                                      variable=self.__particles,
                                      activebackground=self.__colors.getColor("highLight"),
+                                     activeforeground=self.__loader.colorPalettes.getColor("font"),
                                      command=self.saveHeight
                                      )
 

@@ -243,6 +243,9 @@ class PictureToCode:
 
         self.__button1 = Button(self.__subFrame1, bg=self.__loader.colorPalettes.getColor("window"),
                                 font = self.__normalFont, text = "<<",
+                                activebackground = self.__loader.colorPalettes.getColor("highLight"),
+                                activeforeground = self.__loader.colorPalettes.getColor("font"),
+                                foreground = self.__loader.colorPalettes.getColor("font"),
                                 width=9999, height=9999, state = DISABLED, command = self.pozMinus
                                 )
 
@@ -267,6 +270,9 @@ class PictureToCode:
 
         self.__button2 = Button(self.__subFrame3, bg=self.__loader.colorPalettes.getColor("window"),
                                 font = self.__normalFont, text = ">>",
+                                activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                activeforeground=self.__loader.colorPalettes.getColor("font"),
+                                foreground=self.__loader.colorPalettes.getColor("font"),
                                 width=9999, height=9999, state = DISABLED, command = self.pozPlus
                                 )
 
@@ -282,6 +288,8 @@ class PictureToCode:
 
         self.__previewButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("font"),
                                    fg = self.__loader.colorPalettes.getColor("window"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                    command = self.testingEditor
@@ -292,6 +300,8 @@ class PictureToCode:
 
         self.__saveButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("ok"),
                                    command = self.setAndKill
@@ -302,6 +312,8 @@ class PictureToCode:
 
         self.__cancelButton = Button(self.__menuFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("cancel"),
                                    command = self.__closeWindow
@@ -322,6 +334,8 @@ class PictureToCode:
                                              text=self.__dictionaries.getWordFromCurrentLanguage("invertColors"),
                                              bg=self.__loader.colorPalettes.getColor("window"),
                                              fg=self.__loader.colorPalettes.getColor("font"),
+                                             activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                             activeforeground=self.__loader.colorPalettes.getColor("font"),
                                              font=self.__tinyFont, name = "invertPFBG",
                                              variable=self.__invertPFBG
                                              )
@@ -331,6 +345,8 @@ class PictureToCode:
                                         text=self.__dictionaries.getWordFromCurrentLanguage("oneColorBG"),
                                         bg=self.__loader.colorPalettes.getColor("window"),
                                         fg=self.__loader.colorPalettes.getColor("font"),
+                                        activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                        activeforeground=self.__loader.colorPalettes.getColor("font"),
                                         font=self.__tinyFont,
                                         variable=self.__cutBG
                                         )
@@ -338,6 +354,8 @@ class PictureToCode:
 
         self.__mirrorButton = Button(self.__cBoxFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                    fg = self.__loader.colorPalettes.getColor("font"),
+                                   activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                   activeforeground=self.__loader.colorPalettes.getColor("font"),
                                    font = self.__smallFont2,
                                    text = self.__dictionaries.getWordFromCurrentLanguage("invertPF"),
                                    command = self.mirrorPFGoGo
@@ -413,21 +431,7 @@ class PictureToCode:
            t.start()
 
     def mirrorPFGoGo(self):
-        """
-        for Y in range(0, self.__dataForEditor["h"]):
-            for X in range(0, 8):
-                self.__dataForEditor["lines"][Y]["playfield"]["pixels"] = self.__dataForEditor["lines"][Y]["playfield"]["pixels"][::-1]
 
-        for Y in range(0, 24):
-            for X in range(0, 8):
-                name = "playfield_" + str((X)) + "_" + str(Y)
-                button = self.__editorButtons[name]
-
-                if self.__dataForEditor["lines"][Y+self.__currentY]["playfield"]["pixels"][X] == "1":
-                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"))
-                else:
-                    button.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
-        """
         backUp = self.__currentY
 
         for Y in range(0, self.__dataForEditor["h"]-24):
@@ -1586,6 +1590,8 @@ class PictureToCode:
             self.__check = Checkbutton(self.__cBoxFrame, text=self.__dictionaries.getWordFromCurrentLanguage("invert"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        font=self.__smallFont,
                                        variable=self.__invert, command=self.updateBlackAndWhite
                                        )
@@ -1598,6 +1604,8 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("preferRight"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        font=self.__smallFont,
                                        variable=self.__right, command=self.updateBlackAndWhite
                                        )
@@ -1624,6 +1632,8 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("invertPF"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        font=self.__smallFont2,
                                        variable=self.__mirrorPF
                                        )
@@ -1636,6 +1646,8 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("invertColors"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        font=self.__smallFont2,
                                        variable=self.__invertPFBG
                                        )
@@ -1644,16 +1656,7 @@ class PictureToCode:
 
             self.__reduceBG = IntVar()
             self.__reduceBG.set(0)
-            """
-            self.__reduceBGCheck = Checkbutton(self.__cBoxFrame2,
-                                       text=self.__dictionaries.getWordFromCurrentLanguage("reduceBG"),
-                                       bg=self.__loader.colorPalettes.getColor("window"),
-                                       fg=self.__loader.colorPalettes.getColor("font"),
-                                       font=self.__smallFont,
-                                       variable=self.__reduceBG
-                                       )
-            self.__reduceBGCheck.pack(side=LEFT, anchor=E, fill=X)
-            """
+
 
             self.__cutBG = IntVar()
             self.__cutBG.set(0)
@@ -1662,6 +1665,8 @@ class PictureToCode:
                                        text=self.__dictionaries.getWordFromCurrentLanguage("oneColorBG"),
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       activeforeground=self.__loader.colorPalettes.getColor("font"),
                                        font=self.__smallFont2,
                                        variable=self.__cutBG
                                        )
@@ -1739,13 +1744,15 @@ class PictureToCode:
 
         self.__minusButton = Button(self.__buttonFrame, width=round(self.__topLevel.getTopLevelDimensions()[0] / 6),
                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                    activebackground=self.__loader.colorPalettes.getColor("highLight"),
                                     image=self.__minus, command=self.__neg
                                     )
         self.__minusButton.pack_propagate(False)
         self.__minusButton.pack(side=LEFT, anchor=W, fill=Y)
         self.__positiveButton = Button(self.__buttonFrame, width=round(self.__topLevel.getTopLevelDimensions()[0] / 6),
                                     bg=self.__loader.colorPalettes.getColor("window"),
-                                    image=self.__plus, command=self.__pos
+                                    activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       image=self.__plus, command=self.__pos
                                     )
         self.__positiveButton.pack_propagate(False)
         self.__positiveButton.pack(side=LEFT, anchor=E, fill=Y)
@@ -1766,6 +1773,8 @@ class PictureToCode:
         self.__okButton = Button(self.__buttonFrame2,
                                     bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("font"),
+                                    activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                    activeforeground=self.__loader.colorPalettes.getColor("font"),
                                     text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
                                     font=self.__smallFont, command=self.setAndKill
                                     )
@@ -1797,6 +1806,8 @@ class PictureToCode:
             self.__testButton = Button(self.__bothButtonsFrame1,
                                         bg=self.__loader.colorPalettes.getColor("font"),
                                         fg=self.__loader.colorPalettes.getColor("window"), width=99999999,
+                                        activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                        activeforeground=self.__loader.colorPalettes.getColor("font"),
                                         text=self.__dictionaries.getWordFromCurrentLanguage("preview")[:-1],
                                         font=self.__smallFont, command=self.testingThread
                                         )
@@ -1806,6 +1817,8 @@ class PictureToCode:
             self.__editButton = Button(self.__bothButtonsFrame2,
                                         bg=self.__loader.colorPalettes.getColor("window"),
                                         fg=self.__loader.colorPalettes.getColor("font"), width=99999999,
+                                        activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                        activeforeground=self.__loader.colorPalettes.getColor("font"),
                                         text=self.__dictionaries.getWordFromCurrentLanguage("editPicture"),
                                         font=self.__smallFont2, command=self.setEditAndKill
                                         )
@@ -1816,6 +1829,8 @@ class PictureToCode:
         self.__cancelButton = Button(self.__buttonFrame2,
                                     bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("font"),
+                                    activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                    activeforeground=self.__loader.colorPalettes.getColor("font"),
                                     text=self.__dictionaries.getWordFromCurrentLanguage("cancel"),
                                     font=self.__smallFont, command=self.__closeWindow
                                     )
