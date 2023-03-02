@@ -246,6 +246,7 @@ class _3DLandScape:
 
                 s.pack(side=RIGHT, anchor=W, fill=Y)
                 l.pack(side=LEFT, anchor=W, fill=BOTH)
+                s.config(command=l.yview)
 
                 for item in self.__colorVars:
                     l.insert(END, item)
@@ -309,6 +310,7 @@ class _3DLandScape:
                 l.pack(side=LEFT, anchor=W, fill=BOTH)
                 s.config(command=l.yview)
 
+                s.config(command=l.yview)
 
                 for item in self.__colorVars:
                     l.insert(END, item)

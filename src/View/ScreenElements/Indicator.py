@@ -136,6 +136,7 @@ class Indicator:
             from SnowFlakes   import SnowFlakes
             from _3DLandScape import _3DLandScape
             from Earth        import Earth
+            from BlinkingText import BlinkingText
 
             self.screenSubs = {
                 "Smoke"                 : [Smoke,           ["#", "$02", "$74",
@@ -152,7 +153,8 @@ class Indicator:
                 "WaterWaves"           : [WaterWaves,     ["#", "$80", "$0E|$0C|$0A|$08|$06|$04", "3"]],
                 "SnowFlakes"           : [SnowFlakes,     ["#", "$00|$80", "#", "16", "#"]],
                 "_3DLandScape"         : [_3DLandScape,   ["#", "$40", "8", "16", "#", "2"]],
-                "Earth"                : [Earth,          ["#", "$D8", "#"]]
+                "Earth"                : [Earth,          ["#", "$D8", "#"]],
+                "BlinkingText"         : [BlinkingText,   ["#", "#", "$16", "$42", "2", "#", "#", "0"*512]]
             }
 
 
