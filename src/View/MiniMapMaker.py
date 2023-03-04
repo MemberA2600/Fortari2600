@@ -24,6 +24,7 @@ class MiniMapMaker:
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
+        self.__finished2 = False
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -618,6 +619,7 @@ class MiniMapMaker:
         t2 = Thread(target=self.__loop)
         t2.daemon = True
         t2.start()
+        self.__finished2 = True
 
     def __loadPF(self):
         limit1 = self.__stepY
@@ -808,7 +810,7 @@ class MiniMapMaker:
                self.__loadPlayField.config(state = NORMAL)
                self.__changed = False
 
-            if self.__finished:
+            if self.__finished and self.__finished2:
                if self.__indexY > 0:
                    self.__upButton.config(state = NORMAL)
                else:

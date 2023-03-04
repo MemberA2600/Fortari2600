@@ -197,6 +197,11 @@ MusicPointerBackUp1_HI = $db
 zerg = $dc
 terran = $dc
 protoss = $dd
+test1 = $de
+test2 = $df
+test3 = $e0
+test4 = $e1
+test5 = $e2
 
 
 *Bank2
@@ -205,14 +210,13 @@ protoss = $dd
 
 *Bank3
 *---------
-Pocok = $de
 
 
 *Bank4
 *---------
-Reggeli = $de
-vacsora = $df
-Csiga = $e0
+Reggeli = $e3
+vacsora = $e4
+Csiga = $e5
 
 
 *Bank5
@@ -1126,8 +1130,11 @@ Loop_Odd_Line2
 	sleep 	2
 	STX	GRP1		; 3 (53)
 
+	
 	sleep	10
 		
+
+
 	LDA	temp17		; 3
 	STA	COLUPF		; 3
 	STA	COLUP1		; 3 
@@ -1480,7 +1487,12 @@ EnterScreenBank2
 
 	LDA	#0		; set frame color to black
 	STA	frameColor
-	
+	LDA	#0
+	STA	test1
+	LDA	#0
+	STA	test2
+
+		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
 *Leave Bank
@@ -1558,6 +1570,8 @@ OverScanBank2
 * This is where the game code
 * begins.
 *
+
+
 
 
 *VSYNC
@@ -1652,10 +1666,29 @@ VBlankEndBank2
 * top part of the screen.
 *
 
+
 	tsx
 	stx	item
 
-NAME_Animated_Title
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text
 
 *
 * Main Controller
@@ -1668,79 +1701,79 @@ NAME_Animated_Title
 * temp09-temp16: Text Colors	
 * temp18: 	 IsItJustThru
 *
-* MainC: $f0
-* LineC: $f1
-* TextC: $f2
-* BackC: $f3
+* MainC: test1
+* LineC: test2
+* TextC: #$16
+* BackC: #$42
 *
 
-NAME_Animated_Title_Speed = 3
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed = 2
 
-	JMP	NAME_Animated_Title_FirstJump
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_FirstJump
 	align	256
 
 
-NAME_Animated_Title_FirstJump
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_FirstJump
 	STA	WSYNC			; 76
 	
 	LDA	#0
 	STA	temp18
 
-	LDA	$f0
+	LDA	test1
 	AND	#%00011000
 	STA	temp17
 
-	LDA	$f0
+	LDA	test1
 	AND	#%11100111
-	STA	$f0
+	STA	test1
 
 	LDA	counter			; 3
-	AND	#NAME_Animated_Title_Speed		; 2 (5)
-	CMP	#NAME_Animated_Title_Speed		; 2 (7)
-	BNE	NAME_Animated_Title_SetupBackLines	; 2 (9)
+	AND	#Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed		; 2 (5)
+	CMP	#Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed		; 2 (7)
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines	; 2 (9)
 
 	LDA	#%10000000
 	STA	temp18
 
-	BIT 	$f0			; 3 
-	BVS	NAME_Animated_Title_SetupBackLines	; 2
-	BMI	NAME_Animated_Title_BackGround_Change	; 2 (23)
+	BIT 	test1			; 3 
+	BVS	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines	; 2
+	BMI	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change	; 2 (23)
 	
 	LDA	counter
-	LDX	#NAME_Animated_Title_Speed
-NAME_Animated_Title_Speed_Loop
+	LDX	#Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed_Loop
 	CPX	#0
-	BEQ	NAME_Animated_Title_Speed_Loop_End
+	BEQ	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed_Loop_End
 	LSR
 	DEX
-	JMP	NAME_Animated_Title_Speed_Loop	
-NAME_Animated_Title_Speed_Loop_End
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed_Loop	
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Speed_Loop_End
 	EOR	random
 	AND	#%00000111
 	TAX
 
-	LDA	$f1			; 3 (35)
-	ORA	NAME_Animated_Title_BitMask1,x	; 4 (39)
-	STA	$f1			; 3 (42)
+	LDA	test2			; 3 (35)
+	ORA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BitMask1,x	; 4 (39)
+	STA	test2			; 3 (42)
 
 	CMP	#255			; 2 (44)
-	BNE	NAME_Animated_Title_DontSetReady ; 2 (46)
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_DontSetReady ; 2 (46)
 
-	LDA	$f0			; 3 (49)
+	LDA	test1			; 3 (49)
 	ORA	#%10000000		; 2 (51)
-	STA	$f0			; 3 (54)
-NAME_Animated_Title_DontSetReady
+	STA	test1			; 3 (54)
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_DontSetReady
 	LDA	frameColor		; 3 
 	LDX	#8
-NAME_Animated_Title_BlankLoop
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlankLoop
 	STA	temp01,x		; 3 	
 	DEX				; 2
-	BPL	NAME_Animated_Title_BlankLoop	; 2
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlankLoop	; 2
 
-	JMP	NAME_Animated_Title_PrepareDone	; 3 (8)
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_PrepareDone	; 3 (8)
 
-NAME_Animated_Title_BackGround_Change
-	LDA	$f0					; 3 (21)
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change
+	LDA	test1					; 3 (21)
 	EOR	#255					; 2
 	AND	#%00000111				; 2
 	STA	temp19					; 3 (32)
@@ -1752,87 +1785,87 @@ NAME_Animated_Title_BackGround_Change
 	LDY	frameColor				; 3 (47)
 
 *
-NAME_Animated_Title_BackGround_Change_Loop
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop
 *
 *	One loop: 22
 *	x8 : 88
 *
-	LDA	NAME_Animated_Title_Back_Gradient,x	; 4 
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Back_Gradient,x	; 4 
 	CMP	temp19					; 3 
-	BCS	NAME_Animated_Title_BackGround_Change_Loop_NoZero  ; 2 
+	BCS	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_NoZero  ; 2 
 
 	TYA							    ; 2	
-	JMP	NAME_Animated_Title_BackGround_Change_Loop_WasZero  ; 3 
-NAME_Animated_Title_BackGround_Change_Loop_NoZero
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_WasZero  ; 3 
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_NoZero
 	CLC							; 2
-	ADC	$f3						; 3
-NAME_Animated_Title_BackGround_Change_Loop_WasZero
+	ADC	#$42						; 3
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_WasZero
 	STA	temp01,x					; 4
 	DEX							; 2
-	BPL	NAME_Animated_Title_BackGround_Change_Loop	; 2
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop	; 2
 
 	BIT	temp18
-	BMI	NAME_Animated_Title_BackGround_Change_Loop_Progess
-	JMP	NAME_Animated_Title_FirstJump2
-NAME_Animated_Title_BackGround_Change_Loop_Progess
+	BMI	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_Progess
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_FirstJump2
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_Loop_Progess
 
 	LDA	#%1100000
 	STA	temp18
 
-	INC	$f0
-	LDA	$f0
+	INC	test1
+	LDA	test1
 
 	CMP	#%10000111
-	BNE	NAME_Animated_Title_BackGround_Change_NotSetDone
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_NotSetDone
 	ORA	#%01000000
-	STA	$f0
-NAME_Animated_Title_BackGround_Change_NotSetDone
+	STA	test1
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change_NotSetDone
 
-	JMP	NAME_Animated_Title_PrepareDone
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_PrepareDone
 
-NAME_Animated_Title_SetupBackLines
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines
 
-	BIT	$f0
-	BMI 	NAME_Animated_Title_SetupBackLines_NoJumPBack
-	JMP	NAME_Animated_Title_DontSetReady
+	BIT	test1
+	BMI 	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_NoJumPBack
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_DontSetReady
 
-NAME_Animated_Title_SetupBackLines_NoJumPBack
-	BVS	NAME_Animated_Title_SetupBackLines_NoJumPBack2
-	JMP	NAME_Animated_Title_BackGround_Change
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_NoJumPBack
+	BVS	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_NoJumPBack2
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BackGround_Change
 
-NAME_Animated_Title_SetupBackLines_NoJumPBack2
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_NoJumPBack2
 
 	sleep	7
 				
 	LDX	#7
 	CLC
 
-NAME_Animated_Title_SetupBackLines_Loop
-	LDA	NAME_Animated_Title_Back_Gradient,x
-	ADC	$f3	
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_Loop
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Back_Gradient,x
+	ADC	#$42	
 	STA	temp01,x
 	DEX
-	BPL	NAME_Animated_Title_SetupBackLines_Loop
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_SetupBackLines_Loop
 
-NAME_Animated_Title_PrepareDone
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_PrepareDone
 
 	LDX	#7
-	LDY	$f1
+	LDY	test2
 	CLC
-NAME_Animated_Title_AddColorToText
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_AddColorToText
 	TYA
-	BMI	NAME_Animated_Title_LoadColor
+	BMI	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_LoadColor
 
 	BYTE	#$AD
 	BYTE	#frameColor
 	BYTE	#0
 
-	JMP	NAME_Animated_Title_LoadColorLoaded
-NAME_Animated_Title_LoadColor
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_LoadColorLoaded
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_LoadColor
 
-	LDA	$f2
-	ADC	NAME_Animated_Title_Text_Gradient,x
-NAME_Animated_Title_LoadColorLoaded
+	LDA	#$16
+	ADC	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Text_Gradient,x
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_LoadColorLoaded
 	STA	temp09,x
 
 	TYA
@@ -1840,39 +1873,39 @@ NAME_Animated_Title_LoadColorLoaded
 	TAY		
 
 	DEX
-	BPL	NAME_Animated_Title_AddColorToText
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_AddColorToText
 
-	JMP	NAME_Animated_Title_FirstJump2
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_FirstJump2
 	align	256
 
-NAME_Animated_Title_FirstJump2
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_FirstJump2
 	BIT	temp18
-	BMI	NAME_Animated_Title_NoCorrect1
-	BIT	$F0
-	BVS	NAME_Animated_Title_NoCorrect1
+	BMI	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect1
+	BIT	test1
+	BVS	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect1
 	STA	WSYNC
-	BPL	NAME_Animated_Title_NoCorrect1
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect1
 	STA	WSYNC
-NAME_Animated_Title_NoCorrect1
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect1
 	BIT	temp18
-	BVS	NAME_Animated_Title_NoCorrect2
+	BVS	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect2
 
 	STA	WSYNC
 	STA	WSYNC
 	STA	WSYNC
-NAME_Animated_Title_NoCorrect2
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect2
 
 	LDA	counter
 	AND	#%00000111
 	CMP	#%00000111
-	BNE	NAME_Animated_Title_NoCorrect3
-	LDA	$F0
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect3
+	LDA	test1
 	CMP	#%11000111
-	BNE	NAME_Animated_Title_NoCorrect3	
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect3	
 	LDA	#%11100111
-	STA	$F0
+	STA	test1
 	STA	WSYNC
-NAME_Animated_Title_NoCorrect3
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoCorrect3
 	LDA	frameColor
 	LDX	#0
 	STA 	WSYNC		; 76
@@ -1903,51 +1936,72 @@ NAME_Animated_Title_NoCorrect3
 
 	LDX	#7		; 2 (62)
 
-	LDA	$F0		
+	LDA	test1		
 	ORA	temp17
-	STA	$F0		; 8 (70)
+	STA	test1		; 8 (70)
 
 	STA	WSYNC
-	BIT 	$F0		
-	BPL	NAME_Animated_Title_NoBlinking
-	BVC	NAME_Animated_Title_NoBlinking
+	BIT 	test1		
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoBlinking
+	BVC	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoBlinking
 
 	LDA	temp17
 	LSR
 	LSR
 	LSR
 	TAY
-	LDA	NAME_Animated_Title_BlinkingMasks,y
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlinkingMasks,y
 	CMP	#0
-	BEQ	NAME_Animated_Title_NoBlinking
+	BEQ	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoBlinking
 
 	STA	temp17 
 
 	LDA	counter
 	AND	temp17
 	CMP	temp17
-	BNE	NAME_Animated_Title_NoBlinking
+	BNE	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoBlinking
 
-NAME_Animated_Title_BlinkColorLoop
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlinkColorLoop
 	LDA	temp01,x
 	STA	temp09,x
 	DEX
-	BPL	NAME_Animated_Title_BlinkColorLoop
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlinkColorLoop
 	LDX	#7
-	JMP	NAME_Animated_Title_Blinked
-NAME_Animated_Title_NoBlinking
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Blinked
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BitMask1
+	BYTE	#%00000001
+	BYTE	#%00000010
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00010000
+	BYTE	#%00100000
+	BYTE	#%01000000
+	BYTE	#%10000000
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BitMask2
+	BYTE	#%11111110
+	BYTE	#%11111101
+	BYTE	#%11111011
+	BYTE	#%11110111
+	BYTE	#%11101111
+	BYTE	#%11011111
+	BYTE	#%10111111
+	BYTE	#%01111111
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_NoBlinking
 	STA	WSYNC
-NAME_Animated_Title_Blinked
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Blinked
 	STA	WSYNC
 	STA	HMOVE		; 3
 	
 	LDA	counter		; 3 (6)
 	AND	#%00000001	; 2 (8) 
 	CMP	#%00000001  	; 2 (10)
-	BEQ	NAME_Animated_Title_Odd_Frame   ; 2 (12)
-	JMP	NAME_Animated_Title_Even_Frame  ; 3 (15)
+	BEQ	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Odd_Frame   ; 2 (12)
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Even_Frame  ; 3 (15)
 
-NAME_Animated_Title_BlinkingMasks
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_BlinkingMasks
 	BYTE	#0
 	BYTE	#%01000000
 	BYTE	#%00100000
@@ -1955,21 +2009,21 @@ NAME_Animated_Title_BlinkingMasks
 
 	align 	256
 
-NAME_Animated_Title_Even_Frame
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Even_Frame
 	LDA	#$80
 	STA	HMP0
 	STA	HMP1
-NAME_Animated_Title_Even_Frame_Loop	
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Even_Frame_Loop	
 	STA	WSYNC		; 76
 	STA	HMOVE		; 3
 	
 	LDA	temp01,x
 	STA	COLUBK
 
-	LDA	NAME_Animated_Title_Letter1,x	; 5 (8)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter1,x	; 5 (8)
 	STA	GRP0				; 3 (11)
 
-	LDA	NAME_Animated_Title_Letter3,x	; 5 (16)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter3,x	; 5 (16)
 	STA	GRP1				; 3 (19)
 
 	LDA	temp09,x
@@ -1978,10 +2032,10 @@ NAME_Animated_Title_Even_Frame_Loop
 
 	sleep	6
 
-	LDA	NAME_Animated_Title_Letter5,x	; 5 
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter5,x	; 5 
 	STA	GRP0				; 3
 
-	LDA	NAME_Animated_Title_Letter7,x	; 5
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter7,x	; 5
 	STA	GRP1				; 3
 
 	LDA	#$00		; 2 
@@ -1992,10 +2046,10 @@ NAME_Animated_Title_Even_Frame_Loop
 
 	STA	HMOVE				; Early 74
 
-	LDA	NAME_Animated_Title_Letter0,x	; 5 (3)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter0,x	; 5 (3)
 	STA	GRP0				; 3 (6)
 
-	LDA	NAME_Animated_Title_Letter2,x	; 5 (11)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter2,x	; 5 (11)
 	STA	GRP1				; 3 (14)
 
 	LDA	#$80
@@ -2004,20 +2058,20 @@ NAME_Animated_Title_Even_Frame_Loop
 
 	sleep	15
 
-	LDA	NAME_Animated_Title_Letter4,x	; 5 
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter4,x	; 5 
 	STA	GRP0				; 3
 
-	LDA	NAME_Animated_Title_Letter6,x	; 5
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter6,x	; 5
 	STA	GRP1				; 3
 
 	DEX	
-	BPL	NAME_Animated_Title_Even_Frame_Loop
-	JMP	NAME_Animated_Title_End
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Even_Frame_Loop
+	JMP	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_End
 
-NAME_Animated_Title_Odd_Frame
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Odd_Frame
 
 	sleep	3
-NAME_Animated_Title_Odd_Frame_Jump2
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Odd_Frame_Jump2
 	LDA	#$80
 	STA	HMP0
 	STA	HMP1	; 8 (23)
@@ -2025,14 +2079,14 @@ NAME_Animated_Title_Odd_Frame_Jump2
 	_sleep	32
 	LDA	temp01,x
 	TAY
-NAME_Animated_Title_Odd_Frame_Loop
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Odd_Frame_Loop
 	sleep	6
 	STA	HMOVE   ; Early 74
 	STY	COLUBK
-	LDA	NAME_Animated_Title_Letter0,x	; 5 (3)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter0,x	; 5 (3)
 	STA	GRP0				; 3 (6)
 
-	LDA	NAME_Animated_Title_Letter2,x	; 5 (11)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter2,x	; 5 (11)
 	STA	GRP1				; 3 (14)
 
 	LDA	temp09,x
@@ -2045,19 +2099,19 @@ NAME_Animated_Title_Odd_Frame_Loop
 
 	sleep	2
 
-	LDA	NAME_Animated_Title_Letter4,x	; 5 
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter4,x	; 5 
 	STA	GRP0				; 3
 
-	LDA	NAME_Animated_Title_Letter6,x	; 5
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter6,x	; 5
 	STA	GRP1				; 3
 
 	STA	WSYNC	
 	STA	HMOVE	; 3
 
-	LDA	NAME_Animated_Title_Letter1,x	; 5 (8)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter1,x	; 5 (8)
 	STA	GRP0				; 3 (11)
 
-	LDA	NAME_Animated_Title_Letter3,x	; 5 (16)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter3,x	; 5 (16)
 	STA	GRP1				; 3 (19)
 
 	LDA	#$00	; 2 (21)
@@ -2070,20 +2124,20 @@ NAME_Animated_Title_Odd_Frame_Loop
 	INX			; 2
 	sleep	5	; 42
 
-	LDA	NAME_Animated_Title_Letter5,x	; 5 (47)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter5,x	; 5 (47)
 	STA	GRP0				; 3 (50)
 
-	LDA	NAME_Animated_Title_Letter7,x	; 5 (55)
+	LDA	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter7,x	; 5 (55)
 	STA	GRP1				; 3 (58)
 
 
 	sleep	4
 
 	DEX		; 2 (69)
-	BPL	NAME_Animated_Title_Odd_Frame_Loop	; 2 (71)
+	BPL	Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Odd_Frame_Loop	; 2 (71)
 	
 
-NAME_Animated_Title_End
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_End
 
 	LDX	#0
 	LDA	frameColor
@@ -2095,11 +2149,34 @@ NAME_Animated_Title_End
 	STX	GRP1
 	STA	HMCLR
 
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
 	ldx	item
 	txs
-
-
-
 
 *SkipIfNoGameSet
 *---------------------------------
@@ -2148,6 +2225,8 @@ ScreenBottomBank2
 	tsx
 	stx	item
 
+
+
 	LDA	#0
 	STA	WSYNC		; (76)
 	STA	COLUBK	
@@ -2170,125 +2249,125 @@ ScreenBottomBank2
 	align	256
 
 
-NAME_Animated_Title_Letter0
-	BYTE	#%11111100
-	BYTE 	#%10000000
-	BYTE	#%01000000
-	BYTE	#%00100000
-	BYTE	#%00010000
-	BYTE	#%00001000
-	BYTE	#%00000100
-	BYTE	#%11111100
+		_align	8
 
-NAME_Animated_Title_Letter1
-	BYTE	#%11111110
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%11100000
-	BYTE	#%11100000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%11111110
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Text_Gradient
+	BYTE	#$0E
+	BYTE	#$0A
+	BYTE	#$0C
+	BYTE	#$08
+	BYTE	#$08
+	BYTE	#$0C
+	BYTE	#$0A
+	BYTE	#$0E
 
-NAME_Animated_Title_Letter2
-	BYTE	#%10000110
-	BYTE	#%10001000
-	BYTE	#%10010000
-	BYTE	#%11111000
-	BYTE	#%10000100
-	BYTE	#%10000100
-	BYTE	#%10000100
-	BYTE	#%11111000
+		_align	8
 
-NAME_Animated_Title_Letter3
-	BYTE	#%01111100
-	BYTE	#%10000010
-	BYTE	#%10000010
-	BYTE	#%10011110
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000010
-	BYTE	#%01111100
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Back_Gradient
+	BYTE	#$0E
+	BYTE	#$0C
+	BYTE	#$0C
+	BYTE	#$0A
+	BYTE	#$0A
+	BYTE	#$0C
+	BYTE	#$0C
+	BYTE	#$0E
 
-NAME_Animated_Title_Letter4
-	BYTE	#%11111110
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
+		_align	8
 
-NAME_Animated_Title_Letter5
-	BYTE	#%01111100
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%01111100
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter0
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
 
-NAME_Animated_Title_Letter6
-	BYTE	#%10000110
-	BYTE	#%10001010
-	BYTE	#%10001010
-	BYTE	#%10010010
-	BYTE	#%10010010
-	BYTE	#%10100010
-	BYTE	#%10100010
-	BYTE	#%11000010
+		_align	8
 
-NAME_Animated_Title_Letter7
-	BYTE	#%01111100
-	BYTE	#%10000010
-	BYTE	#%10000010
-	BYTE	#%10011110
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000010
-	BYTE	#%01111100
-
-NAME_Animated_Title_Text_Gradient
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$06
-	BYTE	#$06
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$00
-
-NAME_Animated_Title_Back_Gradient
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$02
-
-NAME_Animated_Title_BitMask1
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter1
 	BYTE	#%00000001
 	BYTE	#%00000010
-	BYTE	#%00000100
-	BYTE	#%00001000
-	BYTE	#%00010000
-	BYTE	#%00100000
-	BYTE	#%01000000
-	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000010
+	BYTE	#%00000010
+	BYTE	#%00000001
 
-NAME_Animated_Title_BitMask2
-	BYTE	#%11111110
-	BYTE	#%11111101
-	BYTE	#%11111011
-	BYTE	#%11110111
-	BYTE	#%11101111
-	BYTE	#%11011111
-	BYTE	#%10111111
-	BYTE	#%01111111
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter2
+	BYTE	#%11001111
+	BYTE	#%00101000
+	BYTE	#%00100100
+	BYTE	#%11000010
+	BYTE	#%10000010
+	BYTE	#%00000001
+	BYTE	#%00100000
+	BYTE	#%11001111
+
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter3
+	BYTE	#%10011100
+	BYTE	#%00110110
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%10110110
+	BYTE	#%10011100
+
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter4
+	BYTE	#%01110001
+	BYTE	#%00100000
+	BYTE	#%00100000
+	BYTE	#%00100000
+	BYTE	#%00100000
+	BYTE	#%00100001
+	BYTE	#%10101010
+	BYTE	#%11111010
+
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter5
+	BYTE	#%11000111
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%01000010
+	BYTE	#%00100010
+	BYTE	#%00100111
+
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter6
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+		_align	8
+
+Bank2_SpecialEffect_SpecialEffect_BlinkingText_Blinking_Text_Letter7
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+
 
 ###End-Bank2
 *Routine Section
@@ -2298,6 +2377,7 @@ NAME_Animated_Title_BitMask2
 *
 
 
+	
 
 	saveFreeBytes
 	rewind 	2fd4

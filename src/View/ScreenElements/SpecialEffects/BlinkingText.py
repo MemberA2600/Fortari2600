@@ -32,7 +32,19 @@ class BlinkingText:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize * 1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
+        self.__ctrl = False
+        self.__middle = False
+        self.__draw = 0
+
         self.dead = dead
+
+        self.__topLevelWindow = self.__loader.topLevels[0]
+
+        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         itWasHash = False
         if "#" in data:
@@ -41,6 +53,8 @@ class BlinkingText:
         self.__addElements()
         if itWasHash == True:
             self.__changeData(data)
+
+
 
     def killAll(self):
         for item in self.__uniqueFrame.pack_slaves():
@@ -94,7 +108,7 @@ class BlinkingText:
 
         self.__upperFrame = Frame(self.__uniqueFrame, width=self.__w,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   height=secondH // 3 * 2)
+                                   height=round(secondH // 3 * 1.75))
 
         self.__upperFrame.pack_propagate(False)
         self.__upperFrame.pack(side=TOP, anchor=N, fill=X)
@@ -108,6 +122,10 @@ class BlinkingText:
 
         self.__coloumns    = []
         self.__subColoumns = []
+
+        t = Thread(target=self.__createMatrix)
+        t.daemon = True
+        t.start()
 
         self.__labels = []
         text = [self.__dictionaries.getWordFromCurrentLanguage("container"),
@@ -131,7 +149,7 @@ class BlinkingText:
         for num in range(0, maxNum):
             f = Frame(self.__upperFrame, width=self.__w // maxNum,
                                       bg=self.__loader.colorPalettes.getColor("window"),
-                                      height=secondH // 3 * 2)
+                                      height=round(secondH // 3 * 1.75))
 
             f.pack_propagate(False)
             f.pack(side=LEFT, anchor=E, fill=Y)
@@ -143,7 +161,7 @@ class BlinkingText:
 
                     f1 = Frame(f, width=self.__w // maxNum,
                                               bg=self.__loader.colorPalettes.getColor("window"),
-                                              height=secondH // 3)
+                                              height=round(secondH // 3 * 1.75) // 2)
 
                     f1.pack_propagate(False)
                     f1.pack(side=TOP, anchor=N, fill=X)
@@ -403,7 +421,201 @@ class BlinkingText:
                self.setSelectOnListBox(colorNum + 2, colors[colorNum])
 
         self.__speedVar.set(speed)
+
+#        self.__changeData(self.__data)
+
+    def __createMatrix(self):
+        while self.__bottomFrame.winfo_width() < 2: sleep(0.00001)
+
+        noOfRows    = 8
+        noOfColumns = 64
+
+        w = round(self.__bottomFrame.winfo_width()  // noOfColumns * 1.02)
+        h = round(self.__bottomFrame.winfo_height() * 0.80) // noOfRows
+
+        self.__matrixRowFrames  = []
+        self.__matrixCellFrames = []
+        self.__matrixButtons    = []
+
+        matrix = self.__data[10]
+
+        self.__matrixValues = []
+
+        for startIndex in range(0, 512, 64):
+            line = matrix[startIndex:startIndex+64]
+            self.__matrixValues.append([])
+            for charIndex in range(0, 64):
+                self.__matrixValues[-1].append(line[charIndex])
+
+        for num in range(0, noOfRows):
+
+            f = Frame(self.__bottomFrame, width=w,
+                       bg=self.__loader.colorPalettes.getColor("window"),
+                       height=h )
+
+            f.pack_propagate(False)
+            f.pack(side=TOP, anchor=N, fill=X)
+
+            self.__matrixRowFrames.append(f)
+            self.__matrixCellFrames.append([])
+            self.__matrixButtons.append([])
+            self.__soundPlayer.playSound("Pong")
+
+            for num2 in range(0, noOfColumns):
+                sf = Frame(f, width=w,
+                          bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                          height=h)
+
+                sf.pack_propagate(False)
+                sf.pack(side=RIGHT, anchor=W, fill=Y)
+
+                b = Button(sf, height = w, width = h, name = str(num) + "_" + str(num2),
+                            bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                           activebackground = self.__loader.colorPalettes.getColor("highLight"),
+                           relief=GROOVE, state = DISABLED
+                           )
+                b.pack_propagate(False)
+                b.pack(side=LEFT, anchor=E, fill = BOTH)
+
+                if self.__matrixValues[num][num2] == "1":
+                   b.config(bg = self.__loader.colorPalettes.getColor("boxFontNormal"))
+
+                self.__matrixCellFrames[-1].append(sf)
+                self.__matrixButtons[-1].append(b)
+
+        self.genBottomBottom()
+
+        for listOfButtons in self.__matrixButtons:
+            for button in listOfButtons:
+                button.config(state = NORMAL)
+                button.bind("<Button-1>", self.__clicked)
+                button.bind("<Button-3>", self.__clicked)
+                button.bind("<Enter>", self.__enter)
+
+    def genBottomBottom(self):
+        self.__bottomOfBottom = Frame(self.__bottomFrame, height=9999999, width=999999,
+                                      bg=self.__loader.colorPalettes.getColor("window"),
+                                      )
+        self.__bottomOfBottom.pack_propagate(False)
+        self.__bottomOfBottom.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__entryFrame = Frame(self.__bottomOfBottom, height=9999999,
+                                  width=round(self.__bottomFrame.winfo_width() * 0.75),
+                                  bg=self.__loader.colorPalettes.getColor("window"),
+                                  )
+        self.__entryFrame.pack_propagate(False)
+        self.__entryFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__genButtonFrame = Frame(self.__bottomOfBottom, height=9999999,
+                                      width=round(self.__bottomFrame.winfo_width() * 0.75),
+                                      bg=self.__loader.colorPalettes.getColor("window"),
+                                      )
+        self.__genButtonFrame.pack_propagate(False)
+        self.__genButtonFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__textVar = StringVar()
+        self.__text = Entry(self.__entryFrame,
+                            name="fuck",
+                            bg=self.__colors.getColor("boxBackNormal"),
+                            fg=self.__colors.getColor("boxFontNormal"),
+                            width=9999, justify=CENTER,
+                            textvariable=self.__textVar,
+                            font=self.__normalFont
+                            )
+
+        self.__text.pack_propagate(False)
+        self.__text.pack(fill=X, side=TOP, anchor=N)
+
+        self.__text.bind("<FocusOut>", self.__chamgeConstText)
+        self.__text.bind("<KeyRelease>", self.__chamgeConstText)
+
+        self.__genButton = Button(
+            self.__genButtonFrame, width=999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            activebackground=self.__loader.colorPalettes.getColor("highLight"),
+            activeforeground=self.__loader.colorPalettes.getColor("font"),
+            font=self.__normalFont,
+            command=self.__generateText,
+            text=self.__dictionaries.getWordFromCurrentLanguage("generateText")
+        )
+
+        self.__genButton.pack_propagate(False)
+        self.__genButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+    def __generateText(self):
+        text = self.__textVar.get()
+        textToReturn = ["", "", "", "", "", "", "", ""]
+        first = True
+
+        for letter in text:
+            if first == True:
+               first = False
+            else:
+               for num in range(0, 8):
+                   textToReturn[num] += "0"
+
+            letterData = self.__loader.fontManager.getAtariChar(letter)
+            for num in range(0, 8):
+                textToReturn[num] += letterData[num]
+
+        adder     = 64 - len(textToReturn[0])
+        halfAdder = adder // 2
+
+        for num in range(0, 8):
+            textToReturn[num] = (halfAdder * "0") + textToReturn[num] + ((adder - halfAdder) * "0")
+            textToReturn[num] =  textToReturn[num][::-1]
+            for charNum in range(0,64):
+                self.__matrixValues[num][charNum] = textToReturn[num][charNum]
+                if textToReturn[num][charNum] == "1":
+                   self.__matrixButtons[num][charNum].config(bg = self.__colors.getColor("boxFontNormal"))
+                else:
+                   self.__matrixButtons[num][charNum].config(bg=self.__colors.getColor("boxBackNormal"))
+
+        newString = ""
+        for numList in self.__matrixValues:
+            newString += "".join(numList)
+
+        self.__data[10] = newString
         self.__changeData(self.__data)
+
+    def __chamgeConstText(self, event):
+        self.__textVar.set(self.__textVar.get()[:10])
+
+    def __clicked(self, event):
+        name = str(event.widget).split(".")[-1]
+        theY = int(name.split("_")[0])
+        theX = int(name.split("_")[1])
+
+        self.__matrixValues[theY][theX] = str(1 - int(self.__matrixValues[theY][theX]))
+        if self.__matrixValues[theY][theX] == "1":
+           event.widget.config(bg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        else:
+           event.widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+
+        newString = ""
+        for numList in self.__matrixValues:
+            newString += "".join(numList)
+
+        self.__data[10] = newString
+        self.__changeData(self.__data)
+
+    def __enter(self, event):
+        if self.__draw == 0: return
+        self.__clicked(event)
+
+    def shiftON(self, event):
+        self.__ctrl = True
+
+    def shiftOff(self, event):
+        self.__ctrl = False
+
+    def drawMode(self, event):
+        if self.__draw == 1:
+           self.__draw = 0
+        else:
+           self.__draw = 1
+
 
     def __changeListBox(self, event):
         boxNum  = 0

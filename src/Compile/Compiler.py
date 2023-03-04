@@ -80,19 +80,7 @@ class Compiler:
         stepY               = int(self.__data[2])
 
         dataOrganized       = []
-        """
-        for startIndexX in range(0, matrixDimensions[1] * stepX, stepX):
-            dataOrganized.append([])
 
-            for startIndexY in range(0, matrixDimensions[0] * stepY, stepY):
-                dataOrganized[-1].append([])
-                for indexY in range(startIndexY, startIndexY + stepY):
-                   text = ""
-                   for number in dataMatrix[indexY][startIndexX:startIndexX + stepX]:
-                       text += str(number)
-
-                   dataOrganized[-1][-1].append(text)
-        """
         for startIndexY in range(0, matrixDimensions[0] * stepY, stepY):
             dataOrganized.append([])
 
@@ -492,6 +480,7 @@ class Compiler:
 
                 self.__routines["DigitClock"] = self.__io.loadSubModule("DigitClock_Kernel").replace("#BANK#",
                                                                                                      self.__bank)
+
         elif typ == "BigSprite":
             those = self.generate_BigSprite(fullName, data, self.__bank)
             self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_BigSprite") )
@@ -507,7 +496,6 @@ class Compiler:
             for itemNum in range(0, len(those[1])):
                 if those[1][itemNum][1] != "":
                     self.__userData[those[1][itemNum][0]] = those[1][itemNum][1]
-
 
         elif typ == "Menu":
             those = self.generate_Menu(fullName, data, self.__bank)
@@ -545,7 +533,6 @@ class Compiler:
 
                 dictKey = "Space"
 
-
             elif subtyp == "Gradient":
                 those = self.generate_Gradient(fullName, data, self.__bank)
                 if data[4] == "0":
@@ -557,7 +544,6 @@ class Compiler:
                     self.__bankData.append(those[0] + "\n" + self.__loader.io.loadSubModule("Reset_Gradient_Hor"))
                     self.__routines["Gradient_Hor"] = those[1]
                     dictKey = "Gradient_Hor"
-
 
             elif subtyp == "WaterWaves":
                 those = self.generate_WaterWaves(fullName, data, self.__bank)
@@ -584,6 +570,12 @@ class Compiler:
                 self.__userData[name + "_Data"] = those[1]
                 dictKey = "Earth"
 
+            elif subtyp == "BlinkingText":
+                those = self.generate_BlinkingText(fullName, data, self.__bank)
+                self.__bankData.append(those[0])
+                self.__userData[name + "_Data"] = those[1]
+                dictKey = "BlinkingText"
+
         elif typ == "Wall":
             those = self.generate_Wall(fullName, data, self.__bank)
             self.__bankData.append(those[0])
@@ -600,6 +592,67 @@ class Compiler:
 
         self.__lastRoutine = dictKey
 
+    def generate_BlinkingText(self, name, data, bank):
+        container1 = data[0]
+        container2 = data[1]
+        foreGround = data[2]
+        backGround = data[3]
+        speed      = data[4]
+        patternFG  = data[5]
+        patternBG  = data[6]
+        matrix     = data[7]
+
+        toplevel = self.__loader.io.loadSubModule("Blinking_Text_Kernel")
+        toplevel = toplevel.replace("#VAR01#", container1).replace("#VAR02#", container2)
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(foreGround)
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR03#", "#" + foreGround)
+        else:
+           toplevel = toplevel.replace("#VAR03#", foreGround)
+
+        colorVar = self.__loader.virtualMemory.getVariableByName2(backGround)
+        if colorVar == False:
+           toplevel = toplevel.replace("#VAR04#", "#" + backGround)
+        else:
+           toplevel = toplevel.replace("#VAR04#", backGround)
+
+        toplevel = toplevel.replace("#CON01#", speed)
+
+        userData = "\n#NAME#_Blinking_Text_Text_Gradient\n"
+
+        listOfData = patternFG.split("|")[::-1]
+        for item in listOfData:
+            userData += "\tBYTE\t#"+item + "\n"
+
+        userData += "\n#NAME#_Blinking_Text_Back_Gradient\n"
+        listOfData = patternBG.split("|")[::-1]
+        for item in listOfData:
+            userData += "\tBYTE\t#"+item + "\n"
+
+        matrixData = []
+        matrixLines = []
+        for startIndex in range(0, 512, 64):
+            matrixLine = matrix[startIndex : startIndex + 64][::-1]
+            matrixLines.append(matrixLine)
+
+            subIndex = startIndex // 64
+            matrixData.append("\n#NAME#_Blinking_Text_Letter" + str(subIndex) + "\n")
+
+        matrixLines = matrixLines[::-1]
+
+        for line in matrixLines:
+            for startIndex in range(0, 64, 8):
+                subIndex = startIndex // 8
+                matrixData[subIndex] += "\tBYTE\t#%" + line[startIndex : startIndex + 8] + "\n"
+
+        for data in matrixData:
+            userData += data
+
+        return(
+            toplevel.replace("#NAME#", name).replace("#BANK#", bank), userData.replace("#NAME#", name).replace("#BANK#", bank)
+        )
+
     def generate_Earth(self, name, data, bank):
         container = data[0]
         color     = data[1]
@@ -612,7 +665,7 @@ class Compiler:
 
         colorVar = self.__loader.virtualMemory.getVariableByName2(color)
         if colorVar == False:
-           toplevel = toplevel.replace("#VAR02", "#" + color)
+           toplevel = toplevel.replace("#VAR02#", "#" + color)
         else:
            toplevel = toplevel.replace("#VAR02#", color).replace("!!!ShiftToRight!!!",
                                         self.moveVarToTheRight(colorVar.usedBits, True))

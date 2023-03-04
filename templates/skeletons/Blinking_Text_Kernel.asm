@@ -278,6 +278,27 @@
 	BPL	#NAME#_Blinking_Text_BlinkColorLoop
 	LDX	#7
 	JMP	#NAME#_Blinking_Text_Blinked
+
+#NAME#_Blinking_Text_BitMask1
+	BYTE	#%00000001
+	BYTE	#%00000010
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00010000
+	BYTE	#%00100000
+	BYTE	#%01000000
+	BYTE	#%10000000
+
+#NAME#_Blinking_Text_BitMask2
+	BYTE	#%11111110
+	BYTE	#%11111101
+	BYTE	#%11111011
+	BYTE	#%11110111
+	BYTE	#%11101111
+	BYTE	#%11011111
+	BYTE	#%10111111
+	BYTE	#%01111111
+
 #NAME#_Blinking_Text_NoBlinking
 	STA	WSYNC
 #NAME#_Blinking_Text_Blinked
