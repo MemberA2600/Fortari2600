@@ -350,7 +350,7 @@ class BlinkingText:
                     self.__gradientThings[-1]["hexValues"].append("$00")
 
                     h =      HexEntry(self.__loader, f, self.__colors, self.__colorDict,
-                             self.__normalFont, self.__gradientThings[-1]["hexValues"],
+                             self.__smallFont, self.__gradientThings[-1]["hexValues"],
                              num2, None, self.__changeHex)
 
                     self.__gradientThings[-1]["hexEntries"].append(h)

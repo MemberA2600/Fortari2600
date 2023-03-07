@@ -20,7 +20,7 @@
 #NAME#_Blinking_Text_Speed = #CON01#
 
 	JMP	#NAME#_Blinking_Text_FirstJump
-	align	256
+	_align	215
 
 
 #NAME#_Blinking_Text_FirstJump
@@ -110,13 +110,14 @@
 	CLC							; 2
 	ADC	#VAR04#						; 3
 #NAME#_Blinking_Text_BackGround_Change_Loop_WasZero
-	STA	temp01,x					; 4
+*******	STA	temp01,x					; 4
+#STA02#
 	DEX							; 2
 	BPL	#NAME#_Blinking_Text_BackGround_Change_Loop	; 2
 
 	BIT	temp18
 	BMI	#NAME#_Blinking_Text_BackGround_Change_Loop_Progess
-	JMP	#NAME#_Blinking_Text_FirstJump2
+	JMP	#NAME#_Blinking_Text_SecondJump
 #NAME#_Blinking_Text_BackGround_Change_Loop_Progess
 
 	LDA	#%1100000
@@ -176,7 +177,8 @@
 	LDA	#VAR03#
 	ADC	#NAME#_Blinking_Text_Text_Gradient,x
 #NAME#_Blinking_Text_LoadColorLoaded
-	STA	temp09,x
+******	STA	temp09,x
+#STA01#
 
 	TYA
 	ASL	
@@ -185,10 +187,10 @@
 	DEX
 	BPL	#NAME#_Blinking_Text_AddColorToText
 
-	JMP	#NAME#_Blinking_Text_FirstJump2
-	align	256
+	JMP	#NAME#_Blinking_Text_SecondJump
+	_align	175
 
-#NAME#_Blinking_Text_FirstJump2
+#NAME#_Blinking_Text_SecondJump
 	BIT	temp18
 	BMI	#NAME#_Blinking_Text_NoCorrect1
 	BIT	#VAR01#
@@ -289,16 +291,6 @@
 	BYTE	#%01000000
 	BYTE	#%10000000
 
-#NAME#_Blinking_Text_BitMask2
-	BYTE	#%11111110
-	BYTE	#%11111101
-	BYTE	#%11111011
-	BYTE	#%11110111
-	BYTE	#%11101111
-	BYTE	#%11011111
-	BYTE	#%10111111
-	BYTE	#%01111111
-
 #NAME#_Blinking_Text_NoBlinking
 	STA	WSYNC
 #NAME#_Blinking_Text_Blinked
@@ -317,7 +309,7 @@
 	BYTE	#%00100000
 	BYTE	#%00010000
 
-	align 	256
+	_align 	220
 
 #NAME#_Blinking_Text_Even_Frame
 	LDA	#$80

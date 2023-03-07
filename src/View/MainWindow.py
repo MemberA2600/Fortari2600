@@ -568,7 +568,7 @@ class MainWindow:
                         self.__loader.virtualMemory.changeKernelMemory(old, new)
         item.changed = False
 
-
+    """
     def __saveOnlyOne(self, bank, variable):
         try:
             if bank == "bank1":
@@ -593,7 +593,9 @@ class MainWindow:
                                             str(e)
                                             )
 
-    """
+   
+    
+    
     def __changeFirstValidDeliminator(self, text, section):
         if section not in ["subroutines","vblank", "enter", "leave", "overscan", "screen_bottom"]:
             return (text)
@@ -623,15 +625,28 @@ class MainWindow:
 
     """
 
+
     def __saveProject(self):
-        self.__saveOnlyOne("bank1", "bank_configurations")
-        self.__saveOnlyOne("bank1", "global_variables")
+        self.__saveOnlyOne("bank1", "bank_configurations", False)
+        self.__saveOnlyOne("bank1", "global_variables", False)
         for num in range(2, 9):
             bank = "bank" + str(num)
             for section in self.__loader.sections:
-                self.__saveOnlyOne(bank, section)
+                self.__saveOnlyOne(bank, section, False)
 
         self.__soundPlayer.playSound("Success")
+
+    def __saveOnlyOne(self, bank, section, playsound):
+        path = self.projectPath + bank + "/" + section + ".a26"
+        code = self.__loader.virtualMemory.codes[bank][section]
+
+        f = open(path, "w")
+        f.write(code.code)
+        f.close()
+
+        code.changed = False
+        if playsound: self.__soundPlayer.playSound("Success")
+
 
     def closeProject(self):
         self.__soundPlayer.playSound("Close")
@@ -730,8 +745,9 @@ class MainWindow:
 
     def __saveButtonFunction(self):
         #self.__saveOnlyOne(self.selectedItem[0], self.selectedItem[1])
-        self.__saveOnlyOne(self.__loader.listBoxes["bankBox"].getSelectedName(),
-                           self.__loader.listBoxes["sectionBox"].getSelectedName())
+        current = self.__bigFrame.returnCurrentBankSection()
+
+        self.__saveOnlyOne(current[0], current[1], True)
 
     def __saveAllButtonFunction(self):
         self.__saveProject()

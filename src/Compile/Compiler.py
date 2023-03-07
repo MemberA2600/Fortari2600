@@ -607,15 +607,18 @@ class Compiler:
 
         colorVar = self.__loader.virtualMemory.getVariableByName2(foreGround)
         if colorVar == False:
-           toplevel = toplevel.replace("#VAR03#", "#" + foreGround)
+           toplevel = toplevel.replace("#VAR03#", "#" + foreGround).replace(
+               "#STA01#", "\tBYTE\t#$9D\n\tBYTE\t#temp09\n\tBYTE\t#0\n")
         else:
-           toplevel = toplevel.replace("#VAR03#", foreGround)
+           toplevel = toplevel.replace("#VAR03#", foreGround).replace("#STA01#", "\tSTA\ttemp09,x")
+
 
         colorVar = self.__loader.virtualMemory.getVariableByName2(backGround)
         if colorVar == False:
-           toplevel = toplevel.replace("#VAR04#", "#" + backGround)
+           toplevel = toplevel.replace("#VAR04#", "#" + backGround).replace(
+               "#STA02#", "\tBYTE\t#$9D\n\tBYTE\t#temp01\n\tBYTE\t#0\n")
         else:
-           toplevel = toplevel.replace("#VAR04#", backGround)
+           toplevel = toplevel.replace("#VAR04#", backGround).replace("#STA02#", "\tSTA\ttemp01,x")
 
         toplevel = toplevel.replace("#CON01#", speed)
 

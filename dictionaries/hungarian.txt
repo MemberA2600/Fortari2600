@@ -394,3 +394,6 @@ replace=Csere a Következõre
 replaceAll=Összes Cseréje
 replaceInLine=Csere soron Belül
 reIndent=Újraformázás
+convertASM=Fordítás Assembly-re
+errorOnASMConvert=Hiba Assembly-re fordításkor
+errorOnASMConvertText=Hiányzó #type# pár a #line# soron található parancsnál! 

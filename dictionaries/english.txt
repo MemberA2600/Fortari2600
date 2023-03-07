@@ -394,3 +394,6 @@ replace=Replace With
 replaceInLine=Replace In Line
 replaceAll=Replace All
 reIndent=reIndentation
+convertASM=Convert To Assembly
+errorOnASMConvert=Error on ASM convert
+errorOnASMConvertText=No #type# found for command on #line#!

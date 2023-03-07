@@ -63,10 +63,6 @@ class VirtualMemory:
 
         self.archieved.append(
             {
-#             "viewed": [
- #                self.__loader.listBoxes["bankBox"].getListBoxAndScrollBar()[0].curselection()[0],
-  #               self.__loader.listBoxes["sectionBox"].getListBoxAndScrollBar()[0].curselection()[0]
-   #          ],
              "codes": deepcopy(self.codes),
              "locks": deepcopy(self.locks),
              "memory": deepcopy(self.memory),
@@ -175,6 +171,8 @@ class VirtualMemory:
         self.memory = deepcopy(self.archieved[self.cursor]["memory"])
         self.subs = deepcopy(self.archieved[self.cursor]["subs"])
         self.bankLinks = deepcopy(self.archieved[self.cursor]["bankLinks"])
+
+        self.__loader.bigFrame.loadCurrentFromMemory()
 
 
     def emptyArchieved(self):

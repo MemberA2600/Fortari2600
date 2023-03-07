@@ -63,7 +63,9 @@ class IO:
 
     def loadSyntax(self):
         from Command import Command
+
         for item in self.loadWholeText("config"+os.sep+"syntax.txt").split("\n"):
+            if item.startswith("*") or item.startswith("#"): continue
             self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=")[0], "=".join(item.split("=")[1:]).replace("\n","").replace("\r",""))
 
         stringConstants = self.__loader.stringConstants

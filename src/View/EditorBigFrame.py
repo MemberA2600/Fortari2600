@@ -82,8 +82,8 @@ class EditorBigFrame:
         # Valid modes: intro, editor, locked, empty
         self.__selectedMode = "intro"
 
-        self.__bankButtons    = self.__editor.changerButtons
-        self.__sectionButtons = self.__editor.sectionButtons
+        self.addBindings()
+
         self.__highLightWord       = None
         self.__highLightIgnoreCase = True
 
@@ -96,6 +96,31 @@ class EditorBigFrame:
         t = Thread(target=self.loop)
         t.daemon = True
         t.start()
+
+    def addBindings(self):
+        self.__bankButtons    = self.__editor.changerButtons
+        self.__sectionButtons = self.__editor.sectionButtons
+
+        for button in self.__bankButtons:
+            button.bind("<ButtonRelease-1>", self.changeSomething)
+
+        for button in self.__sectionButtons:
+            button.bind("<ButtonRelease-1>", self.changeSomething)
+
+    def changeSomething(self, event):
+        from copy import deepcopy
+
+        button = event.widget
+        if button in self.__bankButtons:
+           self.__currentBank = "bank" + str(self.__bankButtons.index(button)+2)
+        else:
+           secs = deepcopy(self.__loader.sections)
+           for item in ['local_variables', 'screen_bottom', 'screen_top', 'special_read_only']:
+               secs.remove(item)
+
+           self.__currentSection = secs[self.__sectionButtons.index(button)]
+
+        self.loadCurrentFromMemory()
 
     def __focusIn(self, event):
         self.__focused  = event.widget
@@ -535,7 +560,79 @@ class EditorBigFrame:
         self.__prettyButton.pack_propagate(False)
         self.__prettyButton.pack(side=TOP, anchor = N, fill = BOTH)
 
+        """
+        self.__compileFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
+                                   height=fSize//2,
+                                   bg=self.__colors.getColor("comment"))
+        self.__compileFrame.pack_propagate(False)
+        self.__compileFrame.pack(side=TOP, anchor = N, fill=X)
+        """
+
+        self.__compileASMButton = Button(
+            self.__prettyFrame, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__smallFont,
+            command=self.compileToASM,
+            text=self.__dictionaries.getWordFromCurrentLanguage("convertASM")
+        )
+
+
+        self.__compileASMButton.pack_propagate(False)
+        self.__compileASMButton.pack(side=TOP, anchor = N, fill = BOTH)
+
         self.getLineStructure(None, None, True)
+        self.loadCurrentFromMemory()
+
+    def compileToASM(self):
+        selection = [1.0, self.__codeBox.index(END)]
+        try:
+            sel_start = self.__codeBox.index("sel.first")
+            sel_end   = self.__codeBox.index("sel.last")
+            selection = [sel_start, sel_end]
+        except:
+            pass
+
+        text = self.__codeBox.get(0.0, END).replace("\r","").split("\n")
+
+        lineNumOfEnd = int(str(selection[1]).split(".")[0])
+        thatLine = text[lineNumOfEnd-1]
+
+        selection[0] = str(selection[0]).split(".")[0] + ".0"
+        selection[1] = str(selection[1]).split(".")[0] + "." + str(len(thatLine))
+
+        firstLineStruct = self.getLineStructure(int(selection[0].split(".")[0])-1, text, True)
+        lastLineStruct  = self.getLineStructure(int(selection[1].split(".")[0])-1, text, True)
+
+        errorFound = False
+        errorData  = None
+
+        for lineNum in range(firstLineStruct["lineNum"], lastLineStruct["lineNum"] + 1):
+            currentLineStructure = self.getLineStructure(lineNum, text, True)
+
+            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
+               endFound = self.__findEnd(currentLineStructure, lineNum, text)
+               if endFound == False:
+                  errorFound = True
+                  errorData  = {"line": str(lineNum), "type": "end"}
+               else:
+                  endY    = endFound[0]
+                  if endY > lastLineStruct["lineNum"]: selection[1] = str(endY) + "." + str(len(text[endY]))
+
+            elif currentLineStructure["command"][0].startswith("end-") == True:
+               startFound = self.__findStart(currentLineStructure, lineNum, text)
+               if startFound == False:
+                  errorFound = True
+                  errorData  = {"line": str(lineNum), "type": "start"}
+
+               else:
+                  startY    = startFound[0]
+                  if startY < firstLineStruct["lineNum"]: selection[0] = str(startY) + ".0"
+
+        if errorFound:
+           self.__loader.fileDialogs.displayError("errorOnASMConvert", "errorOnASMConvertText", errorData, None)
+
+    def loadCurrentFromMemory(self):
         self.__loadFromMemory(self.__currentBank, self.__currentSection)
 
     def createCodeLine(self, labelFrames, codeEditorItems, appendThem):
@@ -839,8 +936,8 @@ class EditorBigFrame:
         self.__loader.mainWindow.focusOut(event)
 
     def __loadFromMemory(self, bank, section):
-        if self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed == True:
-           pass
+        #if self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed == True:
+        #   pass
 
         self.__codeBox.delete(0.0, END)
         text = self.__loader.virtualMemory.codes[bank][section].code
@@ -876,7 +973,7 @@ class EditorBigFrame:
             self.__constants = self.collectConstantsFromSections()
 
         if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
-            self.__subroutines = self.collectSubroutinesFromSections()
+            self.__subroutines = self.collectNamesByCommandFromSections("subroutine")
 
         if mode == "whole":
             self.__codeEditorItems["updateRow"].config(state=DISABLED)
@@ -891,8 +988,31 @@ class EditorBigFrame:
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, None)
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
+            self.__saveCode()
+
         else:
             self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None)
+
+
+    def __saveCode(self):
+        text = self.__codeBox.get(0.0, END)
+        old  = self.__virtualMemory.codes[self.__currentBank][self.__currentSection].code
+
+        textLines = text.split("\n")
+        oldLines  = old.split("\n")
+
+        if textLines[-1] == "":
+            text = "\n".join(textLines[:-1])
+
+        if oldLines[-1]  == "":
+            old  = "\n".join(oldLines[:-1])
+
+        if text == old:
+           return
+
+        self.__virtualMemory.codes[self.__currentBank][self.__currentSection].code    = text
+        self.__virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
+        self.__virtualMemory.archieve()
 
     def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole):
 
@@ -1065,7 +1185,8 @@ class EditorBigFrame:
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
                     addError = True
 
-           if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed:
+           if self.__currentSection     not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed\
+           or currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed:
               addError = True
 
 
@@ -1278,7 +1399,8 @@ class EditorBigFrame:
 
                      for command in self.__syntaxList.keys():
                          if command.startswith(currentWord):
-                            listOfItems.append([command, "command"])
+                            if self.__currentSection in self.__syntaxList[command].sectionsAllowed:
+                                listOfItems.append([command, "command"])
 
                      objList = self.__objectMaster.getStartingObjects()
                      for obj in objList:
@@ -1339,6 +1461,7 @@ class EditorBigFrame:
                else:
                    listOfItems = self.setupList(currentWord, listType, currentLineStructure, selectedType, text)
 
+
            listOfItems.sort()
            self.fillListBox(listOfItems)
 
@@ -1358,6 +1481,8 @@ class EditorBigFrame:
                    self.__codeEditorItems[name1][0].set(self.__codeEditorItems[name2][0].get())
                    self.__codeEditorItems[name2][0].set("")
 
+    def returnCurrentBankSection(self):
+        return self.__currentBank, self.__currentSection
 
     def configTheItem(self, name, tagName):
         #print(name, tagName)
@@ -1537,7 +1662,9 @@ class EditorBigFrame:
             if isItObj == False:
                 for key in self.__syntaxList.keys():
                     if key.startswith(currentWord) or currentWord == None:
-                       wordsForList.append([key, "command"])
+
+                       if self.__currentSection in self.__syntaxList[key].sectionsAllowed:
+                          wordsForList.append([key, "command"])
 
                 starters = self.__objectMaster.getStartingObjects()
                 starters.append("game")
@@ -1607,7 +1734,7 @@ class EditorBigFrame:
                      wordsForList.append([word, "stringConst"])
 
         elif listType == "subroutine":
-            wordsForList = self.collectSubroutinesFromSections()
+            wordsForList = self.collectNamesByCommandFromSections("subroutine")
 
         # Maybe "statement" will be important here to??
 
@@ -1637,7 +1764,7 @@ class EditorBigFrame:
 
         return constants
 
-    def collectSubroutinesFromSections(self):
+    def collectNamesByCommandFromSections(self, word):
         subroutines = []
 
         for section in self.__syntaxList["subroutine"].sectionsAllowed:
@@ -1645,7 +1772,7 @@ class EditorBigFrame:
 
             for lineNum in range(0, len(code)):
                 lineStructure = self.getLineStructure(lineNum, code, False)
-                if lineStructure["command"][0] == "subroutine" or lineStructure["command"][0] in self.__syntaxList["subroutine"].alias:
+                if lineStructure["command"][0] == word or lineStructure["command"][0] in self.__syntaxList[word].alias:
                    subroutines.append(lineStructure["param#1"])
 
         return subroutines
