@@ -2,51 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/syntax.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/syntax.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2023-03-04_082301.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank2/local_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank2/local_variables.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank2/overscan.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank2/overscan.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank5/local_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank5/local_variables.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank6/local_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank6/local_variables.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank7/local_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank7/local_variables.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bank8/local_variables.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bank8/local_variables.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/Command.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/Command.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Handlers/IO.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Handlers/IO.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/EditorBigFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/EditorBigFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/MainWindow.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MainWindow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/BlinkingText.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/ScreenElements/SpecialEffects/BlinkingText.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/OPL2LPTPlayer.cbp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/OPL2LPTPlayer.depend" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/OPL2LPTPlayer.layout" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/inpout32.sys" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/inpoutx64.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/inpoutx64.lib" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/inpoutx64.sys" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/main.f90" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/detectosbits.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/loadlib.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/main.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/routines.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/sleeping.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/obj/Release/vgmplayer.mod" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/test.vgz" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/OPL2LPTPlayer/thisIsIt.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Blinking_Text_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Blinking_Text_Kernel.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2023-03-05_210001.txt" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -75,6 +35,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrameEditor.coverage" NAME="RightFrameEditor Coverage Results" MODIFIED="1626523268148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$let_py__1_.coverage" NAME="let.pyű (1) Coverage Results" MODIFIED="1660464566937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$MainWindowHandler.coverage" NAME="MainWindowHandler Coverage Results" MODIFIED="1618141912041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
+    <SUITE FILE_PATH="coverage/Fortari2600$vgmToBytes.coverage" NAME="vgmToBytes Coverage Results" MODIFIED="1679028685168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$KernelChanger.coverage" NAME="KernelChanger Coverage Results" MODIFIED="1626515069782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LibCaller.coverage" NAME="LibCaller Coverage Results" MODIFIED="1629529829538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Libs" />
     <SUITE FILE_PATH="coverage/Fortari2600$ScreenTopTester.coverage" NAME="ScreenTopTester Coverage Results" MODIFIED="1656783628985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
@@ -85,7 +46,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1678046400702" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1679281908535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -122,6 +83,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$AllToTIAv0_05.coverage" NAME="AllToTIAv0.05 Coverage Results" MODIFIED="1635440534815" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../projects/jetbrains/Fortari2600" />
     <SUITE FILE_PATH="coverage/Fortari2600$let_py.coverage" NAME="let.py Coverage Results" MODIFIED="1660709117860" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$sun7.coverage" NAME="sun7 Coverage Results" MODIFIED="1666712969793" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
+    <SUITE FILE_PATH="coverage/Fortari2600$vgmToBytesZIP.coverage" NAME="vgmToBytesZIP Coverage Results" MODIFIED="1678631132225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$LoadingScreenHandler.coverage" NAME="LoadingScreenHandler Coverage Results" MODIFIED="1618069748048" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$TiaTone.coverage" NAME="TiaTone Coverage Results" MODIFIED="1629617344192" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$generateInverted.coverage" NAME="generateInverted Coverage Results" MODIFIED="1649044847279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -221,37 +183,37 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="277" />
+          <entry key="project.closed" value="288" />
           <entry key="project.open.time.2" value="4" />
           <entry key="project.open.time.3" value="62" />
-          <entry key="project.open.time.4" value="271" />
-          <entry key="project.open.time.5" value="8" />
+          <entry key="project.open.time.4" value="288" />
+          <entry key="project.open.time.5" value="9" />
           <entry key="project.open.time.68" value="2" />
-          <entry key="project.opened" value="348" />
+          <entry key="project.opened" value="366" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="6" />
-          <entry key="py" value="440" />
+          <entry key="py" value="448" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="6" />
-          <entry key="Python" value="440" />
+          <entry key="Python" value="448" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="207151" />
+          <entry key="py" value="220200" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="207151" />
+          <entry key="Python" value="220200" />
         </counts>
       </usages-collector>
     </session>
@@ -264,7 +226,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="704">
+            <state relative-caret-position="10112">
               <caret line="632" column="111" selection-start-line="632" selection-start-column="111" selection-end-line="632" selection-end-column="111" />
             </state>
           </provider>
@@ -273,8 +235,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="144" column="34" lean-forward="true" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
+            <state relative-caret-position="2272">
+              <caret line="144" column="34" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
               <folding>
                 <element signature="e#0#32#0" expanded="true" />
               </folding>
@@ -282,10 +244,10 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="348">
+            <state relative-caret-position="528">
               <caret line="33" column="31" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="31" />
             </state>
           </provider>
@@ -306,8 +268,26 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12032">
-              <caret line="768" column="35" selection-start-line="768" selection-start-column="28" selection-end-line="768" selection-end-column="35" />
+            <state relative-caret-position="12016">
+              <caret line="767" column="24" selection-start-line="767" selection-start-column="24" selection-end-line="767" selection-end-column="24" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/venv/vgmToBytes.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1">
+              <caret line="204" selection-start-line="204" selection-end-line="213" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="10768">
+              <caret line="673" column="32" selection-start-line="673" selection-start-column="32" selection-end-line="673" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -323,18 +303,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>collectNamesByCommandFromSections</find>
-      <find>saveCode</find>
-      <find>loadFromMemory</find>
-      <find>codebox</find>
-      <find>__bigFrame</find>
-      <find>__saveButtonFunction</find>
-      <find>loadCu</find>
-      <find>bankLinks</find>
-      <find>savePr</find>
-      <find>__currentBank</find>
-      <find>save</find>
-      <find>listBox</find>
       <find>command</find>
       <find>fillList</find>
       <find>setupList</find>
@@ -353,9 +321,20 @@
       <find>endFound</find>
       <find>getXYfromCommand</find>
       <find>endFou</find>
+      <find>listIndexTable</find>
+      <find>&quot;\t; SecondByte&quot;</find>
+      <find>secondByte</find>
+      <find>second</find>
+      <find>possible</find>
+      <find>endText</find>
+      <find>zeroReg</find>
+      <find>endConstant</find>
+      <find>$00</find>
+      <find>jump</find>
+      <find>Jump</find>
+      <find>align</find>
     </findStrings>
     <replaceStrings>
-      <replace>//10</replace>
       <replace>rainbowFrames</replace>
       <replace>__varListScrollBar</replace>
       <replace>convertAnyTo8Bits</replace>
@@ -385,6 +364,7 @@
       <replace>collectConstantsFromSections</replace>
       <replace>currentPoz</replace>
       <replace>__codeEditorItems</replace>
+      <replace>secondByte</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -393,9 +373,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/Haunted.py" />
-        <option value="$PROJECT_DIR$/src/View/PitFallHarry.py" />
-        <option value="$PROJECT_DIR$/src/Scripts/DataReader.py" />
         <option value="$PROJECT_DIR$/src/View/MemoryManagerWindow.py" />
         <option value="$PROJECT_DIR$/src/Handlers/Loader.py" />
         <option value="$PROJECT_DIR$/../projects/stocks3.py" />
@@ -444,6 +421,9 @@
         <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
         <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
         <option value="$PROJECT_DIR$/src/View/EditorBigFrame.py" />
+        <option value="$PROJECT_DIR$/venv/vgmToBytesZIP.py" />
+        <option value="$PROJECT_DIR$/src/Compile/Assembler.py" />
+        <option value="$PROJECT_DIR$/venv/vgmToBytes.py" />
       </list>
     </option>
   </component>
@@ -492,6 +472,26 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="View" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
@@ -515,11 +515,11 @@
       <recent name="E:\PyCharm\P\Fortari2600\src\View" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PyCharm\P\Fortari2600\venv" />
       <recent name="D:\PyCharm\P\projects" />
       <recent name="D:\PyCharm\P\Fortari2600\src\View\ScreenElements\SpecialEffects" />
       <recent name="F:\PyCharm\P\Fortari2600\src\View\ScreenElements" />
       <recent name="F:\PyCharm\P\Fortari2600\venv" />
-      <recent name="E:\PyCharm\P\Fortari2600\src\View" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -549,28 +549,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/VLQ.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="VS2008" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/VS2008.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -623,7 +601,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="stocks4" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="vgmToBytes" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -631,12 +609,34 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../projects" />
-      <option name="IS_MODULE_SDK" value="false" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../projects/stocks4.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/vgmToBytes.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="vgmToBytesZIP" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/venv" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/vgmToBytesZIP.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -647,18 +647,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.stocks4" />
-      <item itemvalue="Python.VS2008" />
       <item itemvalue="Python.VLQ" />
       <item itemvalue="Python.pacalka" />
+      <item itemvalue="Python.vgmToBytes" />
+      <item itemvalue="Python.vgmToBytesZIP" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
+        <item itemvalue="Python.vgmToBytes" />
+        <item itemvalue="Python.vgmToBytesZIP" />
         <item itemvalue="Python.pacalka" />
         <item itemvalue="Python.VLQ" />
-        <item itemvalue="Python.VS2008" />
-        <item itemvalue="Python.stocks4" />
       </list>
     </recent_temporary>
   </component>
@@ -688,19 +688,19 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4554102" visible="true" weight="0.18875" />
-      <window_info id="Structure" order="1" sideWeight="0.54458976" side_tool="true" visible="true" weight="0.18875" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4376757" visible="true" weight="0.120625" />
+      <window_info id="Structure" order="1" sideWeight="0.5623243" side_tool="true" visible="true" weight="0.120625" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.721875" visible="true" weight="0.21180882" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.716875" weight="0.21180882" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49743262" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.278125" side_tool="true" visible="true" weight="0.21180882" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.283125" side_tool="true" weight="0.21180882" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -738,41 +738,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/venv/VS2008.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/venv/VLQ.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="16">
-          <caret line="1" selection-start-line="1" selection-end-line="27" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="762">
-          <caret line="206" column="25" selection-start-line="206" selection-start-column="25" selection-end-line="207" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Handlers/ButtonMaker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="21" column="10" lean-forward="true" selection-start-line="21" selection-start-column="10" selection-end-line="21" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Scripts/PictureToCode.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="256">
-          <caret line="185" column="27" selection-start-line="185" selection-start-column="21" selection-end-line="185" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/DigitClock.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -1051,6 +1016,39 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/venv/vgmToBytes2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1392" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/venv/vgmToBytesZIP.py" />
+    <entry file="file://$PROJECT_DIR$/venv/vgmToBytes3.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="10112">
+          <caret line="632" column="111" selection-start-line="632" selection-start-column="111" selection-end-line="632" selection-end-column="111" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2272">
+          <caret line="144" column="34" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="33" column="31" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8288">
@@ -1063,32 +1061,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12032">
-          <caret line="768" column="35" selection-start-line="768" selection-start-column="28" selection-end-line="768" selection-end-column="35" />
+        <state relative-caret-position="12016">
+          <caret line="767" column="24" selection-start-line="767" selection-start-column="24" selection-end-line="767" selection-end-column="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
+    <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="144" column="34" lean-forward="true" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="10768">
+          <caret line="673" column="32" selection-start-line="673" selection-start-column="32" selection-end-line="673" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
+    <entry file="file://$PROJECT_DIR$/venv/vgmToBytes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="704">
-          <caret line="632" column="111" selection-start-line="632" selection-start-column="111" selection-end-line="632" selection-end-column="111" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="348">
-          <caret line="33" column="31" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="31" />
+        <state relative-caret-position="1">
+          <caret line="204" selection-start-line="204" selection-end-line="213" selection-end-column="41" />
         </state>
       </provider>
     </entry>
