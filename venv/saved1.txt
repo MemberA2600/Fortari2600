@@ -3,6 +3,70 @@
 #NAME#_VGM_Segment_Bank1
 	BYTE	#$04	; Jump to
 	BYTE	#$01	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$01	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$4D	; Register
+	BYTE	#$00	; Reg. Data
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$01	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
@@ -2367,7 +2431,7 @@
 	BYTE	#$08	; of Frames 
 	BYTE	#$44	; Register
 	BYTE	#$3F	; Reg. Data
-	BYTE	#$02	; End with 2366 bytes
+	BYTE	#$02	; End with 2430 bytes
 
 
 #NAME#_VGM_JumpTable_Bank1

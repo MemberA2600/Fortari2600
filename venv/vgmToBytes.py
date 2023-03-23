@@ -54,7 +54,8 @@ for line in lines:
        decimals = (waits+decimals) - integer
 
        if integer > 0:
-          if integer < 256:
+           print(integer)
+           if integer < 256:
               byteData.append(waitOp + waitCode)
               xxx = hex(integer).replace("0x", "")
               if len(xxx) == 1:
@@ -64,7 +65,7 @@ for line in lines:
               byteData.append(xxx + waitNum)
               byteData.append("|")
 
-          else:
+           else:
              while integer > 255:
                  byteData.append(waitOp + waitCode)
                  byteData.append("$FF" + waitNum)
@@ -222,7 +223,7 @@ for dataNum in range(0, len(saveData)):
 jumpTable   = saveData[1]
 allSegments = saveData[2]
 dataText    = saveData[0]
-limitByBanks = 4096 - (jumpTable.count("BYTE") + allSegments.count("BYTE") + 576)
+limitByBanks = 4096 - (jumpTable.count("BYTE") + allSegments.count("BYTE") + 640)
 per = dataText.count("BYTE") / limitByBanks
 
 # titleText = "\talign\t256\n#NAME#_VGM_Segment_BankX"

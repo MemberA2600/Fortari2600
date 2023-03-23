@@ -46,9 +46,10 @@ pfIndex = $a3
 ************************
 SubMenu = $a4		; 0-1 : SubMenuLines
 NoGameMode = $a4	; 2-4 : BankToJump
-bankToJump = $a4	; 5 : FREE
+bankToJump = $a4	; 5 : PlayedNote
 SubMenuLines = $a4	; 6 : Go to SubMenu
-************************  7 : No Game Mode
+PlayedNote = $a4	; 7 : No Game Mode
+************************  
 
 *** Player Settings
 P0SpritePointer = $a5		; 16bit
@@ -197,6 +198,11 @@ MusicPointerBackUp1_HI = $db
 zerg = $dc
 terran = $dc
 protoss = $dd
+test1 = $de
+test2 = $df
+test3 = $e0
+test4 = $e1
+test5 = $e2
 
 
 *Bank2
@@ -1474,21 +1480,43 @@ start_bank1
 
 EnterScreenBank2
 
-NAME_VGM_endbyte = $07 
-NAME_VGM_returnbyte = $04 
-
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
 	LDA	#0		; set frame color to black
 	STA	frameColor
+
+	LDA	#0
+	STA	MusicDuration0
+	LDA	#0
+	STA	P0Height
+	LDA	#0
+	STA	P0Y
+	LDA	#0
+	STA	P1Height
+	LDA	#0
+	STA	P1Y
+	LDA	#0
+	STA	TileSelected
+	LDA	#0
+	STA	test1
+	LDA	#0
+	STA	test2
+	LDA	#0
+	STA	test3
+	LDA	#0
+	STA	test4
+
+	LDA	#6
+	STA	$f0
+
 *	
 *	Init Music	
 *	
 
 NAME_VGMPlayerPointer = MusicPointer0_LO
 NAME_VGMPlayerLO = MusicPointer0_LO
-NAME_VGMPlayerHI = MusicPointer0_LO
+NAME_VGMPlayerHI = MusicPointer0_HI
 
 NAME_VGMPlayerDuration = MusicDuration0
 NAME_VGMPlayerCurrentBank = MusicDuration1
@@ -1505,7 +1533,7 @@ NAME_VGMPlayerPointerBackUpHI = MusicPointerBackUp0_HI
 	LDA	#1
 	STA	NAME_VGMPlayerDuration
 	
-	LDA	#0
+	LDA	#3
 	STA	NAME_VGMPlayerCurrentBank
 
 Start_It
@@ -1620,6 +1648,38 @@ OverScanBank2
 * begins.
 *
 
+	LDA	#$00
+	STA	COLUBK
+	
+	LDA	$f0
+	CMP	#0
+	BEQ	NoDECThat
+	DEC	$f0
+	JMP	NoPressed
+	
+NoDECThat
+	BIT	INPT4
+	BMI	NoPressed
+	LDA	$f0
+	CMP	#0
+	BNE	NoPressed
+	LDA	NAME_VGMPlayerDuration
+	CMP	#1
+	BNE	NoPressed
+	LDA	#8
+	STA	$f0
+
+	LDA	#$1e
+	STA	COLUBK
+
+	JMP	NoINCThat
+NoPressed
+	INC	NAME_VGMPlayerDuration
+NoINCThat
+
+*	
+*	VGM Player	
+*
 	DEC	NAME_VGMPlayerDuration
 	LDA	NAME_VGMPlayerDuration
 	CMP	#0
@@ -1640,24 +1700,22 @@ OverScanBank2
    	lda	#>(NAME_VGM_Player_JumpBack-1)
 	sta	temp02
 
-	LDX	NAME_VGMPlayerCurrentBank
-	LDY	NAME_VGMPlayerCurrentBank
+	LAX	NAME_VGMPlayerCurrentBank
 *
 *	(N - 3) * 2
 *		
-
-	TYA
 	ASL
 	TAY
 
 	lda	NAME_VGM_Player_PointersMinus6,y
    	pha
-   	lda	NAME_VGM_Player_PointersMinus6,y
+   	lda	NAME_VGM_Player_PointersMinus6+1,y
 NAME_VGM_Player_PointersMinus6
    	pha
    	pha
    	pha
-   	jmp	bankSwitchJump
+
+  	jmp	bankSwitchJump
 
 NAME_VGM_Player_Pointers
 	BYTE	#>(NAME_VGM_Player_Bank0-1)
@@ -1770,6 +1828,498 @@ VBlankEndBank2
 	tsx
 	stx	item
 
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+
+Bank2_DynamicText_DynamicText
+	LDA	#$1e
+	STA	temp18
+	LDA	#$00
+	STA	temp19
+*
+*	P0Height		: Letter01
+*	P1Height		: Letter02
+*	P0Y		: Letter03
+*	P1Y		: Letter04
+*	TileSelected		: Letter05
+*	MusicDuration0		: Letter06
+*	TileSelected		: Letter07
+*	test1		: Letter08
+*	test2		: Letter09
+*	TileSelected		: Letter10
+*	test3		: Letter11
+*	test4		: Letter12
+*			
+*	temp18		: Text Front Color
+*	temp19		: Text Back  Color
+*
+
+Bank2_DynamicText_DynamicText_DynamicText_Begin
+
+
+*** Test Here
+
+	LDA	#38		; Space
+	STA	TileSelected
+
+	LDA	MusicPointer0_HI
+	AND	#%00001111
+	STA	P1Height
+
+	LDA	MusicPointer0_HI
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	P0Height
+
+	LDA	MusicPointer0_LO
+	AND	#%00001111
+	STA	P1Y
+
+	LDA	MusicPointer0_LO
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	P0Y
+
+	LDA	P0X
+	AND	#%00001111
+	STA	test2
+
+	LDA	P0X
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	test1
+
+
+	LDA	P1X
+	AND	#%00001111
+	STA	test4
+
+	LDA	P1X
+	LSR
+	LSR
+	LSR
+	LSR
+	STA	test3
+
+	LDX	#0			; 2
+	LDA	frameColor		; 3
+	STA	WSYNC			; 76
+	STA	COLUBK			; 3
+	STA	COLUPF			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
+	
+	STX	PF0			; 3 (15)
+	STX	PF1			; 3 (18)
+	STX	PF2			; 3 (21)
+	
+	STX	GRP1			; 3 (24)
+	STX	GRP0			; 3 (27)
+	STX	ENAM0			; 3 (30)
+	STX	ENAM1			; 3 (33)
+	STX	ENABL			; 3 (36)
+
+	STX	RESP0			; 3 (39)
+	STX	RESP1			; 3 (42)
+
+	STX	REFP0			; 3 (45)
+	STX	REFP1			; 3 (48)
+
+	LDA	#$00			; 2 (50)
+	STA	HMP0			; 3 (53)
+	LDA	#$10			; 2 (55)
+	STA	HMP1			; 3 (58)
+
+	LDA	#$03			; 2 (62)
+	STA	NUSIZ0			; 3 (65)
+	STA	NUSIZ1			; 3 (68)
+
+	STA	WSYNC			; 76
+	STA	HMOVE			; 3
+
+	LDA	temp18			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
+	
+	LDA	counter			; 3 
+	AND	#%00000001		; 2 
+	CMP	#%00000001		; 2 		
+	BEQ	Bank2_DynamicText_DynamicText_DynamicText_Otherjump	; 2 
+	JMP	Bank2_DynamicText_DynamicText_DynamicText_Even_Begin	; 3 
+Bank2_DynamicText_DynamicText_DynamicText_Otherjump
+	JMP	Bank2_DynamicText_DynamicText_DynamicText_Odd_Begin	; 3 
+	
+	_align	250
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Begin
+
+	LDY	test2				; 3 
+	LDA	Bank2Font_Right_Line4,y	; 5 
+	LDY	TileSelected				; 3 
+	ORA	Bank2Font_Left_Line4,y		; 5  	
+	TAX					; 2 
+
+	LDY	temp19				; 3 
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Line0
+	STA	WSYNC				; 76
+	STY	COLUBK
+
+	LDY	P0Height				; 3
+	LDA	Bank2Font_Right_Line4,y	; 4 (7)
+	LDY	P1Height				; 3 (10)
+	ORA	Bank2Font_Left_Line4,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (22)
+
+	sleep	3
+
+	LDY	TileSelected				; 3 (32)
+	LDA	Bank2Font_Right_Line4,y	; 4 (36)
+	LDY	MusicDuration0				; 3 (39)
+	ORA	Bank2Font_Left_Line4,y		; 4 (43) 	
+	STA	GRP0				; 3 (47)
+
+	sleep	2
+
+	STX	GRP0				; 3 (52)
+
+	LDY	test3				; 3 (55)
+	LDA	Bank2Font_Right_Line3,y	; 4 (59)
+	LDY	test4				; 3 (62)
+	ORA	Bank2Font_Left_Line3,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Line1
+	STA	WSYNC				; 76
+	LDY	P0Y				; 3
+	LDA	Bank2Font_Right_Line3,y	; 4 (7)
+	LDY	P1Y				; 3 (10)
+	ORA	Bank2Font_Left_Line3,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	TileSelected				; 3 (34)
+	LDA	Bank2Font_Right_Line3,y	; 4 (38)
+	LDY	test1				; 3 (41)
+	ORA	Bank2Font_Left_Line3,y		; 4 (44) 	
+	STA	GRP1				; 3 (47)
+
+	sleep	2
+
+	STX	GRP1				; 3 (52)
+
+	LDY	test2				; 3 (55)
+	LDA	Bank2Font_Right_Line2,y	; 4 (59)
+	LDY	TileSelected				; 3 (62)
+	ORA	Bank2Font_Left_Line2,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Line2
+	STA	WSYNC				; 76
+	LDY	P0Height				; 3
+	LDA	Bank2Font_Right_Line2,y	; 4 (7)
+	LDY	P1Height				; 3 (10)
+	ORA	Bank2Font_Left_Line2,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (22)
+
+	sleep	6
+
+	LDY	TileSelected				; 3 (32)
+	LDA	Bank2Font_Right_Line2,y	; 4 (36)
+	LDY	MusicDuration0				; 3 (39)
+	ORA	Bank2Font_Left_Line2,y		; 4 (43) 	
+	STA	GRP0				; 3 (47)
+
+	sleep	2
+
+	STX	GRP0				; 3 (52)
+
+	LDY	test3				; 3 (55)
+	LDA	Bank2Font_Right_Line1,y	; 4 (59)
+	LDY	test4				; 3 (62)
+	ORA	Bank2Font_Left_Line1,y		; 4 (66) 	
+	TAX					; 2 (68)
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Line3
+	STA	WSYNC				; 76
+	LDY	P0Y				; 3
+	LDA	Bank2Font_Right_Line1,y	; 4 (8)
+	LDY	P1Y				; 3 (11)
+	ORA	Bank2Font_Left_Line1,y		; 4 (16) 	
+	STA	GRP1				; 3 (19)
+
+	LDA	#0				; 2 (21)
+	STA	GRP0				; 3 (24)
+
+	sleep	8
+
+	LDY	TileSelected				; 3 (27)
+	LDA	Bank2Font_Right_Line1,y	; 4 (31)
+	LDY	test1				; 3 (34)
+	ORA	Bank2Font_Left_Line1,y		; 4 (38) 	
+	STA	GRP1				; 3 (41)
+
+	sleep	2
+
+	STX	GRP1				; 3 (46)
+
+	LDY	test2				; 3 (49)
+	LDA	Bank2Font_Right_Line0,y	; 4 (54)
+	LDY	TileSelected				; 3 (57)
+	ORA	Bank2Font_Left_Line0,y		; 4 (61) 	
+	TAX					; 2 (63)
+
+Bank2_DynamicText_DynamicText_DynamicText_Odd_Line2
+	STA	WSYNC				; 76
+	LDY	P0Height				; 3
+	LDA	Bank2Font_Right_Line0,y	; 4 (7)
+	LDY	P1Height				; 3 (10)
+	ORA	Bank2Font_Left_Line0,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (21)
+
+	sleep	6
+
+	LDY	TileSelected				; 3 (31)
+	LDA	Bank2Font_Right_Line0,y	; 4 (35)
+	LDY	MusicDuration0				; 3 (38)
+	ORA	Bank2Font_Left_Line0,y		; 4 (42) 	
+	STA	GRP0				; 3 (45)
+
+	sleep	2
+
+	STX	GRP0				; 3 (50)
+
+	sleep	12
+	
+	JMP	Bank2_DynamicText_DynamicText_DynamicText_Reset
+
+	_align	250
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Begin
+	LDY	test3				; 3 
+	LDA	Bank2Font_Right_Line4,y	; 4 
+	LDY	test4				; 3 
+	ORA	Bank2Font_Left_Line4,y		; 4  	
+	TAX					; 2 
+
+	LDY	temp19				; 3 
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Line0
+	STA	WSYNC				; 76
+	STY	COLUBK				; 3
+
+	LDY	P0Y				; 3
+	LDA	Bank2Font_Right_Line4,y	; 4 (7)
+	LDY	P1Y				; 3 (10)
+	ORA	Bank2Font_Left_Line4,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	5
+
+	LDY	TileSelected				; 3 (34)
+	LDA	Bank2Font_Right_Line4,y	; 4 (38)
+	LDY	test1				; 3 (41)
+	ORA	Bank2Font_Left_Line4,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	LDY	test2				; 3 (56)
+	LDA	Bank2Font_Right_Line3,y	; 4 (60)
+	LDY	TileSelected				; 3 (63)
+	ORA	Bank2Font_Left_Line3,y		; 4 (67) 	
+	TAX					; 2 (69)
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Line1
+	STA	WSYNC				; 76
+	LDY	P0Height				; 3
+	LDA	Bank2Font_Right_Line3,y	; 4 (7)
+	LDY	P1Height				; 3 (10)
+	ORA	Bank2Font_Left_Line3,y		; 4 (14) 	
+	STA	GRP0				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP1				; 3 (21)
+
+	sleep	6
+
+	LDY	TileSelected				; 3 (31)
+	LDA	Bank2Font_Right_Line3,y	; 4 (35)
+	LDY	MusicDuration0				; 3 (38)
+	ORA	Bank2Font_Left_Line3,y		; 4 (42) 	
+	STA	GRP0				; 3 (45)
+
+	sleep	2
+
+	STX	GRP0				; 3 (50)
+
+	LDY	test3				; 3 (53)
+	LDA	Bank2Font_Right_Line2,y	; 4 (57)
+	LDY	test4				; 3 (60)
+	ORA	Bank2Font_Left_Line2,y		; 4 (64) 	
+	TAX					; 2 (66)
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Line2
+	STA	WSYNC				; 76
+	LDY	P0Y				; 3
+	LDA	Bank2Font_Right_Line2,y	; 4 (7)
+	LDY	P1Y				; 3 (10)
+	ORA	Bank2Font_Left_Line2,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	TileSelected				; 3 (34)
+	LDA	Bank2Font_Right_Line2,y	; 4 (38)
+	LDY	test1				; 3 (41)
+	ORA	Bank2Font_Left_Line2,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	LDY	test2				; 3 (56)
+	LDA	Bank2Font_Right_Line1,y	; 4 (60)
+	LDY	TileSelected				; 3 (63)
+	ORA	Bank2Font_Left_Line1,y		; 4 (67) 	
+	TAX		
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Line3
+	STA	WSYNC				; 76
+	LDY	P0Height				; 3
+	LDA	Bank2Font_Right_Line1,y	; 4 (8)
+	LDY	P1Height				; 3 (11)
+	ORA	Bank2Font_Left_Line1,y		; 4 (16) 	
+	STA	GRP0				; 3 (19)
+
+	LDA	#0				; 2 (21)
+	STA	GRP1				; 3 (24)
+
+	sleep	6
+
+	LDY	TileSelected				; 3 (27)
+	LDA	Bank2Font_Right_Line1,y	; 4 (32)
+	LDY	MusicDuration0				; 3 (35)
+	ORA	Bank2Font_Left_Line1,y		; 4 (40) 	
+	STA	GRP0				; 3 (43)
+
+	sleep	2
+
+	STX	GRP0				; 3 (46)
+
+	LDY	test3				; 3 (49)
+	LDA	Bank2Font_Right_Line0,y	; 4 (54)
+	LDY	test4				; 3 (57)
+	ORA	Bank2Font_Left_Line0,y		; 4 (61) 	
+	TAX					; 2 (63)
+
+Bank2_DynamicText_DynamicText_DynamicText_Even_Line4
+	STA	WSYNC				; 76
+	LDY	P0Y				; 3
+	LDA	Bank2Font_Right_Line0,y	; 4 (7)
+	LDY	P1Y				; 3 (10)
+	ORA	Bank2Font_Left_Line0,y		; 4 (14) 	
+	STA	GRP1				; 3 (17)
+
+	LDA	#0				; 2 (19)
+	STA	GRP0				; 3 (22)
+
+	sleep	8
+
+	LDY	TileSelected				; 3 (34)
+	LDA	Bank2Font_Right_Line0,y	; 4 (38)
+	LDY	test1				; 3 (41)
+	ORA	Bank2Font_Left_Line0,y		; 4 (45) 	
+	STA	GRP1				; 3 (48)
+
+	sleep	2
+
+	STX	GRP1				; 3 (53)
+
+	sleep	13
+
+Bank2_DynamicText_DynamicText_DynamicText_Reset
+	LDX	#0			; 2
+	STX	GRP1			; 3 
+	STX	GRP0			; 3
+
+	LDA	frameColor		; 3
+	STA	WSYNC			; 76
+	STA	COLUBK			; 3
+	STA	COLUPF			; 3 (6)
+	STA	COLUP0			; 3 (9)
+	STA	COLUP1			; 3 (12)
+	STX	HMCLR			; 3 (30)
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
 
 	ldx	item
 	txs
@@ -1841,7 +2391,564 @@ ScreenBottomBank2
 * elments.
 *
 
+		_align	52
 
+Bank2Font_Left_Line0
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00000010
+	BYTE	#%00001100
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00000110
+	BYTE	#%00001100
+	BYTE	#%00001110
+	BYTE	#%00001000
+	BYTE	#%00000110
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00000111
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001110
+	BYTE	#%00000000
+	BYTE	#%00000010
+	BYTE	#%00001000
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+
+		_align	52
+
+Bank2Font_Left_Line1
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00000010
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001001
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00000010
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00001011
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000100
+
+		_align	52
+
+Bank2Font_Left_Line2
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000110
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00001110
+	BYTE	#%00000010
+	BYTE	#%00000100
+	BYTE	#%00000110
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00001100
+	BYTE	#%00001011
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00000010
+	BYTE	#%00001100
+	BYTE	#%00001000
+	BYTE	#%00001001
+	BYTE	#%00000010
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00001010
+	BYTE	#%00001100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001001
+	BYTE	#%00000010
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001110
+	BYTE	#%00001110
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+
+		_align	52
+
+Bank2Font_Left_Line3
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00000100
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00000010
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00000010
+	BYTE	#%00000010
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00000010
+	BYTE	#%00000100
+
+		_align	52
+
+Bank2Font_Left_Line4
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000010
+	BYTE	#%00001110
+	BYTE	#%00000110
+	BYTE	#%00001110
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00000110
+	BYTE	#%00001100
+	BYTE	#%00001110
+	BYTE	#%00001110
+	BYTE	#%00000110
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00000110
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001100
+	BYTE	#%00000110
+	BYTE	#%00001010
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00000110
+	BYTE	#%00001110
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00001010
+	BYTE	#%00001110
+	BYTE	#%00000000
+	BYTE	#%00000010
+	BYTE	#%00001000
+	BYTE	#%00000100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000010
+	BYTE	#%00001010
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000100
+	BYTE	#%00001100
+	BYTE	#%00000000
+
+		_align	52
+
+Bank2Font_Right_Line0
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%11000000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%01100000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%10000000
+	BYTE	#%01100000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%01110000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%11100000
+	BYTE	#%00000000
+	BYTE	#%00100000
+	BYTE	#%10000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+
+		_align	52
+
+Bank2Font_Right_Line1
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%00100000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%10010000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%00100000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%10110000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+
+		_align	52
+
+Bank2Font_Right_Line2
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01100000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%00100000
+	BYTE	#%01000000
+	BYTE	#%01100000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%10110000
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%10010000
+	BYTE	#%00100000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%10100000
+	BYTE	#%11000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10010000
+	BYTE	#%00100000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+
+		_align	52
+
+Bank2Font_Right_Line3
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%01000000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%00100000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%00100000
+	BYTE	#%00100000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%01000000
+		_align	52
+
+Bank2Font_Right_Line4
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%00100000
+	BYTE	#%11100000
+	BYTE	#%01100000
+	BYTE	#%11100000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%01100000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%01100000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%01100000
+	BYTE	#%10000000
+	BYTE	#%10000000
+	BYTE	#%11000000
+	BYTE	#%01100000
+	BYTE	#%10100000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%01100000
+	BYTE	#%11100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%10000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%10100000
+	BYTE	#%11100000
+	BYTE	#%00000000
+	BYTE	#%00100000
+	BYTE	#%10000000
+	BYTE	#%01000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00100000
+	BYTE	#%10100000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%00000000
 
 
 ###End-Bank2
@@ -1909,6 +3016,10 @@ NAME_VGM_Player_Bank0
 *
 
 NAME_VGM_Player_Bank0_Again
+*	LDA	#$00
+*	STA	COLUBK
+
+
 	LDX	#NAME_VGMPlayerPointer
 	LDA	($00,x)
 	INC	0,x
@@ -1917,13 +3028,14 @@ NAME_VGM_Player_Bank0_Again
 
 	CMP	#NAME_VGM_EndByte
 	BNE	NAME_VGM_Player_Bank0_NoRestart		
+
 	LDA	#4
 	STA	NAME_VGMPlayerCurrentBank
 	TAX
 
-	lda	#<(NAME_VGM_Player_Bank1-1)
+	lda	#>(NAME_VGM_Player_Bank1-1)
    	pha
-   	lda	#>(NAME_VGM_Player_Bank1-1)
+   	lda	#<(NAME_VGM_Player_Bank1-1)
    	pha
    	pha
    	pha
@@ -1959,12 +3071,28 @@ NAME_VGM_Player_Bank0_NoRestore
 	JMP	NAME_VGM_Player_Bank0_Again
 
 NAME_VGM_Player_Bank0_NoJump	
-	TAY
+	CMP	#0
+	BNE	NAME_VGM_Player_Bank0_NoWait
+
+	LDX	#NAME_VGMPlayerPointer
+	LDA	($00,x)
+	INC	0,x
+	BNE	*+4
+	INC	1,x
+
+	STA	NAME_VGMPlayerDuration	
+	JMP	NAME_VGM_Player_Bank0_JumpBack
+
+NAME_VGM_Player_Bank0_NoWait
 *
 *	$1 => $A (+$90)
 *	$D => $B (+$E0)
 *
-	AND	#$F0
+	TAY
+	LSR
+	LSR
+	LSR
+	LSR
 	TAX	
 	LDA	NAME_VGM_Player_Bank0_AddTable,x
 	CMP	#0
@@ -1975,8 +3103,11 @@ NAME_VGM_Player_Bank0_NoJump
 	ADC	temp03
 	TAY	
 	LDX	#0
-	JSR	NAME_VGM_Player_Bank0_SaveOneData
-	JMP	NAME_VGM_Player_Bank0_JumpBack	
+
+*	LDA	#$1e
+*	STA	COLUBK
+
+	JMP	NAME_VGM_Player_Bank0_SaveOneData
 
 NAME_VGM_Player_Bank0_NoZeroShortCut
 	LDX	#NAME_VGMPlayerPointer
@@ -1986,16 +3117,22 @@ NAME_VGM_Player_Bank0_NoZeroShortCut
 	INC	1,x	
 	
 	TAX
-	JSR	NAME_VGM_Player_Bank0_SaveOneData
-	JMP	NAME_VGM_Player_Bank0_JumpBack
+	JMP	NAME_VGM_Player_Bank0_SaveOneData
 
 NAME_VGM_Player_Bank0_SaveOneData
+	LDA	#1
+	STA	NAME_VGMPlayerDuration
+
+	STY	P0X
+	STX	P1X
+
 *
 *	Saving the most significant nibble to joyport0
 *	 
 	TYA			
 	AND	#%11110101
-	STA	SWCHA	
+	STA	SWCHA
+
 *
 *	Set buffer clock to HI.
 *	Save it to low nibble of buffer.
@@ -2081,9 +3218,10 @@ NAME_VGM_Player_Bank0_SaveOneData
 	LDA	#%00000001
 	STA	SWCHA
 	
-	sleep	35
+	_sleep	30
+	sleep	5
 
-	RTS
+	JMP	NAME_VGM_Player_Bank0_JumpBack
 
 NAME_VGM_Player_Bank0_AddTable
 	BYTE	#0
@@ -5506,71 +6644,7 @@ NAME_VGM_Segment_Bank0
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$4D	; Register
-	BYTE	#$00	; Reg. Data
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$02	; End with 3438 bytes
+	BYTE	#$02	; End with 3374 bytes
 
 
 NAME_VGM_JumpTable_Bank0
@@ -5689,6 +6763,7 @@ NAME_VGM_Segment_Bank0_$0F
 	BYTE	#$03
 
 
+
 ###End-Bank3
 *Routine Section
 *---------------------------------
@@ -5762,13 +6837,13 @@ NAME_VGM_Player_Bank1_Again
 
 	CMP	#NAME_VGM_EndByte
 	BNE	NAME_VGM_Player_Bank1_NoRestart		
-	LDA	#4
+	LDA	#3
 	STA	NAME_VGMPlayerCurrentBank
 	TAX
 
-	lda	#<(NAME_VGM_Player_Bank1-1)
+	lda	#>(NAME_VGM_Player_Bank0-1)
    	pha
-   	lda	#>(NAME_VGM_Player_Bank1-1)
+   	lda	#<(NAME_VGM_Player_Bank0-1)
    	pha
    	pha
    	pha
@@ -5804,12 +6879,28 @@ NAME_VGM_Player_Bank1_NoRestore
 	JMP	NAME_VGM_Player_Bank1_Again
 
 NAME_VGM_Player_Bank1_NoJump	
-	TAY
+	CMP	#0
+	BNE	NAME_VGM_Player_Bank1_NoWait
+
+	LDX	#NAME_VGMPlayerPointer
+	LDA	($00,x)
+	INC	0,x
+	BNE	*+4
+	INC	1,x
+
+	STA	NAME_VGMPlayerDuration	
+	JMP	NAME_VGM_Player_Bank1_JumpBack
+
+NAME_VGM_Player_Bank1_NoWait
 *
 *	$1 => $A (+$90)
 *	$D => $B (+$E0)
 *
-	AND	#$F0
+	TAY
+	LSR
+	LSR
+	LSR
+	LSR
 	TAX	
 	LDA	NAME_VGM_Player_Bank1_AddTable,x
 	CMP	#0
@@ -5820,8 +6911,7 @@ NAME_VGM_Player_Bank1_NoJump
 	ADC	temp03
 	TAY	
 	LDX	#0
-	JSR	NAME_VGM_Player_Bank1_SaveOneData
-	JMP	NAME_VGM_Player_Bank1_JumpBack	
+	JMP	NAME_VGM_Player_Bank1_SaveOneData
 
 NAME_VGM_Player_Bank1_NoZeroShortCut
 	LDX	#NAME_VGMPlayerPointer
@@ -5831,16 +6921,22 @@ NAME_VGM_Player_Bank1_NoZeroShortCut
 	INC	1,x	
 	
 	TAX
-	JSR	NAME_VGM_Player_Bank1_SaveOneData
-	JMP	NAME_VGM_Player_Bank1_JumpBack
+	JMP	NAME_VGM_Player_Bank1_SaveOneData
 
 NAME_VGM_Player_Bank1_SaveOneData
+	LDA	#1
+	STA	NAME_VGMPlayerDuration
+
+	STY	P0X
+	STX	P1X
+
 *
 *	Saving the most significant nibble to joyport0
 *	 
 	TYA			
 	AND	#%11110101
-	STA	SWCHA	
+	STA	SWCHA
+
 *
 *	Set buffer clock to HI.
 *	Save it to low nibble of buffer.
@@ -5926,9 +7022,10 @@ NAME_VGM_Player_Bank1_SaveOneData
 	LDA	#%00000001
 	STA	SWCHA
 	
-	sleep	35
+	sleep	30
+	_sleep	5
 
-	RTS
+	JMP	NAME_VGM_Player_Bank1_JumpBack
 
 NAME_VGM_Player_Bank1_AddTable
 	BYTE	#0
@@ -5973,6 +7070,70 @@ NAME_VGM_Player_Bank1_JumpBack
 
 
 NAME_VGM_Segment_Bank1
+	BYTE	#$04	; Jump to
+	BYTE	#$01	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$01	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$00	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$4D	; Register
+	BYTE	#$00	; Reg. Data
+	BYTE	#$04	; Jump to
+	BYTE	#$03	; somewhere! 
 	BYTE	#$04	; Jump to
 	BYTE	#$01	; somewhere! 
 	BYTE	#$10	; Save zero to reg
@@ -8339,7 +9500,7 @@ NAME_VGM_Segment_Bank1
 	BYTE	#$08	; of Frames 
 	BYTE	#$44	; Register
 	BYTE	#$3F	; Reg. Data
-	BYTE	#$02	; End with 2366 bytes
+	BYTE	#$02	; End with 2430 bytes
 
 
 NAME_VGM_JumpTable_Bank1
@@ -8456,7 +9617,6 @@ NAME_VGM_Segment_Bank1_$0F
 	BYTE	#$0D	; Reg. Data
 
 	BYTE	#$03
-
 
 
 ###End-Bank4

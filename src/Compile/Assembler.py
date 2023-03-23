@@ -770,6 +770,9 @@ class Assembler():
             if variables[var].startswith("$") == False and isItInt == False and variables[var].startswith("%") == False:
                 variables[var] = simple_ones[variables[var]]
 
+        #for key in variables.keys():
+        #    print(key, ": ", variables[key])
+
         return variables
 
     def compile(self, path):

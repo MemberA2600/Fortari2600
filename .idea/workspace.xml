@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/vgmToBytes3.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2023-03-05_210001.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2023-03-20_041149.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" afterPath="$PROJECT_DIR$/temp/source.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/saved0.txt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/saved0.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/saved1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/venv/saved1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/venv/vgmToBytes.py" beforeDir="false" afterPath="$PROJECT_DIR$/venv/vgmToBytes.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,7 +37,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$RightFrameEditor.coverage" NAME="RightFrameEditor Coverage Results" MODIFIED="1626523268148" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$let_py__1_.coverage" NAME="let.pyű (1) Coverage Results" MODIFIED="1660464566937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$MainWindowHandler.coverage" NAME="MainWindowHandler Coverage Results" MODIFIED="1618141912041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$vgmToBytes.coverage" NAME="vgmToBytes Coverage Results" MODIFIED="1679028685168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
+    <SUITE FILE_PATH="coverage/Fortari2600$vgmToBytes.coverage" NAME="vgmToBytes Coverage Results" MODIFIED="1679464590531" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$KernelChanger.coverage" NAME="KernelChanger Coverage Results" MODIFIED="1626515069782" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$LibCaller.coverage" NAME="LibCaller Coverage Results" MODIFIED="1629529829538" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Libs" />
     <SUITE FILE_PATH="coverage/Fortari2600$ScreenTopTester.coverage" NAME="ScreenTopTester Coverage Results" MODIFIED="1656783628985" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
@@ -46,7 +48,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1679281908535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1679546514764" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -183,37 +185,37 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="288" />
+          <entry key="project.closed" value="291" />
           <entry key="project.open.time.2" value="4" />
-          <entry key="project.open.time.3" value="62" />
-          <entry key="project.open.time.4" value="288" />
+          <entry key="project.open.time.3" value="66" />
+          <entry key="project.open.time.4" value="290" />
           <entry key="project.open.time.5" value="9" />
           <entry key="project.open.time.68" value="2" />
-          <entry key="project.opened" value="366" />
+          <entry key="project.opened" value="372" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="6" />
-          <entry key="py" value="448" />
+          <entry key="py" value="449" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="6" />
-          <entry key="Python" value="448" />
+          <entry key="Python" value="449" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="220200" />
+          <entry key="py" value="220296" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="220200" />
+          <entry key="Python" value="220296" />
         </counts>
       </usages-collector>
     </session>
@@ -223,71 +225,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10112">
-              <caret line="632" column="111" selection-start-line="632" selection-start-column="111" selection-end-line="632" selection-end-column="111" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/FileDialogs.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2272">
-              <caret line="144" column="34" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="33" column="31" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8288">
-              <caret line="524" selection-start-line="524" selection-end-line="524" />
-              <folding>
-                <marker date="1678015967514" expanded="true" signature="5808:5817" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/MainWindow.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12016">
-              <caret line="767" column="24" selection-start-line="767" selection-start-column="24" selection-end-line="767" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/venv/vgmToBytes.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1">
-              <caret line="204" selection-start-line="204" selection-end-line="213" selection-end-column="41" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10768">
-              <caret line="673" column="32" selection-start-line="673" selection-start-column="32" selection-end-line="673" selection-end-column="32" />
+            <state relative-caret-position="32">
+              <caret line="39" selection-start-line="39" selection-end-line="67" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -303,9 +245,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>command</find>
-      <find>fillList</find>
-      <find>setupList</find>
       <find>.insert</find>
       <find>self.__listBoxOnTheRight.insert</find>
       <find>fillListBox</find>
@@ -333,6 +272,9 @@
       <find>jump</find>
       <find>Jump</find>
       <find>align</find>
+      <find>constant</find>
+      <find>variables</find>
+      <find>wait</find>
     </findStrings>
     <replaceStrings>
       <replace>rainbowFrames</replace>
@@ -433,7 +375,7 @@
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="-4" />
     <option name="y" value="-4" />
     <option name="width" value="1032" />
@@ -685,15 +627,15 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
+    <frame x="-4" y="-4" width="1608" height="1164" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4376757" visible="true" weight="0.120625" />
-      <window_info id="Structure" order="1" sideWeight="0.5623243" side_tool="true" visible="true" weight="0.120625" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.43043995" visible="true" weight="0.120625" />
+      <window_info id="Structure" order="1" sideWeight="0.56956005" side_tool="true" visible="true" weight="0.120625" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.716875" weight="0.21180882" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.716875" visible="true" weight="0.21180882" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49743262" weight="0.39961758" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -1036,9 +978,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2272">
           <caret line="144" column="34" selection-start-line="144" selection-start-column="34" selection-end-line="144" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1053,9 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8288">
           <caret line="524" selection-start-line="524" selection-end-line="524" />
-          <folding>
-            <marker date="1678015967514" expanded="true" signature="5808:5817" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1068,15 +1004,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Assembler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10768">
-          <caret line="673" column="32" selection-start-line="673" selection-start-column="32" selection-end-line="673" selection-end-column="32" />
+        <state relative-caret-position="16">
+          <caret line="732" lean-forward="true" selection-start-line="732" selection-end-line="773" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/venv/vgmToBytes.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1">
-          <caret line="204" selection-start-line="204" selection-end-line="213" selection-end-column="41" />
+        <state relative-caret-position="32">
+          <caret line="39" selection-start-line="39" selection-end-line="67" selection-end-column="11" />
         </state>
       </provider>
     </entry>
