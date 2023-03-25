@@ -234,154 +234,154 @@
 	BYTE	#$18	; Save zero to reg
 	BYTE	#$D8	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -402,15 +402,15 @@
 	BYTE	#$18	; Save zero to reg
 	BYTE	#$D8	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -419,16 +419,16 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -437,100 +437,32 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -542,17 +474,85 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -560,13 +560,13 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -575,62 +575,62 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -643,33 +643,33 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -685,35 +685,35 @@
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -722,20 +722,20 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -744,10 +744,10 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -759,9 +759,9 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -771,9 +771,9 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -784,17 +784,17 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -807,17 +807,17 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -828,9 +828,9 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -839,20 +839,20 @@
 	BYTE	#$00	; Wait
 	BYTE	#$01	; of Frames 
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -860,15 +860,15 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -876,23 +876,23 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -902,14 +902,14 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -923,14 +923,14 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -938,31 +938,31 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -971,34 +971,34 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1007,12 +1007,12 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1021,17 +1021,17 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1049,14 +1049,14 @@
 	BYTE	#$17	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1066,14 +1066,14 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1082,14 +1082,14 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1097,94 +1097,24 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1197,47 +1127,84 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1246,10 +1213,43 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1258,32 +1258,32 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1292,10 +1292,10 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1303,23 +1303,23 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1333,25 +1333,25 @@
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1361,163 +1361,34 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1525,9 +1396,34 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1536,15 +1432,119 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1553,14 +1553,14 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1572,10 +1572,10 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1586,18 +1586,18 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -1605,72 +1605,17 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1680,9 +1625,64 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -1690,9 +1690,9 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1704,17 +1704,17 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -1731,241 +1731,20 @@
 	BYTE	#$17	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$15	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$15	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$15	; Save zero to reg
-	BYTE	#$D5	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -1975,12 +1754,233 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$15	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$15	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$15	; Save zero to reg
+	BYTE	#$D5	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2028,13 +2028,13 @@
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2050,28 +2050,28 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2085,14 +2085,14 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2102,54 +2102,54 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -2157,15 +2157,15 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2175,16 +2175,16 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2193,17 +2193,17 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2219,18 +2219,18 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2239,7 +2239,7 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2248,9 +2248,9 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2261,34 +2261,34 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
@@ -2296,15 +2296,15 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2333,40 +2333,40 @@
 	BYTE	#$4C	; Register
 	BYTE	#$09	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2376,16 +2376,16 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2413,7 +2413,7 @@
 	BYTE	#$4B	; Register
 	BYTE	#$97	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2421,7 +2421,7 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$C0	; Register
@@ -2463,7 +2463,7 @@
 	BYTE	#$17	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$02	; of Frames 
 	BYTE	#$D1	; Save zero to reg
@@ -2550,11 +2550,11 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$D1	; Save zero to reg
@@ -2567,7 +2567,7 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$02	; of Frames 
 	BYTE	#$D2	; Save zero to reg
@@ -2575,7 +2575,7 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$D1	; Save zero to reg
@@ -2584,14 +2584,14 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$02	; of Frames 
 	BYTE	#$D1	; Save zero to reg
@@ -2605,7 +2605,7 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$03	; of Frames 
 	BYTE	#$D2	; Save zero to reg
@@ -2615,7 +2615,7 @@
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$02	; of Frames 
 	BYTE	#$D1	; Save zero to reg
@@ -2683,7 +2683,7 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2766,7 +2766,7 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2776,17 +2776,17 @@
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2815,14 +2815,14 @@
 	BYTE	#$4B	; Register
 	BYTE	#$00	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -2836,7 +2836,7 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2845,119 +2845,13 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D3	; Save zero to reg
-	BYTE	#$13	; Save zero to reg
-	BYTE	#$D3	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$14	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D3	; Save zero to reg
-	BYTE	#$D3	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$D4	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
-	BYTE	#$11	; Save zero to reg
-	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -2968,21 +2862,101 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$11	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
@@ -2994,7 +2968,33 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$09	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D3	; Save zero to reg
+	BYTE	#$D3	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D1	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D3	; Save zero to reg
+	BYTE	#$13	; Save zero to reg
+	BYTE	#$D3	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$14	; Save zero to reg
+	BYTE	#$D4	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D3	; Save zero to reg
 	BYTE	#$13	; Save zero to reg
@@ -3003,7 +3003,7 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -3014,32 +3014,32 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -3066,39 +3066,39 @@
 	BYTE	#$4B	; Register
 	BYTE	#$97	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$12	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$D2	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$10	; Save zero to reg
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$12	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
+	BYTE	#$10	; Save zero to reg
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$12	; Save zero to reg
+	BYTE	#$D2	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -3154,9 +3154,9 @@
 	BYTE	#$17	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -3179,9 +3179,9 @@
 	BYTE	#$4D	; Register
 	BYTE	#$0C	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3189,36 +3189,36 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
-	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3234,7 +3234,7 @@
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$00	; Wait
 	BYTE	#$02	; of Frames 
 	BYTE	#$D2	; Save zero to reg
@@ -3242,20 +3242,20 @@
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$D7	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3263,14 +3263,14 @@
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3278,14 +3278,14 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$16	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3299,9 +3299,9 @@
 	BYTE	#$16	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D2	; Save zero to reg
@@ -3309,9 +3309,9 @@
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$09	; somewhere! 
+	BYTE	#$0F	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3322,12 +3322,12 @@
 	BYTE	#$14	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$06	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3339,14 +3339,14 @@
 	BYTE	#$15	; Save zero to reg
 	BYTE	#$D5	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
-	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
-	BYTE	#$D0	; Save zero to reg
-	BYTE	#$04	; Jump to
 	BYTE	#$09	; somewhere! 
 	BYTE	#$04	; Jump to
-	BYTE	#$01	; somewhere! 
+	BYTE	#$05	; somewhere! 
+	BYTE	#$D0	; Save zero to reg
+	BYTE	#$04	; Jump to
+	BYTE	#$0F	; somewhere! 
+	BYTE	#$04	; Jump to
+	BYTE	#$06	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3354,7 +3354,7 @@
 	BYTE	#$4D	; Register
 	BYTE	#$06	; Reg. Data
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
 	BYTE	#$D4	; Save zero to reg
@@ -3362,7 +3362,7 @@
 	BYTE	#$16	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$00	; somewhere! 
+	BYTE	#$05	; somewhere! 
 	BYTE	#$10	; Save zero to reg
 	BYTE	#$D0	; Save zero to reg
 	BYTE	#$D1	; Save zero to reg
@@ -3376,7 +3376,7 @@
 	BYTE	#$16	; Save zero to reg
 	BYTE	#$D6	; Save zero to reg
 	BYTE	#$04	; Jump to
-	BYTE	#$03	; somewhere! 
+	BYTE	#$09	; somewhere! 
 	BYTE	#$02	; End with 3374 bytes
 
 

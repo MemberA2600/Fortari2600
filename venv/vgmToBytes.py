@@ -54,7 +54,7 @@ for line in lines:
        decimals = (waits+decimals) - integer
 
        if integer > 0:
-           print(integer)
+           # print(integer)
            if integer < 256:
               byteData.append(waitOp + waitCode)
               xxx = hex(integer).replace("0x", "")
@@ -177,7 +177,7 @@ for theMax in range(3, 128):
         allSegments += "\n" + \
                        title + "\n" + segmentList[num][1] + "\n" + byteConstantText + "#" + backByte + "\n###\n"
 
-        replacer = byteConstantText + "#" + jumpByte + "\t; Jump to" + "\n" + byteConstantText + "#" + all8bits[num] + "\t; somewhere! - !!!\n"
+        replacer = byteConstantText + "#" + jumpByte + "\t; Jump to" + "\n" + byteConstantText + "#" + possibleKeys[num + 3] + "\t; somewhere! - !!!\n"
 
         dataText = dataText.replace(segmentList[num][1], replacer)
         lastNum  = possibleKeys[num + 3]
