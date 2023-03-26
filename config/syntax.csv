@@ -1,0 +1,40 @@
+command;[aliasnames]; [kernels]; type; needs end?; needs brackets?; [where it can be used]; [params]; io method; fixed level
+add;[addition +];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+and;[& &&];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+asm;[assembly];[common];command;None;brackets;[];[string {string}];None;None
+calc;[calculate compute comp];[common];command;None;brackets;[];[variable statement];write;None
+call;[exec execute];[common];command;None;brackets;[];[subroutine {variable}];write;None
+case;[when];[common];command;None;brackets;[];[variable|number|statement|stringConst];read;None
+const;[constant];[common];command;None;brackets;[enter];[string number];None;None
+cycle;[continue next];[common];command;None;None;[];None;None;None
+decr;[decrement --];[common];command;None;brackets;[];[variable];write;None
+default;[other else];[common];command;None;None;[];None;None;None
+div;[divide /];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[array];item;None
+do-times;[for-until perform-until];[common];command;end;brackets;[];[number|stringConst variable];write;None
+do-until;[for-until perform-until];[common];command;end;brackets;[];[statement];read;None
+do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];read;None
+do;[for perform];[common];command;end;None;[];None;None;None
+exit;[break next-sentence];[common];command;None;None;[];None;None;None
+goto;[];[common];command;None;None;[leave];[number|stringConst|variable];None;None
+incr;[increment ++];[common];command;None;brackets;[];[variable];write;None
+leave;[];[common];command;None;None;[overscan];None;None;None
+multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+not;[! / ~];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None
+or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None
+pow;[power **];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];None;None
+rem;[remainder %];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];None;None
+return;[];[common];command;None;brackets;[subroutines];[number|variable|stringConst];read;None
+rollL;[rol];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None
+rollR;[ror];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None
+screen;[];[common];command;end;brackets;[screenroutines];[string];None;0
+select;[switch evaluate];[common];command;end;brackets;[];[variable|stringConst|number];read;None
+set;[];[common];command;None;brackets;[];[variable number|variable|stringConst];write;None
+shiftL;[asl];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None
+shiftR;[lsr];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None
+sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None
+sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None
+subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0
+swap;[];[common];command;None;brackets;[];[variable variable];write;None
+xor;[eor];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None

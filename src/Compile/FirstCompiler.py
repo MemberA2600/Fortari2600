@@ -11,9 +11,10 @@ class FirstCompiler:
         self.__counter        = 0
         self.__addComments    = addComments
         self.__loadCommandASM = self.__loader.io.loadCommandASM
-        self.errorList        = []
-        self.__constants      = self.__editorBigFrame.collectConstantsFromSections()
+        self.errorList        = {}
         self.__currentBank    = bank
+
+        self.__constants      = self.__editorBigFrame.collectConstantsFromSections(self.__currentBank)
         self.__currentSection = section
         self.__virtualMemory  = self.__loader.virtualMemory
         self.__config         = self.__loader.config
@@ -83,6 +84,8 @@ class FirstCompiler:
             curParam = line["param#"+str(num)][0]
             if curParam not in self.__noneList:
                curParam = self.formatParam(curParam, line["command"][0], line["lineNum"])
+               if curParam == None:
+                  continue
 
     def formatParam(self, paramText, command, lineNum):
         import re
@@ -106,12 +109,13 @@ class FirstCompiler:
                   returnMe["type"]  = "number"
                   return returnMe
 
-           self.errorList.append(self.prepareError("compileErrorConstant",
-                                 self.__constants[paramText], paramText),
-                                 str(lineNum + self.__startLine)
-                                 )
 
-           return("")
+           self.addToErrorList(self.prepareError("compileErrorConstant",
+                               self.__constants[paramText], paramText,
+                               str(lineNum + self.__startLine))
+                               )
+
+           return(None)
 
         vars        = self.__all
         commandData = self.__loader.syntaxList[command]
@@ -122,9 +126,18 @@ class FirstCompiler:
            else:
                 vars = self.__writable
 
-    def prepareError(self, text, val, con, lineNum):
+    def addToErrorList(self, text):
+        if self.__currentBank not in self.errorList.keys():
+           self.errorList[self.__currentBank] = {}
+
+        if self.__currentSection not in self.errorList[self.__currentBank].keys():
+           self.errorList[self.__currentBank][self.__currentSection] = []
+
+        self.errorList[self.__currentBank][self.__currentSection].append(text)
+
+    def prepareError(self, text, val, var, lineNum):
         return self.__dictionaries.getWordFromCurrentLanguage(text)\
-                    .replace("#VAL#", val, "#CON#", con,
+                    .replace("#VAL#", val, "#VAR#", var,
                              "#BANK", self.__currentBank, "#SECTION#", self.__currentSection,
                              "#LINENUM#", str(lineNum)
                              )

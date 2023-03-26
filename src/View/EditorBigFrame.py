@@ -940,9 +940,6 @@ class EditorBigFrame:
 
         self.__codeBox.focus()
 
-    def checker(self, event):
-        pass
-
     def focusOut(self, event):
         self.__setTinting("whole")
         self.__loader.mainWindow.focusOut(event)
@@ -982,7 +979,7 @@ class EditorBigFrame:
         self.__subroutines = []
         self.__constants = deepcopy(self.__loader.stringConstants)
         if self.__currentSection in self.__syntaxList["const"].sectionsAllowed:
-            self.__constants = self.collectConstantsFromSections()
+            self.__constants = self.collectConstantsFromSections(self.__currentBank)
 
         if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
             self.__subroutines = self.collectNamesByCommandFromSections("subroutine")
@@ -1456,7 +1453,7 @@ class EditorBigFrame:
                          commandString += self.__codeEditorItems[key][0].get()
 
                   dummy, ioMethod = self.returnParamsOfObjects(commandString)
-                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(listType, currentWord,
+                  foundIt, paramTypeAndDimension = self.checkIfParamIsOK(listType, currentWord,
                                                                             ioMethod, None,
                                                                             "dummy", mustHave, selectedType, currentLineStructure)
                   if foundIt == True:
@@ -1581,7 +1578,7 @@ class EditorBigFrame:
                       paramType = paramType[1:-1]
                       mustHave = False
 
-                  foundIt, paramTypeAndDimension = self.__checkIfParamIsOK(paramType, lineStructure[cursorIn][0],
+                  foundIt, paramTypeAndDimension = self.checkIfParamIsOK(paramType, lineStructure[cursorIn][0],
                                                                             ioMethod, None,
                                                                             dimension, mustHave, cursorIn, lineStructure)
                   if foundIt == True:
@@ -1744,7 +1741,7 @@ class EditorBigFrame:
                    wordsForList.append([array, "array"])
 
         elif listType == "stringConst":
-             constantList = self.collectConstantsFromSections()
+             constantList = self.collectConstantsFromSections(self.__currentBank)
              for word in constantList:
                  if word.startswith(currentWord) or currentWord == "":
                      wordsForList.append([word, "stringConst"])
@@ -1757,7 +1754,7 @@ class EditorBigFrame:
         wordsForList.sort()
         return(wordsForList)
 
-    def collectConstantsFromSections(self):
+    def collectConstantsFromSections(self, bank):
         from copy import deepcopy
 
         constants = {}
@@ -1765,7 +1762,7 @@ class EditorBigFrame:
         constants['"False"'] = self.__loader.stringConstants['"False"']
 
         for section in self.__syntaxList["const"].sectionsAllowed:
-            code = self.__virtualMemory.codes[self.__currentBank][section].code.replace("\r", "").replace("\t", "").split("\n")
+            code = self.__virtualMemory.codes[bank][section].code.replace("\r", "").replace("\t", "").split("\n")
 
             for lineNum in range(0, len(code)):
                 lineStructure = self.getLineStructure(lineNum, code, False)
@@ -2008,7 +2005,7 @@ class EditorBigFrame:
 
         return params, ioMethod
 
-    def __checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure):
+    def checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure):
         foundIt = False
         noneList   = ["None", None, ""]
 
@@ -2395,7 +2392,7 @@ class EditorBigFrame:
             elif param in noneList     and paramType in noneList:
                  returnBack.append(["error", ppp[paramNum][1]])
             else:
-                 self.__checkIfParamIsOK(paramType, param,
+                 self.checkIfParamIsOK(paramType, param,
                                          ioMethod, returnBack,
                                          ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure)
 
@@ -2465,12 +2462,28 @@ class EditorBigFrame:
                paramType = self.__syntaxList["select"].params[0]
                temp      = []
 
-               self.__checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
+               self.checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
                                        "read", temp, None, True, "param#1", currentLineStructure)
 
                if (temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst"]) or\
                   (temp[0][0] in ["stringConst", "number"] and returnBack[0][0] not in ["statement"]) :
                    returnBack[0][0] = "error"
+
+        else:
+            mathCommands = ["add", "and", "div", "multi", "not", "or",
+                            "pow", "rand", "rem", "rollL", "rollR",
+                            "shiftL", "shiftR", "sub", "xor"]
+
+            for isThisCommand in mathCommands:
+                if isThisCommand == command or command in self.__loader.syntaxList[isThisCommand].alias:
+                   theCommand = self.__loader.syntaxList[isThisCommand]
+                   paramMaxNum     = len(theCommand.params)
+                   if returnBack[paramMaxNum-1][0] != "missing":
+                       if returnBack[paramMaxNum-1][0] != "variable": returnBack[paramMaxNum-1][0] = "error"
+                   else:
+                       if returnBack[0][0] != "variable": returnBack[0][0] = "error"
+
+                   break
 
         if "item" in [param1[0], param2[0], param3[0]]:
             startFound = self.__findWahWah("do-items", currentLineStructure["lineNum"],

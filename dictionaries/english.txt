@@ -397,4 +397,4 @@ reIndent=reIndentation
 convertASM=Convert To Assembly
 errorOnASMConvert=Error on ASM convert
 errorOnASMConvertText=No #type# found for command on #line#!
-compileErrorConstant=Invalid value #VAL# found on constant #CON# on #BANK#'s #SECTION# on line #LINENUM#! Constanst must be decimal, binary ('%11111111') or hex ('$FF') numbers!
+compileErrorConstant=Invalid value #VAL# found on constant #VAR# on #BANK#'s #SECTION# on line #LINENUM#! Constanst must be decimal, binary ('%11111111') or hex ('$FF') numbers!
