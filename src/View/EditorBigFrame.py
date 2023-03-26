@@ -607,8 +607,13 @@ class EditorBigFrame:
         errorFound = False
         errorData  = None
 
+        noneList = ["", "None", None]
+
         for lineNum in range(firstLineStruct["lineNum"], lastLineStruct["lineNum"] + 1):
             currentLineStructure = self.getLineStructure(lineNum, text, True)
+
+            if currentLineStructure["command"][0] in noneList:
+               continue
 
             if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                endFound = self.__findEnd(currentLineStructure, lineNum, text)
@@ -631,6 +636,13 @@ class EditorBigFrame:
 
         if errorFound:
            self.__loader.fileDialogs.displayError("errorOnASMConvert", "errorOnASMConvertText", errorData, None)
+        else:
+           from FirstCompiler import FirstCompiler
+
+           c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
+                                                                     selection[1]),
+                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]))
+           print(c.result)
 
     def loadCurrentFromMemory(self):
         self.__loadFromMemory(self.__currentBank, self.__currentSection)
@@ -1186,9 +1198,10 @@ class EditorBigFrame:
                     addError = True
 
            if self.__currentSection     not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed\
-           or currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed:
+           or (currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed
+           and self.__syntaxList[currentLineStructure["command"][0]].levelAllowed != None
+           ):
               addError = True
-
 
            if addError == True:
                if caller == "lineTinting":
@@ -1621,7 +1634,10 @@ class EditorBigFrame:
 
             listBoxItems = list(self.__listBoxOnTheRight.get(0, END))
 
-            self.__listBoxOnTheRight.itemconfig(len(listBoxItems)-1, fg = fg, bg = bg)
+            try:
+                self.__listBoxOnTheRight.itemconfig(len(listBoxItems)-1, fg = fg, bg = bg)
+            except:
+                pass
 
             if selected in self.__listOfItems:
                selection = self.__listOfItems.index(selected)
@@ -1745,7 +1761,7 @@ class EditorBigFrame:
         from copy import deepcopy
 
         constants = {}
-        constants['"True"'] = self.__loader.stringConstants['"True"']
+        constants['"True"']  = self.__loader.stringConstants['"True"']
         constants['"False"'] = self.__loader.stringConstants['"False"']
 
         for section in self.__syntaxList["const"].sectionsAllowed:

@@ -103,6 +103,9 @@ class IO:
             dataHolder.append(
                 self.returnResized(IMAGE.open(str("others/img/"+folder+"/" + num + "."+format)), s[0], s[1], s[2]))
 
+    def loadCommandASM(self, name):
+        return self.loadWholeText("templates"+os.sep+"commandASM"+os.sep+name+".asm")
+
     def returnResized(self, source, w, h, part):
         from PIL import Image as IMAGE
 

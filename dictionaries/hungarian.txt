@@ -397,3 +397,4 @@ reIndent=Újraformázás
 convertASM=Fordítás Assembly-re
 errorOnASMConvert=Hiba Assembly-re fordításkor
 errorOnASMConvertText=Hiányzó #type# pár a #line# soron található parancsnál! 
+compileErrorConstant=Helytelen #VAL# érték a #CON# konstanson, a #BANK# #SECTION# szekciójában, a #LINENUM#. soron! A konstansok csak decimális, bináris ('%11111111') vagy hexa ('$FF') értéket vehetnek fel!

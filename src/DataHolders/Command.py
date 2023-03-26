@@ -13,6 +13,8 @@ class Command:
         else:
             self.alias = []
 
+#        print(name, data)
+
         if data[3].lower() == "end":
            self.endNeeded = True
            newName  = "end-"+name.split("-")[0]
