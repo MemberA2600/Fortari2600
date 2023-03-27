@@ -1650,6 +1650,24 @@ class EditorBigFrame:
     def setupList(self, currentWord, listType, lineStructure, cursorIn, text):
         wordsForList = []
 
+        noneList = ["", None, "None"]
+
+        command = None
+        for c in self.__loader.syntaxList.keys():
+            if lineStructure["command"][0] == c or lineStructure["command"][0] in self.__syntaxList[c].alias:
+               command = self.__loader.syntaxList[c]
+               break
+
+        varOnly = False
+
+        if command not in noneList:
+            if command.flexSave == True:
+               maxParamNum = len(command.params)
+
+               if lineStructure["param#" + str(maxParamNum - 1)][0] in noneList or lineStructure[
+                  "param#" + str(maxParamNum - 1)][0] == "missing":
+                   if cursorIn == "param#1": varOnly = True
+
         if   listType == None:
             wordsForList = []
         elif listType == "nextObject":
@@ -1698,10 +1716,14 @@ class EditorBigFrame:
 
         elif listType == "variable":
             writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
-            if self.doesItWriteInParam(lineStructure, cursorIn):
+
+            if varOnly == True:
                varList = writable
             else:
-               varList = all
+                if self.doesItWriteInParam(lineStructure, cursorIn):
+                   varList = writable
+                else:
+                   varList = all
 
             for word in varList:
                 if word.startswith(currentWord) or currentWord == "":
@@ -1740,7 +1762,7 @@ class EditorBigFrame:
                 if array.startswith(currentWord) or currentWord == "":
                    wordsForList.append([array, "array"])
 
-        elif listType == "stringConst":
+        elif listType == "stringConst" and varOnly == False:
              constantList = self.collectConstantsFromSections(self.__currentBank)
              for word in constantList:
                  if word.startswith(currentWord) or currentWord == "":
@@ -2009,6 +2031,12 @@ class EditorBigFrame:
         foundIt = False
         noneList   = ["None", None, ""]
 
+        command = None
+        for c in self.__loader.syntaxList.keys():
+            if lineStructure["command"][0] == c or lineStructure["command"][0] in self.__syntaxList[c].alias:
+               command = self.__loader.syntaxList[c]
+               break
+
         sendBack   = False
         if returnBack == None:
            returnBack  = []
@@ -2018,6 +2046,14 @@ class EditorBigFrame:
 
         if self.doesItWriteInParam(lineStructure, cursorIn) == False:
            ioMethod = "read"
+
+        varOnly = False
+        if command.flexSave == True:
+           maxParamNum = len(command.params)
+           if lineStructure["param#" + str(maxParamNum-1)][0] in noneList or lineStructure["param#" + str(maxParamNum-1)][0] == "missing":
+              if cursorIn == "param#1":
+                 ioMethod = "write"
+                 varOnly  = True
 
         for pType in paramTypeList:
             if foundIt == True: break
@@ -2039,6 +2075,7 @@ class EditorBigFrame:
                        returnBack.append(["variable", dimension])
                     break
             elif pType == "number":
+                if varOnly: continue
                 if printMe: print(pType)
 
                 import re
@@ -2076,6 +2113,7 @@ class EditorBigFrame:
                     foundIt = True
 
             elif pType in ["string", "stringConst"]:
+                if varOnly: continue
                 if printMe: print(pType)
 
                 delimiters = self.__config.getValueByKey("validStringDelimiters")
@@ -2398,6 +2436,12 @@ class EditorBigFrame:
 
         #print("fuck", params, returnBack)
 
+        commandVar = None
+        for c in self.__loader.syntaxList.keys():
+            if currentLineStructure["command"][0] == c or currentLineStructure["command"][0] in self.__syntaxList[c].alias:
+               commandVar = self.__loader.syntaxList[c]
+               break
+
         if command == "const" or command in self.__syntaxList["const"].alias:
            if returnBack[0][0] == "string" and returnBack[1][0] == "number":
               if param1[0] in self.__constants.keys():
@@ -2469,21 +2513,13 @@ class EditorBigFrame:
                   (temp[0][0] in ["stringConst", "number"] and returnBack[0][0] not in ["statement"]) :
                    returnBack[0][0] = "error"
 
-        else:
-            mathCommands = ["add", "and", "div", "multi", "not", "or",
-                            "pow", "rand", "rem", "rollL", "rollR",
-                            "shiftL", "shiftR", "sub", "xor"]
-
-            for isThisCommand in mathCommands:
-                if isThisCommand == command or command in self.__loader.syntaxList[isThisCommand].alias:
-                   theCommand = self.__loader.syntaxList[isThisCommand]
-                   paramMaxNum     = len(theCommand.params)
-                   if returnBack[paramMaxNum-1][0] != "missing":
-                       if returnBack[paramMaxNum-1][0] != "variable": returnBack[paramMaxNum-1][0] = "error"
-                   else:
-                       if returnBack[0][0] != "variable": returnBack[0][0] = "error"
-
-                   break
+        elif commandVar.flexSave == True:
+             theCommand = self.__loader.syntaxList[command]
+             paramMaxNum = len(theCommand.params)
+             if returnBack[paramMaxNum - 1][0] != "missing":
+                if returnBack[paramMaxNum - 1][0] != "variable": returnBack[paramMaxNum - 1][0] = "error"
+             else:
+                if returnBack[0][0] != "variable": returnBack[0][0] = "error"
 
         if "item" in [param1[0], param2[0], param3[0]]:
             startFound = self.__findWahWah("do-items", currentLineStructure["lineNum"],
@@ -3061,8 +3097,8 @@ class EditorBigFrame:
 
     def __keyReleased(self, event):
         self.__lastButton = event.keysym
-        self.__counter   = 5
-        self.__counter2  = 30
+        self.__counter   = 3
+        self.__counter2  = 20
 
         self.setCurzorPoz()
 

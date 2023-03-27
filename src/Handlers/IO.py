@@ -66,15 +66,13 @@ class IO:
 
         skipFirst = True
         for item in self.loadWholeText("config"+os.sep+"syntax.csv").split("\n"):
+            if item == "": continue
             if skipFirst == True:
                skipFirst = False
             else:
                item = item.replace("\r", "").split(";")
                if ",".join(item[1:]) == "": return
                self.__loader.syntaxList[item[0]] = Command(self.__loader, item[0], ",".join(item[1:]))
-
-           # if item.startswith("*") or item.startswith("#"): continue
-           # self.__loader.syntaxList[item.split("=")[0]] = Command(self.__loader, item.split("=")[0], "=".join(item.split("=")[1:]).replace("\n","").replace("\r",""))
 
         stringConstants = self.__loader.stringConstants
 
@@ -86,8 +84,6 @@ class IO:
             stringConstants[name]["alias"] = secondPart[0][1:-1].split(" ")
             stringConstants[name]["value"] = int(secondPart[1])
 
-
-        #print(stringConstants)
 
     def loadSubModule(self, name):
         return(open("templates/skeletons/"+name+".asm", "r").read())

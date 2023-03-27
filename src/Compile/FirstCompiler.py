@@ -80,51 +80,56 @@ class FirstCompiler:
 
     def getParamsWithTypes(self, line):
         params = []
+
+        command = None
+        for commandName in self.__loader.syntaxList.keys():
+            if self.isCommandInLineThat(line, commandName):
+               command = self.__loader.syntaxList[commandName]
+               break
+
+        if command == None:
+           self.addToErrorList(self.prepareError("compilerErrorCommand", None,
+                                                 line["command"][0], None,
+                                                 str(line["lineNum"] + self.__startLine)))
         for num in range(1, 4):
             curParam = line["param#"+str(num)][0]
             if curParam not in self.__noneList:
-               curParam = self.formatParam(curParam, line["command"][0], line["lineNum"])
-               if curParam == None:
-                  continue
+               #curParam = self.formatParam(curParam, line["command"][0], line["lineNum"])
+               paramType = command.params[num-1]
+               mustHave  = True
+               if paramType.startswith("{"):
+                  mustHave = False
+                  paramType = paramType[1:-1]
 
-    def formatParam(self, paramText, command, lineNum):
-        import re
+               paramTypes = paramType.split("|")
 
-        returnMe = {"param": paramText, "type": "variable"}
+               foundIt = False
+               param   = None
+               for param in paramTypes:
+                   foundIt, paramTypeAndDimension = self.__editorBigFrame.checkIfParamIsOK(param, curParam,
+                                                                                           command.does, None,
+                                                                                           "dummy", mustHave, "param#"+str(num),
+                                                                                           line)
+                   #print(curParam, param, foundIt)
+                   if foundIt == True:
+                      break
 
-        numberRegexes = {"dec": r'^\d{1,3}$',
-                         "bin": r'^[b|%][0-1]{1,8}$',
-                         "hex": r'^[$|z|h][0-9a-f]{1,2}$'
-                         }
-        for key in numberRegexes:
-            if len(re.findall(numberRegexes[key], paramText)) > 0:
-               returnMe["param"] = "#" + returnMe["param"]
-               returnMe["type"]  = "number"
-               return returnMe
+               if foundIt == False:
+                  for param in paramTypes:
+                      missinWords = {
+                          "stringConst": "Constant",
+                          "variable"   : "Variable",
+                          "number"     : "Number",
+                          "string"     : "String",
 
-        if paramText in self.__constants.keys():
-           for key in numberRegexes:
-               if len(re.findall(numberRegexes[key], self.__constants[paramText])) > 0:
-                  returnMe["param"] = "#" + self.__constants[paramText]
-                  returnMe["type"]  = "number"
-                  return returnMe
+                      }
+                      missing = missinWords[param]
 
-
-           self.addToErrorList(self.prepareError("compileErrorConstant",
-                               self.__constants[paramText], paramText,
-                               str(lineNum + self.__startLine))
-                               )
-
-           return(None)
-
-        vars        = self.__all
-        commandData = self.__loader.syntaxList[command]
-
-        if command.does == "write":
-           if paramText == "item":
-                pass
-           else:
-                vars = self.__writable
+                      self.addToErrorList(self.prepareError("compilerErrorParam", None,
+                                                              line["command"][0], None,
+                                                              str(line["lineNum"] + self.__startLine)) +
+                                            " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing)
+                                            )
 
     def addToErrorList(self, text):
         if self.__currentBank not in self.errorList.keys():
@@ -135,11 +140,10 @@ class FirstCompiler:
 
         self.errorList[self.__currentBank][self.__currentSection].append(text)
 
-    def prepareError(self, text, val, var, lineNum):
+    def prepareError(self, text, param, val, var, lineNum):
         return self.__dictionaries.getWordFromCurrentLanguage(text)\
-                    .replace("#VAL#", val, "#VAR#", var,
-                             "#BANK", self.__currentBank, "#SECTION#", self.__currentSection,
-                             "#LINENUM#", str(lineNum)
+                    .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK", self.__currentBank)\
+                    .replace("#SECTION#", self.__currentSection.replace("#LINENUM#", str(lineNum)).replace("#PARAM#", param)
                              )
 
 
