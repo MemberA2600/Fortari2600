@@ -47,12 +47,9 @@ class FirstCompiler:
 
             linesFeteched.append(lineStruct)
 
-        if   mode == "forEditor":
-             self.compileBuild(linesFeteched)
-        elif mode == "forBuild":
-             self.compileBuild(linesFeteched)
+        self.compileBuild(linesFeteched, mode)
 
-    def compileBuild(self, linesFeteched):
+    def compileBuild(self, linesFeteched, mode):
 
         for line in linesFeteched:
             if self.isCommandInLineThat(line, "asm"):
@@ -69,12 +66,15 @@ class FirstCompiler:
         for line in linesFeteched:
             for word in ["commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
                 if line[word] not in self.__noneList:
-                   if type(line[word]) == list:
-                      line[word] = "\n".join(line[word])
-                   textToReturn += line[word] + "\n"
+                    if type(line[word]) == list:
+                        line[word] = "\n".join(line[word])
+                    if   mode == "forBuild":
+                         textToReturn += line[word] + "\n"
+                    elif mode == "forEditor":
+                         textToReturn += "\tasm(\"" + line[word] + "\")"
 
             if line["comment"][0] not in self.__noneList:
-               textToReturn = textToReturn[:-1] + "\t; " +  line["comment"][0] + "\n"
+                textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
         self.result = textToReturn
 
@@ -121,7 +121,8 @@ class FirstCompiler:
                           "variable"   : "Variable",
                           "number"     : "Number",
                           "string"     : "String",
-
+                          "subroutine" : "Sub",
+                          "array"      : "Array"
                       }
                       missing = missinWords[param]
 
@@ -130,6 +131,9 @@ class FirstCompiler:
                                                               str(line["lineNum"] + self.__startLine)) +
                                             " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing)
                                             )
+               else:
+                   listOfErrors = self.__editorBigFrame.callLineTintingFromFirstCompiler(line["fullLine"], line["lineNum"], self.__text)
+
 
     def addToErrorList(self, text):
         if self.__currentBank not in self.errorList.keys():

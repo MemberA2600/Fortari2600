@@ -135,7 +135,7 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                           selectPosizions, errorPositions, "lineEditor", None)
+                           selectPosizions, errorPositions, "lineEditor", None, None)
 
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
@@ -177,7 +177,7 @@ class EditorBigFrame:
                      objectList = self.__objectMaster.getStartingObjects()
 
                      self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                                        selectPosizions, errorPositions, "lineEditor", None)
+                                        selectPosizions, errorPositions, "lineEditor", None, None)
                      break
 
     def getCurrentBank(self):
@@ -936,7 +936,7 @@ class EditorBigFrame:
 
         self.__codeBox.mark_set(INSERT, str(currentLineNum)+"."+ str(len(line)))
         self.__codeEditorItems["updateRow"].config(state = DISABLED)
-        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True)
+        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None)
 
         self.__codeBox.focus()
 
@@ -987,7 +987,7 @@ class EditorBigFrame:
         if mode == "whole":
             self.__codeEditorItems["updateRow"].config(state=DISABLED)
             for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True)
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True, None)
 
                for item in selectPosizions:
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
@@ -1000,7 +1000,7 @@ class EditorBigFrame:
             self.__saveCode()
 
         else:
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None)
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None)
 
 
     def __saveCode(self):
@@ -1023,7 +1023,18 @@ class EditorBigFrame:
         self.__virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
         self.__virtualMemory.archieve()
 
-    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole):
+    def callLineTintingFromFirstCompiler(self, line, lineNum, text):
+        objectList = self.__objectMaster.getStartingObjects()
+        objectList.append("game")
+
+        selectPosizions = []
+        errorPositions = []
+
+        self.__lineTinting(line, objectList, lineNum, selectPosizions, errorPositions, "firstCompiler", None, text)
+
+        return errorPositions
+
+    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole, text):
 
         lineEditorTempDict = {}
 
@@ -1034,13 +1045,17 @@ class EditorBigFrame:
 
         if caller == "lineTinting":
            self.removeTag(yOnTextBox, 0, len(line), None)
-        text = self.__codeBox.get(1.0, END).replace("\t", " ").split("\n")
-        if lineNum >= len(text): return
 
+        if text == None:
+           text = self.__codeBox.get(1.0, END).replace("\t", " ").split("\n")
+        if type(text) == str:
+           text = text.replace("\t", " ").split("\n")
+
+        if lineNum >= len(text): return
         if line == "": line = " "
 
         currentLineStructure = None
-        if  caller == "lineTinting":
+        if  caller in ("lineTinting", "firstCompiler"):
             currentLineStructure = self.getLineStructure(lineNum, text, True)
         elif caller == "lineEditor":
             currentLineStructure = self.getLineStructure(0, [line], True)
@@ -1080,7 +1095,11 @@ class EditorBigFrame:
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                 endFound = self.__findEnd(currentLineStructure, lineNum, text)
-                if endFound == False: addError = True
+                if endFound == False:
+                   addError = True
+                   if caller == 'firstCompiler':
+                      errorPositions.append(["command", "noEndFound"])
+
                 else:
                     if self.__cursorPoz[0] == yOnTextBox:
 
@@ -1091,7 +1110,10 @@ class EditorBigFrame:
 
            elif currentLineStructure["command"][0].startswith("end-") == True:
                startFound = self.__findStart(currentLineStructure, lineNum, text)
-               if startFound == False: addError = True
+               if startFound == False:
+                  addError = True
+                  if caller == 'firstCompiler':
+                      errorPositions.append(["command", "noStartFound"])
                else:
                    if self.__cursorPoz[0] == yOnTextBox:
 
@@ -1104,7 +1126,14 @@ class EditorBigFrame:
                 self.__syntaxList["case"].alias:
 
                 foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
-                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False: addError = True
+                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False:
+                   addError = True
+                   if caller == 'firstCompiler':
+                      if foundAllRelatedForCaseDefault["select"] == False:
+                         errorPositions.append(["command", "noSelectForCase"])
+
+                      if foundAllRelatedForCaseDefault["end-select"] == False:
+                         errorPositions.append(["command", "noEndForCase"])
 
                 #print(foundAllRelatedForCaseDefault)
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
@@ -1126,7 +1155,17 @@ class EditorBigFrame:
 
                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault[
                    "end-select"] == False or foundAllRelatedForCaseDefault["numOfDefaults"] > 1 or \
-                       foundAllRelatedForCaseDefault["numOfCases"] == 0: addError = True
+                       foundAllRelatedForCaseDefault["numOfCases"] == 0:
+                       addError = True
+                       if caller == 'firstCompiler':
+                          if foundAllRelatedForCaseDefault["select"] == False:
+                             errorPositions.append(["command", "noSelectForDefault"])
+
+                          if foundAllRelatedForCaseDefault["end-select"] == False:
+                             errorPositions.append(["command", "noEndForDefault"])
+
+                          if foundAllRelatedForCaseDefault["end-select"] == False:
+                             errorPositions.append(["command", "noCaseForDefault"])
 
                if addError == False and self.__cursorPoz[0] == yOnTextBox:
 
@@ -1147,7 +1186,15 @@ class EditorBigFrame:
 
                 foundAllRelatedForDoAndEndDo = self.__foundAllRelatedForDoAndEndDo(currentLineStructure, lineNum, text, "do")
 
-                if foundAllRelatedForDoAndEndDo["start"] == False or foundAllRelatedForDoAndEndDo["end"] == False: addError = True
+                if foundAllRelatedForDoAndEndDo["start"] == False or foundAllRelatedForDoAndEndDo["end"] == False:
+                   addError = True
+                   if caller == 'firstCompiler':
+                       if foundAllRelatedForDoAndEndDo["start"] == False:
+                          errorPositions.append(["command", "noDoForCommand"])
+
+                       if foundAllRelatedForDoAndEndDo["end"] == False:
+                          errorPositions.append(["command", "noEndForDefault"])
+
 
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
                     self.addToPosizions(selectPosizions,
@@ -1193,6 +1240,14 @@ class EditorBigFrame:
                (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
                     addError = True
+                    if caller == 'firstCompiler':
+                       if self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True:
+                          if currentLineStructure["("] == -1:
+                             errorPositions.append(["bracket", "missingOpeningBracket"])
+                          if currentLineStructure[")"] == -1:
+                             errorPositions.append(["bracket", "missingClosingBracket"])
+                       else:
+                           errorPositions.append(["bracket", "commandDoesNotNeedBrackets"])
 
            if self.__currentSection     not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed\
            or (currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed
@@ -2885,7 +2940,7 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__theNumOfLine = lineStructure["lineNum"]
-        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None)
+        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None, None)
 
     def __focusOut(self, event):
         #print(event.type)
@@ -2904,7 +2959,7 @@ class EditorBigFrame:
            #objectList.append("game")
 
            self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                              selectPosizions, errorPositions, "lineEditor", None)
+                              selectPosizions, errorPositions, "lineEditor", None, None)
 
 
     def __getFakeLine(self, source):
