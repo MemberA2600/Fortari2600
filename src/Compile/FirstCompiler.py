@@ -60,7 +60,8 @@ class FirstCompiler:
 
                line["compiled"] = "\t"+"\t".join(datas)
             elif self.isCommandInLineThat(line, "add"):
-                params = self.getParamsWithTypes(line)
+                params = self.getParamsWithTypesAndCheckSyntax(line)
+                print(params)
 
         textToReturn = ""
         for line in linesFeteched:
@@ -78,8 +79,8 @@ class FirstCompiler:
 
         self.result = textToReturn
 
-    def getParamsWithTypes(self, line):
-        params = []
+    def getParamsWithTypesAndCheckSyntax(self, line):
+        params = {}
 
         command = None
         for commandName in self.__loader.syntaxList.keys():
@@ -88,8 +89,8 @@ class FirstCompiler:
                break
 
         if command == None:
-           self.addToErrorList(self.prepareError("compilerErrorCommand", None,
-                                                 line["command"][0], None,
+           self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                 line["command"][0], "",
                                                  str(line["lineNum"] + self.__startLine)))
         for num in range(1, 4):
             curParam = line["param#"+str(num)][0]
@@ -101,13 +102,24 @@ class FirstCompiler:
                   mustHave = False
                   paramType = paramType[1:-1]
 
+               ioMethod = command.does
+
+               if self.__loader.syntaxList[line["command"][0]].flexSave == True and num == 1 and \
+                  line["param#3"][0] in self.__noneList:
+                  paramType = "variable"
+                  ioMethod  = "write"
+
                paramTypes = paramType.split("|")
 
-               foundIt = False
-               param   = None
+               if self.__editorBigFrame.doesItWriteInParam(line, "param#"+str(num)) == False:
+                   ioMethod = "read"
+
+               foundIt               = False
+               param                 = None
+               paramTypeAndDimension = None
                for param in paramTypes:
                    foundIt, paramTypeAndDimension = self.__editorBigFrame.checkIfParamIsOK(param, curParam,
-                                                                                           command.does, None,
+                                                                                           ioMethod, None,
                                                                                            "dummy", mustHave, "param#"+str(num),
                                                                                            line)
                    #print(curParam, param, foundIt)
@@ -117,38 +129,88 @@ class FirstCompiler:
                if foundIt == False:
                   for param in paramTypes:
                       missinWords = {
-                          "stringConst": "Constant",
+                          "stringConst": "Const",
                           "variable"   : "Variable",
                           "number"     : "Number",
                           "string"     : "String",
                           "subroutine" : "Sub",
                           "array"      : "Array"
                       }
-                      missing = missinWords[param]
 
-                      self.addToErrorList(self.prepareError("compilerErrorParam", None,
-                                                              line["command"][0], None,
+                      if param == "statement":
+                         if line["command"][0] == "calc" or line["command"][0] in self.__loader.syntaxList["calc"].alias:
+                            missing = "statementCalc"
+                        # elif here should be the speciel statement type for the screen text display!
+                         else:
+                            missing = "statementComp"
+
+                      else:
+                          missing = missinWords[param]
+
+                      self.addToErrorList(line["lineNum"],    self.prepareError("compilerErrorParam", "param#" + str(num),
+                                                              line["param#" + str(num)][0], "",
                                                               str(line["lineNum"] + self.__startLine)) +
-                                            " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing)
-                                            )
+                                            " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing))
+
                else:
-                   listOfErrors = self.__editorBigFrame.callLineTintingFromFirstCompiler(line["fullLine"], line["lineNum"], self.__text)
+                   params["param#" + str(num)] = [curParam, paramTypeAndDimension[0]]
+
+        listOfErrors = self.__editorBigFrame.callLineTintingFromFirstCompiler(line["fullLine"], line["lineNum"], self.__text)
+        errorNames = {"noEndFound": {"#COMMAND#": line["command"][0],
+                                     "#END#": "end-" + line["command"][0].split("-")[0]},
+                      "noStartFound": {"#COMMAND#": line["command"][0]},
+                      "noSelectForCase": {"#COMMAND#": line["command"][0]},
+                      "noEndForCase": {"#COMMAND#": line["command"][0]},
+                      "noSelectForDefault": "noSelectForCase",
+                      "noEndForDefault": "noEndForCase",
+                      "noCaseForDefault": {"#COMMAND#": line["command"][0]},
+                      "noDoForCommand": "noEndFound",
+                      "noEndForDo": "noStartFound",
+                      "missingOpeningBracket": {},
+                      "missingClosingBracket": {},
+                      "commandDoesNotNeedBrackets": {},
+                      "sectionNotAllowed": {"#SECTIONS#": ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed)},
+                      "levelNotAllowed": {"#LEVEL#": str(self.__loader.syntaxList[line["command"][0]].levelAllowed)},
+                      "paramNotNeeded": {},
+                      "iteralError": {}
+                      }
+
+        for item in listOfErrors:
+            if item[1] not in errorNames.keys():
+                continue
+
+            while type(errorNames[item[1]]) == str:
+                item[1] = errorNames[item[1]]
+
+            secondPart = self.__dictionaries.getWordFromCurrentLanguage(item[1])
+            for key in errorNames[item[1]]:
+                secondPart = secondPart.replace(key, errorNames[item[1]][key])
+
+            self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                                   line["command"][0], "",
+                                                                   str(line["lineNum"] + self.__startLine))
+                                + " " + secondPart)
+
+        return(params)
 
 
-    def addToErrorList(self, text):
+    def addToErrorList(self, lineNum, text):
         if self.__currentBank not in self.errorList.keys():
            self.errorList[self.__currentBank] = {}
 
         if self.__currentSection not in self.errorList[self.__currentBank].keys():
-           self.errorList[self.__currentBank][self.__currentSection] = []
+           self.errorList[self.__currentBank][self.__currentSection] = {}
 
-        self.errorList[self.__currentBank][self.__currentSection].append(text)
+        if lineNum not in self.errorList[self.__currentBank][self.__currentSection].keys():
+           self.errorList[self.__currentBank][self.__currentSection][lineNum] = []
+
+        self.errorList[self.__currentBank][self.__currentSection][lineNum].append(text)
 
     def prepareError(self, text, param, val, var, lineNum):
         return self.__dictionaries.getWordFromCurrentLanguage(text)\
-                    .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK", self.__currentBank)\
-                    .replace("#SECTION#", self.__currentSection.replace("#LINENUM#", str(lineNum)).replace("#PARAM#", param)
-                             )
+                    .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK#", self.__currentBank)\
+                    .replace("#SECTION#", self.__currentSection).replace("#LINENUM#", str(lineNum)).replace("#PARAM#", param).replace("  ", " ")
+
 
 
     def isCommandInLineThat(self, line, command):
