@@ -2163,7 +2163,7 @@ class EditorBigFrame:
 
                 numberRegexes = {"dec": r'^\d{1,3}$',
                                  "bin": r'^[b|%][0-1]{1,8}$',
-                                 "hex": r'^[$|z|h][0-9a-f]{1,2}$'
+                                 "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'
                                  }
 
                 for key in numberRegexes.keys():
@@ -2450,7 +2450,7 @@ class EditorBigFrame:
 
         numberRegexes = {"dec": r'^\d{1,3}$',
                          "bin": r'^[b|%][0-1]{1,8}$',
-                         "hex": r'^[$|z|h][0-9a-f]{1,2}$'
+                         "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'
                          }
 
         for key in numberRegexes.keys():

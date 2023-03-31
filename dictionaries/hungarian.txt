@@ -417,3 +417,6 @@ sectionNotAllowed=A parancs csak az alábbi szekciókban használható: #SECTIONS#!
 levelNotAllowed=A parancs csak az alábbi szinten használható: #LEVEL#!
 paramNotNeeded=Túl sok paraméter került a parancshoz!
 iteralError=Az "item" változó helytelenül használt! A "Do-items" parancsok nem illeszthetõek egymásba!
+compilerErrorStatementCalc=A számító állítások számokat, változókat, konstansokat, zárójeleket és matematikai jeleket tartalmazhatnak!
+compilerErrorStatementComp=Az összehasonlító állítások számokat, változókat, konstansokat, zárójeleket, matematikai jeleket és EGY összehasonlító jelet tartalmazhatnak!
+compilerErrorStatementStr=A string állítások számokat, változókat, konstansokat, karakterláncokat és a '+' jelet tartalmazhetják!

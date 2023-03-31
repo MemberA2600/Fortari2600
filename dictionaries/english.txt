@@ -417,3 +417,6 @@ sectionNotAllowed=The command is allowed in the following sections only: #SECTIO
 levelNotAllowed=The command is allowed on the following level only: #LEVEL#!
 paramNotNeeded=Too many params given for command!
 iteralError=Wrong usage of variable "item"! "Do-items" kind of commands cannot be nested!
+compilerErrorStatementCalc=Calculating statements can contain numbers, variables, constants, brackets and arithmetic signs
+compilerErrorStatementComp=Comparing statements can contain numbers, variables, constants, brackets, arithmetic signs and ONE comparing sign!
+compilerErrorStatementStr=String statements can contain numbers, variables, constants, strings and the '+' sign!
