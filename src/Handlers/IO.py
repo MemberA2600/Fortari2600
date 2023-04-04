@@ -84,6 +84,48 @@ class IO:
             stringConstants[name]["alias"] = secondPart[0][1:-1].split(" ")
             stringConstants[name]["value"] = int(secondPart[1])
 
+    def loadRegOpCodes(self):
+        return self.loadRegisters(), self.loadOpCodes()
+
+    def loadRegisters(self):
+        temp = {}
+        file = open("templates/6507Registers.a26", "r")
+        for line in file.readlines():
+            line = line.split("=", 1)
+            if (line[0].startswith("$") == False):
+                line[0] = "$"+line[0]
+
+            temp[line[0]] = line[1].replace("\r","").replace("\n","").replace(" ", "")
+
+        file.close()
+        return(temp)
+
+
+    def loadOpCodes(self):
+        temp = {}
+        file = open("templates/opcodes.a26", "r")
+        for line in file.readlines():
+            line = line.split("=", 1)
+            if (line[0].startswith("$") == False):
+                line[0] = "$"+line[0]
+
+            temp[line[0]] = {}
+            sub = line[1].replace("\r","").replace("\n","")
+
+            while(sub.endswith(" ")):
+                sub = sub[:-1]
+
+            sub = sub.split(" ")
+            temp[line[0]]["opcode"] = sub[0]
+            if len(sub) == 1:
+                temp[line[0]]["format"] = None
+                temp[line[0]]["bytes"] = 1
+            else:
+                temp[line[0]]["format"] = sub[1]
+                temp[line[0]]["bytes"] = int(sub[1].count("a")/2)+1
+
+        file.close()
+        return(temp)
 
     def loadSubModule(self, name):
         return(open("templates/skeletons/"+name+".asm", "r").read())

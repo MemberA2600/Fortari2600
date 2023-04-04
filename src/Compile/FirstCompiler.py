@@ -14,17 +14,43 @@ class FirstCompiler:
         self.errorList        = {}
         self.__currentBank    = bank
 
+        writable, readOnly, all, nonSystem = self.__loader.virtualMemory.returnVariablesForBank(self.__currentBank)
+        self.__variablesOfBank = {
+            "writable"  : writable,
+            "readOnly"  : readOnly,
+            "all"       : all,
+            "nonSystem" : nonSystem
+        }
+
+        self.numberRegexes    = {"dec": r'^\d{1,3}$',
+                                 "bin": r'^[b|%][0-1]{1,8}$',
+                                 "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'}
+
         self.__constants      = self.__editorBigFrame.collectConstantsFromSections(self.__currentBank)
         self.__currentSection = section
         self.__virtualMemory  = self.__loader.virtualMemory
         self.__config         = self.__loader.config
         self.__dictionaries   = self.__loader.dictionaries
         self.__startLine      = startLine
+        self.__registers,     \
+        self.__opcodes        = self.__loader.io.loadRegOpCodes()
 
         self.__writable,\
         self.__readOnly,\
         self.__all,\
         self.__nonSystem      = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+
+        self.__validMemoryAddresses = []
+
+        for num in range(0, 255):
+            origNum = num
+            num = hex(num).replace("0x", "")
+            if len(num) == 1: num = "0" + num
+
+            if origNum > 127:
+               self.__validMemoryAddresses.append("$" + num.upper())
+
+            self.__validMemoryAddresses.append("$F0" + num.upper())
 
         linesFeteched = []
         self.__noneList = ["", "None", None, []]
@@ -59,7 +85,11 @@ class FirstCompiler:
                    if line["param#" + str(num)][0] not in self.__noneList:
                       datas.append(line["param#" + str(num)][0][1:-1])
 
-               line["compiled"] = "\t"+"\t".join(datas)
+               txt = "\t"+"\t".join(datas)
+
+               self.checkASMCode(txt, line)
+               if self.__error: line["compiled"] = txt
+
             elif self.isCommandInLineThat(line, "add"):
                 params = self.getParamsWithTypesAndCheckSyntax(line)
 
@@ -117,13 +147,217 @@ class FirstCompiler:
             varName = "#VAR0" + str(num) + "#"
             template = template.replace(varName, params[name][0])
 
-        """
-        if line["comment"][0] not in self.__noneList:
-           template = template.replace("#COMMENT#", line["comment"][0])
-           line["comment"][0] = None
+        self.checkASMCode(template, line)
+        if self.__error: line["compiled"] = template
 
-        """
-        line["compiled"] = template
+    def checkASMCode(self, template, lineStructure):
+        lines = template.split("\n")
+
+        for line in lines:
+            delimiterPoz = self.__editorBigFrame.getFirstValidDelimiterPoz(line)
+            line = line[:delimiterPoz]
+            #'$79': {'opcode': 'ADC', 'format': 'aaaa,y', 'bytes': 3},
+            line = line.replace("\r", "").replace("\t", " ").split(" ")
+            command = ""
+            value   = ""
+
+            for item in line:
+                if item != "":
+                   if command == "":
+                      command = item
+                   else:
+                      value = item
+                      break
+
+            foundCommand = False
+            for item in self.__opcodes:
+                lineSettings = self.__opcodes[item]
+                if lineSettings["opcode"].upper() == command.upper():
+                   if value in self.__noneList:
+                       if lineSettings["bytes"] == 1:
+                          foundCommand = True
+                          break
+                       else: continue
+
+                   if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
+
+                   beforeComma = value.split(",")[0]
+
+                   operandTyp  = self.getTypeOfOperand(beforeComma)
+                   operandSize = self.sizeOfNumber(beforeComma, operandTyp)
+
+                   numberValue = ""
+                   numeric = value
+
+                   if operandTyp in ("variable", "register"):
+                      numeric = self.getAddress(value)
+
+                   if value.startswith("#>") or value.startswith("#<"):
+                       if value[1] == ">":
+                           value = self.__editorBigFrame.convertStringNumToNumber(numeric[1:3])
+                       else:
+                           value = self.__editorBigFrame.convertStringNumToNumber(numeric[3:5])
+                   else:
+                       numberValue = self.__editorBigFrame.convertStringNumToNumber(numeric.replace("#", ""))
+
+                   hexa = ""
+                   mode = ""
+
+                   if operandTyp in ("address", "register"):
+                      hexa = hex(numberValue).replace("0x", "")
+                      if len(hexa) % 2 != 0: hexa = "0" + hexa
+                      hexa = "$" + hexa
+
+                      if hexa not in self.__registers.keys() and hexa not in self.__validMemoryAddresses:
+                         self.addToErrorList(lineStructure["lineNum"],
+                                             self.prepareErrorASM("compilerErrorASMRegisterAddr",
+                                                                   command, value,
+                                                                   lineStructure["lineNum"]))
+                      if operandSize == 2:
+                         high = hexa[1:3]
+                         low  = hexa[3:5]
+
+                         if high != "F0":
+                            if high == "02":
+                               riot = {
+                                   "80": "both",
+                                   "81": "write",
+                                   "82": "write",
+                                   "83": "none",
+                                   "84": "read",
+                                   "94": "write",
+                                   "95": "write",
+                                   "96": "write",
+                                   "97": "write"
+                               }
+
+                               mode = riot[low]
+                            else:
+                               mode = "read"
+                         else:
+                            if int(low) < 80:
+                               mode = "write"
+                            else:
+                               mode = "read"
+                      else:
+                          if int(hexa[1:]) > 29:
+                             mode = "read"
+                          else:
+                             mode = "write"
+
+                   elif operandTyp == "variable":
+                       pass
+
+
+                   foundCommand = True
+                   break
+
+            if foundCommand == False:
+                self.addToErrorList(lineStructure["lineNum"], self.prepareErrorASM("compilerErrorASMOpCode",
+                                                     command, value, lineStructure["lineNum"]))
+
+            if foundCommand == True:
+               try:
+                   print(command, value, operandTyp, operandSize, item)
+               except:
+                   print(command, value)
+            else:
+               print(self.errorList)
+
+    def checkIfASMhasrightOperand(self, lineSettings, value):
+        import re
+
+        beforeCommaValue    = value.split(",")[0]
+        try:
+            afterCommaValue = value.split(",")[1]
+        except:
+            afterCommaValue = ""
+
+        beforeCommaFormat    = lineSettings["format"].split(",")[0]
+        try:
+            afterCommaFormat = lineSettings["format"].split(",")[1]
+        except:
+            afterCommaFormat = ""
+
+        if afterCommaFormat != afterCommaValue: return False
+        beforeCommaFormat = beforeCommaFormat.upper()
+
+        onlyBody = beforeCommaValue.replace("#", "").replace(">", "").replace("<", "")
+        for reg in self.__registers:
+            if self.__registers[reg] == onlyBody.upper():
+               beforeCommaValue = beforeCommaValue.replace(onlyBody, "") + reg
+
+        for var in self.__variablesOfBank["all"]:
+            if var.upper() == onlyBody.upper():
+               addr = self.__virtualMemory.getAddressOnVariableIsStored(var, "bank1")
+               if addr == False:
+                  addr = self.__virtualMemory.getAddressOnVariableIsStored(var, self.__currentBank)
+               beforeCommaValue = beforeCommaValue.replace(onlyBody, "") + addr
+
+        allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
+
+        if beforeCommaFormat != allA: return False
+
+        numOfBytesFormat = beforeCommaFormat.count("A") // 2
+        if value.startswith("#"): numOfBytesFormat = 1
+
+        return self.sizeOfNumber(value, "") == numOfBytesFormat
+
+    def sizeOfNumber(self, value, typ):
+        makeItHalf = 1
+
+        if typ == "":
+           typ =  self.getTypeOfOperand(value)
+
+        if typ in ["variable", "register"]:
+
+           value = self.getAddress(value)
+           if value == False: return 0
+
+        else:
+            if value.startswith("#"):
+               return 1
+
+        numberValue = self.__editorBigFrame.convertStringNumToNumber(value)
+        if numberValue > 255:
+           return 2 // makeItHalf
+        else:
+           return 1 // makeItHalf
+
+    def getAddress(self, value):
+        body = value.replace("#", "").replace(">", "").replace("<", "")
+
+        address = self.__loader.virtualMemory.getAddressOnVariableIsStored(body, "bank1")
+        if address == False:
+            address = self.__loader.virtualMemory.getAddressOnVariableIsStored(body, self.__currentBank)
+
+        if address == False:
+            for reg in self.__registers:
+                if body.upper() == self.__registers[reg].upper():
+                    address = reg
+
+        return address
+
+    def getTypeOfOperand(self, value):
+        import re
+
+        numberFormat = None
+        for key in self.numberRegexes:
+            if len(re.findall(self.numberRegexes[key], value)) > 0:
+               if "#" in value: return "constant"
+               else:            return "address"
+
+        if numberFormat == None:
+           if value.startswith("#"): value = value[1:]
+
+           for key in self.__variablesOfBank:
+               if value in self.__variablesOfBank[key]:
+                  return "variable"
+           for key in self.__registers:
+               if value.upper() in self.__registers[key]:
+                  return "register"
+
+        return False
 
     def getParamsWithTypesAndCheckSyntax(self, line):
         params = {}
@@ -196,7 +430,7 @@ class FirstCompiler:
                       self.addToErrorList(line["lineNum"],    self.prepareError("compilerErrorParam", "param#" + str(num),
                                                               line["param#" + str(num)][0], "",
                                                               str(line["lineNum"] + self.__startLine)) +
-                                            " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing))
+                                                              " " + self.__dictionaries.getWordFromCurrentLanguage("compilerError" + missing))
 
                else:
                    if   paramTypeAndDimension[0] == "number":
@@ -241,7 +475,7 @@ class FirstCompiler:
             self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                                    line["command"][0], "",
                                                                    str(line["lineNum"] + self.__startLine))
-                                + " " + secondPart)
+                                                                    + " " + secondPart)
 
         return(params)
 
@@ -255,6 +489,7 @@ class FirstCompiler:
                return str(self.__constants[that]["value"])
 
     def addToErrorList(self, lineNum, text):
+
         if self.__currentBank not in self.errorList.keys():
            self.errorList[self.__currentBank] = {}
 
@@ -272,7 +507,12 @@ class FirstCompiler:
                     .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK#", self.__currentBank)\
                     .replace("#SECTION#", self.__currentSection).replace("#LINENUM#", str(lineNum)).replace("#PARAM#", param).replace("  ", " ")
 
-
+    def prepareErrorASM(self, text, opcode, operand, lineNum):
+        self.__error = True
+        return (self.__dictionaries.getWordFromCurrentLanguage("compilerErrorASM") + " " +\
+               self.__dictionaries.getWordFromCurrentLanguage(text)).replace("#LINENUM#", str(lineNum))\
+                                                                    .replace("#OPCODE#" , str(opcode))\
+                                                                    .replace("#OPERAND#", str(operand))
 
     def isCommandInLineThat(self, line, command):
         if line["command"][0] == command or command in self.__loader.syntaxList[command].alias:

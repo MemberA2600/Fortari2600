@@ -1350,9 +1350,10 @@ class EditorBigFrame:
             currentLineStructure["param#1"] not in [None, "None", ""]\
             and hasValidCommand == True:
             paramColoring = self.checkParams(currentLineStructure["param#1"],
-                                               currentLineStructure["param#2"],
-                                               currentLineStructure["param#3"],
-                                               currentLineStructure, currentLineStructure["command"][0], text)
+                                             currentLineStructure["param#2"],
+                                             currentLineStructure["param#3"],
+                                             currentLineStructure,
+                                             currentLineStructure["command"][0], text)
 
             paramNum = 0
             for item in paramColoring:
@@ -1392,8 +1393,7 @@ class EditorBigFrame:
                        self.removeTag(yOnTextBox, startNum, startNum  + len(self.__highLightWord), "background")
                        self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight")
 
-
-        if (yOnTextBox == self.__cursorPoz[0])  and caller == "lineTinting":
+        if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
            self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
@@ -2725,6 +2725,8 @@ class EditorBigFrame:
         stringD  = None
 
         for charNum in range(0, endPoz):
+            if charNum >= len(line): break
+
             if inside == True and line[charNum] == stringD:
                stringD = None
                inside  = False
@@ -3103,13 +3105,13 @@ class EditorBigFrame:
         return largest
 
     def addTag(self, Y, X1, X2, tag):
+#       tagRanges = self.__codeBox.tag_ranges("sel")
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
     def removeTag(self, Y, X1, X2, tags):
         if tags == None:
             for tag in self.__codeBox.tag_names():
                 if tag == "sel": continue
-
                 self.__codeBox.tag_remove(tag,
                                           str(Y) + "." + str(X1),
                                           str(Y) + "." + str(X2)
@@ -3311,3 +3313,4 @@ class EditorBigFrame:
 
 
         self.__codeBox.config(font=self.__normalFont)
+        self.__codeBox.tag_raise("sel")

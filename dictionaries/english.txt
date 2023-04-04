@@ -420,3 +420,7 @@ iteralError=Wrong usage of variable "item"! "Do-items" kind of commands cannot b
 compilerErrorStatementCalc=Calculating statements can contain numbers, variables, constants, brackets and arithmetic signs
 compilerErrorStatementComp=Comparing statements can contain numbers, variables, constants, brackets, arithmetic signs and ONE comparing sign!
 compilerErrorStatementStr=String statements can contain numbers, variables, constants, strings and the '+' sign!
+compilerErrorASM=Error found on compiled assembly from line #LINENUM#!
+compilerErrorASMOpCode=#OPCODE# is not a valid opcode or #OPERAND# is not suited for it!
+compilerErrorASMNumber=#OPERAND# is not a valid number! Numbers must be between 0-255, in decimal, binary ('%11111111') or hex ('$FF') format!
+compilerErrorASMRegisterAddr=#OPERAND# is not a valid register/memory address!

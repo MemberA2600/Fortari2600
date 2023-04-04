@@ -5,6 +5,7 @@ class Assembler():
     def __init__(self, __loader, projectPath, testIt, tv, deleteSrc):
         self.projectPath = projectPath
         self.__tv = tv
+        self.__loader = __loader
 
         self.__testIt = testIt
 
@@ -38,49 +39,6 @@ class Assembler():
         #print(command)
 
         os.popen(command)
-
-
-    def loadRegisters(self, path):
-        temp = {}
-
-        file = open(path, "r")
-        for line in file.readlines():
-            line = line.split("=", 1)
-            if (line[0].startswith("$") == False):
-                line[0] = "$"+line[0]
-
-            temp[line[0]] = line[1].replace("\r","").replace("\n","").replace(" ", "")
-
-        file.close()
-        return(temp)
-
-
-    def loadOpCodes(self, path):
-        temp = {}
-        file = open(path, "r")
-        for line in file.readlines():
-            line = line.split("=", 1)
-            if (line[0].startswith("$") == False):
-                line[0] = "$"+line[0]
-
-            temp[line[0]] = {}
-            sub = line[1].replace("\r","").replace("\n","")
-
-            while(sub.endswith(" ")):
-                sub = sub[:-1]
-
-            sub = sub.split(" ")
-            temp[line[0]]["opcode"] = sub[0]
-            if len(sub) == 1:
-                temp[line[0]]["format"] = None
-                temp[line[0]]["bytes"] = 1
-            else:
-                temp[line[0]]["format"] = sub[1]
-                temp[line[0]]["bytes"] = int(sub[1].count("a")/2)+1
-
-
-        file.close()
-        return(temp)
 
     def normalize(self, text):
         import re
@@ -778,8 +736,7 @@ class Assembler():
     def compile(self, path):
         import re
 
-        registers =  self.loadRegisters("templates/6507Registers.a26")
-        opcodes =  self.loadOpCodes("templates/opcodes.a26")
+        registers, opcodes =  self.__loader.io.loadRegOpCodes()
         file = open(path, "r")
         source = file.read()
         file.close()

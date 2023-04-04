@@ -420,3 +420,7 @@ iteralError=Az "item" változó helytelenül használt! A "Do-items" parancsok nem i
 compilerErrorStatementCalc=A számító állítások számokat, változókat, konstansokat, zárójeleket és matematikai jeleket tartalmazhatnak!
 compilerErrorStatementComp=Az összehasonlító állítások számokat, változókat, konstansokat, zárójeleket, matematikai jeleket és EGY összehasonlító jelet tartalmazhatnak!
 compilerErrorStatementStr=A string állítások számokat, változókat, konstansokat, karakterláncokat és a '+' jelet tartalmazhetják!
+compilerErrorASM=Hiba található a lefordított #LINENUM#. soron!
+compilerErrorASMOpCode=#OPCODE# nem valódi operációkód vagy az #OPERAND# nem társítható hozzá!
+compilerErrorASMNumber=#OPERAND# nem valós szám! A számok 0-255 közöttiek, decimális, bináris ('%11111111') vagy hexa ('$FF') formátumban!
+compilerErrorASMRegisterAddr=#OPERAND# nem valós regiszter/memória cím!

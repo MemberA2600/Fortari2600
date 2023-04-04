@@ -51,7 +51,10 @@ class Command:
         else:
            self.levelAllowed = None
 
-        self.flexSave = bool(data[9])
+        if data[9] == "True":
+           self.flexSave = True
+        else:
+           self.flexSave = False
 
         for a in self.alias:
             newString = "[],[common],command,"+data[3].lower()+","+data[4].lower() + "," + data[5] +\
