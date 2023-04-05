@@ -14,6 +14,15 @@ class FirstCompiler:
         self.errorList        = {}
         self.__currentBank    = bank
 
+        self.opcodesIOsMoreOtherThanRead = {
+             "SAX": "write",
+             "DCP": "both",
+             "ISB": "both",
+             "DEC": "both",
+             "INC": "both",
+             "STA": "write"
+        }
+
         writable, readOnly, all, nonSystem = self.__loader.virtualMemory.returnVariablesForBank(self.__currentBank)
         self.__variablesOfBank = {
             "writable"  : writable,
@@ -187,21 +196,31 @@ class FirstCompiler:
                    operandSize = self.sizeOfNumber(beforeComma, operandTyp)
 
                    numberValue = ""
-                   numeric = value
+                   numeric = beforeComma
 
                    if operandTyp in ("variable", "register"):
-                      numeric = self.getAddress(value)
+                      numeric = self.getAddress(beforeComma)
 
-                   if value.startswith("#>") or value.startswith("#<"):
-                       if value[1] == ">":
-                           value = self.__editorBigFrame.convertStringNumToNumber(numeric[1:3])
+                   if beforeComma.startswith("#>") or beforeComma.startswith("#<"):
+                       if beforeComma[1] == ">":
+                           beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[1:3])
                        else:
-                           value = self.__editorBigFrame.convertStringNumToNumber(numeric[3:5])
+                           beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[3:5])
                    else:
                        numberValue = self.__editorBigFrame.convertStringNumToNumber(numeric.replace("#", ""))
 
-                   hexa = ""
-                   mode = ""
+                   hexa    = ""
+                   mode    = ""
+                   special = ""
+
+                   try:
+                       opcodeDoes = self.opcodesIOsMoreOtherThanRead[command.upper()]
+                   except:
+                       opcodeDoes = "read"
+
+                   if operandTyp == "variable" and "#" in beforeComma:
+                      operandTyp  = "constant"
+                      beforeComma =  numeric
 
                    if operandTyp in ("address", "register"):
                       hexa = hex(numberValue).replace("0x", "")
@@ -219,6 +238,7 @@ class FirstCompiler:
 
                          if high != "F0":
                             if high == "02":
+                               special = "RIOT"
                                riot = {
                                    "80": "both",
                                    "81": "write",
@@ -235,20 +255,44 @@ class FirstCompiler:
                             else:
                                mode = "read"
                          else:
+                            special = "SARA"
                             if int(low) < 80:
                                mode = "write"
                             else:
                                mode = "read"
                       else:
+                          special = "CPU"
                           if int(hexa[1:]) > 29:
                              mode = "read"
                           else:
                              mode = "write"
 
                    elif operandTyp == "variable":
-                       pass
+                        if  len(self.__loader.virtualMemory.getAddressOnVariableIsStored(beforeComma)) > 2:
+                            mode = self.changeSARAtoAddress(lineStructure, opcodeDoes, beforeComma)
+                        else:
+                            if beforeComma in self.__variablesOfBank["readOnly"]:
+                               mode = "read"
+                            else:
+                               mode = "both"
 
+                   elif operandTyp == "constant":
+                        mode = "read"
 
+                   if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write"):
+                      mode = opcodeDoes
+
+                   if opcodeDoes != mode:
+                      if special == "":
+                         eText = operandTyp[0].upper() + operandTyp[1:]
+                      else:
+                         eText = special
+
+                      eText += opcodeDoes[0].upper() + opcodeDoes[1:]
+                      self.addToErrorList(lineStructure["lineNum"],
+                                          self.prepareErrorASM("compilerErrorASM"+eText,
+                                                               command, value,
+                                                               lineStructure["lineNum"]))
                    foundCommand = True
                    break
 
@@ -263,6 +307,24 @@ class FirstCompiler:
                    print(command, value)
             else:
                print(self.errorList)
+
+    def changeSARAtoAddress(self, line, IO, variable):
+        address = self.__loader.virtualMemory.getAddressOnVariableIsStored(variable)
+        low     = address[3:]
+
+        if low  > 79:
+           readAddress  = address
+           writeAddress = self.__loader.virtualMemory.getSARAWriteAddressFromReadAddress(address)
+        else:
+           writeAddress = address
+           readAddress  = self.__loader.virtualMemory.getSARAReadAddressFromWriteAddress(address)
+
+        if IO == "read":
+           line["compiled"] = line["compiled"].replace(variable, readAddress)
+           return "read"
+        else:
+           line["compiled"] = line["compiled"].replace(variable, writeAddress)
+           return "write"
 
     def checkIfASMhasrightOperand(self, lineSettings, value):
         import re

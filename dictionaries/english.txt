@@ -424,3 +424,6 @@ compilerErrorASM=Error found on compiled assembly from line #LINENUM#!
 compilerErrorASMOpCode=#OPCODE# is not a valid opcode or #OPERAND# is not suited for it!
 compilerErrorASMNumber=#OPERAND# is not a valid number! Numbers must be between 0-255, in decimal, binary ('%11111111') or hex ('$FF') format!
 compilerErrorASMRegisterAddr=#OPERAND# is not a valid register/memory address!
+compilerErrorASMRIOTRead=#OPCODE# requires a readable register. Maybe, #OPERAND# of RIOT is write-only?
+compilerErrorASMRIOTWrite=#OPCODE# requires a writable register. Maybe, #OPERAND# of RIOT is read-only?
+compilerErrorASMRIOTBoth=#OPCODE# requires a register that can be read and also written. #OPERAND# seems to be one-way only.
