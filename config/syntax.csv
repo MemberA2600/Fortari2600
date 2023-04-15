@@ -3,7 +3,7 @@ add;[addition +];[common];command;None;brackets;[];[number|variable|stringConst 
 and;[& &&];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 asm;[assembly];[common];command;None;brackets;[];[string {string}];None;None;False
 calc;[calculate compute comp];[common];command;None;brackets;[];[variable statement];write;None;False
-call;[exec execute];[common];command;None;brackets;[];[subroutine {variable}];write;None;False
+call;[exec execute];[common];command;None;brackets;[!subroutines];[subroutine {variable}];write;None;False
 case;[when];[common];command;None;brackets;[];[variable|number|statement|stringConst];read;None;False
 const;[constant];[common];command;None;brackets;[enter];[string number];None;None;False
 cycle;[continue next];[common];command;None;None;[];None;None;None;False
@@ -20,21 +20,22 @@ goto;[];[common];command;None;None;[leave];[number|stringConst|variable];None;No
 incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False
 leave;[];[common];command;None;None;[overscan];None;None;None;False
 multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
-not;[! / ~];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
+not;[! ~];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
 or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
 pow;[power **];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];None;None;False
 rem;[remainder %];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];None;None;True
 return;[];[common];command;None;brackets;[subroutines];[number|variable|stringConst];read;None;False
-rollL;[rol];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
-rollR;[ror];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+rollL;[rol <-];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+rollR;[ror ->];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 screen;[];[common];command;end;brackets;[screenroutines];[string];None;0;False
 select;[switch evaluate];[common];command;end;brackets;[];[variable|stringConst|number];read;None;False
-set;[];[common];command;None;brackets;[];[variable number|variable|stringConst];write;None;False
-shiftL;[asl];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
-shiftR;[lsr];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+set;[=];[common];command;None;brackets;[];[variable number|variable|stringConst];write;None;False
+setAll;[setA =A];[common];command;None;brackets;[];[array number|variable|stringConst];write;None;False
+shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False
 swap;[];[common];command;None;brackets;[];[variable variable];write;None;False
-xor;[eor];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
+xor;[eor ^];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True

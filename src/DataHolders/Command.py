@@ -33,7 +33,14 @@ class Command:
         if data[5] == "[]":
            self.sectionsAllowed = self.__loader.sections
         else:
-           self.sectionsAllowed = data[5][1:-1].split(" ")
+           if data[5].startswith("[!") == False:
+              self.sectionsAllowed = data[5][1:-1].split(" ")
+           else:
+             from copy import deepcopy
+             nope = data[5][2:-1].split(" ")
+             self.sectionsAllowed = deepcopy(self.__loader.sections)
+             for item in nope:
+                 self.sectionsAllowed.remove(item)
 
         if data[6] != "None":
            self.params = data[6][1:-1].split(" ")

@@ -615,25 +615,34 @@ class EditorBigFrame:
             if currentLineStructure["command"][0] in noneList:
                continue
 
-            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
-               endFound = self.__findEnd(currentLineStructure, lineNum, text)
-               if endFound == False:
-                  errorFound = True
-                  errorData  = {"line": str(lineNum), "type": "end"}
-                  break
-               else:
-                  endY    = endFound[0]
-                  if endY > lastLineStruct["lineNum"]: selection[1] = str(endY) + "." + str(len(text[endY]))
+            if currentLineStructure["command"][0] not in self.__syntaxList:
+                foundObjects = self.findObjects(currentLineStructure["command"][0],
+                                                self.__objectMaster.getStartingObjects())
 
-            elif currentLineStructure["command"][0].startswith("end-") == True:
-               startFound = self.__findStart(currentLineStructure, lineNum, text)
-               if startFound == False:
-                  errorFound = True
-                  errorData  = {"line": str(lineNum), "type": "start"}
-                  break
-               else:
-                  startY    = startFound[0]
-                  if startY < firstLineStruct["lineNum"]: selection[0] = str(startY) + ".0"
+                if foundObjects == {}:
+                   errorFound = True
+                   errorData = {"line": str(lineNum), "type": "command"}
+                   break
+            else:
+                if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
+                   endFound = self.__findEnd(currentLineStructure, lineNum, text)
+                   if endFound == False:
+                      errorFound = True
+                      errorData  = {"line": str(lineNum), "type": "end"}
+                      break
+                   else:
+                      endY    = endFound[0]
+                      if endY > lastLineStruct["lineNum"]: selection[1] = str(endY) + "." + str(len(text[endY]))
+
+                elif currentLineStructure["command"][0].startswith("end-") == True:
+                   startFound = self.__findStart(currentLineStructure, lineNum, text)
+                   if startFound == False:
+                      errorFound = True
+                      errorData  = {"line": str(lineNum), "type": "start"}
+                      break
+                   else:
+                      startY    = startFound[0]
+                      if startY < firstLineStruct["lineNum"]: selection[0] = str(startY) + ".0"
 
         if errorFound:
            self.__loader.fileDialogs.displayError("errorOnASMConvert", "errorOnASMConvertText", errorData, None)
@@ -1045,6 +1054,7 @@ class EditorBigFrame:
         yOnTextBox = lineNum + 1
 
         line = line.replace("\t", " ")
+        self.__statement = None
 
         if caller == "lineTinting":
            self.removeTag(yOnTextBox, 0, len(line), None)
@@ -1356,6 +1366,7 @@ class EditorBigFrame:
                                              currentLineStructure["command"][0], text)
 
             paramNum = 0
+            #print(paramColoring)
             for item in paramColoring:
                 if item[1][0] != -1:
                    if caller == "lineTinting":
@@ -1367,6 +1378,17 @@ class EditorBigFrame:
                                               item[0])
                    elif caller == "lineEditor":
                       paramNum += 1
+
+                      isThatStatement, paramN = self.isThatADamnStatement(currentLineStructure, item[1])
+                      if isThatStatement == True:
+                         paramNum = paramN
+                         item[0] = "bracket"
+                         for itemS in self.__statement:
+                             if itemS["type"] == "error":
+                                item[0] = "error"
+                                break
+
+
                       self.configTheItem("param#" + str(paramNum), item[0])
                       lineEditorTempDict["param#" + str(paramNum)] = item[0]
 
@@ -1455,6 +1477,29 @@ class EditorBigFrame:
                     lineEditorTempDict["command#3"] = "error"
 
             self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
+
+    def isThatADamnStatement(self, currentLineStructure, dimensions):
+        for item in currentLineStructure.keys():
+            if item.startswith("param#"):
+               S1 = currentLineStructure[item][1][0]
+               S2 = dimensions[0]
+               E1 = currentLineStructure[item][1][1]
+               E2 = dimensions[1]
+
+               if S2 >= S1 and E2 <= E1:
+                   command = None
+                   for c in self.__loader.syntaxList.keys():
+                       if currentLineStructure["command"][0] == c or currentLineStructure["command"][0] in self.__syntaxList[c].alias:
+                          command = self.__loader.syntaxList[c]
+                          break
+
+                   paramNum      = int(item.split("#")[1]) - 1
+                   selectedParam = command.params[paramNum]
+
+                   if "statement" in selectedParam:
+                      return True, int(item.split("#")[1])
+
+        return False, ""
 
     def updateListBoxFromLineEditor(self, currentLineStructure, commandParams, lineEditorTempDict, text):
         wordList = []
@@ -2249,10 +2294,13 @@ class EditorBigFrame:
                 if lineStructure["command"][0] == "calc" or lineStructure["command"][0] in self.__syntaxList["calc"].alias:
                    needComprassion = False
 
-                #If the screenItem stuff will be available, set it here!
+                elif "%write" in lineStructure["command"][0]:
+                    stringAllowed   = True
+                    needComprassion = False
 
                 addIndex = lineStructure[cursorIn][1][0]
                 statementData = self.getStatementStructure(param, needComprassion, stringAllowed, addIndex, lineStructure)
+                self.__statement = statementData
                 foundIt = True
 
                 # if cursorIn == "param#1": raise ValueError
@@ -2293,7 +2341,10 @@ class EditorBigFrame:
                        param[startIndex:endIndex] not in ["(", ")"]  and\
                        param[startIndex:endIndex] not in arithmetics:
 
+                       if param[endIndex-1] == ")":
+                          endIndex -= 1
 
+                       #print(param[startIndex:endIndex], startIndex, endIndex-1)
                        statementData.append(
                            {
                                "word"    : param[startIndex:endIndex],
@@ -2366,19 +2417,23 @@ class EditorBigFrame:
             if item["type"] == "comprass":
                if numberOfCompares > 0:
                   item["type"] = "error"
+                  #print("1")
                numberOfCompares += 1
 
             if "string" in item["type"] and stringAllowed == False:
                 item["type"] = "error"
+                #print("2")
 
             if [item["type"], lastOne]   in inValidPairs or \
                [lastOne, item["type"]]   in inValidPairs or \
                (lastOne == item["type"] and item["type"] not in ("bracket", "invalidBracket")):
                item["type"] = "error"
+               #print("3")
 
             if stringAllowed == True and ((item["type"] == "bracket"     or item["type"] == "comprass" or
                                            item["type"] == "arithmetic") and item["word"] != "+"):
                item["type"] = "error"
+               #print("4")
 
             lastOne = item["type"]
 
@@ -2453,6 +2508,7 @@ class EditorBigFrame:
                          "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'
                          }
 
+        #print(word)
         for key in numberRegexes.keys():
             test = re.findall(numberRegexes[key], word)
             if len(test) > 0:

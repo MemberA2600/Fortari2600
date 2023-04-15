@@ -13,6 +13,10 @@ class FirstCompiler:
         self.__loadCommandASM = self.__loader.io.loadCommandASM
         self.errorList        = {}
         self.__currentBank    = bank
+        self.__objectMaster   = self.__loader.virtualMemory.objectMaster
+
+        from Compiler import Compiler
+        self.__mainCompiler   = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "dummy", None)
 
         self.opcodesIOsMoreOtherThanRead = {
              "SAX": "write",
@@ -97,22 +101,101 @@ class FirstCompiler:
                txt = "\t"+"\t".join(datas)
 
                self.checkASMCode(txt, line)
-               if self.__error: line["compiled"] = txt
+               if self.__error == False: line["compiled"] = txt
 
             elif self.isCommandInLineThat(line, "add"):
                 params = self.getParamsWithTypesAndCheckSyntax(line)
 
-                if params["param#1"][1] == "number":
-                   if self.isItZero(params["param#1"][0]): continue
-
-                if params["param#2"][1] == "number":
-                   if self.isItZero(params["param#2"][0]): continue
-
                 if "param#3" not in params.keys():
+                   if params["param#2"][1] == "number":
+                      if   self.isIt(params["param#2"][0], 0): continue
+                      elif self.isIt(params["param#2"][0], 1):
+                           addr = self.getAddress(params["param#1"][0])
+                           var  = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+
+                           if len(addr) == 3 and var.type == "byte":
+                              txt = "\tINC\t" + params["param#1"][0] + "\n"
+                              self.checkASMCode(txt, line)
+                              if self.__error == False: line["compiled"] = txt
+                              continue
+
                    params["param#3"] = params["param#1"]
 
-                if self.__error == False: self.createASMTextFromLine(line, "add", params)
+                else:
+                    if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+
+                       keyParam = None
+                       if   self.isIt(params["param#1"][0], 0):
+                            keyParam = "param#2"
+                       elif self.isIt(params["param#2"][0], 0):
+                            keyParam = "param#1"
+
+                       if keyParam != None:
+                          txt = "\tLDA\t#" + params[keyParam][0].replace("#", "") + "\n"
+
+                          var =  self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+                          if var.type != "byte":
+                             txt += self.__mainCompiler.save8bitsToAny2(var.usedBits, params["param#3"][0])
+
+                          txt += "\tSTA\t" + params["param#3"][0] + "\n"
+
+                          self.checkASMCode(txt, line)
+                          if self.__error == False: line["compiled"] = txt
+                          continue
+
+                changeText = self.prepareAdd(params)
+
+                if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText)
                 #print(params)
+
+            elif self.isCommandInLineThat(line, "and"):
+                 params = self.getParamsWithTypesAndCheckSyntax(line)
+                 if "param#3" not in params.keys():
+                     if params["param#2"][1] == "number":
+                        if self.isIt(params["param#2"][0], 255):
+                           continue
+
+                        if self.isIt(params["param#2"][0], 0):
+                           txt = "\tLDA\t#0\n\tSTA\t" + params["param#1"][0] + "\n"
+                           self.checkASMCode(txt, line)
+                           if self.__error == False: line["compiled"] = txt
+                           continue
+
+                     params["param#3"] = params["param#1"]
+                 else:
+
+                     zeroParam = None
+                     param255 = None
+
+                     if params["param#1"][1] == "number":
+                        if self.isIt(params["param#1"][0], 0):
+                           zeroParam = True
+
+                        if self.isIt(params["param#1"][0], 255):
+                           param255 = "param#2"
+
+                     if params["param#2"][1] == "number":
+                        if self.isIt(params["param#2"][0], 0):
+                           zeroParam = True
+
+                        if self.isIt(params["param#2"][0], 255):
+                           param255 = "param#1"
+
+                     if zeroParam == True:
+                        txt = "\tLDA\t#0\n\tSTA\t" + params["param#3"][0] + "\n"
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        continue
+
+                     if param255 != None:
+                        txt = "\tLDA\t#" + params[param255][0] + "\n\tSTA\t" + params["param#3"][0] + "\n"
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        continue
+
+                 changeText = self.prepareAdd(params)
+                 if self.__error == False: self.createASMTextFromLine(line, "and", params, changeText)
+
 
         textToReturn = ""
         for line in linesFeteched:
@@ -120,12 +203,13 @@ class FirstCompiler:
                 if line[word] not in self.__noneList:
                     if type(line[word]) == list:
                         line[word] = "\n".join(line[word])
+
                     if   mode == "forBuild":
                          textToReturn += line[word] + "\n"
                     elif mode == "forEditor":
                          textLines = line[word].split("\n")
                          for tLine in textLines:
-                            if tLine in self.__noneList or tLine == "\n": continue
+                            if tLine in self.__noneList or tLine == "\n" or "!!!" in tLine: continue
                             if tLine.startswith("*"):
                                textToReturn += tLine + "\n"
                             else:
@@ -136,7 +220,7 @@ class FirstCompiler:
 
         self.result = textToReturn
 
-    def isItZero(self, val):
+    def isIt(self, val, comp):
         if val.startswith("#"): val = val[1:]
 
         if   val.startswith("%"):
@@ -146,18 +230,46 @@ class FirstCompiler:
         else:
              val = int(val)
 
-        if val == 0: return True
+        if val == comp: return True
         return False
 
-    def createASMTextFromLine(self, line, command, params):
+    def createASMTextFromLine(self, line, command, params, changeText):
         template = self.__loader.io.loadCommandASM(command)
+
+        for item in changeText:
+            #print(item, item in template)
+            template = template.replace(item, changeText[item])
+
         for num in range(1, 4):
             name    = "param#" + str(num)
             varName = "#VAR0" + str(num) + "#"
             template = template.replace(varName, params[name][0])
 
         self.checkASMCode(template, line)
-        if self.__error: line["compiled"] = template
+        if self.__error == False: line["compiled"] = template
+
+    def prepareAdd(self, params):
+        changeText = {}
+
+        var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+        var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
+        if var1 != False:
+           if var1.type != "byte":
+              changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+
+        if var2 != False:
+           if var2.type != "byte":
+              changeText["#VAR02#"] = "temp01"
+              changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
+                                            self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\ttemp01"
+        if var3 != False:
+           if var3.type != "byte":
+              changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+
+        return changeText
+
 
     def checkASMCode(self, template, lineStructure):
         lines = template.split("\n")
@@ -170,13 +282,19 @@ class FirstCompiler:
             command = ""
             value   = ""
 
+            #if line == [""]: continue
+            newLine = []
             for item in line:
-                if item != "":
-                   if command == "":
-                      command = item
-                   else:
-                      value = item
-                      break
+                if item != "": newLine.append(item)
+            line    = newLine
+            if line == []: continue
+
+            command = line[0]
+            if len(line) > 1:
+               value   = line[1]
+
+            if command == "": continue
+            errorVal   = 0
 
             foundCommand = False
             for item in self.__opcodes:
@@ -188,7 +306,10 @@ class FirstCompiler:
                           break
                        else: continue
 
+                   errorVal = 1
                    if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
+
+                   errorVal = 2
 
                    beforeComma = value.split(",")[0]
 
@@ -268,7 +389,7 @@ class FirstCompiler:
                              mode = "write"
 
                    elif operandTyp == "variable":
-                        if  len(self.__loader.virtualMemory.getAddressOnVariableIsStored(beforeComma)) > 2:
+                        if  len(self.getVarAddress(beforeComma)) > 3:
                             mode = self.changeSARAtoAddress(lineStructure, opcodeDoes, beforeComma)
                         else:
                             if beforeComma in self.__variablesOfBank["readOnly"]:
@@ -297,9 +418,11 @@ class FirstCompiler:
                    break
 
             if foundCommand == False:
-                self.addToErrorList(lineStructure["lineNum"], self.prepareErrorASM("compilerErrorASMOpCode",
+               #print(line, errorVal)
+               self.addToErrorList(lineStructure["lineNum"], self.prepareErrorASM("compilerErrorASMOpCode",
                                                      command, value, lineStructure["lineNum"]))
 
+            """
             if foundCommand == True:
                try:
                    print(command, value, operandTyp, operandSize, item)
@@ -307,10 +430,11 @@ class FirstCompiler:
                    print(command, value)
             else:
                print(self.errorList)
+            """
 
     def changeSARAtoAddress(self, line, IO, variable):
-        address = self.__loader.virtualMemory.getAddressOnVariableIsStored(variable)
-        low     = address[3:]
+        address = self.getVarAddress(variable)
+        low     = int(address[3:])
 
         if low  > 79:
            readAddress  = address
@@ -344,6 +468,8 @@ class FirstCompiler:
         if afterCommaFormat != afterCommaValue: return False
         beforeCommaFormat = beforeCommaFormat.upper()
 
+
+
         onlyBody = beforeCommaValue.replace("#", "").replace(">", "").replace("<", "")
         for reg in self.__registers:
             if self.__registers[reg] == onlyBody.upper():
@@ -356,7 +482,12 @@ class FirstCompiler:
                   addr = self.__virtualMemory.getAddressOnVariableIsStored(var, self.__currentBank)
                beforeCommaValue = beforeCommaValue.replace(onlyBody, "") + addr
 
-        allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
+        if "#" in beforeCommaValue:
+           allA = "AA"
+        else:
+           allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
+
+        #print(beforeCommaFormat, allA)
 
         if beforeCommaFormat != allA: return False
 
@@ -364,6 +495,12 @@ class FirstCompiler:
         if value.startswith("#"): numOfBytesFormat = 1
 
         return self.sizeOfNumber(value, "") == numOfBytesFormat
+
+    def getVarAddress(self, var):
+        addr = self.__virtualMemory.getAddressOnVariableIsStored(var, "bank1")
+        if addr == False:
+           addr = self.__virtualMemory.getAddressOnVariableIsStored(var, self.__currentBank)
+        return addr
 
     def sizeOfNumber(self, value, typ):
         makeItHalf = 1
@@ -403,21 +540,19 @@ class FirstCompiler:
     def getTypeOfOperand(self, value):
         import re
 
-        numberFormat = None
         for key in self.numberRegexes:
-            if len(re.findall(self.numberRegexes[key], value)) > 0:
+            if len(re.findall(self.numberRegexes[key], value.replace("#", ""))) > 0:
                if "#" in value: return "constant"
                else:            return "address"
 
-        if numberFormat == None:
-           if value.startswith("#"): value = value[1:]
+        if value.startswith("#"): value = value[1:]
 
-           for key in self.__variablesOfBank:
-               if value in self.__variablesOfBank[key]:
-                  return "variable"
-           for key in self.__registers:
-               if value.upper() in self.__registers[key]:
-                  return "register"
+        for key in self.__variablesOfBank:
+            if value in self.__variablesOfBank[key]:
+               return "variable"
+        for key in self.__registers:
+            if value.upper() in self.__registers[key]:
+               return "register"
 
         return False
 
@@ -565,12 +700,16 @@ class FirstCompiler:
 
     def prepareError(self, text, param, val, var, lineNum):
         self.__error = True
+        #raise ValueError
+
         return self.__dictionaries.getWordFromCurrentLanguage(text)\
                     .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK#", self.__currentBank)\
                     .replace("#SECTION#", self.__currentSection).replace("#LINENUM#", str(lineNum)).replace("#PARAM#", param).replace("  ", " ")
 
     def prepareErrorASM(self, text, opcode, operand, lineNum):
         self.__error = True
+        #raise ValueError
+
         return (self.__dictionaries.getWordFromCurrentLanguage("compilerErrorASM") + " " +\
                self.__dictionaries.getWordFromCurrentLanguage(text)).replace("#LINENUM#", str(lineNum))\
                                                                     .replace("#OPCODE#" , str(opcode))\
@@ -581,3 +720,124 @@ class FirstCompiler:
            return True
         return False
 
+    def convertStatementToSmallerCodes(self, command, statement, line):
+        side1            = ""
+        side2            = ""
+        statementData    = []
+        statementFetched = []
+
+        needComprassion = True
+        stringAllowed   = False
+
+        if command == "calc":
+           needComprassion = False
+        elif "%write" in command:
+           needComprassion = False
+           stringAllowed   = True
+
+        # string thing will come here
+
+        statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0, line)
+
+        self.__temps        = []
+        self.__highestLevel = -1
+
+        for num in range(2, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+
+            self.__temps.append("temp" + num)
+
+        self.setLevelsAndPriors(statementData, line)
+
+        if self.__error == False:
+           for currentLevel in range(self.__highestLevel, -1, -1):
+               self.processCurrentLevelOfStatement(currentLevel, statementData, statementFetched)
+
+    def setLevelsAndPriors(self, statementData, line):
+        level        = 0
+        highestLevel = 0
+
+        for dataNum in range(0, len(statementData)):
+            data = statementData[dataNum]
+
+            if data["type"].startswith("bracket"):
+               if data["word"] == "(":
+                  level += 1
+                  if level > highestLevel:
+                     highestLevel = level
+                     if self.__highestLevel == -1:
+                        self.__highestLevel = highestLevel
+
+                  data["level"] = level
+                  data["pior"]  = -1
+               else:
+                  data["level"] = level
+                  level -= 1
+                  data["pior"]  = -1
+
+            else:
+               if data["type"] == "variable" and data["word"] in self.__temps:
+                  try:
+                      self.__temps.remove(data["word"])
+                  except:
+                      pass
+
+               data["level"] = level
+               if data["word"] in self.__config.getValueByKey("validArithmetics").split(" "):
+                  priorityLevel = {
+                      1: ["+", "-"],
+                      2: ["*", "/", "%"],
+                      3: ["&", "|", "!", "~", "^"]
+                  }
+                  for num in range(1, 4):
+                      if data["word"] in priorityLevel[num]:
+                         data["pior"] = num
+
+                         if dataNum > 0:
+                            leftData = statementData[dataNum - 1]
+                            if leftData["pior"] < data["prior"]:
+                               leftData["pior"] = data["prior"]
+
+                         if dataNum < len(statementData):
+                             rightData = statementData[dataNum + 1]
+                             if rightData["pior"] < data["prior"]:
+                                rightData["pior"] = data["prior"]
+
+               if data["type"] == "comprass" and level != 0:
+                  self.addToErrorList(line["lineNum"],
+                                      self.prepareError("compilerErrorStatementComprass", statement,
+                                                         "", data["word"],
+                                                         str(line["lineNum"] + self.__startLine)))
+
+
+
+    def processCurrentLevelOfStatement(self, currentLevel, statementData, statementFetched):
+        lastOne    = False
+        first      = 0
+        opened     = False
+
+        while lastOne == False:
+            startIndex = -1
+            endIndex = -1
+            for itemNum in range(first, len(statementData)):
+                  item = statementData[itemNum]
+
+                  if item["level"] == currentLevel and startIndex == -1:
+                     startIndex    = itemNum
+                     opened        = True
+
+                  if item["level"] != currentLevel and opened == True:
+                     endIndex      = itemNum
+
+                  if itemNum    == len(statementData) - 1:
+                     if opened  == True:
+                        endIndex = itemNum
+                     lastOne     = True
+
+                  if endIndex   != -1:
+                     self.fetchStatementPart(statementData, statementFetched, startIndex, endIndex)
+
+    def fetchStatementPart(self, statementData, statementFetched, startIndex, endIndex):
+        replaceble = statementData[startIndex:endIndex + 1]
+        print(replaceble)

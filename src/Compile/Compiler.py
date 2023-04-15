@@ -189,7 +189,6 @@ class Compiler:
         startingBit     = min(bits)
         lastBit         = max(bits)
         text            = "\tLDA\t" + varName + "\n"
-
         forAND          = ""
 
         for num in range(7,-1,-1):
@@ -226,6 +225,30 @@ class Compiler:
         text            += "\tAND\t#%" + forAND  + "\n" + shifting +\
                            "\tORA\t"   + varName + "\n\tSTA\t" + varName + "\n"
         return(text)
+
+    def save8bitsToAny2(self, bits, varName):
+        startingBit = min(bits)
+        text = "\tTAX\n\tLDA\t" + varName + "\n"
+        forAND = ""
+
+        for num in range(7, -1, -1):
+            if num in bits:
+                forAND += "0"
+            else:
+                forAND += "1"
+
+        text += "\tAND\t#%" + forAND + "\n\tSTA\t" + varName + "\n\tTXA\n"
+
+        shifting = ""
+        if (8 - startingBit) < startingBit:
+            shifting = "\tROR\n" * (8 - startingBit)
+        else:
+            shifting = "\tASL\n" * startingBit
+
+        forAND = "0" * (8 - len(bits)) + "1" * len(bits)
+        text += "\tAND\t#%" + forAND + "\n" + shifting + \
+                "\tORA\t" + varName + "\n"
+        return (text)
 
     def __testMiniMap(self):
         self.__name            = self.__data[0]
@@ -4226,3 +4249,7 @@ class Compiler:
 #if __name__ == "__main__":
 #   c = Compiler(None, None, "dummy" ,None)
 #   print(c.generateTextDataFromString("Elzevir - Forgive Me"))
+
+#if __name__ == "__main__":
+#    o = Compiler(None, None, "dummy", None)
+#    print(o.save8bitsToAny2([5, 6, 7], "Pacal"))
