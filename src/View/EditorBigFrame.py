@@ -1383,6 +1383,7 @@ class EditorBigFrame:
                       if isThatStatement == True:
                          paramNum = paramN
                          item[0] = "bracket"
+
                          for itemS in self.__statement:
                              if itemS["type"] == "error":
                                 item[0] = "error"
@@ -1486,17 +1487,36 @@ class EditorBigFrame:
                E1 = currentLineStructure[item][1][1]
                E2 = dimensions[1]
 
+               statementTyp = "comprass"
+
                if S2 >= S1 and E2 <= E1:
                    command = None
                    for c in self.__loader.syntaxList.keys():
                        if currentLineStructure["command"][0] == c or currentLineStructure["command"][0] in self.__syntaxList[c].alias:
                           command = self.__loader.syntaxList[c]
+
+                          if c == "calc": statementTyp = "calc"
                           break
+
+                   if "%write" in currentLineStructure["command"][0]:
+                       statementTyp = "write"
+
+                   needComprassion = True
+                   stringAllowed = False
+
+                   if statementTyp == "calc":
+                       needComprassion = False
+                   elif statementTyp == "write":
+                       needComprassion = False
+                       stringAllowed = True
 
                    paramNum      = int(item.split("#")[1]) - 1
                    selectedParam = command.params[paramNum]
 
                    if "statement" in selectedParam:
+                      statement = currentLineStructure[item][0]
+                      self.__statement = self.getStatementStructure(statement, needComprassion, stringAllowed, 0, currentLineStructure)
+
                       return True, int(item.split("#")[1])
 
         return False, ""
@@ -2216,7 +2236,10 @@ class EditorBigFrame:
                     if len(test) > 0:
                        foundIt = True
                        returnBack.append(["number", dimension])
-
+                       if key == "dec":
+                          toNum = int(param)
+                          if toNum > 255:
+                             returnBack[-1][0] = "error"
 
             elif pType == "array":
                 if printMe: print(pType)
@@ -2412,7 +2435,6 @@ class EditorBigFrame:
             ["string"     , "stringConst"]
         ]
 
-
         for item in statementData:
             if item["type"] == "comprass":
                if numberOfCompares > 0:
@@ -2438,7 +2460,6 @@ class EditorBigFrame:
             lastOne = item["type"]
 
         level     = 0
-
         #print("1", statementData)
 
         bracketPairs = []
@@ -2450,6 +2471,8 @@ class EditorBigFrame:
 
             if numberOfCompares == 0 and needComprassion == True:
                item["type"] = "error"
+            elif item["type"] == "comprass" and level != 0:
+               item["type"] = "error"
             elif item["word"] == "(":
                level += 1
                if   item["type"] == "invalidBracket":
@@ -2460,7 +2483,7 @@ class EditorBigFrame:
                        bracketPairs.append([itemNum, foundPair])
                    else:
                        item["type"] = "error"
-            elif item["word"] and item["type"] == "invalidBracket" == ")":
+            elif item["word"] == ")" and item["type"] == "invalidBracket" :
                 level -= 1
 
         if lineStructure["lineNum"] == self.__cursorPoz[0]-1:

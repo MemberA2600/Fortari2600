@@ -196,6 +196,9 @@ class FirstCompiler:
                  changeText = self.prepareAdd(params)
                  if self.__error == False: self.createASMTextFromLine(line, "and", params, changeText)
 
+            elif self.isCommandInLineThat(line, "calc"):
+                 self.convertStatementToSmallerCodes("calc", line["param#2"][0], line)
+
 
         textToReturn = ""
         for line in linesFeteched:
@@ -726,118 +729,146 @@ class FirstCompiler:
         statementData    = []
         statementFetched = []
 
-        needComprassion = True
-        stringAllowed   = False
-
-        if command == "calc":
-           needComprassion = False
-        elif "%write" in command:
-           needComprassion = False
-           stringAllowed   = True
-
-        # string thing will come here
-
-        statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0, line)
-
-        self.__temps        = []
-        self.__highestLevel = -1
-
+        self.__temps = []
         for num in range(2, 20):
             num = str(num)
             if len(num) == 1: num = "0" + num
 
             self.__temps.append("temp" + num)
 
-        self.setLevelsAndPriors(statementData, line)
+        needComprassion = True
+        stringAllowed   = False
+        statementTyp    = "comprass"
+
+        if command == "calc":
+           needComprassion = False
+           statementTyp    = "calc"
+        elif "%write" in command:
+           needComprassion = False
+           stringAllowed   = True
+           statementTyp    = "write"
+
+        statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0, line)
+
+        foundError           = False
+        for item in statementData:
+            if item["type"] == "error":
+               foundError = True
+               break
+
+        if foundError == True:
+           self.addToErrorList(line["lineNum"],
+                               self.prepareError("compilerErrorStatementError", statement,
+                                                 "", "", str(line["lineNum"] + self.__startLine)))
+        else:
+            if statementTyp != "write":
+               from sympy import simplify, expand
+               statement = str(expand(simplify(statement)))
+
+               statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0,
+                                                                           line)
+               for item in statementData:
+                   if item["word"] in ["(", ")"]:
+                      self.addToErrorList(line["lineNum"],
+                                          self.prepareError("compilerErrorStatementComplex", statement,
+                                                             "", "", str(line["lineNum"] + self.__startLine)))
+                      break
+
+               if self.__error == False:
+                  commands = self.convertToCommands(statement, line)
+
 
         if self.__error == False:
-           for currentLevel in range(self.__highestLevel, -1, -1):
-               self.processCurrentLevelOfStatement(currentLevel, statementData, statementFetched)
+           print(commands)
 
-    def setLevelsAndPriors(self, statementData, line):
-        level        = 0
-        highestLevel = 0
 
-        for dataNum in range(0, len(statementData)):
-            data = statementData[dataNum]
+    def convertToCommands(self, statement, line):
+        newT = []
 
-            if data["type"].startswith("bracket"):
-               if data["word"] == "(":
-                  level += 1
-                  if level > highestLevel:
-                     highestLevel = level
-                     if self.__highestLevel == -1:
-                        self.__highestLevel = highestLevel
+        for temp in self.__temps:
+            if temp not in statement:
+               newT.append(temp)
 
-                  data["level"] = level
-                  data["pior"]  = -1
-               else:
-                  data["level"] = level
-                  level -= 1
-                  data["pior"]  = -1
+        self.__temps = newT
 
+        statement = statement.split(" ")
+
+        print(statement)
+
+        preCalc = []
+        finals  = []
+
+        import sympy
+        for num in range(0, len(statement)):
+            item = statement[num]
+
+            if "*" in item or "/" in item or "%" in item:
+               try:
+                   temp = self.__temps[0]
+                   preCalc.append( self.multiAndDivide(item, temp) )
+                   finals.append(temp)
+                   self.__temps.pop(0)
+               except:
+                   self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", statement,
+                                                         "", "", str(line["lineNum"] + self.__startLine)))
+                   return("")
             else:
-               if data["type"] == "variable" and data["word"] in self.__temps:
-                  try:
-                      self.__temps.remove(data["word"])
-                  except:
-                      pass
+               finals.append(item)
 
-               data["level"] = level
-               if data["word"] in self.__config.getValueByKey("validArithmetics").split(" "):
-                  priorityLevel = {
-                      1: ["+", "-"],
-                      2: ["*", "/", "%"],
-                      3: ["&", "|", "!", "~", "^"]
-                  }
-                  for num in range(1, 4):
-                      if data["word"] in priorityLevel[num]:
-                         data["pior"] = num
+        saveHere   = line["param#1"]
+        returnBack = "".join(preCalc)
 
-                         if dataNum > 0:
-                            leftData = statementData[dataNum - 1]
-                            if leftData["pior"] < data["prior"]:
-                               leftData["pior"] = data["prior"]
+        first = True
+        for indexNum in range(2, len(finals), 2):
+            if first == True:
+               command  = finals[1]
+               operand1 = finals[0]
+               operand2 = finals[2]
 
-                         if dataNum < len(statementData):
-                             rightData = statementData[dataNum + 1]
-                             if rightData["pior"] < data["prior"]:
-                                rightData["pior"] = data["prior"]
+               returnBack += "\t" + command + "(" + operand1 + ", " + operand2 + ", " + saveHere + ")\n"
+               first       = False
+            else:
+                operand = finals[indexNum]
+                command = finals[indexNum - 1]
 
-               if data["type"] == "comprass" and level != 0:
-                  self.addToErrorList(line["lineNum"],
-                                      self.prepareError("compilerErrorStatementComprass", statement,
-                                                         "", data["word"],
-                                                         str(line["lineNum"] + self.__startLine)))
+                returnBack += "\t" + command + "(" + saveHere + ", " + operand + ")\n"
+
+        return returnBack
 
 
+    def multiAndDivide(self, data, temp):
+        startIndex = 0
+        endIndex   = -1
 
-    def processCurrentLevelOfStatement(self, currentLevel, statementData, statementFetched):
-        lastOne    = False
-        first      = 0
-        opened     = False
+        returnBack = ""
+        items      = []
+        for charNum in range(0, len(data)):
 
-        while lastOne == False:
-            startIndex = -1
-            endIndex = -1
-            for itemNum in range(first, len(statementData)):
-                  item = statementData[itemNum]
+            if charNum >= len(data) - 1:
+               items.append(data[startIndex:])
 
-                  if item["level"] == currentLevel and startIndex == -1:
-                     startIndex    = itemNum
-                     opened        = True
+            if data[charNum] in ["*", "/", "%"]:
+               endIndex = charNum
+               items.append(data[startIndex:endIndex])
+               items.append(data[endIndex])
 
-                  if item["level"] != currentLevel and opened == True:
-                     endIndex      = itemNum
+               startIndex = endIndex + 1
+               endIndex   = -1
 
-                  if itemNum    == len(statementData) - 1:
-                     if opened  == True:
-                        endIndex = itemNum
-                     lastOne     = True
+        first = True
+        for indexNum in range(2, len(items), 2):
+            if first == True:
+               command  = items[1]
+               operand1 = items[0]
+               operand2 = items[2]
 
-                  if endIndex   != -1:
-                     self.fetchStatementPart(statementData, statementFetched, startIndex, endIndex)
+               returnBack += "\t" + command + "(" + operand1 + ", " + operand2 + ", " + temp + ")\n"
+               first       = False
+            else:
+                operand = items[indexNum]
+                command = items[indexNum - 1]
 
-    def fetchStatementPart(self, statementData, statementFetched, startIndex, endIndex):
-        replaceble = statementData[startIndex:endIndex + 1]
-        print(replaceble)
+                returnBack += "\t" + command + "(" + temp + ", " + operand + ")\n"
+
+        return returnBack

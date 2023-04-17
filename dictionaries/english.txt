@@ -442,3 +442,6 @@ compilerErrorASMAddressWrite=#OPCODE# requires a writable address. #OPERAND# is 
 compilerErrorASMRegisterRead=#OPCODE# requires a readable register. #OPERAND# is a write-only address.
 compilerErrorASMRegisterWrite=#OPCODE# requires a writable register. #OPERAND# is a read-only address.
 compilerErrorStatementComprass=#PARAM# statement has the comprass item (#VAR#) not on level 0!
+compilerErrorStatementError=Syntax error found on statement #PARAM#!
+compilerErrorStatementComplex=Statement #PARAM# is too complex!
+compilerErrorStatementTemps=Not enough temporal variables to calculate statement #PARAM#!

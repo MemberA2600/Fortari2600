@@ -442,3 +442,6 @@ compilerErrorASMAddressWrite=#OPCODE# írható címet vár el. #OPERAND# csak olvash
 compilerErrorASMRegisterRead=#OPCODE# olvasható regisztert vár. #OPERAND# csak írható!
 compilerErrorASMRegisterWrite=#OPCODE# írható regisztert vár. #OPERAND# csak olvasható!
 compilerErrorStatementComprass=#PARAM# kifejezésben az összehasonlító elem (#VAR#) nem a nulladik szinten van!
+compilerErrorStatementError=Szintaktikai hiba található a #PARAM# kfeiejezésben!
+compilerErrorStatementComplex=#PARAM# kifejezés túl összetettl
+compilerErrorStatementTemps=Nincs elég ideiglenes változó a #PARAM# képlet kiszámításához!
