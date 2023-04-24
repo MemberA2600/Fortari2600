@@ -12,7 +12,7 @@ codeBoxFont=14
 validObjDelimiters=% . ::
 validLineDelimiters=! ; .
 validNotEQ=!= /= ~= <> NOT= .NEQ.
-validEQ=.EQ. ==
+validEQ=== = .EQ. 
 validLargerThan=> .GT.
 validSmallerThan=< .LT.
 validLargerThanOrEQ=>= => .GE.

@@ -25,7 +25,12 @@ class DataReader:
                 except:
                     pass
 
+        for item in __dict:
+            print(item, __dict[item])
+
         return(__dict)
+
+
 
     def writeDataFile(self, path, keysValues):
         temp = []

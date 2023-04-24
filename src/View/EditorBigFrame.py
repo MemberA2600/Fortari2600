@@ -625,7 +625,7 @@ class EditorBigFrame:
                    break
             else:
                 if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
-                   endFound = self.__findEnd(currentLineStructure, lineNum, text)
+                   endFound = self.findEnd(currentLineStructure, lineNum, text)
                    if endFound == False:
                       errorFound = True
                       errorData  = {"line": str(lineNum), "type": "end"}
@@ -994,7 +994,7 @@ class EditorBigFrame:
             self.__constants = self.collectConstantsFromSections(self.__currentBank)
 
         if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
-            self.__subroutines = self.collectNamesByCommandFromSections("subroutine")
+            self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
 
         if mode == "whole":
             self.__codeEditorItems["updateRow"].config(state=DISABLED)
@@ -1107,7 +1107,7 @@ class EditorBigFrame:
            commandParams   = self.__syntaxList[currentLineStructure["command"][0]].params
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
-                endFound = self.__findEnd(currentLineStructure, lineNum, text)
+                endFound = self.findEnd(currentLineStructure, lineNum, text)
                 if endFound == False:
                    addError = True
                    if caller == 'firstCompiler':
@@ -1138,7 +1138,7 @@ class EditorBigFrame:
            elif currentLineStructure["command"][0] == "case" or currentLineStructure["command"][0] in\
                 self.__syntaxList["case"].alias:
 
-                foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
+                foundAllRelatedForCaseDefault = self.foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
                 if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False:
                    addError = True
                    if caller == 'firstCompiler':
@@ -1163,7 +1163,7 @@ class EditorBigFrame:
            elif currentLineStructure["command"][0] == "default" or currentLineStructure["command"][0] in \
                    self.__syntaxList["default"].alias:
 
-               foundAllRelatedForCaseDefault = self.__foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text,
+               foundAllRelatedForCaseDefault = self.foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text,
                                                                                     False)
 
                if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault[
@@ -1226,7 +1226,7 @@ class EditorBigFrame:
 
               if currentLineStructure["level"] == 0:
                  firstPoz = lineNum
-                 lastPoz  = self.__findEnd(currentLineStructure, lineNum, text)
+                 lastPoz  = self.findEnd(currentLineStructure, lineNum, text)
 
               else:
                  from copy import deepcopy
@@ -1242,7 +1242,7 @@ class EditorBigFrame:
               if firstPoz != False and type(firstPoz) != int: firstPoz = firstPoz[0]
               if lastPoz  != False:                           lastPoz  = lastPoz[0]
 
-              listOfDoItems = self.__listAllCommandFromTo("do-items", text, None, firstPoz, lastPoz + 1)
+              listOfDoItems = self.listAllCommandFromTo("do-items", text, None, firstPoz, lastPoz + 1)
               if len(listOfDoItems) > 1:
                  for item in listOfDoItems:
                      if caller != 'firstCompiler':
@@ -1870,7 +1870,7 @@ class EditorBigFrame:
         elif listType == "array":
             all, writable, readonly = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
 
-            endFound = self.__findWahWah("end-do", lineStructure["lineNum"],
+            endFound = self.findWahWah("end-do", lineStructure["lineNum"],
                                          "downAll", text, lineStructure["level"], None, None, None,
                                          lineStructure)
 
@@ -1879,7 +1879,7 @@ class EditorBigFrame:
             else:
                last      = endFound[0] + 1
 
-            allCommands = self.__listAllCommandFromTo(None, text, None, lineStructure["lineNum"], last)
+            allCommands = self.listAllCommandFromTo(None, text, None, lineStructure["lineNum"], last)
 
             willItWrite = False
             for command in allCommands:
@@ -1907,7 +1907,7 @@ class EditorBigFrame:
                      wordsForList.append([word, "stringConst"])
 
         elif listType == "subroutine":
-            wordsForList = self.collectNamesByCommandFromSections("subroutine")
+            wordsForList = self.collectNamesByCommandFromSections("subroutine", None)
 
         # Maybe "statement" will be important here to??
 
@@ -1937,11 +1937,13 @@ class EditorBigFrame:
 
         return constants
 
-    def collectNamesByCommandFromSections(self, word):
+    def collectNamesByCommandFromSections(self, word, bank):
         subroutines = []
+        if bank == None:
+           bank = self.__currentBank
 
         for section in self.__syntaxList["subroutine"].sectionsAllowed:
-            code = self.__virtualMemory.codes[self.__currentBank][section].code.replace("\r", "").replace("\t", "").split("\n")
+            code = self.__virtualMemory.codes[bank][section].code.replace("\r", "").replace("\t", "").split("\n")
 
             for lineNum in range(0, len(code)):
                 lineStructure = self.getLineStructure(lineNum, code, False)
@@ -1998,7 +2000,7 @@ class EditorBigFrame:
         ender = None
 
         for word in starters:
-            sendBack["start"] = self.__findWahWah(word, lineNum,
+            sendBack["start"] = self.findWahWah(word, lineNum,
                                                    "up", text, currentLineStructure["level"], "-", 0, None,
                                                    currentLineStructure)
 
@@ -2007,14 +2009,14 @@ class EditorBigFrame:
                 break
 
         if ender != None:
-            sendBack["end"] = self.__findWahWah(ender, lineNum,
+            sendBack["end"] = self.findWahWah(ender, lineNum,
                                                    "down", text, currentLineStructure["level"], None, None, None,
                                                    currentLineStructure)
 
         return sendBack
 
 
-    def __foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
+    def foundAllRelatedForCaseDefault(self, currentLineStructure, lineNum, text, isDefault):
         sendBack = {
             "select"         : False,
             "end-select"     : False,
@@ -2024,18 +2026,18 @@ class EditorBigFrame:
             "cases"          : []
         }
 
-        sendBack["select"] = self.__findWahWah("select", lineNum,
+        sendBack["select"] = self.findWahWah("select", lineNum,
                              "up", text, currentLineStructure["level"], "-", 0, None, currentLineStructure)
 
         if sendBack["select"] != False:
-           sendBack["end-select"] = self.__findWahWah("end-select", lineNum,
+           sendBack["end-select"] = self.findWahWah("end-select", lineNum,
                                "down", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
         if sendBack["end-select"] != False:
-           sendBack["cases"] = self.__listAllCommandFromTo("case", text, currentLineStructure["level"],
+           sendBack["cases"] = self.listAllCommandFromTo("case", text, currentLineStructure["level"],
                               sendBack["select"][0], sendBack["end-select"][0] + 1
                                                           )
-           sendBack["defaults"] = self.__listAllCommandFromTo("default", text, currentLineStructure["level"],
+           sendBack["defaults"] = self.listAllCommandFromTo("default", text, currentLineStructure["level"],
                               sendBack["select"][0], sendBack["end-select"][0] + 1
                                                           )
            sendBack["numOfCases"] = len(sendBack["cases"])
@@ -2043,7 +2045,7 @@ class EditorBigFrame:
 
         return sendBack
 
-    def __listAllCommandFromTo(self, searchWord, text, level, fromY, toY):
+    def listAllCommandFromTo(self, searchWord, text, level, fromY, toY):
         sendBack = []
 
         if searchWord != None:
@@ -2061,7 +2063,7 @@ class EditorBigFrame:
 
         return sendBack
 
-    def __findWahWah(self, key, startPoz, direction, text, level, splitBy, splitPoz, forceEndPoz, currentLineStructure):
+    def findWahWah(self, key, startPoz, direction, text, level, splitBy, splitPoz, forceEndPoz, currentLineStructure):
 
         send = False
         searchItems = [key]
@@ -2087,7 +2089,7 @@ class EditorBigFrame:
 
         return False
 
-    def __findEnd(self, currentLineStructure, lineNum, text):
+    def findEnd(self, currentLineStructure, lineNum, text):
         endCommand = "end-" + currentLineStructure["command"][0].split("-")[0]
 
         return self.__finderLoop(currentLineStructure,
@@ -2544,7 +2546,7 @@ class EditorBigFrame:
                if key.startswith(word): return("stringConst")
            return "string"
 
-        comprassDict = self.getComprassionDict()
+        comprassDict = self.getComprassionDict()["all"]
 
         for c in comprassDict:
             if c.startswith(word): return "comprass"
@@ -2559,7 +2561,7 @@ class EditorBigFrame:
         comprassionDict = {"all": []}
 
         for key in comprassionKeys:
-            comprassionDict[key] = self.__config.getValueByKey(key)
+            comprassionDict[key] = self.__config.getValueByKey(key).split(" ")
             for item in comprassionDict[key]:
                 comprassionDict["all"].append(item)
 
@@ -2648,7 +2650,7 @@ class EditorBigFrame:
 
         elif command == "select" or command in self.__syntaxList["select"].alias:
             if returnBack[0][0] == "stringConst":
-               if self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) not in [0, 1]:
+               if self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) != 1:
                    returnBack[0][0] = "error"
             elif returnBack[0][0] == "number":
                 if self.convertStringNumToNumber(param1[0]) not in [0, 1]:
@@ -2656,7 +2658,7 @@ class EditorBigFrame:
 
         elif command == "case" or command in self.__syntaxList["case"].alias:
 
-            startFound = self.__findWahWah("select", currentLineStructure["lineNum"],
+            startFound = self.findWahWah("select", currentLineStructure["lineNum"],
                              "up", text, currentLineStructure["level"], "-", 0, None, currentLineStructure)
 
             if startFound != False:
@@ -2682,7 +2684,7 @@ class EditorBigFrame:
                 if returnBack[0][0] != "variable": returnBack[0][0] = "error"
 
         if "item" in [param1[0], param2[0], param3[0]]:
-            startFound = self.__findWahWah("do-items", currentLineStructure["lineNum"],
+            startFound = self.findWahWah("do-items", currentLineStructure["lineNum"],
                              "upAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
             if startFound == False:
@@ -2699,12 +2701,12 @@ class EditorBigFrame:
                   readOnly         = False
 
                if readOnly == True:
-                  endFound = self.__findWahWah("end-do", currentLineStructure["lineNum"],
+                  endFound = self.findWahWah("end-do", currentLineStructure["lineNum"],
                              "downAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
                   if endFound != False:
                      endDoNum  = endFound[0]
-                     listOfCommands = self.__listAllCommandFromTo(None, text, None, doNum, endDoNum + 1)
+                     listOfCommands = self.listAllCommandFromTo(None, text, None, doNum, endDoNum + 1)
 
                      isOneWriting = False
                      for thisLineStructure in listOfCommands:
