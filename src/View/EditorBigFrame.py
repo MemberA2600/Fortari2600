@@ -1782,7 +1782,6 @@ class EditorBigFrame:
         if self.__lbFocused:
            self.__listBoxOnTheRight.focus()
 
-
         # print(currentWord, listType, wordsForList)
 
     def setupList(self, currentWord, listType, lineStructure, cursorIn, text):
@@ -2437,6 +2436,8 @@ class EditorBigFrame:
             ["string"     , "stringConst"]
         ]
 
+        # print("1", statementData)
+
         for item in statementData:
             if item["type"] == "comprass":
                if numberOfCompares > 0:
@@ -2462,7 +2463,7 @@ class EditorBigFrame:
             lastOne = item["type"]
 
         level     = 0
-        #print("1", statementData)
+        #print("2", statementData)
 
         bracketPairs = []
 
@@ -2488,6 +2489,8 @@ class EditorBigFrame:
             elif item["word"] == ")" and item["type"] == "invalidBracket" :
                 level -= 1
 
+        #print("3", statementData)
+
         if lineStructure["lineNum"] == self.__cursorPoz[0]-1:
            for item in bracketPairs:
                if self.__cursorPoz[1] in [statementData[item[0]]["position"][0]  ,
@@ -2499,7 +2502,7 @@ class EditorBigFrame:
                   statementData[item[1]]["type"] = "bracketSelected"
 
 
-        #print("2", statementData)
+        #print("4", statementData)
         return(statementData)
 
     def findPairOfBracket(self, itemNum, end, adder, statementData, level, theOneWeNeed):
@@ -2597,6 +2600,7 @@ class EditorBigFrame:
                                          ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure)
 
         #print("fuck", params, returnBack)
+        #print(currentLineStructure)
 
         commandVar = None
         for c in self.__loader.syntaxList.keys():
@@ -2671,9 +2675,13 @@ class EditorBigFrame:
                self.checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
                                        "read", temp, None, True, "param#1", currentLineStructure)
 
-               if (temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst"]) or\
-                  (temp[0][0] in ["stringConst", "number"] and returnBack[0][0] not in ["statement"]) :
-                   returnBack[0][0] = "error"
+               if   temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst", "variable"]:
+                    returnBack[0][0] = "error"
+               elif temp[0][0] in ["stringConst", "number"]:
+                    isThatStatement, filler = self.isThatADamnStatement(currentLineStructure, currentLineStructure["param#1"][1])
+                    if isThatStatement == False:
+                       for item in returnBack:
+                           item[0] = "error"
 
         elif commandVar.flexSave == True:
              theCommand = self.__loader.syntaxList[command]
@@ -2828,6 +2836,8 @@ class EditorBigFrame:
 
         if text == None:
            text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+
+        if type(text) == str: text = text.replace("\t", " ").split("\n")
 
         line = text[lineNum].replace("\t", " ")
 

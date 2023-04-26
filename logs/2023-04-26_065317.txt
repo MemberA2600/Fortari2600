@@ -1,0 +1,264 @@
+**********************************
+*** 2023-04-26 06:53:19.817657 ***
+**********************************
+
+Exception: 'ET' object has no attribute '_ET__spriteImage'
+Error Class: <class 'AttributeError'>
+Variables: 
+__name__ = ET
+__file__ = src/View\ET.py
+self = <ET.ET object at 0x000000001CA34A90>
+mouse = <module 'mouse' from 'D:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2023-04-26 06:53:20.333686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.333686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank2
+section = local_variables
+validity = bank2
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.333686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.333686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank5
+section = local_variables
+validity = bank5
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.333686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.334686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank6
+section = local_variables
+validity = bank6
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.334686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.334686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank7
+section = local_variables
+validity = bank7
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.334686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.334686 ***
+**********************************
+
+Exception: list index out of range
+Error Class: <class 'IndexError'>
+Variables: 
+__name__ = VirtualMemory
+__file__ = src/DataHolders\VirtualMemory.py
+self = <VirtualMemory.VirtualMemory object at 0x000000001BAB3128>
+bank = bank8
+section = local_variables
+validity = bank8
+lines = ['*** Here you can find variables those are only aviable for this screen.', '', '']
+line = 
+data = ['']
+name = 
+
+
+**********************************
+*** 2023-04-26 06:53:20.361688 ***
+**********************************
+
+Exception: list.remove(x): x not in list
+Error Class: <class 'ValueError'>
+Variables: 
+__name__ = SubMenu
+__file__ = src/View\SubMenu.py
+self = <SubMenu.SubMenu object at 0x000000003780D550>
+loader = <Loader.Loader object at 0x000000001B63B9E8>
+name = open
+w = 533.3333333333334
+h = 355.0
+checker = None
+addElements = <bound method OpenProjectWindow.__addElements of <OpenProjectWindow.OpenProjectWindow object at 0x000000003780D320>>
+maxNum = 1
+Thread = <class 'threading.Thread'>
+add = <Thread(Thread-32, stopped daemon 6348)>
+
+
+**********************************
+*** 2023-04-26 06:53:20.362688 ***
+**********************************
+
+Exception: bad window path name ".!toplevel2"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = src/View\ET.py
+self = <ET.ET object at 0x000000001CA34A90>
+mouse = <module 'mouse' from 'D:\\PyCharm\\P\\Fortari2600\\venv\\lib\\site-packages\\mouse\\__init__.py'>
+
+
+**********************************
+*** 2023-04-26 06:53:20.370688 ***
+**********************************
+
+Exception: invalid command name ".!toplevel2.!frame2.!frame3.!canvas"
+Error Class: <class '_tkinter.TclError'>
+Variables: 
+__name__ = ET
+__file__ = src/View\ET.py
+self = <ET.ET object at 0x000000001CA34A90>
+sleep = <built-in function sleep>
+moving = None
+
+
+**********************************
+*** 2023-04-26 06:53:21.588758 ***
+**********************************
+
+Exception: None
+Error Class: <class 'KeyError'>
+Variables: 
+__name__ = OpenProjectWindow
+__file__ = src/View\OpenProjectWindow.py
+self = <OpenProjectWindow.OpenProjectWindow object at 0x000000003780D320>
+sleep = <built-in function sleep>
+
+

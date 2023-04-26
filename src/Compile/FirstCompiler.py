@@ -7,7 +7,7 @@ class FirstCompiler:
         self.__loader         = loader
         self.__editorBigFrame = editorBigFrame
         self.__text           = text.replace("\t", " ").split("\n")
-        self.__magicNumber    = str(datetime.now()).replace("-", "").replace(".", "")
+        self.__magicNumber    = int(str(datetime.now()).replace("-", "").replace(".", "").replace(":", "").replace(" ", ""))
         self.__counter        = 0
         self.__addComments    = addComments
         self.__loadCommandASM = self.__loader.io.loadCommandASM
@@ -73,13 +73,16 @@ class FirstCompiler:
 
             lineStruct = self.__editorBigFrame.getLineStructure(lineNum, self.__text, True)
 
-            if lineStruct["command"][0] in self.__noneList: continue
+            #if lineStruct["command"][0] in self.__noneList:
+            #   continue
 
             lineStruct["fullLine"]       = line
             lineStruct["labelsBefore"]   = []
             lineStruct["labelsAfter"]    = []
             lineStruct["commentsBefore"] = ""
             lineStruct["compiled"]       = ""
+            lineStruct["compiledBefore"] = ""
+            lineStruct["magicNumber"]    = -1
 
             if addComments:
                lineStruct["commentsBefore"] = "***\t" + line[:self.__editorBigFrame.getFirstValidDelimiterPoz(line)]
@@ -89,14 +92,14 @@ class FirstCompiler:
         self.compileBuild(linesFeteched, mode)
 
     def compileBuild(self, linesFeteched, mode):
-
         for line in linesFeteched:
             self.__error = False
-            self.processLine(line, linesFeteched)
+            if line["command"][0] not in self.__noneList:
+               self.processLine(line, linesFeteched)
 
         textToReturn = ""
         for line in linesFeteched:
-            for word in ["commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
+            for word in ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
                 if line[word] not in self.__noneList:
                     if type(line[word]) == list:
                         line[word] = "\n".join(line[word])
@@ -224,18 +227,20 @@ class FirstCompiler:
             if self.__error == False: self.createASMTextFromLine(line, "and", params, changeText)
 
         elif self.isCommandInLineThat(line, "calc"):
-            smallerCommands = self.convertStatementToSmallerCodes("calc", line["param#2"][0], line)
+            smallerCommands, temps = self.convertStatementToSmallerCodes("calc", line["param#2"][0], line)
 
             if self.__error == False:
                smallerCommands     = self.isThereAnyLargerThan255(smallerCommands)
                smallerCommandLines = smallerCommands.split("\n")
 
                for subLine in smallerCommandLines:
-                   subLineStructure = self.__editorBigFrame.getLineStructure(line["lineNum"], subLine, False)
-                   self.processLine(subLineStructure)
+                   if subLine == "": continue
+
+                   subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine], False)
+                   self.processLine(subLineStructure, linesFeteched)
 
                    if self.__error == False:
-                      line["compiled"] += subLineStructure["compiled"]
+                      line["compiled"] += subLineStructure["compiled"] + "\n"
 
         elif self.isCommandInLineThat(line, "call"):
              params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -270,11 +275,13 @@ class FirstCompiler:
                       line["compiled"] = template
 
         elif self.isCommandInLineThat(line, "select"):
-             name = self.__currentBank + "_Select_"
+             line["magicNumber"] = str(self.__magicNumber)
+             self.__magicNumber += 1
+
+             name = self.__currentBank + "_" + line["magicNumber"] + "_Select_"
 
              #end = self.__editorBigFrame.findEnd(line, line["lineNum"], self.__text)
-             end      = self.__editorBigFrame.findWahWah("end-select", line["lineNum"],
-                      "down", self.__text, line["level"], None, None, None, line)
+             end      = self.__editorBigFrame.findEnd(line, line["lineNum"], self.__text)
 
              cases    = []
              defaults = []
@@ -287,10 +294,10 @@ class FirstCompiler:
 
 
              else:
-                 cases    = self.__editorBigFrame.listAllCommandFromTo("case", self.__text, line["level"],
+                 cases    = self.__editorBigFrame.listAllCommandFromTo("case", self.__text, line["level"]+1,
                           line["lineNum"], end[0] + 1)
 
-                 defaults = self.__editorBigFrame.listAllCommandFromTo("default", self.__text, line["level"],
+                 defaults = self.__editorBigFrame.listAllCommandFromTo("default", self.__text, line["level"]+1,
                           line["lineNum"], end[0] + 1)
 
                  if len(cases) == 0:
@@ -313,12 +320,15 @@ class FirstCompiler:
 
                 for case in cases:
                     caseNum += 1
-                    caseLine = linesFeteched[case[0]]
+                    caseLine = linesFeteched[case["lineNum"]]
                     caseLine["labelsAfter"] = name + "Case_" + str(caseNum)
+                    caseLine["magicNumber"] = line["magicNumber"]
 
+                if len(defaults) > 0:
+                    defaultLine = linesFeteched[defaults[0]["lineNum"]]
+                    defaultLine["labelsAfter"] = name + "Default"
+                    defaultLine["magicNumber"] = line["magicNumber"]
 
-                defaultLine = linesFeteched[defaults[0][0]]
-                defaultLine["labelsAfter"] = name + "Default"
 
                 self.__temps = []
                 for num in range(2, 20):
@@ -334,7 +344,7 @@ class FirstCompiler:
                       self.__temps.remove(line["param#1"][0])
 
                    for case in cases:
-                       caseLine = linesFeteched[case[0]]
+                       caseLine = linesFeteched[case["lineNum"]]
                        if caseLine["param#1"][0] in self.__temps:
                           self.__temps.remove(caseLine["param#1"][0])
 
@@ -355,7 +365,7 @@ class FirstCompiler:
                        caseNum = -1
                        for case in cases:
                            caseNum += 1
-                           caseLine = linesFeteched[case[0]]
+                           caseLine = linesFeteched[case["lineNum"]]
                            subParams = self.getParamsWithTypesAndCheckSyntax(caseLine)
 
                            cmp = subParams["param#1"][0]
@@ -367,7 +377,7 @@ class FirstCompiler:
                                                                     str(caseLine["lineNum"] + self.__startLine)))
                            if self.__error: break
                            if subParams["param#1"][1] == "variable":
-                              caseVar = self.__loader.virtualMemory.getVariableByName(subParams["param#1"][0])
+                              caseVar = self.__loader.virtualMemory.getVariableByName(subParams["param#1"][0], self.__currentBank)
                               if caseVar == False:
                                  caseVar = self.__loader.virtualMemory.getVariableByName(subParams["param#1"][0], "bank1")
                               if caseVar == False:
@@ -390,49 +400,60 @@ class FirstCompiler:
                                                                            "", "",
                                                                            str(line["lineNum"] + self.__startLine)))
 
-                           txt += "\tCMP\t#" + cmp + "\n" +\
-                                  "\tBEQ\t"  + name + "Case_" + str(caseNum) + "\n"
+                           txt += "\tCMP\t" + cmp + "\n" +\
+                                  "\tBEQ\t" + name + "Case_" + str(caseNum) + "\n"
 
                        if len(defaults) > 0:
                           txt += "\tJMP\t" + name + "Default" + "\n"
                        else:
                           txt += "\tJMP\t" + name + "End" + "\n"
 
-
+                       line["compiled"] = txt
                 else:
-                    txt = ""
 
-                    if self.__editorBigFrame.convertStringNumToNumber(self.__constants[params["param#1"][0]]) != 1:
-                       self.addToErrorList(line["lineNum"],
-                                           self.prepareError("compilerErrorMustBe1", params["param#1"][0],
-                                                              "", self.__constants[params["param#1"][0]],
-                                                              str(line["lineNum"] + self.__startLine)))
+                    if params["param#1"][1] == "stringConst":
+                        if self.__editorBigFrame.convertStringNumToNumber(self.__constants[params["param#1"][0]]):
+                           self.addToErrorList(line["lineNum"],
+                                               self.prepareError("compilerErrorMustBe1", params["param#1"][0],
+                                                                  "", self.__constants[params["param#1"][0]],
+                                                                  str(line["lineNum"] + self.__startLine)))
+                    elif params["param#1"][1] == "number":
+                        if int(params["param#1"][0].replace("#", "")) != 1:
+                           self.addToErrorList(line["lineNum"],
+                                                self.prepareError("compilerErrorMustBe1", params["param#1"][0],
+                                                                  "", self.__constants[params["param#1"][0]],
+                                                                  str(line["lineNum"] + self.__startLine)))
 
                     if self.__error == False:
                         caseNum = -1
                         for case in cases:
                             caseNum += 1
-                            caseLine = linesFeteched[case[0]]
+                            caseLine = linesFeteched[case["lineNum"]]
 
                             statement = caseLine["param#1"][0]
                             smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
                                                                                   statement, caseLine)
                             smallerCommandLines = smallerCommands.split("\n")
 
+                            if self.__error == True: break
+
                             for subLine in smallerCommandLines:
-                                subLineStructure = self.__editorBigFrame.getLineStructure(line["lineNum"], subLine,
+                                if subLine == "": continue
+
+                                subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
                                                                                           False)
-                                self.processLine(subLineStructure)
+                                self.processLine(subLineStructure, linesFeteched)
                                 if self.__error == False:
-                                    line["compiled"] += subLineStructure["compiled"]
+                                   line["compiled"] += subLineStructure["compiled"] + "\n"
 
                             currentComprass = self.findCompass(statement)
                             line["compiled"] += self.fuseTempsAndLogical(temps[0], temps[1], currentComprass, name + "Case_" + str(caseNum))
 
                         if len(defaults) > 0:
-                            txt += "\tJMP\t" + name + "Default" + "\n"
+                            line["compiled"] += "\tJMP\t" + name + "Default" + "\n"
                         else:
-                            txt += "\tJMP\t" + name + "End" + "\n"
+                            line["compiled"] += "\tJMP\t" + name + "End" + "\n"
+
 
         elif self.isCommandInLineThat(line, "case") or self.isCommandInLineThat(line, "default"):
             allRelated = self.__editorBigFrame.foundAllRelatedForCaseDefault(line, line["lineNum"], self.__text, False)
@@ -444,13 +465,29 @@ class FirstCompiler:
             for item in allRelated["defaults"]:
                 stuffs.append(item["lineNum"])
 
+            """
             lastOne = True
             for item in stuffs:
                 if item > line["lineNum"]:
                    lastOne = False
                    break
+            """
 
-            oneBefore = 0
+            firstOne = True
+            oneSmaller = -1
+            empty      = False
+
+            for item in stuffs:
+                if item < line["lineNum"]:
+                   firstOne = False
+                   if item > oneSmaller:
+                      oneSmaller = item
+
+            if abs(line["lineNum"] - oneSmaller) == 1:
+               empty = True
+
+            if firstOne == False and empty == False:
+               line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
 
     def fuseTempsAndLogical(self, temp1, temp2, comprass, caseName):
         comprassDict = self.__editorBigFrame.getComprassionDict()
@@ -957,6 +994,7 @@ class FirstCompiler:
                return str(self.__constants[that]["value"])
 
     def addToErrorList(self, lineNum, text):
+        #raise ValueError
 
         if self.__currentBank not in self.errorList.keys():
            self.errorList[self.__currentBank] = {}
@@ -996,6 +1034,8 @@ class FirstCompiler:
         side2            = ""
         statementData    = []
         statementFetched = []
+        temps            = []
+        commands         = ""
 
         self.__temps = []
         for num in range(2, 20):
@@ -1031,7 +1071,14 @@ class FirstCompiler:
         else:
             if statementTyp != "write":
                from sympy import simplify, expand
-               statement = str(expand(simplify(statement)))
+               currentComprass = self.findCompass(statement)
+               if currentComprass == False:
+                  statement = str(expand(simplify(statement)))
+               else:
+                  statement = statement.split(currentComprass)
+                  for num666 in range(0, len(statement)):
+                      statement[num666] = str(expand(simplify(statement[num666])))
+                  statement = currentComprass.join(statement)
 
                statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0,
                                                                            line)
@@ -1046,7 +1093,7 @@ class FirstCompiler:
                   if command == "calc":
                      commands = self.convertToCommands(statement, line, None)
                   else:
-                     currentComprass = self.findCompass(statement)
+                     # currentComprass = self.findCompass(statement)
 
                      if currentComprass == False:
                          self.addToErrorList(line["lineNum"],
@@ -1071,17 +1118,19 @@ class FirstCompiler:
 
                         if self.__error == False:
                            txt = ""
-                           statement = statement.aplit(currentComprass)
+                           statement = statement.split(currentComprass)
+
+                           #print(statement)
                            txt += self.convertToCommands(statement[0], line, temp1)
                            txt += self.convertToCommands(statement[1], line, temp2)
 
                            commands = txt
-
-                           if self.__error == False:
-                               return commands, [temp1, temp2]
+                           temps = [temp1, temp2]
 
         if self.__error == False:
-           return commands
+           return commands, temps
+        else:
+           return False, temps
 
     def findCompass(self, statement):
         comprassDict = self.__editorBigFrame.getComprassionDict()["all"]
@@ -1089,7 +1138,7 @@ class FirstCompiler:
 
         largest = 0
 
-        for item in comprassDict["all"]:
+        for item in comprassDict:
             if len(item) not in fullDict.keys():
                fullDict[len(item)] = []
                if len(item) > largest: largest = len(item)
@@ -1117,13 +1166,12 @@ class FirstCompiler:
 
         statement = statement.split(" ")
 
-        #print(statement)
-
         preCalc = []
         finals  = []
 
         for num in range(0, len(statement)):
             item = statement[num]
+            if item == "": continue
 
             if "*" in item or "/" in item or "%" in item:
                try:
@@ -1140,23 +1188,51 @@ class FirstCompiler:
                finals.append(item)
 
         if saveHere == None:
-           saveHere   = line["param#1"]
+           saveHere   = line["param#1"][0]
         returnBack = "".join(preCalc)
 
         first = True
-        for indexNum in range(2, len(finals), 2):
-            if first == True:
-               command  = finals[1]
-               operand1 = finals[0]
-               operand2 = finals[2]
+        if len(finals) >= 2:
+            for indexNum in range(2, len(finals), 2):
+                if first == True:
+                   command  = finals[1]
+                   operand1 = finals[0]
+                   operand2 = finals[2]
 
-               returnBack += "\t" + command + "(" + operand1 + ", " + operand2 + ", " + saveHere + ")\n"
-               first       = False
+                   returnBack += "\t" + command + "(" + operand1 + ", " + operand2 + ", " + saveHere + ")\n"
+                   first       = False
+                else:
+                    operand = finals[indexNum]
+                    command = finals[indexNum - 1]
+
+                    returnBack += "\t" + command + "(" + saveHere + ", " + operand + ")\n"
+        else:
+            isItNum = False
+            try:
+                teszt   = int(finals[0].replace("#", ""))
+                isItNum = True
+            except:
+                pass
+
+            extra = ""
+            if isItNum or finals[0][0] in ["%", "$"]:
+               if finals[0][0] != "#":
+                  finals[0]     = "#" + finals[0]
             else:
-                operand = finals[indexNum]
-                command = finals[indexNum - 1]
+                var = self.__loader.virtualMemory.getVariableByName(finals[0], self.__currentBank)
+                if var == False:
+                   var = self.__loader.virtualMemory.getVariableByName(finals[0], "bank1")
+                if var == False:
+                   self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", finals[0],
+                                                                           "", "",
+                                                                           str(line["lineNum"] + self.__startLine)))
+                if var.type != "byte":
+                   extra = self.__mainCompiler.convertAnyTo8Bits(var.usedBits)
 
-                returnBack += "\t" + command + "(" + saveHere + ", " + operand + ")\n"
+            if self.__error == False:
+                returnBack += "asm(\"\tLDA\t" + finals[0] + "\")\n" +\
+                              extra                                 +\
+                              "asm(\"\tSTA\t" + saveHere  + "\")\n"
 
         return returnBack
 

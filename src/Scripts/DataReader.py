@@ -25,8 +25,8 @@ class DataReader:
                 except:
                     pass
 
-        for item in __dict:
-            print(item, __dict[item])
+        #for item in __dict:
+        #    print(item, __dict[item])
 
         return(__dict)
 
