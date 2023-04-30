@@ -479,6 +479,41 @@ class FirstCompiler:
             changeText = self.prepareAdd(params)
             if self.__error == False: self.createASMTextFromLine(line, command, params, changeText)
 
+        elif self.isCommandInLineThat(line, "rollL") or self.isCommandInLineThat(line, "rollR") or \
+             self.isCommandInLineThat(line, "shiftL") or self.isCommandInLineThat(line, "shiftR"):
+             if   self.isCommandInLineThat(line, "rollL"):
+                  command = "ROL"
+             elif self.isCommandInLineThat(line, "rollR"):
+                  command = "ROR"
+             elif self.isCommandInLineThat(line, "shiftL"):
+                  command = "ASL"
+             else:
+                  command = "LSR"
+
+             params = self.getParamsWithTypesAndCheckSyntax(line)
+
+             if "param#2" not in params.keys():
+                 params["param#2"] = ["2", "number"]
+                 self.checkIfCanShiftBits(params, "param#1", "param#2", line, command)
+             else:
+                 from copy import deepcopy
+
+                 shiftNum = -1
+                 if params["param#1"][1] == "number":
+                    shiftNum = self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])
+
+                 if params["param#1"][1] == "variable" or shiftNum > 2:
+                     self.shiftOnVars(params, line, command)
+
+                 elif shiftNum == 0: return
+
+                 else:
+                     params["param#3"] = deepcopy(params["param#2"])
+                     params["param#2"] = [str(2**shiftNum)]
+                     params["param#1"] = params["param#3"]
+
+                     self.checkIfCanShiftBits(params, "param#1", "param#2", line, command)
+
         elif self.isCommandInLineThat(line, "flip"):
             params = self.getParamsWithTypesAndCheckSyntax(line)
             var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
@@ -783,6 +818,68 @@ class FirstCompiler:
             if firstOne == False and empty == False:
                line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
 
+    def shiftOnVars(self, params, line, command):
+        txt      = ""
+
+        var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+        if var2 == False:
+            self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                   "", "",
+                                                                   str(line["lineNum"] + self.__startLine)))
+        if params["param#1"][1] == "variable":
+            var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+            if var1 == False:
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                       "", "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+            else:
+                if var1.type != "byte":
+                    convert = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                    txt = "\tLDA\t" + params["param#1"][0] + "\n" + convert + "\tTAY\n"
+
+                else:
+                    txt = "\tLDY\t" + params["param#1"][0] + "\n"
+
+        else:
+            times = self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])
+
+            if times < 5:
+               conv1 = ""
+               conv2 = ""
+
+               if var2.type != "byte":
+                   conv1 = self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+                   conv2 = self.__mainCompiler.save8bitsToAny2(var2.usedBits, params["param#2"][0])
+
+               line["compiled"] = "\tLDA\t" + params["param#2"][0] + "\n" + conv1 +\
+                                   times * ("\t" + command + "\n") + conv2 + "\tSTA\t" + params["param#2"][0] + "\n"
+               return
+            else:
+               txt = "\tLDY\t#" + params["param#1"][0].replace("#", "") + "\n"
+
+        conv1 = ""
+        conv2 = ""
+
+        magic = str(self.__magicNumber)
+        self.__magicNumber += 1
+
+        name = self.__currentBank + "_Shifting_" + magic + "_"
+
+        if var2.type != "byte":
+            conv1 = self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+            conv2 = self.__mainCompiler.save8bitsToAny2(var2.usedBits, params["param#2"][0])
+
+
+        txt += "\tCPY\t#0\n\tBEQ\t" + name + "_End" + "\n"         +\
+               "\tLDA\t" + params["param#2"][0] + "\n" + conv1     +\
+               name + "Loop" + "\n\t" + command + "\n"             +\
+               "\tDEY\n\tCPY\t#0\n\tBNE\t" + name + "Loop" + "\n"  +\
+               name + "End" + "\n" + conv2 + "\tSTA\t" + params["param#2"][0] + "\n"
+
+        line["compiled"] = txt
+
+
+
     def checkIfCanShiftBits(self, params, varHolder, numberHolder, line, shiftDir):
         theNum = int(self.__editorBigFrame.convertStringNumToNumber(params[numberHolder][0]))
         if self.isPowerOfTwo(theNum) == False: return
@@ -803,23 +900,24 @@ class FirstCompiler:
                                                                        str(line["lineNum"] + self.__startLine)))
 
         times = self.howManyTimesThePowerOfTwo(theNum)
+        if times > 2: self.shiftOnVars(params, line, shiftDir)
+        else:
+            if sourceVar == destVar and sourceVar.type == "byte":
+               line["compiled"] = times * ("\t" + shiftDir + "\t" + params[varHolder][0] + "\n")
+               return
 
-        if sourceVar == destVar and sourceVar.type == "byte":
-           line["compiled"] = times * ("\t" + shiftDir + "\t" + params[varHolder][0] + "\n")
-           return
+            shifting = times * ("\t" + shiftDir + "\n")
+            convert1 = ""
+            convert2 = ""
 
-        shifting = times * ("\t" + shiftDir + "\n")
-        convert1 = ""
-        convert2 = ""
+            if sourceVar.type != "byte":
+               convert1 = self.__mainCompiler.convertAnyTo8Bits(sourceVar.usedBits)
 
-        if sourceVar.type != "byte":
-           convert1 = self.__mainCompiler.convertAnyTo8Bits(sourceVar.usedBits)
+            if destVar.type != "byte":
+               convert2 = self.__mainCompiler.save8bitsToAny2(destVar.usedBits, params["param#3"][0])
 
-        if destVar.type != "byte":
-           convert2 = self.__mainCompiler.save8bitsToAny2(destVar.usedBits, params["param#3"][0])
-
-        line["compiled"] = "\tLDA\t" + params[varHolder][0] + "\n" +\
-                           convert1 + shifting + convert2 + "\tSTA\t" + params["param#3"][0] + "\n"
+            line["compiled"] = "\tLDA\t" + params[varHolder][0] + "\n" +\
+                               convert1 + shifting + convert2 + "\tSTA\t" + params["param#3"][0] + "\n"
 
     def prepareDiv(self, params, aaveThisOne):
         saveThisOne = "ST" + aaveThisOne
@@ -1419,20 +1517,20 @@ class FirstCompiler:
            self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                  line["command"][0], "",
                                                  str(line["lineNum"] + self.__startLine)))
+
         for num in range(1, 4):
             curParam = line["param#"+str(num)][0]
             if curParam not in self.__noneList:
                #curParam = self.formatParam(curParam, line["command"][0], line["lineNum"])
+               print(command.params)
                paramType = command.params[num-1]
                mustHave  = True
                if paramType.startswith("{"):
                   mustHave = False
                   paramType = paramType[1:-1]
 
-               ioMethod = command.does
-
                if self.__loader.syntaxList[line["command"][0]].flexSave == True and num == 1 and \
-                  line["param#3"][0] in self.__noneList:
+                  line["param#" + str(len(command.params))][0] in self.__noneList:
                   paramType = "variable"
                   ioMethod  = "write"
 
@@ -1485,7 +1583,6 @@ class FirstCompiler:
                    elif paramTypeAndDimension[0] == "stringConst":
                         curParam = "#" + self.getConstValue(curParam)
                         paramTypeAndDimension[0] = "number"
-
                    params["param#" + str(num)] = [curParam, paramTypeAndDimension[0]]
 
         listOfErrors = self.__editorBigFrame.callLineTintingFromFirstCompiler(line["fullLine"], line["lineNum"], self.__text)
