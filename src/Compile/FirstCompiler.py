@@ -14,6 +14,8 @@ class FirstCompiler:
         self.errorList        = {}
         self.__currentBank    = bank
         self.__objectMaster   = self.__loader.virtualMemory.objectMaster
+        self.toRoutines       = {}
+        self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
 
         from Compiler import Compiler
         self.__mainCompiler   = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "dummy", None)
@@ -153,6 +155,8 @@ class FirstCompiler:
 
             else:
                 if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                    # We can add them and just do an LDA / STA?
+                    """
 
                     keyParam = None
                     if self.isIt(params["param#1"][0], 0):
@@ -161,70 +165,356 @@ class FirstCompiler:
                         keyParam = "param#1"
 
                     if keyParam != None:
-                        txt = "\tLDA\t#" + params[keyParam][0].replace("#", "") + "\n"
-
-                        var = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
-                        if var.type != "byte":
-                            txt += self.__mainCompiler.save8bitsToAny2(var.usedBits, params["param#3"][0])
-
-                        txt += "\tSTA\t" + params["param#3"][0] + "\n"
+                        txt = self.saveAValue(params, keyParam, "param#3", line)
 
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
+                    """
+
+                    theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) + \
+                             int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                    theNum = theNum % 256
+
+                    params["param#0"] = [str(theNum), "number"]
+                    txt = self.saveAValue(params, "param#0", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
+
+                if self.isIt(params["param#2"][0], 0):
+                    txt = self.saveAValue(params, "param#1", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
 
             changeText = self.prepareAdd(params)
 
             if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText)
             # print(params)
 
-        elif self.isCommandInLineThat(line, "and"):
+        elif self.isCommandInLineThat(line, "sub"):
             params = self.getParamsWithTypesAndCheckSyntax(line)
-            if "param#3" not in params.keys():
-                if params["param#2"][1] == "number":
-                    if self.isIt(params["param#2"][0], 255):
-                        return
 
-                    if self.isIt(params["param#2"][0], 0):
-                        txt = "\tLDA\t#0\n\tSTA\t" + params["param#1"][0] + "\n"
+            if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                """
+                if self.isIt(params["param#2"][0], 0):
+                    txt = self.saveAValue(params, "param#1", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
+                """
+
+                theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) - \
+                         int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                if theNum < 0:
+                   theNum = 256 + theNum
+
+                params["param#0"] = [str(theNum), "number"]
+                txt = self.saveAValue(params, "param#0", "param#3", line)
+                self.checkASMCode(txt, line)
+                if self.__error == False: line["compiled"] = txt
+                return
+
+            elif params["param#2"][1] == "number":
+                if self.isIt(params["param#2"][0], 0):
+                   if "param#3" in params.keys():
+                       txt = self.saveAValue(params, "param#1", "param#3", line)
+                       self.checkASMCode(txt, line)
+                       if self.__error == False: line["compiled"] = txt
+                       return
+                   else:
+                      return
+                elif self.isIt(params["param#2"][0], 1):
+                    addr = self.getAddress(params["param#1"][0])
+                    var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+
+                    if len(addr) == 3 and var.type == "byte":
+                        txt = "\tDEC\t" + params["param#1"][0] + "\n"
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
 
                 params["param#3"] = params["param#1"]
-            else:
 
-                zeroParam = None
+            changeText = self.prepareAdd(params)
+            if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText)
+
+        elif self.isCommandInLineThat(line, "multi"):
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+
+            if    (params["param#1"][1] == "number" and params["param#2"][1] == "variable"):
+                  self.checkIfCanShiftBits(params, "param#2", "param#1", line, "ASL")
+                  if line["compiled"] != "": return
+            elif (params["param#2"][1] == "number" and params["param#1"][1] == "variable"):
+                  self.checkIfCanShiftBits(params, "param#1", "param#2", line, "ASL")
+                  if line["compiled"] != "": return
+
+            if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) * \
+                         int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                theNum = theNum % 256
+
+                params["param#0"] = [str(theNum), "number"]
+                txt = self.saveAValue(params, "param#0", "param#3", line)
+                self.checkASMCode(txt, line)
+                if self.__error == False: line["compiled"] = txt
+                return
+
+
+            if "param#3" not in params.keys():
+               params["param#3"] = params["param#1"]
+
+            if params["param#1"][1] == "number":
+               if self.isIt(params["param#1"][0], 1):
+                  if "param#3" in params.keys():
+                      txt = self.saveAValue(params, "param#2", "param#3", line)
+                      self.checkASMCode(txt, line)
+                      if self.__error == False: line["compiled"] = txt
+                      return
+                  else:
+                      return
+
+               elif self.isIt(params["param#1"][0], 0):
+                    params["param#0"] = ["#0", "number"]
+                    txt = self.saveAValue(params, "param#0", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
+
+            if params["param#2"][1] == "number":
+               if self.isIt(params["param#2"][0], 1):
+                  if "param#3" in params.keys():
+                      txt = self.saveAValue(params, "param#1", "param#3", line)
+                      self.checkASMCode(txt, line)
+                      if self.__error == False: line["compiled"] = txt
+                      return
+                  else:
+                      return
+
+               elif self.isIt(params["param#2"][0], 0):
+                    if params["param#3"][0] in self.__noneList:
+                       saveParam = "param#1"
+                    else:
+                       saveParam = "param#3"
+
+                    params["param#0"] = ["#0", "number"]
+                    txt = self.saveAValue(params, "param#0", saveParam, line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
+
+            changeText = self.prepareMulti(params)
+            if self.__error == False: self.createASMTextFromLine(line, "multi", params, changeText)
+
+        elif self.isCommandInLineThat(line, "div") or self.isCommandInLineThat(line, "rem"):
+            if self.isCommandInLineThat(line, "divide"):
+               saveThisOne = "Y"
+            else:
+               saveThisOne = "A"
+
+            params  = self.getParamsWithTypesAndCheckSyntax(line)
+
+            if (params["param#2"][1] == "number" and params["param#1"][1] == "variable"):
+                self.checkIfCanShiftBits(params, "param#1", "param#2", line, "LSR")
+                if line["compiled"] != "": return
+
+            zeroDiv = False
+            oneDiv  = False
+
+            if params["param#2"][1] == "number":
+               if self.isIt(params["param#2"][0], 0):
+                  zeroDiv = True
+               elif self.isIt(params["param#2"][0], 0):
+                  oneDiv = True
+
+            if zeroDiv == True:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorZeroDiv", "", "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            elif params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                if saveThisOne == "Y":
+                    theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) // \
+                             int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+                else:
+                    theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) % \
+                             int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                theNum = theNum % 256
+
+                params["param#0"] = [str(theNum), "number"]
+                txt = self.saveAValue(params, "param#0", "param#3", line)
+                self.checkASMCode(txt, line)
+                if self.__error == False: line["compiled"] = txt
+                return
+
+            elif oneDiv == True:
+                if saveThisOne == "Y":
+                    if "param#3" not in params.keys():
+                       return
+
+                    txt = self.saveAValue(params, "param#1", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+                    return
+                else:
+                    if "param#3" not in params.keys():
+                        params["param#3"] = params["param#1"]
+
+                    params["param#0"] = [0, "number"]
+                    txt = self.saveAValue(params, "param#0", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+
+            else:
+                if "param#3" not in params.keys():
+                   params["param#3"] = params["param#1"]
+
+                changeText = self.prepareDiv(params, saveThisOne)
+                if self.__error == False: self.createASMTextFromLine(line, "div", params, changeText)
+
+
+        elif self.isCommandInLineThat(line, "and") or\
+             self.isCommandInLineThat(line, "or")  or\
+             self.isCommandInLineThat(line, "xor"):
+            if   self.isCommandInLineThat(line, "and"):
+                 command = "and"
+            elif self.isCommandInLineThat(line, "or"):
+                 command = "or"
+            else:
+                 command = "xor"
+
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+            if "param#3" not in params.keys():
+                if params["param#2"][1] == "number":
+                    if command == "and":
+                       if self.isIt(params["param#2"][0], 255):
+                          return
+
+                       if self.isIt(params["param#2"][0], 0):
+                          params["param#0"] = ["#0", "number"]
+                          txt = self.saveAValue(params, "param#0", "param#1", line)
+                          self.checkASMCode(txt, line)
+                          if self.__error == False: line["compiled"] = txt
+                          return
+                    elif command == "or":
+                        if self.isIt(params["param#2"][0], 0):
+                            return
+
+                        if self.isIt(params["param#2"][0], 255):
+                            params["param#0"] = ["#255", "number"]
+                            txt = self.saveAValue(params, "param#0", "param#1", line)
+                            self.checkASMCode(txt, line)
+                            if self.__error == False: line["compiled"] = txt
+                            return
+
+                params["param#3"] = params["param#1"]
+            else:
+                if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                    if   command == "and":
+                         theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) &\
+                                  int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+                    elif command == "or":
+                          theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) | \
+                                   int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+                    else:
+                          theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) ^ \
+                                   int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                    params["param#0"] = [str(theNum), "number"]
+                    txt = self.saveAValue(params, "param#0", "param#3", line)
+                    self.checkASMCode(txt, line)
+                    if self.__error == False: line["compiled"] = txt
+
+                    return
+
+                param0   = None
                 param255 = None
 
                 if params["param#1"][1] == "number":
                     if self.isIt(params["param#1"][0], 0):
-                        zeroParam = True
+                        param0    = "param#2"
 
                     if self.isIt(params["param#1"][0], 255):
                         param255 = "param#2"
 
                 if params["param#2"][1] == "number":
                     if self.isIt(params["param#2"][0], 0):
-                        zeroParam = True
+                        param0    = "param#1"
 
                     if self.isIt(params["param#2"][0], 255):
                         param255 = "param#1"
 
-                if zeroParam == True:
-                    txt = "\tLDA\t#0\n\tSTA\t" + params["param#3"][0] + "\n"
-                    self.checkASMCode(txt, line)
-                    if self.__error == False: line["compiled"] = txt
-                    return
+                if command == "and":
+                    if param0 != None:
+                        params["param#0"] = ["#0", "number"]
+                        txt = self.saveAValue(params, "param#0", "param#3", line)
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
 
-                if param255 != None:
-                    txt = "\tLDA\t#" + params[param255][0] + "\n\tSTA\t" + params["param#3"][0] + "\n"
-                    self.checkASMCode(txt, line)
-                    if self.__error == False: line["compiled"] = txt
-                    return
+                    if param255 != None:
+                        txt = self.saveAValue(params, param255, "param#3", line)
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
+                elif command == "or":
+                    if param255 != None:
+                        params["param#0"] = ["#255", "number"]
+                        txt = self.saveAValue(params, "param#0", "param#3", line)
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
+
+                    if param0 != None:
+                        txt = self.saveAValue(params, param0, "param#3", line)
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
 
             changeText = self.prepareAdd(params)
-            if self.__error == False: self.createASMTextFromLine(line, "and", params, changeText)
+            if self.__error == False: self.createASMTextFromLine(line, command, params, changeText)
+
+        elif self.isCommandInLineThat(line, "flip"):
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+            var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
+            if var1 == False:
+                var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+            if var1 == False:
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                       "", "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+            if "param#2" in params:
+                var2 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
+                if var2 == False:
+                    var2 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+                if var2 == False:
+                    self.addToErrorList(line["lineNum"],
+                                        self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
+
+                subLineStructure = self.__editorBigFrame.getLineStructure(0,
+                                                                          ["\txor(" + params["param#1"][0] + ", 255, " +
+                                                                          params["param#2"][0] + ")"]
+                                                                          , False)
+            else:
+                params["param#2"] = params["param#1"]
+                subLineStructure = self.__editorBigFrame.getLineStructure(0,
+                                                                          ["\txor("+ params["param#1"][0] + ", 255)"]
+                                                                          , False )
+            for key in line:
+                if key not in subLineStructure.keys():
+                   subLineStructure[key] = line[key]
+
+            self.processLine(subLineStructure, linesFeteched)
+            line["compiled"] = subLineStructure["compiled"]
 
         elif self.isCommandInLineThat(line, "calc"):
             smallerCommands, temps = self.convertStatementToSmallerCodes("calc", line["param#2"][0], line)
@@ -237,6 +527,10 @@ class FirstCompiler:
                    if subLine == "": continue
 
                    subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine], False)
+                   for key in line:
+                       if key not in subLineStructure.keys():
+                           subLineStructure[key] = line[key]
+
                    self.processLine(subLineStructure, linesFeteched)
 
                    if self.__error == False:
@@ -489,6 +783,173 @@ class FirstCompiler:
             if firstOne == False and empty == False:
                line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
 
+    def checkIfCanShiftBits(self, params, varHolder, numberHolder, line, shiftDir):
+        theNum = int(self.__editorBigFrame.convertStringNumToNumber(params[numberHolder][0]))
+        if self.isPowerOfTwo(theNum) == False: return
+
+        sourceVar = self.__loader.virtualMemory.getVariableByName2(params[varHolder][0])
+        if sourceVar == False:
+           self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params[varHolder][0],
+                                                                   "", "",
+                                                                   str(line["lineNum"] + self.__startLine)))
+        if "param#3" not in params.keys():
+            destVar = sourceVar
+            params["param#3"] = params["param#1"]
+        else:
+            destVar = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+            if destVar == False:
+               self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#3"][0],
+                                                                       "", "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+
+        times = self.howManyTimesThePowerOfTwo(theNum)
+
+        if sourceVar == destVar and sourceVar.type == "byte":
+           line["compiled"] = times * ("\t" + shiftDir + "\t" + params[varHolder][0] + "\n")
+           return
+
+        shifting = times * ("\t" + shiftDir + "\n")
+        convert1 = ""
+        convert2 = ""
+
+        if sourceVar.type != "byte":
+           convert1 = self.__mainCompiler.convertAnyTo8Bits(sourceVar.usedBits)
+
+        if destVar.type != "byte":
+           convert2 = self.__mainCompiler.save8bitsToAny2(destVar.usedBits, params["param#3"][0])
+
+        line["compiled"] = "\tLDA\t" + params[varHolder][0] + "\n" +\
+                           convert1 + shifting + convert2 + "\tSTA\t" + params["param#3"][0] + "\n"
+
+    def prepareDiv(self, params, aaveThisOne):
+        saveThisOne = "ST" + aaveThisOne
+        changeText = {}
+
+        var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+        var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
+        changeText["#MAGIC#"] = str(self.__magicNumber)
+        changeText["#BANK#"]  = self.__currentBank
+
+        self.__magicNumber += 1
+
+        self.__temps = []
+        for num in range(2, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+
+            if params["param#1"][0] == "temp" + num or \
+               params["param#2"][0] == "temp" + num or \
+               params["param#3"][0] == "temp" + num:
+               pass
+            else:
+               self.__temps.append("temp" + num)
+
+        first = self.__temps[0]
+        self.__temps.pop(0)
+
+        if var1 != False:
+            if var1.type != "byte":
+                changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+
+        if var2 != False:
+            if var2.type != "byte":
+                changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                              self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+                changeText["#VARTEMP#"]     = first
+                changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
+                changeText["!!!LDAVAR2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n"
+
+            else:
+                changeText["#VARTEMP#"] = params["param#2"][0]
+        else:
+            changeText["#VARTEMP#"] = params["param#2"][0]
+
+        if var3 != False:
+           if var3.type != "byte":
+              changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+
+        if saveThisOne == "A":
+           changeText["#SAVECOMMAND#"] = "STA"
+        else:
+           changeText["#SAVECOMMAND#"] = "STY"
+           if "!!!from8bit!!!" in changeText.keys():
+              changeText["!!!TAY!!!"]     = "\tTAY"
+              changeText["!!!TYA!!!"]     = "\tTYA"
+
+
+        return changeText
+
+
+
+    def saveAValue(self, params, paramName1, paramName2, line):
+        txt = ""
+        itWas0 = False
+
+        if params[paramName1][1] == "variable":
+           var1 = self.__loader.virtualMemory.getVariableByName(params[paramName1][0], self.__currentBank)
+           if var1 == False:
+              var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+           if var1 == False:
+              self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params[paramName1][0],
+                                                                     "", "",
+                                                                    str(line["lineNum"] + self.__startLine)))
+
+           txt += "\tLDA\t" + params[paramName1][0] + "\n"
+           if var1.type != "byte": txt += self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+        else:
+           txt += "\tLDA\t#" + params[paramName1][0].replace("#", "") + "\n"
+           if self.isIt(params[paramName1][0], 0) or self.isIt(params[paramName1][0], 255): itWas0 = True
+
+        var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
+        if var2 == False:
+           var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
+
+        if var2 == False:
+           self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params[paramName2][0],
+                                                                     "", "",
+                                                                    str(line["lineNum"] + self.__startLine)))
+        if var2.type != "byte":
+           if itWas0 == True:
+              command = None
+              if self.isIt(params[paramName1][0], 0):
+                 command  = "AND"
+                 forCOMM  = ""
+                 for num in range(7, -1, -1):
+                     if num in var2.usedBits:
+                        forCOMM += "0"
+                     else:
+                        forCOMM += "1"
+              else:
+                  command = "ORA"
+                  forCOMM = ""
+                  for num in range(7, -1, -1):
+                      if num in var2.usedBits:
+                          forCOMM += "1"
+                      else:
+                          forCOMM += "0"
+
+              return "\tLDA\t#" + params[paramName2][0] + "\n\t" + command + "\t#%" + forCOMM + "\n\tSTA\t" + params[paramName2][0] + "\n"
+           else:
+               saver = self.__mainCompiler.save8bitsToAny2(var2.usedBits, params[paramName2][0])
+
+               if params[paramName1][1] == "number":
+                  maxNumber = int("0b" + ("1" * len(var2.usedBits)), 2)
+                  if maxNumber > self.__editorBigFrame.convertStringNumToNumber(params[paramName1][0]):
+                     saver = saver.split("\n")
+                     saver.pop(5)
+                     saver = "\n".join(saver)
+               txt += saver
+
+        if itWas0:
+           for opcode in ("ASL", "LSR", "ROL", "ROR"):
+               txt = txt.replace("\t" + opcode + "\n", "")
+
+        txt += "\tSTA\t" + params[paramName2][0] + "\n"
+        return txt
+
     def fuseTempsAndLogical(self, temp1, temp2, comprass, caseName):
         comprassDict = self.__editorBigFrame.getComprassionDict()
         del comprassDict["all"]
@@ -556,6 +1017,54 @@ class FirstCompiler:
         self.checkASMCode(template, line)
         if self.__error == False: line["compiled"] = template
 
+    def prepareMulti(self, params):
+        changeText = {}
+
+        var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+        var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
+        changeText["#MAGIC#"] = str(self.__magicNumber)
+        changeText["#BANK#"]  = self.__currentBank
+
+        self.__magicNumber += 1
+
+        self.__temps = []
+        for num in range(2, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+
+            if params["param#1"][0] == "temp" + num or \
+               params["param#2"][0] == "temp" + num or \
+               params["param#3"][0] == "temp" + num:
+               pass
+            else:
+               self.__temps.append("temp" + num)
+
+        first = self.__temps[0]
+        self.__temps.pop(0)
+
+        if var1 != False:
+            if var1.type != "byte":
+                changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                changeText["#VARTEMP#"] = first
+                changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
+
+            else:
+                changeText["#VARTEMP#"] = params["param#1"][0]
+        else:
+            changeText["#VARTEMP#"] = params["param#1"][0]
+
+        if var2 != False:
+            if var2.type != "byte":
+                changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                              self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+        if var3 != False:
+           if var3.type != "byte":
+              changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+
+        return changeText
+
     def prepareAdd(self, params):
         changeText = {}
 
@@ -563,15 +1072,30 @@ class FirstCompiler:
         var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
         var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
 
+        self.__temps = []
+        for num in range(2, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+
+            if params["param#1"][0] == "temp" + num or \
+               params["param#2"][0] == "temp" + num or \
+               params["param#3"][0] == "temp" + num:
+               pass
+            else:
+               self.__temps.append("temp" + num)
+
+        first = self.__temps[0]
+        self.__temps.pop(0)
+
         if var1 != False:
            if var1.type != "byte":
               changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
 
         if var2 != False:
            if var2.type != "byte":
-              changeText["#VAR02#"] = "temp01"
+              changeText["#VAR02#"] = first
               changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
-                                            self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\ttemp01"
+                                            self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\t" + first
         if var3 != False:
            if var3.type != "byte":
               changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
@@ -582,11 +1106,20 @@ class FirstCompiler:
     def checkASMCode(self, template, lineStructure):
         lines = template.split("\n")
 
+        labels = []
         for line in lines:
+            if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
+               labels.append(line.replace("\n", ""))
+
+        for line in lines:
+            if line.replace("\t", " ").startswith(" ") == False: continue
+            if line[0] in ["*", "#"]: continue
+
             delimiterPoz = self.__editorBigFrame.getFirstValidDelimiterPoz(line)
             line = line[:delimiterPoz]
             #'$79': {'opcode': 'ADC', 'format': 'aaaa,y', 'bytes': 3},
             line = line.replace("\r", "").replace("\t", " ").split(" ")
+
             command = ""
             value   = ""
 
@@ -596,6 +1129,15 @@ class FirstCompiler:
                 if item != "": newLine.append(item)
             line    = newLine
             if line == []: continue
+
+            #try:
+            #    print(line, line[0].upper() in self.__branchers, line[1] in labels or "*" in line[1])
+            #except:
+            #    pass
+
+            if line[0].upper() in self.__branchers:
+               if line[1] in labels or "*" in line[1]:
+                  continue
 
             command = line[0]
             if len(line) > 1:
@@ -1025,7 +1567,7 @@ class FirstCompiler:
                                                                     .replace("#OPERAND#", str(operand))
 
     def isCommandInLineThat(self, line, command):
-        if line["command"][0] == command or command in self.__loader.syntaxList[command].alias:
+        if line["command"][0] == command or line["command"][0] in self.__loader.syntaxList[command].alias:
            return True
         return False
 
@@ -1272,3 +1814,16 @@ class FirstCompiler:
                 returnBack += "\t" + command + "(" + temp + ", " + operand + ")\n"
 
         return returnBack
+
+    def returnMaxParamNum(self, command):
+        return len(self.__loader.syntaxList[command].params)
+
+    def isPowerOfTwo(self, num):
+        return num & (num - 1) == 0
+
+    def howManyTimesThePowerOfTwo(self, num):
+        count = 0
+        while num > 1:
+            num = num >> 1
+            count += 1
+        return count

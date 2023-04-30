@@ -453,3 +453,4 @@ compilerErrorMoreDefault=More than one defaults found for command #VAL# on line 
 compilerErrorCaseNotNumber=If you set #VAR# variable for Select, instead of #PARAM#, you should set only constants, variables and numbers for cases!
 compilerErrorMustBe1=If you set a constant or number for Select, it's value must be 1 (as "True"). #PARAM# has a value of #VAR#!
 compilerErrorComprassNotFound=Not found any comprass item  in #PARAM# statement!
+compilerErrorZeroDiv=You cannot do a division with zero!

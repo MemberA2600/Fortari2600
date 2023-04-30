@@ -16,6 +16,7 @@ do-until;[for-until perform-until];[common];command;end;brackets;[];[statement];
 do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];read;None;False
 do;[for perform];[common];command;end;None;[];None;None;None;False
 exit;[break next-sentence];[common];command;None;None;[];None;None;None;False
+flip;[! not];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 goto;[];[common];command;None;None;[leave];[number|stringConst|variable];None;None;False
 incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False
 leave;[];[common];command;None;None;[overscan];None;None;None;False

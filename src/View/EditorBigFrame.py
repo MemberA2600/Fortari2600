@@ -21,6 +21,7 @@ class EditorBigFrame:
         self.__virtualMemory = self.__loader.virtualMemory
         self.__syntaxList = self.__loader.syntaxList
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
+        self.__foundError     = False
 
         self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
                         "param#1", "param#2", "param#3", "comment", "updateRow"]
@@ -226,6 +227,12 @@ class EditorBigFrame:
 
                 for button in self.__sectionButtons:
                     button.config(state = state)
+
+                if  self.__foundError    == False:
+                    self.__compileASMButton.config(state = NORMAL)
+                else:
+                    self.__compileASMButton.config(state = DISABLED)
+
             else:
                 for button in self.__sectionButtons:
                     button.config(state = DISABLED)
@@ -1972,7 +1979,7 @@ class EditorBigFrame:
         if self.__syntaxList[linstructure["command"][0]].does == "write":
            return True
         elif self.__syntaxList[linstructure["command"][0]].flexSave == True and cursorIn == "param#1" and \
-             linstructure["param#3"][0] in ["", "None", None]:
+             linstructure["param#" + str(len(self.__syntaxList[linstructure["command"][0]].params))][0] in ["", "None", None]:
            return True
         else:
            return False
@@ -2142,7 +2149,7 @@ class EditorBigFrame:
 
         objectCommand = False
         for d in listOfValidDelimiters:
-            if d in command:
+            if d in command and command != d:
                objectCommand = True
                break
 
@@ -2185,7 +2192,8 @@ class EditorBigFrame:
            sendBack    = True
 
         if self.__syntaxList[lineStructure["command"][0]].flexSave:
-            if lineStructure["param#3"][0] in ["", "None", None] and cursorIn == "param#1":
+            if lineStructure["param#" + str(len(self.__syntaxList[lineStructure["command"][0]].params))][0] \
+                              in ["", "None", None] and cursorIn == "param#1":
                 paramTypeList = "variable"
                 ioMethod      = "write"
 
@@ -2599,7 +2607,6 @@ class EditorBigFrame:
                                          ioMethod, returnBack,
                                          ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure)
 
-        #print("fuck", params, returnBack)
         #print(currentLineStructure)
 
         commandVar = None
@@ -2686,6 +2693,7 @@ class EditorBigFrame:
         elif commandVar.flexSave == True:
              theCommand = self.__loader.syntaxList[command]
              paramMaxNum = len(theCommand.params)
+
              if returnBack[paramMaxNum - 1][0] != "missing":
                 if returnBack[paramMaxNum - 1][0] != "variable": returnBack[paramMaxNum - 1][0] = "error"
              else:
@@ -2746,6 +2754,7 @@ class EditorBigFrame:
         if type(num) == int  : return num
         if type(num) == float: return int(num)
 
+        if num.startswith("#"): num = num[1:]
         binSigns = self.__config.getValueByKey("validBinarySigns").split(" ")
         hexSigns = self.__config.getValueByKey("validHexSigns").split(" ")
 
@@ -3199,6 +3208,9 @@ class EditorBigFrame:
 #       tagRanges = self.__codeBox.tag_ranges("sel")
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
+        if tag == "error":
+           self.__foundError = True
+
     def removeTag(self, Y, X1, X2, tags):
         if tags == None:
             for tag in self.__codeBox.tag_names():
@@ -3263,6 +3275,8 @@ class EditorBigFrame:
 
     def __counterEnded2(self):
         self.setCurzorPoz()
+        self.__foundError     = False
+
         self.__setTinting("whole")
 
     def __keyPressed(self, event):

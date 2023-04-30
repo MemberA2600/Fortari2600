@@ -453,3 +453,4 @@ compilerErrorMoreDefault=Több, mint egy default található a #VAL# parancshoz a #
 compilerErrorCaseNotNumber=Ha #VAR# változó adja a Select alapját, ezért a #PARAM# helyett számokat, változókat és konstansokat kell használni!
 compilerErrorMustBe1=Ha konstans vagy változó tartozik a Select-hez, az értékének 1-nek kell lennie (mint "True"). A #PARAM# értéke #VAR#!
 compilerErrorComprassNotFound=nem található összehasonlító elem a #PARAM# képletben!
+compilerErrorZeroDiv=Tilos nullával osztani!
