@@ -14,6 +14,7 @@ do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[arr
 do-times;[for-until perform-until];[common];command;end;brackets;[];[number|stringConst|variable];write;None;False
 do-until;[for-until perform-until];[common];command;end;brackets;[];[statement];read;None;False
 do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];read;None;False
+do-frames;[for-frames perform-frames];[common];command;end;brackets;[];[number|stringConst {number|stringConst}];read;None;False
 do;[for perform];[common];command;end;None;[];None;None;None;False
 exit;[break next-sentence];[common];command;None;None;[];None;None;None;False
 flip;[! not];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True

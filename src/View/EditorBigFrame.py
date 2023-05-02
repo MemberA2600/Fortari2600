@@ -1414,6 +1414,45 @@ class EditorBigFrame:
                       self.configTheItem("param#" + str(paramNum), item[0])
                       lineEditorTempDict["param#" + str(paramNum)] = item[0]
 
+        if currentLineStructure["command"][0] == "do-frames" or currentLineStructure["command"][0] in\
+           self.__syntaxList["do-frames"].alias:
+           num1 = None
+           num2 = None
+
+           try:
+               try:
+                   num1 = self.convertStringNumToNumber(currentLineStructure["param#1"][0])
+               except:
+                   num1 = self.convertStringNumToNumber(self.__constants[currentLineStructure["param#1"][0]])
+
+               if currentLineStructure["param#2"][0] not in [None, "None", ""]:
+                  try:
+                      num2 = self.convertStringNumToNumber(currentLineStructure["param#2"][0])
+                  except:
+                      num2 = self.convertStringNumToNumber(self.__constants[currentLineStructure["param#2"][0]])
+
+           except:
+                pass
+
+           if num1 != None:
+               if num1 != 1 and self.isPowerOfTwo(num1) == False:
+                    if caller == "lineTinting":
+                        self.addTag(yOnTextBox, currentLineStructure["param#1"][1][0],
+                                   currentLineStructure["param#1"][1][1]+1,
+                                   "error")
+                    elif caller == "firstCompiler":
+                        errorPositions.append(["param#1", "mustBePowerOf2"])
+
+           if num2 != None:
+               if num1 < num2:
+                   if caller == "lineTinting":
+                      self.addTag(yOnTextBox, currentLineStructure["param#2"][1][0],
+                                  currentLineStructure["param#2"][1][1]+1,
+                                 "error")
+                   elif caller == "firstCompiler":
+                      errorPositions.append(["param#2", "mustBeSmaller"])
+
+
         for ind in range(0, len(currentLineStructure["commas"])):
             if ind > len(commandParams) - 2:
                if caller == "lineTinting":
@@ -1436,6 +1475,8 @@ class EditorBigFrame:
                     if thisWord == thatWord:
                        self.removeTag(yOnTextBox, startNum, startNum  + len(self.__highLightWord), "background")
                        self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight")
+
+
 
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
@@ -2335,7 +2376,6 @@ class EditorBigFrame:
                              else:
                                 foundIt = True
                                 returnBack.append(["error", dimension])
-
 
                 else:
                     errorLevel = 0
@@ -3443,3 +3483,6 @@ class EditorBigFrame:
 
         self.__codeBox.config(font=self.__normalFont)
         self.__codeBox.tag_raise("sel")
+
+    def isPowerOfTwo(self, num):
+        return num & (num - 1) == 0

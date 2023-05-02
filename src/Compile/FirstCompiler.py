@@ -124,6 +124,7 @@ class FirstCompiler:
 
     def processLine(self, line, linesFeteched):
         self.__useThese = [line["lineNum"], linesFeteched]
+        self.__thisLine = line
 
         if self.isCommandInLineThat(line, "asm"):
             datas = []
@@ -605,11 +606,11 @@ class FirstCompiler:
                       template = template.replace("!!!SAVE!!!", save)
                       line["compiled"] = template
 
-        elif line["command"].split("-")[0] in ["do", "perform", "for", "foreach"]:
+        elif line["command"][0].split("-")[0] in ["do", "perform", "for", "foreach"]:
             command     = None
             commandName = None
             for c in self.__loader.syntaxList.keys():
-                if line[command] == c or line[command] in self.__loader.syntaxList[c].alias:
+                if line["command"][0] == c or line["command"][0] in self.__loader.syntaxList[c].alias:
                    command     = self.__loader.syntaxList[c]
                    commandName = c
                    break
@@ -618,7 +619,7 @@ class FirstCompiler:
                 self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                                        line["command"][0], "",
                                                                        str(line["lineNum"] + self.__startLine)))
-
+            txt = ""
             if self.__error == False:
                line["magicNumber"] = str(self.__magicNumber)
                self.__magicNumber += 1
@@ -634,7 +635,8 @@ class FirstCompiler:
 
                endLine = linesFeteched[end[0]]
                endLine["labelsBefore"] = name + "End"
-               endLine["compiledBefore"] = "\tJMP\t" + name + "Loop\n"
+               if self.isCommandInLineThat(line, "do-frames") == False:
+                  endLine["compiledBefore"] = "\tJMP\t" + name + "Loop\n"
 
                exits = self.__editorBigFrame.listAllCommandFromTo("exit", self.__text, line["level"] + 1,
                                                                   line["lineNum"], end[0] + 1)
@@ -660,22 +662,43 @@ class FirstCompiler:
                                                                     str(line["lineNum"] + self.__startLine)))
 
                   if self.__error == False:
-                     if params["param#1"][0] == "variable":
+                     if params["param#1"][1] == "variable":
                         txt += "\tLDA\t"  + params["param#1"][0] + "\n"
                      else:
-                        txt += "\tLDA\t#" + params["param#1"][0] + "\n"
+                        txt += "\tLDA\t#" + params["param#1"][0].replace("#", "") + "\n"
 
-                     first = self.__temps[0]
-                     self.__temps.pop(0)
-                     txt += "\tSTA\t" + first  + "\n"        +\
-                            "\tJMP\t" + name   + "JumpOver"  +\
-                              name    + "Loop" + "\n"        +\
-                            "\tDEC\t" + first  + "\n"        +\
-                            "\tLDA\t" + first  + "\n"        +\
-                            "\tCMP\t" + "#0"   + "\n"        +\
-                            "\tBEQ\t" + name   + "End\n"     +\
-                            name      + "JumpOver\n"
+                     try:
+                         first = self.__temps[0]
+                         self.__temps.pop(0)
+                     except:
+                         self.addToErrorList(line["lineNum"],
+                                             self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                               "", "",
+                                                               str(line["lineNum"] + self.__startLine)))
+                     if self.__error == False:
+                         done = False
+                         if params["param#1"][1] == "number":
+                               if self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0]) < 128:
+                                   txt += "\tSTA\t" + first + "\n" + \
+                                           name + "Loop" + "\n" + \
+                                          "\tDEC\t" + first + "\n" + \
+                                          "\tLDA\t" + first + "\n" + \
+                                          "\tBMI\t" + name + "End\n"
 
+                                   done = True
+
+                         if done == False:
+                             txt += "\tSTA\t" + first  + "\n"        +\
+                                    "\tJMP\t" + name                 +\
+                                    "JumpOver" + "\n"                +\
+                                      name    + "Loop" + "\n"        +\
+                                    "\tDEC\t" + first  + "\n"        +\
+                                    "\tLDA\t" + first  + "\n"        +\
+                                    "\tCMP\t" + "#0"   + "\n"        +\
+                                    "\tBEQ\t" + name   + "End\n"     +\
+                                    name      + "JumpOver\n"
+
+            line["compiled"] = txt
 
         elif self.isCommandInLineThat(line, "select"):
              line["magicNumber"] = str(self.__magicNumber)
@@ -796,9 +819,9 @@ class FirstCompiler:
                                                          self.prepareError("compilerErrorStatementTemps", subParams["param#1"][0],
                                                                            "", "",
                                                                            str(line["lineNum"] + self.__startLine)))
-
-                           txt += "\tCMP\t" + cmp + "\n" +\
-                                  "\tBEQ\t" + name + "Case_" + str(caseNum) + "\n"
+                           if self.__error == False:
+                               txt += "\tCMP\t" + cmp + "\n" +\
+                                      "\tBEQ\t" + name + "Case_" + str(caseNum) + "\n"
 
                        if len(defaults) > 0:
                           txt += "\tJMP\t" + name + "Default" + "\n"
@@ -1048,23 +1071,30 @@ class FirstCompiler:
 
         self.__temps = self.collectUsedTemps()
 
-        first = self.__temps[0]
-        self.__temps.pop(0)
+        try:
+            first = self.__temps[0]
+            self.__temps.pop(0)
+        except:
+            self.addToErrorList(self.__thisLine["lineNum"],
+                                self.prepareError("compilerErrorStatementTemps", params["param#2"][0],
+                                                  "", "",
+                                                  str(self.__thisLine["lineNum"] + self.__startLine)))
 
-        if var1 != False:
-            if var1.type != "byte":
-                changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+        if self.__error == False:
+            if var1 != False:
+                if var1.type != "byte":
+                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
 
-        if var2 != False:
-            if var2.type != "byte":
-                changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
-                                              self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
-                changeText["#VARTEMP#"]     = first
-                changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
-                changeText["!!!LDAVAR2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n"
+            if var2 != False:
+                if var2.type != "byte":
+                    changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                                  self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+                    changeText["#VARTEMP#"]     = first
+                    changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
+                    changeText["!!!LDAVAR2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n"
 
-            else:
-                changeText["#VARTEMP#"] = params["param#2"][0]
+                else:
+                    changeText["#VARTEMP#"] = params["param#2"][0]
         else:
             changeText["#VARTEMP#"] = params["param#2"][0]
 
@@ -1233,27 +1263,33 @@ class FirstCompiler:
 
         self.__temps = self.collectUsedTemps()
 
-        first = self.__temps[0]
-        self.__temps.pop(0)
+        try:
+            first = self.__temps[0]
+            self.__temps.pop(0)
+        except:
+            self.addToErrorList(self.__thisLine["lineNum"],
+                                self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                  "", "",
+                                                  str(self.__thisLine["lineNum"] + self.__startLine)))
+        if self.__error == False:
+            if var1 != False:
+                if var1.type != "byte":
+                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                    changeText["#VARTEMP#"] = first
+                    changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
 
-        if var1 != False:
-            if var1.type != "byte":
-                changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
-                changeText["#VARTEMP#"] = first
-                changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
-
+                else:
+                    changeText["#VARTEMP#"] = params["param#1"][0]
             else:
                 changeText["#VARTEMP#"] = params["param#1"][0]
-        else:
-            changeText["#VARTEMP#"] = params["param#1"][0]
 
-        if var2 != False:
-            if var2.type != "byte":
-                changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
-                                              self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
-        if var3 != False:
-           if var3.type != "byte":
-              changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+            if var2 != False:
+                if var2.type != "byte":
+                    changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                                  self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+            if var3 != False:
+               if var3.type != "byte":
+                  changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
 
         return changeText
 
@@ -1266,21 +1302,28 @@ class FirstCompiler:
 
         self.__temps = self.collectUsedTemps()
 
-        first = self.__temps[0]
-        self.__temps.pop(0)
+        try:
+            first = self.__temps[0]
+            self.__temps.pop(0)
+        except:
+            self.addToErrorList(self.__thisLine["lineNum"],
+                                self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                  "", "",
+                                                  str(self.__thisLine["lineNum"] + self.__startLine)))
 
-        if var1 != False:
-           if var1.type != "byte":
-              changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+        if self.__error == False:
+            if var1 != False:
+               if var1.type != "byte":
+                  changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
 
-        if var2 != False:
-           if var2.type != "byte":
-              changeText["#VAR02#"] = first
-              changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
-                                            self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\t" + first
-        if var3 != False:
-           if var3.type != "byte":
-              changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+            if var2 != False:
+               if var2.type != "byte":
+                  changeText["#VAR02#"] = first
+                  changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
+                                                self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\t" + first
+            if var3 != False:
+               if var3.type != "byte":
+                  changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
 
         return changeText
 

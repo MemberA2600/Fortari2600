@@ -455,3 +455,5 @@ compilerErrorMustBe1=Ha konstans vagy változó tartozik a Select-hez, az értékéne
 compilerErrorComprassNotFound=nem található összehasonlító elem a #PARAM# képletben!
 compilerErrorZeroDiv=Tilos nullával osztani!
 infiniteLoop=A "do" típusú parancsoknál, ha nincs kilépési feltétel, szükséges legalább egy "exit", "return", "goto" vagy "leave", különben biztosan végtelen ciklus alakul ki!
+mustBePowerOf2=A Do-Frames parancs elsõ paramétere 1, vagy kettõ valamely hatványa lehet!
+mustBeSmaller=A Do-Frames parancs második paramétere az elsõnél kisebb vagy egyenlõ!
