@@ -123,6 +123,8 @@ class FirstCompiler:
         self.result = textToReturn
 
     def processLine(self, line, linesFeteched):
+        self.__useThese = [line["lineNum"], linesFeteched]
+
         if self.isCommandInLineThat(line, "asm"):
             datas = []
             for num in range(1, 3):
@@ -603,6 +605,78 @@ class FirstCompiler:
                       template = template.replace("!!!SAVE!!!", save)
                       line["compiled"] = template
 
+        elif line["command"].split("-")[0] in ["do", "perform", "for", "foreach"]:
+            command     = None
+            commandName = None
+            for c in self.__loader.syntaxList.keys():
+                if line[command] == c or line[command] in self.__loader.syntaxList[c].alias:
+                   command     = self.__loader.syntaxList[c]
+                   commandName = c
+                   break
+
+            if command == None:
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                                       line["command"][0], "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+
+            if self.__error == False:
+               line["magicNumber"] = str(self.__magicNumber)
+               self.__magicNumber += 1
+               name = self.__currentBank + "_" + line["magicNumber"] + "_Do_"
+
+               txt = name + "Start" + "\n"
+               end = self.__editorBigFrame.findEnd(line, line["lineNum"], self.__text)
+               if  end == False:
+                   self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorNoEnd", "",
+                                                          line["command"][0], "",
+                                                          str(line["lineNum"] + self.__startLine)))
+
+               endLine = linesFeteched[end[0]]
+               endLine["labelsBefore"] = name + "End"
+               endLine["compiledBefore"] = "\tJMP\t" + name + "Loop\n"
+
+               exits = self.__editorBigFrame.listAllCommandFromTo("exit", self.__text, line["level"] + 1,
+                                                                  line["lineNum"], end[0] + 1)
+               for item in exits:
+                   exitLine = linesFeteched[item["lineNum"]]
+                   exitLine["compiled"] = "\tJMP\t" + name + "End\n"
+
+               self.__temps = self.collectUsedTemps()
+               params = self.getParamsWithTypesAndCheckSyntax(line)
+
+               if commandName == "do-times":
+                  if params["param#1"][0] == "variable":
+                      if params["param#1"][1] == "variable":
+                         var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
+                                                                             self.__currentBank)
+                         if params == False:
+                            params = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+                         if params == False:
+                            self.addToErrorList(line["lineNum"],
+                                                  self.prepareError("compilerErrorVarNotFound",
+                                                                    params["param#1"][0],
+                                                                    "", "",
+                                                                    str(line["lineNum"] + self.__startLine)))
+
+                  if self.__error == False:
+                     if params["param#1"][0] == "variable":
+                        txt += "\tLDA\t"  + params["param#1"][0] + "\n"
+                     else:
+                        txt += "\tLDA\t#" + params["param#1"][0] + "\n"
+
+                     first = self.__temps[0]
+                     self.__temps.pop(0)
+                     txt += "\tSTA\t" + first  + "\n"        +\
+                            "\tJMP\t" + name   + "JumpOver"  +\
+                              name    + "Loop" + "\n"        +\
+                            "\tDEC\t" + first  + "\n"        +\
+                            "\tLDA\t" + first  + "\n"        +\
+                            "\tCMP\t" + "#0"   + "\n"        +\
+                            "\tBEQ\t" + name   + "End\n"     +\
+                            name      + "JumpOver\n"
+
+
         elif self.isCommandInLineThat(line, "select"):
              line["magicNumber"] = str(self.__magicNumber)
              self.__magicNumber += 1
@@ -659,13 +733,7 @@ class FirstCompiler:
                     defaultLine["magicNumber"] = line["magicNumber"]
 
 
-                self.__temps = []
-                for num in range(2, 20):
-                    num = str(num)
-                    if len(num) == 1: num = "0" + num
-
-                    self.__temps.append("temp" + num)
-
+                self.__temps = self.collectUsedTemps()
                 params = self.getParamsWithTypesAndCheckSyntax(line)
                 if params["param#1"][1] == "variable":
 
@@ -843,7 +911,7 @@ class FirstCompiler:
         else:
             times = self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])
 
-            if times < 5:
+            if times < 3:
                conv1 = ""
                conv2 = ""
 
@@ -878,7 +946,53 @@ class FirstCompiler:
 
         line["compiled"] = txt
 
+    def collectUsedTemps(self):
+        lineNum      = self.__useThese[0]
+        linesFetched = self.__useThese[1]
 
+        startNum     = lineNum
+        endNum       = lineNum
+        usedTemps    = []
+        currentLevel = linesFetched[lineNum]["level"]
+
+        temps = []
+        for num in range(1, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+            temps.append("temp" + num)
+
+        for lNum in range(lineNum, -1, -1):
+            if linesFetched[lNum]["level"] <= currentLevel:
+               for paramNum in range(1,4):
+                   paramNum = "param#" + str(paramNum)
+                   if linesFetched[lNum][paramNum][0] in temps:
+                      temps.remove(linesFetched[lNum][paramNum][0])
+
+               for temp in temps:
+                   if temp in linesFetched[lNum]["compiled"]:
+                      temps.remove(temp)
+
+            if linesFetched[lNum]["level"] == 0:
+               startNum = linesFetched[lNum]["lineNum"]
+               break
+
+        for lNum in range(lineNum, len(linesFetched)):
+            if linesFetched[lNum]["level"] <= currentLevel:
+                for paramNum in range(1, 4):
+                    paramNum = "param#" + str(paramNum)
+                    if linesFetched[lNum][paramNum][0] in temps:
+                        temps.remove(linesFetched[lNum][paramNum][0])
+
+                for temp in temps:
+                    if temp in linesFetched[lNum]["compiled"]:
+                        temps.remove(temp)
+
+            if linesFetched[lNum]["level"] == 0:
+                endNum = linesFetched[lNum]["lineNum"]
+                break
+
+        #print(temps)
+        return temps
 
     def checkIfCanShiftBits(self, params, varHolder, numberHolder, line, shiftDir):
         theNum = int(self.__editorBigFrame.convertStringNumToNumber(params[numberHolder][0]))
@@ -932,17 +1046,7 @@ class FirstCompiler:
 
         self.__magicNumber += 1
 
-        self.__temps = []
-        for num in range(2, 20):
-            num = str(num)
-            if len(num) == 1: num = "0" + num
-
-            if params["param#1"][0] == "temp" + num or \
-               params["param#2"][0] == "temp" + num or \
-               params["param#3"][0] == "temp" + num:
-               pass
-            else:
-               self.__temps.append("temp" + num)
+        self.__temps = self.collectUsedTemps()
 
         first = self.__temps[0]
         self.__temps.pop(0)
@@ -1127,17 +1231,7 @@ class FirstCompiler:
 
         self.__magicNumber += 1
 
-        self.__temps = []
-        for num in range(2, 20):
-            num = str(num)
-            if len(num) == 1: num = "0" + num
-
-            if params["param#1"][0] == "temp" + num or \
-               params["param#2"][0] == "temp" + num or \
-               params["param#3"][0] == "temp" + num:
-               pass
-            else:
-               self.__temps.append("temp" + num)
+        self.__temps = self.collectUsedTemps()
 
         first = self.__temps[0]
         self.__temps.pop(0)
@@ -1170,17 +1264,7 @@ class FirstCompiler:
         var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
         var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
 
-        self.__temps = []
-        for num in range(2, 20):
-            num = str(num)
-            if len(num) == 1: num = "0" + num
-
-            if params["param#1"][0] == "temp" + num or \
-               params["param#2"][0] == "temp" + num or \
-               params["param#3"][0] == "temp" + num:
-               pass
-            else:
-               self.__temps.append("temp" + num)
+        self.__temps = self.collectUsedTemps()
 
         first = self.__temps[0]
         self.__temps.pop(0)
@@ -1676,12 +1760,7 @@ class FirstCompiler:
         temps            = []
         commands         = ""
 
-        self.__temps = []
-        for num in range(2, 20):
-            num = str(num)
-            if len(num) == 1: num = "0" + num
-
-            self.__temps.append("temp" + num)
+        self.__temps = self.collectUsedTemps()
 
         needComprassion = True
         stringAllowed   = False

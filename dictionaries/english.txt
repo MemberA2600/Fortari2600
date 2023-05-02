@@ -454,3 +454,4 @@ compilerErrorCaseNotNumber=If you set #VAR# variable for Select, instead of #PAR
 compilerErrorMustBe1=If you set a constant or number for Select, it's value must be 1 (as "True"). #PARAM# has a value of #VAR#!
 compilerErrorComprassNotFound=Not found any comprass item  in #PARAM# statement!
 compilerErrorZeroDiv=You cannot do a division with zero!
+infiniteLoop=Using "do" commands without exit conditions must have at least one "exit", "return", "goto" or "leave" the prevent infinite loops!

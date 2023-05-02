@@ -11,7 +11,7 @@ decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;Fals
 default;[other else];[common];command;None;None;[];None;None;None;False
 div;[divide /];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[array];item;None;False
-do-times;[for-until perform-until];[common];command;end;brackets;[];[number|stringConst variable];write;None;False
+do-times;[for-until perform-until];[common];command;end;brackets;[];[number|stringConst|variable];write;None;False
 do-until;[for-until perform-until];[common];command;end;brackets;[];[statement];read;None;False
 do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];read;None;False
 do;[for perform];[common];command;end;None;[];None;None;None;False

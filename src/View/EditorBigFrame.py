@@ -1224,6 +1224,20 @@ class EditorBigFrame:
                     self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
+           if currentLineStructure["command"][0] == "do" or\
+              currentLineStructure["command"][0] in self.__syntaxList["do"].alias:
+              firstPoz = lineNum
+              lastPoz = self.findEnd(currentLineStructure, lineNum, text)
+
+              if lastPoz != False:
+                 lastPoz = lastPoz[0]
+
+                 if self.infiniteLoop(text, firstPoz, lastPoz):
+                     if caller == 'firstCompiler':
+                        errorPositions.append(["command", "infiniteLoop"])
+                     else:
+                        self.addToPosizions(errorPositions,
+                                            self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
            if currentLineStructure["command"][0] == "do-items" or\
               currentLineStructure["command"][0] in self.__syntaxList["do-items"].alias:
@@ -1485,6 +1499,16 @@ class EditorBigFrame:
                     lineEditorTempDict["command#3"] = "error"
 
             self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
+
+    def infiniteLoop(self, text, firstPoz, lastPoz):
+
+        listOfExit = self.listAllCommandFromTo("exit",    text, None, firstPoz, lastPoz + 1)
+        listOfGoto = self.listAllCommandFromTo("goto",    text, None, firstPoz, lastPoz + 1)
+        listOfLeave = self.listAllCommandFromTo("leave",  text, None, firstPoz, lastPoz + 1)
+        listOfReturn = self.listAllCommandFromTo("leave", text, None, firstPoz, lastPoz + 1)
+
+        if listOfExit == [] and listOfGoto == [] and listOfLeave == [] and listOfReturn == []: return True
+        return False
 
     def isThatADamnStatement(self, currentLineStructure, dimensions):
         for item in currentLineStructure.keys():

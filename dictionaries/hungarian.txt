@@ -454,3 +454,4 @@ compilerErrorCaseNotNumber=Ha #VAR# változó adja a Select alapját, ezért a #PARA
 compilerErrorMustBe1=Ha konstans vagy változó tartozik a Select-hez, az értékének 1-nek kell lennie (mint "True"). A #PARAM# értéke #VAR#!
 compilerErrorComprassNotFound=nem található összehasonlító elem a #PARAM# képletben!
 compilerErrorZeroDiv=Tilos nullával osztani!
+infiniteLoop=A "do" típusú parancsoknál, ha nincs kilépési feltétel, szükséges legalább egy "exit", "return", "goto" vagy "leave", különben biztosan végtelen ciklus alakul ki!
