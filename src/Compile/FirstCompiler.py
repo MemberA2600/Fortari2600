@@ -623,7 +623,12 @@ class FirstCompiler:
             if self.__error == False:
                line["magicNumber"] = str(self.__magicNumber)
                self.__magicNumber += 1
-               name = self.__currentBank + "_" + line["magicNumber"] + "_Do_"
+               subName = commandName.split("-")
+               for partNum in range(0, len(subName)):
+                   subName[partNum] = subName[partNum][0].upper() + subName[partNum][1:]
+               subName = "-".join(subName)
+
+               name = self.__currentBank + "_" + line["magicNumber"] + "_" + subName + "_"
 
                txt = name + "Start" + "\n"
                end = self.__editorBigFrame.findEnd(line, line["lineNum"], self.__text)
@@ -643,6 +648,12 @@ class FirstCompiler:
                for item in exits:
                    exitLine = linesFeteched[item["lineNum"]]
                    exitLine["compiled"] = "\tJMP\t" + name + "End\n"
+
+               cycles = self.__editorBigFrame.listAllCommandFromTo("cycle", self.__text, line["level"] + 1,
+                                                                  line["lineNum"], end[0] + 1)
+               for item in cycles:
+                   cycleLine = linesFeteched[item["lineNum"]]
+                   cycleLine["compiled"] = "\tJMP\t" + name + "Loop\n"
 
                self.__temps = self.collectUsedTemps()
                params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -697,6 +708,65 @@ class FirstCompiler:
                                     "\tCMP\t" + "#0"   + "\n"        +\
                                     "\tBEQ\t" + name   + "End\n"     +\
                                     name      + "JumpOver\n"
+
+               elif commandName == "do-frames":
+                  thatNum1 = str(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0]) - 1)
+
+                  if "param#2" in params.keys():
+                      thatNum2 = str(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) - 1)
+
+                  if thatNum1 != "0":
+                     txt += "\tLDA\tcounter\n\tAND\t#" + thatNum1 + "\n"
+                     if "param#2" in params.keys():
+                        txt += "\tCMP\t#" + thatNum2 + "\n"
+                     else:
+                        txt += "\tCMP\t#" + thatNum1 + "\n"
+                     txt += "\tBNE\t" + name + "End" + "\n" + name + "Loop" + "\n"
+                  else:
+                     txt += name + "Loop" + "\n"
+
+               elif commandName == "do":
+                   txt += name + "Loop" + "\n"
+
+               elif commandName == "do-until" or commandName == "do-while":
+                   opcode = ""
+                   txt += name + "Loop" + "\n"
+
+                   statement = line["param#1"][0]
+                   smallerCommands, temps = self.convertStatementToSmallerCodes("do-until",
+                                                                                statement, line)
+                   smallerCommandLines = smallerCommands.split("\n")
+
+                   if self.__error == False:
+                       for subLine in smallerCommandLines:
+                           if subLine == "": continue
+
+                           subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
+                                                                                     False)
+                           self.processLine(subLineStructure, linesFeteched)
+                           #print(self.__error, subLine)
+                           if self.__error == False:
+                               txt += subLineStructure["compiled"] + "\n"
+
+                       currentComprass = self.findCompass(statement)
+                       comprassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
+                                                                    name + "End")
+
+                       for opc in self.__branchers:
+                           if opc in comprassLine:
+                              opcode = opc
+                              break
+
+                       if commandName == "do-while":
+                          for itemNum in range(0, len(self.__branchers)):
+                              if opcode == self.__branchers[itemNum]:
+                                 if itemNum % 2 == 0:
+                                    itemNum += 1
+                                 else:
+                                    itemNum -= 1
+                                 comprassLine = comprassLine.replace(opcode, self.__branchers[itemNum])
+                                 break
+                       txt += comprassLine
 
             line["compiled"] = txt
 
@@ -1649,7 +1719,7 @@ class FirstCompiler:
             curParam = line["param#"+str(num)][0]
             if curParam not in self.__noneList:
                #curParam = self.formatParam(curParam, line["command"][0], line["lineNum"])
-               print(command.params)
+               #print(command.params)
                paramType = command.params[num-1]
                mustHave  = True
                if paramType.startswith("{"):

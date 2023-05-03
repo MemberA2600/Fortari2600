@@ -1435,7 +1435,7 @@ class EditorBigFrame:
                 pass
 
            if num1 != None:
-               if num1 != 1 and self.isPowerOfTwo(num1) == False:
+               if (num1 != 1 and self.isPowerOfTwo(num1)) or num1 < 1 == False:
                     if caller == "lineTinting":
                         self.addTag(yOnTextBox, currentLineStructure["param#1"][1][0],
                                    currentLineStructure["param#1"][1][1]+1,
@@ -1444,7 +1444,7 @@ class EditorBigFrame:
                         errorPositions.append(["param#1", "mustBePowerOf2"])
 
            if num2 != None:
-               if num1 < num2:
+               if num1 < num2 or num2 < 1:
                    if caller == "lineTinting":
                       self.addTag(yOnTextBox, currentLineStructure["param#2"][1][0],
                                   currentLineStructure["param#2"][1][1]+1,
