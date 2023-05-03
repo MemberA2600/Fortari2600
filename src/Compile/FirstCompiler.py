@@ -91,6 +91,13 @@ class FirstCompiler:
 
             linesFeteched.append(lineStruct)
 
+        """
+        test = "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp02\n" + "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp03\n" + \
+               "\tSTA\ttemp04\n" + "\tASL\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp05\n" + "\tLDA\ttemp04\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp06\n"
+
+        print(self.checkForNotNeededExtraLDA(test))
+        """
+
         self.compileBuild(linesFeteched, mode)
 
     def compileBuild(self, linesFeteched, mode):
@@ -120,7 +127,7 @@ class FirstCompiler:
             if line["comment"][0] not in self.__noneList:
                 textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
-        self.result = textToReturn
+        self.result = self.checkForNotNeededExtraLDA(textToReturn)
 
     def processLine(self, line, linesFeteched):
         self.__useThese = [line["lineNum"], linesFeteched]
@@ -547,6 +554,7 @@ class FirstCompiler:
                 subLineStructure = self.__editorBigFrame.getLineStructure(0,
                                                                           ["\txor("+ params["param#1"][0] + ", 255)"]
                                                                           , False )
+            subLineStructure["fullLine"] = line["fullLine"]
             for key in line:
                 if key not in subLineStructure.keys():
                    subLineStructure[key] = line[key]
@@ -737,12 +745,19 @@ class FirstCompiler:
                                                                                 statement, line)
                    smallerCommandLines = smallerCommands.split("\n")
 
+                   #print(smallerCommandLines)
+
                    if self.__error == False:
                        for subLine in smallerCommandLines:
                            if subLine == "": continue
 
                            subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
                                                                                      False)
+                           subLineStructure["fullLine"] = subLine
+                           for key in line:
+                               if key not in subLineStructure.keys():
+                                   subLineStructure[key] = line[key]
+
                            self.processLine(subLineStructure, linesFeteched)
                            #print(self.__error, subLine)
                            if self.__error == False:
@@ -932,6 +947,11 @@ class FirstCompiler:
 
                                 subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
                                                                                           False)
+                                subLineStructure["fullLine"] = subLine
+                                for key in line:
+                                    if key not in subLineStructure.keys():
+                                        subLineStructure[key] = line[key]
+
                                 self.processLine(subLineStructure, linesFeteched)
                                 if self.__error == False:
                                    line["compiled"] += subLineStructure["compiled"] + "\n"
@@ -978,6 +998,81 @@ class FirstCompiler:
 
             if firstOne == False and empty == False:
                line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
+
+        line["compiled"] = self.checkForNotNeededExtraLDA(line["compiled"])
+
+    def checkForNotNeededExtraLDA(self, lineCompiled):
+        lineLines = lineCompiled.split("\n")
+
+        for letter in ["A", "Y", "X"]:
+            opcode1 = "LD" + letter
+            opcode2 = "ST" + letter
+
+            if opcode1 not in lineCompiled: continue
+
+            for currentLineNum in range(0, len(lineLines)):
+                line = lineLines[currentLineNum].replace("\t", " ")
+                if line == "" or line[0] not in ["\t", " "]: continue
+                opC1, opR1 = self.getOpCodeAndOperandFromASMLine(line)
+
+                if opC1 == opcode1:
+                   for compareLineNum in range(currentLineNum - 1, -1, -1):
+                       if compareLineNum < 0: break
+                       compareLine = lineLines[compareLineNum]
+                       if compareLine == "": continue
+
+                       opC2, opR2 = self.getOpCodeAndOperandFromASMLine(compareLine)
+
+                       if opC2[0:2] not in ("ST", "LD"):
+                          break
+
+                       if opR1 == opR2:
+                          lineLines[currentLineNum] = ""
+                          break
+
+                elif opC1 == opcode2:
+                    for compareLineNum in range(currentLineNum - 1, -1, -1):
+                        if compareLineNum < 0: break
+                        compareLine = lineLines[compareLineNum].replace("\t", " ")
+                        if compareLine == "" or line[0] not in ["\t", " "]: continue
+
+                        opC2, opR2 = self.getOpCodeAndOperandFromASMLine(compareLine)
+
+                        if opC2[0:2] not in ("ST", "LD"):
+                            break
+
+                        if opC2 == opcode1:
+                           break
+
+                        if opR1 == opR2:
+                            lineLines[currentLineNum] = ""
+                            break
+        returnB = ""
+        for line in lineLines:
+            if line != "": returnB += line + "\n"
+
+        return returnB
+
+    def getOpCodeAndOperandFromASMLine(self, line):
+        asmStructure = self.__editorBigFrame.getLineStructure(0, [line], False)
+        if self.isCommandInLineThat(asmStructure, "asm"):
+           if asmStructure["param#2"][0] not in self.__noneList:
+              asmLine = asmStructure["param#1"][0][1:-1] + " " + asmStructure["param#2"][0][1:-1]
+           else:
+              asmLine = asmStructure["param#1"][0][1:-1]
+        else:
+            asmLine = line.replace("\t", " ")
+
+        asmLine = asmLine.split(" ")
+        newLine = []
+
+        for item in asmLine:
+            if item != "":
+               newLine.append(item)
+
+        if len(newLine) == 1: newLine.append("")
+
+        return newLine[0], newLine[1]
 
     def shiftOnVars(self, params, line, command):
         txt      = ""
@@ -1799,7 +1894,10 @@ class FirstCompiler:
                       "sectionNotAllowed": {"#SECTIONS#": ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed)},
                       "levelNotAllowed": {"#LEVEL#": str(self.__loader.syntaxList[line["command"][0]].levelAllowed)},
                       "paramNotNeeded": {},
-                      "iteralError": {}
+                      "iteralError": {},
+                      "infiniteLoop": {},
+                      "mustBePowerOf2": {},
+                      "mustBeSmaller": {}
                       }
 
         for item in listOfErrors:
@@ -2058,7 +2156,10 @@ class FirstCompiler:
                                                                            "", "",
                                                                            str(line["lineNum"] + self.__startLine)))
                 if var.type != "byte":
-                   extra = self.__mainCompiler.convertAnyTo8Bits(var.usedBits)
+                   extraLines = self.__mainCompiler.convertAnyTo8Bits(var.usedBits).split("\n")
+                   for line in extraLines:
+                       if line != "":
+                          extra += "asm(\"" + line + "\")\n"
 
             if self.__error == False:
                 returnBack += "asm(\"\tLDA\t" + finals[0] + "\")\n" +\

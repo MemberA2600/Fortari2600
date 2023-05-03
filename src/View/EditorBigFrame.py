@@ -2508,7 +2508,7 @@ class EditorBigFrame:
             ["string"     , "stringConst"]
         ]
 
-        # print("1", statementData)
+        #print("1", statementData)
 
         for item in statementData:
             if item["type"] == "comprass":
@@ -2558,7 +2558,7 @@ class EditorBigFrame:
                        bracketPairs.append([itemNum, foundPair])
                    else:
                        item["type"] = "error"
-            elif item["word"] == ")" and item["type"] == "invalidBracket" :
+            elif item["word"] == ")" and item["type"] in ["invalidBracket", "bracket"] :
                 level -= 1
 
         #print("3", statementData)
