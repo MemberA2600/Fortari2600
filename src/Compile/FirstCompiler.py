@@ -623,7 +623,10 @@ class FirstCompiler:
             if command == None:
                 self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                                        line["command"][0], "",
+
+
                                                                        str(line["lineNum"] + self.__startLine)))
+
             txt = ""
             if self.__error == False:
                line["magicNumber"] = str(self.__magicNumber)
@@ -663,7 +666,7 @@ class FirstCompiler:
                self.__temps = self.collectUsedTemps()
                params = self.getParamsWithTypesAndCheckSyntax(line)
 
-               if commandName == "do-times":
+               if self.isCommandInLineThat(line, "do-times"):
                   if params["param#1"][0] == "variable":
                       if params["param#1"][1] == "variable":
                          var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
@@ -714,7 +717,7 @@ class FirstCompiler:
                                     "\tBEQ\t" + name   + "End\n"     +\
                                     name      + "JumpOver\n"
 
-               elif commandName == "do-frames":
+               elif self.isCommandInLineThat(line, "do-frames"):
                   thatNum1 = str(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0]) - 1)
 
                   if "param#2" in params.keys():
@@ -730,10 +733,10 @@ class FirstCompiler:
                   else:
                      txt += name + "Loop" + "\n"
 
-               elif commandName == "do":
+               elif self.isCommandInLineThat(line, "do"):
                    txt += name + "Loop" + "\n"
 
-               elif commandName == "do-items":
+               elif self.isCommandInLineThat(line, "do-items"):
                    array = line["param#1"][0]
                    self.changeIfYouCanSaveToItem(True)
 
@@ -772,7 +775,7 @@ class FirstCompiler:
 
                    self.changeIfYouCanSaveToItem(False)
 
-               elif commandName == "do-until" or commandName == "do-while":
+               elif self.isCommandInLineThat(line, "do-until") or self.isCommandInLineThat(line, "do-while"):
                    opcode = ""
                    txt += name + "Loop" + "\n"
 

@@ -1582,6 +1582,8 @@ class EditorBigFrame:
                        stringAllowed = True
 
                    paramNum      = int(item.split("#")[1]) - 1
+                   if len(command.params) == 0: return False, ""
+
                    selectedParam = command.params[paramNum]
 
                    if "statement" in selectedParam:
@@ -2169,7 +2171,7 @@ class EditorBigFrame:
                 send = self.__finderLoop(currentLineStructure, startPoz, text, direction, item,
                                          lvlNum, splitBy, splitPoz, forceEndPoz, False)
 
-        return False
+        return send
 
     def findEnd(self, currentLineStructure, lineNum, text):
         endCommand = "end-" + currentLineStructure["command"][0].split("-")[0]
@@ -2305,6 +2307,7 @@ class EditorBigFrame:
                        if param == "item":
                           returnBack.append(
                               [self.isItemAcceptedForWrite(lineStructure, text), dimension])
+                          #print(returnBack[-1])
 
                        else:
                           returnBack.append(["error", dimension])
@@ -2844,6 +2847,7 @@ class EditorBigFrame:
                                      currentLineStructure)
 
         if startFound == False:
+            #print("#1")
             return "error"
         else:
             doNum = startFound[0]
@@ -2853,7 +2857,7 @@ class EditorBigFrame:
             if array in self.__virtualMemory.arrays.keys():
                 readOnly = self.__virtualMemory.hasArrayReadOnly(array)
             else:
-                # print("2")
+                #print("2")
                 return "error"
 
             if readOnly == True:
@@ -2883,7 +2887,7 @@ class EditorBigFrame:
                                         isOneWriting = True
                                         break
                         if isOneWriting == True:
-                            # print("3")
+                            #print("3")
                             return "error"
         return "variable"
 
