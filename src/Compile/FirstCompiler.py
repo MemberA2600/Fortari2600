@@ -50,10 +50,7 @@ class FirstCompiler:
         self.__registers,     \
         self.__opcodes        = self.__loader.io.loadRegOpCodes()
 
-        self.__writable,\
-        self.__readOnly,\
-        self.__all,\
-        self.__nonSystem      = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
+        self.__writable, self.__readOnly, self.__all, self.__nonSystem  = writable, readOnly, all, nonSystem
 
         self.__validMemoryAddresses = []
 
@@ -155,7 +152,7 @@ class FirstCompiler:
                         addr = self.getAddress(params["param#1"][0])
                         var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                        if len(addr) == 3 and var.type == "byte":
+                        if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
                             txt = "\tINC\t" + params["param#1"][0] + "\n"
                             self.checkASMCode(txt, line)
                             if self.__error == False: line["compiled"] = txt
@@ -241,7 +238,7 @@ class FirstCompiler:
                     addr = self.getAddress(params["param#1"][0])
                     var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                    if len(addr) == 3 and var.type == "byte":
+                    if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
                         txt = "\tDEC\t" + params["param#1"][0] + "\n"
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
@@ -736,6 +733,45 @@ class FirstCompiler:
                elif commandName == "do":
                    txt += name + "Loop" + "\n"
 
+               elif commandName == "do-items":
+                   array = line["param#1"][0]
+                   self.changeIfYouCanSaveToItem(True)
+
+                   if array not in self.__loader.virtualMemory.arrays.keys() or\
+                      (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1", "global"]):
+
+                      self.addToErrorList(line["lineNum"],
+                                          self.prepareError("compilerErrorArrayNotFound", array,
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+
+                   if self.__error == False:
+                      isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"], self.__text)
+                      for varName in self.__virtualMemory.arrays[array]:
+                          var = self.__loader.virtualMemory.getVariableByName2(varName)
+                          if var == False:
+                             self.addToErrorList(line["lineNum"],
+                                                 self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                    "", "",
+                                                                    str(line["lineNum"] + self.__startLine)))
+
+                          else:
+                              txt += "\tLDA\t" + varName + "\n"
+                              if var.type != "byte":
+                                 txt += self.__mainCompiler.convertAnyTo8Bits(var.usedBits)
+
+                              txt += "\tSTA\titem\n\tJSR\t" + name + "JumpOver\n"
+
+                              if isWriting:
+                                 txt += "\tLDA\titem\n"
+                                 if var.type != "byte":
+                                    txt += self.__mainCompiler.save8bitsToAny2(var.usedBits, varName)
+                                 txt += "\tSTA\t" + varName + "\n"
+
+                      txt += "\tJMP\t" + name + "End\n" + name + "Loop" + "\n" + "\tRTS\n" + name + "JompOver\n"
+
+                   self.changeIfYouCanSaveToItem(False)
+
                elif commandName == "do-until" or commandName == "do-while":
                    opcode = ""
                    txt += name + "Loop" + "\n"
@@ -1000,6 +1036,27 @@ class FirstCompiler:
                line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
 
         line["compiled"] = self.checkForNotNeededExtraLDA(line["compiled"])
+
+    def checkIfItIsWritingInItem(self, start, end, level, text):
+        listOfCommands = self.__editorBigFrame.listAllCommandFromTo(None, text, None, start, end + 1)
+
+        for thisLineStructure in listOfCommands:
+            if "item" in [
+                thisLineStructure["param#1"][0],
+                thisLineStructure["param#2"][0],
+                thisLineStructure["param#3"][0]]:
+                c = thisLineStructure["command"][0]
+
+                for key in self.__loader.syntaxList.keys():
+                    if key == c or c in self.__loader.syntaxList[key].alias:
+                        if self.__editorBigFrame.doesItWriteInParam(thisLineStructure, "param#" + \
+                                                                    str([thisLineStructure["param#1"][0],
+                                                                        thisLineStructure["param#2"][0],
+                                                                        thisLineStructure["param#3"][0]].index("item")+1), "compiler"
+
+                                                   ):
+                            return True
+        return False
 
     def checkForNotNeededExtraLDA(self, lineCompiled):
         lineLines = lineCompiled.split("\n")
@@ -1633,7 +1690,10 @@ class FirstCompiler:
                             mode = self.changeSARAtoAddress(lineStructure, opcodeDoes, beforeComma)
                         else:
                             if beforeComma in self.__variablesOfBank["readOnly"]:
-                               mode = "read"
+                               if beforeComma != "item":
+                                  mode = "read"
+                               else:
+                                  mode = "both"
                             else:
                                mode = "both"
 
@@ -1828,8 +1888,8 @@ class FirstCompiler:
 
                paramTypes = paramType.split("|")
 
-               if self.__editorBigFrame.doesItWriteInParam(line, "param#"+str(num)) == False:
-                   ioMethod = "read"
+               if self.__editorBigFrame.doesItWriteInParam(line, "param#"+str(num), "compiler") == False:
+                  ioMethod = "read"
 
                foundIt               = False
                param                 = None
@@ -1838,7 +1898,7 @@ class FirstCompiler:
                    foundIt, paramTypeAndDimension = self.__editorBigFrame.checkIfParamIsOK(param, curParam,
                                                                                            ioMethod, None,
                                                                                            "dummy", mustHave, "param#"+str(num),
-                                                                                           line)
+                                                                                           line, self.__text)
                    #print(curParam, param, foundIt)
                    if foundIt == True:
                       break
@@ -2217,3 +2277,17 @@ class FirstCompiler:
             num = num >> 1
             count += 1
         return count
+
+    def changeIfYouCanSaveToItem(self, state):
+        var = self.__loader.virtualMemory.getVariableByName2("item")
+        var.iterable = state
+        var.system   = 1 - state
+
+        if state == True:
+           self.__variablesOfBank["readOnly"].remove("item")
+           self.__variablesOfBank["writable"].append("item")
+        else:
+            self.__variablesOfBank["readOnly"].append("item")
+            self.__variablesOfBank["writable"].remove("item")
+
+        #print(self.__variablesOfBank["writable"])

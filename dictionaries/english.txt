@@ -457,3 +457,4 @@ compilerErrorZeroDiv=You cannot do a division with zero!
 infiniteLoop=Using "do" commands without exit conditions must have at least one "exit", "return", "goto" or "leave" the prevent infinite loops!
 mustBePowerOf2=Do-Frames command needs 1 or a power of 2 for the first param!
 mustBeSmaller=Do-Frames command's second parameter must be smaller or equal to the first one!
+compilerErrorArrNotFound=#PARAM# array not available for #BANK#!

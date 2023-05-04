@@ -1387,7 +1387,6 @@ class EditorBigFrame:
                                              currentLineStructure["command"][0], text)
 
             paramNum = 0
-            #print(paramColoring)
             for item in paramColoring:
                 if item[1][0] != -1:
                    if caller == "lineTinting":
@@ -1665,7 +1664,7 @@ class EditorBigFrame:
 
                   foundIt, paramTypeAndDimension = self.checkIfParamIsOK(listType, currentWord,
                                                                             ioMethod, None,
-                                                                            "dummy", mustHave, selectedType, currentLineStructure)
+                                                                            "dummy", mustHave, selectedType, currentLineStructure, text)
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
@@ -1790,7 +1789,7 @@ class EditorBigFrame:
 
                   foundIt, paramTypeAndDimension = self.checkIfParamIsOK(paramType, lineStructure[cursorIn][0],
                                                                             ioMethod, None,
-                                                                            dimension, mustHave, cursorIn, lineStructure)
+                                                                            dimension, mustHave, cursorIn, lineStructure, text)
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
@@ -1929,14 +1928,14 @@ class EditorBigFrame:
             if varOnly == True:
                varList = writable
             else:
-                if self.doesItWriteInParam(lineStructure, cursorIn):
+                if self.doesItWriteInParam(lineStructure, cursorIn, "editor"):
                    varList = writable
                 else:
                    varList = all
 
             for word in varList:
                 if word.startswith(currentWord) or currentWord == "":
-                    wordsForList.append([word, "variable"])
+                   wordsForList.append([word, "variable"])
 
         elif listType == "array":
             all, writable, readonly = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
@@ -1958,7 +1957,7 @@ class EditorBigFrame:
 
                 if "item" in params:
                     paramNum = "param#" + str(params.index("item"))
-                    if self.doesItWriteInParam(command, paramNum) == True:
+                    if self.doesItWriteInParam(command, paramNum, "editor") == True:
                        willItWrite = True
                        break
 
@@ -2023,7 +2022,7 @@ class EditorBigFrame:
 
         return subroutines
 
-    def doesItWriteInParam(self, linstructure, cursorIn):
+    def doesItWriteInParam(self, linstructure, cursorIn, caller):
         dels = self.__config.getValueByKey("validObjDelimiters").split(" ")
 
         for d in dels:
@@ -2032,19 +2031,31 @@ class EditorBigFrame:
         params = self.__syntaxList[linstructure["command"][0]].params
         paramNum = int(cursorIn.split("#")[1]) - 1
         canBeThese = []
+
         try:
             canBeThese = params[paramNum].split("|")
 
-        except:
+        except Exception as e:
+            #print(str(e))
             # print("error:", params, paramNum )
             return(False)
 
+        #if caller == "compiler":
+        #   print(cursorIn, linstructure)
+        if self.__syntaxList[linstructure["command"][0]].flexSave == True:
+            if cursorIn == "param#1" and\
+               linstructure["param#" + str(len(self.__syntaxList[linstructure["command"][0]].params))][0] in ["", "None", None]:
+               return True
+            elif cursorIn == "param#" + str(len(self.__syntaxList[linstructure["command"][0]].params)) and \
+                linstructure["param#" + str(len(self.__syntaxList[linstructure["command"][0]].params))][0] not in ["",
+                                                                                                                   "None",
+                                                                                                                   None]:
+                return True
+
+        #if cursorIn == "param#1" or cursorIn == "param#3": print(cursorIn)
         if len(canBeThese) > 0: return False
 
         if self.__syntaxList[linstructure["command"][0]].does == "write":
-           return True
-        elif self.__syntaxList[linstructure["command"][0]].flexSave == True and cursorIn == "param#1" and \
-             linstructure["param#" + str(len(self.__syntaxList[linstructure["command"][0]].params))][0] in ["", "None", None]:
            return True
         else:
            return False
@@ -2241,7 +2252,7 @@ class EditorBigFrame:
 
         return params, ioMethod
 
-    def checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure):
+    def checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure, text):
         foundIt = False
         noneList   = ["None", None, ""]
 
@@ -2264,7 +2275,8 @@ class EditorBigFrame:
 
         paramTypeList = paramType.split("|")
 
-        if self.doesItWriteInParam(lineStructure, cursorIn) == False:
+        if self.doesItWriteInParam(lineStructure, cursorIn, "editor") == False:
+           #if lineStructure["command"][0] == "add" and cursorIn == "param#1": print("!!!")
            ioMethod = "read"
 
         varOnly = False
@@ -2290,7 +2302,12 @@ class EditorBigFrame:
                     foundIt = True
 
                     if ioMethod == "write" and (param in readOnly):
-                       returnBack.append(["error", dimension])
+                       if param == "item":
+                          returnBack.append(
+                              [self.isItemAcceptedForWrite(lineStructure, text), dimension])
+
+                       else:
+                          returnBack.append(["error", dimension])
                     else:
                        returnBack.append(["variable", dimension])
                     break
@@ -2669,7 +2686,7 @@ class EditorBigFrame:
             else:
                  self.checkIfParamIsOK(paramType, param,
                                          ioMethod, returnBack,
-                                         ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure)
+                                         ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure, text)
 
         #print(currentLineStructure)
 
@@ -2744,7 +2761,7 @@ class EditorBigFrame:
                temp      = []
 
                self.checkIfParamIsOK(paramType, selectLineStructure["param#1"][0],
-                                       "read", temp, None, True, "param#1", currentLineStructure)
+                                       "read", temp, None, True, "param#1", currentLineStructure, text)
 
                if   temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst", "variable"]:
                     returnBack[0][0] = "error"
@@ -2764,10 +2781,14 @@ class EditorBigFrame:
                 if returnBack[0][0] != "variable": returnBack[0][0] = "error"
 
         if "item" in [param1[0], param2[0], param3[0]]:
+            returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
+
+            """
             startFound = self.findWahWah("do-items", currentLineStructure["lineNum"],
                              "upAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
 
             if startFound == False:
+               #print("1")
                returnBack[0][0] = "error"
             else:
                doNum = startFound[0]
@@ -2777,6 +2798,7 @@ class EditorBigFrame:
                if array in self.__virtualMemory.arrays.keys():
                   readOnly = self.__virtualMemory.hasArrayReadOnly(array)
                else:
+                  #print("2")
                   returnBack[0][0] = "error"
                   readOnly         = False
 
@@ -2791,28 +2813,79 @@ class EditorBigFrame:
                      isOneWriting = False
                      for thisLineStructure in listOfCommands:
                          if "item" in [
-                             thisLineStructure["param#1"],
-                             thisLineStructure["param#2"],
-                             thisLineStructure["param#3"]]:
-                             c = thisLineStructure["command"]
+                             thisLineStructure["param#1"][0],
+                             thisLineStructure["param#2"][0],
+                             thisLineStructure["param#3"][0]]:
+                             c = thisLineStructure["command"][0]
 
                              for key in self.__syntaxList.keys():
                                  if key == c or c in self.__syntaxList[key].alias:
                                     if self.doesItWriteInParam(thisLineStructure, "param#" +\
-                                                                                  str([thisLineStructure["param#1"],
-                                                                                       thisLineStructure["param#2"],
-                                                                                       thisLineStructure["param#3"]].index("item"))
+                                                                                  str([thisLineStructure["param#1"][0],
+                                                                                       thisLineStructure["param#2"][0],
+                                                                                       thisLineStructure["param#3"][0]].index("item"))
 
                                                                ):
                                        isOneWriting = True
                                        break
                          if isOneWriting == True:
+                             #print("3")
                              returnBack[0][0] = "error"
                              break
                   else:
+                      #print("4")
                       returnBack[0][0] = "error"
-
+                  """
         return returnBack
+
+    def isItemAcceptedForWrite(self, currentLineStructure, text):
+        startFound = self.findWahWah("do-items", currentLineStructure["lineNum"],
+                                     "upAll", text, currentLineStructure["level"], None, None, None,
+                                     currentLineStructure)
+
+        if startFound == False:
+            return "error"
+        else:
+            doNum = startFound[0]
+            doLineStructure = self.getLineStructure(doNum, text, False)
+
+            array = doLineStructure["param#1"][0]
+            if array in self.__virtualMemory.arrays.keys():
+                readOnly = self.__virtualMemory.hasArrayReadOnly(array)
+            else:
+                # print("2")
+                return "error"
+
+            if readOnly == True:
+                endFound = self.findWahWah("end-do", currentLineStructure["lineNum"],
+                                           "downAll", text, currentLineStructure["level"], None, None, None,
+                                           currentLineStructure)
+
+                if endFound != False:
+                    endDoNum = endFound[0]
+                    listOfCommands = self.listAllCommandFromTo(None, text, None, doNum, endDoNum + 1)
+
+                    isOneWriting = False
+                    for thisLineStructure in listOfCommands:
+                        if "item" in [
+                            thisLineStructure["param#1"][0],
+                            thisLineStructure["param#2"][0],
+                            thisLineStructure["param#3"][0]]:
+                            c = thisLineStructure["command"][0]
+
+                            for key in self.__syntaxList.keys():
+                                if key == c or c in self.__syntaxList[key].alias:
+                                    if self.doesItWriteInParam(thisLineStructure, "param#" + \
+                                                                                  str([thisLineStructure["param#1"][0],
+                                                                                       thisLineStructure["param#2"][0],
+                                                                                       thisLineStructure["param#3"][
+                                                                                           0]].index("item")+1), "editor" ):
+                                        isOneWriting = True
+                                        break
+                        if isOneWriting == True:
+                            # print("3")
+                            return "error"
+        return "variable"
 
     def convertStringNumToNumber(self, num):
         if type(num) == int  : return num
