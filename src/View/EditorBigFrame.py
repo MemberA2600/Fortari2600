@@ -658,7 +658,7 @@ class EditorBigFrame:
 
            c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
                                                                      selection[1]),
-                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]))
+                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END))
            print(c.result)
            print(c.errorList)
 
@@ -1582,7 +1582,7 @@ class EditorBigFrame:
                        stringAllowed = True
 
                    paramNum      = int(item.split("#")[1]) - 1
-                   if len(command.params) == 0: return False, ""
+                   if len(command.params) == 0 or paramNum > len(command.params): return False, ""
 
                    selectedParam = command.params[paramNum]
 

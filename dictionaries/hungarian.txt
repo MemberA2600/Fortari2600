@@ -458,3 +458,4 @@ infiniteLoop=A "do" típusú parancsoknál, ha nincs kilépési feltétel, szükséges l
 mustBePowerOf2=A Do-Frames parancs elsõ paramétere 1, vagy kettõ valamely hatványa lehet!
 mustBeSmaller=A Do-Frames parancs második paramétere az elsõnél kisebb vagy egyenlõ!
 compilerErrorArrNotFound=#PARAM# tömb nem elérhetõ a #BANK# bankban!
+compilerErrorASMDuplicateLabel=#OPERAND# egynél többször fordul elõ a szekcióban!

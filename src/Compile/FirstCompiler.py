@@ -2,11 +2,51 @@ from datetime import datetime
 
 class FirstCompiler:
 
-    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine):
+    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine, fullText):
 
         self.__loader         = loader
         self.__editorBigFrame = editorBigFrame
         self.__text           = text.replace("\t", " ").split("\n")
+        self.__fullText       = fullText.replace("\t", " ").split("\n")
+        self.__noneList = ["", "None", None, []]
+        self.__registers,     \
+        self.__opcodes        = self.__loader.io.loadRegOpCodes()
+        self.__replacers = {
+            "#BANK#": bank,
+            "#SECTION#": section,
+            "#FULL#": bank + "_" + section
+
+        }
+
+        self.__fullTextLabels  = []
+        for line in self.__fullText:
+            if line == "": continue
+            labelLineStructure = self.__editorBigFrame.getLineStructure(0, [line], False)
+            if self.isCommandInLineThat(labelLineStructure, "asm"):
+                asmCode = labelLineStructure["param#1"][0][1:-1]
+                if labelLineStructure["param#2"][0] not in self.__noneList:
+                   asmCode += " " + labelLineStructure["param#2"][0][1:-1]
+
+                datas = asmCode.replace("\t", " ").split(" ")
+                foundCode = False
+                for part in datas:
+                    if part != "":
+                       for item in self.__opcodes:
+                           lineSettings = self.__opcodes[item]
+                           if lineSettings["opcode"].upper() == part.upper():
+                               foundCode = True
+                               break
+                    break
+
+                if foundCode: continue
+                if "!!!" not in line and asmCode[0] not in [" ", "\t", "*"] and\
+                    (asmCode[0] != "#" or asmCode.startswith("#BANK#") or asmCode.startswith("#SECTION#") or asmCode.startswith("#FULL#")):
+                   for replacer in self.__replacers.keys():
+                       if replacer in asmCode:
+                          asmCode = asmCode.replace(replacer, self.__replacers[replacer])
+
+                   self.__fullTextLabels.append(asmCode.replace("\n", ""))
+
         self.__magicNumber    = int(str(datetime.now()).replace("-", "").replace(".", "").replace(":", "").replace(" ", ""))
         self.__counter        = 0
         self.__addComments    = addComments
@@ -19,6 +59,7 @@ class FirstCompiler:
         self.__jumpers        = ["JMP", "JSR"]
 
         self.__labelsOfMainKenrel = []
+
         kernelText = self.__loader.io.loadKernelElement(self.__loader.virtualMemory.kernel, "main_kernel").split("\n")
         for line in kernelText:
             if line == "": continue
@@ -55,8 +96,7 @@ class FirstCompiler:
         self.__config         = self.__loader.config
         self.__dictionaries   = self.__loader.dictionaries
         self.__startLine      = startLine
-        self.__registers,     \
-        self.__opcodes        = self.__loader.io.loadRegOpCodes()
+
 
         self.__writable, self.__readOnly, self.__all, self.__nonSystem  = writable, readOnly, all, nonSystem
 
@@ -73,7 +113,6 @@ class FirstCompiler:
             self.__validMemoryAddresses.append("$F0" + num.upper())
 
         linesFeteched = []
-        self.__noneList = ["", "None", None, []]
 
         for lineNum in range(0, len(self.__text)):
             line = self.__text[lineNum]
@@ -147,8 +186,25 @@ class FirstCompiler:
 
             txt = "\t" + "\t".join(datas)
 
+            """
+            if line["param#2"][0] not in self.__noneList:
+               line["param#1"][0] = "\"" + line["param#1"][0][1:-1] + " " + line["param#2"][0][1:-1] + "\""
+               line["param#2"][0] = None
+               line["fullLine"] = " asm(" + line["param#1"][0] + ")"
+            """
+
+            self.__changeThese = {}
             self.checkASMCode(txt, line)
-            if self.__error == False: line["compiled"] = txt
+
+            if self.__error == False:
+               if line["level"] > -1:
+                  line["compiled"] = txt
+               else:
+                  line["compiled"] = datas[0]
+
+            for key in self.__changeThese.keys():
+                line["compiled"] = line["compiled"].replace(key, self.__changeThese[key])
+
             self.__checked = True
 
         elif self.isCommandInLineThat(line, "add"):
@@ -162,7 +218,7 @@ class FirstCompiler:
                         addr = self.getAddress(params["param#1"][0])
                         var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                        if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
+                        if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
                             txt = "\tINC\t" + params["param#1"][0] + "\n"
                             txt = self.checkForNotNeededExtraLDA(txt)
 
@@ -231,7 +287,7 @@ class FirstCompiler:
                     addr = self.getAddress(params["param#1"][0])
                     var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                    if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
+                    if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
                         txt = "\tDEC\t" + params["param#1"][0] + "\n"
                         txt = self.checkForNotNeededExtraLDA(txt)
 
@@ -1057,12 +1113,36 @@ class FirstCompiler:
         elif self.isCommandInLineThat(line, "incr") or self.isCommandInLineThat(line, "decr"):
             if self.isCommandInLineThat(line, "incr"):
                asmCommand = "INC"
+               subLineCommand = "add"
                command = self.__loader.syntaxList["incr"]
             else:
                asmCommand = "DEC"
+               subLineCommand = "sub"
                command = self.__loader.syntaxList["decr"]
 
             params  = self.getParamsWithTypesAndCheckSyntax(line)
+
+            var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
+                                                                self.__currentBank)
+            if var == False:
+                var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+            if var == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound",
+                                                      params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            subLineStructure = self.__editorBigFrame.getLineStructure(0, ["\t" + subLineCommand + "(" + params["param#1"][0] + ", 1)"], False)
+            subLineStructure["fullLine"] = line["fullLine"]
+            for key in line:
+                if key not in subLineStructure.keys():
+                   subLineStructure[key] = line[key]
+
+            self.processLine(subLineStructure, linesFeteched)
+            line["compiled"] = subLineStructure["compiled"]
+
+            """
             txt     = ""
 
             var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
@@ -1080,6 +1160,7 @@ class FirstCompiler:
             self.checkASMCode(txt, line)
             if self.__error == False: line["compiled"] = txt
             self.__checked = True
+            """
 
         elif self.isCommandInLineThat(line, "leave"):
             if self.__currentSection not in self.__loader.syntaxList[line["command"][0]].sectionsAllowed:
@@ -1618,9 +1699,10 @@ class FirstCompiler:
         labels = []
         for line in lines:
             if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
-               labels.append(line.replace("\n", ""))
+                labels.append(line.replace("\n", ""))
 
         for line in lines:
+
             if line.replace("\t", " ").startswith(" ") == False: continue
             if line[0] in ["*", "#"]: continue
 
@@ -1644,9 +1726,43 @@ class FirstCompiler:
             #except:
             #    pass
 
+            stopHere = False
             if line[0].upper() in self.__branchers or line[0].upper() in self.__jumpers:
-               if line[1] in labels or "*" in line[1] or line[1] in self.__labelsOfMainKenrel:
+               for replacer in self.__replacers.keys():
+                   replaceIt = self.__replacers[replacer]
+                   
+                   if replacer in line[1]: line[1] = line[1].replace(replacer, replaceIt)
+                   for key in lineStructure.keys():
+                       if type(lineStructure[key]) == list and lineStructure[key] != []:
+                           if lineStructure[key][0] not in self.__noneList:
+                               lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                               self.__changeThese[replacer] = replaceIt
+
+               if line[1] in labels or "*" in line[1] or "#" in line[1] or line[1] in self.__fullTextLabels or line[1] in self.__labelsOfMainKenrel:
                   continue
+
+            for replacer in self.__replacers.keys():
+                replaceIt = self.__replacers[replacer]
+
+                if replacer in line[0]:
+                    line[0] = line[0].replace(replacer, replaceIt)
+                    for key in lineStructure.keys():
+                        if type(lineStructure[key]) == list and lineStructure[key] != []:
+                            if lineStructure[key][0] not in self.__noneList:
+                                lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                                self.__changeThese[replacer] = replaceIt
+
+            if line[0] in labels or line[0] in self.__fullTextLabels or line[0] in self.__labelsOfMainKenrel:
+               lineStructure["level"] = -1
+
+
+               if self.__fullTextLabels.count(line[0]) > 1:
+                  self.addToErrorList(lineStructure["lineNum"],
+                                      self.prepareErrorASM("compilerErrorASMDuplicateLabel",
+                                                            "", value,
+                                                            lineStructure["lineNum"]))
+               continue
+
 
             command = line[0]
             if len(line) > 1:
