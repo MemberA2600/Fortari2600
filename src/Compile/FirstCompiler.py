@@ -16,6 +16,14 @@ class FirstCompiler:
         self.__objectMaster   = self.__loader.virtualMemory.objectMaster
         self.toRoutines       = {}
         self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
+        self.__jumpers        = ["JMP", "JSR"]
+
+        self.__labelsOfMainKenrel = []
+        kernelText = self.__loader.io.loadKernelElement(self.__loader.virtualMemory.kernel, "main_kernel").split("\n")
+        for line in kernelText:
+            if line == "": continue
+            if line[0] not in [" ", "\t", "*", "#"]: self.__labelsOfMainKenrel.append(line)
+
 
         from Compiler import Compiler
         self.__mainCompiler   = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "dummy", None)
@@ -129,6 +137,7 @@ class FirstCompiler:
     def processLine(self, line, linesFeteched):
         self.__useThese = [line["lineNum"], linesFeteched]
         self.__thisLine = line
+        self.__checked  = False
 
         if self.isCommandInLineThat(line, "asm"):
             datas = []
@@ -140,6 +149,7 @@ class FirstCompiler:
 
             self.checkASMCode(txt, line)
             if self.__error == False: line["compiled"] = txt
+            self.__checked = True
 
         elif self.isCommandInLineThat(line, "add"):
             params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -154,6 +164,8 @@ class FirstCompiler:
 
                         if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
                             txt = "\tINC\t" + params["param#1"][0] + "\n"
+                            txt = self.checkForNotNeededExtraLDA(txt)
+
                             self.checkASMCode(txt, line)
                             if self.__error == False: line["compiled"] = txt
                             return
@@ -162,23 +174,6 @@ class FirstCompiler:
 
             else:
                 if params["param#1"][1] == "number" and params["param#2"][1] == "number":
-                    # We can add them and just do an LDA / STA?
-                    """
-
-                    keyParam = None
-                    if self.isIt(params["param#1"][0], 0):
-                        keyParam = "param#2"
-                    elif self.isIt(params["param#2"][0], 0):
-                        keyParam = "param#1"
-
-                    if keyParam != None:
-                        txt = self.saveAValue(params, keyParam, "param#3", line)
-
-                        self.checkASMCode(txt, line)
-                        if self.__error == False: line["compiled"] = txt
-                        return
-                    """
-
                     theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) + \
                              int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
 
@@ -186,12 +181,16 @@ class FirstCompiler:
 
                     params["param#0"] = [str(theNum), "number"]
                     txt = self.saveAValue(params, "param#0", "param#3", line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
+
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
                     return
 
                 if self.isIt(params["param#2"][0], 0):
                     txt = self.saveAValue(params, "param#1", "param#3", line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
+
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
                     return
@@ -205,14 +204,6 @@ class FirstCompiler:
             params = self.getParamsWithTypesAndCheckSyntax(line)
 
             if params["param#1"][1] == "number" and params["param#2"][1] == "number":
-                """
-                if self.isIt(params["param#2"][0], 0):
-                    txt = self.saveAValue(params, "param#1", "param#3", line)
-                    self.checkASMCode(txt, line)
-                    if self.__error == False: line["compiled"] = txt
-                    return
-                """
-
                 theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) - \
                          int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
 
@@ -229,6 +220,8 @@ class FirstCompiler:
                 if self.isIt(params["param#2"][0], 0):
                    if "param#3" in params.keys():
                        txt = self.saveAValue(params, "param#1", "param#3", line)
+                       txt = self.checkForNotNeededExtraLDA(txt)
+
                        self.checkASMCode(txt, line)
                        if self.__error == False: line["compiled"] = txt
                        return
@@ -240,6 +233,8 @@ class FirstCompiler:
 
                     if len(addr) == 3 and var.type == "byte" and ((var.system == False and var.iterable == True) or params["param#1"][0] == "item"):
                         txt = "\tDEC\t" + params["param#1"][0] + "\n"
+                        txt = self.checkForNotNeededExtraLDA(txt)
+
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
@@ -288,6 +283,8 @@ class FirstCompiler:
                elif self.isIt(params["param#1"][0], 0):
                     params["param#0"] = ["#0", "number"]
                     txt = self.saveAValue(params, "param#0", "param#3", line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
+
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
                     return
@@ -296,6 +293,8 @@ class FirstCompiler:
                if self.isIt(params["param#2"][0], 1):
                   if "param#3" in params.keys():
                       txt = self.saveAValue(params, "param#1", "param#3", line)
+                      txt = self.checkForNotNeededExtraLDA(txt)
+
                       self.checkASMCode(txt, line)
                       if self.__error == False: line["compiled"] = txt
                       return
@@ -310,6 +309,8 @@ class FirstCompiler:
 
                     params["param#0"] = ["#0", "number"]
                     txt = self.saveAValue(params, "param#0", saveParam, line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
+
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
                     return
@@ -365,6 +366,8 @@ class FirstCompiler:
                        return
 
                     txt = self.saveAValue(params, "param#1", "param#3", line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
+
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
                     return
@@ -376,6 +379,7 @@ class FirstCompiler:
                     txt = self.saveAValue(params, "param#0", "param#3", line)
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
+                    self.__checked = True
 
             else:
                 if "param#3" not in params.keys():
@@ -405,6 +409,7 @@ class FirstCompiler:
                        if self.isIt(params["param#2"][0], 0):
                           params["param#0"] = ["#0", "number"]
                           txt = self.saveAValue(params, "param#0", "param#1", line)
+                          txt = self.checkForNotNeededExtraLDA(txt)
                           self.checkASMCode(txt, line)
                           if self.__error == False: line["compiled"] = txt
                           return
@@ -415,6 +420,7 @@ class FirstCompiler:
                         if self.isIt(params["param#2"][0], 255):
                             params["param#0"] = ["#255", "number"]
                             txt = self.saveAValue(params, "param#0", "param#1", line)
+                            txt = self.checkForNotNeededExtraLDA(txt)
                             self.checkASMCode(txt, line)
                             if self.__error == False: line["compiled"] = txt
                             return
@@ -434,6 +440,7 @@ class FirstCompiler:
 
                     params["param#0"] = [str(theNum), "number"]
                     txt = self.saveAValue(params, "param#0", "param#3", line)
+                    txt = self.checkForNotNeededExtraLDA(txt)
                     self.checkASMCode(txt, line)
                     if self.__error == False: line["compiled"] = txt
 
@@ -460,12 +467,14 @@ class FirstCompiler:
                     if param0 != None:
                         params["param#0"] = ["#0", "number"]
                         txt = self.saveAValue(params, "param#0", "param#3", line)
+                        txt = self.checkForNotNeededExtraLDA(txt)
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
 
                     if param255 != None:
                         txt = self.saveAValue(params, param255, "param#3", line)
+                        txt = self.checkForNotNeededExtraLDA(txt)
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
@@ -473,12 +482,14 @@ class FirstCompiler:
                     if param255 != None:
                         params["param#0"] = ["#255", "number"]
                         txt = self.saveAValue(params, "param#0", "param#3", line)
+                        txt = self.checkForNotNeededExtraLDA(txt)
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
 
                     if param0 != None:
                         txt = self.saveAValue(params, param0, "param#3", line)
+                        txt = self.checkForNotNeededExtraLDA(txt)
                         self.checkASMCode(txt, line)
                         if self.__error == False: line["compiled"] = txt
                         return
@@ -502,6 +513,7 @@ class FirstCompiler:
              if "param#2" not in params.keys():
                  params["param#2"] = ["2", "number"]
                  self.checkIfCanShiftBits(params, "param#1", "param#2", line, command)
+
              else:
                  from copy import deepcopy
 
@@ -520,6 +532,10 @@ class FirstCompiler:
                      params["param#1"] = params["param#3"]
 
                      self.checkIfCanShiftBits(params, "param#1", "param#2", line, command)
+
+                 #if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
+                 #if self.__error == True: line["compiled"] = ""
+
 
         elif self.isCommandInLineThat(line, "flip"):
             params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -671,9 +687,9 @@ class FirstCompiler:
                       if params["param#1"][1] == "variable":
                          var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
                                                                              self.__currentBank)
-                         if params == False:
-                            params = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
-                         if params == False:
+                         if var == False:
+                            var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+                         if var == False:
                             self.addToErrorList(line["lineNum"],
                                                   self.prepareError("compilerErrorVarNotFound",
                                                                     params["param#1"][0],
@@ -1038,7 +1054,50 @@ class FirstCompiler:
             if firstOne == False and empty == False:
                line["compiledBefore"] = "\tJMP\t" + self.__currentBank + "_" + str(line["magicNumber"]) + "_Select_End" + "\n"
 
+        elif self.isCommandInLineThat(line, "incr") or self.isCommandInLineThat(line, "decr"):
+            if self.isCommandInLineThat(line, "incr"):
+               asmCommand = "INC"
+               command = self.__loader.syntaxList["incr"]
+            else:
+               asmCommand = "DEC"
+               command = self.__loader.syntaxList["decr"]
+
+            params  = self.getParamsWithTypesAndCheckSyntax(line)
+            txt     = ""
+
+            var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
+                                                                self.__currentBank)
+            if var == False:
+                var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+            if var == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound",
+                                                      params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            txt = "\t" + asmCommand + "\t" + params["param#1"][0] + "\n"
+            self.checkASMCode(txt, line)
+            if self.__error == False: line["compiled"] = txt
+            self.__checked = True
+
+        elif self.isCommandInLineThat(line, "leave"):
+            if self.__currentSection not in self.__loader.syntaxList[line["command"][0]].sectionsAllowed:
+                secondPart = self.__dictionaries.getWordFromCurrentLanguage("sectionNotAllowed").replace("#SECTIONS#",
+                             ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed))
+
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                                       line["command"][0], "",
+                                                                       str(line["lineNum"] + self.__startLine))
+                                                                       + " " + secondPart)
+
+            #Enter here check for "goto" in Leave section!
+
+            line["compiled"] = "\tJMP\tLeaveScreenBank" + str(self.__currentBank[-1]) + "\n"
+
         line["compiled"] = self.checkForNotNeededExtraLDA(line["compiled"])
+        if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
+        if self.__error == True: line["compiled"] = ""
 
     def checkIfItIsWritingInItem(self, start, end, level, text):
         listOfCommands = self.__editorBigFrame.listAllCommandFromTo(None, text, None, start, end + 1)
@@ -1585,8 +1644,8 @@ class FirstCompiler:
             #except:
             #    pass
 
-            if line[0].upper() in self.__branchers:
-               if line[1] in labels or "*" in line[1]:
+            if line[0].upper() in self.__branchers or line[0].upper() in self.__jumpers:
+               if line[1] in labels or "*" in line[1] or line[1] in self.__labelsOfMainKenrel:
                   continue
 
             command = line[0]
@@ -1771,8 +1830,6 @@ class FirstCompiler:
         if afterCommaFormat != afterCommaValue: return False
         beforeCommaFormat = beforeCommaFormat.upper()
 
-
-
         onlyBody = beforeCommaValue.replace("#", "").replace(">", "").replace("<", "")
         for reg in self.__registers:
             if self.__registers[reg] == onlyBody.upper():
@@ -1790,7 +1847,7 @@ class FirstCompiler:
         else:
            allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
 
-        #print(beforeCommaFormat, allA)
+        #print(beforeCommaFormat, allA, value)
 
         if beforeCommaFormat != allA: return False
 
