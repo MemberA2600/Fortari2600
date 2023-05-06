@@ -1466,7 +1466,7 @@ LeaveScreenBank2
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX2
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -1528,8 +1528,9 @@ OverScanBank2
 * begins.
 *
 
-!!!OVERSCAN_BANK2!!!
 !!!JUKEBOX_BANK2!!!
+!!!OVERSCAN_BANK2!!!
+
 
 *VSYNC
 *----------------------------
@@ -1791,7 +1792,7 @@ LeaveScreenBank3
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX3	
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -1852,8 +1853,8 @@ OverScanBank3
 * begins.
 *
 
-!!!OVERSCAN_BANK3!!!
 !!!JUKEBOX_BANK3!!!
+!!!OVERSCAN_BANK3!!!
 
 *VSYNC
 *----------------------------
@@ -2115,7 +2116,7 @@ LeaveScreenBank4
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX4
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -2176,8 +2177,8 @@ OverScanBank4
 * begins.
 *
 
-!!!OVERSCAN_BANK4!!!
 !!!JUKEBOX_BANK4!!!
+!!!OVERSCAN_BANK4!!!
 
 *VSYNC
 *----------------------------
@@ -2439,7 +2440,7 @@ LeaveScreenBank5
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX5
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -2500,8 +2501,8 @@ OverScanBank5
 * begins.
 *
 
-!!!OVERSCAN_BANK5!!!
 !!!JUKEBOX_BANK5!!!
+!!!OVERSCAN_BANK5!!!
 
 *VSYNC
 *----------------------------
@@ -2762,7 +2763,7 @@ LeaveScreenBank6
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX6
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -2823,8 +2824,8 @@ OverScanBank6
 * begins.
 *
 
-!!!OVERSCAN_BANK6!!!
 !!!JUKEBOX_BANK6!!!
+!!!OVERSCAN_BANK6!!!
 
 *VSYNC
 *----------------------------
@@ -3086,7 +3087,7 @@ LeaveScreenBank7
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX7
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -3146,8 +3147,8 @@ OverScanBank7
 * begins.
 *
 
-!!!OVERSCAN_BANK7!!!
 !!!JUKEBOX_BANK7!!!
+!!!OVERSCAN_BANK7!!!
 
 *VSYNC
 *----------------------------
@@ -3410,7 +3411,7 @@ LeaveScreenBank8
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
-	
+JumpToNewScreenBank_NoLAX8
 	SEC
 	SBC	#2
 	STA	temp01		
@@ -3470,8 +3471,8 @@ OverScanBank8
 * begins.
 *
 
-!!!OVERSCAN_BANK8!!!
 !!!JUKEBOX_BANK8!!!
+!!!OVERSCAN_BANK8!!!
 
 *VSYNC
 *----------------------------

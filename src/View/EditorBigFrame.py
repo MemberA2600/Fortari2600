@@ -1013,6 +1013,7 @@ class EditorBigFrame:
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
 
                for item in errorPositions:
+                   print(item, "errorPositions")
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, None)
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
@@ -1239,7 +1240,7 @@ class EditorBigFrame:
                         self.addToPosizions(errorPositions,
                                             self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
-           if currentLineStructure["command"][0] == "do-items" or\
+           elif currentLineStructure["command"][0] == "do-items" or\
               currentLineStructure["command"][0] in self.__syntaxList["do-items"].alias:
 
               firstPoz  = []
@@ -1272,11 +1273,14 @@ class EditorBigFrame:
                      else:
                          errorPositions.append(["command", "iteralError"])
 
+           #print(errorPositions, addError)
+
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                 self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
                (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
                     addError = True
+                    #print("#1")
                     if caller == 'firstCompiler':
                        if self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True:
                           if currentLineStructure["("] == -1:
@@ -1291,6 +1295,7 @@ class EditorBigFrame:
            and self.__syntaxList[currentLineStructure["command"][0]].levelAllowed != None
            ):
               addError = True
+              #print("#2")
               if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed:
                  errorPositions.append(["command", "sectionNotAllowed"])
               if currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed\
@@ -1376,6 +1381,8 @@ class EditorBigFrame:
                self.addTag(yOnTextBox, currentLineStructure["("],
                         currentLineStructure["("] + 1,
                         "bracket")
+
+        #print(errorPositions, addError)
 
         if (currentLineStructure["("] != -1 or caller == "lineEditor") and\
             currentLineStructure["param#1"] not in [None, "None", ""]\
@@ -1584,7 +1591,10 @@ class EditorBigFrame:
                    paramNum      = int(item.split("#")[1]) - 1
                    if len(command.params) == 0 or paramNum > len(command.params): return False, ""
 
-                   selectedParam = command.params[paramNum]
+                   try:
+                      selectedParam = command.params[paramNum]
+                   except:
+                      return False, ""
 
                    if "statement" in selectedParam:
                       statement = currentLineStructure[item][0]
@@ -2730,17 +2740,20 @@ class EditorBigFrame:
             valid  = False
             number = None
             if returnBack[0][0] == "stringConst":
-               number = self.__constants[param1[0]]
-               valid  = True
+               number = self.__constants[param1[0].replace("#", "")]
+               if int(param1[0].replace("#", "")) > 1 and int(param1[0].replace("#", "")) < 9:
+                  valid  = True
             elif returnBack[0][0] == "number":
-               if int(param1[0]) > 1 and int(param1[0]) < 9:
+               if int(param1[0].replace("#", "")) > 1 and int(param1[0].replace("#", "")) < 9:
                    number = param1[0]
                    valid  = True
 
             if valid == True:
-               if self.__virtualMemory.locks["bank"+str(number)] != None:
+               if self.__virtualMemory.locks["bank"+str(number)] not in (None, "None", ""):
+                  #print("#1")
                   returnBack[0][0] = "error"
             else:
+                #print("#2")
                 returnBack[0][0] = "error"
 
         elif command == "select" or command in self.__syntaxList["select"].alias:
@@ -2786,59 +2799,6 @@ class EditorBigFrame:
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
 
-            """
-            startFound = self.findWahWah("do-items", currentLineStructure["lineNum"],
-                             "upAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
-
-            if startFound == False:
-               #print("1")
-               returnBack[0][0] = "error"
-            else:
-               doNum = startFound[0]
-               doLineStructure = self.getLineStructure(doNum, text, False)
-
-               array    = doLineStructure["param#1"][0]
-               if array in self.__virtualMemory.arrays.keys():
-                  readOnly = self.__virtualMemory.hasArrayReadOnly(array)
-               else:
-                  #print("2")
-                  returnBack[0][0] = "error"
-                  readOnly         = False
-
-               if readOnly == True:
-                  endFound = self.findWahWah("end-do", currentLineStructure["lineNum"],
-                             "downAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
-
-                  if endFound != False:
-                     endDoNum  = endFound[0]
-                     listOfCommands = self.listAllCommandFromTo(None, text, None, doNum, endDoNum + 1)
-
-                     isOneWriting = False
-                     for thisLineStructure in listOfCommands:
-                         if "item" in [
-                             thisLineStructure["param#1"][0],
-                             thisLineStructure["param#2"][0],
-                             thisLineStructure["param#3"][0]]:
-                             c = thisLineStructure["command"][0]
-
-                             for key in self.__syntaxList.keys():
-                                 if key == c or c in self.__syntaxList[key].alias:
-                                    if self.doesItWriteInParam(thisLineStructure, "param#" +\
-                                                                                  str([thisLineStructure["param#1"][0],
-                                                                                       thisLineStructure["param#2"][0],
-                                                                                       thisLineStructure["param#3"][0]].index("item"))
-
-                                                               ):
-                                       isOneWriting = True
-                                       break
-                         if isOneWriting == True:
-                             #print("3")
-                             returnBack[0][0] = "error"
-                             break
-                  else:
-                      #print("4")
-                      returnBack[0][0] = "error"
-                  """
         return returnBack
 
     def isItemAcceptedForWrite(self, currentLineStructure, text):
@@ -3347,6 +3307,8 @@ class EditorBigFrame:
 
     def addTag(self, Y, X1, X2, tag):
 #       tagRanges = self.__codeBox.tag_ranges("sel")
+        #if tag == "error": raise ValueError
+
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":

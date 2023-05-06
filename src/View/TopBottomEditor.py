@@ -683,7 +683,7 @@ class TopBottomEditor:
                 section = self.__codeData[inEditor][num]
                 if section[1] == True:
                     wasSaved = True
-                    newCode = ["*** Date modified: " + str(datetime.now())]
+                    newCode = ["*** Date modified on: " + str(datetime.now())]
 
                     section[1] = False
                     for item in section[2]:

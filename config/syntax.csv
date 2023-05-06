@@ -18,7 +18,7 @@ do-frames;[for-frames perform-frames];[common];command;end;brackets;[];[number|s
 do;[for perform];[common];command;end;None;[];None;None;None;False
 exit;[break next-sentence];[common];command;None;None;[];None;None;None;False
 flip;[! not];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
-goto;[];[common];command;None;None;[leave];[number|stringConst|variable];None;None;False
+goto;[];[common];command;None;brackets;[leave];[number|stringConst|variable];None;None;False
 incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False
 leave;[];[common];command;None;None;[overscan vblank];None;None;None;False
 multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
