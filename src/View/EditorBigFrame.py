@@ -43,8 +43,10 @@ class EditorBigFrame:
 
         self.__lbFocused = False
 
-        miniSize = 0.65
+        self.exiters = ["exit", "goto", "return", "leave", "resetScreen", "resetGame"]
+        self.__unreachableLVL = -1
 
+        miniSize = 0.65
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*miniSize), False, False, False)
@@ -550,10 +552,22 @@ class EditorBigFrame:
         self.__replaceButton2.pack(side=TOP, anchor = N, fill = BOTH)
 
         self.__prettyFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
-                                   height=fSize//2,
+                                   height=fSize//4,
                                    bg=self.__colors.getColor("window"))
         self.__prettyFrame.pack_propagate(False)
         self.__prettyFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__alissFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
+                                   height=fSize//4,
+                                   bg=self.__colors.getColor("window"))
+        self.__alissFrame.pack_propagate(False)
+        self.__alissFrame.pack(side=TOP, anchor = N, fill=X)
+
+        self.__compileFrame = Frame(self.__leftFrame, width=self.__editor.getWindowSize()[0],
+                                   height=fSize//4,
+                                   bg=self.__colors.getColor("window"))
+        self.__compileFrame.pack_propagate(False)
+        self.__compileFrame.pack(side=TOP, anchor = N, fill=X)
 
         self.__prettyButton = Button(
             self.__prettyFrame, width=999999999,
@@ -575,8 +589,21 @@ class EditorBigFrame:
         self.__compileFrame.pack(side=TOP, anchor = N, fill=X)
         """
 
+        self.__aliasToCommand = Button(
+            self.__alissFrame, width=999999999,
+            bg=self.__colors.getColor("window"),
+            fg=self.__colors.getColor("font"),
+            font=self.__smallFont,
+            command=self.__convertAliasToCommand,
+            text=self.__dictionaries.getWordFromCurrentLanguage("aliasToCommand")
+        )
+
+
+        self.__aliasToCommand.pack_propagate(False)
+        self.__aliasToCommand.pack(side=TOP, anchor = N, fill = BOTH)
+
         self.__compileASMButton = Button(
-            self.__prettyFrame, width=999999999,
+            self.__compileFrame, width=999999999,
             bg=self.__colors.getColor("window"),
             fg=self.__colors.getColor("font"),
             font=self.__smallFont,
@@ -590,6 +617,38 @@ class EditorBigFrame:
 
         self.getLineStructure(None, None, True)
         self.loadCurrentFromMemory()
+
+    def __convertAliasToCommand(self):
+        selection = [1.0, self.__codeBox.index(END)]
+        try:
+            sel_start = self.__codeBox.index("sel.first")
+            sel_end   = self.__codeBox.index("sel.last")
+            selection = [sel_start, sel_end]
+        except:
+            pass
+
+        text = self.__codeBox.get(0.0, END).replace("\r","").split("\n")
+        newText = []
+
+        start = int(str(selection[0]).split(".")[0])-1
+        end   = int(str(selection[1]).split(".")[0])-1
+
+        for lineNum in range(start, end):
+            if lineNum >= len(text): break
+
+            foundIt = False
+            lineData = self.getLineStructure(lineNum, text, True)
+            if lineData["command"][0] not in ['', None, "None"]:
+                for c in self.__syntaxList.keys():
+                     if lineData["command"][0] in self.__syntaxList[c].alias:
+                        s = lineData["command"][1][0]
+                        e = lineData["command"][1][1]
+                        newText.append(text[lineNum][:s] + c + text[lineNum][e+1:])
+                        foundIt = True
+            if foundIt == False:
+               newText.append(text[lineNum])
+
+        self.updateText(newText)
 
     def compileToASM(self):
         selection = [1.0, self.__codeBox.index(END)]
@@ -1013,7 +1072,7 @@ class EditorBigFrame:
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
 
                for item in errorPositions:
-                   print(item, "errorPositions")
+                   #print(item, "errorPositions")
                    self.removeTag(item[2] + 1, item[0], item[1] + 1, None)
                    self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
 
@@ -1091,6 +1150,8 @@ class EditorBigFrame:
                    )
 
         if line[0] in ("*", "#"): delimiterPoz = 0
+        if currentLineStructure["level"] < self.__unreachableLVL:
+           self.__unreachableLVL = -1
 
         if delimiterPoz != len(line):
            if caller == "lineTinting":
@@ -1130,6 +1191,7 @@ class EditorBigFrame:
 
 
            elif currentLineStructure["command"][0].startswith("end-") == True:
+               self.__unreachableLVL = -1
                startFound = self.__findStart(currentLineStructure, lineNum, text)
                if startFound == False:
                   addError = True
@@ -1468,6 +1530,11 @@ class EditorBigFrame:
                elif caller == "firstCompiler":
                   errorPositions.append(["param#" + str(ind+1), "paramNotNeeded"])
 
+        if currentLineStructure["level"] >= self.__unreachableLVL and self.__unreachableLVL != -1:
+           if currentLineStructure["command"][0] not in [None, "None", ""]:
+               self.removeTag(yOnTextBox, 0, len(line), "background")
+               self.addTag(yOnTextBox,    0, len(line), "unreachable")
+
         if self.__highLightWord not in ("", None):
             if len(line) >= len(self.__highLightWord):
                 for startNum in range(0, len(line) - len(self.__highLightWord), 1):
@@ -1482,7 +1549,17 @@ class EditorBigFrame:
                        self.removeTag(yOnTextBox, startNum, startNum  + len(self.__highLightWord), "background")
                        self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight")
 
+        for exitCommand in self.exiters:
+            foundExit = False
+            if currentLineStructure["command"][0] in [None, "None", ""]: break
+            if exitCommand == currentLineStructure["command"][0]: foundExit = True
+            if foundExit == False:
+               if currentLineStructure["command"][0] in self.__syntaxList[exitCommand].alias:
+                  foundExit = True
 
+            if foundExit:
+               self.__unreachableLVL = currentLineStructure["level"]
+               currentLineStructure["unreachable"] = True
 
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
@@ -1549,13 +1626,11 @@ class EditorBigFrame:
 
     def infiniteLoop(self, text, firstPoz, lastPoz):
 
-        listOfExit = self.listAllCommandFromTo("exit",    text, None, firstPoz, lastPoz + 1)
-        listOfGoto = self.listAllCommandFromTo("goto",    text, None, firstPoz, lastPoz + 1)
-        listOfLeave = self.listAllCommandFromTo("leave",  text, None, firstPoz, lastPoz + 1)
-        listOfReturn = self.listAllCommandFromTo("leave", text, None, firstPoz, lastPoz + 1)
+        for word in self.exiters:
+            collected = self.listAllCommandFromTo(word, text, None, firstPoz, lastPoz + 1)
+            if collected != []: return False
 
-        if listOfExit == [] and listOfGoto == [] and listOfLeave == [] and listOfReturn == []: return True
-        return False
+        return True
 
     def isThatADamnStatement(self, currentLineStructure, dimensions):
         for item in currentLineStructure.keys():
@@ -2961,7 +3036,8 @@ class EditorBigFrame:
             "lineNum":  lineNum,
             "level":    -1,
             "comment": [None, [-1,-1]],
-            "commas": []
+            "commas": [],
+            "unreachable": False
         }
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
         validDelimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
@@ -3509,6 +3585,7 @@ class EditorBigFrame:
 
         self.__codeBox.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
 
+        self.__codeBox.tag_config("unreachable", background=self.__loader.colorPalettes.getColor("unreachable"))
 
         self.__codeBox.tag_config("commandBack", background=self.__loader.colorPalettes.getColor("commandBack"),
                                                  foreground=self.__loader.colorPalettes.getColor("command"),

@@ -16,6 +16,7 @@ class FirstCompiler:
             "#SECTION#": section,
             "#FULL#": bank + "_" + section
         }
+        self.exiters = self.__editorBigFrame.exiters
 
         self.__fullTextLabels  = []
         for line in self.__fullText:
@@ -118,7 +119,6 @@ class FirstCompiler:
 
         for lineNum in range(0, len(self.__text)):
             line = self.__text[lineNum]
-
             lineStruct = self.__editorBigFrame.getLineStructure(lineNum, self.__text, True)
 
             #if lineStruct["command"][0] in self.__noneList:
@@ -135,6 +135,7 @@ class FirstCompiler:
             if addComments:
                lineStruct["commentsBefore"] = "***\t" + line[:self.__editorBigFrame.getFirstValidDelimiterPoz(line)]
 
+            lineStruct["unreachable"] = self.checkIfCodeUnreachable(linesFeteched, lineStruct["level"])
             linesFeteched.append(lineStruct)
 
         """
@@ -144,12 +145,29 @@ class FirstCompiler:
         print(self.checkForNotNeededExtraLDA(test))
         """
 
+        """    
+        text = "\tJMP\tFos\n\tLDA\t#0\nPacal\n\tSTA\ttemp01\nFos\n\tLDA\t#1\n"
+        print(self.detectUnreachableCode(text))
+        """
+
         self.compileBuild(linesFeteched, mode)
+
+    def checkIfCodeUnreachable(self, linesFeteched, level):
+        for lineNum in range(len(linesFeteched)-1, -1, -1):
+            line = linesFeteched[lineNum]
+            if line["level"] < level: return False
+            if line["level"] > level: continue
+            if line["command"][0] not in self.__noneList:
+               for exitCommand in self.exiters:
+                   if line["command"][0] == exitCommand or line["command"][0] in self.__loader.syntaxList[exitCommand].alias:
+                      return True
+
+        return False
 
     def compileBuild(self, linesFeteched, mode):
         for line in linesFeteched:
             self.__error = False
-            if line["command"][0] not in self.__noneList:
+            if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                self.processLine(line, linesFeteched)
 
         textToReturn = ""
@@ -173,7 +191,42 @@ class FirstCompiler:
             if line["comment"][0] not in self.__noneList:
                 textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
-        self.result = self.checkForNotNeededExtraLDA(textToReturn)
+        self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
+
+    def detectUnreachableCode(self, text):
+        lines = text.replace("\r", "").split("\n")
+
+        for lineNum in range(0, len(lines)):
+            line = lines[lineNum]
+            if line == "" or line.isspace() or line[0] not in ["\t", " "]:
+                continue
+
+            opcode, label = self.getOpCodeAndOperandFromASMLine(line)
+            if opcode != "JMP":
+               continue
+            else:
+               for secondLineNum in range(lineNum+1, len(lines)):
+                   if secondLineNum >= len(lines): break
+                   secondLine = lines[secondLineNum]
+
+                   if secondLine.startswith(label): break
+                   if len(secondLine) == 0: continue
+                   if secondLine[0] in ["*", "#"] or secondLine.isspace(): continue
+
+                   opcode2, filler = self.getOpCodeAndOperandFromASMLine(secondLine)
+
+                   validOpCode = False
+                   for item in self.__opcodes:
+                       if opcode2.upper() == self.__opcodes[item]["opcode"]:
+                          validOpCode = True
+                          break
+
+                   if validOpCode == False:
+                      break
+
+                   lines[secondLineNum] = ""
+
+        return "\n".join(lines)
 
     def processLine(self, line, linesFeteched):
         self.__useThese = [line["lineNum"], linesFeteched]
@@ -301,6 +354,58 @@ class FirstCompiler:
 
             changeText = self.prepareAdd(params)
             if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText)
+
+        elif self.isCommandInLineThat(line, "pow"):
+            from copy import deepcopy
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+
+            if params["param#1"][1] != "number" or params["param#2"][1] != "number":
+                if params["param#2"][1] == "number":
+                    if self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 1:
+                       subline = self.createSubLineForPower(line, linesFeteched)
+                       line["compiled"] = subline["compiled"]
+
+                       self.checkASMCode(line["compiled"] , line)
+                       if self.__error == False:
+                          self.__checked = True
+                       return
+                    elif self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 0:
+                        params["param#0"] = ["#1", "number"]
+                        if "param#3" not in params.keys():
+                            txt = self.saveAValue(params, "param#0", "param#1", line)
+                        else:
+                            txt = self.saveAValue(params, "param#0", "param#3", line)
+
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
+
+                subLine = self.createSubLineForPower(line, linesFeteched)
+                if params["param#2"][1] == "variable":
+                   var = self.__loader.virtualMemory.getVariableByName2(subLine["param#2"][0])
+                   if var == False:
+                      self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                                              "", "",
+                                                                              str(line["lineNum"] + self.__startLine)))
+                if self.__error == False:
+                   txt = self.preparePow(params, subLine, line)
+                   self.checkASMCode(txt, line)
+                   if self.__error == False:
+                      line["compiled"] = txt
+                      self.__checked = True
+
+            else:
+                theNum = pow(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0]),
+                             self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+
+                theNum = theNum%256
+                params["param#0"] = ["#" + str(theNum), "number"]
+
+                txt = self.saveAValue(params, "param#0", "param#3", line)
+                self.checkASMCode(txt, line)
+                if self.__error == False: line["compiled"] = txt
+                return
+
 
         elif self.isCommandInLineThat(line, "multi"):
             params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -1203,7 +1308,7 @@ class FirstCompiler:
                template = self.__loader.io.loadCommandASM("goto").replace("#NUM#", params["param#1"][0].replace("#", ""))
                line["compiled"] = template
 
-        line["compiled"] = self.checkForNotNeededExtraLDA(line["compiled"])
+        line["compiled"] = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"]))
         if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
         if self.__error == True: line["compiled"] = ""
 
@@ -1227,6 +1332,22 @@ class FirstCompiler:
                    return True
 
         return False
+
+    def createSubLineForPower(self, line, linesFeteched):
+        from copy import deepcopy
+
+        subLine = deepcopy(line)
+        subLine["command"][0] = "*"
+        subLine["param#2"] = subLine["param#1"]
+
+        subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#1"][0]
+        if subLine["param#3"][0] in self.__noneList:
+            subLine["fullLine"] += ")"
+        else:
+            subLine["fullLine"] += ", " + subLine["param#3"][0] + ")"
+
+        self.processLine(subLine, linesFeteched)
+        return subLine
 
     def checkIfItIsWritingInItem(self, start, end, level, text):
         listOfCommands = self.__editorBigFrame.listAllCommandFromTo(None, text, None, start, end + 1)
@@ -1260,7 +1381,8 @@ class FirstCompiler:
 
             for currentLineNum in range(0, len(lineLines)):
                 line = lineLines[currentLineNum].replace("\t", " ")
-                if line == "" or line[0] not in ["\t", " "]: continue
+                if line == "" or line.isspace() or line[0] not in ["\t", " "]:
+                   continue
                 opC1, opR1 = self.getOpCodeAndOperandFromASMLine(line)
 
                 if opC1 == opcode1:
@@ -1708,6 +1830,96 @@ class FirstCompiler:
 
         return changeText
 
+    def preparePow(self, params, subLine, line):
+        var1NotByte = False
+
+        if params["param#1"][1] == "variable":
+            var1 = self.__loader.virtualMemory.getVariableByName2(subLine["param#1"][0])
+            if var1 == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+            if var1.type != "byte": var1NotByte = True
+        else:
+            var1 = False
+
+        if params["param#2"][1] == "variable":
+            var2 = self.__loader.virtualMemory.getVariableByName2(subLine["param#2"][0])
+            if var2 == False:
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                                       "", "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+        else:
+            var2 = False
+
+        template = self.__loader.io.loadCommandASM("pow")
+        if params["param#2"][1] == "number":
+            val = int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
+            if val > 127:
+                template = template.replace("#VAR#", "#" + str(val + 1)) \
+                    .replace("!!!DECR!!!", "\tDEX\n\tCMP\t#0\n\tBEQ\t#BANK#_Pow_#MAGIC#_End\n")
+            else:
+                template = template.replace("#VAR#", "#" + str(val - 1)) \
+                    .replace("!!!DECR!!!", "\tDEX\n\tBMI\t#BANK#_Pow_#MAGIC#_End\n")
+        else:
+            template = template.replace("#VAR#", params["param#2"][0])
+            if var2.type != "byte":
+                template = template.replace("!!!to8Bit1!!!", self.__mainCompiler.convertAnyTo8Bits(var.usedBits))
+
+            template = template.replace("!!!DECR!!!", "\tDEX\n\tCMP\t#0\n\tBEQ\t#BANK#_Pow_#MAGIC#_End\n").replace(
+                "!!!INCR!!!", "\tINX\n")
+
+        if "param#3" in params.keys() or var1NotByte:
+            if "param#3" in params.keys():
+                var3 = self.__loader.virtualMemory.getVariableByName2(subLine["param#3"][0])
+                if var3 == False:
+                    self.addToErrorList(line["lineNum"],
+                                        self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
+            else:
+                params["param#3"] = params["param#1"]
+                var3              = var1
+
+            self.__temps = self.collectUsedTemps()
+            try:
+                thisOne = self.__temps[0]
+                self.__temps.pop(0)
+
+            except:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorStatementTemps", statement,
+                                                      "", "", str(line["lineNum"] + self.__startLine)))
+
+            if self.__error == False:
+               subLine["param#1"][0] = thisOne
+               subLine["param#3"][0] = thisOne
+
+               subLine["fullLine"] = subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#1"][0] + ")"
+               self.processLine(subLine, self.__useThese[1])
+
+               txt1 = "\tLDA\t" + params["param#1"][0] + "\n"
+               if var1 != False:
+                  if var1.type != "byte": txt1 += self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+               txt1 += "\tSTA\t" + thisOne + "\n"
+
+               txt3 = "\tLDA\t" + thisOne + "\n"
+               if var3 != False:
+                  if var3.type != "byte": txt3 += self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+               txt3 += "\tSTA\t" + params["param#1"][0] + "\n"
+
+               template = template.replace("!!!TEMPVARLOAD!!!", txt1).replace("!!!TEMPVARSAVE!!!", txt3)
+
+        if self.__error == False:
+            template = template.replace("!!!Multi!!!", subLine["compiled"]) \
+                .replace("#BANK#", self.__currentBank).replace("#MAGIC#", str(self.__magicNumber))
+            self.__magicNumber += 1
+
+            return template
+        else:
+            return ""
+
     def prepareAdd(self, params):
         changeText = {}
 
@@ -1771,27 +1983,20 @@ class FirstCompiler:
             line    = newLine
             if line == []: continue
 
-            #try:
-            #    print(line, line[0].upper() in self.__branchers, line[1] in labels or "*" in line[1])
-            #except:
-            #    pass
-
+            #print(line[0].upper() in self.__branchers, line[0].upper() in self.__jumpers)
             if line[0].upper() in self.__branchers or line[0].upper() in self.__jumpers:
-               for replacer in self.__replacers.keys():
-                   replaceIt = self.__replacers[replacer]
-                   
-                   if replacer in line[1]: line[1] = line[1].replace(replacer, replaceIt)
-                   for key in lineStructure.keys():
-                       if type(lineStructure[key]) == list and lineStructure[key] != []:
-                           if lineStructure[key][0] not in self.__noneList:
-                               lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
-                               self.__changeThese[replacer] = replaceIt
-               """ 
-               if "#MAGIC#" in line[1] and "magicNumber" in lineStructure.keys():
-                   for key in lineStructure:
-                       if type(lineStructure[key]) == list and lineStructure[key] != []:
-                          lineStructure[key] = lineStructure[key].replace("#MAGIC#", lineStructure["magicNumber"])
-               """
+
+               if self.isCommandInLineThat(lineStructure, "asm"):
+                   for replacer in self.__replacers.keys():
+                       replaceIt = self.__replacers[replacer]
+
+                       if replacer in line[1]: line[1] = line[1].replace(replacer, replaceIt)
+                       for key in lineStructure.keys():
+                           if type(lineStructure[key]) == list and lineStructure[key] != []:
+                               if lineStructure[key][0] not in self.__noneList:
+                                  lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                                  self.__changeThese[replacer] = replaceIt
+
                if line[1] in labels                     or\
                   "*" in line[1]                        or\
                   "#" in line[1]                        or\
@@ -1799,39 +2004,40 @@ class FirstCompiler:
                   line[1] in self.__labelsOfMainKenrel:
                   continue
 
-            for replacer in self.__replacers.keys():
-                replaceIt = self.__replacers[replacer]
+            if self.isCommandInLineThat(lineStructure, "asm"):
+                for replacer in self.__replacers.keys():
+                    replaceIt = self.__replacers[replacer]
 
-                if replacer in line[0]:
-                    line[0] = line[0].replace(replacer, replaceIt)
-                    for key in lineStructure.keys():
-                        if type(lineStructure[key]) == list and lineStructure[key] != []:
-                            if lineStructure[key][0] not in self.__noneList:
-                                lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
-                                self.__changeThese[replacer] = replaceIt
+                    if replacer in line[0]:
+                        line[0] = line[0].replace(replacer, replaceIt)
+                        for key in lineStructure.keys():
+                            if type(lineStructure[key]) == list and lineStructure[key] != []:
+                                if lineStructure[key][0] not in self.__noneList:
+                                    lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                                    self.__changeThese[replacer] = replaceIt
 
-            if line[0] in labels or line[0] in self.__fullTextLabels:
-               lineStructure["level"] = -1
+                if line[0] in labels or line[0] in self.__fullTextLabels:
+                   lineStructure["level"] = -1
 
-               if self.__fullTextLabels.count(line[0]) > 1:
-                  self.addToErrorList(lineStructure["lineNum"],
+                if self.__fullTextLabels.count(line[0]) > 1:
+                   self.addToErrorList(lineStructure["lineNum"],
                                       self.prepareErrorASM("compilerErrorASMDuplicateLabel",
                                                             "", line[0],
                                                             lineStructure["lineNum"]))
 
-               if self.__labelsOfMainKenrel.count(line[0]) > 0:
-                  self.addToErrorList(lineStructure["lineNum"],
+                if self.__labelsOfMainKenrel.count(line[0]) > 0:
+                   self.addToErrorList(lineStructure["lineNum"],
                                       self.prepareErrorASM("compilerErrorASMDKernelLabel",
                                                             "", line[0],
                                                             lineStructure["lineNum"]))
 
-               if len(line[0]) < 8:
+                if len(line[0]) < 8:
                    self.addToErrorList(lineStructure["lineNum"],
                                        self.prepareErrorASM("compilerErrorASMKernelLabelShort",
                                                             "", line[0],
                                                             lineStructure["lineNum"]))
 
-               continue
+                continue
 
 
             command = line[0]

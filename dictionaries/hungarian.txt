@@ -463,4 +463,5 @@ compilerErrorASMKernelLabel=#OPERAND# címkét már a kernel használja!
 compilerErrorASMKernelLabelShort=#OPERAND# túl rövid címkének! Minimum 8 karakter hosszúnak kell lennie!
 compilerErrorBankLocked=Bank #PARAM# foglalt, nem használható képernyõváltásra!
 compilerErrorBankOutOfRange=A bank #PARAM# nem elfogadott! Képernyõváltáshoz a 2-8 intervallum használható!
-compilerErrorBankMissingPairInSection=A '#VAR#' parancshoz legalább egy '#VAL#' parancsnak kell tartoznia #PARAM# szekció(k)ban! 
+compilerErrorBankMissingPairInSection=A '#VAR#' parancshoz legalább egy '#VAL#' parancsnak kell tartoznia #PARAM# szekció(k)ban!
+aliasToCommand=Aliaszok Parancsnévvé alakítása

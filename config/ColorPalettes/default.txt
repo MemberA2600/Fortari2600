@@ -20,3 +20,4 @@ array=brown
 constStringBack=black
 constStringFont=lime
 subroutine=cyan
+unreachable=maroon1
