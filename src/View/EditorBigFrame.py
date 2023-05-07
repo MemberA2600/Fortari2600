@@ -1540,6 +1540,14 @@ class EditorBigFrame:
                self.removeTag(yOnTextBox, 0, len(line), "background")
                self.addTag(yOnTextBox,    0, len(line), "unreachable")
 
+        if currentLineStructure["command"][0] not in [None, "None", ""]:
+            if self.__currentSection in ["subroutines", "screenroutines"] and currentLineStructure["level"] == 0                                       and\
+               currentLineStructure["command"][0] != "subroutine" and currentLineStructure["command"][0] not in self.__syntaxList["subroutine"].alias and \
+               currentLineStructure["command"][0] != "screen"     and currentLineStructure["command"][0] not in self.__syntaxList["screen"].alias:
+               self.removeTag(yOnTextBox, 0, len(line), "background")
+               self.addTag(yOnTextBox, 0, len(line), "unreachable")
+
+
         if self.__highLightWord not in ("", None):
             if len(line) >= len(self.__highLightWord):
                 for startNum in range(0, len(line) - len(self.__highLightWord), 1):

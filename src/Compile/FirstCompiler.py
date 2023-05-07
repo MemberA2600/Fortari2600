@@ -162,6 +162,13 @@ class FirstCompiler:
                    if line["command"][0] == exitCommand or line["command"][0] in self.__loader.syntaxList[exitCommand].alias:
                       return True
 
+        line = linesFeteched[-1]
+        if line["command"][0] not in [None, "None", ""]:
+            if self.__currentSection in ["subroutines", "screenroutines"] and line["level"] == 0 and \
+               line["command"][0] != "subroutine"                         and line["command"][0] not in self.__loader.syntaxList["subroutine"].alias and \
+               line["command"][0] != "screen"                             and line["command"][0] not in self.__lodaer.syntaxList["screen"].alias:
+               return True
+
         return False
 
     def compileBuild(self, linesFeteched, mode):
