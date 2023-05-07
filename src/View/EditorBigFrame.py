@@ -45,6 +45,7 @@ class EditorBigFrame:
 
         self.exiters = ["exit", "goto", "return", "leave", "resetScreen", "resetGame"]
         self.__unreachableLVL = -1
+        self.__unreachableNum = -1
 
         miniSize = 0.65
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
@@ -1152,6 +1153,7 @@ class EditorBigFrame:
         if line[0] in ("*", "#"): delimiterPoz = 0
         if currentLineStructure["level"] < self.__unreachableLVL:
            self.__unreachableLVL = -1
+           self.__unreachableNum = -1
 
         if delimiterPoz != len(line):
            if caller == "lineTinting":
@@ -1192,6 +1194,7 @@ class EditorBigFrame:
 
            elif currentLineStructure["command"][0].startswith("end-") == True:
                self.__unreachableLVL = -1
+               self.__unreachableNum = -1
                startFound = self.__findStart(currentLineStructure, lineNum, text)
                if startFound == False:
                   addError = True
@@ -1530,7 +1533,9 @@ class EditorBigFrame:
                elif caller == "firstCompiler":
                   errorPositions.append(["param#" + str(ind+1), "paramNotNeeded"])
 
-        if currentLineStructure["level"] >= self.__unreachableLVL and self.__unreachableLVL != -1:
+        if currentLineStructure["level"] >= self.__unreachableLVL and self.__unreachableLVL != -1 \
+           and currentLineStructure["lineNum"] > self.__unreachableNum:
+
            if currentLineStructure["command"][0] not in [None, "None", ""]:
                self.removeTag(yOnTextBox, 0, len(line), "background")
                self.addTag(yOnTextBox,    0, len(line), "unreachable")
@@ -1559,6 +1564,7 @@ class EditorBigFrame:
 
             if foundExit:
                self.__unreachableLVL = currentLineStructure["level"]
+               self.__unreachableNum = currentLineStructure["lineNum"]
                currentLineStructure["unreachable"] = True
 
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":

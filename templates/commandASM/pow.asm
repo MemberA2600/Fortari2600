@@ -1,4 +1,5 @@
 !!!TEMPVARLOAD!!!
+!!!SELF!!!
 	LDX	#VAR#
 !!!INCR!!!
 !!!to8Bit1!!!

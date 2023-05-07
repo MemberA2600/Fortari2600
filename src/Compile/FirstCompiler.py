@@ -1268,6 +1268,37 @@ class FirstCompiler:
 
             line["compiled"] = "\tJMP\tLeaveScreenBank" + str(self.__currentBank[-1]) + "\n"
 
+        elif self.isCommandInLineThat(line, "resetGame"):
+            if self.__currentSection not in self.__loader.syntaxList[line["command"][0]].sectionsAllowed:
+                secondPart = self.__dictionaries.getWordFromCurrentLanguage("sectionNotAllowed").replace("#SECTIONS#",
+                             ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed))
+
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                                       line["command"][0], "",
+                                                                       str(line["lineNum"] + self.__startLine))
+                                                                       + " " + secondPart)
+
+            if self.__error == False:
+               # Have to rewrite these after reanaming the labels in the kernel!!
+               if self.__currentBank == "bank8":
+                  line["compiled"] = "\tJMP\tStart\n"
+               else:
+                  line["compiled"] = "\tJMP\tstart_bank"+ self.__currentBank[-1] +"\n"
+
+        elif self.isCommandInLineThat(line, "resetScreen"):
+            if self.__currentSection not in self.__loader.syntaxList[line["command"][0]].sectionsAllowed:
+                secondPart = self.__dictionaries.getWordFromCurrentLanguage("sectionNotAllowed").replace("#SECTIONS#",
+                             ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed))
+
+                self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
+                                                                       line["command"][0], "",
+                                                                       str(line["lineNum"] + self.__startLine))
+                                                                       + " " + secondPart)
+
+            if self.__error == False:
+               # Have to rewrite these after reanaming the labels in the kernel!!
+               line["compiled"] = "\tJMP\tEnterScreenBank"+ self.__currentBank[-1] +"\n"
+
         elif self.isCommandInLineThat(line, "goto"):
             params     = self.getParamsWithTypesAndCheckSyntax(line)
             bankToJump = params["param#1"][0].replace("#", "")
@@ -1336,9 +1367,19 @@ class FirstCompiler:
     def createSubLineForPower(self, line, linesFeteched):
         from copy import deepcopy
 
+        self.__temps = self.collectUsedTemps()
+        try:
+            thisOne = self.__temps[0]
+            self.__temps.pop(0)
+
+        except:
+            self.addToErrorList(line["lineNum"],
+                                self.prepareError("compilerErrorStatementTemps", statement,
+                                                  "", "", str(line["lineNum"] + self.__startLine)))
+
         subLine = deepcopy(line)
         subLine["command"][0] = "*"
-        subLine["param#2"] = subLine["param#1"]
+        subLine["param#2"][0] = thisOne
 
         subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#1"][0]
         if subLine["param#3"][0] in self.__noneList:
@@ -1884,7 +1925,9 @@ class FirstCompiler:
 
             self.__temps = self.collectUsedTemps()
             try:
-                thisOne = self.__temps[0]
+                thisOne   = self.__temps[0]
+                self.__temps.pop(0)
+                otherOne  = self.__temps[0]
                 self.__temps.pop(0)
 
             except:
@@ -1894,9 +1937,11 @@ class FirstCompiler:
 
             if self.__error == False:
                subLine["param#1"][0] = thisOne
+               subLine["param#2"][0] = otherOne
                subLine["param#3"][0] = thisOne
+               print(subLine)
 
-               subLine["fullLine"] = subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#1"][0] + ")"
+               subLine["fullLine"] = subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#2"][0] + ")"
                self.processLine(subLine, self.__useThese[1])
 
                txt1 = "\tLDA\t" + params["param#1"][0] + "\n"
@@ -1907,9 +1952,14 @@ class FirstCompiler:
                txt3 = "\tLDA\t" + thisOne + "\n"
                if var3 != False:
                   if var3.type != "byte": txt3 += self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
-               txt3 += "\tSTA\t" + params["param#1"][0] + "\n"
+               txt3 += "\tSTA\t" + params["param#3"][0] + "\n"
 
-               template = template.replace("!!!TEMPVARLOAD!!!", txt1).replace("!!!TEMPVARSAVE!!!", txt3)
+               template = template.replace("!!!TEMPVARLOAD!!!", txt1).replace("!!!TEMPVARSAVE!!!", txt3)\
+                                  .replace("!!!SELF!!!", "\tSTA\t" + subLine["param#2"][0] + "\n")
+        else:
+            template = template.replace("!!!SELF!!!",
+                                        "\tLDA\t" + subLine["param#1"][0] + "\n\tSTA\t" + subLine["param#2"][0] + "\n")
+
 
         if self.__error == False:
             template = template.replace("!!!Multi!!!", subLine["compiled"]) \
