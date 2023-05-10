@@ -465,3 +465,5 @@ compilerErrorBankLocked=Bank #PARAM# is locked, cannot be used for jumping!
 compilerErrorBankOutOfRange=Bank #PARAM# is out of range! Banks for jumping must be between 2 and 8!
 compilerErrorBankMissingPairInSection=Command '#VAR#' needs at least one '#VAL#' command in section(s) #PARAM#! 
 aliasToCommand=Convert Aliases to Commands
+noSubRoutineForReturn=The command #COMMAND# has no opening "Subroutine" kind of command.
+noEndSubRoutineForReturn=The command #COMMAND# has no closing "End-Subroutine" kind of command.

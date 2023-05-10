@@ -465,3 +465,5 @@ compilerErrorBankLocked=Bank #PARAM# foglalt, nem használható képernyõváltásra!
 compilerErrorBankOutOfRange=A bank #PARAM# nem elfogadott! Képernyõváltáshoz a 2-8 intervallum használható!
 compilerErrorBankMissingPairInSection=A '#VAR#' parancshoz legalább egy '#VAL#' parancsnak kell tartoznia #PARAM# szekció(k)ban!
 aliasToCommand=Aliaszok Parancsnévvé alakítása
+noSubRoutineForReturn=A #COMMAND# parancs nem tartozik "Subroutine" jellegû parancshoz!
+noEndSubRoutineForReturn=A #COMMAND# alatt nem található "End-Subroutine" jellegû záróparancs!

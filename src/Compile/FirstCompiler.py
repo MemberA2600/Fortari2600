@@ -135,8 +135,14 @@ class FirstCompiler:
             if addComments:
                lineStruct["commentsBefore"] = "***\t" + line[:self.__editorBigFrame.getFirstValidDelimiterPoz(line)]
 
-            lineStruct["unreachable"] = self.checkIfCodeUnreachable(linesFeteched, lineStruct["level"])
             linesFeteched.append(lineStruct)
+            lineStruct["unreachable"] = self.checkIfCodeUnreachable(linesFeteched, lineStruct["level"])
+            if lineStruct["unreachable"] == True:
+               lineStruct["command"][0]  = None
+               lineStruct["param#1"][0]  = None
+               lineStruct["param#2"][0]  = None
+               lineStruct["param#3"][0]  = None
+
 
         """
         test = "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp02\n" + "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp03\n" + \
@@ -150,10 +156,15 @@ class FirstCompiler:
         print(self.detectUnreachableCode(text))
         """
 
+        #text = "\tLDA\t#3\n\tTAY\n\tLDA\ttemp01\n"
+        #text = "\tLDA\ttemp02\n\tTAX\n\tLDA\ttemp01\n"
+        #print(self.LDATAYLDA(text))
+
         self.compileBuild(linesFeteched, mode)
 
     def checkIfCodeUnreachable(self, linesFeteched, level):
-        for lineNum in range(len(linesFeteched)-1, -1, -1):
+        if len(linesFeteched) < 2: return False
+        for lineNum in range(len(linesFeteched)-2, -1, -1):
             line = linesFeteched[lineNum]
             if line["level"] < level: return False
             if line["level"] > level: continue
@@ -161,12 +172,16 @@ class FirstCompiler:
                for exitCommand in self.exiters:
                    if line["command"][0] == exitCommand or line["command"][0] in self.__loader.syntaxList[exitCommand].alias:
                       return True
+        return False
 
         line = linesFeteched[-1]
         if line["command"][0] not in [None, "None", ""]:
             if self.__currentSection in ["subroutines", "screenroutines"] and line["level"] == 0 and \
-               line["command"][0] != "subroutine"                         and line["command"][0] not in self.__loader.syntaxList["subroutine"].alias and \
-               line["command"][0] != "screen"                             and line["command"][0] not in self.__lodaer.syntaxList["screen"].alias:
+               line["command"][0] != "subroutine"                         and line["command"][0] not in self.__loader.syntaxList["subroutine"].alias     and \
+               line["command"][0] != "screen"                             and line["command"][0] not in self.__loader.syntaxList["screen"].alias         and \
+               line["command"][0] != "end-subroutine"                     and line["command"][0] not in self.__loader.syntaxList["end-subroutine"].alias and \
+               line["command"][0] != "end-screen"                         and line["command"][0] not in self.__loader.syntaxList["end-screen"].alias:
+
                return True
 
         return False
@@ -174,6 +189,7 @@ class FirstCompiler:
     def compileBuild(self, linesFeteched, mode):
         for line in linesFeteched:
             self.__error = False
+
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                self.processLine(line, linesFeteched)
 
@@ -199,6 +215,71 @@ class FirstCompiler:
                 textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
         self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
+
+    def LDATAYLDA(self, text):
+        lines = text.replace("\r", "").split("\n")
+
+        for lineNum in range(2, len(lines)):
+            line1 = lines[lineNum-2]
+            line2 = lines[lineNum-1]
+            line3 = lines[lineNum]
+
+            if line1 == "" or line1.isspace() or line1[0] not in ["\t", " "] or \
+               line2 == "" or line2.isspace() or line2[0] not in ["\t", " "] or \
+               line3 == "" or line3.isspace() or line3[0] not in ["\t", " "]: continue
+
+            opcode1, operand1 = self.getOpCodeAndOperandFromASMLine(line1)
+            opcode2, operand2 = self.getOpCodeAndOperandFromASMLine(line2)
+            opcode3, operand3 = self.getOpCodeAndOperandFromASMLine(line3)
+
+            foundIt = False
+            if (((opcode1.upper() == "LDA" and opcode2.upper() == "LDX")  or \
+                (opcode1.upper() == "LDX" and opcode2.upper() == "LDA")) and \
+                 operand1 == operand2)                                    or \
+                (opcode1.upper() == "LDA" and opcode2.upper() == "TAX")      :
+                 for item in self.__opcodes:
+                    lineSettings = self.__opcodes[item]
+                    if lineSettings["opcode"].upper() == "LAX":
+                        if self.checkIfASMhasrightOperand(lineSettings, operand1) == True:
+                            foundIt = True
+                            break
+                 if foundIt:
+                    lines[lineNum - 2] = "\tLAX\t" + operand1
+                    lines[lineNum - 1] = ""
+
+
+            if foundIt == False:
+
+                if opcode1[:2].upper() != "LD": continue
+                if opcode3[:2].upper() != "LD": continue
+                if opcode2[0].upper()  != "T"   or\
+            "S" in opcode2                    : continue
+
+                for letter1 in ["A", "Y", "X"]:
+                    for letter2 in ["A", "Y", "X"]:
+                        if letter1 == letter2: continue
+
+                        compOp1 = "LD" + letter1
+                        compOp2 = "T"  + letter1 + letter2
+
+                        if opcode1 != compOp1 or opcode2 != compOp2 or opcode3 != compOp1: continue
+                        newOpC = "LD" + letter2
+
+                        foundIt = False
+                        for item in self.__opcodes:
+                            lineSettings = self.__opcodes[item]
+                            if lineSettings["opcode"].upper() == newOpC:
+                               if self.checkIfASMhasrightOperand(lineSettings, operand1) == True:
+                                  foundIt = True
+                                  break
+
+                        if foundIt == False: continue
+                        lines[lineNum-2] = "\t" + newOpC  + "\t" + operand1
+                        lines[lineNum-1] = "\t" + opcode3 + "\t" + operand3
+                        lines[lineNum]   =  ""
+                        break
+
+        return "\n".join(lines)
 
     def detectUnreachableCode(self, text):
         lines = text.replace("\r", "").split("\n")
@@ -1346,7 +1427,63 @@ class FirstCompiler:
                template = self.__loader.io.loadCommandASM("goto").replace("#NUM#", params["param#1"][0].replace("#", ""))
                line["compiled"] = template
 
-        line["compiled"] = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"]))
+        elif self.isCommandInLineThat(line, "subroutine"):
+             params = self.getParamsWithTypesAndCheckSyntax(line)
+             line["labelsBefore"] = self.__currentBank + "_SubRoutine_" + params["param#1"][0][1:-1] + "\n"
+
+        elif self.isCommandInLineThat(line, "end-subroutine"):
+             noRTS    = False
+             breakOut = False
+             if line["lineNum"] > 0:
+                 cLineNum = -1
+                 thatC = None
+                 for lNum in range(line["lineNum"] - 1, -1, -1):
+                     if linesFeteched[lNum]["command"][0] not in self.__noneList:
+                         cLineNum = lNum
+                         thatC = linesFeteched[lNum]["command"][0]
+                         for exitCommand in self.exiters:
+                             if thatC == exitCommand or thatC in self.__loader.syntaxList[exitCommand].alias:
+                                noRTS = True
+                                break
+                         breakOut = True
+                         if noRTS: break
+                     if breakOut: break
+
+             if noRTS == False: line["compiled"] = "\tRTS\n"
+
+        elif self.isCommandInLineThat(line, "return"):
+             params = self.getParamsWithTypesAndCheckSyntax(line)
+             if params["param#1"][0] == "variable":
+                var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
+                                                                     self.__currentBank)
+                if var == False:
+                   var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+                if var == False:
+                   self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorVarNotFound",
+                                                          params["param#1"][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
+
+                if self.__error == False:
+                   line["compiled"] = "\tLDA\t" + params["param#1"][0] + "\n"
+                   if var.type != "variable":
+                      line["compiled"] += self.__mainCompiler.convertAnyTo8Bits(var.usedBits)
+
+             else:
+                 line["compiled"] = "\tLDA\t#" + params["param#1"][0].replace("#", "") + "\n"
+
+             line["compiled"] += "\tRTS\n"
+
+        elif self.isCommandInLineThat(line, "screen"):
+             params = self.getParamsWithTypesAndCheckSyntax(line)
+             line["labelsBefore"] = self.__currentBank + "_Screen_" + params["param#1"][0][1:1] + "\n"
+             #line["compiled"] = "\tLDX\titem\n\tTXS\n"
+
+        elif self.isCommandInLineThat(line, "end-screen"):
+             line["compiled"] = "\tTSX\n\tSTX\titem\n\tRTS\n"
+
+        line["compiled"] = self.LDATAYLDA(self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"])))
         if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
         if self.__error == True: line["compiled"] = ""
 
@@ -2076,23 +2213,23 @@ class FirstCompiler:
                 if line[0] in labels or line[0] in self.__fullTextLabels:
                    lineStructure["level"] = -1
 
-                if self.__fullTextLabels.count(line[0]) > 1:
-                   self.addToErrorList(lineStructure["lineNum"],
-                                      self.prepareErrorASM("compilerErrorASMDuplicateLabel",
-                                                            "", line[0],
-                                                            lineStructure["lineNum"]))
+                   if self.__fullTextLabels.count(line[0]) > 1:
+                      self.addToErrorList(lineStructure["lineNum"],
+                                          self.prepareErrorASM("compilerErrorASMDuplicateLabel",
+                                                                "", line[0],
+                                                                lineStructure["lineNum"]))
 
-                if self.__labelsOfMainKenrel.count(line[0]) > 0:
-                   self.addToErrorList(lineStructure["lineNum"],
-                                      self.prepareErrorASM("compilerErrorASMDKernelLabel",
-                                                            "", line[0],
-                                                            lineStructure["lineNum"]))
+                   if self.__labelsOfMainKenrel.count(line[0]) > 0:
+                      self.addToErrorList(lineStructure["lineNum"],
+                                          self.prepareErrorASM("compilerErrorASMDKernelLabel",
+                                                                "", line[0],
+                                                                lineStructure["lineNum"]))
 
-                if len(line[0]) < 8:
-                   self.addToErrorList(lineStructure["lineNum"],
-                                       self.prepareErrorASM("compilerErrorASMKernelLabelShort",
-                                                            "", line[0],
-                                                            lineStructure["lineNum"]))
+                   if len(line[0]) < 8:
+                      self.addToErrorList(lineStructure["lineNum"],
+                                           self.prepareErrorASM("compilerErrorASMKernelLabelShort",
+                                                                "", line[0],
+                                                                lineStructure["lineNum"]))
 
                 continue
 
@@ -2262,6 +2399,9 @@ class FirstCompiler:
            return "write"
 
     def checkIfASMhasrightOperand(self, lineSettings, value):
+        if lineSettings["format"][0] == "#" and value[0] != "#": return False
+        if lineSettings["format"][0] != "#" and value[0] == "#": return False
+
         import re
 
         beforeCommaValue    = value.split(",")[0]
@@ -2292,11 +2432,9 @@ class FirstCompiler:
                beforeCommaValue = beforeCommaValue.replace(onlyBody, "") + addr
 
         if "#" in beforeCommaValue:
-           allA = "AA"
+           allA = "#AA"
         else:
            allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
-
-        #print(beforeCommaFormat, allA, value)
 
         if beforeCommaFormat != allA: return False
 
@@ -2466,7 +2604,9 @@ class FirstCompiler:
                       "iteralError": {},
                       "infiniteLoop": {},
                       "mustBePowerOf2": {},
-                      "mustBeSmaller": {}
+                      "mustBeSmaller": {},
+                      "noSubRoutineForReturn": {"#COMMAND#": line["command"][0]},
+                      "noEndSubRoutineForReturn": {"#COMMAND#": line["command"][0]},
                       }
 
         for item in listOfErrors:

@@ -40,6 +40,6 @@ shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|stringConst {
 shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
-subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string, {number|variable|stringConst}];None;0;False
+subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False
 swap;[<<>>];[common];command;None;brackets;[];[variable variable];write;None;False
 xor;[eor ^];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True

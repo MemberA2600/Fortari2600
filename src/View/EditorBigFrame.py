@@ -1064,18 +1064,22 @@ class EditorBigFrame:
             self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
 
         if mode == "whole":
-            self.__codeEditorItems["updateRow"].config(state=DISABLED)
+            try:
+                self.__codeEditorItems["updateRow"].config(state=DISABLED)
+            except:
+                pass
+
             for num in range (1, len(text)+1):
                self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True, None)
 
-               for item in selectPosizions:
-                   self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
-                   self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
+            for item in selectPosizions:
+                # print(item)
+                self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
+                self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
 
-               for item in errorPositions:
-                   #print(item, "errorPositions")
-                   self.removeTag(item[2] + 1, item[0], item[1] + 1, None)
-                   self.addTag(item[2] + 1, item[0], item[1] + 1, "error")
+            for item in errorPositions:
+                self.removeTag(int(item[2]) + 1, item[0], item[1] + 1, None)
+                self.addTag(int(item[2]) + 1, item[0], item[1] + 1, "error")
 
             self.__saveCode()
 
@@ -1182,7 +1186,7 @@ class EditorBigFrame:
                 if endFound == False:
                    addError = True
                    if caller == 'firstCompiler':
-                      errorPositions.append(["command", "noEndFound"])
+                      errorPositions.append(["command", "noEndFound", currentLineStructure["lineNum"]])
 
                 else:
                     if self.__cursorPoz[0] == yOnTextBox:
@@ -1199,7 +1203,7 @@ class EditorBigFrame:
                if startFound == False:
                   addError = True
                   if caller == 'firstCompiler':
-                      errorPositions.append(["command", "noStartFound"])
+                      errorPositions.append(["command", "noStartFound", currentLineStructure["lineNum"]])
                else:
                    if self.__cursorPoz[0] == yOnTextBox:
 
@@ -1207,19 +1211,51 @@ class EditorBigFrame:
                       self.addToPosizions(selectPosizions,
                                                 self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
+           elif currentLineStructure["command"][0] == "return" or currentLineStructure["command"][0] in \
+                self.__syntaxList["return"].alias:
+
+                #self.__fos = True
+                startFound = self.findWahWah("subroutine", lineNum,
+                             "upAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+
+                endFound   = self.findWahWah("end-subroutine", lineNum,
+                             "downAll", text, currentLineStructure["level"], None, None, None, currentLineStructure)
+
+                #self.__fos = False
+                #print(startFound, endFound, currentLineStructure)
+
+                if startFound == False:
+                    addError = True
+                    if caller == 'firstCompiler':
+                        errorPositions.append(["command", "noSubRoutineForReturn", currentLineStructure["lineNum"]])
+                else:
+                    if self.__cursorPoz[0] == yOnTextBox:
+                        self.addToPosizions(selectPosizions, self.convertToX1X2Y(startFound))
+                        self.addToPosizions(selectPosizions,
+                                            self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+                if endFound == False:
+                    addError = True
+                    if caller == 'firstCompiler':
+                        errorPositions.append(["command", "noEndSubRoutineForReturn", currentLineStructure["lineNum"]])
+                else:
+                    if self.__cursorPoz[0] == yOnTextBox:
+                        self.addToPosizions(selectPosizions, self.convertToX1X2Y(startFound))
+                        self.addToPosizions(selectPosizions,
+                                            self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
            elif currentLineStructure["command"][0] == "case" or currentLineStructure["command"][0] in\
                 self.__syntaxList["case"].alias:
 
                 foundAllRelatedForCaseDefault = self.foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
+
                 if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False:
                    addError = True
                    if caller == 'firstCompiler':
                       if foundAllRelatedForCaseDefault["select"] == False:
-                         errorPositions.append(["command", "noSelectForCase"])
+                         errorPositions.append(["command", "noSelectForCase", currentLineStructure["lineNum"]])
 
                       if foundAllRelatedForCaseDefault["end-select"] == False:
-                         errorPositions.append(["command", "noEndForCase"])
+                         errorPositions.append(["command", "noEndForCase", currentLineStructure["lineNum"]])
 
                 #print(foundAllRelatedForCaseDefault)
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
@@ -1245,13 +1281,13 @@ class EditorBigFrame:
                        addError = True
                        if caller == 'firstCompiler':
                           if foundAllRelatedForCaseDefault["select"] == False:
-                             errorPositions.append(["command", "noSelectForDefault"])
+                             errorPositions.append(["command", "noSelectForDefault", currentLineStructure["lineNum"]])
 
                           if foundAllRelatedForCaseDefault["end-select"] == False:
-                             errorPositions.append(["command", "noEndForDefault"])
+                             errorPositions.append(["command", "noEndForDefault", currentLineStructure["lineNum"]])
 
                           if foundAllRelatedForCaseDefault["end-select"] == False:
-                             errorPositions.append(["command", "noCaseForDefault"])
+                             errorPositions.append(["command", "noCaseForDefault", currentLineStructure["lineNum"]])
 
                if addError == False and self.__cursorPoz[0] == yOnTextBox:
 
@@ -1276,10 +1312,10 @@ class EditorBigFrame:
                    addError = True
                    if caller == 'firstCompiler':
                        if foundAllRelatedForDoAndEndDo["start"] == False:
-                          errorPositions.append(["command", "noDoForCommand"])
+                          errorPositions.append(["command", "noDoForCommand", currentLineStructure["lineNum"]])
 
                        if foundAllRelatedForDoAndEndDo["end"] == False:
-                          errorPositions.append(["command", "noEndForDo"])
+                          errorPositions.append(["command", "noEndForDo", currentLineStructure["lineNum"]])
 
 
                 if addError == False and self.__cursorPoz[0] == yOnTextBox:
@@ -1289,6 +1325,7 @@ class EditorBigFrame:
                                               self.convertToX1X2Y(foundAllRelatedForDoAndEndDo["end"]))
                     self.addToPosizions(selectPosizions,
                                               self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+
 
            if currentLineStructure["command"][0] == "do" or\
               currentLineStructure["command"][0] in self.__syntaxList["do"].alias:
@@ -1300,7 +1337,7 @@ class EditorBigFrame:
 
                  if self.infiniteLoop(text, firstPoz, lastPoz):
                      if caller == 'firstCompiler':
-                        errorPositions.append(["command", "infiniteLoop"])
+                        errorPositions.append(["command", "infiniteLoop", currentLineStructure["lineNum"]])
                      else:
                         self.addToPosizions(errorPositions,
                                             self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
@@ -1336,9 +1373,18 @@ class EditorBigFrame:
                          self.addToPosizions(errorPositions,
                                              self.convertToX1X2Y(self.getXYfromCommand(item)))
                      else:
-                         errorPositions.append(["command", "iteralError"])
+                         errorPositions.append(["command", "iteralError", currentLineStructure["lineNum"]])
 
-           #print(errorPositions, addError)
+           #This one should be used only if subroutine would have the second parameter as the result
+           """ 
+           elif currentLineStructure["command"][0] == "subroutine" or\
+                currentLineStructure["command"][0] in self.__syntaxList["subroutine"].alias:
+                if currentLineStructure["param#2"] not in ["", None, "None"]:
+                   pass
+
+           #print(errorPositions, addError, currentLineStructure["command"][0])
+           """
+
 
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                 self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
@@ -1349,11 +1395,13 @@ class EditorBigFrame:
                     if caller == 'firstCompiler':
                        if self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True:
                           if currentLineStructure["("] == -1:
-                             errorPositions.append(["bracket", "missingOpeningBracket"])
+                             errorPositions.append(["bracket", "missingOpeningBracket", currentLineStructure["lineNum"]])
                           if currentLineStructure[")"] == -1:
-                             errorPositions.append(["bracket", "missingClosingBracket"])
+                             errorPositions.append(["bracket", "missingClosingBracket", currentLineStructure["lineNum"]])
                        else:
-                           errorPositions.append(["bracket", "commandDoesNotNeedBrackets"])
+                           errorPositions.append(["bracket", "commandDoesNotNeedBrackets", currentLineStructure["lineNum"]])
+
+           #print(errorPositions, addError, currentLineStructure["command"][0])
 
            if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed\
            or (currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed
@@ -1362,10 +1410,12 @@ class EditorBigFrame:
               addError = True
               #print("#2")
               if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed:
-                 errorPositions.append(["command", "sectionNotAllowed"])
+                  if caller == 'firstCompiler':
+                     errorPositions.append(["command", "sectionNotAllowed", currentLineStructure["lineNum"]])
               if currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed\
               and self.__syntaxList[currentLineStructure["command"][0]].levelAllowed != None:
-                  errorPositions.append(["command", "levelNotAllowed"])
+                  if caller == 'firstCompiler':
+                     errorPositions.append(["command", "levelNotAllowed", currentLineStructure["lineNum"]])
 
            if addError == True:
                if caller == "lineTinting":
@@ -1420,14 +1470,13 @@ class EditorBigFrame:
                      else:
                         commandParams.append("variable")
 
-
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
              if caller == "lineTinting":
                 self.addTag(yOnTextBox, currentLineStructure["("],
                                      currentLineStructure["("] + 1,
                                      "error")
              elif caller == "firstCompiler":
-                errorPositions.append(["bracket", "missingClosingBracket"])
+                errorPositions.append(["bracket", "missingClosingBracket", currentLineStructure["lineNum"]])
 
         elif currentLineStructure["("] == -1 and currentLineStructure[")"] != -1:
              if caller == "lineTinting":
@@ -1435,7 +1484,7 @@ class EditorBigFrame:
                                      currentLineStructure[")"] + 1,
                                      "error")
              elif caller == "firstCompiler":
-                errorPositions.append(["bracket", "missingOpeningBracket"])
+                errorPositions.append(["bracket", "missingOpeningBracket", currentLineStructure["lineNum"]])
 
         elif currentLineStructure["("] != -1 and currentLineStructure[")"] != -1:
             if caller == "lineTinting":
@@ -1447,7 +1496,7 @@ class EditorBigFrame:
                         currentLineStructure["("] + 1,
                         "bracket")
 
-        #print(errorPositions, addError)
+        #print(errorPositions, addError, currentLineStructure["command"][0])
 
         if (currentLineStructure["("] != -1 or caller == "lineEditor") and\
             currentLineStructure["param#1"] not in [None, "None", ""]\
@@ -1512,7 +1561,7 @@ class EditorBigFrame:
                                    currentLineStructure["param#1"][1][1]+1,
                                    "error")
                     elif caller == "firstCompiler":
-                        errorPositions.append(["param#1", "mustBePowerOf2"])
+                        errorPositions.append(["param#1", "mustBePowerOf2", currentLineStructure["lineNum"]])
 
            if num2 != None:
                if num1 < num2 or num2 < 1:
@@ -1521,7 +1570,7 @@ class EditorBigFrame:
                                   currentLineStructure["param#2"][1][1]+1,
                                  "error")
                    elif caller == "firstCompiler":
-                      errorPositions.append(["param#2", "mustBeSmaller"])
+                      errorPositions.append(["param#2", "mustBeSmaller", currentLineStructure["lineNum"]])
 
 
         for ind in range(0, len(currentLineStructure["commas"])):
@@ -1531,7 +1580,7 @@ class EditorBigFrame:
                                        currentLineStructure["commas"][ind] + 1,
                                        "error")
                elif caller == "firstCompiler":
-                  errorPositions.append(["param#" + str(ind+1), "paramNotNeeded"])
+                  errorPositions.append(["param#" + str(ind+1), "paramNotNeeded", currentLineStructure["lineNum"]])
 
         if currentLineStructure["level"] >= self.__unreachableLVL and self.__unreachableLVL != -1 \
            and currentLineStructure["lineNum"] > self.__unreachableNum:
@@ -1540,13 +1589,14 @@ class EditorBigFrame:
                self.removeTag(yOnTextBox, 0, len(line), "background")
                self.addTag(yOnTextBox,    0, len(line), "unreachable")
 
-        if currentLineStructure["command"][0] not in [None, "None", ""]:
-            if self.__currentSection in ["subroutines", "screenroutines"] and currentLineStructure["level"] == 0                                       and\
-               currentLineStructure["command"][0] != "subroutine" and currentLineStructure["command"][0] not in self.__syntaxList["subroutine"].alias and \
-               currentLineStructure["command"][0] != "screen"     and currentLineStructure["command"][0] not in self.__syntaxList["screen"].alias:
+        if currentLineStructure["command"][0] not in [None, "None", ""] and whole != None:
+            if self.__currentSection in ["subroutines", "screenroutines"] and currentLineStructure["level"] == 0                                                         and \
+               currentLineStructure["command"][0] != "subroutine"         and currentLineStructure["command"][0] not in self.__syntaxList["subroutine"].alias     and \
+               currentLineStructure["command"][0] != "screen"             and currentLineStructure["command"][0] not in self.__syntaxList["screen"].alias         and \
+               currentLineStructure["command"][0] != "end-subroutine"     and currentLineStructure["command"][0] not in self.__syntaxList["end-subroutine"].alias and \
+               currentLineStructure["command"][0] != "end-screen"         and currentLineStructure["command"][0] not in self.__syntaxList["end-screen"].alias:
                self.removeTag(yOnTextBox, 0, len(line), "background")
                self.addTag(yOnTextBox, 0, len(line), "unreachable")
-
 
         if self.__highLightWord not in ("", None):
             if len(line) >= len(self.__highLightWord):
@@ -2263,6 +2313,12 @@ class EditorBigFrame:
         else:
            numList = [level - 1]
 
+        #try:
+        #    if self.__fos:
+        #       print(searchItems, startPoz)
+        #except:
+        #    pass
+
         for lvlNum in numList:
             for item in searchItems:
                 if send != False: return send
@@ -2294,6 +2350,12 @@ class EditorBigFrame:
                                  )
 
     def __finderLoop(self, currentLineStructure, startPoz, text, direction, compareWord, level, splitBy, splitPoz, forceEndPoz, printMe):
+        #try:
+        #    if self.__fos:
+        #       printMe = True
+        #except:
+        #    pass
+
         if direction == "down":
            endPoz = len(text)
            adder  = 1
@@ -2308,6 +2370,7 @@ class EditorBigFrame:
 
             compareLineStructure = self.getLineStructure(compareLineNum, text, True)
             ehhWord = compareLineStructure["command"][0]
+
             if ehhWord == None: continue
             if splitBy != None:
                ehhWord = ehhWord.split(splitBy)[splitPoz]
@@ -3221,13 +3284,16 @@ class EditorBigFrame:
             if checkLevel == True and lineStructure["command"][0] != None:
                # lines = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
                level     = 0
+               listOfCommands = []
+               for command in ["do", "select", "subroutine", "screen"]:
+                   listOfCommands.append(command.upper())
+                   for alias in self.__syntaxList[command].alias:
+                       listOfCommands.append(alias.upper())
+
                for compareLineNum in range(0, lineNum):
                    compareStructure = self.getLineStructure(compareLineNum, text, False)
                    if compareStructure["command"][0] != None:
-                       if compareStructure["command"][0].split("-")[0].upper() in ["DO", "PERFORM",
-                                                                                   "FOR", "FOREACH",
-                                                                                   "SELECT", "SWITCH",
-                                                                                   "EVALUATE"]:
+                       if compareStructure["command"][0].split("-")[0].upper() in listOfCommands:
                           level += 1
                        elif compareStructure["command"][0].split("-")[0].upper() == "END":
                           level -= 1
