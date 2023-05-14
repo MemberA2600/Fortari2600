@@ -2888,6 +2888,45 @@ class EditorBigFrame:
                if param1[0] not in self.__subroutines:
                   returnBack[0][0] = "error"
 
+        elif command == "rand" or command in self.__syntaxList["rand"].alias:
+            if returnBack[1][0] in ["number", "stringConst"] and \
+               returnBack[2][0] in ["number", "stringConst"]:
+
+               if returnBack[1][0] == "number":
+                  var1 = int(param2[0].replace("#", ""))
+               else:
+                  var1 = int(self.__constants[param2[0].replace("#", "")])
+
+               if returnBack[2][0] == "number":
+                  var2 = int(param3[0].replace("#", ""))
+               else:
+                  var2 = int(self.__constants[param3[0].replace("#", "")])
+
+               if var1 > var2:
+                  returnBack[1][0] = "error"
+                  returnBack[2][0] = "error"
+
+            if returnBack[1][0] in ["number", "stringConst"] or \
+               returnBack[2][0] in ["number", "stringConst"]:
+               if returnBack[2][0] in ["number", "stringConst"]:
+                  if returnBack[2][0] == "number":
+                      var = int(param3[0].replace("#", ""))
+                  else:
+                      var = int(self.__constants[param3[0].replace("#", "")])
+
+                  if "0" in bin(var).replace("0b", ""):
+                     returnBack[2][0] = "error"
+
+               if returnBack[1][0] == "number" and returnBack[2][0] == "missing":
+                  if returnBack[1][0] == "number":
+                     var = int(param2[0].replace("#", ""))
+                  else:
+                     var = int(self.__constants[param2[0].replace("#", "")])
+
+                  if "0" in bin(var).replace("0b", ""):
+                     returnBack[1][0] = "error"
+
+
         elif command == "goto" or command in self.__syntaxList["goto"].alias:
             valid  = False
             number = None

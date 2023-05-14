@@ -443,13 +443,202 @@ class FirstCompiler:
             changeText = self.prepareAdd(params)
             if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText)
 
+        elif self.isCommandInLineThat(line, "sqrt"):
+            params                  = self.getParamsWithTypesAndCheckSyntax(line)
+            self.toRoutines["sqrt"] = self.__loader.io.loadCommandASM("sqrt_table").replace("#BANK#", self.__currentBank)
+            template                = self.__loader.io.loadCommandASM("sqrt")
+            self.__temps            = self.collectUsedTemps()
+
+            try:
+                theOne             =  self.__temps[0]
+                self.__temps.pop(0)
+            except:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            if params["param#1"][1] == "variable":
+                var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
+                if var1 == False:
+                   var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+                if var1 == False:
+                   self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
+
+            var2 = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], self.__currentBank)
+            if var2 == False:
+               var2 = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], "bank1")
+
+            if var2 == False:
+               self.addToErrorList(line["lineNum"],
+                                   self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            if self.__error == False:
+               if params["param#1"][1] == "number":
+                  template = template.replace("#VAR01#", "#" + params["param#1"][0].replace("#", ""))
+
+               else:
+                  template = template.replace("#VAR01#", params["param#1"][0])
+                  if var1.type != "byte":
+                      template = template.replace("!!!to8bit!!!", self.__mainCompiler.convertAnyTo8Bits(var1.usedBits))
+
+               template = template.replace("#VAR02#", params["param#2"][0])
+               if var2.type != "byte":
+                   template = template.replace("!!!from8bit!!!",
+                                               self.__mainCompiler.save8bitsToAny2(var2.usedBits),
+                                                                                   params["param#2"][0])
+               template = template.replace("#TEMP#", theOne)
+               self.checkASMCode(template, line)
+               if self.__error == False: line["compiled"] = template.replace("#BANK#", self.__currentBank).replace(
+                   "#MAGIC#", str(self.__magicNumber))
+               self.__magicNumber += 1
+
+        elif self.isCommandInLineThat(line, "rand"):
+            params    = self.getParamsWithTypesAndCheckSyntax(line)
+            template  = self.__loader.io.loadCommandASM("rand")
+
+            var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
+            if var == False:
+               var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+            if var == False:
+               self.addToErrorList(line["lineNum"],
+                                   self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                     "", "",
+                                                     str(line["lineNum"] + self.__startLine)))
+            minV         = None
+            maxV         = None
+            replacers    = {}
+            self.__temps = self.collectUsedTemps()
+
+            if var.type != "byte":
+               replacers["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var.usedBits, params["param#1"][0])
+            replacers["#VAR01#"]           = params["param#1"][0]
+
+            if   "param#3" in params.keys():
+                 minV = "param#2"
+                 maxV = "param#3"
+
+            elif "param#2" in params.keys():
+                 maxV = "param#2"
+
+            if minV != None:
+               val = params[minV][0]
+               var = self.__loader.virtualMemory.getVariableByName2(val)
+               if var == False:
+                  replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t#" + str(val).replace("#", "") + "\n"
+               else:
+                  if var.type == "byte":
+                     replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t" + str(val) + "\n"
+                  else:
+                     try:
+                         first = self.__temps[0]
+                         self.__temps.pop(0)
+                     except:
+                         self.addToErrorList(line["lineNum"],
+                                             self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                               "", "",
+                                                               str(line["lineNum"] + self.__startLine)))
+                     if self.__error == False:
+                        replacers["!!!ADD!!!"]     = "\tCLC\n\tADC\t" + first + "\n"
+                        replacers["!!!CALCADD!!!"] = "\tLDA\t" + val + \
+                                                     "\n" + self.__mainCompiler.convertAnyTo8Bits(var.usedBits) +\
+                                                     "\tSTA\t" + first + "\n"
+
+            if maxV != None:
+                val = params[maxV][0]
+                var = self.__loader.virtualMemory.getVariableByName2(val)
+                if var == False:
+                    replacers["!!!AND!!!"] = "\tCLC\n\tAND\t#" + str(val).replace("#", "") + "\n"
+                else:
+                    if var.type == "byte":
+                        replacers["!!!AND!!!"] = "\tAND\t" + str(val) + "\n"
+                    else:
+                        try:
+                            first = self.__temps[0]
+                            self.__temps.pop(0)
+                        except:
+                            self.addToErrorList(line["lineNum"],
+                                                self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                                  "", "",
+                                                                  str(line["lineNum"] + self.__startLine)))
+                        if self.__error == False:
+                            replacers["!!!AND!!!"] = "\tAND\t" + first + "\n"
+                            replacers["!!!CALCADD!!!"] = "\tLDA\t" + val + \
+                                                         "\n" + self.__mainCompiler.convertAnyTo8Bits(var.usedBits) + \
+                                                         "\tSTA\t" + first + "\n"
+
+
+            for key in replacers:
+                template = template.replace(key, replacers[key])
+
+            self.__readOnly.remove("random")
+            self.checkASMCode(template, line)
+            self.__readOnly.append("random")
+            if self.__error == False: line["compiled"] = template
+            return
+
+
         elif self.isCommandInLineThat(line, "pow"):
             from copy import deepcopy
             params = self.getParamsWithTypesAndCheckSyntax(line)
 
             if params["param#1"][1] != "number" or params["param#2"][1] != "number":
+
+                varPow2Param = False
+                if params["param#1"][1] == "number":
+                   if self.isIt(params["param#1"][0], 2):
+                      varPow2Param = "param#2"
+
+                if varPow2Param != False:
+                    template = self.__loader.io.loadCommandASM("pow2")
+                    if params[varPow2Param][1] == "variable":
+                        var1 = self.__loader.virtualMemory.getVariableByName(params[varPow2Param][0], self.__currentBank)
+                        if var1 == False:
+                           var1 = self.__loader.virtualMemory.getVariableByName(params[varPow2Param][0], "bank1")
+
+                        if var1 == False:
+                            self.addToErrorList(line["lineNum"],
+                                                self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                  "", "",
+                                                                  str(line["lineNum"] + self.__startLine)))
+
+                        template = template.replace("#VAR01#", params[varPow2Param][0])
+                        if var1.type != "byte":
+                           template = template.replace("!!!to8bit!!!", self.__mainCompiler.convertAnyTo8Bits(var1.usedBits))
+
+                    else:
+                        template = template.replace("#VAR01#", "#" + params[varPow2Param][0].replace("#", ""))
+
+
+                    var2 = self.__loader.virtualMemory.getVariableByName(params["param#3"][0], self.__currentBank)
+                    if var2 == False:
+                       var2 = self.__loader.virtualMemory.getVariableByName(params["param#3"][0], "bank1")
+
+                    if var2 == False:
+                        self.addToErrorList(line["lineNum"],
+                                            self.prepareError("compilerErrorVarNotFound", params["param#3"][0],
+                                                              "", "",
+                                                              str(line["lineNum"] + self.__startLine)))
+
+                    template = template.replace("#VAR02#", params["param#3"][0])
+                    if var2.type == "type":
+                       template = template.raplace("!!!from8bit!!!" , self.__mainCompiler.save8bitsToAny2(var2.usedBits, params["param#2"][0]))
+
+                    self.checkASMCode(template, line)
+                    if self.__error == False: line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#MAGIC#", str(self.__magicNumber))
+                    self.__magicNumber += 1
+
+                    return
+
                 if params["param#2"][1] == "number":
-                    if self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 1:
+                    if self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 2:
                        subline = self.createSubLineForPower(line, linesFeteched)
                        line["compiled"] = subline["compiled"]
 
@@ -457,6 +646,18 @@ class FirstCompiler:
                        if self.__error == False:
                           self.__checked = True
                        return
+
+                    elif self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 1:
+                        params["param#0"] = params["param#1"]
+                        if "param#3" not in params.keys():
+                            return
+                        else:
+                            txt = self.saveAValue(params, "param#0", "param#3", line)
+
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
+
                     elif self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) == 0:
                         params["param#0"] = ["#1", "number"]
                         if "param#3" not in params.keys():
@@ -1568,6 +1769,7 @@ class FirstCompiler:
                 line = lineLines[currentLineNum].replace("\t", " ")
                 if line == "" or line.isspace() or line[0] not in ["\t", " "]:
                    continue
+
                 opC1, opR1 = self.getOpCodeAndOperandFromASMLine(line)
 
                 if opC1 == opcode1:
@@ -1625,7 +1827,8 @@ class FirstCompiler:
             if item != "":
                newLine.append(item)
 
-        if len(newLine) == 1: newLine.append("")
+        for nnn in range(0, 2-len(newLine)):
+            newLine.append("")
 
         return newLine[0], newLine[1]
 
@@ -2083,7 +2286,7 @@ class FirstCompiler:
                subLine["param#1"][0] = thisOne
                subLine["param#2"][0] = otherOne
                subLine["param#3"][0] = thisOne
-               print(subLine)
+               #print(subLine)
 
                subLine["fullLine"] = subLine["fullLine"] = "*(" + subLine["param#1"][0] + ", " + subLine["param#2"][0] + ")"
                self.processLine(subLine, self.__useThese[1])
@@ -2148,6 +2351,19 @@ class FirstCompiler:
 
         return changeText
 
+    def collectLabelsFromRoutines(self, labels):
+        for key in self.toRoutines.keys():
+            lines = self.toRoutines[key].replace("\r", "").split("\n")
+            for line in lines:
+                if line == "" or line.isspace() or line[0] in ["\t", " "]:
+                   continue
+
+                if line.replace("\t", " ")[0] != " " and "!!!" not in line:
+                    labels.append(line)
+                    if self.__currentBank in line:
+                       labels.append(line.replace(self.__currentBank, "#BANK#"))
+                    else:
+                       labels.append(line.replace("#BANK#", self.__currentBank))
 
     def checkASMCode(self, template, lineStructure):
         lines = template.split("\n")
@@ -2157,7 +2373,10 @@ class FirstCompiler:
             if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
                 labels.append(line.replace("\n", ""))
 
+        self.collectLabelsFromRoutines(labels)
+
         for line in lines:
+            full = line
 
             if line.replace("\t", " ").startswith(" ") == False: continue
             if line[0] in ["*", "#"]: continue
@@ -2178,6 +2397,7 @@ class FirstCompiler:
             if line == []: continue
 
             #print(line[0].upper() in self.__branchers, line[0].upper() in self.__jumpers)
+
             if line[0].upper() in self.__branchers or line[0].upper() in self.__jumpers:
 
                if self.isCommandInLineThat(lineStructure, "asm"):
@@ -2190,11 +2410,17 @@ class FirstCompiler:
                                if lineStructure[key][0] not in self.__noneList:
                                   lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
                                   self.__changeThese[replacer] = replaceIt
+               """ 
+               print(line, line[1] in labels,
+                  "*" in line[1],
+                  "#" in line[1],
+                  line[1] in self.__fullTextLabels,
+                  line[1] in self.__labelsOfMainKenrel)
+               """
 
                if line[1] in labels                     or\
-                  "*" in line[1]                        or\
-                  "#" in line[1]                        or\
                   line[1] in self.__fullTextLabels      or\
+                  line[1][0] == "*"                     or\
                   line[1] in self.__labelsOfMainKenrel:
                   continue
 
@@ -2250,6 +2476,22 @@ class FirstCompiler:
                           foundCommand = True
                           break
                        else: continue
+
+                   if line[1].split(",")[0] in labels or \
+                      line[1].split(",")[0] in self.__fullTextLabels or \
+                      line[1].split(",")[0] in self.__labelsOfMainKenrel:
+
+                      if "," not in line[1]:
+                          if lineSettings["format"] == "aaaa":
+                             foundCommand = True
+                             break
+                      else:
+                          if "," in lineSettings["format"]:
+                             splitFormat = lineSettings["format"].split(",")
+                             splitValue  = value.split(",")
+                             if splitValue[1] == splitFormat[1]:
+                                foundCommand = True
+                                break
 
                    errorVal = 1
                    if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
@@ -2399,8 +2641,16 @@ class FirstCompiler:
            return "write"
 
     def checkIfASMhasrightOperand(self, lineSettings, value):
-        if lineSettings["format"][0] == "#" and value[0] != "#": return False
-        if lineSettings["format"][0] != "#" and value[0] == "#": return False
+        labels = []
+        self.collectLabelsFromRoutines(labels)
+
+        if lineSettings["format"][0] == "#"    and\
+           value.split(",")[0] not in labels   and\
+           value[0] != "#": return False
+
+        if lineSettings["format"][0] != "#"    and\
+           value.split(",")[0] not in labels   and\
+           value[0] == "#": return False
 
         import re
 
@@ -2431,7 +2681,11 @@ class FirstCompiler:
                   addr = self.__virtualMemory.getAddressOnVariableIsStored(var, self.__currentBank)
                beforeCommaValue = beforeCommaValue.replace(onlyBody, "") + addr
 
-        if "#" in beforeCommaValue:
+        if beforeCommaValue in labels:
+           thisIs = "aaaa," + afterCommaValue
+           if lineSettings["format"] == thisIs: return True
+
+        if "#" in beforeCommaValue and beforeCommaValue not in labels:
            allA = "#AA"
         else:
            allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
