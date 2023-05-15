@@ -584,6 +584,55 @@ class FirstCompiler:
             if self.__error == False: line["compiled"] = template
             return
 
+        elif self.isCommandInLineThat(line, "swap"):
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+            var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
+            if var1 == False:
+                var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
+
+            if var1 == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            var2 = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], self.__currentBank)
+            if var2 == False:
+                var2 = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], "bank1")
+
+            if var2 == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            load1    = ""
+            load2    = ""
+            save1    = ""
+            save2    = ""
+
+            varName1 = params["param#1"][0]
+            varName2 = params["param#2"][0]
+
+            if var1.type == "byte":
+               load1     =  "\tLDY\t" + varName1 + "\n"
+               save1     =  "\tSTA\t" + varName1 + "\n"
+            else:
+               load1     = "\tLDA\t" + varName1 + "\n" + self.__mainCompiler.convertAnyTo8Bits(var1.usedBits) + "\tTAY\n"
+               save1     = self.__mainCompiler.save8bitsToAny2(var1.usedBits, varName1) + "\tSTA\t" + varName1 + "\n"
+
+            if var2.type == "byte":
+               load2     =  "\tLDA\t" + varName2 + "\n"
+               save2     =  "\tSTY\t" + varName2 + "\n"
+            else:
+               load2     = "\tLDA\t" + varName1 + "\n" + self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+               save2     = "\tTYA\n" + self.__mainCompiler.save8bitsToAny2(var2.usedBits, varName1) + "\tSTA\t" + varName2 + "\n"
+
+            txt = load1 + load2 + save1 + save2
+
+            self.checkASMCode(txt, line)
+            if self.__error == False: line["compiled"] = txt
+
 
         elif self.isCommandInLineThat(line, "pow"):
             from copy import deepcopy
@@ -1783,7 +1832,7 @@ class FirstCompiler:
                        if opC2[0:2] not in ("ST", "LD"):
                           break
 
-                       if opR1 == opR2:
+                       if opR1 == opR2 and opC1[2] == opC2[2]:
                           lineLines[currentLineNum] = ""
                           break
 
@@ -1801,7 +1850,7 @@ class FirstCompiler:
                         if opC2 == opcode1:
                            break
 
-                        if opR1 == opR2:
+                        if opR1 == opR2 and opC1[2] == opC2[2]:
                             lineLines[currentLineNum] = ""
                             break
         returnB = ""
@@ -2470,6 +2519,7 @@ class FirstCompiler:
             foundCommand = False
             for item in self.__opcodes:
                 lineSettings = self.__opcodes[item]
+
                 if lineSettings["opcode"].upper() == command.upper():
                    if value in self.__noneList:
                        if lineSettings["bytes"] == 1:

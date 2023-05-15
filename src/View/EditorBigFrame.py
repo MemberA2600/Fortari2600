@@ -2926,6 +2926,10 @@ class EditorBigFrame:
                   if "0" in bin(var).replace("0b", ""):
                      returnBack[1][0] = "error"
 
+        elif command == "swap" or command in self.__syntaxList["swap"].alias:
+             if param1[0] == param2[0]:
+                returnBack[0][0] = "error"
+                returnBack[1][0] = "error"
 
         elif command == "goto" or command in self.__syntaxList["goto"].alias:
             valid  = False
