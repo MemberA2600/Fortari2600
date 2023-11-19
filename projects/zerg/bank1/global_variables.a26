@@ -9,3 +9,5 @@ test4=byte,None,None
 test5=byte,None,None
 races=array(zerg,protoss)
 WarCraft=array(protoss,temp04)
+bcdTest1=byte,None,BCD
+bcdTest2=byte,None,BCD

@@ -174,6 +174,7 @@ class FirstCompiler:
                       return True
         return False
 
+        """
         line = linesFeteched[-1]
         if line["command"][0] not in [None, "None", ""]:
             if self.__currentSection in ["subroutines", "screenroutines"] and line["level"] == 0 and \
@@ -185,6 +186,7 @@ class FirstCompiler:
                return True
 
         return False
+        """
 
     def compileBuild(self, linesFeteched, mode):
         for line in linesFeteched:
@@ -321,6 +323,47 @@ class FirstCompiler:
         self.__thisLine = line
         self.__checked  = False
         self.__changeThese = {}
+        annotation = ""
+        hasBCD       = False
+        hasColor     = False
+
+        try:
+            command = self.__loader.syntaxList[line["command"][0]]
+            params = self.getParamsWithTypesAndCheckSyntax(line)
+            if len(params) > 0:
+                thisIsTheResult = str(len(command.params) - 1)
+
+                if command.flexSave == True:
+                   if len(params) < len(command.params):
+                      thisIsTheResult = "1"
+
+                for name in params:
+                    try:
+                        var = self.__loader.virtualMemory.getVariableByName2(params[name][0])
+                        if var != False:
+                            if name[-1] == thisIsTheResult:
+                                if var.color == True and hasColor == False:
+                                    hasColor  = True
+                                    if annotation == "":
+                                       annotation = "\t; &COLOR"
+                                    else:
+                                       annotation += " &COLOR"
+
+                            if var.bcd   == True:
+                                   hasBCD = True
+                                   if annotation == "":
+                                      annotation = "\t; &BCD"
+                                   else:
+                                      annotation += " &BCD"
+
+                        if hasColor == True and hasBCD == True: break
+                    except Exception as e:
+                        print(str(e))
+                        #pass
+        except Exception as e:
+            print(str(e))
+            #pass
+
 
         if self.isCommandInLineThat(line, "asm"):
             datas = []
@@ -351,13 +394,13 @@ class FirstCompiler:
             self.__checked = True
 
         elif self.isCommandInLineThat(line, "add"):
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
 
             if "param#3" not in params.keys():
                 if params["param#2"][1] == "number":
                     if self.isIt(params["param#2"][0], 0):
                         return
-                    elif self.isIt(params["param#2"][0], 1):
+                    elif self.isIt(params["param#2"][0], 1) and hasBCD == False:
                         addr = self.getAddress(params["param#1"][0])
                         var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
@@ -370,8 +413,11 @@ class FirstCompiler:
                             return
 
                 params["param#3"] = params["param#1"]
+                var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
             else:
+                var = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
                 if params["param#1"][1] == "number" and params["param#2"][1] == "number":
                     theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) + \
                              int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
@@ -396,13 +442,15 @@ class FirstCompiler:
 
             changeText = self.prepareAdd(params)
 
-            if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText)
+            if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText, annotation)
             # print(params)
 
         elif self.isCommandInLineThat(line, "sub"):
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
 
             if params["param#1"][1] == "number" and params["param#2"][1] == "number":
+                var = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
                 theNum = int(self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])) - \
                          int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
 
@@ -426,7 +474,7 @@ class FirstCompiler:
                        return
                    else:
                       return
-                elif self.isIt(params["param#2"][0], 1):
+                elif self.isIt(params["param#2"][0], 1) and hasBCD == False:
                     addr = self.getAddress(params["param#1"][0])
                     var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
@@ -438,13 +486,16 @@ class FirstCompiler:
                         if self.__error == False: line["compiled"] = txt
                         return
 
-                params["param#3"] = params["param#1"]
+                if "param3" not in params.keys():
+                    params["param#3"] = params["param#1"]
+
+                var = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
 
             changeText = self.prepareAdd(params)
-            if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText)
+            if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText, annotation)
 
         elif self.isCommandInLineThat(line, "sqrt"):
-            params                  = self.getParamsWithTypesAndCheckSyntax(line)
+            #params                  = self.getParamsWithTypesAndCheckSyntax(line)
             self.toRoutines["sqrt"] = self.__loader.io.loadCommandASM("sqrt_table").replace("#BANK#", self.__currentBank)
             template                = self.__loader.io.loadCommandASM("sqrt")
             self.__temps            = self.collectUsedTemps()
@@ -500,7 +551,7 @@ class FirstCompiler:
                self.__magicNumber += 1
 
         elif self.isCommandInLineThat(line, "rand"):
-            params    = self.getParamsWithTypesAndCheckSyntax(line)
+            #params    = self.getParamsWithTypesAndCheckSyntax(line)
             template  = self.__loader.io.loadCommandASM("rand")
 
             var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
@@ -585,7 +636,7 @@ class FirstCompiler:
             return
 
         elif self.isCommandInLineThat(line, "swap"):
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
             var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
             if var1 == False:
                 var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
@@ -636,13 +687,15 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "pow"):
             from copy import deepcopy
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
+
+            allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
 
             if params["param#1"][1] != "number" or params["param#2"][1] != "number":
 
                 varPow2Param = False
                 if params["param#1"][1] == "number":
-                   if self.isIt(params["param#1"][0], 2):
+                   if self.isIt(params["param#1"][0], 2) and hasBCD == False:
                       varPow2Param = "param#2"
 
                 if varPow2Param != False:
@@ -664,7 +717,6 @@ class FirstCompiler:
 
                     else:
                         template = template.replace("#VAR01#", "#" + params[varPow2Param][0].replace("#", ""))
-
 
                     var2 = self.__loader.virtualMemory.getVariableByName(params["param#3"][0], self.__currentBank)
                     if var2 == False:
@@ -746,12 +798,12 @@ class FirstCompiler:
 
 
         elif self.isCommandInLineThat(line, "multi"):
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
 
-            if    (params["param#1"][1] == "number" and params["param#2"][1] == "variable"):
+            if    (params["param#1"][1] == "number" and params["param#2"][1] == "variable") and hasBCD == False:
                   self.checkIfCanShiftBits(params, "param#2", "param#1", line, "ASL")
                   if line["compiled"] != "": return
-            elif (params["param#2"][1] == "number" and params["param#1"][1] == "variable"):
+            elif (params["param#2"][1] == "number" and params["param#1"][1] == "variable") and hasBCD == False:
                   self.checkIfCanShiftBits(params, "param#1", "param#2", line, "ASL")
                   if line["compiled"] != "": return
 
@@ -817,7 +869,7 @@ class FirstCompiler:
                     return
 
             changeText = self.prepareMulti(params)
-            if self.__error == False: self.createASMTextFromLine(line, "multi", params, changeText)
+            if self.__error == False: self.createASMTextFromLine(line, "multi", params, changeText, annotation)
 
         elif self.isCommandInLineThat(line, "div") or self.isCommandInLineThat(line, "rem"):
             if self.isCommandInLineThat(line, "divide"):
@@ -825,7 +877,7 @@ class FirstCompiler:
             else:
                saveThisOne = "A"
 
-            params  = self.getParamsWithTypesAndCheckSyntax(line)
+            #params  = self.getParamsWithTypesAndCheckSyntax(line)
 
             if (params["param#2"][1] == "number" and params["param#1"][1] == "variable"):
                 self.checkIfCanShiftBits(params, "param#1", "param#2", line, "LSR")
@@ -887,7 +939,7 @@ class FirstCompiler:
                    params["param#3"] = params["param#1"]
 
                 changeText = self.prepareDiv(params, saveThisOne)
-                if self.__error == False: self.createASMTextFromLine(line, "div", params, changeText)
+                if self.__error == False: self.createASMTextFromLine(line, "div", params, changeText, annotation)
 
 
         elif self.isCommandInLineThat(line, "and") or\
@@ -900,7 +952,7 @@ class FirstCompiler:
             else:
                  command = "xor"
 
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
             if "param#3" not in params.keys():
                 if params["param#2"][1] == "number":
                     if command == "and":
@@ -996,7 +1048,7 @@ class FirstCompiler:
                         return
 
             changeText = self.prepareAdd(params)
-            if self.__error == False: self.createASMTextFromLine(line, command, params, changeText)
+            if self.__error == False: self.createASMTextFromLine(line, command, params, changeText, annotation)
 
         elif self.isCommandInLineThat(line, "rollL") or self.isCommandInLineThat(line, "rollR") or \
              self.isCommandInLineThat(line, "shiftL") or self.isCommandInLineThat(line, "shiftR"):
@@ -1009,7 +1061,7 @@ class FirstCompiler:
              else:
                   command = "LSR"
 
-             params = self.getParamsWithTypesAndCheckSyntax(line)
+             #params = self.getParamsWithTypesAndCheckSyntax(line)
 
              if "param#2" not in params.keys():
                  params["param#2"] = ["2", "number"]
@@ -1039,7 +1091,7 @@ class FirstCompiler:
 
 
         elif self.isCommandInLineThat(line, "flip"):
-            params = self.getParamsWithTypesAndCheckSyntax(line)
+            #params = self.getParamsWithTypesAndCheckSyntax(line)
             var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], self.__currentBank)
             if var1 == False:
                 var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
@@ -1097,7 +1149,7 @@ class FirstCompiler:
                       line["compiled"] += subLineStructure["compiled"] + "\n"
 
         elif self.isCommandInLineThat(line, "call"):
-             params = self.getParamsWithTypesAndCheckSyntax(line)
+             #params = self.getParamsWithTypesAndCheckSyntax(line)
 
              template = self.__loader.io.loadCommandASM("call")
              template = template.replace("#ADDRESS#", self.__currentBank + "_SubRoutine_" + params["param#1"][0])
@@ -1565,7 +1617,7 @@ class FirstCompiler:
                subLineCommand = "sub"
                command = self.__loader.syntaxList["decr"]
 
-            params  = self.getParamsWithTypesAndCheckSyntax(line)
+            #params  = self.getParamsWithTypesAndCheckSyntax(line)
 
             var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
                                                                 self.__currentBank)
@@ -1638,7 +1690,7 @@ class FirstCompiler:
                line["compiled"] = "\tJMP\tEnterScreenBank"+ self.__currentBank[-1] +"\n"
 
         elif self.isCommandInLineThat(line, "goto"):
-            params     = self.getParamsWithTypesAndCheckSyntax(line)
+            #params     = self.getParamsWithTypesAndCheckSyntax(line)
             bankToJump = params["param#1"][0].replace("#", "")
 
             if self.__currentSection not in self.__loader.syntaxList[line["command"][0]].sectionsAllowed:
@@ -1678,7 +1730,7 @@ class FirstCompiler:
                line["compiled"] = template
 
         elif self.isCommandInLineThat(line, "subroutine"):
-             params = self.getParamsWithTypesAndCheckSyntax(line)
+             #params = self.getParamsWithTypesAndCheckSyntax(line)
              line["labelsBefore"] = self.__currentBank + "_SubRoutine_" + params["param#1"][0][1:-1] + "\n"
 
         elif self.isCommandInLineThat(line, "end-subroutine"):
@@ -1702,7 +1754,7 @@ class FirstCompiler:
              if noRTS == False: line["compiled"] = "\tRTS\n"
 
         elif self.isCommandInLineThat(line, "return"):
-             params = self.getParamsWithTypesAndCheckSyntax(line)
+             #params = self.getParamsWithTypesAndCheckSyntax(line)
              if params["param#1"][0] == "variable":
                 var = self.__loader.virtualMemory.getVariableByName(params["param#1"][0],
                                                                      self.__currentBank)
@@ -1726,7 +1778,7 @@ class FirstCompiler:
              line["compiled"] += "\tRTS\n"
 
         elif self.isCommandInLineThat(line, "screen"):
-             params = self.getParamsWithTypesAndCheckSyntax(line)
+             #params = self.getParamsWithTypesAndCheckSyntax(line)
              line["labelsBefore"] = self.__currentBank + "_Screen_" + params["param#1"][0][1:1] + "\n"
              #line["compiled"] = "\tLDX\titem\n\tTXS\n"
 
@@ -1735,7 +1787,50 @@ class FirstCompiler:
 
         line["compiled"] = self.LDATAYLDA(self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"])))
         if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
+
+        if line["lineNum"] > 0: self.checkIfCLDisFollowedBySED(linesFeteched, line["lineNum"])
+
         if self.__error == True: line["compiled"] = ""
+
+    def checkIfCLDisFollowedBySED(self, linesFeteched, lineNum):
+        lastvalidLine = -1
+
+        for num in range(lineNum-1, -1, -1):
+            if linesFeteched[num] != "":
+               lastvalidLine = num
+               break
+
+        if lastvalidLine < 0: return
+
+        currentLines = linesFeteched[lineNum]["compiled"].split("\n")
+        beforeLines  = linesFeteched[lastvalidLine]["compiled"].split("\n")
+
+        for lineNumX in range(0, len(currentLines)):
+            line = currentLines[lineNumX].replace("\t", " ")
+            if line == "" or line.isspace() or line[0] not in ["\t", " "]:
+                continue
+
+            opcode, value = self.getOpCodeAndOperandFromASMLine(line)
+            if opcode.upper() in ("SBC", "ADC"): break
+            if opcode.upper() == "SED":
+               for subLineNum in range(len(beforeLines) - 1, -1, -1):
+                   subLine = beforeLines[subLineNum]
+                   if subLine == "" or subLine.isspace() or subLine[0] not in ["\t", " "]:
+                      continue
+
+                   sOpcode, Svalue = self.getOpCodeAndOperandFromASMLine(line)
+
+                   if sOpcode.upper() in ("SBC", "ADC"): break
+                   if sOpcode.upper() == "CLD":
+                      currentLines.pop(lineNumX)
+                      linesFeteched[lineNum]["compiled"] = "\n".join(currentLines)
+
+                      beforeLines.pop(subLineNum)
+                      linesFeteched[lastvalidLine]["compiled"] = "\n".join(subLineNum)
+
+                      break
+
+               break
 
     def ifCommandInSections(self, commandName):
         command = None
@@ -2034,7 +2129,10 @@ class FirstCompiler:
 
         var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
         var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
-        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        if "param#3" in params:
+            var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        else:
+            var3 = None
 
         changeText["#MAGIC#"] = str(self.__magicNumber)
         changeText["#BANK#"]  = self.__currentBank
@@ -2053,12 +2151,48 @@ class FirstCompiler:
                                                   "", "",
                                                   str(self.__thisLine["lineNum"] + self.__startLine)))
 
+        allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+        if hasBCD:
+            changeText["!!!BCDon!!!"] = "\tSED"
+            changeText["!!!BCDoff!!!"] = "\tCLD"
+
+            if allTheSame == False:
+                try:
+                    temp1 = self.__temps[0]
+                    self.__temps.pop(0)
+
+                    temp2 = self.__temps[0]
+                    self.__temps.pop(0)
+
+                except:
+                    self.addToErrorList(self.__thisLine["lineNum"],
+                                        self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                          "", "",
+                                                          str(self.__thisLine["lineNum"] + self.__startLine)))
+
         if self.__error == False:
             if var1 != False:
+                bcdText = ""
+
+                if var1.bcd == True and allTheSame == False:
+                    bcdText = self.__loader.io.loadSubModule("bin2BCD_2") \
+                        .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
                 if var1.type != "byte":
-                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits) + bcdText
+                else:
+                    if hasBCD == True: changeText["!!!to8Bit1!!!"] = bcdText
+
+            else:
+               if hasBCD == True and var1 != None: self.paramToDec(params, 1)
 
             if var2 != False:
+                bcdText = ""
+                if var2.bcd == True and allTheSame == False:
+                    bcdText = self.__loader.io.loadSubModule("bin2BCD_2") \
+                        .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
                 if var2.type != "byte":
                     changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
                                                   self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
@@ -2068,12 +2202,23 @@ class FirstCompiler:
 
                 else:
                     changeText["#VARTEMP#"] = params["param#2"][0]
-        else:
-            changeText["#VARTEMP#"] = params["param#2"][0]
+
+            else:
+                if hasBCD == True: self.paramToDec(params, 2)
+                changeText["#VARTEMP#"] = params["param#2"][0]
 
         if var3 != False:
            if var3.type != "byte":
               changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+              if var3.bcd == False and allTheSame == False:
+                   if "BCDtoBin_Table" not in self.toRoutines:
+                       self.toRoutines["BCDtoBin_Table"] = self.__loader.io.loadSubModule("BCDtoBin_Table")
+
+                   changeText["!!!from8bit!!!"] += self.__loader.io.loadSubModule("BCDtoBin_2") \
+                       .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
+           else:
+               if hasBCD == True and var3 != None: self.paramToDec(params, 3)
 
         if saveThisOne == "A":
            changeText["#SAVECOMMAND#"] = "STA"
@@ -2194,7 +2339,7 @@ class FirstCompiler:
 
         return (data)
 
-    def isIt(self, val, comp):
+    def valOfNumber(self, val):
         if val.startswith("#"): val = val[1:]
 
         if   val.startswith("%"):
@@ -2204,10 +2349,15 @@ class FirstCompiler:
         else:
              val = int(val)
 
+        return val
+
+    def isIt(self, val, comp):
+        val = self.valOfNumber(val)
+
         if val == comp: return True
         return False
 
-    def createASMTextFromLine(self, line, command, params, changeText):
+    def createASMTextFromLine(self, line, command, params, changeText, annotation):
         template = self.__loader.io.loadCommandASM(command)
 
         for item in changeText:
@@ -2217,8 +2367,13 @@ class FirstCompiler:
         for num in range(1, 4):
             name    = "param#" + str(num)
             varName = "#VAR0" + str(num) + "#"
-            template = template.replace(varName, params[name][0])
 
+            if annotation != "" and params[name][1] == "number":
+                template = template.replace(varName, params[name][0] + annotation)
+            else:
+                template = template.replace(varName, params[name][0])
+
+        #print(template)
         self.checkASMCode(template, line)
         if self.__error == False: line["compiled"] = template
 
@@ -2227,7 +2382,10 @@ class FirstCompiler:
 
         var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
         var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
-        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        if "param#3" in params:
+            var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        else:
+            var3 = None
 
         changeText["#MAGIC#"] = str(self.__magicNumber)
         changeText["#BANK#"]  = self.__currentBank
@@ -2240,35 +2398,123 @@ class FirstCompiler:
         try:
             first = self.__temps[0]
             self.__temps.pop(0)
+
+            second = self.__temps[0]
+            self.__temps.pop(0)
+
         except:
             self.addToErrorList(self.__thisLine["lineNum"],
                                 self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
                                                   "", "",
                                                   str(self.__thisLine["lineNum"] + self.__startLine)))
+
+        allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+        if hasBCD:
+           changeText["!!!BCDon!!!"] = "\tSED"
+           changeText["!!!BCDoff!!!"] = "\tCLD"
+
+           if allTheSame == False:
+               try:
+                   temp1 = self.__temps[0]
+                   self.__temps.pop(0)
+
+                   temp2 = self.__temps[0]
+                   self.__temps.pop(0)
+
+               except:
+                   self.addToErrorList(self.__thisLine["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                         "", "",
+                                                         str(self.__thisLine["lineNum"] + self.__startLine)))
         if self.__error == False:
             if var1 != False:
+                bcdText = ""
+
+                if var1.bcd == True and allTheSame == False:
+                    bcdText = self.__loader.io.loadSubModule("bin2BCD_2")\
+                                                     .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
                 if var1.type != "byte":
-                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                    changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits) + bcdText
                     changeText["#VARTEMP#"] = first
                     changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
 
                 else:
+                    changeText["!!!to8Bit1!!!"] = bcdText
                     changeText["#VARTEMP#"] = params["param#1"][0]
             else:
+                if hasBCD == True: self.paramToDec(params, 1)
                 changeText["#VARTEMP#"] = params["param#1"][0]
 
             if var2 != False:
                 if var2.type != "byte":
-                    changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
-                                                  self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
-            if var3 != False:
+
+                    if var1.bcd == True and allTheSame == False:
+                        changeText["!!!to8Bit1!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                                      self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + \
+                                                      self.__loader.io.loadSubModule("bin2BCD_2") \
+                                                          .replace("#TEMP1#", temp1).replace("#TEMP2#",
+                                                                                             temp2) + "\tSTA\t" + second
+
+                    else:
+                        changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" + \
+                                                      self.__mainCompiler.convertAnyTo8Bits(var2.usedBits)
+            else:
+                if hasBCD == True: self.paramToDec(params, 2)
+
+            if var3 != False and var3 != None:
                if var3.type != "byte":
                   changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+
+                  if var3.bcd == False and allTheSame == False:
+                      if "BCDtoBin_Table" not in self.toRoutines:
+                          self.toRoutines["BCDtoBin_Table"] = self.__loader.io.loadSubModule("BCDtoBin_Table")
+
+                      changeText["!!!from8bit!!!"] += self.__loader.io.loadSubModule("BCDtoBin_2") \
+                          .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
+            else:
+               if hasBCD == True and var3 != None: self.paramToDec(params, 3)
 
         return changeText
 
     def preparePow(self, params, subLine, line):
         var1NotByte = False
+
+        template = self.__loader.io.loadCommandASM("pow")
+
+        self.__temps = self.collectUsedTemps()
+        try:
+            thisOne = self.__temps[0]
+            self.__temps.pop(0)
+            otherOne = self.__temps[0]
+            self.__temps.pop(0)
+
+        except:
+            self.addToErrorList(line["lineNum"],
+                                self.prepareError("compilerErrorStatementTemps", statement,
+                                                  "", "", str(line["lineNum"] + self.__startLine)))
+
+        allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+        if hasBCD:
+            template = template.replace("!!!BCDon!!!", "\tSED")
+            template = template.replace("!!!BCDoff!!!", "\tCLD")
+
+            if allTheSame == False:
+                try:
+                    temp1 = self.__temps[0]
+                    self.__temps.pop(0)
+
+                    temp2 = self.__temps[0]
+                    self.__temps.pop(0)
+
+                except:
+                    self.addToErrorList(self.__thisLine["lineNum"],
+                                        self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                          "", "",
+                                                          str(self.__thisLine["lineNum"] + self.__startLine)))
 
         if params["param#1"][1] == "variable":
             var1 = self.__loader.virtualMemory.getVariableByName2(subLine["param#1"][0])
@@ -2280,6 +2526,7 @@ class FirstCompiler:
             if var1.type != "byte": var1NotByte = True
         else:
             var1 = False
+            if hasBCD: self.paramToDec(params, 1)
 
         if params["param#2"][1] == "variable":
             var2 = self.__loader.virtualMemory.getVariableByName2(subLine["param#2"][0])
@@ -2289,8 +2536,8 @@ class FirstCompiler:
                                                                        str(line["lineNum"] + self.__startLine)))
         else:
             var2 = False
+            if hasBCD: self.paramToDec(params, 2)
 
-        template = self.__loader.io.loadCommandASM("pow")
         if params["param#2"][1] == "number":
             val = int(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]))
             if val > 127:
@@ -2301,11 +2548,17 @@ class FirstCompiler:
                     .replace("!!!DECR!!!", "\tDEX\n\tBMI\t#BANK#_Pow_#MAGIC#_End\n")
         else:
             template = template.replace("#VAR#", params["param#2"][0])
+
+            replacer = ""
             if var2.type != "byte":
-                template = template.replace("!!!to8Bit1!!!", self.__mainCompiler.convertAnyTo8Bits(var.usedBits))
+                replacer = self.__mainCompiler.convertAnyTo8Bits(var.usedBits)
+
+            if var2.bcd == True:
+                replacer += self.__loader.io.loadSubModule("bin2BCD_2") \
+                    .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
 
             template = template.replace("!!!DECR!!!", "\tDEX\n\tCMP\t#0\n\tBEQ\t#BANK#_Pow_#MAGIC#_End\n").replace(
-                "!!!INCR!!!", "\tINX\n")
+                "!!!INCR!!!", "\tINX\n").replace("!!!to8Bit1!!!", replacer)
 
         if "param#3" in params.keys() or var1NotByte:
             if "param#3" in params.keys():
@@ -2319,19 +2572,8 @@ class FirstCompiler:
                 params["param#3"] = params["param#1"]
                 var3              = var1
 
-            self.__temps = self.collectUsedTemps()
-            try:
-                thisOne   = self.__temps[0]
-                self.__temps.pop(0)
-                otherOne  = self.__temps[0]
-                self.__temps.pop(0)
-
-            except:
-                self.addToErrorList(line["lineNum"],
-                                    self.prepareError("compilerErrorStatementTemps", statement,
-                                                      "", "", str(line["lineNum"] + self.__startLine)))
-
             if self.__error == False:
+
                subLine["param#1"][0] = thisOne
                subLine["param#2"][0] = otherOne
                subLine["param#3"][0] = thisOne
@@ -2343,11 +2585,18 @@ class FirstCompiler:
                txt1 = "\tLDA\t" + params["param#1"][0] + "\n"
                if var1 != False:
                   if var1.type != "byte": txt1 += self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
+                  if var1.bcd == True   : txt1 += self.__loader.io.loadSubModule("bin2BCD_2")\
+                                                  .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
                txt1 += "\tSTA\t" + thisOne + "\n"
 
                txt3 = "\tLDA\t" + thisOne + "\n"
                if var3 != False:
                   if var3.type != "byte": txt3 += self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
+                  if var3.bcd == True   : txt3 += self.__loader.io.loadSubModule("BCDtoBin_2") \
+                                                  .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
+
                txt3 += "\tSTA\t" + params["param#3"][0] + "\n"
 
                template = template.replace("!!!TEMPVARLOAD!!!", txt1).replace("!!!TEMPVARSAVE!!!", txt3)\
@@ -2366,12 +2615,32 @@ class FirstCompiler:
         else:
             return ""
 
+
+    def paramsHaveBCDandBinaryAtTheSameTime(self, params):
+        binary = False
+        bcd    = False
+
+        for name in params:
+            var = self.__loader.virtualMemory.getVariableByName2(params[name][0])
+            if var != False:
+               if var.bcd == True:
+                  bcd    = True
+               else:
+                  binary = True
+
+               if bcd == True and binary == True: return True, True
+
+        return False, bcd
+
     def prepareAdd(self, params):
         changeText = {}
 
         var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
         var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
-        var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        if "param#3" in params:
+            var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+        else:
+            var3 = None
 
         self.__temps = self.collectUsedTemps()
 
@@ -2384,21 +2653,87 @@ class FirstCompiler:
                                                   "", "",
                                                   str(self.__thisLine["lineNum"] + self.__startLine)))
 
+        allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+        if hasBCD:
+           changeText["!!!BCDon!!!"] = "\tSED"
+           changeText["!!!BCDoff!!!"] = "\tCLD"
+
+           if allTheSame == False:
+               try:
+                   temp1 = self.__temps[0]
+                   self.__temps.pop(0)
+
+                   temp2 = self.__temps[0]
+                   self.__temps.pop(0)
+
+               except:
+                   self.addToErrorList(self.__thisLine["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                         "", "",
+                                                         str(self.__thisLine["lineNum"] + self.__startLine)))
+
         if self.__error == False:
             if var1 != False:
                if var1.type != "byte":
                   changeText["!!!to8Bit1!!!"] = self.__mainCompiler.convertAnyTo8Bits(var1.usedBits)
 
+               if var1.bcd == True and allTheSame == False:
+                  if "!!!to8Bit1!!!" not in changeText: changeText["!!!to8Bit1!!!"] = ""
+
+                  changeText["!!!to8Bit1!!!"] += self.__loader.io.loadSubModule("bin2BCD_2")\
+                                                 .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+            else:
+                if hasBCD == True: self.paramToDec(params, 1)
+
             if var2 != False:
                if var2.type != "byte":
-                  changeText["#VAR02#"] = first
-                  changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
-                                                self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\t" + first
-            if var3 != False:
+                  try:
+                     changeText["#VAR02#"] = first
+                  except:
+                     pass
+
+                  if var2.bcd == True and allTheSame == False:
+                      changeText["!!!to8Bit1!!!"]  = "\tLDA\t" + params["param#2"][0] + "\n"         +\
+                                                       self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) +\
+                                                       self.__loader.io.loadSubModule("bin2BCD_2")\
+                                                       .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2) + "\tSTA\t" + first
+                  else:
+                      changeText["!!!to8Bit2!!!"] = "\tLDA\t" + params["param#2"][0] + "\n" +\
+                                                    self.__mainCompiler.convertAnyTo8Bits(var2.usedBits) + "\tSTA\t" + first
+
+            else:
+                if hasBCD == True: self.paramToDec(params, 2)
+
+            if var3 != False and var3 != None:
                if var3.type != "byte":
                   changeText["!!!from8bit!!!"] = self.__mainCompiler.save8bitsToAny2(var3.usedBits, params["param#3"][0])
 
+                  if var3.bcd == True and allTheSame == False:
+                      if "BCDtoBin_Table" not in self.toRoutines:
+                          self.toRoutines["BCDtoBin_Table"] = self.__loader.io.loadSubModule("BCDtoBin_Table")
+
+                      changeText["!!!from8bit!!!"] += self.__loader.io.loadSubModule("BCDtoBin_2") \
+                              .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
+
+            else:
+               if hasBCD == True and var3 != None: self.paramToDec(params, 3)
+
         return changeText
+
+    def paramToDec(self, params, num):
+        val = str(self.valOfNumber(params["param#" + str(num)][0]))
+        if len(val) == 1:
+            val = "#$0" + val
+        else:
+            if len(val) > 2:
+                self.addToErrorList(self.__useThese[0], self.prepareError("compilerErrorBCDOverFlow", "",
+                                     "", params["param#" + str(num)][0],
+                                    self.__useThese[0]))
+
+            val = "#$"  + val[-2:]
+
+        params["param#" + str(num)][0] = val
 
     def collectLabelsFromRoutines(self, labels):
         for key in self.toRoutines.keys():
@@ -2415,6 +2750,7 @@ class FirstCompiler:
                        labels.append(line.replace("#BANK#", self.__currentBank))
 
     def checkASMCode(self, template, lineStructure):
+
         lines = template.split("\n")
 
         labels = []
@@ -2516,6 +2852,16 @@ class FirstCompiler:
             if command == "": continue
             errorVal   = 0
 
+            if command.upper() == "BYTE":
+               try:
+                   t = self.valOfNumber(line[1])
+                   continue
+               except:
+                   self.prepareErrorASM("compilerErrorASMByteInvalidParameter",
+                                        "", line[1],
+                                        lineStructure["lineNum"])
+                   continue
+
             foundCommand = False
             for item in self.__opcodes:
                 lineSettings = self.__opcodes[item]
@@ -2526,6 +2872,9 @@ class FirstCompiler:
                           foundCommand = True
                           break
                        else: continue
+
+                   else:
+                       if lineSettings["format"] == None: continue
 
                    if line[1].split(",")[0] in labels or \
                       line[1].split(",")[0] in self.__fullTextLabels or \
@@ -2544,6 +2893,7 @@ class FirstCompiler:
                                 break
 
                    errorVal = 1
+
                    if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
 
                    errorVal = 2
@@ -2576,11 +2926,13 @@ class FirstCompiler:
                    except:
                        opcodeDoes = "read"
 
+
                    if operandTyp == "variable" and "#" in beforeComma:
                       operandTyp  = "constant"
                       beforeComma =  numeric
 
                    if operandTyp in ("address", "register"):
+
                       hexa = hex(numberValue).replace("0x", "")
                       if len(hexa) % 2 != 0: hexa = "0" + hexa
                       hexa = "$" + hexa

@@ -467,3 +467,5 @@ compilerErrorBankMissingPairInSection=Command '#VAR#' needs at least one '#VAL#'
 aliasToCommand=Convert Aliases to Commands
 noSubRoutineForReturn=The command #COMMAND# has no opening "Subroutine" kind of command.
 noEndSubRoutineForReturn=The command #COMMAND# has no closing "End-Subroutine" kind of command.
+compilerErrorASMByteInvalidParameter=Inserting a byte directly requires a valid number! #OPERAND# seems to be invalid!
+compilerErrorBCDOverFlow=Given a number larger than 99 (#VAR#) for a BCD constant!

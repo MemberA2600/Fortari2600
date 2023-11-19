@@ -1,3 +1,4 @@
+!!!BCDon!!!
 	LDY	#0
 !!!LDAVAR2!!!
 !!!to8Bit2!!!	
@@ -18,3 +19,4 @@
 !!!from8bit!!!
 !!!TAY!!!	
 	#SAVECOMMAND#	#VAR03#
+!!!BCDoff!!!

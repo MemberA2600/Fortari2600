@@ -467,3 +467,5 @@ compilerErrorBankMissingPairInSection=A '#VAR#' parancshoz legalább egy '#VAL#' 
 aliasToCommand=Aliaszok Parancsnévvé alakítása
 noSubRoutineForReturn=A #COMMAND# parancs nem tartozik "Subroutine" jellegû parancshoz!
 noEndSubRoutineForReturn=A #COMMAND# alatt nem található "End-Subroutine" jellegû záróparancs!
+compilerErrorASMByteInvalidParameter=A byte beékelésnek valós számnak kell lennie! #OPERAND# érvénytelennek tûnik!
+compilerErrorBCDOverFlow=99-nél nagyobb szám (#VAR#), mint BCD konstans!

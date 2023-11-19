@@ -424,7 +424,6 @@ class VirtualMemory:
                     color   = subData[1]
                     bcd     = subData[2]
 
-
                     if color == "color":
                        color = True
                     else:

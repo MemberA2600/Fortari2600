@@ -1,3 +1,4 @@
+!!!BCDon!!!
 	LDA	#VAR02#
 !!!to8Bit2!!!	
 	TAY
@@ -14,3 +15,4 @@
 #BANK#_Multiply_#MAGIC#_End
 !!!from8bit!!!
 	STA	#VAR03#
+!!!BCDoff!!!

@@ -1,3 +1,4 @@
+!!!BCDon!!!
 !!!TEMPVARLOAD!!!
 !!!SELF!!!
 	LDX	#VAR#
@@ -9,3 +10,4 @@
 	JMP	#BANK#_Pow_#MAGIC#_Loop
 #BANK#_Pow_#MAGIC#_End
 !!!TEMPVARSAVE!!!
+!!!BCDoff!!!

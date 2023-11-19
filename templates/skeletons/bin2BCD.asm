@@ -14,14 +14,17 @@
 #BANK#_bin2BCD
     	asl
     	sta	temp03
-    	lda	#0           ; clear
+    	lda	#0           		; clear
 #BANK#_bin2BCD_Loop
-    	ldx	#$F8         		; SED = Opcode $F8
+	BYTE	#$A2
+#BANK#_bin2BCD_Loop_1
+	BYTE	#$F8
+*    	ldx	#$F8         		; SED = Opcode $F8
     	sta	temp04
     	adc	temp04
     	rol	temp03
     	inx                 		; Since we want to perform decimal mode, has to skip the first opcode 
-    	bne	#BANK#_bin2BCD_Loop+1 	; and use the operand as opcode instead, nice solution!
+    	bne	#BANK#_bin2BCD_Loop_1 	; and use the operand as opcode instead, nice solution!
     	cld
 	LDY	temp03
 
