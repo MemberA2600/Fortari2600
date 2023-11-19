@@ -29,7 +29,6 @@ temp17 = $92
 temp18 = $93
 temp19 = $94
 
-
 item = $95
 frameColor = $96
 			
@@ -1384,6 +1383,13 @@ FineAdjustTable
 
 UnderTheTable
 
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+!!!ROUTINES_BANK1!!!
 
 *Data Section
 *-------------------------------

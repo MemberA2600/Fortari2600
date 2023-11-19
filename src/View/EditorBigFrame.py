@@ -26,6 +26,7 @@ class EditorBigFrame:
         self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
                         "param#1", "param#2", "param#3", "comment", "updateRow"]
         self.__subroutines = []
+        self.__removeThese = ['local_variables', 'screen_bottom', 'screen_top', 'special_read_only']
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
@@ -115,11 +116,18 @@ class EditorBigFrame:
         from copy import deepcopy
 
         button = event.widget
+
+        if button.cget("state") == DISABLED: return
+
         if button in self.__bankButtons:
-           self.__currentBank = "bank" + str(self.__bankButtons.index(button)+2)
+           self.__currentBank = "bank" + str(self.__bankButtons.index(button)+1)
+
+           if self.__currentBank == "bank1" and self.__currentSection not in self.__loader.bank1Sections:
+              self.__currentSection = "subroutines"
+
         else:
            secs = deepcopy(self.__loader.sections)
-           for item in ['local_variables', 'screen_bottom', 'screen_top', 'special_read_only']:
+           for item in self.__removeThese:
                secs.remove(item)
 
            self.__currentSection = secs[self.__sectionButtons.index(button)]
@@ -215,21 +223,29 @@ class EditorBigFrame:
             if self.__counter2 == 1: self.__counterEnded2()
 
             if self.activeMode == "job":
-                for bankNum in range(2,9):
+                for bankNum in range(1,9):
                     key = "bank" + str(bankNum)
                     if self.__virtualMemory.locks[key] == None:
-                        self.__bankButtons[bankNum - 2].config(state=NORMAL)
+                        self.__bankButtons[bankNum - 1].config(state=NORMAL)
                     else:
-                        self.__bankButtons[bankNum - 2].config(state=DISABLED)
+                        self.__bankButtons[bankNum - 1].config(state=DISABLED)
 
                 if self.__virtualMemory.locks[self.__currentBank] == None:
                    state = NORMAL
                 else:
                    state = DISABLED
 
+                from copy import deepcopy
+
+                secs = deepcopy(self.__loader.sections)
+                for item in self.__removeThese:
+                    secs.remove(item)
 
                 for button in self.__sectionButtons:
-                    button.config(state = state)
+                    if self.__currentBank == "bank1" and secs[self.__sectionButtons.index(button)] not in self.__loader.bank1Sections:
+                        button.config(state = DISABLED)
+                    else:
+                        button.config(state = state)
 
                 if  self.__foundError    == False:
                     self.__compileASMButton.config(state = NORMAL)
@@ -1028,7 +1044,14 @@ class EditorBigFrame:
         #   pass
 
         self.__codeBox.delete(0.0, END)
-        text = self.__loader.virtualMemory.codes[bank][section].code
+        if bank != "bank1":
+           text = self.__loader.virtualMemory.codes[bank][section].code
+        else:
+           if section in self.__loader.bank1Sections:
+              text = self.__loader.virtualMemory.codes[bank][section].code
+           else:
+              text = self.__loader.virtualMemory.codes[bank]["subroutines"].code
+
         self.__codeBox.insert(0.0, text)
         self.__setTinting("whole")
 
@@ -2164,12 +2187,19 @@ class EditorBigFrame:
            bank = self.__currentBank
 
         for section in self.__syntaxList["subroutine"].sectionsAllowed:
-            code = self.__virtualMemory.codes[bank][section].code.replace("\r", "").replace("\t", "").split("\n")
+            if bank == "bank1":
+               listOfBanks = ["bank1"]
+            else:
+               listOfBanks = ["bank1", bank]
 
-            for lineNum in range(0, len(code)):
-                lineStructure = self.getLineStructure(lineNum, code, False)
-                if lineStructure["command"][0] == word or lineStructure["command"][0] in self.__syntaxList[word].alias:
-                   subroutines.append(lineStructure["param#1"])
+            for bankName in listOfBanks:
+                if section in self.__virtualMemory.codes[bankName]:
+                   code = self.__virtualMemory.codes[bankName][section].code.replace("\r", "").replace("\t", "").split("\n")
+
+                   for lineNum in range(0, len(code)):
+                       lineStructure = self.getLineStructure(lineNum, code, False)
+                       if lineStructure["command"][0] == word or lineStructure["command"][0] in self.__syntaxList[word].alias:
+                          subroutines.append(lineStructure["param#1"])
 
         return subroutines
 

@@ -189,8 +189,8 @@ class MainWindow:
 
          self.changerButtons = []
 
-         for num in range(2,9):
-             f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//7,
+         for num in range(1,9):
+             f = Frame(self.__controllerMenu, width=self.getWindowSize()[0]//8,
                                    height=self.getWindowSize()[1]//30,
                                    bg=self.__colors.getColor("window"))
              f.pack_propagate(False)
@@ -526,8 +526,12 @@ class MainWindow:
             #file.close()
             self.__loader.config.addProjectPath(projectPath)
 
-            self.__setVirtualMemoryItem("bank1", "bank_configurations")
-            self.__setVirtualMemoryItem("bank1", "global_variables")
+            #self.__setVirtualMemoryItem("bank1", "bank_configurations")
+            #self.__setVirtualMemoryItem("bank1", "global_variables")
+
+            for section in self.__loader.bank1Sections:
+                self.__setVirtualMemoryItem("bank1", section)
+
             for num in range(2,9):
                 bank = "bank"+str(num)
                 for section in self.__loader.sections:
@@ -627,8 +631,12 @@ class MainWindow:
 
 
     def __saveProject(self):
-        self.__saveOnlyOne("bank1", "bank_configurations", False)
-        self.__saveOnlyOne("bank1", "global_variables", False)
+        #self.__saveOnlyOne("bank1", "bank_configurations", False)
+        #self.__saveOnlyOne("bank1", "global_variables", False)
+
+        for section in self.__loader.bank1Sections:
+            self.__saveOnlyOne("bank1", section, False)
+
         for num in range(2, 9):
             bank = "bank" + str(num)
             for section in self.__loader.sections:

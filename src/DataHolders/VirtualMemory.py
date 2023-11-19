@@ -19,6 +19,7 @@ class VirtualMemory:
         self.kernel = "common"
         self.changedCodes = {}
         self.objectMaster = ObjectMaster(loader)
+        self.excludeForBank1Routines = ["temp18", "temp19"]
 
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
@@ -32,11 +33,15 @@ class VirtualMemory:
             self.codes[bankNum] = {}
             self.changedCodes[bankNum] = {}
             if (num == 1):
-                self.codes[bankNum]["bank_configurations"] = DataItem()
-                self.codes[bankNum]["global_variables"] = DataItem()
+                #self.codes[bankNum]["bank_configurations"] = DataItem()
+                #self.codes[bankNum]["global_variables"] = DataItem()
 
-                self.changedCodes[bankNum]["bank_configurations"] = False
-                self.changedCodes[bankNum]["global_variables"] = False
+                #self.changedCodes[bankNum]["bank_configurations"] = False
+                #self.changedCodes[bankNum]["global_variables"] = False
+
+                for section in self.__loader.bank1Sections:
+                    self.codes[bankNum][section] = DataItem()
+                    self.changedCodes[bankNum][section] = False
 
             else:
                 for section in self.__loader.sections:
@@ -183,9 +188,10 @@ class VirtualMemory:
             bankNum = "bank"+str(num)
             self.changedCodes[bankNum] = {}
             if (num == 1):
-                self.changedCodes[bankNum]["bank_configurations"] = False
-                self.changedCodes[bankNum]["global_variables"] = False
-
+                #self.changedCodes[bankNum]["bank_configurations"] = False
+                #self.changedCodes[bankNum]["global_variables"] = False
+                for section in self.__loader.bank1Sections:
+                    self.changedCodes["bank1"][section] = False
             else:
                 for section in self.__loader.sections:
                     self.changedCodes[bankNum][section] = False
@@ -566,13 +572,14 @@ class VirtualMemory:
         for address in self.memory.keys():
             for variable in self.memory[address].variables.keys():
                 var = self.memory[address].variables[variable]
+
                 if  (var.validity == "global" or
                      var.validity == bankNum):
                      all.append(variable)
-                     if var.system == False:
+                     if var.system == False and (bankNum != "bank1" or (variable not in self.excludeForBank1Routines)):
                         nonSystem.append(variable)
                         writatble.append(variable)
-                     elif var.iterable == True:
+                     elif var.iterable == True and (bankNum != "bank1" or (variable not in self.excludeForBank1Routines)):
                         writatble.append(variable)
                      elif var.linkable == True:
                         readOnly.append(variable)

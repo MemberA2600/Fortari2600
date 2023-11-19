@@ -48,7 +48,8 @@ class Loader:
         self.subMenuDict = {}
         self.stopThreads = []
 
-        self.sections = []
+        self.sections      = []
+        self.bank1Sections = []
         self.currentEditor = None
 
         #test        = Thread(target=self.__loop)

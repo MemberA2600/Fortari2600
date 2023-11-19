@@ -57,7 +57,8 @@ class LoadingScreen():
         from IO import IO
         self.__loader.io = IO(self.__loader.dictionaries, self.__loader.config, self.__loader)
 
-        self.__loader.sections = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
+        self.__loader.bank1Sections = self.__loader.io.getFileNamesInDir("templates/new_project/bank1")
+        self.__loader.sections      = self.__loader.io.getFileNamesInDir("templates/bank2_8/")
 
         from VirtualMemory import VirtualMemory
         self.__loader.virtualMemory = VirtualMemory(self.__loader)
