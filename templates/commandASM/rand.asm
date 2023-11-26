@@ -1,3 +1,4 @@
+!!!BCDon!!!
 !!!CALCADD!!!
 !!!CALCAND!!!
 	LDA	random
@@ -10,4 +11,4 @@
 	STA	random
 !!!from8bit!!!
 	STA	#VAR01#
-	
+!!!BCDoff!!!
