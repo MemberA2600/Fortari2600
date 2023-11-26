@@ -1785,6 +1785,7 @@ class FirstCompiler:
                     line["compiled"] += self.__loader.io.loadCommandASM("returnFromBank1")
 
         elif self.isCommandInLineThat(line, "set"):
+            """
             saveVar   = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
             sourceVar = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
             txt       = ""
@@ -1817,8 +1818,8 @@ class FirstCompiler:
                    txt += self.convertAny2Any(saveVar, "FROM", params, None)
 
                txt += "\tSTA\t" + params["param#1"][0] + "\n"
-
-               line["compiled"] = txt
+               """
+            line["compiled"] = self.saveAValue(params, "param#2", "param#1", line)
 
         elif self.isCommandInLineThat(line, "setAll"):
             array = params["param#1"][0]
@@ -2347,81 +2348,61 @@ class FirstCompiler:
 
     def saveAValue(self, params, paramName1, paramName2, line):
         txt = ""
-        itWas0 = False
 
         allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
-        before = ""
-        after  = ""
-
-        if hasBCD and allTheSame == True:
-           before = "\tSED\n"
-           after  = "\tCLD\n"
-
-        if params[paramName1][1] == "variable":
-           var1 = self.__loader.virtualMemory.getVariableByName(params[paramName1][0], self.__currentBank)
-           if var1 == False:
-              var1 = self.__loader.virtualMemory.getVariableByName(params["param#1"][0], "bank1")
-
-           if var1 == False:
-              self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params[paramName1][0],
-                                                                     "", "",
-                                                                    str(line["lineNum"] + self.__startLine)))
-
-           txt += "\tLDA\t" + params[paramName1][0] + "\n"
-           if (hasBCD == True and allTheSame == False) or var1.type != "byte":
-               txt += self.convertAny2Any(var1, "TO", params, None)
-
-        else:
-           txt += "\tLDA\t#" + params[paramName1][0].replace("#", "") + "\n"
-           if self.isIt(params[paramName1][0], 0) or self.isIt(params[paramName1][0], 255): itWas0 = True
 
         var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
         if var2 == False:
-           var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
+            var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
 
         if var2 == False:
-           self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params[paramName2][0],
-                                                                     "", "",
-                                                                    str(line["lineNum"] + self.__startLine)))
+            self.addToErrorList(line["lineNum"],
+                                self.prepareError("compilerErrorVarNotFound", params[paramName2][0],
+                                                  "", "",
+                                                  str(line["lineNum"] + self.__startLine)))
         if self.__error == False:
-            if var2.type != "byte" or (var2.bcd and allTheSame == False):
-               if itWas0 == True:
-                  command = None
-                  if self.isIt(params[paramName1][0], 0):
-                     command  = "AND"
-                     forCOMM  = ""
-                     for num in range(7, -1, -1):
-                         if num in var2.usedBits:
-                            forCOMM += "0"
-                         else:
-                            forCOMM += "1"
-                  else:
-                      command = "ORA"
-                      forCOMM = ""
-                      for num in range(7, -1, -1):
-                          if num in var2.usedBits:
-                              forCOMM += "1"
-                          else:
-                              forCOMM += "0"
+            if params[paramName1][1] == "number":
+               if hasBCD: self.paramToDec(params, int(paramName1[-1]))
 
-                  return "\tLDA\t#" + params[paramName2][0] + "\n\t" + command + "\t#%" + forCOMM + "\n\tSTA\t" + params[paramName2][0] + "\n"
-               else:
-                   saver = self.convertAny2Any(var2, "FROM", params, None)
+               binary = bin(self.__editorBigFrame.convertStringNumToNumber(params[paramName1][0]) % 256).replace("0b", "")
+               binary = "0" * (8 - len(binary)) + binary
 
-                   if params[paramName1][1] == "number":
-                      maxNumber = int("0b" + ("1" * len(var2.usedBits)), 2)
-                      if maxNumber > self.__editorBigFrame.convertStringNumToNumber(params[paramName1][0]):
-                         saver = saver.split("\n")
-                         saver.pop(5)
-                         saver = "\n".join(saver)
-                   txt += saver
+               if var2.type != "byte":
+                  binary  = binary[(8-len(var2.usedBits)):8]
+                  largest = max(var2.usedBits)
+                  binary  = "0" * (7-largest) + binary
+                  binary  = binary + (8 - len(binary)) * "0"
 
-        if itWas0:
-           for opcode in ("ASL", "LSR", "ROL", "ROR"):
-               txt = txt.replace("\t" + opcode + "\n", "")
+               txt = "\tLDA\t#%" + binary + "\n\tSTA\t" + params[paramName2][0] + "\n"
 
-        txt += "\tSTA\t" + params[paramName2][0] + "\n"
-        txt = before + txt + after
+            else:
+                if hasBCD and allTheSame == True:
+                   before = "\tSED\n"
+                   after  = "\tCLD\n"
+                else:
+                   before = ""
+                   after = ""
+
+                var1 = self.__loader.virtualMemory.getVariableByName(params[paramName1][0], self.__currentBank)
+                if var1 == False:
+                    var1 = self.__loader.virtualMemory.getVariableByName(params[paramName1][0], "bank1")
+
+                if var1 == False:
+                    self.addToErrorList(line["lineNum"],
+                                        self.prepareError("compilerErrorVarNotFound", params[paramName1][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
+
+                if self.__error == False:
+                   txt += "\tLDA\t" + params[paramName1][0] + "\n"
+                   if (var1.bcd == True and allTheSame == False) or var1.type != "byte":
+                       txt += self.convertAny2Any(var1, "TO", params, None)
+
+                   if (var2.bcd == True and allTheSame == False) or var2.type != "byte":
+                       txt += self.convertAny2Any(var2, "FROM", params, None)
+
+                   txt += "\tSTA\t" + params[paramName2][0] + "\n"
+                   txt = before + txt + after
 
         return txt
 
@@ -2554,7 +2535,7 @@ class FirstCompiler:
                         changeText["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
 
             else:
-                if hasBCD == True: self.paramToDec(params, 1)
+                if var.bcd == True: self.paramToDec(params, 1)
                 changeText["#VARTEMP#"] = params["param#1"][0]
 
             if var2 != False:

@@ -172,6 +172,7 @@ class EditorBigFrame:
            text[self.__cursorPoz[0]-1] = theLine
 
            self.updateText(text)
+           self.__codeBox.mark_set("insert", "%d.%d" % (self.__cursorPoz[0], self.__cursorPoz[1] + (len(selected) - (self.__cursorPoz[1] - cutPoz))))
         else:
            for itemName in self.__codeEditorItems.keys():
                item = self.__codeEditorItems[itemName]
