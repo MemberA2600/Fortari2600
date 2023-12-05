@@ -3381,7 +3381,24 @@ class EditorBigFrame:
             self.__lineStructure = lineStructure
 
         #print(lineStructure)
+        try:
+            if "fullLine" not in lineStructure and "command" in lineStructure: self.getFullLine(lineStructure)
+        except:
+            pass
         return(lineStructure)
+
+    def getFullLine(self, line):
+        lineTxt = "\t" + line["command"][0]
+        if "param#1" in line:
+            paramList = []
+            for num in range(1, 4):
+                pName = "param#" + str(num)
+                if pName in line:
+                    if type(line[pName][0]) == str:
+                        paramList.append(line[pName][0])
+
+            lineTxt += " (" + ", ".join(paramList) + " )\n"
+        line["fullLine"] = lineTxt
 
     def updateLineDisplay(self, lineStructure):
         self.createFakeCodeEditorItems(lineStructure, self.__codeEditorItems)

@@ -8,7 +8,7 @@
 	BEQ	#BANK#_Pow2_#MAGIC#_End
 
 #BANK#_Pow2_#MAGIC#_Loop
-	ASL
+!!!ASL!!!
 	DEX
 	BPL	#BANK#_Pow2_#MAGIC#_Loop
 	

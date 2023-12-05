@@ -17,12 +17,12 @@ do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];
 do-frames;[for-frames perform-frames];[common];command;end;brackets;[];[number|stringConst {number|stringConst}];read;None;False
 do;[for perform];[common];command;end;None;[];None;None;None;False
 exit;[break next-sentence];[common];command;None;None;[];None;None;None;False
-flip;[! not];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+flip;[! not ~];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 goto;[go];[common];command;None;brackets;[leave];[number|stringConst|variable];None;None;False
 incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False
+init;[initizalize];[common];command;None;brackets;[];[array];write;None;False
 leave;[=>];[common];command;None;None;[overscan];None;None;None;False
 multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
-not;[! ~];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
 or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
 pow;[power **];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];None;None;False
