@@ -625,7 +625,8 @@ class FirstCompiler:
                val = params[minV][0]
                var = self.__loader.virtualMemory.getVariableByName2(val)
                if var == False:
-                  replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t#" + str(val).replace("#", "") + "\n"
+                  #replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t#" + str(val).replace("#", "") + "\n"
+                  adder = "#" + str(val).replace("#", "")
                else:
                    #allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
 
@@ -634,7 +635,9 @@ class FirstCompiler:
                       replacers["!!!BCDoff!!!"] = "\tCLD"
 
                    if var.type == "byte" and (var.bcd == False or allTheSame == True):
-                         replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t" + str(val) + "\n"
+                         #replacers["!!!ADD!!!"] = "\tCLC\n\tADC\t" + str(val) + "\n"
+                         adder = str(val)
+
                    else:
                          try:
                              first = self.__temps[0]
@@ -645,16 +648,20 @@ class FirstCompiler:
                                                                    "", "",
                                                                    str(line["lineNum"] + self.__startLine)))
                          if self.__error == False:
-                            replacers["!!!ADD!!!"]     = "\tCLC\n\tADC\t" + first + "\n"
+                            #replacers["!!!ADD!!!"]     = "\tCLC\n\tADC\t" + first + "\n"
+                            adder = first
                             replacers["!!!CALCADD!!!"] = "\tLDA\t" + val + \
                                                          "\n" + self.convertAny2Any(var, "TO", params, self.__temps) +\
                                                          "\tSTA\t" + first + "\n"
+               self.__magicNumber += 1
+               label = "#BANK#_" + str(self.__magicNumber) + "_NotSmaller\n"
+               replacers["!!!ADD!!!"] = "\tCMP\t" + adder + "\n\tBCS\t" + label + "\tLDA\t" + adder + "\n" + label
 
             if maxV != None:
                 val = params[maxV][0]
                 var = self.__loader.virtualMemory.getVariableByName2(val)
                 if var == False:
-                    replacers["!!!AND!!!"] = "\tCLC\n\tAND\t#" + str(val).replace("#", "") + "\n"
+                    replacers["!!!AND!!!"] = "\tAND\t#" + str(val).replace("#", "") + "\n"
                 else:
 
                     #allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
@@ -667,7 +674,7 @@ class FirstCompiler:
                         replacers["!!!AND!!!"] = "\tAND\t" + str(val) + "\n"
                     else:
                         try:
-                            first = self.__temps[0]
+                            second = self.__temps[0]
                             self.__temps.pop(0)
                         except:
                             self.addToErrorList(line["lineNum"],
@@ -675,10 +682,10 @@ class FirstCompiler:
                                                                   "", "",
                                                                   str(line["lineNum"] + self.__startLine)))
                         if self.__error == False:
-                            replacers["!!!AND!!!"] = "\tAND\t" + first + "\n"
-                            replacers["!!!CALCADD!!!"] = "\tLDA\t" + val + \
-                                                         "\n" + self.convertAny2Any(var, "TO", params, None) + \
-                                                         "\tSTA\t" + first + "\n"
+                            replacers["!!!AND!!!"] = "\tAND\t" + second + "\n"
+                            replacers["!!!CALCAND!!!"] = "\tLDA\t" + val + \
+                                                         "\n" + self.convertAny2Any(var, "TO", params, self.__temps) + \
+                                                         "\tSTA\t" + second + "\n"
 
 
             for key in replacers:
@@ -874,6 +881,64 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "multi"):
             #params = self.getParamsWithTypesAndCheckSyntax(line)
+
+            if params["param#1"][0] == params["param#2"][0] and params["param#1"][1] == "variable":
+               template = self.__loader.io.loadCommandASM("multiS")
+               var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+
+               if "param#3" not in params:
+                  params["param#3"] = params["param#1"]
+
+               var2 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
+
+               if var1 == False:
+                  self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                         "", "",
+                                                         str(line["lineNum"] + self.__startLine)))
+
+               if var1 != var2 and var2 == False:
+                  self.addToErrorList(line["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", params["param#3"][0],
+                                                         "", "",
+                                                         str(line["lineNum"] + self.__startLine)))
+
+               changers = {}
+               changers["#VAR01#"]   = params["param#1"][0]
+               changers["#VARTEMP#"] = params["param#1"][0]
+               changers["#VAR03#"]   = params["param#3"][0]
+               if   var1.bcd == True and var2.bcd == True and var1.type == "byte" and var2.type == "byte":
+                    changers["!!!BCDon!!!"]  = "\tSED\t"
+                    changers["!!!BCDoff!!!"] = "\tCLD\t"
+
+               else:
+                    self.__temps = self.collectUsedTemps()
+                    try:
+                       first = self.__temps[0]
+                       self.__temps.pop(0)
+                    except:
+                       self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+
+                    if var2.bcd == True or var2.type != "byte":
+                       changers["!!!from8bit!!!"] = self.convertAny2Any(params["param#3"][0], "FROM", params, self.__temps)
+
+                    if var1.bcd == True or var1.type != "byte":
+                       changers["!!!to8Bit1!!!"] = self.convertAny2Any(params["param#1"][0], "TO", params, self.__temps)
+                       changers["#VARTEMP#"]     = first
+                       changers["!!!staTEMP!!!"] = "\tSTA\t" + first + "\n"
+
+               txt = template
+               for item in changers:
+                   txt = txt.replace(item, changers[item])
+
+               self.checkASMCode(txt, line)
+               if self.__error == False:
+                   line["compiled"] = txt
+                   return
+
             if    params["param#1"][1] in ["number", "variable"] and params["param#2"][1] in ["number", "variable"]\
                   and params["param#1"][1] != params["param#2"][1]:
 
@@ -2212,6 +2277,10 @@ class FirstCompiler:
                line["compiled"] = "\tTSX\n\tSTX\titem\n\tRTS\n"
             else:
                line["compiled"] += "\tTSX\n\tSTX\titem\n" + self.__loader.io.loadCommandASM("returnFromBank1")
+
+        else:
+            objectThings = self.__loader.objectMaster.returnAllAboutTheObject("command")
+
 
         line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
         if "#MAGIC#" in line["compiled"]:

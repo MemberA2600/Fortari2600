@@ -1,15 +1,8 @@
 !!!BCDon!!!
-	LDA	#VAR02#
-!!!to8Bit2!!!	
-	TAY
 	LDA	#VAR01#
-!!!to8Bit1!!!
+!!!to8Bit1!!!	
 !!!staTEMP!!!
-	CMP	#0
-	BNE	#BANK#_Multiply_#MAGIC#_Not0
-	LDA	#0
-	JMP	#BANK#_Multiply_#MAGIC#_End
-#BANK#_Multiply_#MAGIC#_Not0
+	TAY
 	DEY	
 	CPY	#0
 	BEQ	#BANK#_Multiply_#MAGIC#_End

@@ -1,6 +1,7 @@
 import os
 from threading import Thread
 from copy import deepcopy
+from Command  import Command
 from Compiler import Compiler
 
 class ObjectMaster:
@@ -141,6 +142,140 @@ class ObjectMaster:
                                       self.objects[bankKey][name][procedure] = txtToSave
 
         self.objects["currentBank"] = self.objects[self.__loader.bigFrame.getCurrentBank()]
+
+    def returnAllAboutTheObject(self, command):
+        import os
+
+        delimiter = "%"
+        listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
+        for symbol in listOfValidDelimiters:
+            if symbol in command:
+                delimiter = symbol
+                break
+
+        listOfObjects = command.split(delimiter)
+        if listOfObjects[0] == "game": listOfObjects.pop(0)
+
+        theObject = {}
+
+        theObject["delimiter"] = delimiter
+        level = 1
+        try:
+            pointer = self.objects
+            for item in listOfObjects:
+                pointer = pointer[item]
+                level  += 1
+
+        except Exception:
+            pass
+
+        if listOfObjects[0] == "currentBank":
+           theObject["screen"] = True
+        else:
+           theObject["screen"] = False
+
+        theObject["level"] = level
+
+        if theObject["level"] == 2 + theObject["screen"]:
+           theObject["exist"] = True
+        else:
+           theObject["exist"] = False
+
+        if theObject["exist"] == True:
+           path = os.getcwd() + "\\templates\\objects\\"
+           if theObject["screen"] == True:
+              path += "screenItems\\"
+           else:
+              path += "game\\"
+
+           path += "\\".join(listOfObjects) + ".asm"
+
+           theObject["path"]     = path
+
+           f = open(path, "r")
+           theObject["template"] = f.read()
+           f.close()
+
+           lines = theObject["template"].replace("\r", "").split("\n")
+           pList = lines[0].split("=")[1].split(",")
+           theObject["params"] = []
+           validOnes = ["variable", "string", "stringConst", "number"]
+
+           #print(pList)
+           for p in pList:
+               them = p.split("|")
+               ok = True
+               for item in them:
+                   if item not in validOnes:
+                       ok = False
+                       break
+               if ok:
+                   theObject["params"].append(p)
+               else:
+                   theObject["params"].append("variable")
+
+           theObject["sysVars"] = []
+           import re
+
+           theObject["ioMethod"] = "read"
+           for line in lines:
+               if len(line) == 0:
+                  continue
+
+               if line[0] in ["*", "#"]:
+                  continue
+
+               if len(re.findall(r'ST[AYX][\s\t]+#VAR', line)) > 0: theObject["ioMethod"] = "write"
+
+               line    = line.replace("\t", " ").split(";")[0].split(" ")
+               newLine = []
+               for item in line:
+                   if item != "": newLine.append(item)
+
+               line = newLine
+               if len(line) > 1:
+                  operand = line[1].split(",")[0]
+                  var = self.__loader.virtualMemory.getVariableByName2(operand)
+                  if var != False:
+                     if var.system == True: theObject["sysVars"].append(operand)
+
+
+           theObject["paramsWithSettings"] = []
+           for num in range(0, len(theObject["params"])):
+               theObject["paramsWithSettings"].append({})
+               last = theObject["paramsWithSettings"][-1]
+               last["param"]    = theObject["params"][num]
+               lineOfVar        = lines[num + 1].split("=")[1].split(",")
+               last["replacer"] = lineOfVar[0]
+               if len(lineOfVar) > 1:
+                  last["converter"] = lineOfVar[1]
+        else:
+           return(theObject)
+
+        for key in theObject:
+            print(key + ":", theObject[key])
+        return theObject
+
+    def createFakeCommandOnObjectProcess(self, command):
+        object = self.returnAllAboutTheObject(command)
+
+        if object["exist"]:
+            name = command.split(object["delimiter"])[-1]
+            data = []
+            data.append("[]")
+            data.append("[common]")
+            data.append("command")
+            data.append("None")
+            data.append("brackets")
+            data.append("[]")
+            data.append(" ".join(object["params"]))
+            data.append(object["ioMethod"])
+            data.append("None")
+            data.append("False")
+
+            return Command(self.__loader, name, ",".join(data))
+        else:
+            return False
 
     def returnNextLevelOrProcesses(self, fullLine):
         delimiter = "%"

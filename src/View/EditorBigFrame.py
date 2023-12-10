@@ -1487,12 +1487,7 @@ class EditorBigFrame:
 
                  validOnes = ["variable", "string", "stringConst", "number"]
 
-                 params          = self.__objectMaster.returnParamsForProcess(currentLineStructure["command"][0])
-                 for p in params:
-                     if p in validOnes:
-                        commandParams.append(p)
-                     else:
-                        commandParams.append("variable")
+                 commandParams = self.__objectMaster.returnAllAboutTheObject(currentLineStructure["command"][0])["params"]
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
              if caller == "lineTinting":
@@ -1738,6 +1733,8 @@ class EditorBigFrame:
 
                           if c == "calc": statementTyp = "calc"
                           break
+                   if command == None:
+                      command = self.__objectMaster.createFakeCommandOnObjectProcess(currentLineStructure["command"][0])
 
                    if "%write" in currentLineStructure["command"][0]:
                        statementTyp = "write"
@@ -2435,14 +2432,8 @@ class EditorBigFrame:
             params   = []
             ioMethod = []
 
-            validOnes = ["variable", "string", "stringConst", "number"]
-
-            pList = self.__objectMaster.returnParamsForProcess(command)
-            for p in pList:
-                if p in validOnes:
-                    params.append(p)
-                else:
-                    params.append("variable")
+            params = self.__objectMaster.returnAllAboutTheObject(command)["params"]
+            for num in range(0, len(params)):
                 ioMethod.append("read")
 
         return params, ioMethod
@@ -2462,11 +2453,16 @@ class EditorBigFrame:
            returnBack  = []
            sendBack    = True
 
-        if self.__syntaxList[lineStructure["command"][0]].flexSave:
-            if lineStructure["param#" + str(len(self.__syntaxList[lineStructure["command"][0]].params))][0] \
-                              in ["", "None", None] and cursorIn == "param#1":
-                paramTypeList = "variable"
-                ioMethod      = "write"
+        if command != None:
+            if self.__syntaxList[lineStructure["command"][0]].flexSave:
+                if lineStructure["param#" + str(len(self.__syntaxList[lineStructure["command"][0]].params))][0] \
+                                  in ["", "None", None] and cursorIn == "param#1":
+                    paramTypeList = "variable"
+                    ioMethod      = "write"
+
+        else:
+            command = self.__objectMaster.createFakeCommandOnObjectProcess(lineStructure["command"][0])
+
 
         paramTypeList = paramType.split("|")
 
@@ -2891,6 +2887,9 @@ class EditorBigFrame:
             if currentLineStructure["command"][0] == c or currentLineStructure["command"][0] in self.__syntaxList[c].alias:
                commandVar = self.__loader.syntaxList[c]
                break
+
+        if commandVar == None:
+           commandVar = self.__objectMaster.createFakeCommandOnObjectProcess(currentLineStructure["command"][0])
 
         if command == "const" or command in self.__syntaxList["const"].alias:
            if returnBack[0][0] == "string" and returnBack[1][0] == "number":
