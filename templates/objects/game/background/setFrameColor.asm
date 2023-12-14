@@ -1,5 +1,6 @@
 * params=variable|stringConst|number
-* Var1=#VAR01#,!!!to8bit!!! 
+* param1=#VAR01#,!!!to8bit!!! 
+* direction=TO
 *
 	LDA	#VAR01#		; &COLOR
 !!!to8bit!!!

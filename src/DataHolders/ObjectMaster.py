@@ -249,11 +249,25 @@ class ObjectMaster:
                last["replacer"] = lineOfVar[0]
                if len(lineOfVar) > 1:
                   last["converter"] = lineOfVar[1]
+
+           nextIndex = len(theObject["params"]) + 1
+           for index in range(nextIndex, len(lines)):
+               if len(lines[index]) == 0: break
+               if lines[index][0] not in ("*", "#"): break
+               #print(lines[index].split("=")[0])
+               try:
+                   name = lines[index].split("=")[0].split(" ")[1]
+                   theObject[name] = []
+                   params = lines[index].split("=")[1].split(",")
+                   theObject[name] = params
+               except:
+                   continue
+
         else:
            return(theObject)
 
-        for key in theObject:
-            print(key + ":", theObject[key])
+        ##or key in theObject:
+        #    print(key + ":", theObject[key])
         return theObject
 
     def createFakeCommandOnObjectProcess(self, command):
@@ -268,14 +282,14 @@ class ObjectMaster:
             data.append("None")
             data.append("brackets")
             data.append("[]")
-            data.append(" ".join(object["params"]))
+            data.append("[" + " ".join(object["params"]) + "]")
             data.append(object["ioMethod"])
             data.append("None")
             data.append("False")
 
             return Command(self.__loader, name, ",".join(data))
         else:
-            return False
+            return None
 
     def returnNextLevelOrProcesses(self, fullLine):
         delimiter = "%"
@@ -309,14 +323,26 @@ class ObjectMaster:
     def returnNextLevel(self, name):
         if name == "game": return list(self.objects.keys())
 
-        for lvl1 in self.objects.keys():
-            if name.upper() == lvl1.upper(): return list(self.objects[lvl1].keys())
-            for lvl2 in self.objects[lvl1].keys():
-                if name.upper() == lvl2.upper():
-                   if type(self.objects[lvl1][lvl2]) == dict:
-                      return list(self.objects[lvl1][lvl2].keys())
+        delimiter = "%"
+        listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
+        for symbol in listOfValidDelimiters:
+            if symbol in name:
+               delimiter = symbol
+               break
 
-        return([])
+        name = name.split(delimiter)
+        if name[0] == "game": name.pop(0)
+
+        pointer = self.objects
+        try:
+            #if len(name) == 1: pointer = self.objects[name[0]]
+            for word in name:
+                if word in pointer.keys():
+                   pointer = pointer[word]
+
+            return(list(pointer.keys()))
+        except:
+            return []
 
     def returnObjListLike(self, lvl1Obj, lvl2Obj, lvl3Obj, lvlAskedFor):
         items = self.returnAllCombinations()

@@ -166,9 +166,21 @@ class EditorBigFrame:
            theLine = text[self.__cursorPoz[0]-1]
            currentWord = self.getCurrentWord(theLine)
 
-           cutPoz = self.__cursorPoz[1] - len(currentWord)
+           delimiter = "%"
+           listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
+           for symbol in listOfValidDelimiters:
+               if symbol in currentWord:
+                   delimiter = symbol
+                   break
 
-           theLine = theLine[:cutPoz] + selected + theLine[self.__cursorPoz[1]:]
+           cutPoz = self.__cursorPoz[1] - len(currentWord.split(delimiter)[-1])
+
+           if "(" in selected:
+               insertText = selected.split("(")[0] + "("
+           else:
+               insertText = selected
+
+           theLine = theLine[:cutPoz] + insertText + theLine[self.__cursorPoz[1]:]
            text[self.__cursorPoz[0]-1] = theLine
 
            self.updateText(text)
@@ -700,11 +712,12 @@ class EditorBigFrame:
                continue
 
             if currentLineStructure["command"][0] not in self.__syntaxList:
-                foundObjects = self.findObjects(currentLineStructure["command"][0],
+                foundObjects = self.findObjects(currentLineStructure["command"],
                                                 self.__objectMaster.getStartingObjects())
 
                 if foundObjects == {}:
                    errorFound = True
+                   eNum = 1
                    errorData = {"line": str(lineNum), "type": "command"}
                    break
             else:
@@ -712,6 +725,7 @@ class EditorBigFrame:
                    endFound = self.findEnd(currentLineStructure, lineNum, text)
                    if endFound == False:
                       errorFound = True
+                      eNum = 2
                       errorData  = {"line": str(lineNum), "type": "end"}
                       break
                    else:
@@ -722,6 +736,7 @@ class EditorBigFrame:
                    startFound = self.__findStart(currentLineStructure, lineNum, text)
                    if startFound == False:
                       errorFound = True
+                      eNum = 3
                       errorData  = {"line": str(lineNum), "type": "start"}
                       break
                    else:
@@ -730,6 +745,7 @@ class EditorBigFrame:
 
         if errorFound:
            self.__loader.fileDialogs.displayError("errorOnASMConvert", "errorOnASMConvertText", errorData, None)
+           #print(eNum)
         else:
            from FirstCompiler import FirstCompiler
 
@@ -878,15 +894,16 @@ class EditorBigFrame:
     def createFakeCodeEditorItems(self, lineStructure, destination):
         for key in lineStructure:
             if key in self.__words:
-               item = destination[key]
+               if key in destination:
+                   item = destination[key]
 
-               if type(item)  == Label:
-                  item.config(text = str(lineStructure[key]))
+                   if type(item)  == Label:
+                      item.config(text = str(lineStructure[key]))
 
-               elif type(item) == list:
-                  if type(item[0]) == StringVar:
-                     item[0].set(lineStructure[key][0])
-                     if item[0].get() == "None": item[0].set("")
+                   elif type(item) == list:
+                      if type(item[0]) == StringVar:
+                         item[0].set(lineStructure[key][0])
+                         if item[0].get() == "None": item[0].set("")
 
             elif key == "command":
                 delimiter = "%"
@@ -1099,11 +1116,11 @@ class EditorBigFrame:
             for item in selectPosizions:
                 # print(item)
                 self.removeTag(item[2] + 1, item[0], item[1] + 1, "background")
-                self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack")
+                self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack", None)
 
             for item in errorPositions:
                 self.removeTag(int(item[2]) + 1, item[0], item[1] + 1, None)
-                self.addTag(int(item[2]) + 1, item[0], item[1] + 1, "error")
+                self.addTag(int(item[2]) + 1, item[0], item[1] + 1, "error", 0)
 
             self.__saveCode()
 
@@ -1185,7 +1202,7 @@ class EditorBigFrame:
 
         if delimiterPoz != len(line):
            if caller == "lineTinting":
-              self.addTag(yOnTextBox, delimiterPoz, len(line), "comment")
+              self.addTag(yOnTextBox, delimiterPoz, len(line), "comment", None)
            elif caller == "lineEditor":
               self.configTheItem("comment", "comment")
               lineEditorTempDict["comment"] = "command"
@@ -1197,7 +1214,7 @@ class EditorBigFrame:
         if currentLineStructure["command"][0] in self.__syntaxList.keys():
            if caller == "lineTinting":
               self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
-                                   currentLineStructure["command"][1][1]+1, "command")
+                                   currentLineStructure["command"][1][1]+1, "command", None)
            elif caller == "lineEditor":
               self.configTheItem("command#1", "command")
               lineEditorTempDict["command#1"] = "command"
@@ -1446,7 +1463,7 @@ class EditorBigFrame:
                   self.removeTag(yOnTextBox, currentLineStructure["command"][1][0],
                               currentLineStructure["command"][1][1] + 1, None)
                   self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
-                           currentLineStructure["command"][1][1] + 1, "error")
+                           currentLineStructure["command"][1][1] + 1, "error", 1)
                elif caller == "lineEditor":
                    self.configTheItem("command#1", "error")
                    lineEditorTempDict["comment#1"] = "error"
@@ -1454,9 +1471,11 @@ class EditorBigFrame:
         elif currentLineStructure["command"][0] not in (None, "None", ""):
            foundObjects = self.findObjects(currentLineStructure["command"], objects)
 
+           setBack = self.__foundError
+
            if caller == "lineTinting":
               self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
-                        currentLineStructure["command"][1][1] + 1, "error")
+                        currentLineStructure["command"][1][1] + 1, "error", 2)
            elif caller == "lineEditor":
                self.configTheItem("command#1", "error")
                lineEditorTempDict["comment#1"] = "error"
@@ -1475,7 +1494,7 @@ class EditorBigFrame:
 
                  self.addTag(yOnTextBox, foundObjects[key][0][0],
                           foundObjects[key][0][1] + 1,
-                          foundObjects[key][1])
+                          foundObjects[key][1], None)
 
               elif caller == "lineEditor":
                   self.configTheItem("command#"+str(keyNum+1), foundObjects[key][1])
@@ -1484,16 +1503,14 @@ class EditorBigFrame:
 
               if foundObjects[key][1] == "process":
                  hasValidCommand = True
-
-                 validOnes = ["variable", "string", "stringConst", "number"]
-
                  commandParams = self.__objectMaster.returnAllAboutTheObject(currentLineStructure["command"][0])["params"]
+                 self.__foundError = setBack
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
              if caller == "lineTinting":
                 self.addTag(yOnTextBox, currentLineStructure["("],
                                      currentLineStructure["("] + 1,
-                                     "error")
+                                     "error", 3)
              elif caller == "firstCompiler":
                 errorPositions.append(["bracket", "missingClosingBracket", currentLineStructure["lineNum"]])
 
@@ -1501,7 +1518,7 @@ class EditorBigFrame:
              if caller == "lineTinting":
                 self.addTag(yOnTextBox, currentLineStructure[")"],
                                      currentLineStructure[")"] + 1,
-                                     "error")
+                                     "error", 4)
              elif caller == "firstCompiler":
                 errorPositions.append(["bracket", "missingOpeningBracket", currentLineStructure["lineNum"]])
 
@@ -1509,11 +1526,11 @@ class EditorBigFrame:
             if caller == "lineTinting":
                self.addTag(yOnTextBox, currentLineStructure[")"],
                         currentLineStructure[")"] + 1,
-                        "bracket")
+                        "bracket", None)
 
                self.addTag(yOnTextBox, currentLineStructure["("],
                         currentLineStructure["("] + 1,
-                        "bracket")
+                        "bracket", None)
 
         #print(errorPositions, addError, currentLineStructure["command"][0])
 
@@ -1530,12 +1547,17 @@ class EditorBigFrame:
             for item in paramColoring:
                 if item[1][0] != -1:
                    if caller == "lineTinting":
+                      if item[0] == "error":
+                         n = 5
+                      else:
+                         n = None
+
                       self.removeTag(yOnTextBox, item[1][0],
                                               item[1][1] + 1,
                                               None)
                       self.addTag(   yOnTextBox, item[1][0],
                                               item[1][1] + 1,
-                                              item[0])
+                                              item[0], n)
                    elif caller == "lineEditor":
                       paramNum += 1
 
@@ -1578,7 +1600,7 @@ class EditorBigFrame:
                     if caller == "lineTinting":
                         self.addTag(yOnTextBox, currentLineStructure["param#1"][1][0],
                                    currentLineStructure["param#1"][1][1]+1,
-                                   "error")
+                                   "error", 6)
                     elif caller == "firstCompiler":
                         errorPositions.append(["param#1", "mustBePowerOf2", currentLineStructure["lineNum"]])
 
@@ -1587,7 +1609,7 @@ class EditorBigFrame:
                    if caller == "lineTinting":
                       self.addTag(yOnTextBox, currentLineStructure["param#2"][1][0],
                                   currentLineStructure["param#2"][1][1]+1,
-                                 "error")
+                                 "error", 7)
                    elif caller == "firstCompiler":
                       errorPositions.append(["param#2", "mustBeSmaller", currentLineStructure["lineNum"]])
 
@@ -1597,7 +1619,7 @@ class EditorBigFrame:
                if caller == "lineTinting":
                   self.addTag(yOnTextBox, currentLineStructure["commas"][ind],
                                        currentLineStructure["commas"][ind] + 1,
-                                       "error")
+                                       "error", 8)
                elif caller == "firstCompiler":
                   errorPositions.append(["param#" + str(ind+1), "paramNotNeeded", currentLineStructure["lineNum"]])
 
@@ -1606,7 +1628,7 @@ class EditorBigFrame:
 
            if currentLineStructure["command"][0] not in [None, "None", ""]:
                self.removeTag(yOnTextBox, 0, len(line), "background")
-               self.addTag(yOnTextBox,    0, len(line), "unreachable")
+               self.addTag(yOnTextBox,    0, len(line), "unreachable", None)
 
         if currentLineStructure["command"][0] not in [None, "None", ""] and whole != None:
             if self.__currentSection in ["subroutines", "screenroutines"] and currentLineStructure["level"] == 0                                                         and \
@@ -1615,7 +1637,7 @@ class EditorBigFrame:
                currentLineStructure["command"][0] != "end-subroutine"     and currentLineStructure["command"][0] not in self.__syntaxList["end-subroutine"].alias and \
                currentLineStructure["command"][0] != "end-screen"         and currentLineStructure["command"][0] not in self.__syntaxList["end-screen"].alias:
                self.removeTag(yOnTextBox, 0, len(line), "background")
-               self.addTag(yOnTextBox, 0, len(line), "unreachable")
+               self.addTag(yOnTextBox, 0, len(line), "unreachable", None)
 
         if self.__highLightWord not in ("", None):
             if len(line) >= len(self.__highLightWord):
@@ -1629,7 +1651,7 @@ class EditorBigFrame:
 
                     if thisWord == thatWord:
                        self.removeTag(yOnTextBox, startNum, startNum  + len(self.__highLightWord), "background")
-                       self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight")
+                       self.addTag(yOnTextBox, startNum, startNum + len(self.__highLightWord), "highLight", None)
 
         for exitCommand in self.exiters:
             foundExit = False
@@ -1997,7 +2019,7 @@ class EditorBigFrame:
 
             if item[0] in self.__listOfItems: continue
 
-            self.__listBoxOnTheRight.insert(END, item[0])
+            self.__listBoxOnTheRight.insert(END, item[0].split("(")[0])
             self.__listOfItems.append(item[0])
 
             try:
@@ -2052,6 +2074,7 @@ class EditorBigFrame:
             wordsForList = []
         elif listType == "nextObject":
             objList = self.__objectMaster.returnNextLevel(currentWord[:-1])
+
             if objList == False: objList = []
 
             for word in objList:
@@ -3551,10 +3574,8 @@ class EditorBigFrame:
 
         return largest
 
-    def addTag(self, Y, X1, X2, tag):
-#       tagRanges = self.__codeBox.tag_ranges("sel")
-        #if tag == "error": raise ValueError
-
+    def addTag(self, Y, X1, X2, tag, errCallNum):
+        #if tag == "error": print(errCallNum)
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":

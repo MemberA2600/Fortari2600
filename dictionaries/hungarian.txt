@@ -469,3 +469,5 @@ noSubRoutineForReturn=A #COMMAND# parancs nem tartozik "Subroutine" jellegû para
 noEndSubRoutineForReturn=A #COMMAND# alatt nem található "End-Subroutine" jellegû záróparancs!
 compilerErrorASMByteInvalidParameter=A byte beékelésnek valós számnak kell lennie! #OPERAND# érvénytelennek tûnik!
 compilerErrorBCDOverFlow=99-nél nagyobb szám (#VAR#), mint BCD konstans!
+compilerErrorNotValidNumber=Az objektumfüggvény paraméterként érvényelen számot (#PARAM#Ö kapott!! Csak a 0-255 közötti, decimális, bináris vagy hexadecimális számok elfogadhatóak!
+compilerErrorConstValNotValidNumber=Az objektumfüggvénynek paraméterként átadott #PARAM# konstans értéke (#VAL#) érvénytelen! Csak a 0-255 közötti, decimális, bináris vagy hexadecimális számok elfogadhatóak!

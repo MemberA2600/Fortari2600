@@ -194,6 +194,7 @@ class FirstCompiler:
 
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                self.processLine(line, linesFeteched)
+               self.colorAnnotationAfter(line)
 
         textToReturn = ""
         for line in linesFeteched:
@@ -217,6 +218,43 @@ class FirstCompiler:
                 textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
         self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
+
+    def colorAnnotationAfter(self, line):
+        if "&COLOR" in line["compiled"]: return
+        lines = line["compiled"].split("\n")
+
+        hasColor = False
+        for modeNum in range(0, 2):
+            if hasColor == False and modeNum == 1: break
+
+            for lineNum in range(0, len(lines)):
+                theLine = lines[lineNum]
+                if len(theLine) == 0: continue
+                if theLine[0] in ["*", "#"]: continue
+
+                l = theLine.replace("\t", " ").split(" ")
+                newLine = []
+                for item in l:
+                    if item != "": newLine.append(item)
+
+                operand = newLine[1]
+                if modeNum == 0:
+                   var = self.__loader.virtualMemory.getVariableByName2(operand)
+                   if var != False:
+                      if var.color == True:
+                         hasColor = True
+                         break
+                else:
+                    import re
+                    if len(re.findall(r'#?[$%]?[0-9a-fA-F]+', operand)) > 0:
+                       if ";" in lines[lineNum]:
+                           adder = " &COLOR"
+                       else:
+                           adder = " ; &COLOR"
+                       lines[lineNum] += adder
+
+        line["compiled"] = "\n".join(lines)
+
 
     def LDATAYLDA(self, text):
         lines = text.replace("\r", "").split("\n")
@@ -319,6 +357,8 @@ class FirstCompiler:
         return "\n".join(lines)
 
     def processLine(self, line, linesFeteched):
+        import traceback
+
         self.__useThese = [line["lineNum"], linesFeteched]
         self.__thisLine = line
         self.__checked  = False
@@ -330,7 +370,10 @@ class FirstCompiler:
         params = {}
 
         try:
-            command = self.__loader.syntaxList[line["command"][0]]
+            if line["command"][0] in self.__loader.syntaxList:
+               command = self.__loader.syntaxList[line["command"][0]]
+            else:
+               command = self.__objectMaster.createFakeCommandOnObjectProcess(line["command"][0])
 
             if "fullLine" not in line:
                 line["fullLine"] = self.__editorBigFrame.getFillLine(line)
@@ -367,7 +410,7 @@ class FirstCompiler:
                         print(str(e))
                         #pass
         except Exception as e:
-            print(str(e), line)
+            print(traceback.format_exc(), line)
             #pass
 
         if command.flexSave and "param#3" in params:
@@ -2279,8 +2322,88 @@ class FirstCompiler:
                line["compiled"] += "\tTSX\n\tSTX\titem\n" + self.__loader.io.loadCommandASM("returnFromBank1")
 
         else:
-            objectThings = self.__loader.objectMaster.returnAllAboutTheObject("command")
+            objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
+            template     = objectThings["template"]
 
+            for paramName in params:
+                paramIndex = int(paramName[-1]) - 1
+
+                ok      = True
+                saveIt  = None
+                convert = ""
+                errType = None
+                val     = ""
+                var     = ""
+                self.__temps = self.collectUsedTemps()
+
+                pSettings   = objectThings["paramsWithSettings"][paramIndex]
+                validParams = pSettings["param"].split("|")
+
+                template = objectThings["template"]
+
+                if params[paramName][1] not in validParams:
+                   ok = False
+
+                if ok:
+                    if params[paramName][1] == "number":
+                       try:
+                          numVal = self.__editorBigFrame.convertStringNumToNumber(params[paramName][0])
+                          saveIt = "#" + str(numVal)
+                       except:
+                          ok = False
+                          errType = "NotValidNumber"
+
+                    elif params[paramName][1] == "stringConst":
+                         ok = False
+                         errType = "ConstNotFound"
+                         for const in self.__constants:
+                             if const == params[paramName][0]:
+                                 try:
+                                     numVal = self.__editorBigFrame.convertStringNumToNumber(self.__constants[const])
+                                     saveIt = "#" + str(numVal)
+                                     break
+                                 except:
+                                     ok = False
+                                     errType = "ConstValNotValidNumber"
+                                     val = self.__constants[const]
+                    elif params[paramName][1] == "string":
+                         pass
+
+                    elif params[paramName][1] == "data":
+                         pass
+
+                    else:
+                        var = self.__loader.virtualMemory.getVariableByName2(params[paramName][0])
+                        if var == False:
+                           self.addToErrorList(line["lineNum"],
+                                               self.prepareError("compilerErrorVarNotFound",
+                                                                  params[paramName][0],
+                                                                  "", "",
+                                                                  str(line["lineNum"] + self.__startLine)))
+                        if self.__error == False:
+                            saveIt = params[paramName][0]
+                            if var.type != "byte" or var.bcd:
+                               convert = self.convertAny2Any(params[paramName][0], pSettings["direction"], params, None)
+
+                    if errType != None:
+                       self.addToErrorList(line["lineNum"],
+                                            self.prepareError("compilerError" + errType,
+                                                              params[paramName][0],
+                                                              val, var,
+                                                              str(line["lineNum"] + self.__startLine)))
+
+                    if self.__error == False:
+                       if "replacer" in pSettings:
+                           replacer   = pSettings["replacer"]
+                           template   = template.replace(replacer, saveIt)
+
+                       if "converter" in pSettings:
+                           converter   = pSettings["converter"]
+                           template    = template.replace(converter, convert)
+
+
+                if self.__error == False:
+                   line["compiled"] = template
 
         line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
         if "#MAGIC#" in line["compiled"]:
@@ -3610,6 +3733,9 @@ class FirstCompiler:
                break
 
         if command == None:
+           command = self.__objectMaster.createFakeCommandOnObjectProcess(line["command"][0])
+
+        if command == None:
            self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                  line["command"][0], "",
                                                  str(line["lineNum"] + self.__startLine)))
@@ -3625,7 +3751,7 @@ class FirstCompiler:
                   mustHave = False
                   paramType = paramType[1:-1]
 
-               if self.__loader.syntaxList[line["command"][0]].flexSave == True and num == 1 and \
+               if command.flexSave == True and num == 1 and \
                   line["param#" + str(len(command.params))][0] in self.__noneList:
                   paramType = "variable"
                   ioMethod  = "write"
@@ -3695,8 +3821,8 @@ class FirstCompiler:
                       "missingOpeningBracket": {},
                       "missingClosingBracket": {},
                       "commandDoesNotNeedBrackets": {},
-                      "sectionNotAllowed": {"#SECTIONS#": ", ".join(self.__loader.syntaxList[line["command"][0]].sectionsAllowed)},
-                      "levelNotAllowed": {"#LEVEL#": str(self.__loader.syntaxList[line["command"][0]].levelAllowed)},
+                      "sectionNotAllowed": {"#SECTIONS#": ", ".join(command.sectionsAllowed)},
+                      "levelNotAllowed": {"#LEVEL#": str(command.levelAllowed)},
                       "paramNotNeeded": {},
                       "iteralError": {},
                       "infiniteLoop": {},

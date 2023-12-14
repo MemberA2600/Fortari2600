@@ -469,3 +469,6 @@ noSubRoutineForReturn=The command #COMMAND# has no opening "Subroutine" kind of 
 noEndSubRoutineForReturn=The command #COMMAND# has no closing "End-Subroutine" kind of command.
 compilerErrorASMByteInvalidParameter=Inserting a byte directly requires a valid number! #OPERAND# seems to be invalid!
 compilerErrorBCDOverFlow=Given a number larger than 99 (#VAR#) for a BCD constant!
+compilerErrorNotValidNumber=Object process got an invalid number as #PARAM#! Valid numbers are between 0 and 255, in dec, bin, hex format!
+compilerErrorNotValidNumber=Object process got an invalid number as #PARAM#! Valid numbers are between 0 and 255, in dec, bin, hex format!
+compilerErrorConstValNotValidNumber=Object process got #PARAM# constant that has the value of #VAL#! Valid numbers are between 0 and 255, in dec, bin, hex format!
