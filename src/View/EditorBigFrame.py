@@ -1571,7 +1571,6 @@ class EditorBigFrame:
                                 item[0] = "error"
                                 break
 
-
                       self.configTheItem("param#" + str(paramNum), item[0])
                       lineEditorTempDict["param#" + str(paramNum)] = item[0]
 
@@ -2645,7 +2644,6 @@ class EditorBigFrame:
         if sendBack: return foundIt, returnBack[-1]
 
     def getStatementStructure(self, param, needComprassion, stringAllowed, addIndex, lineStructure):
-
         statementData = []
 
         startIndex = 0
@@ -2654,11 +2652,13 @@ class EditorBigFrame:
 
         delimiters  = self.__config.getValueByKey("validStringDelimiters").split(" ")
         arithmetics = self.__config.getValueByKey("validArithmetics").split(" ")
+        concatSigns = self.__config.getValueByKey("validConcatSigns").split(" ")
 
         for charNum in range(0, len(param)):
             if inside == False:
                 if param[charNum] in (" ", "(", ")") or\
                    param[charNum] in arithmetics     or\
+                   param[charNum] in concatSigns     or\
                    charNum == len(param) - 1:
 
                    endIndex = charNum
@@ -2667,7 +2667,8 @@ class EditorBigFrame:
 
                    if endIndex != startIndex                         and\
                        param[startIndex:endIndex] not in ["(", ")"]  and\
-                       param[startIndex:endIndex] not in arithmetics:
+                       param[startIndex:endIndex] not in arithmetics and \
+                       param[startIndex:endIndex] not in concatSigns:
 
                        if param[endIndex-1] == ")":
                           endIndex -= 1
@@ -2694,7 +2695,7 @@ class EditorBigFrame:
 
                             )
                       startIndex = endIndex + 1
-                   elif param[charNum] in arithmetics:
+                   elif param[charNum] in arithmetics or param[charNum] in concatSigns:
                        statementData.append(
                            {
                                "word": param[charNum],
@@ -2746,24 +2747,29 @@ class EditorBigFrame:
             if item["type"] == "comprass":
                if numberOfCompares > 0:
                   item["type"] = "error"
-                  #print("1")
+                  eNum = 1
                numberOfCompares += 1
+
+            if  stringAllowed == False and item["word"] == "|":
+                item["type"] = "error"
+                eNum = 2
 
             if "string" in item["type"] and stringAllowed == False:
                 item["type"] = "error"
-                #print("2")
+                eNum = 3
 
             if [item["type"], lastOne]   in inValidPairs or \
                [lastOne, item["type"]]   in inValidPairs or \
                (lastOne == item["type"] and item["type"] not in ("bracket", "invalidBracket")):
                item["type"] = "error"
-               #print("3")
+               eNum = 4
 
             if stringAllowed == True and ((item["type"] == "bracket"     or item["type"] == "comprass" or
-                                           item["type"] == "arithmetic") and item["word"] != "+"):
+                                           item["type"] == "arithmetic") and item["word"] not in concatSigns):
                item["type"] = "error"
-               #print("4")
+               eNum = 4
 
+            #if item["type"] == "error": print(eNum)
             lastOne = item["type"]
 
         level     = 0
@@ -2904,7 +2910,7 @@ class EditorBigFrame:
                                          ppp[paramNum][1], mustHave, "param#"+str(paramNum+1), currentLineStructure, text)
 
         #print(currentLineStructure)
-
+        #print(returnBack)
         commandVar = None
         for c in self.__loader.syntaxList.keys():
             if currentLineStructure["command"][0] == c or currentLineStructure["command"][0] in self.__syntaxList[c].alias:

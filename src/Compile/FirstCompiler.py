@@ -60,6 +60,7 @@ class FirstCompiler:
         self.toRoutines       = {}
         self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
         self.__jumpers        = ["JMP", "JSR"]
+        self.__exceptions     = []
 
         self.__labelsOfMainKenrel = []
 
@@ -230,28 +231,29 @@ class FirstCompiler:
             for lineNum in range(0, len(lines)):
                 theLine = lines[lineNum]
                 if len(theLine) == 0: continue
-                if theLine[0] in ["*", "#"]: continue
+                if theLine[0] in ["*", "#", "!"]: continue
 
                 l = theLine.replace("\t", " ").split(" ")
                 newLine = []
                 for item in l:
                     if item != "": newLine.append(item)
 
-                operand = newLine[1]
-                if modeNum == 0:
-                   var = self.__loader.virtualMemory.getVariableByName2(operand)
-                   if var != False:
-                      if var.color == True:
-                         hasColor = True
-                         break
-                else:
-                    import re
-                    if len(re.findall(r'#?[$%]?[0-9a-fA-F]+', operand)) > 0:
-                       if ";" in lines[lineNum]:
-                           adder = " &COLOR"
-                       else:
-                           adder = " ; &COLOR"
-                       lines[lineNum] += adder
+                if len(newLine) > 1:
+                    operand = newLine[1]
+                    if modeNum == 0:
+                       var = self.__loader.virtualMemory.getVariableByName2(operand)
+                       if var != False:
+                          if var.color == True:
+                             hasColor = True
+                             break
+                    else:
+                        import re
+                        if len(re.findall(r'#?[$%]?[0-9a-fA-F]+', operand)) > 0:
+                           if ";" in lines[lineNum]:
+                               adder = " &COLOR"
+                           else:
+                               adder = " ; &COLOR"
+                           lines[lineNum] += adder
 
         line["compiled"] = "\n".join(lines)
 
@@ -339,7 +341,7 @@ class FirstCompiler:
 
                    if secondLine.startswith(label): break
                    if len(secondLine) == 0: continue
-                   if secondLine[0] in ["*", "#"] or secondLine.isspace(): continue
+                   if secondLine[0] in ["*", "#", "!"] or secondLine.isspace(): continue
 
                    opcode2, filler = self.getOpCodeAndOperandFromASMLine(secondLine)
 
@@ -507,13 +509,14 @@ class FirstCompiler:
                     if self.__error == False: line["compiled"] = txt
                     return
 
-                if self.isIt(params["param#2"][0], 0):
-                    txt = self.saveAValue(params, "param#1", "param#3", line)
-                    txt = self.checkForNotNeededExtraLDA(txt)
+                if params["param#2"][1] == "number":
+                    if self.isIt(params["param#2"][0], 0):
+                        txt = self.saveAValue(params, "param#1", "param#3", line)
+                        txt = self.checkForNotNeededExtraLDA(txt)
 
-                    self.checkASMCode(txt, line)
-                    if self.__error == False: line["compiled"] = txt
-                    return
+                        self.checkASMCode(txt, line)
+                        if self.__error == False: line["compiled"] = txt
+                        return
 
             changeText = self.prepareAdd(params, False)
 
@@ -735,8 +738,11 @@ class FirstCompiler:
                 template = template.replace(key, replacers[key])
 
             self.__readOnly.remove("random")
+            self.__exceptions.append("random")
             self.checkASMCode(template, line)
             self.__readOnly.append("random")
+            self.__exceptions.remove("random")
+
             if self.__error == False: line["compiled"] = template
             return
 
@@ -2383,7 +2389,12 @@ class FirstCompiler:
                         if self.__error == False:
                             saveIt = params[paramName][0]
                             if var.type != "byte" or var.bcd:
-                               convert = self.convertAny2Any(params[paramName][0], pSettings["direction"], params, None)
+                               direction = objectThings["direction"][0]
+                               if "converter" in pSettings:
+                                   if "TO"   in pSettings["converter"].upper(): direction = "TO"
+                                   if "FROM" in pSettings["converter"].upper(): direction = "FROM"
+
+                               convert = self.convertAny2Any(params[paramName][0], direction, params, None)
 
                     if errType != None:
                        self.addToErrorList(line["lineNum"],
@@ -2391,7 +2402,6 @@ class FirstCompiler:
                                                               params[paramName][0],
                                                               val, var,
                                                               str(line["lineNum"] + self.__startLine)))
-
                     if self.__error == False:
                        if "replacer" in pSettings:
                            replacer   = pSettings["replacer"]
@@ -2401,9 +2411,25 @@ class FirstCompiler:
                            converter   = pSettings["converter"]
                            template    = template.replace(converter, convert)
 
-
                 if self.__error == False:
-                   line["compiled"] = template
+                   for item in objectThings["sysVars"]:
+                       self.__exceptions.append(item)
+                       if item in self.__readOnly:
+                          self.__readOnly.remove(item)
+
+                   self.checkASMCode(template, line)
+
+                   for item in objectThings["sysVars"]:
+                       self.__exceptions.remove(item)
+                       if item not in self.__readOnly:
+                          self.__readOnly.append(item)
+
+                   if self.__error == False:
+                      line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
+                      if "#MAGIC#" in line["compiled"]:
+                          self.__magicNumber += 1
+                          line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
+                      return
 
         line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
         if "#MAGIC#" in line["compiled"]:
@@ -3306,7 +3332,7 @@ class FirstCompiler:
 
                 if line.replace("\t", " ")[0] != " " and "!!!" not in line:
                     if len(line) > 0:
-                        if line[0] not in ("*", "#"):
+                        if line[0] not in ("*", "#", "!"):
                            labels.append(line)
                            if self.__currentBank in line:
                               labels.append(line.replace(self.__currentBank, "#BANK#"))
@@ -3325,7 +3351,7 @@ class FirstCompiler:
                 #print(len(line))
                 if len(line) > 0:
                    #print(line[0] not in ("*", "#"))
-                   if line[0] not in ("*", "#"):
+                   if line[0] not in ("*", "#", "!"):
                       labels.append(line.replace("\n", ""))
 
         self.collectLabelsFromRoutines(labels)
@@ -3335,7 +3361,7 @@ class FirstCompiler:
             full = line
 
             if line.replace("\t", " ").startswith(" ") == False: continue
-            if line[0] in ["*", "#"]: continue
+            if line[0] in ["*", "#", "!"]: continue
 
             delimiterPoz = self.__editorBigFrame.getFirstValidDelimiterPoz(line)
             line = line[:delimiterPoz]
@@ -3556,10 +3582,10 @@ class FirstCompiler:
                    elif operandTyp == "constant":
                         mode = "read"
 
-                   if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write"):
+                   if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write") and item not in self.__exceptions:
                       mode = opcodeDoes
 
-                   if opcodeDoes != mode:
+                   if opcodeDoes != mode :
                       if special == "":
                          eText = operandTyp[0].upper() + operandTyp[1:]
                       else:

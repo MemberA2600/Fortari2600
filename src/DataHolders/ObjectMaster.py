@@ -260,7 +260,7 @@ class ObjectMaster:
                    theObject[name] = []
                    params = lines[index].split("=")[1].split(",")
                    theObject[name] = params
-               except:
+               except Exception as e:
                    continue
 
         else:
