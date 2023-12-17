@@ -179,6 +179,15 @@ class VirtualMemory:
 
         self.__loader.bigFrame.loadCurrentFromMemory()
 
+    def isSara(self, name):
+        for address in self.memory.keys():
+            for variable in self.memory[address].variables.keys():
+                if variable == name:
+                   if len(address) > 3:
+                       return True
+                   else:
+                       return False
+        return False
 
     def emptyArchieved(self):
         self.cursor = 0

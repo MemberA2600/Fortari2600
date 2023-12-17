@@ -10,3 +10,4 @@ class Variable:
             #"global", bank{2-8}
         self.bcd       = bcd
         self.color     = color
+

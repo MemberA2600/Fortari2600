@@ -2049,6 +2049,9 @@ class EditorBigFrame:
         # print(currentWord, listType, wordsForList)
 
     def setupList(self, currentWord, listType, lineStructure, cursorIn, text):
+        #
+        #  This is where you can add the items for a new type
+        #
         wordsForList = []
 
         noneList = ["", None, "None"]
@@ -2172,6 +2175,11 @@ class EditorBigFrame:
 
         elif listType == "subroutine":
             wordsForList = self.collectNamesByCommandFromSections("subroutine", None)
+
+        elif listType == "data":
+            listOfData = self.getListOfData(lineStructure["command"][0])
+            for item in listOfData:
+                wordsForList.append([item, "data"])
 
         # Maybe "statement" will be important here to??
 
@@ -2461,6 +2469,9 @@ class EditorBigFrame:
         return params, ioMethod
 
     def checkIfParamIsOK(self, paramType, param, ioMethod, returnBack, dimension, mustHave, cursorIn, lineStructure, text):
+        #
+        # This is where you can set new param types if needed. (to make them valid and also color them)
+        #
         foundIt = False
         noneList   = ["None", None, ""]
 
@@ -2635,6 +2646,14 @@ class EditorBigFrame:
                 for item in statementData:
                     returnBack.append([item["type"], item["position"]])
 
+            elif pType == "data":
+                 if printMe: print(pType)
+
+                 listOfData     = self.getListOfData(lineStructure["command"][0])
+                 if param in listOfData:
+                    returnBack.append(["data", dimension])
+                    foundIt = True
+
         if foundIt == False:
            if mustHave == False and param in noneList:
               returnBack.append(["missing", dimension])
@@ -2642,6 +2661,24 @@ class EditorBigFrame:
               returnBack.append(["error", dimension])
 
         if sendBack: return foundIt, returnBack[-1]
+
+    def getListOfData(self, object):
+        if type(object) == str: object = self.__objectMaster.returnAllAboutTheObject(object)
+        fNames = []
+
+        for param in object["paramsWithSettings"]:
+            if param["param"] == "data":
+               folderName = param["folder"]
+
+               path = self.__loader.mainWindow.projectPath + "/" + folderName + "/"
+               import os
+
+               for root, dirs, files in os.walk(path):
+                   for file in files:
+                       if file.endswith(".asm"):
+                          fNames.append(file[:-4])
+
+        return fNames
 
     def getStatementStructure(self, param, needComprassion, stringAllowed, addIndex, lineStructure):
         statementData = []
@@ -3760,6 +3797,11 @@ class EditorBigFrame:
 
             "subroutine": {
                 "foreground": self.__loader.colorPalettes.getColor("subroutine"),
+                "font": self.__boldUnderlinedFont
+            },
+
+            "data": {
+                "foreground": self.__loader.colorPalettes.getColor("data"),
                 "font": self.__boldUnderlinedFont
             }
         }

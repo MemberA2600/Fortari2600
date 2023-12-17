@@ -199,7 +199,7 @@ class ObjectMaster:
            lines = theObject["template"].replace("\r", "").split("\n")
            pList = lines[0].split("=")[1].split(",")
            theObject["params"] = []
-           validOnes = ["variable", "string", "stringConst", "number"]
+           validOnes = ["variable", "string", "stringConst", "number", "data"]
 
            #print(pList)
            for p in pList:
@@ -248,7 +248,10 @@ class ObjectMaster:
                lineOfVar        = lines[num + 1].split("=")[1].split(",")
                last["replacer"] = lineOfVar[0]
                if len(lineOfVar) > 1:
-                  last["converter"] = lineOfVar[1]
+                  if last["param"] == "data":
+                      last["folder"]    = lineOfVar[1]
+                  else:
+                      last["converter"] = lineOfVar[1]
 
            nextIndex = len(theObject["params"]) + 1
            for index in range(nextIndex, len(lines)):

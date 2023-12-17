@@ -58,9 +58,11 @@ class FirstCompiler:
         self.__currentBank    = bank
         self.__objectMaster   = self.__loader.virtualMemory.objectMaster
         self.toRoutines       = {}
+        self.bank1Data        = {}
         self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
         self.__jumpers        = ["JMP", "JSR"]
         self.__exceptions     = []
+        self.__labels         = []
 
         self.__labelsOfMainKenrel = []
 
@@ -1005,7 +1007,7 @@ class FirstCompiler:
                           return
 
                       if var != False:
-                          if self.isPowerOfTwo(theNum) and var.type == "byte":
+                          if self.isPowerOfTwo(theNum):
                              times   = self.howManyTimesThePowerOfTwo(theNum)
                              subLine = self.__editorBigFrame.getLineStructure(0, ["\tasl(" + str(times) + ", " + params[varParam][0] + " )"], False)
                              self.processLine(subLine, linesFeteched)
@@ -1396,8 +1398,7 @@ class FirstCompiler:
                    txt  += self.convertAny2Any(varName, "TO"  , params, None) + "\n"
                    _to   = self.convertAny2Any(varName, "FROM", params, None) + "\n"
 
-
-                if shiftNum < 2 and var2.bcd == False:
+                if shiftNum < 2 and var2.bcd == False and self.__loader.virtualMemory.isSara(params["param#1"][0]) == False:
                     txt = shiftNum * ("\t" + command + "\t" + varName + "\n")
                 else:
                     txt += shiftNum * ("\t" + command + "\n") + _to + "\tSTA\t" + varName + "\n"
@@ -2341,6 +2342,10 @@ class FirstCompiler:
                 val     = ""
                 var     = ""
                 self.__temps = self.collectUsedTemps()
+                data    = ""
+                dataReplacers = {
+                    "playfields": ["##NAME##", "playfield"]
+                }
 
                 pSettings   = objectThings["paramsWithSettings"][paramIndex]
                 validParams = pSettings["param"].split("|")
@@ -2376,7 +2381,11 @@ class FirstCompiler:
                          pass
 
                     elif params[paramName][1] == "data":
-                         pass
+                        path  = self.__loader.mainWindow.projectPath + "/" + pSettings["folder"] + "/" + params[paramName][0] + ".asm"
+                        dataF = open(path, "r")
+                        data  = dataF.read()
+                        dataF.close()
+                        saveIt = self.__currentBank + "_" + params[paramName][0] + "_" + dataReplacers[pSettings["folder"]][1]
 
                     else:
                         var = self.__loader.virtualMemory.getVariableByName2(params[paramName][0])
@@ -2410,6 +2419,14 @@ class FirstCompiler:
                        if "converter" in pSettings:
                            converter   = pSettings["converter"]
                            template    = template.replace(converter, convert)
+
+                       if "folder" in pSettings.keys():
+                          dataR     = dataReplacers[pSettings["folder"]][0]
+                          name      = self.__currentBank + "_" + params[paramName][0] + "_" + dataReplacers[pSettings["folder"]][1]
+                          data      = data.replace(    dataR, name)
+                          template  = template.replace(dataR, name).replace(replacer, name)
+
+                          self.bank1Data[name] = data
 
                 if self.__error == False:
                    for item in objectThings["sysVars"]:
@@ -3324,20 +3341,26 @@ class FirstCompiler:
         params["param#" + str(num)][0] = val
 
     def collectLabelsFromRoutines(self, labels):
-        for key in self.toRoutines.keys():
-            lines = self.toRoutines[key].replace("\r", "").replace("#BANK#", self.__currentBank).replace("#SECTION#", key).split("\n")
-            for line in lines:
-                if line == "" or line.isspace() or line[0] in ["\t", " "]:
-                   continue
+        sources = [self.toRoutines, self.bank1Data]
 
-                if line.replace("\t", " ")[0] != " " and "!!!" not in line:
-                    if len(line) > 0:
-                        if line[0] not in ("*", "#", "!"):
-                           labels.append(line)
-                           if self.__currentBank in line:
-                              labels.append(line.replace(self.__currentBank, "#BANK#"))
-                           else:
-                              labels.append(line.replace("#BANK#", self.__currentBank))
+        for source in sources:
+            for key in source.keys():
+                lines = source[key].replace("\r", "").replace("#BANK#", self.__currentBank).replace("#SECTION#", key).split("\n")
+                for line in lines:
+                    if line == "" or line.isspace() or line[0] in ["\t", " "]:
+                       continue
+
+                    if line.replace("\t", " ")[0] != " " and "!!!" not in line:
+                        if len(line) > 0:
+                            if line[0] not in ("*", "#", "!"):
+                               labels.append(line)
+                               if self.__currentBank in line:
+                                  labels.append(line.replace(self.__currentBank, "#BANK#"))
+                               else:
+                                  labels.append(line.replace("#BANK#", self.__currentBank))
+
+
+        self.__labels = labels
 
     def checkASMCode(self, template, lineStructure):
         template = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
@@ -3481,8 +3504,8 @@ class FirstCompiler:
                              if splitValue[1] == splitFormat[1]:
                                 foundCommand = True
                                 break
-
                    errorVal = 1
+                   #print("1", value)
 
                    if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
 
@@ -3497,29 +3520,35 @@ class FirstCompiler:
                    numeric = beforeComma
 
                    if operandTyp in ("variable", "register"):
-                      numeric = self.getAddress(beforeComma)
+                      numeric = self.getAddress(self.removeAritmeticPart(beforeComma))
 
                    if beforeComma.startswith("#>") or beforeComma.startswith("#<"):
-                       if beforeComma[1] == ">":
-                           beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[1:3])
-                       else:
-                           beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[3:5])
+                       if operandTyp != "label":
+                           if beforeComma[1] == ">":
+                               beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[1:3])
+                           else:
+                               beforeComma = self.__editorBigFrame.convertStringNumToNumber(numeric[3:5])
+
                    else:
+                       #numeric     = self.removeAritmeticPart(beforeComma)
                        numberValue = self.__editorBigFrame.convertStringNumToNumber(numeric.replace("#", ""))
 
                    hexa    = ""
                    mode    = ""
                    special = ""
+                   #print("2", beforeComma, operandTyp)
 
                    try:
                        opcodeDoes = self.opcodesIOsMoreOtherThanRead[command.upper()]
                    except:
                        opcodeDoes = "read"
 
-
                    if operandTyp == "variable" and "#" in beforeComma:
                       operandTyp  = "constant"
                       beforeComma =  numeric
+
+                   if operandTyp == "variable":
+                      beforeComma = self.removeAritmeticPart(beforeComma)
 
                    if operandTyp in ("address", "register"):
 
@@ -3579,7 +3608,7 @@ class FirstCompiler:
                             else:
                                mode = "both"
 
-                   elif operandTyp == "constant":
+                   elif operandTyp in ("constant", "label"):
                         mode = "read"
 
                    if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write") and item not in self.__exceptions:
@@ -3633,16 +3662,22 @@ class FirstCompiler:
            return "write"
 
     def checkIfASMhasrightOperand(self, lineSettings, value):
+        #print(value)
         labels = []
         self.collectLabelsFromRoutines(labels)
 
+        if lineSettings["format"].upper() == "#AA" and value[0:2] in ("#<", "#>"):
+           if value[2:] in labels: return True
+
         if lineSettings["format"][0] == "#"    and\
            value.split(",")[0] not in labels   and\
-           value[0] != "#": return False
+           value[0] != "#":
+           return False
 
         if lineSettings["format"][0] != "#"    and\
            value.split(",")[0] not in labels   and\
-           value[0] == "#": return False
+           value[0] == "#":
+           return False
 
         import re
 
@@ -3652,15 +3687,19 @@ class FirstCompiler:
         except:
             afterCommaValue = ""
 
+        beforeCommaValue     = self.removeAritmeticPart(beforeCommaValue)
+
         beforeCommaFormat    = lineSettings["format"].split(",")[0]
         try:
             afterCommaFormat = lineSettings["format"].split(",")[1]
         except:
             afterCommaFormat = ""
 
+        #print("1")
         if afterCommaFormat != afterCommaValue: return False
         beforeCommaFormat = beforeCommaFormat.upper()
 
+        #print("2")
         onlyBody = beforeCommaValue.replace("#", "").replace(">", "").replace("<", "")
         for reg in self.__registers:
             if self.__registers[reg] == onlyBody.upper():
@@ -3677,16 +3716,19 @@ class FirstCompiler:
            thisIs = "aaaa," + afterCommaValue
            if lineSettings["format"] == thisIs: return True
 
+        #print("3")
         if "#" in beforeCommaValue and beforeCommaValue not in labels:
            allA = "#AA"
         else:
            allA = re.sub(r'[0-9a-fA-F]', "A", beforeCommaValue).replace("$", "")
 
+        #print(value, beforeCommaFormat, allA)
         if beforeCommaFormat != allA: return False
 
         numOfBytesFormat = beforeCommaFormat.count("A") // 2
         if value.startswith("#"): numOfBytesFormat = 1
 
+        #print(self.sizeOfNumber(value, ""), numOfBytesFormat)
         return self.sizeOfNumber(value, "") == numOfBytesFormat
 
     def getVarAddress(self, var):
@@ -3696,10 +3738,18 @@ class FirstCompiler:
         return addr
 
     def sizeOfNumber(self, value, typ):
+        value = self.removeAritmeticPart(value)
+
         makeItHalf = 1
 
         if typ == "":
            typ =  self.getTypeOfOperand(value)
+
+        if typ == "label":
+           if ">" in value or "<" in value:
+              return 2
+           else:
+              return 4
 
         if typ in ["variable", "register"]:
 
@@ -3730,6 +3780,18 @@ class FirstCompiler:
 
         return address
 
+    def removeAritmeticPart(self, val):
+        for aritmetic in ["+", "-"]:
+            if aritmetic in val:
+               parts = val.replace(" ", "").split(aritmetic)
+               try:
+                   t = int(parts[1])
+                   val = parts[0]
+               except:
+                   pass
+
+        return val
+
     def getTypeOfOperand(self, value):
         import re
 
@@ -3738,7 +3800,10 @@ class FirstCompiler:
                if "#" in value: return "constant"
                else:            return "address"
 
-        if value.startswith("#"): value = value[1:]
+        value = self.removeAritmeticPart(value)
+
+        if value.startswith("#"):  value = value[1:]
+        if value[0] in [">", "<"]: value = value[1:]
 
         for key in self.__variablesOfBank:
             if value in self.__variablesOfBank[key]:
@@ -3746,6 +3811,13 @@ class FirstCompiler:
         for key in self.__registers:
             if value.upper() in self.__registers[key]:
                return "register"
+
+        if self.__labels == []:
+           self.collectLabelsFromRoutines(self.__labels)
+
+        for label in self.__labels:
+            if value == label:
+               return "label"
 
         return False
 
