@@ -1426,7 +1426,6 @@ class EditorBigFrame:
            #print(errorPositions, addError, currentLineStructure["command"][0])
            """
 
-
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                 self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
                (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
@@ -1873,7 +1872,6 @@ class EditorBigFrame:
                else:
                    listOfItems = self.setupList(currentWord, listType, currentLineStructure, selectedType, text)
 
-
            listOfItems.sort()
            self.fillListBox(listOfItems)
 
@@ -1997,6 +1995,8 @@ class EditorBigFrame:
         else:
             wordsForList = self.setupList(currentWord, listType, lineStructure, cursorIn, text)
 
+        #print(wordsForList)
+
         self.fillListBox(wordsForList)
 
     def fillListBox(self, wordsForList):
@@ -2017,18 +2017,19 @@ class EditorBigFrame:
             #endIndex = self.__listBoxOnTheRight.index(END)
 
             if item[0] in self.__listOfItems: continue
+            if item[1] in [None, "None", ""]: continue
 
             self.__listBoxOnTheRight.insert(END, item[0].split("(")[0])
             self.__listOfItems.append(item[0])
 
             try:
                 fg = self.__tagSettings[item[1]]["foreground"]
-            except:
+            except Exception as e:
                 fg = self.__colors.getColor("boxFontNormal")
 
             try:
                 bg = self.__tagSettings[item[1]]["background"]
-            except:
+            except Exception as e:
                 bg = self.__colors.getColor("boxBackNormal")
 
             listBoxItems = list(self.__listBoxOnTheRight.get(0, END))
@@ -2080,7 +2081,7 @@ class EditorBigFrame:
             if objList == False: objList = []
 
             for word in objList:
-                wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word)])
+                wordsForList.append([word, self.__objectMaster.returnObjectOrProcess(word.split("(")[0])])
                 if wordsForList[-1][1] == "process": wordsForList[-1][1] = "command"
 
         elif listType == "command":
@@ -2667,6 +2668,7 @@ class EditorBigFrame:
         fNames = []
 
         for param in object["paramsWithSettings"]:
+            if param["param"].startswith("{"): param["param"] = param["param"][1:-1]
             if param["param"] == "data":
                folderName = param["folder"]
 
@@ -3090,6 +3092,7 @@ class EditorBigFrame:
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
 
+        #print(returnBack)
         return returnBack
 
     def isItemAcceptedForWrite(self, currentLineStructure, text):

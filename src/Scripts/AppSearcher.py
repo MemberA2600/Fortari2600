@@ -8,7 +8,7 @@ class AppSearcher:
 
         for app in winapps.search_installed(exe):
             if app!="":
-                result=self.__Get_App_Path(self.__regexGetInstallLocation(app), exe)
+                result=self.__getAppPath(self.__regexGetInstallLocation(app), exe)
                 if result!="":
                     return(result)
         return("")

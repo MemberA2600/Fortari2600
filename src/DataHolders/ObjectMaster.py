@@ -19,51 +19,44 @@ class ObjectMaster:
 
         for root, dirs, files in os.walk("templates/objects/Game"):
             for dir in dirs:
-                path = self.__pathToListOfObj(root + "/" + dir)
-                objRoot = self.objects
-                for objName in path:
-                    if objName not in objRoot:
-                       objRoot[objName] = {}
-                    objRoot = objRoot[objName]
+                if dir.endswith("ß"):
+                   oList = [dir.replace("ß", "0"), dir.replace("ß", "1")]
+                else:
+                   oList = [dir]
+
+                for item in oList:
+                    path = self.__pathToListOfObj(root + "/" + item)
+                    objRoot = self.objects
+                    for objName in path:
+                        if objName not in objRoot:
+                           objRoot[objName] = {}
+                        objRoot = objRoot[objName]
 
             for file in files:
-                path = self.__pathToListOfObj(root + "/" + file)
-                objRoot = self.objects
+                if "ß" in root:
+                    rList = [root.replace("ß", "0"), root.replace("ß", "1")]
+                else:
+                    rList = [root]
 
-                for objName in path:
-                    if objName.endswith(".asm") == False:
-                       objRoot = objRoot[objName]
-                    else:
-                       text = self.__loader.io.loadWholeText(root + "/" + file)
-                       name = objName.split(".")[0]
-                       f = open((root + "/" + file), "r")
-                       firstLine = f.read().replace("\r", "").split("\n")[0]
-                       f.close()
+                for item in rList:
+                    path = self.__pathToListOfObj(item + "/" + file)
+                    objRoot = self.objects
 
-                       listOfParams = firstLine.split("=")[1]
-                       key = name + "(" + listOfParams + ")"
-                       objRoot[key] = text
-
-                """
-                objRoot = self.objects
-                for objName in path:
-                    if objName not in objRoot:
-                       if objName.endswith(".asm"):
-                           text = self.__loader.io.loadWholeText(root + "/" + file)
+                    for objName in path:
+                        if objName.endswith(".asm") == False:
+                           objRoot = objRoot[objName]
+                        else:
+                           text = self.__loader.io.loadWholeText(item + "/" + file)
                            name = objName.split(".")[0]
-                           f = open((root + "/" + file), "r")
+                           f = open((item + "/" + file), "r")
                            firstLine = f.read().replace("\r", "").split("\n")[0]
                            f.close()
 
-                           listOfParams=firstLine.split("=")[1]
+                           listOfParams = firstLine.split("=")[1]
                            key = name + "(" + listOfParams + ")"
-
                            objRoot[key] = text
-                       else:
-                           objRoot[objName] = {}
-                           objRoot = objRoot[objName]
-                """
-        # print(self.objects)
+
+        #print(self.objects)
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -190,11 +183,29 @@ class ObjectMaster:
 
            path += "\\".join(listOfObjects) + ".asm"
 
+           rNum  = None
+           endIt = False
+
+           thatWord = ["missile", "player"]
+           for w in thatWord:
+               if w in path:
+                  for n in range(0, 2):
+                      rWord = w + str(n)
+                      if rWord in path:
+                         rNum  = str(n)
+                         path  = path.replace(rWord, w + "ß")
+                         endIt = True
+                         break
+                  if endIt: break
+
            theObject["path"]     = path
 
            f = open(path, "r")
            theObject["template"] = f.read()
            f.close()
+
+           if rNum != None:
+              theObject["template"] = theObject["template"].replace("ß", rNum)
 
            lines = theObject["template"].replace("\r", "").split("\n")
            pList = lines[0].split("=")[1].split(",")
@@ -206,7 +217,7 @@ class ObjectMaster:
                them = p.split("|")
                ok = True
                for item in them:
-                   if item not in validOnes:
+                   if item not in validOnes and item[1:-1] not in validOnes:
                        ok = False
                        break
                if ok:
@@ -248,7 +259,7 @@ class ObjectMaster:
                lineOfVar        = lines[num + 1].split("=")[1].split(",")
                last["replacer"] = lineOfVar[0]
                if len(lineOfVar) > 1:
-                  if last["param"] == "data":
+                  if last["param"] in ["data", "{data}"]:
                       last["folder"]    = lineOfVar[1]
                   else:
                       last["converter"] = lineOfVar[1]
@@ -290,6 +301,7 @@ class ObjectMaster:
             data.append("None")
             data.append("False")
 
+            #print(Command(self.__loader, name, ",".join(data)).params)
             return Command(self.__loader, name, ",".join(data))
         else:
             return None
