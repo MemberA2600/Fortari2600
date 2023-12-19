@@ -2332,14 +2332,7 @@ class FirstCompiler:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
             template     = objectThings["template"]
 
-            ok = True
-            saveIt = None
-            convert = ""
-            errType = None
-            val = ""
-            var = ""
             self.__temps = self.collectUsedTemps()
-            data = ""
             dataReplacers = {
                 "playfields": ["##NAME##", "playfield"]
             }
@@ -2348,13 +2341,23 @@ class FirstCompiler:
             template = objectThings["template"]
 
             for paramName in params.keys():
+                data = ""
+                ok = True
+                saveIt = None
+                convert = ""
+                errType = None
+                val = ""
+                var = ""
+
                 paramIndex  = int(paramName[-1]) - 1
                 pSettings   = objectThings["paramsWithSettings"][paramIndex]
                 validParams = pSettings["param"].split("|")
 
+                optional = False
                 for pNum in range(0, len(validParams)):
                     if validParams[pNum].startswith("{"):
                        validParams[pNum] = validParams[pNum][1:-1]
+                       optional = True
 
                 if params[paramName][1] not in validParams:
                    ok = False
@@ -2433,18 +2436,17 @@ class FirstCompiler:
 
                           self.bank1Data[name] = data
 
-                          if "optional" in objectThings.keys():
-                              optionalCounter += 1
-                              optF = objectThings["path"].split("\\")[-2]
-                              from os import getcwd
+                       if "optional" in objectThings.keys() and optional:
+                           optionalCounter += 1
+                           optP = "/".join(objectThings["path"].split("\\")[:-1])
 
-                              path = getcwd().replace("\\", "/") + "/templates/objects/game/" + optF + "/" + \
-                                     objectThings["optional"][optionalCounter] + ".asm"
-                              dataF = open(path, "r")
-                              optD = dataF.read()
-                              dataF.close()
+                           path  = optP + "/" + objectThings["optional"][optionalCounter] + ".asm"
+                           dataF = open(path, "r")
+                           optD  = dataF.read()
+                           dataF.close()
 
-                              print(optD)
+                           template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
+                                      optD, params[paramName], pSettings, optionalCounter, data))
 
             if self.__error == False:
                for item in objectThings["sysVars"]:
@@ -2479,6 +2481,16 @@ class FirstCompiler:
         if self.__error == True:
             print(line["compiled"])
             line["compiled"] = ""
+
+    def editOptionalTemplate(self, objectThings, optionalText, paramData, paramSettings, counter, data):
+        if objectThings["optional"][counter] in ('_heightOfPF'):
+           firstLine = data.split("\n")[0]
+           height    = int(firstLine.split("=")[1])
+           min = 26
+           max = 26 + (height - 42)
+           optionalText = optionalText.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+
+        return optionalText
 
     def checkIfCLDisFollowedBySED(self, linesFeteched, lineNum):
         lastvalidLine = -1

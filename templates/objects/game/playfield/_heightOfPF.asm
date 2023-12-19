@@ -1,7 +1,4 @@
 	LDA	#!!!Max!!!
-	CMP	#255
-	BEQ	#BANK#_#MAGIC#_Exit
-
 	CMP	pfIndex
 	BCS	#BANK#_#MAGIC#_SmallerThan
 	LDA	#!!!Max!!!
