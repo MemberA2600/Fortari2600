@@ -43,6 +43,7 @@ class ObjectMaster:
                     objRoot = self.objects
 
                     for objName in path:
+                        if objName.startswith("_"): continue
                         if objName.endswith(".asm") == False:
                            objRoot = objRoot[objName]
                         else:

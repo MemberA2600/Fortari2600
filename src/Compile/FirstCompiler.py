@@ -2332,28 +2332,33 @@ class FirstCompiler:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
             template     = objectThings["template"]
 
-            for paramName in params:
-                paramIndex = int(paramName[-1]) - 1
+            ok = True
+            saveIt = None
+            convert = ""
+            errType = None
+            val = ""
+            var = ""
+            self.__temps = self.collectUsedTemps()
+            data = ""
+            dataReplacers = {
+                "playfields": ["##NAME##", "playfield"]
+            }
+            optionalCounter = -1
 
-                ok      = True
-                saveIt  = None
-                convert = ""
-                errType = None
-                val     = ""
-                var     = ""
-                self.__temps = self.collectUsedTemps()
-                data    = ""
-                dataReplacers = {
-                    "playfields": ["##NAME##", "playfield"]
-                }
+            template = objectThings["template"]
 
+            for paramName in params.keys():
+                paramIndex  = int(paramName[-1]) - 1
                 pSettings   = objectThings["paramsWithSettings"][paramIndex]
                 validParams = pSettings["param"].split("|")
 
-                template = objectThings["template"]
+                for pNum in range(0, len(validParams)):
+                    if validParams[pNum].startswith("{"):
+                       validParams[pNum] = validParams[pNum][1:-1]
 
                 if params[paramName][1] not in validParams:
                    ok = False
+                #print(paramName, ok, params[paramName][1], validParams)
 
                 if ok:
                     if params[paramName][1] == "number":
@@ -2381,7 +2386,7 @@ class FirstCompiler:
                          pass
 
                     elif params[paramName][1] == "data":
-                        path  = self.__loader.mainWindow.projectPath + "/" + pSettings["folder"] + "/" + params[paramName][0] + ".asm"
+                        path  = self.__loader.mainWindow.projectPath + pSettings["folder"] + "/" + params[paramName][0] + ".asm"
                         dataF = open(path, "r")
                         data  = dataF.read()
                         dataF.close()
@@ -2428,25 +2433,38 @@ class FirstCompiler:
 
                           self.bank1Data[name] = data
 
-                if self.__error == False:
-                   for item in objectThings["sysVars"]:
-                       self.__exceptions.append(item)
-                       if item in self.__readOnly:
-                          self.__readOnly.remove(item)
+                          if "optional" in objectThings.keys():
+                              optionalCounter += 1
+                              optF = objectThings["path"].split("\\")[-2]
+                              from os import getcwd
 
-                   self.checkASMCode(template, line)
+                              path = getcwd().replace("\\", "/") + "/templates/objects/game/" + optF + "/" + \
+                                     objectThings["optional"][optionalCounter] + ".asm"
+                              dataF = open(path, "r")
+                              optD = dataF.read()
+                              dataF.close()
 
-                   for item in objectThings["sysVars"]:
-                       self.__exceptions.remove(item)
-                       if item not in self.__readOnly:
-                          self.__readOnly.append(item)
+                              print(optD)
 
-                   if self.__error == False:
-                      line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
-                      if "#MAGIC#" in line["compiled"]:
-                          self.__magicNumber += 1
-                          line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
-                      return
+            if self.__error == False:
+               for item in objectThings["sysVars"]:
+                   self.__exceptions.append(item)
+                   if item in self.__readOnly:
+                      self.__readOnly.remove(item)
+
+               self.checkASMCode(template, line)
+
+               for item in objectThings["sysVars"]:
+                   self.__exceptions.remove(item)
+                   if item not in self.__readOnly:
+                      self.__readOnly.append(item)
+
+            if self.__error == False:
+               line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
+               if "#MAGIC#" in line["compiled"]:
+                   self.__magicNumber += 1
+                   line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
+               return
 
         line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
         if "#MAGIC#" in line["compiled"]:
