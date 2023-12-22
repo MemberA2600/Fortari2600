@@ -433,10 +433,14 @@ class ObjectMaster:
                     found = True
 
                 else:
-                    for lvl3 in self.objects[lvl1][lvl2].keys():
-                        lvl3 = lvl3.split("(")[0]
-                        items.append([[lvl1, "object"], [lvl2, "object"], [lvl3, "process"]])
-                        found = True
+                    if type(self.objects[lvl1][lvl2]) == str:
+                       items.append([[lvl1, "object"], [lvl2, "process"], ["", ""]])
+                       found = True
+                    else:
+                       for lvl3 in self.objects[lvl1][lvl2].keys():
+                           lvl3 = lvl3.split("(")[0]
+                           items.append([[lvl1, "object"], [lvl2, "object"], [lvl3, "process"]])
+                           found = True
 
             if found == False: items.append([[lvl1, "object"], ["", ""], ["", ""]])
 

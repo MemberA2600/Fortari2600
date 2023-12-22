@@ -96,13 +96,12 @@ class FirstCompiler:
                                  "bin": r'^[b|%][0-1]{1,8}$',
                                  "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'}
 
-        self.__constants      = self.__editorBigFrame.collectConstantsFromSections(self.__currentBank)
         self.__currentSection = section
         self.__virtualMemory  = self.__loader.virtualMemory
         self.__config         = self.__loader.config
         self.__dictionaries   = self.__loader.dictionaries
         self.__startLine      = startLine
-
+        self.__constants      = self.__editorBigFrame.collectConstantsFromSections(self.__currentBank, self.__currentSection, True, None)
 
         self.__writable, self.__readOnly, self.__all, self.__nonSystem  = writable, readOnly, all, nonSystem
 
@@ -2328,6 +2327,8 @@ class FirstCompiler:
             else:
                line["compiled"] += "\tTSX\n\tSTX\titem\n" + self.__loader.io.loadCommandASM("returnFromBank1")
 
+        elif self.isCommandInLineThat(line, "const"):
+            line["compiled"] = ""
         else:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
             template     = objectThings["template"]

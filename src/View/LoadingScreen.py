@@ -54,6 +54,9 @@ class LoadingScreen():
         from SoundPlayer import SoundPlayer
         self.__loader.soundPlayer = SoundPlayer(self.__loader.config)
 
+        from ColorDict import ColorDict
+        self.__loader.colorDict = ColorDict(self.__loader)
+
         from IO import IO
         self.__loader.io = IO(self.__loader.dictionaries, self.__loader.config, self.__loader)
 
@@ -115,9 +118,6 @@ class LoadingScreen():
                                  self.__loader.jumpman, "png",
                                  (__w // 10, __h // 5, 1)
                                  )
-
-        from ColorDict import ColorDict
-        self.__loader.colorDict = ColorDict(self.__loader)
 
         from TiaTone import TiaTone
         self.__loader.tiaTone = TiaTone()

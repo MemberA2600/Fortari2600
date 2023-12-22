@@ -5,7 +5,7 @@ asm;[assembly];[common];command;None;brackets;[];[string {string}];None;None;Fal
 calc;[calculate compute comp];[common];command;None;brackets;[];[variable statement];write;None;False
 call;[exec execute];[common];command;None;brackets;[!subroutines];[subroutine {variable}];write;None;False
 case;[when];[common];command;None;brackets;[];[variable|number|statement|stringConst];read;None;False
-const;[constant];[common];command;None;brackets;[enter];[string number];None;None;False
+const;[constant];[common];command;None;brackets;[];[string number {string}];None;None;False
 cycle;[continue next];[common];command;None;None;[];None;None;None;False
 decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;False
 default;[other else];[common];command;None;None;[];None;None;None;False

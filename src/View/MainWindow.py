@@ -251,6 +251,7 @@ class MainWindow:
 
          self.__bigFrame = EditorBigFrame(self.__loader, self.__fullEditor)
          self.__loader.bigFrame = self.__bigFrame
+         self.sectionNames = __keys
 
 #self.__createSelectorFrame()
 

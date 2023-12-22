@@ -63,6 +63,7 @@ class IO:
 
     def loadSyntax(self):
         from Command import Command
+        import webcolors
 
         skipFirst = True
         for item in self.loadWholeText("config"+os.sep+"syntax.csv").split("\n"):
@@ -83,6 +84,41 @@ class IO:
             secondPart = item.split("=")[1].split(",")
             stringConstants[name]["alias"] = secondPart[0][1:-1].split(" ")
             stringConstants[name]["value"] = int(secondPart[1])
+
+        self.collectColorsConstants()
+        #for c in stringConstants:
+        #    print(c, stringConstants[c]["alias"])
+
+    def collectColorsConstants(self):
+        import webcolors
+
+        allColors = {}
+
+        for dictionary in [webcolors.HTML4_NAMES_TO_HEX,
+                           webcolors.CSS2_NAMES_TO_HEX ,
+                           webcolors.CSS21_NAMES_TO_HEX,
+                           webcolors.CSS3_NAMES_TO_HEX  ]:
+            for const in dictionary:
+                if const not in allColors.keys():
+                   allColors[const] = dictionary[const]
+
+        for color in allColors:
+            name = '"' + color + '"'
+            integerColor = webcolors.hex_to_rgb(dictionary[color])
+
+            self.__loader.stringConstants[name] = {"alias": [name.upper(), name[:2].upper() + name[2:].lower()],
+                                                   "value": self.__loader.colorDict.getClosestTIAColor(integerColor.red, integerColor.green, integerColor.blue).upper()}
+
+        for name in self.__loader.stringConstants:
+            if name in ("True", "False"): continue
+            secondAlias = self.__loader.stringConstants[name]["alias"][1]
+            for compareName in self.__loader.stringConstants:
+                if compareName in ("True", "False"): continue
+                if name[1:-1] in compareName[1:-1]:
+                   new = self.__loader.stringConstants[compareName]['alias'][1].replace(name[1:-1], secondAlias[1:-1])
+                   if new not in self.__loader.stringConstants[compareName]['alias']: \
+                                 self.__loader.stringConstants[compareName]['alias'].append(new)
+
 
     def loadRegOpCodes(self):
         return self.loadRegisters(), self.loadOpCodes()

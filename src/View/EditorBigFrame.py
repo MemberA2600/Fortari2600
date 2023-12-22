@@ -147,10 +147,11 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                           selectPosizions, errorPositions, "lineEditor", None, None)
+                           selectPosizions, errorPositions, "lineEditor", None, None, True)
 
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
+        self.__focused2.focus()
 
     def __insertSelectedFromBox(self):
         try:
@@ -202,7 +203,7 @@ class EditorBigFrame:
                      objectList = self.__objectMaster.getStartingObjects()
 
                      self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                                        selectPosizions, errorPositions, "lineEditor", None, None)
+                                        selectPosizions, errorPositions, "lineEditor", None, None, True)
                      break
 
     def getCurrentBank(self):
@@ -884,6 +885,8 @@ class EditorBigFrame:
         else:
            self.__codeBox.insert(0.0, text)
 
+        self.__focused  = self.__codeBox
+        self.__focused2 = self.__codeBox
         self.__codeBox.focus()
         self.__codeBox.mark_set(INSERT,
                                 str(self.__cursorPoz[0]) + ".0"
@@ -1049,12 +1052,15 @@ class EditorBigFrame:
 
         self.__codeBox.mark_set(INSERT, str(currentLineNum)+"."+ str(len(line)))
         self.__codeEditorItems["updateRow"].config(state = DISABLED)
-        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None)
+        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
+
+        self.__focused2 = self.__codeBox
+        self.__focused  = self.__codeBox
 
         self.__codeBox.focus()
 
     def focusOut(self, event):
-        self.__setTinting("whole")
+        self.__setTinting("wholeNoFocus")
         self.__loader.mainWindow.focusOut(event)
 
     def __loadFromMemory(self, bank, section):
@@ -1081,7 +1087,21 @@ class EditorBigFrame:
         t.start()
 
     def __tintingThread(self, mode):
+        focus = True
+
+        if type(mode) == str:
+            if "NoFocus" in mode:
+                mode  = "whole"
+                focus = False
+
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
+
+        if focus == True:
+           if self.__focused2 != None:
+              focused = self.__focused2
+           else:
+              focused = self.__codeBox
+
         self.__focused2 = self.__codeBox
 
         if self.__lastButton == "Return":
@@ -1098,20 +1118,19 @@ class EditorBigFrame:
 
         self.__subroutines = []
         self.__constants = deepcopy(self.__loader.stringConstants)
-        if self.__currentSection in self.__syntaxList["const"].sectionsAllowed:
-            self.__constants = self.collectConstantsFromSections(self.__currentBank)
 
         if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
             self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
 
         if mode == "whole":
+            self.__constants = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, False, 0)
             try:
                 self.__codeEditorItems["updateRow"].config(state=DISABLED)
             except:
                 pass
 
             for num in range (1, len(text)+1):
-               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True, None)
+               self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True, None, focus)
 
             for item in selectPosizions:
                 # print(item)
@@ -1125,8 +1144,11 @@ class EditorBigFrame:
             self.__saveCode()
 
         else:
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None)
+            self.__constants = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, False, mode-2)
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None, True)
 
+        if focus == True:
+           self.__focused2 = focused
 
     def __saveCode(self):
         text = self.__codeBox.get(0.0, END)
@@ -1155,11 +1177,11 @@ class EditorBigFrame:
         selectPosizions = []
         errorPositions = []
 
-        self.__lineTinting(line, objectList, lineNum, selectPosizions, errorPositions, "firstCompiler", None, text)
+        self.__lineTinting(line, objectList, lineNum, selectPosizions, errorPositions, "firstCompiler", None, text, False)
 
         return errorPositions
 
-    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole, text):
+    def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole, text, focus):
 
         lineEditorTempDict = {}
 
@@ -1667,9 +1689,10 @@ class EditorBigFrame:
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
-           self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
-        elif caller == "lineEditor":
+           if focus:
+              self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
 
+        elif caller == "lineEditor":
             for word in ["command", "param"]:
                 for num in range(1, 4):
                     key = word + "#" + str(num)
@@ -1725,7 +1748,8 @@ class EditorBigFrame:
                     self.configTheItem("command#3", "error")
                     lineEditorTempDict["command#3"] = "error"
 
-            self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
+            if focus:
+               self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
 
     def infiniteLoop(self, text, firstPoz, lastPoz):
 
@@ -1832,6 +1856,20 @@ class EditorBigFrame:
                   )
 
            elif entryType == "param":
+               strdelimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
+
+               delimiter = '"'
+               startsWithDelimiter = False
+               endsWithDelimiter = False
+               if len(currentWord) > 0:
+                   for d in strdelimiters:
+                       if currentWord[0] == d:
+                           delimiter = d
+                           startsWithDelimiter = True
+                           if currentWord[-1] == d and len(currentWord) > 1:
+                               endsWithDelimiter = True
+                           break
+
                mustHave = True
                try:
                    listType = commandParams[entryNum - 1]
@@ -1856,6 +1894,17 @@ class EditorBigFrame:
                   foundIt, paramTypeAndDimension = self.checkIfParamIsOK(listType, currentWord,
                                                                             ioMethod, None,
                                                                             "dummy", mustHave, selectedType, currentLineStructure, text)
+
+                  if (foundIt == False or paramTypeAndDimension[0] == "error") and startsWithDelimiter and\
+                      endsWithDelimiter == False and "stringConst" in listType:
+                      for key in self.__constants:
+                          if len(currentWord) > len(key): continue
+                          if key.lower().startswith(currentWord.lower().replace(delimiter, '"')):
+                             paramTypeAndDimension[0] = "stringConst"
+                             foundIt                  = True
+                             currentWord              = currentWord.lower()
+                             break
+
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
@@ -1912,7 +1961,6 @@ class EditorBigFrame:
 
     def __updateListBoxFromCodeEditor(self, currentWord, lineStructure, paramTypes, line, text):
         from copy import deepcopy
-
         cursorIn     = None
         wordsForList = []
         noneList     = ["", None, "None"]
@@ -1950,25 +1998,38 @@ class EditorBigFrame:
 
         listType = cursorIn
 
+        objDelimiters = self.__config.getValueByKey("validObjDelimiters").split(" ")
+        strdelimiters = self.__config.getValueByKey("validStringDelimiters").split(" ")
+
+        delimiter           = '"'
+        startsWithDelimiter = False
+        endsWithDelimiter   = False
+        if len(currentWord) > 0:
+           for d in strdelimiters:
+               if currentWord[0] == d:
+                  delimiter           = d
+                  startsWithDelimiter = True
+                  if currentWord[-1] == d and len(currentWord) > 1:
+                     endsWithDelimiter = True
+                  break
+
         if  cursorIn == "overIt":
             listType  = None
 
         elif (currentWord in noneList and lineStructure[cursorIn] not in noneList) or \
-              currentWord == lineStructure[cursorIn][0]:
+              currentWord == lineStructure[cursorIn][0] or startsWithDelimiter:
 
         #elif currentWord == lineStructure[cursorIn][0]:
            if cursorIn == "command" and len(currentWord) > 0:
-               if currentWord[-1] in self.__config.getValueByKey("validObjDelimiters").split(" "):
+               if currentWord[-1] in objDelimiters:
                   listType = "nextObject"
 
            elif cursorIn.startswith("param#"):
                paramNum = int(cursorIn[-1]) - 1
-
                params, ioMethod = self.returnParamsOfObjects(lineStructure["command"][0])
                if paramNum > len(params) - 1:
                   listType = None
                else:
-
                   paramType = params[paramNum]
                   dimension = lineStructure[cursorIn][1]
 
@@ -1980,6 +2041,16 @@ class EditorBigFrame:
                   foundIt, paramTypeAndDimension = self.checkIfParamIsOK(paramType, lineStructure[cursorIn][0],
                                                                             ioMethod, None,
                                                                             dimension, mustHave, cursorIn, lineStructure, text)
+
+                  if foundIt == False and startsWithDelimiter and endsWithDelimiter == False and "stringConst" in paramType:
+                      for key in self.__constants:
+                          if len(currentWord) > len(key): continue
+                          if key.lower().startswith(currentWord.lower().replace(delimiter, '"')):
+                             paramTypeAndDimension[0] = "stringConst"
+                             foundIt                  = True
+                             currentWord              = currentWord.lower()
+                             break
+
                   if foundIt == True:
                      listType = paramTypeAndDimension[0]
                   else:
@@ -2168,7 +2239,7 @@ class EditorBigFrame:
                    wordsForList.append([array, "array"])
 
         elif listType == "stringConst" and varOnly == False:
-             constantList = self.collectConstantsFromSections(self.__currentBank)
+             constantList = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, True, None)
              for word in constantList:
                  if word.startswith(currentWord) or currentWord == "":
                      wordsForList.append([word, "stringConst"])
@@ -2186,26 +2257,51 @@ class EditorBigFrame:
         wordsForList.sort()
         return(wordsForList)
 
-    def collectConstantsFromSections(self, bank):
+    def collectConstantsFromSections(self, bank, section, include, stopLineNum):
         from copy import deepcopy
 
         constants = {}
-        constants['"True"']  = self.__loader.stringConstants['"True"']
-        constants['"False"'] = self.__loader.stringConstants['"False"']
+        for c in self.__loader.stringConstants.keys():
+            constants[c]  = self.__loader.stringConstants[c]
 
-        for section in self.__syntaxList["const"].sectionsAllowed:
-            code = self.__virtualMemory.codes[bank][section].code.replace("\r", "").replace("\t", "").split("\n")
+        for bNum in range(1, 9):
+            bankNum = "bank" + str(bNum)
+            for sect in self.__syntaxList["const"].sectionsAllowed:
+                if sect not in self.__virtualMemory.codes[bankNum]:
+                   continue
 
-            for lineNum in range(0, len(code)):
-                lineStructure = self.getLineStructure(lineNum, code, False)
-                if lineStructure["command"][0] == "const" or lineStructure["command"][0] in self.__syntaxList["const"].alias:
-                   param1 = lineStructure["param#1"]
-                   param2 = lineStructure["param#2"]
+                if sect not in self.__loader.mainWindow.sectionNames:
+                   continue
 
-                   constants[param1[0]] = {
-                       "alias": [param1[0].upper(), param1[0].lower()],
-                       "value": param2[0]
-                   }
+                code = self.__virtualMemory.codes[bankNum][sect].code.replace("\r", "").replace("\t", "").split("\n")
+
+                for lineNum in range(0, len(code)):
+                    if len(code[lineNum]) == 0: continue
+                    if code[lineNum][0] in ["*", "#"]: continue
+
+                    lineStructure = self.getLineStructure(lineNum, code, False)
+                    if lineStructure["command"][0] == "const" or lineStructure["command"][0] in self.__syntaxList["const"].alias:
+                       param1 = lineStructure["param#1"]
+                       param2 = lineStructure["param#2"]
+                       param3 = lineStructure["param#3"]
+
+                       if param3[0] not in ["None", None, ""]:
+                          validity = param3[0].lower()
+                       else:
+                          validity = "bank"
+
+                       if  validity == "global"                                          \
+                       or (validity == "bank"    and bank == bankNum)                    \
+                       or (validity == "section" and bank == bankNum and sect == section):
+                           if include == False and stopLineNum <= lineNum:
+                              if   validity == "section"                                        : break
+                              elif validity == "bank"    and section == sect                    : break
+                              elif validity == "global"  and section == sect and bank == bankNum: break
+
+                           constants[param1[0]] = {
+                              "alias": [param1[0].upper(), param1[0].lower()],
+                              "value": param2[0]
+                           }
 
         return constants
 
@@ -2496,8 +2592,17 @@ class EditorBigFrame:
         else:
             command = self.__objectMaster.createFakeCommandOnObjectProcess(lineStructure["command"][0])
 
+        blockStringConst = False
+        listOfBlockers   = ["const"]
+
+        for c in listOfBlockers:
+            if lineStructure["command"][0] == c or \
+               lineStructure["command"][0] in self.__syntaxList[c].alias:
+               blockStringConst = True
+               break
 
         paramTypeList = paramType.split("|")
+        delimiters = self.__config.getValueByKey("validStringDelimiters")
 
         if self.doesItWriteInParam(lineStructure, cursorIn, "editor") == False:
            #if lineStructure["command"][0] == "add" and cursorIn == "param#1": print("!!!")
@@ -2514,7 +2619,11 @@ class EditorBigFrame:
         for pType in paramTypeList:
             if foundIt == True: break
 
-            if param in noneList: continue
+            if param in noneList:
+               foundStartOfString = False
+               #print(cursorIn, lineStructure)
+
+               if foundStartOfString == False: continue
 
             printMe = False
 
@@ -2581,7 +2690,6 @@ class EditorBigFrame:
                 if varOnly: continue
                 if printMe: print(pType)
 
-                delimiters = self.__config.getValueByKey("validStringDelimiters")
                 errorLevel = -1
 
                 if param[0] in delimiters:
@@ -2610,7 +2718,11 @@ class EditorBigFrame:
 
                           if stringConst == True:
                              foundIt = True
-                             returnBack.append(["stringConst", dimension])
+
+                             if blockStringConst:
+                                returnBack.append(["string"     , dimension])
+                             else:
+                                returnBack.append(["stringConst", dimension])
                           else:
                              if pType == "string":
                                 foundIt = True
@@ -2660,6 +2772,7 @@ class EditorBigFrame:
            else:
               returnBack.append(["error", dimension])
 
+        #print(returnBack)
         if sendBack: return foundIt, returnBack[-1]
 
     def getListOfData(self, object):
@@ -2967,8 +3080,14 @@ class EditorBigFrame:
                     "alias": [param1[0].upper(), param1[0].lower()],
                     "value": param2[0]
                  }
+
            elif returnBack[0][0] == "stringConst":
                returnBack[0][0] = "error"
+
+           if currentLineStructure["param#3"][0] not in ["", None, "None"]:
+              if returnBack[2][0] == "string":
+                 if currentLineStructure["param#3"][0].lower()[1:-1] not in ("section", "bank", "global"):
+                    returnBack[2][0] = "error"
 
         elif command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
            if returnBack[0][0] == "string":
@@ -3398,6 +3517,7 @@ class EditorBigFrame:
                       if paramNum > 2: break
                       paramStart = paramEnd + 2
 
+
             for key in lineStructure:
                 if type(lineStructure[key]) == list and key != "commas":
                    if lineStructure[key][0] != None:
@@ -3452,6 +3572,7 @@ class EditorBigFrame:
             if "fullLine" not in lineStructure and "command" in lineStructure: self.getFullLine(lineStructure)
         except:
             pass
+
         return(lineStructure)
 
     def getFullLine(self, line):
@@ -3483,11 +3604,10 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__theNumOfLine = lineStructure["lineNum"]
-        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None, None)
+        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None, None, True)
 
     def __focusOut(self, event):
         #print(event.type)
-
         if event.widget in self.__focusOutItems:
            if event.type == "FocusOut":
               self.__focused = None
@@ -3502,7 +3622,7 @@ class EditorBigFrame:
            #objectList.append("game")
 
            self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                              selectPosizions, errorPositions, "lineEditor", None, None)
+                              selectPosizions, errorPositions, "lineEditor", None, None, True)
 
 
     def __getFakeLine(self, source):
