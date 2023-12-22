@@ -1427,9 +1427,9 @@ class EditorBigFrame:
            """
 
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
-                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True or
-               (currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
-               self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
+               self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True): # or
+               #(currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
+               #self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == False):
                     addError = True
                     #print("#1")
                     if caller == 'firstCompiler':
@@ -1438,8 +1438,8 @@ class EditorBigFrame:
                              errorPositions.append(["bracket", "missingOpeningBracket", currentLineStructure["lineNum"]])
                           if currentLineStructure[")"] == -1:
                              errorPositions.append(["bracket", "missingClosingBracket", currentLineStructure["lineNum"]])
-                       else:
-                           errorPositions.append(["bracket", "commandDoesNotNeedBrackets", currentLineStructure["lineNum"]])
+                       #else:
+                       #    errorPositions.append(["bracket", "commandDoesNotNeedBrackets", currentLineStructure["lineNum"]])
 
            #print(errorPositions, addError, currentLineStructure["command"][0])
 
@@ -1823,7 +1823,6 @@ class EditorBigFrame:
                                wordList.append(item)
                          elif  item[0].startswith(lineEditorTempDict["command#1"] or item[0] == ""):
                                wordList.append(item)
-
 
               if listOfItems == []:
                   listOfItems = self.__objectMaster.returnObjListLike(

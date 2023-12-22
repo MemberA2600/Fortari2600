@@ -2367,7 +2367,10 @@ class FirstCompiler:
                     if params[paramName][1] == "number":
                        try:
                           numVal = self.__editorBigFrame.convertStringNumToNumber(params[paramName][0])
-                          saveIt = "#" + str(numVal)
+                          if objectThings["extension"] == "aam":
+                              saveIt = "#" + str(numVal)
+                          else:
+                              saveIt = str(numVal)
                        except:
                           ok = False
                           errType = "NotValidNumber"
@@ -2379,7 +2382,10 @@ class FirstCompiler:
                              if const == params[paramName][0]:
                                  try:
                                      numVal = self.__editorBigFrame.convertStringNumToNumber(self.__constants[const])
-                                     saveIt = "#" + str(numVal)
+                                     if objectThings["extension"] == "aam":
+                                        saveIt = "#" + str(numVal)
+                                     else:
+                                        saveIt = str(numVal)
                                      break
                                  except:
                                      ok = False
@@ -2448,18 +2454,24 @@ class FirstCompiler:
                            template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
                                       optD, params[paramName], pSettings, optionalCounter, data))
 
+                       if objectThings["extension"] == "a26":
+                           template = template.split("\n")
+                           for lineNum in range(0, len(template)):
+                               subLine = template[lineNum]
+                               if len(subLine) > 0:
+                                  if subLine[0] not in ["*", "#", "!"] and subLine.isspace() == False:
+                                     lineStruct = self.__editorBigFrame.getLineStructure(0, [subLine], False)
+                                     self.exceptionList(objectThings["sysVars"], "add")
+                                     self.processLine(lineStruct, linesFeteched)
+                                     self.exceptionList(objectThings["sysVars"], "delete")
+                                     template[lineNum] = lineStruct["compiled"]
+
+                           template = "\n".join(template)
+
             if self.__error == False:
-               for item in objectThings["sysVars"]:
-                   self.__exceptions.append(item)
-                   if item in self.__readOnly:
-                      self.__readOnly.remove(item)
-
+               self.exceptionList(objectThings["sysVars"], "add")
                self.checkASMCode(template, line)
-
-               for item in objectThings["sysVars"]:
-                   self.__exceptions.remove(item)
-                   if item not in self.__readOnly:
-                      self.__readOnly.append(item)
+               self.exceptionList(objectThings["sysVars"], "delete")
 
             if self.__error == False:
                line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
@@ -2468,19 +2480,35 @@ class FirstCompiler:
                    line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
                return
 
-        line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
-        if "#MAGIC#" in line["compiled"]:
-            self.__magicNumber += 1
-            line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
+        if self.__error == False:
+           line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
 
-        line["compiled"] = self.LDATAYLDA(self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"])))
-        if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
+           if "#MAGIC#" in line["compiled"]:
+              self.__magicNumber += 1
+              line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
 
-        if line["lineNum"] > 0: self.checkIfCLDisFollowedBySED(linesFeteched, line["lineNum"])
+           line["compiled"] = self.LDATAYLDA(self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"])))
+           if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
 
-        if self.__error == True:
-            print(line["compiled"])
+           if line["lineNum"] > 0: self.checkIfCLDisFollowedBySED(linesFeteched, line["lineNum"])
+
+        else:
+            if "compiled" in line:
+                print(line["compiled"])
             line["compiled"] = ""
+
+    def exceptionList(self, source, method):
+        for item in source:
+            if method == "add":
+               self.__exceptions.append(item)
+               if item in self.__readOnly:
+                  self.__readOnly.remove(item)
+            else:
+               self.__exceptions.remove(item)
+               if item not in self.__readOnly:
+                  self.__readOnly.append(item)
+
+
 
     def editOptionalTemplate(self, objectThings, optionalText, paramData, paramSettings, counter, data):
         if objectThings["optional"][counter] in ('_heightOfPF'):

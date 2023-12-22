@@ -8,6 +8,7 @@ class Command:
         self.name   = name
 
         data = string.split(",")
+
         if data[0]!= "[]":
             self.alias = data[0][1:-1].split(" ")
         else:

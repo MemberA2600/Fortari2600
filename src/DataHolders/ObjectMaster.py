@@ -44,17 +44,21 @@ class ObjectMaster:
 
                     for objName in path:
                         if objName.startswith("_"): continue
-                        if objName.endswith(".asm") == False:
+                        if objName.endswith(".asm") == False and objName.endswith(".a26") == False:
                            objRoot = objRoot[objName]
                         else:
                            text = self.__loader.io.loadWholeText(item + "/" + file)
                            name = objName.split(".")[0]
                            f = open((item + "/" + file), "r")
+
                            firstLine = f.read().replace("\r", "").split("\n")[0]
                            f.close()
 
-                           listOfParams = firstLine.split("=")[1]
-                           key = name + "(" + listOfParams + ")"
+                           if firstLine[0] in ["*", "#"]:
+                              listOfParams = firstLine.split("=")[1]
+                              key = name + "(" + listOfParams + ")"
+                           else:
+                              key = name
                            objRoot[key] = text
 
         #print(self.objects)
@@ -87,7 +91,7 @@ class ObjectMaster:
                           path = "templates/objects/screenItems/" + typ + "/"
                           for root, dirs, files in os.walk(path):
                               for file in files:
-                                  if file.endswith(".asm"):
+                                  if file.endswith(".asm") or file.endswith("a26"):
                                       f = open((root + "/" + file), "r")
                                       txtToSave = self.__loader.io.loadWholeText(root + "/" + file)
                                       f.close()
@@ -160,7 +164,7 @@ class ObjectMaster:
                 pointer = pointer[item]
                 level  += 1
 
-        except Exception:
+        except Exception as e:
             pass
 
         if listOfObjects[0] == "currentBank":
@@ -168,6 +172,7 @@ class ObjectMaster:
         else:
            theObject["screen"] = False
 
+        if level > len(listOfObjects): level = len(listOfObjects)
         theObject["level"] = level
 
         if theObject["level"] == 2 + theObject["screen"]:
@@ -183,6 +188,17 @@ class ObjectMaster:
               path += "game\\"
 
            path += "\\".join(listOfObjects) + ".asm"
+
+           from os.path import exists
+           if exists(path):
+              theObject["extension"] = "asm"
+           else:
+              path = path[:-3] + "a26"
+              if exists(path):
+                  theObject["extension"] = "a26"
+              else:
+                  path                   = None
+                  theObject["extension"] = None
 
            rNum  = None
            endIt = False
@@ -209,7 +225,11 @@ class ObjectMaster:
               theObject["template"] = theObject["template"].replace("ß", rNum)
 
            lines = theObject["template"].replace("\r", "").split("\n")
-           pList = lines[0].split("=")[1].split(",")
+           try:
+               pList = lines[0].split("=")[1].split(",")
+           except:
+               pList = []
+
            theObject["params"] = []
            validOnes = ["variable", "string", "stringConst", "number", "data"]
 
@@ -234,24 +254,44 @@ class ObjectMaster:
                if len(line) == 0:
                   continue
 
-               if line[0] in ["*", "#"]:
+               if line[0] in ["*", "#", "!"]:
                   continue
 
-               if len(re.findall(r'ST[AYX][\s\t]+#VAR', line)) > 0: theObject["ioMethod"] = "write"
+               if theObject["extension"] == "asm":
+                   if theObject["ioMethod"] != "write":
+                      if len(re.findall(r'ST[AYX][\s\t]+#VAR', line)) > 0: theObject["ioMethod"] = "write"
 
-               line    = line.replace("\t", " ").split(";")[0].split(" ")
-               newLine = []
-               for item in line:
-                   if item != "": newLine.append(item)
+                   line    = line.replace("\t", " ").split(";")[0].split(" ")
+                   newLine = []
+                   for item in line:
+                       if item != "": newLine.append(item)
 
-               line = newLine
-               if len(line) > 1:
-                  operand = line[1].split(",")[0]
-                  var = self.__loader.virtualMemory.getVariableByName2(operand)
-                  if var != False:
-                     if var.system == True: theObject["sysVars"].append(operand)
+                   line = newLine
+                   if len(line) > 1:
+                      operand = line[1].split(",")[0]
+                      var = self.__loader.virtualMemory.getVariableByName2(operand)
+                      if var != False:
+                         if var.system == True: theObject["sysVars"].append(operand)
+               else:
+                   theCommand = line.split("(")[0]
+                   if theObject["ioMethod"] != "write":
+                      for commandKey in self.__loader.syntaxList.keys():
+                          if theCommand == commandKey or theCommand in self.__loader.syntaxList[commandKey].alias:
+                             commandObj = self.__loader.syntaxList[commandKey]
+                             if commandObj.does == "write": theObject["ioMethod"] = commandObj.does
+                             break
+                   try:
+                      ppp     = line.split("(")[1].split(")")[0].split(",")
+                      for pNum in range(0, len(ppp)):
+                          ppp[pNum] = ppp[pNum].strip()
+                          var = self.__loader.virtualMemory.getVariableByName2(ppp[pNum])
+                          if var != False:
+                             if var.system == True: theObject["sysVars"].append(ppp[pNum])
 
-
+                   except Exception as e:
+                      # print(str(e))
+                      pass
+           #print(theObject["sysVars"])
            theObject["paramsWithSettings"] = []
            for num in range(0, len(theObject["params"])):
                theObject["paramsWithSettings"].append({})
@@ -263,7 +303,8 @@ class ObjectMaster:
                   if last["param"] in ["data", "{data}"]:
                       last["folder"]    = lineOfVar[1]
                   else:
-                      last["converter"] = lineOfVar[1]
+                      if len(lineOfVar) > 1:
+                         last["converter"] = lineOfVar[1]
 
            nextIndex = len(theObject["params"]) + 1
            for index in range(nextIndex, len(lines)):
@@ -295,7 +336,10 @@ class ObjectMaster:
             data.append("[common]")
             data.append("command")
             data.append("None")
-            data.append("brackets")
+            if len(object["params"]) > 0:
+               data.append("brackets")
+            else:
+               data.append("None")
             data.append("[]")
             data.append("[" + " ".join(object["params"]) + "]")
             data.append(object["ioMethod"])
@@ -445,14 +489,14 @@ class ObjectMaster:
         for lvl1 in self.objects.keys():
             if name.upper() == lvl1.upper(): return "object"
             for lvl2 in self.objects[lvl1].keys():
-                if name.upper() == lvl2.split("(")[0].upper():
+                if name.upper() == lvl2.split("(")[0].upper() or name.upper() == lvl2.upper():
                    if type(self.objects[lvl1][lvl2]) == dict:
                       return "object"
                    else:
                       return "process"
                 if type(self.objects[lvl1][lvl2]) == dict:
                    for lvl3 in self.objects[lvl1][lvl2].keys():
-                       if self.objects[lvl1][lvl2][lvl3].split("(")[0].upper() == name.upper(): return "process"
+                       if lvl3.upper().split("(")[0] == name.upper() or name.upper() == lvl3.upper(): return "process"
 
     def getObjectsAndProcessesValidForGlobalAndBank(self):
         # It assumes there are up to 3 levels

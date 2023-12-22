@@ -4,7 +4,7 @@
 * direction=TO
 * optional=_heightOfPF
 *
-	LDA	#VAR01#		; &COLOR
+	LDA	#VAR01#		
 !!!to8bit!!!
 	STA	pfIndex
 !!!Optional!!!
