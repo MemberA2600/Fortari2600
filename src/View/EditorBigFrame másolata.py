@@ -28,7 +28,7 @@ class EditorBigFrame:
         self.__subroutines = []
         self.__removeThese = ['local_variables', 'screen_bottom', 'screen_top', 'special_read_only']
 
-        #self.__focused = None
+        self.__focused = None
         self.__screenSize = self.__loader.screenSize
         self.__counter    = 0
         self.__counter2    = 0
@@ -39,14 +39,10 @@ class EditorBigFrame:
 
         self.__destroyables = {}
         self.__lastButton   = None
-        #self.__focused2 = None
+        self.__focused2 = None
         #self.__searchLine = 0
 
         self.__lbFocused = False
-        self.__lastFocusedEditorItem = None
-        self.__codeEditorocused      = False
-        self.__lineEditorFocused     = False
-        self.__lineEditorFocusedItem = None
 
         self.exiters = ["exit", "goto", "return", "leave", "resetScreen", "resetGame"]
         self.__unreachableLVL = -1
@@ -138,7 +134,6 @@ class EditorBigFrame:
 
         self.loadCurrentFromMemory()
 
-    """
     def __focusIn(self, event):
         self.__focused  = event.widget
         self.__focused2 = event.widget
@@ -154,11 +149,9 @@ class EditorBigFrame:
         self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
                            selectPosizions, errorPositions, "lineEditor", None, None, True)
 
-    """
-
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
-        #self.__focused2.focus()
+        self.__focused2.focus()
 
     def __insertSelectedFromBox(self):
         try:
@@ -166,10 +159,10 @@ class EditorBigFrame:
         except:
             return
 
-        #if self.__focused2 == None:
-        #   return
+        if self.__focused2 == None:
+           return
 
-        if self.__lastFocusedEditorItem == self.__codeBox:
+        if self.__focused2 == self.__codeBox:
            text = self.__codeBox.get(0.0, END).split("\n")
            theLine = text[self.__cursorPoz[0]-1]
            currentWord = self.getCurrentWord(theLine)
@@ -197,7 +190,7 @@ class EditorBigFrame:
            for itemName in self.__codeEditorItems.keys():
                item = self.__codeEditorItems[itemName]
                if type(item) == list:
-                  if item[1] == self.__lastFocusedEditorItem:
+                  if item[1] == self.__focused2:
                      item[0].set(selected)
                      item[1].focus()
                      item[1].icursor(len(selected))
@@ -355,15 +348,11 @@ class EditorBigFrame:
         self.__codeBox.bind("<Key>", self.__keyPressed)
         self.__codeBox.bind("<KeyRelease>", self.__keyReleased)
         self.__codeBox.bind("<MouseWheel>", self.__mouseWheel)
-        #self.__codeBox.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
-        #self.__codeBox.bind("<FocusOut>", self.focusOut)
-        #self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
+        self.__codeBox.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
+        self.__codeBox.bind("<FocusOut>", self.focusOut)
+        self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
 
         self.__editor.editor.bind("<Insert>", self.__insertPressed)
-        self.__codeBox.bind("<FocusOut>", self.__focusOutCodeEditor)
-        self.__codeBox.bind("<ButtonRelease-1>", self.__focusInCodeEditor)
-        self.__codeBox.bind("<FocusIn>", self.__focusInCodeEditor)
-
 
         self.__currentBank    = "bank2"
         self.__currentSection = "overscan"
@@ -854,14 +843,9 @@ class EditorBigFrame:
                     entry.pack(side=TOP, anchor=N, fill=BOTH)
                     self.__focusOutItems.append(entry)
 
-                entry.bind("<KeyRelease>", self.__focusInLineEditorEntry)
-                entry.bind("<FocusOut>", self.__focusOutLineEditorEntry)
-                entry.bind("<FocusIn>", self.__focusInLineEditorEntry)
-                entry.bind("<ButtonRelease-1>", self.__focusInLineEditorEntry)
-
-                #entry.bind("<FocusOut>", self.__focusOut)
-                #entry.bind("<FocusIn>", self.__focusIn)
-                #entry.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
+                entry.bind("<KeyRelease>", self.__focusOut)
+                entry.bind("<FocusOut>", self.__focusOut)
+                entry.bind("<FocusIn>", self.__focusIn)
 
                 codeEditorItems[self.__words[num]] = [entryVar, entry]
 
@@ -877,52 +861,6 @@ class EditorBigFrame:
                     button.pack(fill=X)
 
                 codeEditorItems[self.__words[num]] = button
-
-    # List of variables:
-    # -------------------
-    # self.__lastFocusedEditorItem
-    # self.__codeEditorocused
-    # self.__lineEditorFocused
-    # self.__lineEditorFocusedItem
-
-    def __focusInCodeEditor(self, event):
-        self.__lastFocusedEditorItem = self.__codeBox
-        self.__codeEditorocused      = True
-        self.__loader.mainWindow.focusIn(event)
-
-        selectPosizions = []
-        errorPositions  = []
-        objectList = self.__objectMaster.getStartingObjects()
-        objectList.append("game")
-
-        self.__codeEditorItems["updateRow"].config(state = DISABLED)
-        self.setCurzorPoz()
-
-        line = self.__codeBox.get(0.0, END).split("\n")[self.__cursorPoz[0]-1]
-        self.__lineTinting(line, objectList, self.__cursorPoz[0]-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
-
-    def __focusOutCodeEditor(self, event):
-        self.__codeEditorocused      = False
-
-    def __focusInLineEditorEntry(self, event):
-        self.__lastFocusedEditorItem = event.widget
-        self.__lineEditorFocusedItem = event.widget
-        self.__lineEditorFocused     = True
-        self.__loader.mainWindow.focusIn(event)
-        self.__codeEditorItems["updateRow"].config(state = NORMAL)
-
-        textToPrint = self.__getFakeLine(self.__codeEditorItems)
-
-        selectPosizions = []
-        errorPositions = []
-        objectList = self.__objectMaster.getStartingObjects()
-
-        self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                           selectPosizions, errorPositions, "lineEditor", None, None, True)
-
-    def __focusOutLineEditorEntry(self, event):
-        self.__lineEditorFocusedItem = None
-        self.__lineEditorFocused     = False
 
 
     def reIndent(self):
@@ -947,9 +885,9 @@ class EditorBigFrame:
         else:
            self.__codeBox.insert(0.0, text)
 
-        #self.__focused  = self.__codeBox
-        #self.__focused2 = self.__codeBox
-        #self.__codeBox.focus()
+        self.__focused  = self.__codeBox
+        self.__focused2 = self.__codeBox
+        self.__codeBox.focus()
         self.__codeBox.mark_set(INSERT,
                                 str(self.__cursorPoz[0]) + ".0"
                                 )
@@ -1116,16 +1054,14 @@ class EditorBigFrame:
         self.__codeEditorItems["updateRow"].config(state = DISABLED)
         self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
 
-        #self.__focused2 = self.__codeBox
-        #self.__focused  = self.__codeBox
+        self.__focused2 = self.__codeBox
+        self.__focused  = self.__codeBox
 
         self.__codeBox.focus()
 
-    """
     def focusOut(self, event):
         self.__setTinting("wholeNoFocus")
         self.__loader.mainWindow.focusOut(event)
-    """
 
     def __loadFromMemory(self, bank, section):
         #if self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed == True:
@@ -1160,7 +1096,6 @@ class EditorBigFrame:
 
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
-        """
         if focus == True:
            if self.__focused2 != None:
               focused = self.__focused2
@@ -1168,7 +1103,6 @@ class EditorBigFrame:
               focused = self.__codeBox
 
         self.__focused2 = self.__codeBox
-        """
 
         if self.__lastButton == "Return":
             mode = "whole"
@@ -1211,12 +1145,10 @@ class EditorBigFrame:
 
         else:
             self.__constants = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, False, mode-2)
-            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None, focus)
+            self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None, True)
 
-        """
         if focus == True:
            self.__focused2 = focused
-        """
 
     def __saveCode(self):
         text = self.__codeBox.get(0.0, END)
@@ -1251,7 +1183,6 @@ class EditorBigFrame:
 
     def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole, text, focus):
 
-        self.__foundError = False
         lineEditorTempDict = {}
 
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
@@ -1766,7 +1697,6 @@ class EditorBigFrame:
                 for num in range(1, 4):
                     key = word + "#" + str(num)
                     if key not in lineEditorTempDict and self.__codeEditorItems[key][0].get() != "":
-                       self.__foundError = True
                        lineEditorTempDict[key] = "error"
 
             if "command#1" in lineEditorTempDict.keys():
@@ -1775,13 +1705,11 @@ class EditorBigFrame:
                        secondWord = "command#" + str(secondNum)
                        if secondWord in lineEditorTempDict:
                            if lineEditorTempDict[secondWord] != "":
-                              self.__foundError = True
                               self.configTheItem(secondWord, "error")
                               lineEditorTempDict[secondWord] = "error"
 
                 elif lineEditorTempDict["command#1"] == "object":
                      if "command#2" not in lineEditorTempDict.keys():
-                         self.__foundError = True
                          self.configTheItem("command#2", "error")
                          lineEditorTempDict["command#2"] = "error"
 
@@ -1789,14 +1717,12 @@ class EditorBigFrame:
                      elif lineEditorTempDict["command#2"] not in ("object", "process"):
                          self.configTheItem("command#2", "error")
                          lineEditorTempDict["command#2"] = "error"
-                         self.__foundError = True
 
 
                      if lineEditorTempDict["command#2"] == "object":
                          if "command#3" not in lineEditorTempDict.keys():
                            self.configTheItem("command#3", "error")
                            lineEditorTempDict["command#3"] = "error"
-                           self.__foundError = True
 
                 if "command#2" in lineEditorTempDict and\
                    "command#3" in lineEditorTempDict:
@@ -1804,37 +1730,26 @@ class EditorBigFrame:
                        lineEditorTempDict["command#3"] != "":
                        self.configTheItem("command#3", "error")
                        lineEditorTempDict["command#3"] = "error"
-                       self.__foundError = True
-
                     elif lineEditorTempDict["command#3"] != "process":
                        self.configTheItem("command#3", "error")
                        lineEditorTempDict["command#3"] = "error"
-                       self.__foundError = True
 
             if "param#1" not in lineEditorTempDict.keys():
                if "param#2" in lineEditorTempDict.keys():
                    self.configTheItem("command#2", "error")
                    lineEditorTempDict["command#2"] = "error"
-                   self.__foundError = True
 
                if "param#3" in lineEditorTempDict.keys():
                    self.configTheItem("command#3", "error")
                    lineEditorTempDict["command#3"] = "error"
-                   self.__foundError = True
 
             elif "param#2" not in lineEditorTempDict.keys():
                 if "param#3" in lineEditorTempDict.keys():
                     self.configTheItem("command#3", "error")
                     lineEditorTempDict["command#3"] = "error"
-                    self.__foundError = True
 
             if focus:
                self.updateListBoxFromLineEditor(currentLineStructure, commandParams, lineEditorTempDict, text)
-
-            if self.__foundError:
-               self.__codeEditorItems["updateRow"].config(state=DISABLED)
-            else:
-               self.__codeEditorItems["updateRow"].config(state=NORMAL)
 
     def infiniteLoop(self, text, firstPoz, lastPoz):
 
@@ -1900,7 +1815,7 @@ class EditorBigFrame:
         selectedType = ""
         for key in self.__codeEditorItems.keys():
             if type(self.__codeEditorItems[key]) == list:
-                if self.__lastFocusedEditorItem == self.__codeEditorItems[key][1]:
+                if self.__focused == self.__codeEditorItems[key][1]:
                     currentWord = self.__codeEditorItems[key][0].get()
                     selectedType = key
                     break
@@ -3689,9 +3604,8 @@ class EditorBigFrame:
         objectList.append("game")
 
         self.__theNumOfLine = lineStructure["lineNum"]
-        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None, None, False)
+        self.__lineTinting(textToPrint, objectList, lineStructure["lineNum"], selectPosizions, errorPositions, "lineEditor", None, None, True)
 
-    """
     def __focusOut(self, event):
         #print(event.type)
         if event.widget in self.__focusOutItems:
@@ -3710,7 +3624,6 @@ class EditorBigFrame:
            self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
                               selectPosizions, errorPositions, "lineEditor", None, None, True)
 
-    """
 
     def __getFakeLine(self, source):
 
@@ -3891,15 +3804,14 @@ class EditorBigFrame:
         self.__loader.virtualMemory.codes[self.__currentBank][self.__currentSection].changed = True
         self.__setTinting(self.__cursorPoz[0])
 
-    """
     def clicked(self, event):
         self.__focused2 = event.widget
         self.__counterEnded2()
-    """
 
     def __counterEnded2(self):
         self.setCurzorPoz()
         self.__foundError     = False
+
         self.__setTinting("whole")
 
     def __keyPressed(self, event):
