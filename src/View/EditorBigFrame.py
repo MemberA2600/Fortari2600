@@ -48,6 +48,9 @@ class EditorBigFrame:
         self.__lineEditorFocused     = False
         self.__lineEditorFocusedItem = None
 
+        self.__runningThis           = False
+        self.__threadBuffer          = []
+
         self.exiters = ["exit", "goto", "return", "leave", "resetScreen", "resetGame"]
         self.__unreachableLVL = -1
         self.__unreachableNum = -1
@@ -211,6 +214,7 @@ class EditorBigFrame:
 
                      self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
                                         selectPosizions, errorPositions, "lineEditor", None, None, True)
+
                      break
 
     def getCurrentBank(self):
@@ -288,6 +292,11 @@ class EditorBigFrame:
                     self.__button.config(state = DISABLED)
                 except:
                     pass
+
+            if self.__threadBuffer != [] and self.__runningThis == False:
+               t = self.__threadBuffer[0]
+               t.start()
+               self.__threadBuffer.pop(0)
 
             sleep(0.05)
 
@@ -1114,11 +1123,11 @@ class EditorBigFrame:
 
         self.__codeBox.mark_set(INSERT, str(currentLineNum)+"."+ str(len(line)))
         self.__codeEditorItems["updateRow"].config(state = DISABLED)
-        self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
+        #self.__lineTinting(line, objectList, currentLineNum-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
 
         #self.__focused2 = self.__codeBox
         #self.__focused  = self.__codeBox
-
+        self.__tintingThread("whole")
         self.__codeBox.focus()
 
     """
@@ -1148,10 +1157,13 @@ class EditorBigFrame:
 
         t = Thread(target=self.__tintingThread, args=[mode])
         t.daemon = True
-        t.start()
+        self.__threadBuffer.append(t)
+
+        #t.start()
 
     def __tintingThread(self, mode):
         focus = True
+        self.__runningThis = True
 
         if type(mode) == str:
             if "NoFocus" in mode:
@@ -1251,6 +1263,7 @@ class EditorBigFrame:
 
     def __lineTinting(self, line, objects, lineNum, selectPosizions, errorPositions, caller, whole, text, focus):
 
+        self.__runningThis = True
         self.__foundError = False
         lineEditorTempDict = {}
 
@@ -1835,6 +1848,8 @@ class EditorBigFrame:
                self.__codeEditorItems["updateRow"].config(state=DISABLED)
             else:
                self.__codeEditorItems["updateRow"].config(state=NORMAL)
+
+        self.__runningThis = False
 
     def infiniteLoop(self, text, firstPoz, lastPoz):
 
