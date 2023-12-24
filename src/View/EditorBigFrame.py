@@ -49,7 +49,8 @@ class EditorBigFrame:
         self.__lineEditorFocusedItem = None
 
         self.__runningThis           = False
-        self.__threadBuffer          = []
+        self.__runningAllThis        = False
+        self.__threadBuffer          = {"whole": []}
 
         self.exiters = ["exit", "goto", "return", "leave", "resetScreen", "resetGame"]
         self.__unreachableLVL = -1
@@ -197,8 +198,10 @@ class EditorBigFrame:
            self.updateText(text)
            self.__codeBox.mark_set("insert", "%d.%d" % (self.__cursorPoz[0], self.__cursorPoz[1] + (len(selected) - (self.__cursorPoz[1] - cutPoz))))
         else:
+           index = -1
            for itemName in self.__codeEditorItems.keys():
-               item = self.__codeEditorItems[itemName]
+               item   = self.__codeEditorItems[itemName]
+               index += 1
                if type(item) == list:
                   if item[1] == self.__lastFocusedEditorItem:
                      item[0].set(selected)
@@ -208,6 +211,24 @@ class EditorBigFrame:
                      self.__codeEditorItems["updateRow"].config(state=NORMAL)
                      textToPrint = self.__getFakeLine(self.__codeEditorItems)
 
+                     lineKeys, gotAllParams = self.createListOfItemsToJump(itemName, textToPrint)
+
+                     for key in lineKeys:
+                         if  key == itemName:
+                             index = lineKeys.index(key)
+
+                             if index < len(lineKeys)-1 and gotAllParams == False:
+                                nextKey = lineKeys[index + 1]
+                             else:
+                                nextKey = lineKeys[index]
+                             if type(self.__codeEditorItems[nextKey]) == list:
+                                 self.__lastFocusedEditorItem = self.__codeEditorItems[nextKey][1]
+                                 self.__lineEditorFocusedItem = self.__lastFocusedEditorItem
+
+                                 lenght = len(self.__codeEditorItems[nextKey][0].get())
+                                 self.__lastFocusedEditorItem.icursor(lenght)
+                                 self.__lastFocusedEditorItem.focus()
+
                      selectPosizions = []
                      errorPositions = []
                      objectList = self.__objectMaster.getStartingObjects()
@@ -216,6 +237,121 @@ class EditorBigFrame:
                                         selectPosizions, errorPositions, "lineEditor", None, None, True)
 
                      break
+
+    def createListOfItemsToJump(self, itemName, textToPrint):
+        if textToPrint == None:
+           textToPrint = self.__getFakeLine(self.__codeEditorItems)
+
+        lineKeys = []
+        for word in ["command", "param"]:
+            for num in range(1, 4):
+                lineKeys.append(word + "#" + str(num))
+
+        isItCommand = False
+        com = None
+
+        first = self.__codeEditorItems["command#1"][0].get()
+        if first in self.__syntaxList.keys():
+            isItCommand = True
+            com = self.__syntaxList[first]
+        else:
+            for key in self.__syntaxList.keys():
+                if first in self.__syntaxList[key].alias:
+                    isItCommand = True
+                    com = self.__syntaxList[key]
+                    break
+
+        removeThese = []
+        complete = False
+        lvlOK = 0
+
+        if isItCommand == True:
+            complete = True
+            lvlOK = 1
+        else:
+            objList = [first,
+                       self.__codeEditorItems["command#2"][0].get(),
+                       self.__codeEditorItems["command#3"][0].get()]
+
+            if objList[0] == "game":
+                objList.pop(0)
+                objList.append("")
+
+            pointer = self.__objectMaster.objects
+            try:
+                fakeObject = first
+                for item in objList[1:3]:
+                    if item not in ["", None, "None"]: fakeObject += "%" + item
+
+                com = self.__objectMaster.createFakeCommandOnObjectProcess(fakeObject)
+            except:
+                pass
+
+            while True:
+                if type(pointer) == str:
+                    complete = True
+                    lvlOK + 1
+                    break
+
+                keys = list(pointer.keys())
+                shortKeys = []
+
+                for keyNum in range(0, len(keys)):
+                    shortKeys.append(keys[keyNum].split("(")[0])
+
+                if objList[lvlOK] in shortKeys:
+                    pointer = pointer[keys[shortKeys.index(objList[lvlOK])]]
+                    lvlOK += 1
+                else:
+                    break
+
+        gotAllParams = False
+        if complete:
+            for num in range(lvlOK + 1, 4):
+                removeThese.append("command#" + str(num))
+
+            text = self.__codeBox.get(0.0, END).split("\n")
+            lineNum = int(self.__codeEditorItems["lineNum"].cget("text"))
+            text[lineNum] = textToPrint
+
+            currentLineStructure = self.getLineStructure(lineNum, text, True)
+            paramColoring = self.checkParams(currentLineStructure["param#1"],
+                                             currentLineStructure["param#2"],
+                                             currentLineStructure["param#3"],
+                                             currentLineStructure,
+                                             currentLineStructure["command"][0], textToPrint)
+
+            okParams = []
+            for itemNum in range(0, len(paramColoring)):
+                if paramColoring[itemNum][0] not in ['error', "dummy", "missing", "None", None, ""]:
+                    okParams.append("param#" + str(itemNum + 1))
+
+            numberOfMustParams = 0
+            for p in com.params:
+                if p.startswith("{") == False: numberOfMustParams += 1
+
+            if len(okParams) >= numberOfMustParams: gotAllParams = True
+
+            if itemName in okParams: okParams.remove(itemName)
+
+            for num in range(1, 4):
+                pName = "param#" + str(num)
+
+                pList = []
+                for num2 in range(1, len(com.params)+1):
+                    pName2 = "param#" + str(num)
+                    pList.append(pName2)
+
+                if pName not in pList:
+                    removeThese.append(pName)
+                #if pName in okParams and pName != itemName:
+                #    removeThese.append(pName)
+
+        for r in removeThese:
+            lineKeys.remove(r)
+            self.__codeEditorItems[r][0].set("")
+        #print(lineKeys, gotAllParams)
+        return lineKeys, gotAllParams
 
     def getCurrentBank(self):
         return self.__currentBank
@@ -293,12 +429,39 @@ class EditorBigFrame:
                 except:
                     pass
 
-            if self.__threadBuffer != [] and self.__runningThis == False:
-               t = self.__threadBuffer[0]
-               t.start()
-               self.__threadBuffer.pop(0)
-
+            self.threadBufferThings()
             sleep(0.05)
+
+    def threadBufferThings(self):
+        #print(self.__runningAllThis, self.__runningThis)
+        if self.__runningThis == False and self.__runningAllThis == False:
+            #from datetime import datetime
+            #print(datetime.now())
+
+            if self.__threadBuffer["whole"] != []:
+               for key in self.__threadBuffer.keys():
+                   if key != "whole":
+                      self.__threadBuffer[key] = []
+
+               t = self.__threadBuffer["whole"][0]
+               t.start()
+               self.__threadBuffer['whole'] = []
+            else:
+               keys = list(self.__threadBuffer.keys())
+               keys.remove("whole")
+               keys.sort()
+               for key in keys:
+                   if self.__threadBuffer["whole"] != []:
+                      t = self.__threadBuffer["whole"][0]
+                      t.start()
+                      self.__threadBuffer['whole'] = []
+                      break
+
+                   if self.__threadBuffer[key] != []:
+                      t = self.__threadBuffer[key][0]
+                      t.start()
+                      self.__threadBuffer[key] = []
+
 
     def __removeSlaves(self):
         self.__mainFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
@@ -867,6 +1030,8 @@ class EditorBigFrame:
                 entry.bind("<FocusOut>", self.__focusOutLineEditorEntry)
                 entry.bind("<FocusIn>", self.__focusInLineEditorEntry)
                 entry.bind("<ButtonRelease-1>", self.__focusInLineEditorEntry)
+                entry.bind("<Return>", self.__EnterPressed)
+
 
                 #entry.bind("<FocusOut>", self.__focusOut)
                 #entry.bind("<FocusIn>", self.__focusIn)
@@ -893,6 +1058,48 @@ class EditorBigFrame:
     # self.__codeEditorocused
     # self.__lineEditorFocused
     # self.__lineEditorFocusedItem
+
+    def __EnterPressed(self, event):
+        index = -1
+        up    = False
+
+        for itemName in self.__codeEditorItems.keys():
+            item = self.__codeEditorItems[itemName]
+            index += 1
+            if type(item) == list:
+                if item[1] == self.__lastFocusedEditorItem:
+                    self.__codeEditorItems["updateRow"].config(state=NORMAL)
+                    textToPrint = self.__getFakeLine(self.__codeEditorItems)
+
+                    lineKeys, gotAllParams = self.createListOfItemsToJump(itemName, textToPrint)
+
+                    for key in lineKeys:
+                        if key == itemName:
+                            index = lineKeys.index(key)
+
+                            if index < len(lineKeys) - 1 and gotAllParams == False:
+                                nextKey = lineKeys[index + 1]
+                            else:
+                                nextKey = lineKeys[index]
+                                up      = True
+                            if type(self.__codeEditorItems[nextKey]) == list:
+                                self.__lastFocusedEditorItem = self.__codeEditorItems[nextKey][1]
+                                self.__lineEditorFocusedItem = self.__lastFocusedEditorItem
+
+                                lenght = len(self.__codeEditorItems[nextKey][0].get())
+                                self.__lastFocusedEditorItem.icursor(lenght)
+                                self.__lastFocusedEditorItem.focus()
+
+                    selectPosizions = []
+                    errorPositions = []
+                    objectList = self.__objectMaster.getStartingObjects()
+
+                    self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
+                                       selectPosizions, errorPositions, "lineEditor", None, None, True)
+
+                    break
+
+        if up: self.updateTextFromDisplay()
 
     def __focusInCodeEditor(self, event):
         self.__lastFocusedEditorItem = self.__codeBox
@@ -1155,15 +1362,19 @@ class EditorBigFrame:
     def __setTinting(self, mode):
         from threading import Thread
 
-        t = Thread(target=self.__tintingThread, args=[mode])
-        t.daemon = True
-        self.__threadBuffer.append(t)
+        if mode not in self.__threadBuffer.keys():
+           self.__threadBuffer[mode] = []
+
+        if self.__threadBuffer[mode] == [] and self.__threadBuffer["whole"] == []:
+           t = Thread(target=self.__tintingThread, args=[mode])
+           t.daemon = True
+           self.__threadBuffer[mode].append(t)
 
         #t.start()
 
     def __tintingThread(self, mode):
         focus = True
-        self.__runningThis = True
+        self.__runningAllThis = True
 
         if type(mode) == str:
             if "NoFocus" in mode:
@@ -1229,6 +1440,7 @@ class EditorBigFrame:
         if focus == True:
            self.__focused2 = focused
         """
+        self.__runningAllThis = False
 
     def __saveCode(self):
         text = self.__codeBox.get(0.0, END)
@@ -3924,7 +4136,7 @@ class EditorBigFrame:
     def __keyReleased(self, event):
         self.__lastButton = event.keysym
         self.__counter   = 3
-        self.__counter2  = 20
+        self.__counter2  = 18
 
         self.setCurzorPoz()
 
