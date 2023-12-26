@@ -5,7 +5,7 @@
 	lsr
 	BCC 	*+4
 	EOR	#$d4
-	EOR	counter
+******	EOR	counter
 !!!ADD!!!
 !!!AND!!!
 	STA	random

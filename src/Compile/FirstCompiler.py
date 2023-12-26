@@ -738,11 +738,9 @@ class FirstCompiler:
             for key in replacers:
                 template = template.replace(key, replacers[key])
 
-            self.__readOnly.remove("random")
-            self.__exceptions.append("random")
+            self.exceptionList(["random"], "add")
             self.checkASMCode(template, line)
-            self.__readOnly.append("random")
-            self.__exceptions.remove("random")
+            self.exceptionList(["random"], "delete")
 
             if self.__error == False: line["compiled"] = template
             return
@@ -2341,6 +2339,8 @@ class FirstCompiler:
 
             template = objectThings["template"]
 
+            #print(params)
+
             for paramName in params.keys():
                 data = ""
                 ok = True
@@ -2455,19 +2455,29 @@ class FirstCompiler:
                            template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
                                       optD, params[paramName], pSettings, optionalCounter, data))
 
-                       if objectThings["extension"] == "a26":
-                           template = template.split("\n")
-                           for lineNum in range(0, len(template)):
-                               subLine = template[lineNum]
-                               if len(subLine) > 0:
-                                  if subLine[0] not in ["*", "#", "!"] and subLine.isspace() == False:
-                                     lineStruct = self.__editorBigFrame.getLineStructure(0, [subLine], False)
-                                     self.exceptionList(objectThings["sysVars"], "add")
-                                     self.processLine(lineStruct, linesFeteched)
-                                     self.exceptionList(objectThings["sysVars"], "delete")
-                                     template[lineNum] = lineStruct["compiled"]
+            if objectThings["extension"] == "a26":
+               import re
 
-                           template = "\n".join(template)
+               for paramNum in range(0, len(objectThings["paramsWithSettings"])):
+                   param = objectThings["paramsWithSettings"][paramNum]
+
+                   if param["mustHave"] == False and paramNum > len(params) - 1:
+                      regex = r',[\t\s]{0,}' + param["replacer"]
+                      template = re.sub(regex, "", template)
+                      template = template.replace(param["replacer"], "")
+
+               template = template.split("\n")
+               for lineNum in range(0, len(template)):
+                   subLine = template[lineNum]
+                   if len(subLine) > 0:
+                       if subLine[0] not in ["*", "#", "!"] and subLine.isspace() == False:
+                           lineStruct = self.__editorBigFrame.getLineStructure(0, [subLine], False)
+                           self.exceptionList(objectThings["sysVars"], "add")
+                           self.processLine(lineStruct, linesFeteched)
+                           self.exceptionList(objectThings["sysVars"], "delete")
+                           template[lineNum] = lineStruct["compiled"]
+
+               template = "\n".join(template)
 
             if self.__error == False:
                self.exceptionList(objectThings["sysVars"], "add")
@@ -2499,6 +2509,7 @@ class FirstCompiler:
             line["compiled"] = ""
 
     def exceptionList(self, source, method):
+
         for item in source:
             if method == "add":
                self.__exceptions.append(item)
@@ -3670,10 +3681,10 @@ class FirstCompiler:
                    elif operandTyp in ("constant", "label"):
                         mode = "read"
 
-                   if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write") and item not in self.__exceptions:
+                   if mode == "both" and (opcodeDoes == "read" or opcodeDoes == "write") and beforeComma not in self.__exceptions:
                       mode = opcodeDoes
 
-                   if opcodeDoes != mode :
+                   if opcodeDoes != mode and beforeComma not in self.__exceptions:
                       if special == "":
                          eText = operandTyp[0].upper() + operandTyp[1:]
                       else:

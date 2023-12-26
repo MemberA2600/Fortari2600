@@ -235,10 +235,13 @@ class ObjectMaster:
 
            #print(pList)
            for p in pList:
+               if p.startswith("{"):
+                  p = p[1:-1]
+
                them = p.split("|")
                ok = True
                for item in them:
-                   if item not in validOnes and item[1:-1] not in validOnes:
+                   if item not in validOnes:
                        ok = False
                        break
                if ok:
@@ -293,12 +296,19 @@ class ObjectMaster:
                       pass
            #print(theObject["sysVars"])
            theObject["paramsWithSettings"] = []
+
            for num in range(0, len(theObject["params"])):
                theObject["paramsWithSettings"].append({})
                last = theObject["paramsWithSettings"][-1]
                last["param"]    = theObject["params"][num]
                lineOfVar        = lines[num + 1].split("=")[1].split(",")
                last["replacer"] = lineOfVar[0]
+
+               if pList[num].startswith("{"):
+                   last["mustHave"] = False
+               else:
+                   last["mustHave"] = True
+
                if len(lineOfVar) > 1:
                   if last["param"] in ["data", "{data}"]:
                       last["folder"]    = lineOfVar[1]
@@ -324,6 +334,9 @@ class ObjectMaster:
 
         ##or key in theObject:
         #    print(key + ":", theObject[key])
+        if "addManuallyToSysVars" in theObject.keys():
+            for var in theObject["addManuallyToSysVars"]: theObject["sysVars"].append(var)
+            del theObject["addManuallyToSysVars"]
         return theObject
 
     def createFakeCommandOnObjectProcess(self, command):

@@ -2339,6 +2339,7 @@ class EditorBigFrame:
            elif cursorIn.startswith("param#"):
                paramNum = int(cursorIn[-1]) - 1
                params, ioMethod = self.returnParamsOfObjects(lineStructure["command"][0])
+
                if paramNum > len(params) - 1:
                   listType = None
                else:
@@ -2882,6 +2883,8 @@ class EditorBigFrame:
         #
         foundIt = False
         noneList   = ["None", None, ""]
+
+        #print(paramType, param, mustHave)
 
         command = None
         for c in self.__loader.syntaxList.keys():
