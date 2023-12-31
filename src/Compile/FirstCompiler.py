@@ -2325,8 +2325,9 @@ class FirstCompiler:
             else:
                line["compiled"] += "\tTSX\n\tSTX\titem\n" + self.__loader.io.loadCommandASM("returnFromBank1")
 
-        elif self.isCommandInLineThat(line, "const"):
-            line["compiled"] = ""
+        #elif self.isCommandInLineThat(line, "const"):
+        #    line["compiled"] = ""
+
         else:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
             template     = objectThings["template"]

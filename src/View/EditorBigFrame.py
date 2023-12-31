@@ -2577,6 +2577,37 @@ class EditorBigFrame:
         for c in self.__loader.stringConstants.keys():
             constants[c]  = self.__loader.stringConstants[c]
 
+        path = self.__loader.mainWindow.projectPath + "bank1/constants.a26"
+        f = open(path, "r")
+        lines = f.read().replace("\r", "").split("\n")
+        f.close()
+
+        for line in lines:
+            if len(line) > 0:
+                if line[0] not in ["*", "#"]:
+                   itemName = '"'+ line.split("=")[0] + '"'
+                   params = line.split("=")[1].split(",")
+
+                   val     = params[0]
+                   valType = params[1]
+                   valBank = []
+                   valSect = []
+                   if valType != "global":
+                      valBank = params[2][1:-1].split(" ")
+
+                   if valType == "section":
+                      valSect = params[3][1:-1].split(" ")
+
+                   for bNum in range(0, len(valBank)):
+                       valBank[bNum] = valBank[bNum].lower()
+
+                   if valType == "global"                                                                         or\
+                     (valType == "bank"    and self.__currentBank in valBank)                                     or\
+                     (valType == "section" and self.__currentBank in valBank and self.__currentSection in valSect):
+
+                      constants[itemName] = {"value": val,
+                                             "alias": [itemName.upper(), itemName.lower()]}
+        """ 
         for bNum in range(1, 9):
             bankNum = "bank" + str(bNum)
             for sect in self.__syntaxList["const"].sectionsAllowed:
@@ -2615,7 +2646,7 @@ class EditorBigFrame:
                               "alias": [param1[0].upper(), param1[0].lower()],
                               "value": param2[0]
                            }
-
+        """
         return constants
 
     def collectNamesByCommandFromSections(self, word, bank):
@@ -2907,7 +2938,8 @@ class EditorBigFrame:
         else:
             command = self.__objectMaster.createFakeCommandOnObjectProcess(lineStructure["command"][0])
 
-        blockStringConst = False
+        #blockStringConst = False
+        """
         listOfBlockers   = ["const"]
 
         for c in listOfBlockers:
@@ -2915,6 +2947,7 @@ class EditorBigFrame:
                lineStructure["command"][0] in self.__syntaxList[c].alias:
                blockStringConst = True
                break
+        """
 
         paramTypeList = paramType.split("|")
         delimiters = self.__config.getValueByKey("validStringDelimiters")
@@ -3034,10 +3067,10 @@ class EditorBigFrame:
                           if stringConst == True:
                              foundIt = True
 
-                             if blockStringConst:
-                                returnBack.append(["string"     , dimension])
-                             else:
-                                returnBack.append(["stringConst", dimension])
+                             #if blockStringConst:
+                             #   returnBack.append(["string"     , dimension])
+                             #else:
+                             returnBack.append(["stringConst", dimension])
                           else:
                              if pType == "string":
                                 foundIt = True
@@ -3386,6 +3419,7 @@ class EditorBigFrame:
         if commandVar == None:
            commandVar = self.__objectMaster.createFakeCommandOnObjectProcess(currentLineStructure["command"][0])
 
+        """
         if command == "const" or command in self.__syntaxList["const"].alias:
            if returnBack[0][0] == "string" and returnBack[1][0] == "number":
               if param1[0] in self.__constants.keys():
@@ -3403,8 +3437,9 @@ class EditorBigFrame:
               if returnBack[2][0] == "string":
                  if currentLineStructure["param#3"][0].lower()[1:-1] not in ("section", "bank", "global"):
                     returnBack[2][0] = "error"
-
-        elif command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
+        
+        """
+        if   command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
            if returnBack[0][0] == "string":
               if param1[0] in self.__subroutines:
                  returnBack[0][0] = "error"

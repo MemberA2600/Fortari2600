@@ -216,6 +216,7 @@ class MainWindow:
          __keys.remove('special_read_only')
          __keys.remove('screen_top')
          __keys.remove('screen_bottom')
+         self.validSections = __keys
 
          self.__controllerMenu2 = Frame(self.__fullEditor, width=self.getWindowSize()[0],
                                    height=self.getWindowSize()[1]//30,
@@ -348,6 +349,10 @@ class MainWindow:
 
         self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", currentPoz,
                                           self.openMemoryManager, "projectPath",
+                                            False, None, self.__places, __vals[3])
+
+        self.__memoryManagerButton = self.__buttonMaker.createButton("constant", currentPoz,
+                                          self.openConstantWindow, "projectPath",
                                             False, None, self.__places, __vals[3])
 
         self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", currentPoz,
@@ -885,5 +890,12 @@ class MainWindow:
         from MemoryManagerWindow import MemoryManagerWindow
 
         MemoryManagerWindow(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
+
+    def openConstantWindow(self):
+        from ConstantWindow import ConstantWindow
+
+        ConstantWindow(self.__loader)
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()

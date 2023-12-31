@@ -1,6 +1,6 @@
 autoSetter=True
 language=english
-version=0.01
+version=0.02
 soundOn=False
 emulator=
 colorPalette=default

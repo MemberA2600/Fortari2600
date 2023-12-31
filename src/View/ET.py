@@ -131,6 +131,8 @@ class ET:
         #self.__forestCanvas.clipboard_clear()
         #self.__forestCanvas.delete("all")
 
+        if self.__forestFrame.winfo_width() < 2: self.__forestD()
+
         self.__forestOfSteel = self.__forestCanvas.create_image(
             0, 0, image=self.__forestImg, anchor=NW
         )
