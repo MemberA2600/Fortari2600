@@ -1,6 +1,0 @@
-* params=variable|stringConst|number
-* param1=#VAR01#
-
-	add(frameColor, #VAR01#)
-
-	

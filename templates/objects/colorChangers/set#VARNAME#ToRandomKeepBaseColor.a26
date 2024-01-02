@@ -3,6 +3,8 @@
 * param2=#VAR02#
 * addManuallyToSysVars=random
 
-	rand(bkBaseColor,#VAR01#,#VAR02#)
-
+	and(#SYSVAR#, $F0, temp01)
+	rand(#SYSVAR#,#VAR01#,#VAR02#)
+	and(#SYSVAR#, $0F)
+	 or(#SYSVAR#, temp01)
 	

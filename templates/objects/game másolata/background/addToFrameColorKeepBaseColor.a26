@@ -1,8 +1,0 @@
-* params=variable|stringConst|number
-* param1=#VAR01#
-
-	and(frameColor, $F0, temp01)	
-	add(frameColor, #VAR01#)	
-	and(frameColor, $0F)
-	 or(frameColor, temp01)
-	
