@@ -263,13 +263,16 @@ class ConstantWindow:
         self.__controllers["cancel"].config(state=NORMAL)
 
         self.__loadData()
-        self.pageNumChangedThing(None)
+        try:
+           self.pageNumChangedThing(None)
 
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+           t = Thread(target=self.loop)
+           t.daemon = True
+           t.start()
 
-        self.notInitAnymore = True
+           self.notInitAnymore = True
+        except:
+            pass
 
     def pageNumChanged(self, event):
         self.__countDownPageNum = 40

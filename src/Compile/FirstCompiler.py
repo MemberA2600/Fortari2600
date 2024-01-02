@@ -455,6 +455,7 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "add"):
             #params = self.getParamsWithTypesAndCheckSyntax(line)
+            #print(line)
 
             if params["param#1"][0] == params["param#2"][0]:
                from copy import deepcopy

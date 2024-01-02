@@ -1,0 +1,3 @@
+	LDA	#SYSVAR#
+	AND	#$0F
+	STA	#SYSVAR#

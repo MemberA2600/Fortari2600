@@ -1,0 +1,3 @@
+FrameColor=frameColor,background
+BackgroundBaseColor=bkBaseColor,background
+PlayfieldBaseColor=pfBaseColor,playfield

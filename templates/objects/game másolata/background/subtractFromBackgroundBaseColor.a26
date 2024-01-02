@@ -1,0 +1,6 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	sub(bgBaseColor, #VAR01#)
+
+	

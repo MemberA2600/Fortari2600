@@ -1,0 +1,4 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	add(pfBaseColor, #VAR01#)

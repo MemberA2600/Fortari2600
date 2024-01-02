@@ -1,0 +1,8 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	and(bkBaseColor, $F0, temp01)	
+	add(bkBaseColor, #VAR01#)	
+	and(bkBaseColor, $0F)
+	 or(bkBaseColor, temp01)
+	

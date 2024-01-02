@@ -1111,7 +1111,14 @@ class EditorBigFrame:
         objectList = self.__objectMaster.getStartingObjects()
         objectList.append("game")
 
-        self.__codeEditorItems["updateRow"].config(state = DISABLED)
+        from time import sleep
+        while 1:
+           try:
+               self.__codeEditorItems["updateRow"].config(state = DISABLED)
+               break
+           except:
+               sleep(0.1)
+
         self.setCurzorPoz()
 
         line = self.__codeBox.get(0.0, END).split("\n")[self.__cursorPoz[0]-1]

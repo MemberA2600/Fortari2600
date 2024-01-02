@@ -1,0 +1,8 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	and(pfBaseColor, $F0, temp01)	
+	add(pfBaseColor, #VAR01#)	
+	and(pfBaseColor, $0F)
+	 or(pfBaseColor, temp01)
+	

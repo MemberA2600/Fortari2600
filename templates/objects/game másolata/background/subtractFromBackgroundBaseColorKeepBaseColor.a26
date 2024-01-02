@@ -1,0 +1,8 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	and(bgBaseColor, $F0, temp01)	
+	sub(bgBaseColor, #VAR01#)	
+	and(bgBaseColor, $0F)
+	 or(bgBaseColor, temp01)
+	

@@ -61,6 +61,28 @@ class ObjectMaster:
                               key = name
                            objRoot[key] = text
 
+        f = open("templates/objects/listOfColorChangers.txt", "r")
+        lines = f.read().replace("\r", "").split("\n")
+        f.close()
+
+        for line in lines:
+            if len(line) > 0:
+               name   = line.split("=")[0]
+               params = line.split("=")[1].split(",")
+               sysVar = params[0]
+               parent = params[1]
+
+               for root, dirs, files in os.walk("templates/objects/colorChangers"):
+                   for file in files:
+                       if file.endswith(".asm") or file.endswith(".a26"):
+                          f    = open(root + "/" + file)
+                          text = f.read().replace("#SYSVAR#", sysVar)
+                          f.close()
+
+                          command = file.replace("#VARNAME#", name)[:-4]
+                          self.objects[parent][command] = text
+
+        #del self.objects["many"]
         #print(self.objects)
 
     def __changeCurrentBankPointer(self, bankNum):
@@ -180,6 +202,9 @@ class ObjectMaster:
         else:
            theObject["exist"] = False
 
+        sysVar       = None
+        found        = False
+
         if theObject["exist"] == True:
            path = os.getcwd() + "\\templates\\objects\\"
            if theObject["screen"] == True:
@@ -192,16 +217,49 @@ class ObjectMaster:
            from os.path import exists
            if exists(path):
               theObject["extension"] = "asm"
+              found = True
            else:
               path = path[:-3] + "a26"
               if exists(path):
                   theObject["extension"] = "a26"
+                  found = True
               else:
-                  path                   = None
+                  path  = None
                   theObject["extension"] = None
+
+                  f = open("templates/objects/listOfColorChangers.txt", "r")
+                  lines = f.read().replace("\r", "").split("\n")
+                  f.close()
+
+                  commandComp = listOfObjects[-1]
+
+                  for line in lines:
+                      if len(line) > 0:
+                          name = line.split("=")[0]
+                          params = line.split("=")[1].split(",")
+                          sysVar = params[0]
+                          parent = params[1]
+
+                          for root, dirs, files in os.walk("templates/objects/colorChangers"):
+                              for file in files:
+                                  if file.endswith(".asm") or file.endswith(".a26"):
+                                      f = open(root + "/" + file)
+                                      text = f.read().replace("#SYSVAR#", sysVar)
+                                      f.close()
+
+                                      commandC = file.replace("#VARNAME#", name)[:-4]
+                                      if commandC == commandComp:
+                                         found                  = True
+                                         path                   = root + "/" + file
+                                         theObject["extension"] = path[-3:]
+                                         break
+                              if found: break
+                      if found: break
 
            rNum  = None
            endIt = False
+
+           #if found == False: print(command)
 
            thatWord = ["missile", "player"]
            for w in thatWord:
@@ -220,6 +278,9 @@ class ObjectMaster:
            f = open(path, "r")
            theObject["template"] = f.read()
            f.close()
+
+           if sysVar != None:
+              theObject["template"] = theObject["template"].replace("#SYSVAR#", sysVar)
 
            if rNum != None:
               theObject["template"] = theObject["template"].replace("ß", rNum)

@@ -1,0 +1,8 @@
+* params=variable|stringConst|number
+* param1=#VAR01#
+
+	and(#SYSVAR#, $F0, temp01)	
+	add(#SYSVAR#, #VAR01#)	
+	and(#SYSVAR#, $0F)
+	 or(#SYSVAR#, temp01)
+	

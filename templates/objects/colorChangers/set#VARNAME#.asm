@@ -4,5 +4,5 @@
 *
 	LDA	#VAR01#		; &COLOR
 !!!to8bit!!!
-	STA	bgBaseColor
+	STA	#SYSVAR#
 
