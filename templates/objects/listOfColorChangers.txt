@@ -3,4 +3,4 @@ BackgroundBaseColor=bkBaseColor,background
 PlayfieldBaseColor=pfBaseColor,playfield
 Missile0Color=M0Color,missile0
 Missile1Color=M1Color,missile1
-TileScreenMainColor=TileScreenMainColor,subMenu
+TileScreenMainColor=TileScreenMainColor,gameScreen

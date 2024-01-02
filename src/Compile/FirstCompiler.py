@@ -2328,6 +2328,108 @@ class FirstCompiler:
 
         #elif self.isCommandInLineThat(line, "const"):
         #    line["compiled"] = ""
+        elif self.isCommandInLineThat(line, "min") or self.isCommandInLineThat(line, "max"):
+            pass
+
+
+        elif self.isCommandInLineThat(line, "bitOn") or self.isCommandInLineThat(line, "bitOff"):
+            sourceTxt        = ""
+            convertSecondTxt = ""
+            changingBitsTxt  = ""
+            destTxt          = ""
+
+            self.__temps = self.collectUsedTemps()
+
+            if self.isCommandInLineThat(line, "bitOn"):
+               direction = "ON"
+            else:
+               direction = "OFF"
+
+            source        = params["param#1"][0]
+            sourceVar     = self.__loader.virtualMemory.getVariableByName2(source)
+            if sourceVar != False:
+               sourceTxt  = "\tLDA\t" + source + "\n" + self.convertAny2Any(sourceVar, "TO", params, self.__temps) + "\n"
+            else:
+               try:
+                   number = self.__editorBigFrame.convertStringNumToNumber(source)%256
+               except:
+                   number = self.__editorBigFrame.convertStringNumToNumber(self.getConstValue(source))%256
+
+               sourceTxt  = "\tLDA\t#" + str(number) + "\n"
+
+            if "param#3" not in params.keys():
+                params["param#3"] = params["param#1"]
+
+            dest        = params["param#3"][0]
+            destVar     = self.__loader.virtualMemory.getVariableByName2(dest)
+            if destVar != False:
+               destTxt  = self.convertAny2Any(destVar, "FROM", params, self.__temps) + "\n\tSTA\t" + dest + "\n"
+
+            bitNum      = params["param#2"][0]
+            bitNumVar   = self.__loader.virtualMemory.getVariableByName2(bitNum)
+
+            if bitNumVar == False:
+               try:
+                   number = self.__editorBigFrame.convertStringNumToNumber(bitNum) % 8
+               except:
+                   number = self.__editorBigFrame.convertStringNumToNumber(self.getConstValue(bitNum))%8
+
+               if direction == "ON":
+                   changingBitsTxt = "\tORA\t#%00000000\n"
+                   changeIndex = len(changingBitsTxt) - number - 2
+                   changingBitsTxt = changingBitsTxt[:changeIndex] + "1" + changingBitsTxt[changeIndex + 1:]
+
+               else:
+                   changingBitsTxt = "\tAND\t#%11111111\n"
+                   changeIndex = len(changingBitsTxt) - number - 2
+                   changingBitsTxt = changingBitsTxt[:changeIndex] + "0" + changingBitsTxt[changeIndex + 1:]
+
+            else:
+
+                convertSecondTxt = "\tLDA\t" + bitNum + "\n" + self.convertAny2Any(bitNumVar, "TO", params, self.__temps) +\
+                                   '\n\tAND\t#%00000111\n\tTAX\n'
+
+                try:
+                    first = self.__temps[0]
+                    self.__temps.pop(0)
+                except:
+                    self.addToErrorList(self.__thisLine["lineNum"],
+                                        self.prepareError("compilerErrorStatementTemps", params["param#2"][0],
+                                                          "", "",
+                                                          str(self.__thisLine["lineNum"] + self.__startLine)))
+
+                if self.__error == False:
+                   self.__magicNumber += 1
+
+                   opcode = ["ORA", "AND"]
+                   masks  = ["00000001", "11111110"]
+
+                   if direction == 'ON':
+                      num = 0
+                   else:
+                      num = 1
+
+                   label               = "#BANK#_Shift_#MAGIC#"
+                   exitLabel           = "#BANK#_Shift_#MAGIC#_End"
+
+                   convertSecondTxt   += '\tLDA\t#%'+ masks[num] + '\n\tDEX\n\tBMI\t' + exitLabel + '\n' +\
+                                         label + "\n\tASL\n\tDEX\n\tBPL\t" + label + "\n" + exitLabel + "\n\tSTA\t" + first + "\n"
+
+                   changingBitsTxt     = '\t' + opcode[num] + "\t" + first + "\n"
+
+            if self.__error == False:
+               fullText = convertSecondTxt + sourceTxt + changingBitsTxt + destTxt
+               #print("##\n", sourceTxt)
+               #print("##\n", changingBitsTxt)
+               #print("##\n", destTxt)
+
+               fullText = fullText.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection).replace("#MAGIC#", str(self.__magicNumber))
+
+               self.checkASMCode(fullText, line)
+               if self.__error == False:
+                  line["compiled"] = fullText
+            else:
+                line["compiled"]   = ""
 
         else:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
@@ -2384,7 +2486,7 @@ class FirstCompiler:
                          for const in self.__constants:
                              if const == params[paramName][0]:
                                  try:
-                                     numVal = self.__editorBigFrame.convertStringNumToNumber(self.__constants[const])
+                                     numVal = self.__editorBigFrame.convertStringNumToNumber(self.getConstValue(const))
                                      if objectThings["extension"] == "aam":
                                         saveIt = "#" + str(numVal)
                                      else:
@@ -2393,7 +2495,7 @@ class FirstCompiler:
                                  except:
                                      ok = False
                                      errType = "ConstValNotValidNumber"
-                                     val = self.__constants[const]
+                                     val = self.getConstValue(const)
                     elif params[paramName][1] == "string":
                          pass
 
@@ -3688,6 +3790,7 @@ class FirstCompiler:
 
                    if opcodeDoes != mode and beforeComma not in self.__exceptions:
                       if special == "":
+                         #print(beforeComma)
                          eText = operandTyp[0].upper() + operandTyp[1:]
                       else:
                          eText = special

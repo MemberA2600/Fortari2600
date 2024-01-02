@@ -1111,6 +1111,18 @@ class EditorBigFrame:
         objectList = self.__objectMaster.getStartingObjects()
         objectList.append("game")
 
+        from threading import Thread
+
+        t = Thread(target = self.setItThreadMehh)
+        t.daemon = True
+        t.start()
+
+        self.setCurzorPoz()
+
+        line = self.__codeBox.get(0.0, END).split("\n")[self.__cursorPoz[0]-1]
+        self.__lineTinting(line, objectList, self.__cursorPoz[0]-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
+
+    def setItThreadMehh(self):
         from time import sleep
         while 1:
            try:
@@ -1118,11 +1130,6 @@ class EditorBigFrame:
                break
            except:
                sleep(0.1)
-
-        self.setCurzorPoz()
-
-        line = self.__codeBox.get(0.0, END).split("\n")[self.__cursorPoz[0]-1]
-        self.__lineTinting(line, objectList, self.__cursorPoz[0]-1, selectPosizions, errorPositions, "lineTinting", True, None, True)
 
     def __focusOutCodeEditor(self, event):
         self.__codeEditorocused      = False
@@ -3564,6 +3571,22 @@ class EditorBigFrame:
              else:
                 if returnBack[0][0] != "variable": returnBack[0][0] = "error"
 
+        if command == "bitOn"  or command in self.__syntaxList["bitOn"].alias  or \
+           command == "bitOff" or command in self.__syntaxList["bitOff"].alias:
+
+           if returnBack[1][0] in ["number", "stringConst"]:
+              if returnBack[1][0] == "number":
+                 num = int(param2[0].replace("#", ""))
+              else:
+                 num = int(self.__constants[param2[0].replace("#", "")])
+
+              largest = 7
+              if returnBack[0][0] == "variable":
+                 var     = self.__loader.virtualMemory.getVariableByName2(param1[0])
+                 largest = len(var.usedBits) - 1
+
+              if num > largest or num < 0: returnBack[1][0] = "error"
+
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
 
@@ -3947,7 +3970,13 @@ class EditorBigFrame:
 
     def updateLineDisplay(self, lineStructure):
         self.createFakeCodeEditorItems(lineStructure, self.__codeEditorItems)
-        self.__codeEditorItems["updateRow"].config(state = DISABLED)
+
+        from threading import Thread
+
+        t = Thread(target = self.setItThreadMehh)
+        t.daemon = True
+        t.start()
+
         self.__checkEditorItems(lineStructure)
 
     def __checkEditorItems(self, lineStructure):
