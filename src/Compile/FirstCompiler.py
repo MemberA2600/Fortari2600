@@ -2337,6 +2337,7 @@ class FirstCompiler:
             convertSecondTxt = ""
             changingBitsTxt  = ""
             destTxt          = ""
+            makeThemSpace    = False
 
             self.__temps = self.collectUsedTemps()
 
@@ -2374,15 +2375,24 @@ class FirstCompiler:
                except:
                    number = self.__editorBigFrame.convertStringNumToNumber(self.getConstValue(bitNum))%8
 
-               if direction == "ON":
-                   changingBitsTxt = "\tORA\t#%00000000\n"
-                   changeIndex = len(changingBitsTxt) - number - 2
-                   changingBitsTxt = changingBitsTxt[:changeIndex] + "1" + changingBitsTxt[changeIndex + 1:]
+               if source == dest:
+                  sourceText       = ""
+                  destText         = ""
+                  convertSecondTxt = ""
+                  vList            = {"ON": 1, "OFF": 0}
 
+                  changingBitsTxt  = self.bitChanger(source, vList[direction], number + min(sourceVar.usedBits))
+                  makeThemSpace    = True
                else:
-                   changingBitsTxt = "\tAND\t#%11111111\n"
-                   changeIndex = len(changingBitsTxt) - number - 2
-                   changingBitsTxt = changingBitsTxt[:changeIndex] + "0" + changingBitsTxt[changeIndex + 1:]
+                   if direction == "ON":
+                       changingBitsTxt = "\tORA\t#%00000000\n"
+                       changeIndex = len(changingBitsTxt) - number - 2
+                       changingBitsTxt = changingBitsTxt[:changeIndex] + "1" + changingBitsTxt[changeIndex + 1:]
+
+                   else:
+                       changingBitsTxt = "\tAND\t#%11111111\n"
+                       changeIndex = len(changingBitsTxt) - number - 2
+                       changingBitsTxt = changingBitsTxt[:changeIndex] + "0" + changingBitsTxt[changeIndex + 1:]
 
             else:
 
@@ -2418,16 +2428,21 @@ class FirstCompiler:
                    changingBitsTxt     = '\t' + opcode[num] + "\t" + first + "\n"
 
             if self.__error == False:
-               fullText = convertSecondTxt + sourceTxt + changingBitsTxt + destTxt
-               #print("##\n", sourceTxt)
-               #print("##\n", changingBitsTxt)
-               #print("##\n", destTxt)
+               if makeThemSpace:
+                  fullText = changingBitsTxt
+               else:
+                  fullText = convertSecondTxt + sourceTxt + changingBitsTxt + destTxt
+               #print("#1\n", sourceTxt)
+               #print("#2\n", changingBitsTxt)
+               #print("#3\n", destTxt)
 
                fullText = fullText.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection).replace("#MAGIC#", str(self.__magicNumber))
+
 
                self.checkASMCode(fullText, line)
                if self.__error == False:
                   line["compiled"] = fullText
+
             else:
                 line["compiled"]   = ""
 
@@ -2611,6 +2626,56 @@ class FirstCompiler:
             if "compiled" in line:
                 print(line["compiled"])
             line["compiled"] = ""
+
+    def bitChanger(self, variable, value, oneBit):
+        if type(variable) == str:
+           name = variable
+           variable = self.__loader.virtualMemory.getVariableByName2(variable)
+        else:
+           for address in self.__virtualMemory.memory.keys():
+               for vName in self.__virtualMemory.memory[address].variables.keys():
+                   if self.__virtualMemory.memory[address][vName] == variable:
+                      name = vName
+                      break
+
+        if type(value) == str:
+           try:
+               value = self.valOfNumber(value)
+           except:
+               value = int(self.getConstValue(value))
+
+        value = bin(value).replace("0b", "")
+
+        if oneBit == None:
+           bitLen      = len(variable.usedBits)
+           largestBit  = max(variable.usedBits)
+        else:
+           bitLen      = 1
+           largestBit  = oneBit
+
+        _and        = self.generateAndOr("AND", value, largestBit, bitLen)
+        _or         = self.generateAndOr("ORA", value, largestBit, bitLen)
+
+        if "1" not in _and and _and != "": _or  = ""
+        if "0" not in  _or and  _or != "": _and = ""
+
+        return "\tLDA\t" + name + "\n" + _and + _or + "\tSTA\t" + name + "\n"
+
+    def generateAndOr(self, command, bitsToInsert, largestBit, bitLen):
+
+        bbb = {"AND": "1", "ORA": "0"}
+        while bitLen < len(bitsToInsert):
+           bitsToInsert = bitsToInsert[1:]
+
+        if command.upper() == "AND":
+            bitsToInsert = len(bitsToInsert) * "0"
+
+        startingPoz = 7 - largestBit
+
+        bitsToInsert = (bbb[command.upper()] * startingPoz) + bitsToInsert
+        bitsToInsert += bbb[command.upper()] * (8 - len(bitsToInsert))
+
+        return "\t" + command + "\t#%" + bitsToInsert + "\n"
 
     def exceptionList(self, source, method):
 
@@ -3120,6 +3185,31 @@ class FirstCompiler:
         txt = ""
 
         allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+        if (hasBCD == False or allTheSame) and params[paramName1][1] in ["number", "stringConst"]:
+           if hasBCD:
+              try:
+                  val = self.valOfNumber(params[paramName1][0])
+              except:
+                  val = int(self.getConstValue(params[paramName1][0]))
+
+              val  = str(val)
+              try:
+                  num1 = bin(int(val[-2])).replace("0b", "")
+                  num1 = (4 -len(num1)) * "0" + num1
+              except:
+                  num1 = "0000"
+
+              num2 = bin(int(val[-1])).replace("0b", "")
+              num2 = (4 - len(num2)) * "0" + num2
+
+              val  = int("0b" + num1 + num2, 2)
+
+           else:
+              val  = params[paramName1][0]
+
+           txt = self.bitChanger(params[paramName2][0], val, None)
+           return txt
 
         var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
         if var2 == False:
