@@ -1422,8 +1422,8 @@ class EditorBigFrame:
         self.__subroutines = []
         self.__constants = deepcopy(self.__loader.stringConstants)
 
-        if self.__currentSection in self.__syntaxList["subroutine"].sectionsAllowed:
-            self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
+        if self.__currentSection in self.__syntaxList["call"].sectionsAllowed:
+           self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
 
         if mode == "whole":
             self.__constants = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, False, 0)
@@ -2413,6 +2413,8 @@ class EditorBigFrame:
         for item in wordsForList:
             #endIndex = self.__listBoxOnTheRight.index(END)
 
+            if item == []: continue
+
             if item[0] in self.__listOfItems: continue
             if item[1] in [None, "None", ""]: continue
 
@@ -2572,7 +2574,9 @@ class EditorBigFrame:
                      wordsForList.append([word, "stringConst"])
 
         elif listType == "subroutine":
-            wordsForList = self.collectNamesByCommandFromSections("subroutine", None)
+            subList = self.collectNamesByCommandFromSections("subroutine", None)
+            for sub in subList:
+                wordsForList.append([sub, "subroutine"])
 
         elif listType == "data":
             listOfData = self.getListOfData(lineStructure["command"][0])
@@ -2681,8 +2685,7 @@ class EditorBigFrame:
                    for lineNum in range(0, len(code)):
                        lineStructure = self.getLineStructure(lineNum, code, False)
                        if lineStructure["command"][0] == word or lineStructure["command"][0] in self.__syntaxList[word].alias:
-                          subroutines.append(lineStructure["param#1"])
-
+                          subroutines.append(lineStructure["param#1"][0][1:-1])
         return subroutines
 
     def doesItWriteInParam(self, linstructure, cursorIn, caller):
@@ -3043,6 +3046,8 @@ class EditorBigFrame:
 
             elif pType == "subroutine":
                 if printMe: print(pType)
+
+                if self.__subroutines == []: self.__subroutines = self.collectNamesByCommandFromSections("subroutine", None)
 
                 if param in self.__subroutines:
                     returnBack.append(["subroutine", dimension])
@@ -3455,16 +3460,21 @@ class EditorBigFrame:
         """
         if   command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
            if returnBack[0][0] == "string":
+              if self.__subroutines == []: self.__subroutines = self.collectNamesByCommandFromSections("subroutine",
+                                                                                                        None)
               if param1[0] in self.__subroutines:
                  returnBack[0][0] = "error"
               else:
-                 self.__subroutines.append(param1[0])
+                 self.__subroutines.append(param1[0][1:-1])
 
            elif returnBack[0][0] == "subroutine":
                 returnBack[0][0] = "error"
 
         elif command == "call" or command in self.__syntaxList["call"].alias:
             if returnBack[0][0] == "subroutine":
+
+               if self.__subroutines == []: self.__subroutines = self.collectNamesByCommandFromSections("subroutine",
+                                                                                                         None)
                if param1[0] not in self.__subroutines:
                   returnBack[0][0] = "error"
 

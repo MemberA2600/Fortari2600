@@ -199,7 +199,16 @@ class FirstCompiler:
                self.colorAnnotationAfter(line)
 
         textToReturn = ""
-        for line in linesFeteched:
+        currentLineNum = 0
+
+        lineNum = -1
+        while True:
+        #for line in linesFeteched:
+            lineNum   += 1
+            if lineNum > len(linesFeteched) - 1: break
+
+            line = linesFeteched[lineNum]
+
             for word in ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
                 if line[word] not in self.__noneList:
                     if type(line[word]) == list:
@@ -1597,6 +1606,9 @@ class FirstCompiler:
                       template = template.replace("!!!SAVE!!!", save)
                       line["compiled"] = template
 
+        elif self.isCommandInLineThat(line, "callComp"):
+            pass
+
         elif line["command"][0].split("-")[0] in ["do", "perform", "for", "foreach"]:
             command     = None
             commandName = None
@@ -2329,8 +2341,84 @@ class FirstCompiler:
         #elif self.isCommandInLineThat(line, "const"):
         #    line["compiled"] = ""
         elif self.isCommandInLineThat(line, "min") or self.isCommandInLineThat(line, "max"):
-            pass
+            self.__temps = self.collectUsedTemps()
 
+            if self.isCommandInLineThat(line, "min"):
+               mode = "MIN"
+            else:
+               mode = "MAX"
+
+            source = params["param#1"][0]
+            sourceVar = self.__loader.virtualMemory.getVariableByName2(source)
+
+            compare = params["param#2"][0]
+            compareVar = self.__loader.virtualMemory.getVariableByName2(compare)
+
+            if "param#3" not in params:
+                params["param#3"] = params["param#1"]
+
+            dest        = params["param#3"][0]
+            destVar     = self.__loader.virtualMemory.getVariableByName2(dest)
+
+            self.__magicNumber += 1
+            allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+            if mode == "MIN":
+               var1    = source
+               var1Var = sourceVar
+
+               temp    = compare
+               tempVar = compareVar
+
+               extra   = True
+            else:
+               var1    = compare
+               var1Var = compareVar
+
+               temp    = source
+               tempVar = sourceVar
+
+               extra   = False
+
+            template = self.__loader.io.loadCommandASM("minmax")
+            if extra:
+               template = template.replace("!!!extraLDA!!!", "\tLDA\t#VARTEMP#\n")
+
+            template = template.replace("#VAR01#", var1).replace("!!!to8bit!!!",
+                                                                   self.convertAny2Any(var1Var, "TO", params,
+                                                                                       self.__temps))
+            template = template.replace("#VAR03#", dest).replace("!!!from8bit!!!",
+                                                                   self.convertAny2Any(destVar, "FROM", params,
+                                                                                       self.__temps))
+            itWasDone = False
+            if tempVar != False:
+               if tempVar.type != "byte" or tempVar.bcd and allTheSame == False:
+                   try:
+                       first = self.__temps[0]
+                       template = template.replace("#VARTEMP#", first)
+                       self.__temps.pop(0)
+                   except:
+                       self.addToErrorList(self.__thisLine["lineNum"],
+                                              self.prepareError("compilerErrorStatementTemps", params["param#2"][0],
+                                                                "", "",
+                                                                str(self.__thisLine["lineNum"] + self.__startLine)))
+
+
+                   if self.__error == False:
+                      template = template.replace("!!!convertCompare!!!", "\tLDA\t" + temp + "\n" +
+                                                 self.convertAny2Any(tempVar, "TO", params,
+                                                                     self.__temps)                  +
+                                                 "\n\tSTA\t" + first + '\n'
+                                                 )
+
+            if itWasDone == False:
+               template = template.replace("#VARTEMP#", temp)
+
+            template = template.replace("#MAGIC#", str(self.__magicNumber)).replace("#BANK#", self.__currentBank)
+
+            self.checkASMCode(template, line)
+            if self.__error == False:
+               line["compiled"] = template
 
         elif self.isCommandInLineThat(line, "bitOn") or self.isCommandInLineThat(line, "bitOff"):
             sourceTxt        = ""
