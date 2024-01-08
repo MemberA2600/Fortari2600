@@ -6,7 +6,7 @@ bitOn;[on];[common];command;None;brackets;[];[number|variable|stringConst number
 bitOff;[off];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 calc;[calculate compute comp];[common];command;None;brackets;[];[variable statement];write;None;False
 call;[exec execute];[common];command;None;brackets;[!subroutines];[subroutine {variable}];write;None;False
-callComp;[execComp executeCompare];[common];command;None;brackets;[!subroutines];[statement subroutine {variable}];write;None;False
+callIf;[execIf executeIf];[common];command;None;brackets;[!subroutines];[statement subroutine {variable}];write;None;False
 case;[when];[common];command;None;brackets;[];[variable|number|statement|stringConst];read;None;False
 cycle;[continue next];[common];command;None;None;[];None;None;None;False
 decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;False

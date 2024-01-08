@@ -196,18 +196,19 @@ class FirstCompiler:
 
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                self.processLine(line, linesFeteched)
+               line["compiled"].replace("##", "#")
                self.colorAnnotationAfter(line)
 
         textToReturn = ""
         currentLineNum = 0
 
         lineNum = -1
-        while True:
-        #for line in linesFeteched:
-            lineNum   += 1
-            if lineNum > len(linesFeteched) - 1: break
+        #while True:
+        for line in linesFeteched:
+            #lineNum   += 1
+            #if lineNum > len(linesFeteched) - 1: break
 
-            line = linesFeteched[lineNum]
+            #line = linesFeteched[lineNum]
 
             for word in ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
                 if line[word] not in self.__noneList:
@@ -390,6 +391,7 @@ class FirstCompiler:
             if "fullLine" not in line:
                 line["fullLine"] = self.__editorBigFrame.getFillLine(line)
 
+            #print("faszom", line)
             params = self.getParamsWithTypesAndCheckSyntax(line)
             if len(params) > 0:
                 thisIsTheResult = str(len(command.params) - 1)
@@ -422,8 +424,11 @@ class FirstCompiler:
                         print(str(e))
                         #pass
         except Exception as e:
+            print("OMG")
             print(traceback.format_exc(), line)
             #pass
+
+        #print("faszom", params)
 
         if command.flexSave and "param#3" in params:
            if params["param#1"][0] == params["param#3"][0]:
@@ -449,7 +454,7 @@ class FirstCompiler:
                line["fullLine"] = " asm(" + line["param#1"][0] + ")"
             """
 
-            self.checkASMCode(txt, line)
+            self.checkASMCode(txt, line, lines, linesFeteched)
 
             if self.__error == False:
                if line["level"] > -1:
@@ -479,7 +484,7 @@ class FirstCompiler:
 
                self.processLine(subline, linesFeteched)
                line["compiled"] = subline["compiled"]
-               self.checkASMCode(line["compiled"], line)
+               self.checkASMCode(line["compiled"], line, linesFeteched)
                if self.__error == False:
                   self.__checked = True
                return
@@ -496,7 +501,7 @@ class FirstCompiler:
                             txt = "\tINC\t" + params["param#1"][0] + "\n"
                             txt = self.checkForNotNeededExtraLDA(txt)
 
-                            self.checkASMCode(txt, line)
+                            self.checkASMCode(txt, line, linesFeteched)
                             if self.__error == False: line["compiled"] = txt
                             return
 
@@ -516,7 +521,7 @@ class FirstCompiler:
                     txt = self.saveAValue(params, "param#0", "param#3", line)
                     txt = self.checkForNotNeededExtraLDA(txt)
 
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False: line["compiled"] = txt
                     return
 
@@ -525,13 +530,13 @@ class FirstCompiler:
                         txt = self.saveAValue(params, "param#1", "param#3", line)
                         txt = self.checkForNotNeededExtraLDA(txt)
 
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
             changeText = self.prepareAdd(params, False)
 
-            if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText, annotation)
+            if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText, annotation, linesFeteched)
             # print(params)
 
         elif self.isCommandInLineThat(line, "sub"):
@@ -544,7 +549,7 @@ class FirstCompiler:
                    txt = self.saveAValue(params, "param#0", "param#3", line)
                else:
                    txt = self.saveAValue(params, "param#0", "param#1", line)
-               self.checkASMCode(txt, line)
+               self.checkASMCode(txt, line, linesFeteched)
                if self.__error == False: line["compiled"] = txt
                return
 
@@ -559,7 +564,7 @@ class FirstCompiler:
 
                 params["param#0"] = [str(theNum), "number"]
                 txt = self.saveAValue(params, "param#0", "param#3", line)
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False: line["compiled"] = txt
                 return
 
@@ -569,7 +574,7 @@ class FirstCompiler:
                        txt = self.saveAValue(params, "param#1", "param#3", line)
                        txt = self.checkForNotNeededExtraLDA(txt)
 
-                       self.checkASMCode(txt, line)
+                       self.checkASMCode(txt, line, linesFeteched)
                        if self.__error == False: line["compiled"] = txt
                        return
                    else:
@@ -582,7 +587,7 @@ class FirstCompiler:
                         txt = "\tDEC\t" + params["param#1"][0] + "\n"
                         txt = self.checkForNotNeededExtraLDA(txt)
 
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
@@ -596,7 +601,7 @@ class FirstCompiler:
                                                       "", "",
                                                       str(line["lineNum"] + self.__startLine)))
             changeText = self.prepareAdd(params, False)
-            if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText, annotation)
+            if self.__error == False: self.createASMTextFromLine(line, "sub", params, changeText, annotation, linesFeteched)
 
         elif self.isCommandInLineThat(line, "sqrt"):
             #params                  = self.getParamsWithTypesAndCheckSyntax(line)
@@ -645,7 +650,7 @@ class FirstCompiler:
                template = template.replace("#VAR02#", params["param#2"][0])
                template = template.replace("!!!from8bit!!!", self.convertAny2Any( var2, "FROM", params, self.__temps))
                template = template.replace("#TEMP#", theOne)
-               self.checkASMCode(template, line)
+               self.checkASMCode(template, line, linesFeteched)
                if self.__error == False: line["compiled"] = template.replace("#BANK#", self.__currentBank).replace(
                    "#MAGIC#", str(self.__magicNumber))
                self.__magicNumber += 1
@@ -749,7 +754,7 @@ class FirstCompiler:
                 template = template.replace(key, replacers[key])
 
             self.exceptionList(["random"], "add")
-            self.checkASMCode(template, line)
+            self.checkASMCode(template, line, linesFeteched)
             self.exceptionList(["random"], "delete")
 
             if self.__error == False: line["compiled"] = template
@@ -801,7 +806,7 @@ class FirstCompiler:
 
             txt = load1 + load2 + save1 + save2
 
-            self.checkASMCode(txt, line)
+            self.checkASMCode(txt, line, linesFeteched)
             if self.__error == False: line["compiled"] = txt
 
 
@@ -866,7 +871,7 @@ class FirstCompiler:
                     template = template.replace("#VAR02#", params["param#3"][0])
                     template = template.raplace("!!!from8bit!!!" , self.convertAny2Any( var2, "FROM", params, self.__temps))
 
-                    self.checkASMCode(template, line)
+                    self.checkASMCode(template, line, linesFeteched)
                     if self.__error == False: line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#MAGIC#", str(self.__magicNumber))
                     self.__magicNumber += 1
 
@@ -884,7 +889,7 @@ class FirstCompiler:
 
                        self.processLine(subline, linesFeteched)
                        line["compiled"] = subline["compiled"]
-                       self.checkASMCode(line["compiled"] , line)
+                       self.checkASMCode(line["compiled"] , line, linesFeteched)
                        if self.__error == False:
                           self.__checked = True
                        return
@@ -896,7 +901,7 @@ class FirstCompiler:
                         else:
                             txt = self.saveAValue(params, "param#0", "param#3", line)
 
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
@@ -907,7 +912,7 @@ class FirstCompiler:
                         else:
                             txt = self.saveAValue(params, "param#0", "param#3", line)
 
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
@@ -920,7 +925,7 @@ class FirstCompiler:
                                                                               str(line["lineNum"] + self.__startLine)))
                 if self.__error == False:
                    txt = self.preparePow(params, subLine, line)
-                   self.checkASMCode(txt, line)
+                   self.checkASMCode(txt, line, linesFeteched)
                    if self.__error == False:
                       line["compiled"] = txt
                       self.__checked = True
@@ -933,7 +938,7 @@ class FirstCompiler:
                 params["param#0"] = ["#" + str(theNum), "number"]
 
                 txt = self.saveAValue(params, "param#0", "param#3", line)
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False: line["compiled"] = txt
                 return
 
@@ -992,7 +997,7 @@ class FirstCompiler:
                for item in changers:
                    txt = txt.replace(item, changers[item])
 
-               self.checkASMCode(txt, line)
+               self.checkASMCode(txt, line, linesFeteched)
                if self.__error == False:
                    line["compiled"] = txt
                    return
@@ -1039,14 +1044,14 @@ class FirstCompiler:
 
                             for key in changer:
                                 template = template.replace(key, changer[key])
-                            self.checkASMCode(template, line)
+                            self.checkASMCode(template, line, linesFeteched)
                             if self.__error == False:
                                line["compiled"] = template.replace("#BANK#", self.__currentBank)
                                return
                          elif times == 1:
                             txt = "\tLDA\t"   + params[varParam][0] + "\n" + self.convertAny2Any(params[varParam][0] , "TO"  , params, None) +\
                                   "\n\tASL\n" + self.convertAny2Any(params["param#3"][0], "FROM", params, None) + "\tSTA\t" + params["param#3"][0] + "\n"
-                            self.checkASMCode(txt, line)
+                            self.checkASMCode(txt, line, linesFeteched)
                             if self.__error == False:
                                line["compiled"] = txt.replace("#BANK#", self.__currentBank)
                                return
@@ -1054,13 +1059,13 @@ class FirstCompiler:
                              if   params[numParam][0] == "0":
                                   params["param#0"] = ["0", "number"]
                                   txt = self.saveAValue(params, "param#0", "param#3", line)
-                                  self.checkASMCode(txt, line)
+                                  self.checkASMCode(txt, line, linesFeteched)
                                   if self.__error == False:
                                      line["compiled"] = txt
                                      return
                              elif params[numParam][0] == "1":
                                   txt = self.saveAValue(params, "param#1", "param#3", line)
-                                  self.checkASMCode(txt, line)
+                                  self.checkASMCode(txt, line, linesFeteched)
                                   if self.__error == False:
                                      line["compiled"] = txt
                                      return
@@ -1077,7 +1082,7 @@ class FirstCompiler:
 
                 params["param#0"] = [str(theNum), "number"]
                 txt = self.saveAValue(params, "param#0", "param#3", line)
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False:
                     line["compiled"] = txt
                     return
@@ -1086,7 +1091,7 @@ class FirstCompiler:
                if self.isIt(params["param#1"][0], 1):
                   if "param#3" in params.keys():
                       txt = self.saveAValue(params, "param#2", "param#3", line)
-                      self.checkASMCode(txt, line)
+                      self.checkASMCode(txt, line, linesFeteched)
                       if self.__error == False:
                           line["compiled"] = txt
                           return
@@ -1098,7 +1103,7 @@ class FirstCompiler:
                     txt = self.saveAValue(params, "param#0", "param#3", line)
                     txt = self.checkForNotNeededExtraLDA(txt)
 
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False:
                        line["compiled"] = txt
                        return
@@ -1109,7 +1114,7 @@ class FirstCompiler:
                       txt = self.saveAValue(params, "param#1", "param#3", line)
                       txt = self.checkForNotNeededExtraLDA(txt)
 
-                      self.checkASMCode(txt, line)
+                      self.checkASMCode(txt, line, linesFeteched)
                       if self.__error == False:
                          line["compiled"] = txt
                          return
@@ -1126,14 +1131,14 @@ class FirstCompiler:
                     txt = self.saveAValue(params, "param#0", saveParam, line)
                     txt = self.checkForNotNeededExtraLDA(txt)
 
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False:
                        line["compiled"] = txt
                        return
 
             changeText = self.prepareMulti(params)
 
-            if self.__error == False: self.createASMTextFromLine(line, "multi", params, changeText, annotation)
+            if self.__error == False: self.createASMTextFromLine(line, "multi", params, changeText, annotation, linesFeteched)
 
         elif self.isCommandInLineThat(line, "div") or self.isCommandInLineThat(line, "rem"):
             if self.isCommandInLineThat(line, "divide"):
@@ -1151,7 +1156,7 @@ class FirstCompiler:
                    txt = self.saveAValue(params, "param#0", "param#3", line)
                else:
                    txt = self.saveAValue(params, "param#0", "param#1", line)
-               self.checkASMCode(txt, line)
+               self.checkASMCode(txt, line, linesFeteched)
                if self.__error == False:
                   line["compiled"] = txt
                   return
@@ -1200,7 +1205,7 @@ class FirstCompiler:
 
                 params["param#0"] = [str(theNum), "number"]
                 txt = self.saveAValue(params, "param#0", "param#3", line)
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False: line["compiled"] = txt
                 return
 
@@ -1212,7 +1217,7 @@ class FirstCompiler:
                     txt = self.saveAValue(params, "param#1", "param#3", line)
                     txt = self.checkForNotNeededExtraLDA(txt)
 
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False: line["compiled"] = txt
                     return
                 else:
@@ -1221,7 +1226,7 @@ class FirstCompiler:
 
                     params["param#0"] = [0, "number"]
                     txt = self.saveAValue(params, "param#0", "param#3", line)
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False: line["compiled"] = txt
                     self.__checked = True
 
@@ -1230,7 +1235,7 @@ class FirstCompiler:
                    params["param#3"] = params["param#1"]
 
                 changeText = self.prepareDiv(params, saveThisOne)
-                if self.__error == False: self.createASMTextFromLine(line, "div", params, changeText, annotation)
+                if self.__error == False: self.createASMTextFromLine(line, "div", params, changeText, annotation, linesFeteched)
 
 
         elif self.isCommandInLineThat(line, "and") or\
@@ -1251,7 +1256,7 @@ class FirstCompiler:
                       params["param#0"] = ["#0", "number"]
                       txt = self.saveAValue(params, "param#0", "param#1", line)
                       txt = self.checkForNotNeededExtraLDA(txt)
-                      self.checkASMCode(txt, line)
+                      self.checkASMCode(txt, line, linesFeteched)
                       if self.__error == False: line["compiled"] = txt
                       return
 
@@ -1268,7 +1273,7 @@ class FirstCompiler:
                           params["param#0"] = ["#0", "number"]
                           txt = self.saveAValue(params, "param#0", "param#1", line)
                           txt = self.checkForNotNeededExtraLDA(txt)
-                          self.checkASMCode(txt, line)
+                          self.checkASMCode(txt, line, linesFeteched)
                           if self.__error == False: line["compiled"] = txt
                           return
                     elif command == "or":
@@ -1279,7 +1284,7 @@ class FirstCompiler:
                             params["param#0"] = ["#255", "number"]
                             txt = self.saveAValue(params, "param#0", "param#1", line)
                             txt = self.checkForNotNeededExtraLDA(txt)
-                            self.checkASMCode(txt, line)
+                            self.checkASMCode(txt, line, linesFeteched)
                             if self.__error == False: line["compiled"] = txt
                             return
 
@@ -1292,7 +1297,7 @@ class FirstCompiler:
                    else:
                       txt = self.saveAValue(params, "param#1", "param#3", line)
                    txt = self.checkForNotNeededExtraLDA(txt)
-                   self.checkASMCode(txt, line)
+                   self.checkASMCode(txt, line, linesFeteched)
                    if self.__error == False: line["compiled"] = txt
                    return
 
@@ -1311,7 +1316,7 @@ class FirstCompiler:
                     params["param#0"] = [str(theNum), "number"]
                     txt = self.saveAValue(params, "param#0", "param#3", line)
                     txt = self.checkForNotNeededExtraLDA(txt)
-                    self.checkASMCode(txt, line)
+                    self.checkASMCode(txt, line, linesFeteched)
                     if self.__error == False: line["compiled"] = txt
 
                     return
@@ -1338,14 +1343,14 @@ class FirstCompiler:
                         params["param#0"] = ["#0", "number"]
                         txt = self.saveAValue(params, "param#0", "param#3", line)
                         txt = self.checkForNotNeededExtraLDA(txt)
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
                     if param255 != None:
                         txt = self.saveAValue(params, param255, "param#3", line)
                         txt = self.checkForNotNeededExtraLDA(txt)
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
                 elif command == "or":
@@ -1353,19 +1358,19 @@ class FirstCompiler:
                         params["param#0"] = ["#255", "number"]
                         txt = self.saveAValue(params, "param#0", "param#3", line)
                         txt = self.checkForNotNeededExtraLDA(txt)
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
                     if param0 != None:
                         txt = self.saveAValue(params, param0, "param#3", line)
                         txt = self.checkForNotNeededExtraLDA(txt)
-                        self.checkASMCode(txt, line)
+                        self.checkASMCode(txt, line, linesFeteched)
                         if self.__error == False: line["compiled"] = txt
                         return
 
             changeText = self.prepareAdd(params, True)
-            if self.__error == False: self.createASMTextFromLine(line, command, params, changeText, annotation)
+            if self.__error == False: self.createASMTextFromLine(line, command, params, changeText, annotation, linesFeteched)
 
         elif self.isCommandInLineThat(line, "rollL") or self.isCommandInLineThat(line, "rollR") or \
              self.isCommandInLineThat(line, "shiftL") or self.isCommandInLineThat(line, "shiftR"):
@@ -1411,7 +1416,7 @@ class FirstCompiler:
                     txt += shiftNum * ("\t" + command + "\n") + _to + "\tSTA\t" + varName + "\n"
 
                 txt = self.checkForNotNeededExtraLDA(txt)
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False: line["compiled"] = txt
                 return
 
@@ -1426,7 +1431,7 @@ class FirstCompiler:
                                                               .replace("#COMMAND#", command)
                 self.__magicNumber += 1
                 txt = self.checkForNotNeededExtraLDA(txt.replace("#MAGIC#", str(self.__magicNumber)))
-                self.checkASMCode(txt, line)
+                self.checkASMCode(txt, line, linesFeteched)
                 if self.__error == False: line["compiled"] = txt
                 return
              else:
@@ -1555,6 +1560,7 @@ class FirstCompiler:
 
              subroutines   = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", self.__currentBank)
              bank1Routines = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", "bank1")
+             self.removeTheOnesFromTheFirstThatIsInTheSecond(subroutines, bank1Routines)
 
              if params["param#1"][0] not in bank1Routines:
                  back = ""
@@ -1575,39 +1581,104 @@ class FirstCompiler:
 
              if self.__error == False:
                 save = ""
-                if params["param#2"][0] not in self.__noneList:
-                   var = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], self.__currentBank)
-                   if var == False:
-                      var = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], "bank1")
+                if "param#2" in params:
+                   if params["param#2"][0] not in self.__noneList:
+                       var = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], self.__currentBank)
+                       if var == False:
+                          var = self.__loader.virtualMemory.getVariableByName(params["param#2"][0], "bank1")
 
-                   if var == False:
-                      self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
-                                                                               "", "",
-                                                                               str(line["lineNum"] + self.__startLine)))
-                   if self.__error == False:
-                      self.__temps = self.collectUsedTemps()
+                       if var == False:
+                          self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                                                   "", "",
+                                                                                   str(line["lineNum"] + self.__startLine)))
+                       if self.__error == False:
+                          self.__temps = self.collectUsedTemps()
 
-                      try:
-                           temp1 = self.__temps[0]
-                           self.__temps.pop(0)
+                          try:
+                               temp1 = self.__temps[0]
+                               self.__temps.pop(0)
 
-                           temp2 = self.__temps[0]
-                           self.__temps.pop(0)
+                               temp2 = self.__temps[0]
+                               self.__temps.pop(0)
 
-                      except:
-                           self.addToErrorList(self.__thisLine["lineNum"],
-                                               self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
-                                                                 "", "",
-                                                                 str(self.__thisLine["lineNum"] + self.__startLine)))
-                      self.__temps = self.collectUsedTemps()
-                      save += self.convertAny2Any(var, "FROM", params, self.__temps)
-                      save += "\tSTA\t" + params["param#2"][0] + "\n"
+                          except:
+                               self.addToErrorList(self.__thisLine["lineNum"],
+                                                   self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                                     "", "",
+                                                                     str(self.__thisLine["lineNum"] + self.__startLine)))
+                          self.__temps = self.collectUsedTemps()
+                          save += self.convertAny2Any(var, "FROM", params, self.__temps)
+                          save += "\tSTA\t" + params["param#2"][0] + "\n"
 
-                      template = template.replace("!!!SAVE!!!", save)
-                      line["compiled"] = template
+                          template = template.replace("!!!SAVE!!!", save)
+                line["compiled"] = template
 
-        elif self.isCommandInLineThat(line, "callComp"):
-            pass
+
+        elif self.isCommandInLineThat(line, "callIf"):
+            statement = line["param#1"][0]
+            smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
+                                                                         statement, line)
+            smallerCommandLines = smallerCommands.split("\n")
+
+            line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
+
+            """
+            for subLine in smallerCommandLines:
+                if subLine == "": continue
+
+                subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
+                                                                          False)
+                subLineStructure["fullLine"] = subLine
+                for key in line:
+                    if key not in subLineStructure.keys():
+                        subLineStructure[key] = line[key]
+
+                self.processLine(subLineStructure, linesFeteched)
+                if self.__error == False:
+                    line["compiled"] += subLineStructure["compiled"] + "\n"
+
+            line["compiled"] = "\n".join(line["compiled"].split("\n")[:-1])
+            """
+            self.__magicNumber += 1
+            label = self.__currentBank + "_" + str(self.__magicNumber) + "_CallIf_JumpOver"
+
+            currentComprass = self.findCompass(statement)
+            compassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
+                                                         label)
+
+
+
+            listOfThem = ["BEQ", "BNE", "BCC", "BCS"]
+            for itemNum in range(0, len(listOfThem)):
+                item = listOfThem[itemNum]
+                if item in compassLine:
+                    compassLine = compassLine.replace(item, listOfThem[itemNum^1])
+                    break
+
+            line["compiled"] += compassLine
+            line["compiled"] = self.simplifyCompassShit(line["compiled"], temps)
+
+            from copy import deepcopy
+
+            subline = deepcopy(line)
+            subline["command"] = ["call", [0, 3]]
+            subline["param#1"] = line["param#2"]
+            subline["param#2"] = line["param#3"]
+            subline["param#3"] = [None, [-1, -1]]
+
+            subline["fullLine"] = "\tcall(" + subline["param#1"][0]
+            if subline["param#2"][0] not in [None, "None", ""]:
+               subline["fullLine"] += ", " + subline["param#2"][0] + ")"
+
+            subline["fullLine"] += ")"
+            subline["compiled"]  = ""
+
+            self.processLine(subline, linesFeteched)
+            line["compiled"] += subline["compiled"]
+            #self.checkASMCode(line["compiled"], line)
+
+            line["compiled"] += label + "\n"
+            #print(line["compiled"].split("\n"))
 
         elif line["command"][0].split("-")[0] in ["do", "perform", "for", "foreach"]:
             command     = None
@@ -1645,7 +1716,7 @@ class FirstCompiler:
                                                           str(line["lineNum"] + self.__startLine)))
 
                endLine = linesFeteched[end[0]]
-               endLine["labelsBefore"] = name + "End"
+               endLine["labelsBefore"].append(name + "End")
                if self.isCommandInLineThat(line, "do-frames") == False:
                   endLine["compiledBefore"] = "\tJMP\t" + name + "Loop\n"
 
@@ -1782,6 +1853,12 @@ class FirstCompiler:
                    #print(smallerCommandLines)
 
                    if self.__error == False:
+
+                       txt = self.comprassThing(smallerCommandLines, line, linesFeteched)
+
+                       #print(txt)
+
+                       """
                        for subLine in smallerCommandLines:
                            if subLine == "": continue
 
@@ -1792,12 +1869,17 @@ class FirstCompiler:
                                if key not in subLineStructure.keys():
                                    subLineStructure[key] = line[key]
 
+                           #print(">>>", subLine)
+
                            self.processLine(subLineStructure, linesFeteched)
                            #print(self.__error, subLine)
                            if self.__error == False:
                                txt += subLineStructure["compiled"] + "\n"
 
+                       txt = "\n".join(txt.split("\n")[:-1])
+                       """
                        currentComprass = self.findCompass(statement)
+
                        comprassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
                                                                     name + "End")
 
@@ -1816,6 +1898,7 @@ class FirstCompiler:
                                  comprassLine = comprassLine.replace(opcode, self.__branchers[itemNum])
                                  break
                        txt += comprassLine
+                       txt  = self.simplifyCompassShit(txt, temps)
 
             line["compiled"] = txt
 
@@ -1859,19 +1942,19 @@ class FirstCompiler:
 
              if self.__error == False:
                 endLine = linesFeteched[end[0]]
-                endLine["labelsBefore"] = name + "End"
+                endLine["labelsBefore"].append(name + "End")
 
                 caseNum = -1
 
                 for case in cases:
                     caseNum += 1
                     caseLine = linesFeteched[case["lineNum"]]
-                    caseLine["labelsAfter"] = name + "Case_" + str(caseNum)
+                    caseLine["labelsAfter"].append(name + "Case_" + str(caseNum))
                     caseLine["magicNumber"] = line["magicNumber"]
 
                 if len(defaults) > 0:
                     defaultLine = linesFeteched[defaults[0]["lineNum"]]
-                    defaultLine["labelsAfter"] = name + "Default"
+                    defaultLine["labelsAfter"].append(name + "Default")
                     defaultLine["magicNumber"] = line["magicNumber"]
 
 
@@ -1975,6 +2058,9 @@ class FirstCompiler:
 
                             if self.__error == True: break
 
+                            line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
+
+                            """    
                             for subLine in smallerCommandLines:
                                 if subLine == "": continue
 
@@ -1989,8 +2075,11 @@ class FirstCompiler:
                                 if self.__error == False:
                                    line["compiled"] += subLineStructure["compiled"] + "\n"
 
+                            line["compiled"] = "\n".join(line["compiled"].split("\n")[:-1])
+                            """
                             currentComprass = self.findCompass(statement)
                             line["compiled"] += self.fuseTempsAndLogical(temps[0], temps[1], currentComprass, name + "Case_" + str(caseNum))
+                            linf["compiled"]  = self.simplifyCompassShit(line["compiled"], temps)
 
                         if len(defaults) > 0:
                             line["compiled"] += "\tJMP\t" + name + "Default" + "\n"
@@ -2156,7 +2245,7 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "subroutine"):
              #params = self.getParamsWithTypesAndCheckSyntax(line)
-             line["labelsBefore"] = self.__currentBank + "_SubRoutine_" + params["param#1"][0][1:-1] + "\n"
+             line["labelsBefore"].append(self.__currentBank + "_SubRoutine_" + params["param#1"][0][1:-1] + "\n")
 
         elif self.isCommandInLineThat(line, "end-subroutine"):
              noRTS    = False
@@ -2177,7 +2266,7 @@ class FirstCompiler:
                      if breakOut: break
 
              if noRTS == False:
-                 if self.__currentBank > 1:
+                 if self.__currentBank.lower() != "bank1":
                     line["compiled"] = "\tRTS\n"
                  else:
                     line["compiled"] += self.__loader.io.loadCommandASM("returnFromBank1")
@@ -2329,7 +2418,7 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "screen"):
              #params = self.getParamsWithTypesAndCheckSyntax(line)
-             line["labelsBefore"] = self.__currentBank + "_Screen_" + params["param#1"][0][1:1] + "\n"
+             line["labelsBefore"].append(self.__currentBank + "_Screen_" + params["param#1"][0][1:1] + "\n")
              #line["compiled"] = "\tLDX\titem\n\tTXS\n"
 
         elif self.isCommandInLineThat(line, "end-screen"):
@@ -2416,7 +2505,7 @@ class FirstCompiler:
 
             template = template.replace("#MAGIC#", str(self.__magicNumber)).replace("#BANK#", self.__currentBank)
 
-            self.checkASMCode(template, line)
+            self.checkASMCode(template, line, linesFeteched)
             if self.__error == False:
                line["compiled"] = template
 
@@ -2527,12 +2616,15 @@ class FirstCompiler:
                fullText = fullText.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection).replace("#MAGIC#", str(self.__magicNumber))
 
 
-               self.checkASMCode(fullText, line)
+               self.checkASMCode(fullText, line, linesFeteched)
                if self.__error == False:
                   line["compiled"] = fullText
 
             else:
                 line["compiled"]   = ""
+
+        elif line["command"][0].startswith("end"):
+            pass
 
         else:
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
@@ -2688,7 +2780,7 @@ class FirstCompiler:
 
             if self.__error == False:
                self.exceptionList(objectThings["sysVars"], "add")
-               self.checkASMCode(template, line)
+               self.checkASMCode(template, line, linesFeteched)
                self.exceptionList(objectThings["sysVars"], "delete")
 
             if self.__error == False:
@@ -2698,6 +2790,8 @@ class FirstCompiler:
                    line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
                return
 
+        if "compiled" in line: line["compiled"] = line["compiled"].replace("##", "#")
+
         if self.__error == False:
            line["compiled"] = line["compiled"].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
 
@@ -2705,15 +2799,71 @@ class FirstCompiler:
               self.__magicNumber += 1
               line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
 
+           #print("#1", line["compiled"].split("\n")[-1])
            line["compiled"] = self.LDATAYLDA(self.detectUnreachableCode(self.checkForNotNeededExtraLDA(line["compiled"])))
-           if line["compiled"] != "": self.checkASMCode(line["compiled"], line)
+           #print("#2", line["compiled"].split("\n")[-1])
+
+           if line["compiled"] != "": self.checkASMCode(line["compiled"], line, linesFeteched)
 
            if line["lineNum"] > 0: self.checkIfCLDisFollowedBySED(linesFeteched, line["lineNum"])
 
         else:
             if "compiled" in line:
+                print("ERROR -- ERROR -- ERROR")
                 print(line["compiled"])
             line["compiled"] = ""
+
+    def simplifyCompassShit(self, txt, temps):
+        txt = txt.split("\n")
+
+        #0. RemoveBlank
+        newTxt = []
+        for line in txt:
+            if line.isspace() == False and line != "":
+               newTxt.append(line)
+
+        txt = newTxt
+
+        #1. If the very first is just a simple load and save to a temp.
+        opcode1, value1 = self.getOpCodeAndOperandFromASMLine(txt[0])
+        opcode2, value2 = self.getOpCodeAndOperandFromASMLine(txt[1])
+
+        #print(opcode1, opcode2, value1, value2, temps[0], temps[1])
+        #print("#1", opcode1.upper() == "LDA", opcode1)
+        #print("#2", opcode2.upper() == "STA", opcode2)
+        #print("#3", value1 == temps[0], value1, temps[0])
+
+        if opcode1.upper() == "LDA" and opcode2.upper() == "STA" and value2 == temps[0]:
+           saveIt    = value1
+
+           txt.pop(0)
+           txt.pop(0)
+
+           for lineNum in range(0, len(txt)):
+               txt[lineNum] = txt[lineNum].replace(temps[0], saveIt)
+
+        #2. Remove the STA / LDA before the CMP is the same, remove them!
+
+        cmpLineNum = -1
+        for lineNum in range(len(txt)-1, -1, -1):
+            opcode, value = self.getOpCodeAndOperandFromASMLine(txt[lineNum])
+            if opcode.upper() == "CMP":
+                cmpLineNum = lineNum
+                break
+
+        opcode1, value1 = self.getOpCodeAndOperandFromASMLine(txt[cmpLineNum-2])
+        opcode2, value2 = self.getOpCodeAndOperandFromASMLine(txt[cmpLineNum-1])
+
+        #print("#1", txt[cmpLineNum-2])
+        #print("#2", txt[cmpLineNum-1])
+
+        if opcode1.upper() == "STA" and opcode2.upper() == "LDA" and value1 == value2:
+           txt.pop(cmpLineNum-2)
+           txt.pop(cmpLineNum-2)
+
+        #print("\n".join(txt) + "\n")
+        return "\n".join(txt) + "\n"
+
 
     def bitChanger(self, variable, value, oneBit):
         if type(variable) == str:
@@ -2741,8 +2891,10 @@ class FirstCompiler:
            bitLen      = 1
            largestBit  = oneBit
 
-        _and        = self.generateAndOr("AND", value, largestBit, bitLen)
-        _or         = self.generateAndOr("ORA", value, largestBit, bitLen)
+        leadingZeroes = "0" * (bitLen - len(value))
+
+        _and        = self.generateAndOr("AND", leadingZeroes + value, largestBit, bitLen)
+        _or         = self.generateAndOr("ORA", leadingZeroes + value, largestBit, bitLen)
 
         if "1" not in _and and _and != "": _or  = ""
         if "0" not in  _or and  _or != "": _and = ""
@@ -2752,6 +2904,7 @@ class FirstCompiler:
     def generateAndOr(self, command, bitsToInsert, largestBit, bitLen):
 
         bbb = {"AND": "1", "ORA": "0"}
+        #print("###", bitsToInsert)
         while bitLen < len(bitsToInsert):
            bitsToInsert = bitsToInsert[1:]
 
@@ -2759,6 +2912,8 @@ class FirstCompiler:
             bitsToInsert = len(bitsToInsert) * "0"
 
         startingPoz = 7 - largestBit
+
+       # print("###", largestBit, bitLen, startingPoz, bitsToInsert)
 
         bitsToInsert = (bbb[command.upper()] * startingPoz) + bitsToInsert
         bitsToInsert += bbb[command.upper()] * (8 - len(bitsToInsert))
@@ -2828,6 +2983,34 @@ class FirstCompiler:
                       break
 
                break
+
+    def comprassThing(self, smallerCommandLines, line, linesFeteched):
+        txt = ""
+        for subLine in smallerCommandLines:
+            if subLine == "": continue
+
+            subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
+                                                                      False)
+            subLineStructure["fullLine"] = subLine
+            for key in line:
+                if key not in subLineStructure.keys():
+                    subLineStructure[key] = line[key]
+
+            self.processLine(subLineStructure, linesFeteched)
+            if self.__error == False:
+                txt += subLineStructure["compiled"] + "\n"
+
+        txt = txt.split("\n")
+
+        while True:
+            if   txt[-1] == "":
+                 txt = txt[:-1]
+                 continue
+            #elif "STA" in txt[-1]:
+            #     txt = txt[:-1]
+            break
+
+        return("\n".join(txt) + "\n")
 
     def ifCommandInSections(self, commandName):
         command = None
@@ -3272,7 +3455,31 @@ class FirstCompiler:
     def saveAValue(self, params, paramName1, paramName2, line):
         txt = ""
 
+        if params == None:
+           params = {"param#1": [paramName1, None], "param#2": [paramName2, "variable"]}
+           paramName1 = "param#1"
+           paramName2 = "param#2"
+
+           varTest = self.__loader.virtualMemory.getVariableByName(params[paramName1][0], self.__currentBank)
+
+           if varTest == False:
+               if params[paramName1][0] in self.__constants:
+                  params[paramName1][1] = "constant"
+               else:
+                  params[paramName1][1] = "number"
+           else:
+               params[paramName1][1] = "variable"
+
         allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+        var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
+        if var2 == False:
+            var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
+
+        if var2 == False:
+            self.addToErrorList(line["lineNum"],
+                                self.prepareError("compilerErrorVarNotFound", params[paramName2][0],
+                                                  "", "",
+                                                  str(line["lineNum"] + self.__startLine)))
 
         if (hasBCD == False or allTheSame) and params[paramName1][1] in ["number", "stringConst"]:
            if hasBCD:
@@ -3296,18 +3503,12 @@ class FirstCompiler:
            else:
               val  = params[paramName1][0]
 
+           if var2.type == "byte":
+              return "\tLDA\t#" + str(val) + "\n\tSTA\t" + params[paramName2][0] + "\n".replace("##", "#")
+
            txt = self.bitChanger(params[paramName2][0], val, None)
            return txt
 
-        var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
-        if var2 == False:
-            var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
-
-        if var2 == False:
-            self.addToErrorList(line["lineNum"],
-                                self.prepareError("compilerErrorVarNotFound", params[paramName2][0],
-                                                  "", "",
-                                                  str(line["lineNum"] + self.__startLine)))
         if self.__error == False:
             if params[paramName1][1] == "number":
                txt = "\tLDA\t#%" + self.bibBinBin(params[paramName1][0], var2, hasBCD, params, int(paramName1[-1])) \
@@ -3345,6 +3546,8 @@ class FirstCompiler:
         return txt
 
     def fuseTempsAndLogical(self, temp1, temp2, comprass, caseName):
+        #print(temp1, temp2)
+
         comprassDict = self.__editorBigFrame.getComprassionDict()
         del comprassDict["all"]
 
@@ -3354,15 +3557,18 @@ class FirstCompiler:
                thatKey = key
 
         allTheOnes = {
-            "validNotEQ":           "\tLDA\t" + temp1 + "\n\tCMP\t" + temp2 + "\n\tBNE\t" + caseName + "\n",
-            "validEQ":              "\tLDA\t" + temp1 + "\n\tCMP\t" + temp2 + "\n\tBEQ\t" + caseName + "\n",
+            "validNotEQ":           "\tLDA\t" + temp2 + "\n\tCMP\t" + temp1 + "\n\tBNE\t" + caseName + "\n",
+            "validEQ":              "\tLDA\t" + temp2 + "\n\tCMP\t" + temp1 + "\n\tBEQ\t" + caseName + "\n",
             "validLargerThan":      "\tLDA\t" + temp2 + "\n\tCMP\t" + temp1 + "\n\tBCC\t" + caseName + "\n",
             "validSmallerThan":     "\tLDA\t" + temp1 + "\n\tCMP\t" + temp2 + "\n\tBCC\t" + caseName + "\n",
             "validLargerThanOrEQ":  "\tLDA\t" + temp1 + "\n\tCMP\t" + temp2 + "\n\tBCS\t" + caseName + "\n",
             "validSmallerThanOrEQ": "\tLDA\t" + temp2 + "\n\tCMP\t" + temp1 + "\n\tBCS\t" + caseName + "\n"
         }
+        txt = allTheOnes[thatKey]
 
-        return allTheOnes[thatKey]
+        #print("###", txt)
+
+        return txt
 
     def isThereAnyLargerThan255(self, data):
         import re
@@ -3401,7 +3607,7 @@ class FirstCompiler:
         if val == comp: return True
         return False
 
-    def createASMTextFromLine(self, line, command, params, changeText, annotation):
+    def createASMTextFromLine(self, line, command, params, changeText, annotation, linesFetched):
         template = self.__loader.io.loadCommandASM(command)
 
         for item in changeText:
@@ -3419,7 +3625,7 @@ class FirstCompiler:
                 template = template.replace(varName, params[name][0])
 
         #print(template)
-        self.checkASMCode(template, line)
+        self.checkASMCode(template, line, linesFetched)
         if self.__error == False: line["compiled"] = template
 
     def prepareMulti(self, params):
@@ -3697,40 +3903,88 @@ class FirstCompiler:
 
         for source in sources:
             for key in source.keys():
-                lines = source[key].replace("\r", "").replace("#BANK#", self.__currentBank).replace("#SECTION#", key).split("\n")
+                b = self.__currentBank
+                if source == self.bank1Data: b = "bank1"
+                lines = source[key].replace("\r", "").split("\n")
+
                 for line in lines:
                     if line == "" or line.isspace() or line[0] in ["\t", " "]:
                        continue
 
                     if line.replace("\t", " ")[0] != " " and "!!!" not in line:
                         if len(line) > 0:
-                            if line[0] not in ("*", "#", "!"):
+                            if line[0] not in ("*", "#", "!") and "#BANK#" not in line:
                                labels.append(line)
-                               if self.__currentBank in line:
-                                  labels.append(line.replace(self.__currentBank, "#BANK#"))
-                               else:
-                                  labels.append(line.replace("#BANK#", self.__currentBank))
+                               labels.append(line).replace("#BANK#", b).replace("#SECTION#", key)
 
+        subroutines = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", self.__currentBank)
+        bank1Routines = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", "bank1")
+        self.removeTheOnesFromTheFirstThatIsInTheSecond(subroutines, bank1Routines)
 
-        self.__labels = labels
+        sources = [subroutines, bank1Routines]
 
-    def checkASMCode(self, template, lineStructure):
+        for source in sources:
+            for subName in subroutines:
+                if source == bank1Routines:
+                   b = "bank1"
+                else:
+                   b = self.__currentBank
+
+                labels.append(
+                    b + "_SubRoutine_" + subName
+                )
+
+            self.__labels = labels
+
+    def removeTheOnesFromTheFirstThatIsInTheSecond(self, list1, list2):
+        list1 = [item for item in list1 if item not in list2]
+
+    def checkASMCode(self, template, lineStructure, linesFetched):
         template = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
 
         lines = template.split("\n")
+#        for line in lines:
+ #           if "BNE" in line:
+  #              print("faszom")
+   #             raise ValueError
 
         labels = []
-        for line in lines:
+        #for line in lines:
             #print(line, line.replace("\t", " ").startswith(" ") == False, "!!!" not in line)
-            if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
+        #    if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
                 #print(len(line))
-                if len(line) > 0:
+        #        if len(line) > 0:
                    #print(line[0] not in ("*", "#"))
-                   if line[0] not in ("*", "#", "!"):
-                      labels.append(line.replace("\n", ""))
+                   #print("---", line)
+        #           if line[0] not in ("*", "#", "!") and "#BANK#" not in line[0]:
+        #              labels.append(line.replace("\n", ""))
 
         self.collectLabelsFromRoutines(labels)
         #print(labels)
+
+        #FUCKFUCK
+        for line in linesFetched:
+            for key in ["labelsBefore", "labelsAfter"]:
+                if key in line:
+                   for label in line[key]:
+                       base = label.replace("\r", "")
+
+                       labels.append(base)
+                       labels.append(base.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
+
+            if line["compiled"] != "":
+               subLines = line["compiled"].replace("\r", "").split("\n")
+               for subLine in subLines:
+                   if subLine.replace("\t", " ").startswith(" ") == False and "!!!" not in subLine:
+                       if len(subLine) > 0:
+                           if subLine[0] not in ("*", "#", "!") or "#BANK#" in subLine:
+                              labels.append(subLine)
+                              labels.append(subLine.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
+            #else:
+            #   labelLineStructure =
+            #   if linesFetched["fullLine"] != "":
+            #      if
+            #   labelLineStructure = self.__editorBigFrame.getLineStructure(0, [line], False)
 
         for line in lines:
             full = line
@@ -3742,7 +3996,15 @@ class FirstCompiler:
             line = line[:delimiterPoz]
             #'$79': {'opcode': 'ADC', 'format': 'aaaa,y', 'bytes': 3},
             line = line.replace("\r", "").replace("\t", " ").split(" ")
+            """
+            while line.startswith(" "):
+                line = line[1:]
 
+            while "  " in line:
+                line = line.replace("  ", " ")
+
+            line = line.split(" ")
+            """
             command = ""
             value   = ""
 
@@ -3753,6 +4015,7 @@ class FirstCompiler:
             line    = newLine
             if line == []: continue
 
+            #print(line)
             #print(line[0].upper() in self.__branchers, line[0].upper() in self.__jumpers)
 
             if line[0].upper() in self.__branchers or line[0].upper() in self.__jumpers:
@@ -4347,10 +4610,10 @@ class FirstCompiler:
         return False
 
     def convertStatementToSmallerCodes(self, command, statement, line):
-        side1            = ""
-        side2            = ""
+        #side1            = ""
+        #side2            = ""
         statementData    = []
-        statementFetched = []
+        #statementFetched = []
         temps            = []
         commands         = ""
 
@@ -4432,7 +4695,6 @@ class FirstCompiler:
                            txt = ""
                            statement = statement.split(currentComprass)
 
-                           #print(statement)
                            txt += self.convertToCommands(statement[0], line, temp1)
                            txt += self.convertToCommands(statement[1], line, temp2)
 
@@ -4442,6 +4704,7 @@ class FirstCompiler:
         if self.__error == False:
            return commands, temps
         else:
+           #print(self.errorList)
            return False, temps
 
     def findCompass(self, statement):
@@ -4469,6 +4732,8 @@ class FirstCompiler:
 
     def convertToCommands(self, statement, line, saveHere):
         newT = []
+
+        params = self.getParamsWithTypesAndCheckSyntax(line)
 
         for temp in self.__temps:
             if temp not in statement:
@@ -4519,6 +4784,9 @@ class FirstCompiler:
 
                     returnBack += "\t" + command + "(" + saveHere + ", " + operand + ")\n"
         else:
+            returnBack = " set(" + saveHere + ", " + finals[0] + ")\n"
+
+            """
             isItNum = False
             try:
                 teszt   = int(finals[0].replace("#", ""))
@@ -4526,7 +4794,7 @@ class FirstCompiler:
             except:
                 pass
 
-            extra  = ""
+            #extra  = ""
             before = ""
             after  = ""
 
@@ -4548,19 +4816,18 @@ class FirstCompiler:
                        before = "asm(\"\tSED\n\")"
                        after  = "asm(\"\tCLD\n\")"
 
-                    if var.type != "byte" and (var.bcd and allTheSame == False):
-                       extraLines = self.convertAny2Any(var, "TO", params, None)
-                       for line in extraLines:
-                           if line != "":
-                              extra += "asm(\"" + line + "\")\n"
+                    #if var.type != "byte" and (var.bcd and allTheSame == False):
+                    #   extraLines = self.convertAny2Any(var, "TO", params, None)
+                    #   for line in extraLines:
+                    #       if line != "":
+                    #          extra += "asm(\"" + line + "\")\n"
 
             if self.__error == False:
                 returnBack += before                                +\
                               "asm(\"\tLDA\t" + finals[0] + "\")\n" +\
-                              extra                                 +\
                               "asm(\"\tSTA\t" + saveHere  + "\")\n" +\
                               after
-
+            """
         return returnBack
 
 

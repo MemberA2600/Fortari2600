@@ -2247,7 +2247,9 @@ class EditorBigFrame:
                    listOfItems = self.setupList(currentWord, listType, currentLineStructure, selectedType, text)
 
            listOfItems.sort()
-           self.fillListBox(listOfItems)
+           t = Thread(target=self.fillListBox, args=[listOfItems])
+           t.daemon = True
+           t.start()
 
     def reAlignCommandsAndParams(self):
         noneList = ("", None, "None")
@@ -2394,9 +2396,14 @@ class EditorBigFrame:
 
         #print(wordsForList)
 
-        self.fillListBox(wordsForList)
+        from threading import Thread
+        t = Thread(target=self.fillListBox, args=[wordsForList])
+        t.daemon = True
+        t.start()
+        #self.fillListBox(wordsForList)
 
     def fillListBox(self, wordsForList):
+        from time import sleep
 
         selection = 0
         selected  = ""
@@ -2407,8 +2414,13 @@ class EditorBigFrame:
             pass
 
         self.__listOfItems = []
-        self.__listBoxOnTheRight.select_clear(0, END)
-        self.__listBoxOnTheRight.delete(0, END)
+        while True:
+            try:
+                self.__listBoxOnTheRight.select_clear(0, END)
+                self.__listBoxOnTheRight.delete(0, END)
+                break
+            except:
+                sleep(0.05)
 
         for item in wordsForList:
             #endIndex = self.__listBoxOnTheRight.index(END)
@@ -2685,7 +2697,8 @@ class EditorBigFrame:
                    for lineNum in range(0, len(code)):
                        lineStructure = self.getLineStructure(lineNum, code, False)
                        if lineStructure["command"][0] == word or lineStructure["command"][0] in self.__syntaxList[word].alias:
-                          subroutines.append(lineStructure["param#1"][0][1:-1])
+                          if lineStructure["param#1"][0] not in ["", "None", None]:
+                             subroutines.append(lineStructure["param#1"][0][1:-1])
         return subroutines
 
     def doesItWriteInParam(self, linstructure, cursorIn, caller):
@@ -3987,11 +4000,21 @@ class EditorBigFrame:
         t.daemon = True
         t.start()
 
-        self.__checkEditorItems(lineStructure)
+        t2 = Thread(target = self.__checkEditorItems, args=[lineStructure])
+        t2.daemon = True
+        t2.start()
+
+        #self.__checkEditorItems(lineStructure)
 
     def __checkEditorItems(self, lineStructure):
+        from time import sleep
 
-        textToPrint = self.__getFakeLine(self.__codeEditorItems)
+        while True:
+            try:
+               textToPrint = self.__getFakeLine(self.__codeEditorItems)
+               break
+            except:
+               sleep(0.05)
 
         selectPosizions = []
         errorPositions  = []
