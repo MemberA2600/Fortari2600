@@ -524,6 +524,7 @@ class MainWindow:
         try:
         #if True:
             projectPath=path.replace("\\", "/")
+            kernelOld = self.__loader.virtualMemory.kernel
             from re import sub
             projectPath = sub("/+", "/", projectPath)
             self.__setProjectPath(projectPath)
@@ -542,6 +543,9 @@ class MainWindow:
                 bank = "bank"+str(num)
                 for section in self.__loader.sections:
                     self.__setVirtualMemoryItem(bank, section)
+
+            if kernelOld != self.__loader.virtualMemory.kernel:
+               self.__loader.virtualMemory.objectMaster.loadKernelObjects()
 
             self.__loader.virtualMemory.setLocksAfterLoading()
             self.__loader.virtualMemory.setVariablesFromMemory("all")

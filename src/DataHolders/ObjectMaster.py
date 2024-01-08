@@ -16,20 +16,30 @@ class ObjectMaster:
             self.objects[bankNum] = {}
 
         self.objects["currentBank"] = self.objects["bank2"]
+        self.loadKernelObjects()
 
-        for root, dirs, files in os.walk("templates/objects/Game"):
+    def loadKernelObjects(self):
+        if "game" in self.objects.keys():
+            del self.objects["game"]
+
+        try:
+           self.objRoot = "templates/objects_" + self.__loader.virtualMemory.kernel + "/"
+        except:
+           self.objRoot = "templates/objects_common/"
+
+        for root, dirs, files in os.walk(self.objRoot + "Game"):
             for dir in dirs:
                 if dir.endswith("ß"):
-                   oList = [dir.replace("ß", "0"), dir.replace("ß", "1")]
+                    oList = [dir.replace("ß", "0"), dir.replace("ß", "1")]
                 else:
-                   oList = [dir]
+                    oList = [dir]
 
                 for item in oList:
                     path = self.__pathToListOfObj(root + "/" + item)
                     objRoot = self.objects
                     for objName in path:
                         if objName not in objRoot:
-                           objRoot[objName] = {}
+                            objRoot[objName] = {}
                         objRoot = objRoot[objName]
 
             for file in files:
@@ -45,45 +55,42 @@ class ObjectMaster:
                     for objName in path:
                         if objName.startswith("_"): continue
                         if objName.endswith(".asm") == False and objName.endswith(".a26") == False:
-                           objRoot = objRoot[objName]
+                            objRoot = objRoot[objName]
                         else:
-                           text = self.__loader.io.loadWholeText(item + "/" + file)
-                           name = objName.split(".")[0]
-                           f = open((item + "/" + file), "r")
+                            text = self.__loader.io.loadWholeText(item + "/" + file)
+                            name = objName.split(".")[0]
+                            f = open((item + "/" + file), "r")
 
-                           firstLine = f.read().replace("\r", "").split("\n")[0]
-                           f.close()
+                            firstLine = f.read().replace("\r", "").split("\n")[0]
+                            f.close()
 
-                           if firstLine[0] in ["*", "#"]:
-                              listOfParams = firstLine.split("=")[1]
-                              key = name + "(" + listOfParams + ")"
-                           else:
-                              key = name
-                           objRoot[key] = text
+                            if firstLine[0] in ["*", "#"]:
+                                listOfParams = firstLine.split("=")[1]
+                                key = name + "(" + listOfParams + ")"
+                            else:
+                                key = name
+                            objRoot[key] = text
 
-        f = open("templates/objects/listOfColorChangers.txt", "r")
+        f = open(self.objRoot + "listOfColorChangers.txt", "r")
         lines = f.read().replace("\r", "").split("\n")
         f.close()
 
         for line in lines:
             if len(line) > 0:
-               name   = line.split("=")[0]
-               params = line.split("=")[1].split(",")
-               sysVar = params[0]
-               parent = params[1]
+                name = line.split("=")[0]
+                params = line.split("=")[1].split(",")
+                sysVar = params[0]
+                parent = params[1]
 
-               for root, dirs, files in os.walk("templates/objects/colorChangers"):
-                   for file in files:
-                       if file.endswith(".asm") or file.endswith(".a26"):
-                          f    = open(root + "/" + file)
-                          text = f.read().replace("#SYSVAR#", sysVar)
-                          f.close()
+                for root, dirs, files in os.walk("templates/objects/colorChangers"):
+                    for file in files:
+                        if file.endswith(".asm") or file.endswith(".a26"):
+                            f = open(root + "/" + file)
+                            text = f.read().replace("#SYSVAR#", sysVar)
+                            f.close()
 
-                          command = file.replace("#VARNAME#", name)[:-4]
-                          self.objects[parent][command] = text
-
-        #del self.objects["many"]
-        #print(self.objects)
+                            command = file.replace("#VARNAME#", name)[:-4]
+                            self.objects[parent][command] = text
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -92,7 +99,7 @@ class ObjectMaster:
         self.objects["currentBank"] = self.objects[bankNum]
 
     def __pathToListOfObj(self, path):
-        return path.replace("\\", "/").replace("templates/objects/Game/", "").split("/")
+        return path.replace("\\", "/").replace(self.objRoot + "Game/", "").split("/")
 
     def generateScreenObjects(self):
         codes = self.__loader.virtualMemory.codes
@@ -110,7 +117,7 @@ class ObjectMaster:
                           name = data[0]
                           typ  = data[1]
 
-                          path = "templates/objects/screenItems/" + typ + "/"
+                          path = "templates/objects_screenItems/" + typ + "/"
                           for root, dirs, files in os.walk(path):
                               for file in files:
                                   if file.endswith(".asm") or file.endswith("a26"):
@@ -208,7 +215,7 @@ class ObjectMaster:
         if theObject["exist"] == True:
            path = os.getcwd() + "\\templates\\objects\\"
            if theObject["screen"] == True:
-              path += "screenItems\\"
+              path = os.getcwd() + "\\templates\\objects_screenItems\\"
            else:
               path += "game\\"
 

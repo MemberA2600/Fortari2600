@@ -10,6 +10,8 @@ class NewProjectWindow:
         self.__loader=loader
         self.OK = False
 
+        self.kernelOld = self.__loader.virtualMemory.kernel
+
         self.stopThread = False
         self.__loader.stopThreads.append(self)
 
@@ -144,6 +146,10 @@ class NewProjectWindow:
                 self.__loader.mainWindow.setMode("empty")
 
                 self.__loader.mainWindow.openProject(self.__getPath())
+
+                if self.kernelOld != self.__loader.virtualMemory.kernel:
+                   self.__loader.virtualMemory.objectMaster.loadKernelObjects()
+
                 self.__closeWindow()
 
             except Exception as e:

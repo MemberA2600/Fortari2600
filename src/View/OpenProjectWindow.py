@@ -108,6 +108,7 @@ class OpenProjectWindow:
                 path += "/"
             self.__opener(path)
         self.dead = True
+
         self.__closeWindow()
 
     def __getAndSelect(self):
