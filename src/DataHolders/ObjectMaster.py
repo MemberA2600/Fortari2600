@@ -57,9 +57,18 @@ class ObjectMaster:
                         if objName.endswith(".asm") == False and objName.endswith(".a26") == False:
                             objRoot = objRoot[objName]
                         else:
-                            text = self.__loader.io.loadWholeText(item + "/" + file)
+                            path = item + "/" + file
+
+                            for word in ("player", "missile"):
+                                for num in range(0, 2):
+                                    check = word + str(num)
+                                    if check in path:
+                                       path = path.replace(check, check[:-1] + "ß")
+                                       break
+
+                            text = self.__loader.io.loadWholeText(path)
                             name = objName.split(".")[0]
-                            f = open((item + "/" + file), "r")
+                            f = open(path, "r")
 
                             firstLine = f.read().replace("\r", "").split("\n")[0]
                             f.close()
@@ -82,7 +91,12 @@ class ObjectMaster:
                 sysVar = params[0]
                 parent = params[1]
 
-                for root, dirs, files in os.walk("templates/objects/colorChangers"):
+                try:
+                    path = "templates/objects_" + self.__loader.virtualMemory.kernel + "/colorChangers"
+                except:
+                    path = "templates/objects_common/colorChangers"
+
+                for root, dirs, files in os.walk(path):
                     for file in files:
                         if file.endswith(".asm") or file.endswith(".a26"):
                             f = open(root + "/" + file)
@@ -234,7 +248,7 @@ class ObjectMaster:
                   path  = None
                   theObject["extension"] = None
 
-                  f = open("templates/objects/listOfColorChangers.txt", "r")
+                  f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOfColorChangers.txt", "r")
                   lines = f.read().replace("\r", "").split("\n")
                   f.close()
 
@@ -247,40 +261,49 @@ class ObjectMaster:
                           sysVar = params[0]
                           parent = params[1]
 
-                          for root, dirs, files in os.walk("templates/objects/colorChangers"):
-                              for file in files:
-                                  if file.endswith(".asm") or file.endswith(".a26"):
-                                      f = open(root + "/" + file)
-                                      text = f.read().replace("#SYSVAR#", sysVar)
-                                      f.close()
+                          for mainPath in [
+                              "templates/objects_" + self.__loader.virtualMemory.kernel + "/colorChangers",
+                              "templates/objects_" + self.__loader.virtualMemory.kernel + "/game"
+                          ]:
+                              for root, dirs, files in os.walk(mainPath):
+                                  for file in files:
+                                      if file.endswith(".asm") or file.endswith(".a26"):
+                                          f = open(root + "/" + file)
+                                          text = f.read().replace("#SYSVAR#", sysVar)
+                                          f.close()
 
-                                      commandC = file.replace("#VARNAME#", name)[:-4]
-                                      if commandC == commandComp:
-                                         found                  = True
-                                         path                   = root + "/" + file
-                                         theObject["extension"] = path[-3:]
-                                         break
+                                          commandC = file.replace("#VARNAME#", name)[:-4]
+                                          #print(commandC, commandComp)
+
+                                          if commandC == commandComp:
+                                             found                  = True
+                                             path                   = root + "/" + file
+                                             theObject["extension"] = path[-3:]
+                                             break
+                                  if found: break
                               if found: break
                       if found: break
+
 
            rNum  = None
            endIt = False
 
            #if found == False: print(command)
-
            thatWord = ["missile", "player"]
            for w in thatWord:
                if w in path:
                   for n in range(0, 2):
                       rWord = w + str(n)
-                      if rWord in path:
+                      if rWord in command:
                          rNum  = str(n)
+                         theObject["replaceNum"] = rNum
                          path  = path.replace(rWord, w + "ß")
                          endIt = True
                          break
                   if endIt: break
+               if endIt: break
 
-           theObject["path"]     = path
+           theObject["path"]     = path.replace("/", "\\")
 
            f = open(path, "r")
            theObject["template"] = f.read()
@@ -302,9 +325,14 @@ class ObjectMaster:
            validOnes = ["variable", "string", "stringConst", "number", "data"]
 
            #print(pList)
+           paramNum = -1
+           theObject["optionalParamNums"] = []
+
            for p in pList:
+               paramNum += 1
                if p.startswith("{"):
                   p = p[1:-1]
+                  theObject["optionalParamNums"].append(paramNum)
 
                them = p.split("|")
                ok = True
@@ -379,10 +407,10 @@ class ObjectMaster:
 
                if len(lineOfVar) > 1:
                   if last["param"] in ["data", "{data}"]:
-                      last["folder"]    = lineOfVar[1]
+                     last["folder"]    = lineOfVar[1]
                   else:
-                      if len(lineOfVar) > 1:
-                         last["converter"] = lineOfVar[1]
+                     if len(lineOfVar) > 1:
+                        last["converter"] = lineOfVar[1]
 
            nextIndex = len(theObject["params"]) + 1
            for index in range(nextIndex, len(lines)):

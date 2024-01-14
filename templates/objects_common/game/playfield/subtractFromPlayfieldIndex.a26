@@ -1,0 +1,7 @@
+* params=variable|stringConst|number,{data}
+* param1=#VAR01#
+* param2=#NAME#,playfields,##NAME##
+* optional=_heightOfPF
+*
+	sub(pfIndex, #VAR01#)
+	

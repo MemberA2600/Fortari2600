@@ -428,7 +428,7 @@ class FirstCompiler:
             print(traceback.format_exc(), line)
             #pass
 
-        #print("faszom", params)
+        #print("faszom", params, line)
 
         if command.flexSave and "param#3" in params:
            if params["param#1"][0] == params["param#3"][0]:
@@ -2632,12 +2632,14 @@ class FirstCompiler:
 
             self.__temps = self.collectUsedTemps()
             dataReplacers = {
-                "playfields": ["##NAME##", "playfield"]
+                "playfields" : ["##NAME##", "playfield"],
+                "backgrounds": ["##NAME##", "background"],
+                "sprites":     ["##NAME##", "sprites"]
             }
             optionalCounter = -1
 
-            template = objectThings["template"]
-
+            template     = objectThings["template"]
+            optionalText = ""
             #print(params)
 
             for paramName in params.keys():
@@ -2654,10 +2656,7 @@ class FirstCompiler:
                 validParams = pSettings["param"].split("|")
 
                 optional = False
-                for pNum in range(0, len(validParams)):
-                    if validParams[pNum].startswith("{"):
-                       validParams[pNum] = validParams[pNum][1:-1]
-                       optional = True
+                if paramIndex in objectThings['optionalParamNums']: optional = True
 
                 if params[paramName][1] not in validParams:
                    ok = False
@@ -2667,7 +2666,7 @@ class FirstCompiler:
                     if params[paramName][1] == "number":
                        try:
                           numVal = self.__editorBigFrame.convertStringNumToNumber(params[paramName][0])
-                          if objectThings["extension"] == "aam":
+                          if objectThings["extension"] == "asm":
                               saveIt = "#" + str(numVal)
                           else:
                               saveIt = str(numVal)
@@ -2742,6 +2741,7 @@ class FirstCompiler:
 
                           self.bank1Data[name] = data
 
+                       #print("optional" in objectThings.keys(), optional)
                        if "optional" in objectThings.keys() and optional:
                            optionalCounter += 1
                            optP = "/".join(objectThings["path"].split("\\")[:-1])
@@ -2751,8 +2751,13 @@ class FirstCompiler:
                            optD  = dataF.read()
                            dataF.close()
 
-                           template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
-                                      optD, params[paramName], pSettings, optionalCounter, data))
+                           if objectThings["extension"] == "asm":
+                              template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
+                                         optD, params[paramName], pSettings, optionalCounter, data))
+                           else:
+                              optionalText = self.editOptionalTemplate(objectThings,
+                                             optD, params[paramName], pSettings, optionalCounter, data)
+
 
             if objectThings["extension"] == "a26":
                import re
@@ -2776,19 +2781,23 @@ class FirstCompiler:
                            self.exceptionList(objectThings["sysVars"], "delete")
                            template[lineNum] = lineStruct["compiled"]
 
-               template = "\n".join(template)
+               template = "\n".join(template) + "\n" + optionalText + "\n"
+
+            if "replaceNum" in objectThings.keys(): template = template.replace("ß", objectThings["replaceNum"])
+            if "#MAGIC#" in template:
+               self.__magicNumber += 1
+               template = template.replace("#MAGIC#", str(self.__magicNumber))
+
+            template = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
 
             if self.__error == False:
                self.exceptionList(objectThings["sysVars"], "add")
                self.checkASMCode(template, line, linesFeteched)
                self.exceptionList(objectThings["sysVars"], "delete")
 
-            if self.__error == False:
-               line["compiled"] = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
-               if "#MAGIC#" in line["compiled"]:
-                   self.__magicNumber += 1
-                   line["compiled"] = line["compiled"].replace("#MAGIC#", str(self.__magicNumber))
-               return
+               if self.__error == False:
+                  line["compiled"] = template
+                  return
 
         if "compiled" in line: line["compiled"] = line["compiled"].replace("##", "#")
 
@@ -2932,15 +2941,17 @@ class FirstCompiler:
                if item not in self.__readOnly:
                   self.__readOnly.append(item)
 
-
-
     def editOptionalTemplate(self, objectThings, optionalText, paramData, paramSettings, counter, data):
-        if objectThings["optional"][counter] in ('_heightOfPF'):
-           firstLine = data.split("\n")[0]
-           height    = int(firstLine.split("=")[1])
-           min = 26
-           max = 26 + (height - 42)
-           optionalText = optionalText.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+        if   objectThings["optional"][counter] in ('_heightOfPF'):
+             firstLine = data.split("\n")[0]
+             height    = int(firstLine.split("=")[1])
+             min = 26
+             max = 26 + (height - 42)
+             optionalText = optionalText.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+        elif objectThings["optional"][counter] in ('_heightOfPlayer'):
+             firstLine = data.split("\n")[0]
+             height = int(firstLine.split("=")[1])
+             optionalText = optionalText.replace("!!!Max!!!", str(height))
 
         return optionalText
 
@@ -3915,7 +3926,7 @@ class FirstCompiler:
                         if len(line) > 0:
                             if line[0] not in ("*", "#", "!") and "#BANK#" not in line:
                                labels.append(line)
-                               labels.append(line).replace("#BANK#", b).replace("#SECTION#", key)
+                               labels.append(line.replace("#BANK#", b).replace("#SECTION#", key))
 
         subroutines = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", self.__currentBank)
         bank1Routines = self.__editorBigFrame.collectNamesByCommandFromSections("subroutine", "bank1")
@@ -3949,20 +3960,8 @@ class FirstCompiler:
    #             raise ValueError
 
         labels = []
-        #for line in lines:
-            #print(line, line.replace("\t", " ").startswith(" ") == False, "!!!" not in line)
-        #    if line.replace("\t", " ").startswith(" ") == False and "!!!" not in line:
-                #print(len(line))
-        #        if len(line) > 0:
-                   #print(line[0] not in ("*", "#"))
-                   #print("---", line)
-        #           if line[0] not in ("*", "#", "!") and "#BANK#" not in line[0]:
-        #              labels.append(line.replace("\n", ""))
-
         self.collectLabelsFromRoutines(labels)
-        #print(labels)
 
-        #FUCKFUCK
         for line in linesFetched:
             for key in ["labelsBefore", "labelsAfter"]:
                 if key in line:
@@ -3973,18 +3972,17 @@ class FirstCompiler:
                        labels.append(base.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
 
             if line["compiled"] != "":
-               subLines = line["compiled"].replace("\r", "").split("\n")
-               for subLine in subLines:
-                   if subLine.replace("\t", " ").startswith(" ") == False and "!!!" not in subLine:
-                       if len(subLine) > 0:
-                           if subLine[0] not in ("*", "#", "!") or "#BANK#" in subLine:
-                              labels.append(subLine)
-                              labels.append(subLine.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
-            #else:
-            #   labelLineStructure =
-            #   if linesFetched["fullLine"] != "":
-            #      if
-            #   labelLineStructure = self.__editorBigFrame.getLineStructure(0, [line], False)
+               txt = line["compiled"]
+            else:
+               txt = template
+
+            subLines = txt.replace("\r", "").split("\n")
+            for subLine in subLines:
+                if subLine.replace("\t", " ").startswith(" ") == False and "!!!" not in subLine:
+                   if len(subLine) > 0:
+                      if subLine[0] not in ("*", "#", "!") or "#BANK#" in subLine:
+                         labels.append(subLine)
+                         labels.append(subLine.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
 
         for line in lines:
             full = line
