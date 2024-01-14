@@ -2700,6 +2700,10 @@ class FirstCompiler:
                         dataF.close()
                         saveIt = self.__currentBank + "_" + params[paramName][0] + "_" + dataReplacers[pSettings["folder"]][1]
 
+                        if "loadAndUse" in objectThings.keys():
+                            if objectThings["loadAndUse"][0] == paramName:
+                               template = self.useItThings(template, data, objectThings["loadAndUse"][1], objectThings)
+
                     else:
                         var = self.__loader.virtualMemory.getVariableByName2(params[paramName][0])
                         if var == False:
@@ -2821,6 +2825,16 @@ class FirstCompiler:
                 print("ERROR -- ERROR -- ERROR")
                 print(line["compiled"])
             line["compiled"] = ""
+
+    def useItThings(self, template, data, usage, objectThings):
+        if usage == "setMinAndMaxofPF":
+           firstLine = data.split("\n")[0]
+           height = int(firstLine.split("=")[1])
+           min = 26
+           max = 26 + (height - 42)
+           template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+
+        return template
 
     def simplifyCompassShit(self, txt, temps):
         txt = txt.split("\n")

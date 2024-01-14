@@ -428,6 +428,8 @@ class ObjectMaster:
         else:
            return(theObject)
 
+        #if "loadAndUse" in theObject.keys(): print(theObject["loadAndUse"])
+
         ##or key in theObject:
         #    print(key + ":", theObject[key])
         if "addManuallyToSysVars" in theObject.keys():

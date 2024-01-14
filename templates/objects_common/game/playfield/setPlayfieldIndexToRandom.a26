@@ -1,8 +1,6 @@
-* params={data},{variable|stringConst|number},{variable|stringConst|number}
-* param1=#NAME#,playfields,##NAME##
-* param2=#VAR01#
-* param3=#VAR02#
-* optional=_heightOfPF
+* params={variable|stringConst|number},{variable|stringConst|number}
+* param1=#VAR01#
+* param2=#VAR02#
 * addManuallyToSysVars=random
 *
 	rand(pfIndex,#VAR01#,#VAR02#)

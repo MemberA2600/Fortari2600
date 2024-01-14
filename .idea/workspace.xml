@@ -2,28 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/ball/setBallSize.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/ball/setBallTurnOff.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/ball/setBallTurnOn.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setBorderHandling.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/missileß/setMissileSize.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/missileß/setMissileTurnOff.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/missileß/setMissileTurnOn.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/_heightOfPlayer.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeight.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerMirrored.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerNonMirrored.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerNumberSpacingSize.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSprite.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerTurnOff.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerTurnOn.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setMovePlayersMissilesBehindPlayfield.asm" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setMovePlayersMissilesInFrontOfPlayfield.asm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-01-13_083049.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-01-14_101501.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/grayScale#VARNAME#.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/setGrayScale#VARNAME#.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandom.a26" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,7 +52,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$CosmicCommuter.coverage" NAME="CosmicCommuter Coverage Results" MODIFIED="1703685041879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1705223701073" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1705256323725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1704736948401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -213,18 +196,18 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="468" />
+          <entry key="project.closed" value="469" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="4" />
           <entry key="project.open.time.3" value="73" />
-          <entry key="project.open.time.4" value="408" />
+          <entry key="project.open.time.4" value="409" />
           <entry key="project.open.time.5" value="90" />
           <entry key="project.open.time.6" value="18" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="3" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="604" />
+          <entry key="project.opened" value="605" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -244,13 +227,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="401930" />
+          <entry key="py" value="402207" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="401930" />
+          <entry key="Python" value="402207" />
         </counts>
       </usages-collector>
     </session>
@@ -263,8 +246,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8">
-              <caret line="2783" column="73" selection-start-line="2783" selection-start-column="73" selection-end-line="2783" selection-end-column="73" />
+            <state relative-caret-position="440">
+              <caret line="2837" lean-forward="true" selection-start-line="2837" selection-end-line="2837" />
+              <folding>
+                <marker date="1705256293150" expanded="true" signature="141290:141602" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -272,8 +258,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4432">
-              <caret line="281" column="50" selection-start-line="281" selection-start-column="50" selection-end-line="281" selection-end-column="50" />
+            <state relative-caret-position="257">
+              <caret line="430" column="44" selection-start-line="430" selection-start-column="12" selection-end-line="430" selection-end-column="44" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -284,7 +270,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="257">
+            <state relative-caret-position="14992">
               <caret line="937" selection-start-line="937" selection-end-line="937" />
               <folding>
                 <marker date="1704631684944" expanded="true" signature="46911:47123" ph="..." />
@@ -330,10 +316,10 @@
       <find>&quot;optional</find>
       <find>&quot;optional&quot;</find>
       <find>&quot;path&quot;</find>
-      <find>editOptionalTemplate</find>
       <find>&quot;folder&quot;</find>
       <find>temple</find>
       <find>rNum</find>
+      <find>editOptionalTemplate</find>
     </findStrings>
     <replaceStrings>
       <replace>self.__words</replace>
@@ -448,7 +434,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -489,6 +474,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -680,8 +666,8 @@
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48172447" visible="true" weight="0.165" />
-      <window_info id="Structure" order="1" sideWeight="0.51827556" side_tool="true" visible="true" weight="0.165" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48078725" visible="true" weight="0.165" />
+      <window_info id="Structure" order="1" sideWeight="0.5192127" side_tool="true" visible="true" weight="0.165" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
@@ -1056,19 +1042,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4432">
-          <caret line="281" column="50" selection-start-line="281" selection-start-column="50" selection-end-line="281" selection-end-column="50" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="257">
+        <state relative-caret-position="14992">
           <caret line="937" selection-start-line="937" selection-end-line="937" />
           <folding>
             <marker date="1704631684944" expanded="true" signature="46911:47123" ph="..." />
@@ -1076,10 +1052,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="430" column="44" selection-start-line="430" selection-start-column="12" selection-end-line="430" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8">
-          <caret line="2783" column="73" selection-start-line="2783" selection-start-column="73" selection-end-line="2783" selection-end-column="73" />
+        <state relative-caret-position="440">
+          <caret line="2837" lean-forward="true" selection-start-line="2837" selection-end-line="2837" />
+          <folding>
+            <marker date="1705256293150" expanded="true" signature="141290:141602" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
