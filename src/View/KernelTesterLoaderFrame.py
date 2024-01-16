@@ -7,7 +7,7 @@ class KernelTesterLoaderFrame:
         self.__dictionaries = self.__loader.dictionaries
         self.__fileDialogs = self.__loader.fileDialogs
         self.__topLevelW = parent
-        self.__boss = boss
+        self.caller = boss
 
 
         self.__frame = Frame(parent, height=h, width=w,
@@ -81,21 +81,20 @@ class KernelTesterLoaderFrame:
 
         self.valid = False
 
-        from threading import Thread
-        e = Thread(target=self.checkIfExists)
-        e.daemon = True
-        e.start()
+        self.__loader.threadLooper.addToThreading(self, self.checkIfExists, [])
+
+        #from threading import Thread
+        #e = Thread(target=self.checkIfExists)
+        #e.daemon = True
+        #e.start()
 
     def checkIfExists(self):
-        from time import sleep
         import os
 
-        while self.__boss.dead == False:
-            if os.path.exists(self.__entryVal.get()):
-                self.valid = True
-            else:
-                self.valid = False
-            sleep(0.1)
+        if os.path.exists(self.__entryVal.get()):
+           self.valid = True
+        else:
+           self.valid = False
 
     def getValue(self):
         return self.__entryVal.get()

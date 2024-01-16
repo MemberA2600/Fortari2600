@@ -43,14 +43,16 @@ class LockFrame:
         self.__locks = []
         self.saveLocks()
 
-        from threading import Thread
-        t = Thread(target=self.resize)
-        t.daemon = True
-        t.start()
+        #from threading import Thread
+        #t = Thread(target=self.resize)
+        #t.daemon = True
+        #t.start()
 
-        l = Thread(target=self.locker)
-        l.daemon = True
-        l.start()
+        self.__loader.threadLooper.addToThreading(self, self.locker, [])
+
+        #l = Thread(target=self.locker)
+        #l.daemon = True
+        #l.start()
 
     def getFrame(self):
         return(self.__frame)

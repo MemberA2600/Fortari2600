@@ -61,8 +61,6 @@ class SpriteEditor:
         self.dead = True
 
     def checker(self):
-        from time import sleep
-        while(self.dead==False and self.__loader.mainWindow.dead == False):
             try:
                 if self.__numOfFrames>1:
                     self.__backButton.config(state=NORMAL)
@@ -115,7 +113,6 @@ class SpriteEditor:
                 self.__loader.logger.errorLog(e)
 
 
-            sleep(0.04)
 
     def shiftON(self, event):
         self.__ctrl = True
@@ -418,9 +415,10 @@ class SpriteEditor:
         e.daemon = True
         e.start()
 
-        t = Thread(target=self.checker)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.checker, [])
+        #t = Thread(target=self.checker)
+        #t.daemon = True
+        #t.start()
 
         self.__finished = True
 

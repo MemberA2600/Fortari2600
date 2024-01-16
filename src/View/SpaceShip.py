@@ -31,26 +31,14 @@ class SpaceShip:
 
         self.__spaceLabel.pack_propagate(False)
         self.__spaceLabel.pack(fill=BOTH)
+        self.__item1 = None
 
-        t = Thread(target=self.__drawCanvas)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.__drawCanvas, [])
 
-    """
-    def __setBuffer(self):
-        self.__imgBuffer.clear()
-        #self.__lastSizeX = self.__frame.winfo_width()
+        #t = Thread(target=self.__drawCanvas)
+        #t.daemon = True
+        #t.start()
 
-        for num in range(0,66):
-            self.__imgBuffer.append(
-                ImageTk.PhotoImage(self.__frames[num].resize(
-                    (self.__frame.winfo_width(), self.__frame.winfo_height()), IMAGE.ANTIALIAS)
-                ))
-            if num == 0:
-                self.__spaceLabel.config(
-                    image=self.__imgBuffer[0]
-                )
-    """
 
     def setOther(self, other):
         self.__other = other
@@ -60,24 +48,8 @@ class SpaceShip:
         return(random.randint(10+min, 200+min))
 
     def __drawCanvas(self):
-        from time import sleep
-        self.__item1 = None
-        while self.__loader.mainWindow.dead == False and self.__frame!=None and self.stopThread==False and self.__loader.bigFrame.getMode() == "intro" :
+        if self.__frame != None and self.__loader.bigFrame.getMode() == "intro":
             try:
-                """
-
-                if (self.__lastScaleX != self.__loader.mainWindow.getScales()[0] or
-                    self.__lastScaleY != self.__loader.mainWindow.getScales()[1]
-                    ):
-
-                    self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                    self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
-
-                    self.__spaceLabel.config(width=self.__frame.winfo_width(),
-                                              height=self.__frame.winfo_height())
-                    self.__setBuffer()
-                """
-
                 if self.__dontDoIt == True:
                     self.__rocketY += 1
                     if self.__rocketY > 65:
@@ -125,6 +97,5 @@ class SpaceShip:
                     image=self.__imgBuffer[self.__rocketY]
                 )
 
-                sleep(0.04)
             except Exception as e:
                 self.__loader.logger.errorLog(e)

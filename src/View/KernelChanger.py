@@ -142,19 +142,16 @@ class KernelChanger:
             if selectables[number] == self.__static.get():
                 self.__listBox.select_set(number)
 
-
-        e = Thread(target=self.enableDisable)
-        e.daemon = True
-        e.start()
+        self.__loader.threadLooper.addToThreading(self, self.enableDisable, [])
+        #e = Thread(target=self.enableDisable)
+        #e.daemon = True
+        #e.start()
 
 
     def killMe(self):
         self.__topLevelWindow.destroy()
 
     def enableDisable(self):
-        from time import sleep
-
-        while (self.dead==False and self.__loader.mainWindow.dead==False):
             try:
                 if self.__listBox.get(ACTIVE)!=self.__static.get():
                     self.__buttonOK.config(state=NORMAL)
@@ -163,7 +160,6 @@ class KernelChanger:
             except Exception as e:
                 self.__loader.logger.errorLog(e)
 
-            sleep(0.4)
 
     def doThings(self):
         self.__loader.soundPlayer.playSound("Ask")

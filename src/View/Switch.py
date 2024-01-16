@@ -48,15 +48,15 @@ class Switch:
         self.__w = round(self.__frame.winfo_width()/2)
         self.__h = round(self.__w*1.72)
 
+        from time import sleep
         while True:
             try:
                 self.__imgLocked = ImageTk.PhotoImage(IMAGE.open("others/img/switchOn.png").resize((self.__w, self.__h), IMAGE.ANTIALIAS))
                 self.__imgUnLocked = ImageTk.PhotoImage(IMAGE.open("others/img/switchOff.png").resize((self.__w, self.__h), IMAGE.ANTIALIAS))
                 break
             except Exception as e:
-
                 self.__loader.logger.errorLog(e)
-
+                sleep(0.01)
 
         self.createSwitch()
 

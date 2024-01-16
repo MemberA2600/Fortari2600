@@ -244,10 +244,11 @@ class SoundPlayerEditor:
 
         self.__createRainbow()
 
-        from threading import Thread
-        t = Thread(target=self.checker)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLopper(self, self.checker, [])
+        #from threading import Thread
+        #t = Thread(target=self.checker)
+        #t.daemon = True
+        #t.start()
 
     def __checkLock(self, event):
         teszt = 0
@@ -287,12 +288,9 @@ class SoundPlayerEditor:
 
 
     def checker(self):
-        from time import sleep
-        while(self.dead==False and self.__loader.mainWindow.dead == False):
             if self.__mouseHover != self.__mouseHoverSave:
                self.__mouseHoverSave = self.__mouseHover
 
-            sleep(0.00005)
 
     def __convertToASM(self):
         from WaveConverter import WaveConverter

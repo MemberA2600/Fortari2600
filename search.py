@@ -1,6 +1,6 @@
 import os
 
-wordToFind = '/objects'
+wordToFind = 'mainWindow.dead'
 
 for root, dirs, files in os.walk(os.getcwd()+"/src", False):
     for file in files:

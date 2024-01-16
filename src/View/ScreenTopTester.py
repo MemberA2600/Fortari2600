@@ -36,16 +36,18 @@ class ScreenTopTester:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
         self.__sizes = [self.__screenSize[0] // 4, self.__screenSize[1] // 3.75]
-        c = Thread(target = self.decrementCounter)
-        c.daemon = True
-        c.start()
+
+        self.__loader.threadLooping(self, self.decrementCounter, [])
+        #c = Thread(target = self.decrementCounter)
+        #c.daemon = True
+        #c.start()
 
         self.__window = SubMenu(self.__loader, "screenTester", self.__sizes[0], self.__sizes[1], None, self.__addElements,
                                 2)
         self.dead = True
 
     def decrementCounter(self):
-        while self.dead == False and self.__mainWindow.dead == False:
+        #while self.dead == False and self.__mainWindow.dead == False:
             if self.__counter > 0 : self.__counter -= 1
             if self.__counter == 1:
                 self.checkEntry(self.__lastEvent)

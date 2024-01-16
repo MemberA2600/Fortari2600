@@ -59,9 +59,9 @@ class NewListBoxInFrame():
 
         self.__scrollBar.config(command=self.__listBox.yview)
 
-        align = Thread(target=self.dinamicallyAlign)
-        align.daemon = True
-        align.start()
+        #align = Thread(target=self.dinamicallyAlign)
+        #align.daemon = True
+        #align.start()
         self.__setFont()
         self.__listOfItems = []
 
@@ -88,8 +88,6 @@ class NewListBoxInFrame():
             except:
                 self.__newW = self.__container.winfo_width()
                 self.__newH = self.__container.winfo_height()
-
-
 
         return (
             self.__newW / self.__originalW,
@@ -127,25 +125,6 @@ class NewListBoxInFrame():
         while self.__loader.mainWindow.dead == False and self.stopThread==False:
             self.__function(self.__listBox)
             sleep(0.1)
-
-    def dinamicallyAlign(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead == False or self.__first == True and self.stopThread==False:
-            try:
-                if (self.__lastScaleX == self.__loader.mainWindow.getScales()[0]
-                        and self.__lastScaleY == self.__loader.mainWindow.getScales()[1]):
-
-                    sleep(0.05)
-                    continue
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
-
-                self.__setFont()
-                self.__first = False
-            except Exception as e:
-                self.__loader.logger.errorLog(e)
-
-            sleep(0.02)
 
     def getSelectedName(self):
         from time import sleep

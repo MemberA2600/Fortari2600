@@ -41,6 +41,7 @@ class Indicator:
         self.dead = [False]
         self.stopMe = True
         self.__mode = self.__data[1]
+        self.__delay = 0
 
         self.__setterBase = ScreenSetterFrameBase(loader, baseFrame, data, self.__name, changeName, self.dead, itemNames)
         self.__addElements()
@@ -259,56 +260,58 @@ class Indicator:
     def __loopThem(self):
         from mouse import get_position
 
-        delay = 0
+        self.__textLabel.config(
+            fg=self.__loader.mainWindow.getLoopColor()
+        )
 
-        while self.__loader.mainWindow.dead == False and self.dead[0] == False and self.stopMe == False:
-            self.__textLabel.config(
-                fg=self.__loader.mainWindow.getLoopColor()
-            )
+        if self.__delay > 1:
+            self.__delay = 0
+        else:
+            self.__delay += 1
 
-            if    delay > 1: delay = 0
-            else: delay += 1
+        # if True:
+        try:
+            if self.__delay == 0:
+                maxW = self.__w - self.__loader.jumpman[0].width() - 5
 
-            #if True:
-            try:
-                if delay == 0:
-                    maxW = self.__w - self.__loader.jumpman[0].width() - 5
+                jumpManOnScreenX = self.__topLevelWindow.winfo_x() + \
+                                   self.__baseFrame.winfo_x() + \
+                                   self.__jumpManX
 
-                    jumpManOnScreenX = self.__topLevelWindow.winfo_x()          + \
-                                       self.__baseFrame.winfo_x()               + \
-                                       self.__jumpManX
+                difference = get_position()[0] - jumpManOnScreenX - self.__loader.jumpman[0].width() // 2
 
-                    difference = get_position()[0] - jumpManOnScreenX - self.__loader.jumpman[0].width() // 2
+                if abs(difference) < 20:
+                    self.__jumpManFrameNum = 0
 
-                    if abs(difference) < 20:
-                       self.__jumpManFrameNum = 0
-
+                else:
+                    if self.__jumpManFrameNum > 1:
+                        self.__jumpManFrameNum = 0
                     else:
-                       if    self.__jumpManFrameNum  > 1: self.__jumpManFrameNum = 0
-                       else:                              self.__jumpManFrameNum += 1
+                        self.__jumpManFrameNum += 1
 
-                       if    difference > 0 : self.__jumpManMirrored = False
-                       else:                  self.__jumpManMirrored = True
+                    if difference > 0:
+                        self.__jumpManMirrored = False
+                    else:
+                        self.__jumpManMirrored = True
 
-                       step = 25
+                    step = 25
 
-                       if difference < 0 and self.__jumpManX > 5:
-                          self.__jumpManX -= step
-                       else:
-                          if self.__jumpManMirrored == True: self.__jumpManFrameNum = 0
+                    if difference < 0 and self.__jumpManX > 5:
+                        self.__jumpManX -= step
+                    else:
+                        if self.__jumpManMirrored == True: self.__jumpManFrameNum = 0
 
-                       if difference > 0 and self.__jumpManX < maxW:
-                          self.__jumpManX += step
-                       else:
-                          if self.__jumpManMirrored == False: self.__jumpManFrameNum = 0
+                    if difference > 0 and self.__jumpManX < maxW:
+                        self.__jumpManX += step
+                    else:
+                        if self.__jumpManMirrored == False: self.__jumpManFrameNum = 0
 
-                self.__jumpMan.config(
-                               image = self.__loader.jumpman[self.__jumpManMirrored*3 + self.__jumpManFrameNum]
-                           )
-                self.__jumpMan.place(x=self.__jumpManX, y=0)
+            self.__jumpMan.config(
+                image=self.__loader.jumpman[self.__jumpManMirrored * 3 + self.__jumpManFrameNum]
+            )
+            self.__jumpMan.place(x=self.__jumpManX, y=0)
 
 
-            except Exception as e:
-                print(str(e))
+        except Exception as e:
+            print(str(e))
 
-            sleep(0.025)

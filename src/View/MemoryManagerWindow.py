@@ -883,10 +883,12 @@ class MemoryManagerWindow:
         )
         self.changeSlot('global')
 
-        from threading import Thread
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper(self, self.loop, [])
+
+        #from threading import Thread
+        #t = Thread(target=self.loop)
+        #t.daemon = True
+        #t.start()
 
     def __changeVarType(self, event):
         if self.__virtualMemory.types[list(self.__virtualMemory.types.keys())[self.__typeListBox.curselection()[0]]] < 4:

@@ -19,23 +19,21 @@ class Rainbow:
         self.__label.pack_propagate(False)
         self.__label.pack(side=TOP, anchor=N, fill=BOTH)
         self.dead = False
+        self.__num = 0
 
-        from threading import Thread
+        loader.threadLooper(self, self.loopThings, [])
+        #from threading import Thread
 
-        t = Thread(target=self.loopThings)
-        t.daemon = True
-        t.start()
+        #t = Thread(target=self.loopThings)
+        #t.daemon = True
+        #t.start()
 
     def loopThings(self):
-        from time import sleep
-        num = 0
-
-        while self.dead == False:
             try:
-                self.__label.config(image=self.__rainbow[num])
-                num += 1
-                if num == 39:
-                   num = 0
+                self.__label.config(image=self.__rainbow[self.__num])
+                self.__num += 1
+                if self.__num == 39:
+                    self.__num = 0
 
                 sleep(0.05)
             except:

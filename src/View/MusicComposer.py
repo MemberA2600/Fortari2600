@@ -110,9 +110,6 @@ class MusicComposer:
         return(s)
 
     def checker(self):
-        from time import sleep
-        while(self.dead==False and self.__loader.mainWindow.dead == False
-        ):
             try:
                 if self.__runningThreads == 0 and len(self.__piaNoteTable) > 0:
                     if self.__tiaScreens.currentScreen == 0:
@@ -146,7 +143,6 @@ class MusicComposer:
                 print(str(e))
                 self.__loader.logger.errorLog(e)
 
-            sleep(0.4)
 
     def reColorAll(self):
         for name in self.__piaNoteTable:
@@ -365,9 +361,10 @@ class MusicComposer:
         t5.daemon = True
         t5.start()
 
-        t99 = Thread(target=self.checker)
-        t99.daemon = True
-        t99.start()
+        self.__loader.threadLooper.addToThreading(self, self.checker, [])
+        #t99 = Thread(target=self.checker)
+        #t99.daemon = True
+        #t99.start()
 
         self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
         self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)

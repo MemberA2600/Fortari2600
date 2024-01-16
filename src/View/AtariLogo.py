@@ -1,6 +1,6 @@
 from tkinter import *
 from PIL import Image as IMAGE, ImageTk
-from threading import Thread
+#from threading import Thread
 
 class AtariLogo:
 
@@ -19,6 +19,7 @@ class AtariLogo:
         from SpaceShip import SpaceShip
         self.__spaceShip1 = SpaceShip(self.__loader, self.__left)
         self.__spaceShip2 = SpaceShip(self.__loader, self.__right)
+
         self.__spaceShip1.setOther(self.__spaceShip2)
         self.__spaceShip2.setOther(self.__spaceShip1)
 
@@ -34,27 +35,7 @@ class AtariLogo:
 
         self.__setCurrentImage(0)
 
-        t = Thread(target=self.nextFrame)
-        t.daemon=True
-        t.start()
-
-        #s = Thread(target=self.resize)
-        #s.daemon=True
-        #s.start()
-
-
-    """
-    def __createLotsOfImages(self):
-        self.__imageBuffer=[]
-        self.__sizing = True
-        #self.__lastSizeX = self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
-        for num in range(0,19):
-            self.__imageBuffer.append(ImageTk.PhotoImage(self.__frames[num].resize((
-            self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[0])
-            , self.__main.winfo_height()*round(self.__loader.mainWindow.getScales()[1])
-        ), IMAGE.ANTIALIAS)))
-        self.__sizing = False
-    """
+        self.__loader.threadLooper.addToThreading(self, self.nextFrame, [])
 
     def __setCurrentImage(self, num):
         try:
@@ -67,27 +48,9 @@ class AtariLogo:
             self.__loader.logger.errorLog(e)
 
     def nextFrame(self):
-        from time import sleep
-        while(self.__loader.mainWindow.dead==False and self.stopThread == False
-              and self.__loader.bigFrame.getMode() == "intro"
-        ):
-            if self.__counter<18:
-                self.__counter+=1
-            else:
-                self.__counter=0
-            if self.__sizing == False:
-                self.__setCurrentImage(self.__counter)
-            sleep(0.02)
-    """
-    def resize(self):
-        from time import sleep
-        while(self.__loader.mainWindow.dead==False and self.stopThread == False):
-            if (self.__lastX != self.__loader.mainWindow.getScales()[0] and
-                self.__lastY != self.__loader.mainWindow.getScales()[1]):
-                self.__lastX = self.__loader.mainWindow.getScales()[0]
-                self.__lastY = self.__loader.mainWindow.getScales()[1]
-
-                self.__createLotsOfImages()
-
-            sleep(0.04)
-    """
+        if self.__counter<18:
+           self.__counter+=1
+        else:
+           self.__counter=0
+        if self.__sizing == False:
+           self.__setCurrentImage(self.__counter)

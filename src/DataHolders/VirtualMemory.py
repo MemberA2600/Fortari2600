@@ -1,7 +1,6 @@
 from DataItem import DataItem
 import os
 from MemoryItem import MemoryItem
-from threading import Thread
 from tkinter import END
 from copy import deepcopy
 from ObjectMaster import ObjectMaster
@@ -58,10 +57,6 @@ class VirtualMemory:
 
         self.resetMemory()
         self.emptyArchieved()
-
-        #t = Thread(target=self.testPrintMemory)
-        #t.daemon = True
-        #t.start()
 
     def archieve(self):
         self.archieved = self.archieved[:self.cursor+1]

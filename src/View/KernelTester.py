@@ -127,16 +127,13 @@ class KernelTester:
         self.__testButton.pack_propagate(False)
         self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
 
-        from threading import Thread
-        e = Thread(target=self.checkIfAllValid)
-        e.daemon = True
-        e.start()
+        self.__loader.threadLooper(self, self.checkIfAllValid, [])
+        #from threading import Thread
+        #e = Thread(target=self.checkIfAllValid)
+        #e.daemon = True
+        #e.start()
 
     def checkIfAllValid(self):
-        from time import sleep
-
-        while self.dead == False:
-
             try:
                 if (self.__openKernelFrame.valid == True
                         and self.__openEnter.valid == True

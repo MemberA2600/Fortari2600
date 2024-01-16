@@ -47,8 +47,7 @@ class SubMenuOkCancelButtons:
 
         if enableDisableVar != None:
             self.__var = enableDisableVar
-            disableOK = Thread(target=self.__changeOK)
-            disableOK.start()
+            self.__loader.threadLooper.addToThreading(self, self.__changeOK, [])
 
     def __sendTrue(self):
         self.__function(True)
@@ -57,8 +56,6 @@ class SubMenuOkCancelButtons:
         self.__function(False)
 
     def __changeOK(self):
-        while self.__loader.mainWindow.dead==False and self.__window.dead==False and self.stopThread==False:
-            from time import sleep
             try:
                 if self.__var() == True:
                     self.__OKButton.config(state=NORMAL)
@@ -66,4 +63,3 @@ class SubMenuOkCancelButtons:
                     self.__OKButton.config(state=DISABLED)
             except Exception as e:
                 self.__loader.logger.errorLog(e)
-            sleep(0.025)

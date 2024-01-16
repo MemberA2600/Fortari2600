@@ -41,18 +41,19 @@ class MenuButton:
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
         self.__placer()
 
-        #align = Thread(target=self.dinamicallyAlign)
-        #align.start()
-
         if (self.__bindedVar != None):
-            binder = Thread(target=self.checkBinded)
-            binder.daemon = True
-            binder.start()
+            self.__loader.threadLooper.addToThreading(self, self.checkBinded, [])
+
+            #binder = Thread(target=self.checkBinded)
+            #binder.daemon = True
+            #binder.start()
 
         if (self.__bindedOut !=None):
-            bind2 = Thread(target=self.__bindedOut, args=[self])
-            bind2.daemon = True
-            bind2.start()
+            self.__loader.threadLooper.addToThreading(self, self.__bindedOut, [self])
+
+            #bind2 = Thread(target=self.__bindedOut, args=[self])
+            #bind2.daemon = True
+            #bind2.start()
 
     def __checkIfFalse(self, var):
         if var == False or var == None or var == "":
@@ -60,8 +61,6 @@ class MenuButton:
         return True
 
     def checkBinded(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False and self.stopThread==False:
             if self.preventRun == False:
                 try:
                     if self.__invertedBinding == True:
@@ -76,22 +75,9 @@ class MenuButton:
                 except Exception as e:
                     self.__loader.logger.errorLog(e)
 
-            sleep(0.0025)
 
     def getButton(self):
         return(self.__button)
-
-    def dinamicallyAlign(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False and self.stopThread==False:
-            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]):
-                sleep(0.05)
-                continue
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-            self.__resizeMe()
-            self.__placer()
-
-            sleep(0.0025)
 
     def __resizeMe(self):
         self.__button.config(width=self.__loader.mainWindow.getConstant(),

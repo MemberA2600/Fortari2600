@@ -50,9 +50,11 @@ class ET:
         forest.daemon = True
         forest.start()
 
-        draw = Thread(target=self.drawET)
-        draw.daemon = True
-        draw.start()
+        self.__loader.threadLooper.addToThreading(self, self.drawET, [])
+
+        #draw = Thread(target=self.drawET)
+        #draw.daemon = True
+        #draw.start()
 
     def __forestD(self):
         from time import sleep
@@ -104,27 +106,19 @@ class ET:
         self.centerET()
 
     def drawET(self):
-        from time import sleep
-
-        while self.__window.dead == False and self.stopThread==False:
-            try:
-                moving = self.getDifference()
-                if moving == False and self.__first == False:
-                    if self.__spriteCounter != 0:
-                        #print(self.__spriteCounter)
-                        self.__spriteCounter = 0
-                        self.draw()
-                        sleep(0.05)
-                    sleep(0.1)
-                    continue
-                else:
+        try:
+            moving = self.getDifference()
+            if moving == False and self.__first == False:
+                if self.__spriteCounter != 0:
+                    # print(self.__spriteCounter)
+                    self.__spriteCounter = 0
                     self.draw()
 
-            except Exception as e:
-                self.__loader.logger.errorLog(e)
+            else:
+                self.draw()
 
-
-            sleep(0.05)
+        except Exception as e:
+            self.__loader.logger.errorLog(e)
 
     def draw(self):
         self.__first = False

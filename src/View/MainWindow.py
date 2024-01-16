@@ -2,23 +2,9 @@
 # -*- coding: utf-8 -*-
 
 from tkinter import *
-import os
-
-from tkinter.filedialog import *
-from tkinter import messagebox
-from PIL import ImageTk, Image
-from threading import Thread
-
-from FrameContent import FrameContent
-from MenuButton import MenuButton
 from MenuLabel import MenuLabel
 from ButtonMaker import ButtonMaker
-from SubMenu import SubMenu
-
-from tkinter.simpledialog import *
 from tkinter.filedialog import *
-from tkinter import messagebox
-
 
 class MainWindow:
 
@@ -28,6 +14,7 @@ class MainWindow:
         self.__loader.mainWindow = self
 
         self.__loopColor = "#000000"
+        self.__colorNum  = 0
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -91,21 +78,13 @@ class MainWindow:
         #self.selectedItem = ["bank1", "global_variables"]
         self.bindThings()
 
-        from threading import Thread
-
         self.__soundPlayer.playSound("Start")
-        #align = Thread(target=self.__scales)
-        #align.daemon = True
-        #align.start()
 
         self.editor.deiconify()
         self.editor.focus()
         self.__loader.tk.iconify()
 
-        t = Thread(target=self.__loopColorThread)
-        t.daemon = True
-        t.start()
-
+        self.__loader.threadLooper.addToThreading(self, self.__loopColorThread, [])
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()
 
@@ -118,9 +97,6 @@ class MainWindow:
 
         self.editor.bind("<Key>", self.pressed)
         self.editor.bind("<KeyRelease>", self.released)
-        t  = Thread(target=self.__checkBinded)
-        t.daemon = True
-        t.start()
 
     def __setProjectPath(self, path):
         self.projectPath=path
@@ -254,13 +230,6 @@ class MainWindow:
          self.__loader.bigFrame = self.__bigFrame
          self.sectionNames = __keys
 
-#self.__createSelectorFrame()
-
-         #from BFG9000 import BFG9000
-         #self.__BFG9000 = BFG9000(self.__loader, self.editor, self,
-         #                         self.__buttonMenu.getFrameSize()[1]+self.__selectMenu1.getFrameSize()[1]
-         #                         )
-
     def __createMenuFrame(self):
         #self.__buttonMenu = FrameContent(self.__loader, "buttonMenu",
         #                                 self.getWindowSize()[0]/3*2, self.getWindowSize()[1]/11.25, 5, 5,
@@ -366,29 +335,23 @@ class MainWindow:
 
 
     def __loopColorThread(self):
-        from time import sleep
-        colorNum = 0
-        while self.__loader.mainWindow.dead == False and self.dead == False:
-            try:
-                colorNum += 1
-                if colorNum == 256: colorNum = 0
-                hexaNum = hex(colorNum-colorNum%2).replace("0x", "$")
-                if len(hexaNum) == 2: hexaNum = "$0"+hexaNum[1]
-                self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
-            except:
-                pass
+        try:
+            self.__colorNum += 1
+            if self.__colorNum == 256: colorNum = 0
+            hexaNum = hex(colorNum - colorNum % 2).replace("0x", "$")
+            if len(hexaNum) == 2: hexaNum = "$0" + hexaNum[1]
+            self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
+        except:
+            pass
 
-            for item in self.__loader.stopThreads:
-                try:
-                    if item.stopThread == True:
-                       self.__loader.stopThreads.remove(item)
-                       break
-                except:
+        for item in self.__loader.stopThreads:
+            try:
+                if item.stopThread == True:
                     self.__loader.stopThreads.remove(item)
                     break
-
-            sleep(0.025)
-
+            except:
+                self.__loader.stopThreads.remove(item)
+                break
 
     def __createLabel(self, event):
 
@@ -753,12 +716,6 @@ class MainWindow:
         self.__loader.tk.focus()
 
     def __buildProject(self):
-        #from BuildProjectWindow import BuildProjectWindow
-
-        #BuildProjectWindow(self.__loader)
-        #self.__loader.tk.deiconify()
-        #self.__loader.tk.focus()
-
         pass
 
     def __saveButtonFunction(self):
@@ -797,31 +754,26 @@ class MainWindow:
         self.__loader.virtualMemory.getArcNext()
 
     def __undoButtonHandler(self, button):
-        from time import sleep
-        while self.dead==False:
-            try:
-                if len(self.__loader.virtualMemory.archieved)>0 and self.__loader.virtualMemory.cursor>0:
-                    self.__undoButton.getButton().config(state=NORMAL)
+        try:
+            if len(self.__loader.virtualMemory.archieved) > 0 and self.__loader.virtualMemory.cursor > 0:
+                self.__undoButton.getButton().config(state=NORMAL)
 
-                else:
-                    self.__undoButton.getButton().config(state=DISABLED)
-            except:
-                pass
-            sleep(0.0025)
+            else:
+                self.__undoButton.getButton().config(state=DISABLED)
+        except:
+            pass
+
 
 
     def __redoButtonHandler(self, button):
-        from time import sleep
-        while self.dead==False:
-            try:
-                if self.__loader.virtualMemory.cursor<len(self.__loader.virtualMemory.archieved)-1:
-                    self.__redoButton.getButton().config(state=NORMAL)
+        try:
+            if self.__loader.virtualMemory.cursor < len(self.__loader.virtualMemory.archieved) - 1:
+                self.__redoButton.getButton().config(state=NORMAL)
 
-                else:
-                    self.__redoButton.getButton().config(state=DISABLED)
-            except:
-                pass
-            sleep(0.0025)
+            else:
+                self.__redoButton.getButton().config(state=DISABLED)
+        except:
+            pass
 
     def getConstant(self):
         scalerX = self.getWindowSize()[0]/1300
@@ -841,20 +793,16 @@ class MainWindow:
 
 
     def setCopyButton(self, button):
-        from time import sleep
-        sleep(2)
-        while self.dead==False:
+        try:
             if self.focused == None:
                 self.__copyButton.getButton().config(state=DISABLED)
             else:
                 self.__copyButton.getButton().config(state=NORMAL)
-
-            sleep(0.0025)
+        except:
+            pass
 
     def setPasteButton(self, button):
-        from time import sleep
-        sleep(2)
-        while self.dead==False:
+        try:
             if self.focused == None:
                 self.__pasteButton.getButton().config(state=DISABLED)
             else:
@@ -862,7 +810,8 @@ class MainWindow:
                     self.__pasteButton.getButton().config(state=DISABLED)
                 else:
                     self.__pasteButton.getButton().config(state=NORMAL)
-            sleep(0.0025)
+        except:
+            pass
 
     def pressed(self, event):
         key = event.keysym
@@ -879,10 +828,6 @@ class MainWindow:
             self.__pressedHome = False
         elif key == "Shift_L" or key == "Shift_R":
             self.__pressedShiftL = False
-
-    def __checkBinded(self):
-        from time import sleep
-        from threading import Thread
 
     def __openLockManager(self):
         from LockManagerWindow import LockManagerWindow

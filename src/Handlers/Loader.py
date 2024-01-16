@@ -1,5 +1,4 @@
 from tkinter import *
-from threading import Thread
 
 class Loader:
     def __init__(self):
@@ -33,6 +32,7 @@ class Loader:
         self.piaNotes = None
         self.executor = None
         self.bigFrame = None
+        self.threadLooper = None
         self.jumpman = []
         self.jukebox = []
         self.stringConstants = {}
@@ -51,33 +51,3 @@ class Loader:
         self.sections      = []
         self.bank1Sections = []
         self.currentEditor = None
-
-        #test        = Thread(target=self.__loop)
-        #test.daemon = True
-        #test.start()
-
-    def __loop(self):
-
-        from time import sleep
-
-        while True:
-            try:
-                while self.mainWindow.dead == False:
-                    print(
-                       # f"frames: {self.topLevels}\n",
-                        f"menuButtons: {self.menuButtons}\n",
-                        f"bindedVariables: {self.bindedVariables}\n",
-                       # f"listBoxes: {self.listBoxes}\n",
-                        f"topLevels: {self.topLevels}\n",
-                       # f"destroyable: {self.destroyable}\n",
-                        f"subMenus: {self.subMenus}\n",
-                        f"subMenuDict: {self.subMenuDict}\n",
-                       # f"stopThreads: {self.stopThreads}\n",
-                        f"sections: {self.sections}\n",
-                    )
-                    sleep(10)
-
-                break
-
-            except:
-                sleep(10)

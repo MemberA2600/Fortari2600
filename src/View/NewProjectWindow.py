@@ -87,18 +87,17 @@ class NewProjectWindow:
         return(self.OK)
 
     def __checker(self):
-        from time import sleep
         import os
-        while self.dead == False and self.stopThread==False:
-            try:
+        try:
                 path = str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText())
-                if os.path.exists(self.__folderEntryWithButton.getText()) == True and os.path.exists(path) == False and self.__loader.io.checkIfValidFileName(self.__projectEntryWithButton.getText()) == True:
+                if os.path.exists(self.__folderEntryWithButton.getText()) == True \
+                   and os.path.exists(path) == False \
+                   and self.__loader.io.checkIfValidFileName(self.__projectEntryWithButton.getText()) == True:
                     self.OK = True
                 else:
                     self.OK = False
-            except Exception as e:
+        except Exception as e:
                 self.__loader.logger.errorLog(e)
-            sleep(0.05)
 
     def __getPath(self):
         return(str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText()+os.sep).replace("\\","/"))

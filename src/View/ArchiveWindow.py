@@ -18,7 +18,7 @@ class ArchiveWindow:
             pass
 
         self.dead = False
-
+        self.__counter = 0
         self.changed = False
         self.__loader.stopThreads.append(self)
 
@@ -181,9 +181,10 @@ class ArchiveWindow:
 
         self.fillListBox()
 
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        #t = Thread(target=self.loop)
+        #t.daemon = True
+        #t.start()
 
     def __archive(self):
         self.__mode = ">>"
@@ -316,18 +317,13 @@ class ArchiveWindow:
         self.__data = self.getNumAndSize()
 
     def loop(self):
-        from time import sleep
-        counter = 0
-        try:
-
-            while self.dead == False and self.__loader.mainWindow.dead == False:
                 if self.__mode == "<<":
                     c = 25
                 else:
                     c = 65
 
-                if counter > c:
-                    counter = 0
+                if self.__counter > c:
+                    self.__counter = 0
                     if self.__mode == "<<":
                        self.__imgIndex -= 1
 
@@ -339,7 +335,7 @@ class ArchiveWindow:
 
                        self.__tapeLabel.config(image = self.__buffer[self.__imgIndex])
                 else:
-                    counter+=1
+                    self.__counter+=1
 
                 if self.__finished == True:
                    self.__button2.config(state = NORMAL)
@@ -348,7 +344,3 @@ class ArchiveWindow:
                 else:
                     self.__button1.config(state=DISABLED)
                     self.__button2.config(state=DISABLED)
-
-            sleep(0.001)
-        except:
-            pass

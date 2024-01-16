@@ -57,9 +57,9 @@ class FrameWithLabelAndEntry:
         self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
         self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
 
-        t = Thread(target=self.resize)
-        t.daemon=True
-        t.start()
+        #t = Thread(target=self.resize)
+        #t.daemon=True
+        #t.start()
 
         self.__entry.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
         self.__entry.bind("<FocusOut>", self.__loader.mainWindow.focusOut)

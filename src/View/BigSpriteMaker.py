@@ -1,6 +1,5 @@
 from tkinter import *
 from SubMenu import SubMenu
-from threading import Thread
 
 class BigSpriteMaker:
 
@@ -114,9 +113,11 @@ class BigSpriteMaker:
         self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
         self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
-        t = Thread(target=self.__loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [])
+
+        #t = Thread(target=self.__loop)
+        #t.daemon = True
+        #t.start()
 
     def __oneThread(self):
         self.__createData()
@@ -607,6 +608,7 @@ class BigSpriteMaker:
             test = Thread(target=self.__testThread)
             test.daemon = True
             test.start()
+
 
     def __testThread(self):
         from Compiler import Compiler
@@ -1185,9 +1187,6 @@ class BigSpriteMaker:
         self.__redrawCanvas()
 
     def __loop(self):
-        from time import sleep
-
-        while self.dead == False and self.__mainWindow.dead == False:
             try:
                 if self.__mode != self.__activeMode and self.__finished == True:
 
@@ -1216,8 +1215,6 @@ class BigSpriteMaker:
                    play.start()
                 else:
                    self.__playButton.config(image = self.__playImage)
-
-                sleep(0.04)
             except:
                 pass
 

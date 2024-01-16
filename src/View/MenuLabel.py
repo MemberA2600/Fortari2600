@@ -23,25 +23,7 @@ class MenuLabel:
 
         self.dead = False
         self.__placer()
-        #align = Thread(target=self.dinamicallyAlign)
-        #align.daemon = True
-        #align.start()
         self.__setFont()
-
-    def dinamicallyAlign(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False and self.stopThread==False and self.dead == False:
-            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
-                    and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
-                sleep(0.05)
-                continue
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-            self.__lastScaleY = self.__loader.mainWindow.getScales()[1]
-
-            self.__placer()
-            self.__setFont()
-
-            sleep(0.02)
 
     def __placer(self):
         c = self.__loader.mainWindow.getConstant()

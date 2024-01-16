@@ -7,11 +7,14 @@ class Haunted:
         self.__loader = loader
         self.__frame = frame
 
+        self.__colors  = ["black", "dark orange", "orange", "dark orange"]
+        self.__counter = 0
+
         self.__topLevelWindow = toplevel
         self.__step = 16
         self.__yourSize = 12
 
-        self.__parent = parent
+        self.caller = parent
 
         self.__maxX =  self.__frame.winfo_width() // self.__step * self.__step
         self.__maxY =  self.__frame.winfo_height() // self.__step * self.__step
@@ -58,10 +61,11 @@ class Haunted:
             (False, True, False, True)   : 8
         }
 
-        from threading import Thread
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        #from threading import Thread
+        #t = Thread(target=self.loop)
+        #t.daemon = True
+        #t.start()
 
     def setEyePoses(self):
 
@@ -183,20 +187,14 @@ class Haunted:
         self.__keys[str(event.keysym)] = False
 
     def loop(self):
-        colors = ["black", "dark orange", "orange", "dark orange"]
-        counter = 0
-
-        from time import sleep
-        while self.__parent.dead == False and self.__loader.mainWindow.dead == False:
-
-            counter += 1
-            if counter > 3: counter = 0
+            self.__counter += 1
+            if self.__counter > 3: self.__counter = 0
 
             self.setEyePoses()
 
             try:
 
-                self.__color = colors[counter]
+                self.__color = self.__colors[self.__counter]
                 #self.__canvas.clipboard_clear()
                 self.__canvas.delete("all")
 
@@ -265,10 +263,6 @@ class Haunted:
 
                 except Exception as e:
                     print(str(e))
-
-
-            sleep(0.002)
-
 
     def drawPixelOval(self):
         self.__canvas.create_rectangle(self.__yourX - self.__yourSize//2, self.__yourY - self.__yourSize,

@@ -43,16 +43,6 @@ class FrameContent:
     def getFrameSize(self):
         return (self.__frame.winfo_width(), self.__frame.winfo_height())
 
-    def dinamicallyAlign(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False and self.stopThread==False:
-            if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0]
-                    and self.__lastScaleY==self.__loader.mainWindow.getScales()[1]):
-                sleep(0.05)
-                continue
-            #self.__changeSize()
-            sleep(0.02)
-
     def __changeSize(self):
 
         self.__lastScaleX = self.__loader.mainWindow.getScales()[0]

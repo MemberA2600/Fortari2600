@@ -31,9 +31,10 @@ class PitFallHarry:
         t.daemon = True
         t.start()
 
-        m = Thread(target=self.__move)
-        m.daemon = True
-        m.start()
+        self.__loader.threadLooper.addToThreading(self, self.__move, [])
+        #m = Thread(target=self.__move)
+        #m.daemon = True
+        #m.start()
 
     def initMe(self):
         self.__finished = False
@@ -132,24 +133,7 @@ class PitFallHarry:
             pass
 
     def __move(self):
-        from time import sleep
-
-        while self.__finished == False:
-            sleep(0.5)
-
-        while self.__window.dead == False and self.stopThread==False:
-
-            """
-            while self.__harryLabel.winfo_width() < (self.__h * 0.76) * 0.9:
-                try:
-                    self.__harryLabel.config(width=self.__harryFrame.winfo_height(),
-                                             height=round(self.__h * 0.76))
-
-                    self.__harryLabel.place(x=self.__harryPoz, y=0)
-                except:
-                    pass
-            """
-
+        if self.__finished:
             self.__getDifference()
             if abs(self.__difference)<15:
                 self.__harryStop()
@@ -170,4 +154,3 @@ class PitFallHarry:
                 self.__harryPoz = 0
 
             self.__drawHarry()
-            sleep(0.04)

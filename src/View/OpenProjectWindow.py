@@ -76,19 +76,19 @@ class OpenProjectWindow:
         try:
             self.__getAndSelect()
 
-
-            self.__chg = Thread(target=self.checkIfListBoxSelectChanged)
-            self.__chg.daemon = True
-            self.__chg.start()
+            self.__loader.threadLooper.addToThreading(self, self.checkIfListBoxSelectChanged, [])
+            #self.__chg = Thread(target=self.checkIfListBoxSelectChanged)
+            #self.__chg.daemon = True
+            #self.__chg.start()
         except:
             pass
+
         self.__okCancel = SubMenuOkCancelButtons(self, self.__frame2, self.__loader, self.__normalFont, self.func, self.getOK)
-        self.__okThread = Thread(target=self.checkIfOK)
-        self.__okThread.daemon=True
-        self.__okThread.start()
+
+        self.__loader.threadLooper.addToThreading(self, self.checkIfOK, [])
+
         from ET import ET
         self.__et = ET(self, self.__frame2, self.__loader, self.__topLevel)
-
 
 
     def openDialog(self):
@@ -132,26 +132,21 @@ class OpenProjectWindow:
         return(self.OK)
 
     def checkIfListBoxSelectChanged(self):
-        from time import sleep
-        while self.dead == False and self.stopThread==False:
             try:
-                if self.__selected!=self.__listBox.getSelectedName():
+                if self.__selected != self.__listBox.getSelectedName():
                     self.__getAndSelect()
             except Exception as e:
+                #print(str(e))
                 self.__loader.logger.errorLog(e)
-
-            sleep(0.00005)
 
     def checkIfOK(self):
-        from time import sleep
-        while self.dead == False and self.stopThread == False:
-            try:
-                import os
-                if os.path.exists(self.__projectPathEntry.getText()):
-                    self.OK = True
-                else:
-                    self.OK = False
-            except Exception as e:
-                self.__loader.logger.errorLog(e)
+        try:
+            import os
 
-            sleep(0.00005)
+            if os.path.exists(self.__projectPathEntry.getText()):
+                self.OK = True
+            else:
+                self.OK = False
+        except Exception as e:
+            #print(str(e))
+            self.__loader.logger.errorLog(e)

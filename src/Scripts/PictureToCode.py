@@ -425,10 +425,12 @@ class PictureToCode:
 
         if self.__dataForEditor["h"] > 24:
            self.__yEntry.config(state = NORMAL)
-           from threading import Thread
-           t = Thread(target=self.__stateButtons)
-           t.daemon = True
-           t.start()
+           #from threading import Thread
+
+           #t = Thread(target=self.__stateButtons)
+           #t.daemon = True
+           #t.start()
+           self.__loader.threadLooper.addToThreading(self, self.__stateButtons, [])
 
     def mirrorPFGoGo(self):
 
@@ -482,9 +484,6 @@ class PictureToCode:
         self.__redrawCanvas()
 
     def __stateButtons(self):
-        from time import sleep
-
-        while self.dead == False:
             if self.__temp1 != self.__invertPFBG.get() or self.__temp2 != self.__mirrorPF.get():
                 self.__temp1 = self.__invertPFBG.get()
                 if self.__temp1 == 1:
@@ -508,7 +507,7 @@ class PictureToCode:
                     self.__button2.config(state = DISABLED)
             except:
                 pass
-            sleep(0.00005)
+
 
     def pozMinus(self):
         self.__changeState(self.__currentY-1)

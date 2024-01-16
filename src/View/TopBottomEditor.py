@@ -25,6 +25,9 @@ class TopBottomEditor:
         # 2: The code in lines, readable for the editor
         item = ["", False, []]
 
+        self.__num  = 0
+        self.__num2 = 0
+
         self.__codeData = {
             "Top": [
             deepcopy(item), deepcopy(item), deepcopy(item),
@@ -258,10 +261,6 @@ class TopBottomEditor:
         return name, typ
 
     def loop(self):
-        num  = 0
-        num2 = 0
-
-        while self.dead == False and self.__mainWindow.dead == False:
             if False not in self.__finishedThem:
                if self.__theyAreDisabled == True:
                   for button in self.__bankButtons:
@@ -286,9 +285,9 @@ class TopBottomEditor:
 
             if self.__activeMode in ("blank", "missing"):
                try:
-                   num2 += 1
-                   if num2 == len(self.__loader.rainbowFrames) * 2: num2 = 0
-                   self.__onlyLabel.config(image = self.__loader.rainbowFrames[num2 // 2])
+                   self.__num2 += 1
+                   if self.__num2 == len(self.__loader.rainbowFrames) * 2: self.__num2 = 0
+                   self.__onlyLabel.config(image = self.__loader.rainbowFrames[self.__num2 // 2])
                    self.__lockedLabel.config(
                        fg = self.__mainWindow.getLoopColor()
                    )
@@ -296,9 +295,9 @@ class TopBottomEditor:
                    pass
             elif self.__activeMode == "locked":
                 try:
-                    num += 1
-                    if num == len(self.__loader.lockedFramesTopLevel)*10: num = 0
-                    self.__onlyLabel.config(image=self.__loader.lockedFramesTopLevel[num//10])
+                    self.__num += 1
+                    if self.__num == len(self.__loader.lockedFramesTopLevel)*10: self.__num = 0
+                    self.__onlyLabel.config(image=self.__loader.lockedFramesTopLevel[self.__num//10])
                     self.__lockedLabel.config(
                         fg=self.__mainWindow.getLoopColor()
                     )
@@ -306,9 +305,8 @@ class TopBottomEditor:
                     pass
 
             else:
-                num = 0
+                self.__num = 0
 
-            sleep(0.025)
 
     def __addView(self):
         if len(self.__listBoxItems) > 0:

@@ -92,13 +92,12 @@ class ScreenSetterFrameBase:
         self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
         self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
 
-
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper(self, self.loop, [])
+        #t = Thread(target=self.loop)
+        #t.daemon = True
+        #t.start()
 
     def loop(self):
-        while self.__dead[0] == False and self.__loader.mainWindow.dead == False:
             try:
                 foundError = False
 
@@ -117,7 +116,6 @@ class ScreenSetterFrameBase:
             except Exception as e:
                 pass
 
-            sleep(0.005)
 
     def checkNameEntry(self, event):
         import re

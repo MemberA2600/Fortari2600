@@ -1,6 +1,5 @@
 from tkinter import *
 from SubMenu import SubMenu
-from threading import Thread
 
 class ConstantWindow:
 
@@ -266,10 +265,10 @@ class ConstantWindow:
         try:
            self.pageNumChangedThing(None)
 
-           t = Thread(target=self.loop)
-           t.daemon = True
-           t.start()
-
+           self.__loader.threadLooper.addToThreading(self, self.loop, [])
+           #t = Thread(target=self.loop)
+           #t.daemon = True
+           #t.start()
            self.notInitAnymore = True
         except:
             pass
@@ -362,8 +361,6 @@ class ConstantWindow:
         self.__countDown = 120
 
     def loop(self):
-        from time import sleep
-        while self.dead == False and self.__loader.mainWindow.dead == False:
             try:
                if self.__countDown > 0: self.__countDown -= 1
                if self.__countDown == 1:
@@ -378,7 +375,7 @@ class ConstantWindow:
             except Exception as e:
                 #print(str(e))
                 pass
-            sleep(0.005)
+
 
 
     def callChanger(self, event):

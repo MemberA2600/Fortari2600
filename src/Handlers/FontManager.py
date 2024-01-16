@@ -2,7 +2,6 @@ class FontManager:
 
     def __init__(self, loader):
         from pyglet import font as PyFont
-        from threading import Thread
         self.__loader = loader
         self.__loader.fontManager = self
 
@@ -11,6 +10,7 @@ class FontManager:
 
         self.__chars = {}
         lastChar = None
+        self.diesWithMainOnly = True
 
         f = open("config/letters.txt")
         txt = f.readlines()
@@ -28,8 +28,11 @@ class FontManager:
         PyFont.add_file('others/font/HammerFat.ttf')
         self.__normalSize = 22
         self.__sizing()
-        sizes= Thread(target=self.autoSizes)
-        sizes.start()
+
+        self.__loader.threadLooper.addToThreading(self, self.autoSizes, [])
+
+        #sizes= Thread(target=self.autoSizes)
+        #sizes.start()
 
     def getAtariChar(self, char):
         if char.upper() in self.__chars.keys():
@@ -38,18 +41,12 @@ class FontManager:
            return(None)
 
     def autoSizes(self):
-        from time import sleep
-        try:
-            while self.__loader.mainWindow.dead==False:
-                if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
-                    sleep(0.05)
-                    continue
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-                self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
-                self.__sizing()
-                sleep(0.02)
-        except:
+        if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
             pass
+        else:
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
+            self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
+            self.__sizing()
 
     def __sizing(self):
         baseW = 1600

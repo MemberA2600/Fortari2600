@@ -9,7 +9,7 @@ class CosmicCommuter:
         self.__loader      = loader
         self.__size        = size
         self.__topLevel    = toplevel
-        self.__caller      = caller
+        self.caller        = caller
 
         self.__spaceCanvas = Canvas(self.__motherFrame, bg = "black", height=self.__size[1], width=self.__size[0])
         self.__spaceCanvas.pack_propagate(False)
@@ -47,9 +47,10 @@ class CosmicCommuter:
         buffer.daemon = True
         buffer.start()
 
-        createSprites = Thread(target=self.createSprites)
-        createSprites.daemon = True
-        createSprites.start()
+        self.__loader.threadLooper.addToThreading([self, self.createSprites, []])
+        #createSprites = Thread(target=self.createSprites)
+        #createSprites.daemon = True
+        #createSprites.start()
 
         #draw = Thread(target=self.drawLoop)
         #draw.daemon = True
@@ -91,11 +92,9 @@ class CosmicCommuter:
 
     def createSprites(self):
         import mouse
-        from time import sleep
         from random import randint
 
-        while self.__loader.mainWindow.dead == False and self.__caller.dead == False:
-            if self.__shipSize > 0 and self.__finishedLoading:
+        if self.__shipSize > 0 and self.__finishedLoading:
                if self.__first:
                   self.__shipY = self.__size[1] // 2 - self.__shipSize
 
@@ -171,6 +170,6 @@ class CosmicCommuter:
                    pass
 
                if self.__first: self.__first = False
-            sleep(0.02)
+
 
 

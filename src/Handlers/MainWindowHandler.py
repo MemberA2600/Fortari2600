@@ -28,11 +28,7 @@ class MainWindowHandler:
         self.__loader.mainWindow.dead = True
         self.__loader.soundPlayer.playSound("Exit")
         self.__removeTemp()
-        from time import sleep
-        sleep(2)
 
-    #def setWaitWindow(self, widget):
-    #    widget.wait_window()
 
     def __removeTemp(self):
         try:
@@ -41,20 +37,6 @@ class MainWindowHandler:
 
         except:
             pass
-
-
-        """
-        import os
-
-        toBeDeleted=[]
-
-        for root, dirs, files in os.walk("temp/", False):
-            for file in files:
-                toBeDeleted.append(root+"/"+file)
-
-        for file in toBeDeleted:
-            os.remove(file)
-        """
 
     def createMain(self):
         from MainWindow import MainWindow

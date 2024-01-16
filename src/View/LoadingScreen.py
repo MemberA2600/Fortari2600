@@ -35,9 +35,12 @@ class LoadingScreen():
 
     def loadThings(self):
 
-        from Config import Config
-        from DataReader import DataReader
-        from Dictionary import Dictionary
+        from Config       import Config
+        from DataReader   import DataReader
+        from Dictionary   import Dictionary
+        from ThreadLooper import ThreadLooper
+
+        self.__loader.threadLooper = ThreadLooper(self.__loader)
 
         self.bindThings()
 

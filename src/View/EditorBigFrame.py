@@ -22,6 +22,9 @@ class EditorBigFrame:
         self.__syntaxList = self.__loader.syntaxList
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
         self.__foundError     = False
+        self.diesWithMainOnly = True
+        self.diesWithMainOnly = True
+
 
         self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
                         "param#1", "param#2", "param#3", "comment", "updateRow"]
@@ -106,9 +109,11 @@ class EditorBigFrame:
         self.__focusOutItems = []
         self.__theNumOfLine  = 0
 
-        t = Thread(target=self.loop)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+
+        #t = Thread(target=self.loop)
+        #t.daemon = True
+        #t.start()
 
     def addBindings(self):
         self.__bankButtons    = self.__editor.changerButtons
@@ -357,80 +362,77 @@ class EditorBigFrame:
         return self.__currentBank
 
     def loop(self):
-        from time import sleep
+        if self.activeMode != self.__selectedMode:
+            if self.activeMode != None:
+                self.__removeSlaves()
 
-        while self.__editor.dead == False:
-            if self.activeMode != self.__selectedMode:
-               if self.activeMode != None:
-                   self.__removeSlaves()
+            self.activeMode = self.__selectedMode
+            self.__editor.editor.unbind("<Insert>")
 
-               self.activeMode = self.__selectedMode
-               self.__editor.editor.unbind("<Insert>")
+            if self.__selectedMode == "intro":
+                self.__createIntroScreen()
+            elif self.__selectedMode == "empty":
+                pass
+            elif self.__selectedMode == "job":
+                self.__createJobWindows()
 
-               if self.__selectedMode == "intro":
-                  self.__createIntroScreen()
-               elif  self.__selectedMode == "empty":
-                  pass
-               elif  self.__selectedMode == "job":
-                  self.__createJobWindows()
+        if self.__counter > 0:
+            self.__counter -= 1
 
-            if self.__counter > 0:
-               self.__counter -= 1
+        if self.__counter2 > 0:
+            self.__counter2 -= 1
 
-            if self.__counter2 > 0:
-               self.__counter2 -= 1
+        if self.__counter == 1: self.__counterEnded()
+        if self.__counter2 == 1: self.__counterEnded2()
 
-            if self.__counter  == 1: self.__counterEnded()
-            if self.__counter2 == 1: self.__counterEnded2()
-
-            if self.activeMode == "job":
-                for bankNum in range(1,9):
-                    key = "bank" + str(bankNum)
-                    if self.__virtualMemory.locks[key] == None:
-                        self.__bankButtons[bankNum - 1].config(state=NORMAL)
-                    else:
-                        self.__bankButtons[bankNum - 1].config(state=DISABLED)
-
-                if self.__virtualMemory.locks[self.__currentBank] == None:
-                   state = NORMAL
+        if self.activeMode == "job":
+            for bankNum in range(1, 9):
+                key = "bank" + str(bankNum)
+                if self.__virtualMemory.locks[key] == None:
+                    self.__bankButtons[bankNum - 1].config(state=NORMAL)
                 else:
-                   state = DISABLED
+                    self.__bankButtons[bankNum - 1].config(state=DISABLED)
 
-                from copy import deepcopy
-
-                secs = deepcopy(self.__loader.sections)
-                for item in self.__removeThese:
-                    secs.remove(item)
-
-                for button in self.__sectionButtons:
-                    if self.__currentBank == "bank1" and secs[self.__sectionButtons.index(button)] not in self.__loader.bank1Sections:
-                        button.config(state = DISABLED)
-                    else:
-                        button.config(state = state)
-
-                if  self.__foundError    == False:
-                    self.__compileASMButton.config(state = NORMAL)
-                else:
-                    self.__compileASMButton.config(state = DISABLED)
-
+            if self.__virtualMemory.locks[self.__currentBank] == None:
+                state = NORMAL
             else:
-                for button in self.__sectionButtons:
-                    button.config(state = DISABLED)
-                for button in self.__bankButtons:
-                    button.config(state = DISABLED)
+                state = DISABLED
 
-            curSel = None
+            from copy import deepcopy
+
+            secs = deepcopy(self.__loader.sections)
+            for item in self.__removeThese:
+                secs.remove(item)
+
+            for button in self.__sectionButtons:
+                if self.__currentBank == "bank1" and secs[
+                    self.__sectionButtons.index(button)] not in self.__loader.bank1Sections:
+                    button.config(state=DISABLED)
+                else:
+                    button.config(state=state)
+
+            if self.__foundError == False:
+                self.__compileASMButton.config(state=NORMAL)
+            else:
+                self.__compileASMButton.config(state=DISABLED)
+
+        else:
+            for button in self.__sectionButtons:
+                button.config(state=DISABLED)
+            for button in self.__bankButtons:
+                button.config(state=DISABLED)
+
+        curSel = None
+        try:
+            curSel = self.__listBoxOnTheRight.curselection()[0]
+            self.__button.config(state=NORMAL)
+        except:
             try:
-                curSel = self.__listBoxOnTheRight.curselection()[0]
-                self.__button.config(state = NORMAL)
+                self.__button.config(state=DISABLED)
             except:
-                try:
-                    self.__button.config(state = DISABLED)
-                except:
-                    pass
+                pass
 
-            self.threadBufferThings()
-            sleep(0.05)
+        self.threadBufferThings()
 
     def threadBufferThings(self):
         #print(self.__runningAllThis, self.__runningThis)

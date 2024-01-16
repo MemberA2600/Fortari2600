@@ -11,6 +11,7 @@ class MiniMapMaker:
         self.dead = False
         self.__changed = False
         self.__loader.stopThreads.append(self)
+        self.__done = False
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -794,12 +795,8 @@ class MiniMapMaker:
 
 
     def __loop(self):
-        done = False
-
-        from time import sleep
-        while self.dead == False and self.__loader.mainWindow.dead == False:
-            if self.__finished and done == False:
-               done = True
+            if self.__finished and self.__done == False:
+               self.__done = True
                self.__numOfLines.config(state = NORMAL)
                self.__offsetEntry1.config(state = NORMAL)
                self.__offsetEntry2.config(state = NORMAL)
@@ -835,8 +832,6 @@ class MiniMapMaker:
                    self.__spriteLoader.disableSave()
                else:
                    self.__spriteLoader.enableSave()
-
-            sleep(0.005)
 
     def __chamgeConst(self, event):
         if self.__finished == False: return

@@ -42,7 +42,8 @@ class JukeBox:
 
         self.__name         = StringVar()
         self.__name.set(self.__data[0])
-        self.dead = [False]
+        self.dead  = [False]
+        self.__num = - 1
 
         self.__loadMusicData()
 
@@ -787,20 +788,13 @@ class JukeBox:
 
         self.__setButtonsAndErros()
 
-
     def jukeAnimation(self):
-        from time import sleep
-
-        num = -1
-
-        while self.dead[0] == False and self.__loader.mainWindow.dead == False:
-            num += 1
-            if num > 2: num = 0
-            try:
-                self.__jukeFrame.config(image = self.__jukeBoxPix[num])
-            except:
-                break
-            sleep(0.1)
+        self.__num += 1
+        if self.__num > 2: self.__num = 0
+        try:
+            self.__jukeFrame.config(image=self.__jukeBoxPix[self.__num])
+        except:
+            pass
 
     def saveData(self):
         self.__data[2] = "|".join(self.__addedListBoxItems)

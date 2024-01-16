@@ -59,8 +59,6 @@ class PlayfieldEditor:
 
 
     def checker(self):
-        from time import sleep
-        while(self.dead==False and self.__loader.mainWindow.dead == False):
             try:
                 if self.changed == False:
                     if self.__caller in [0,1]:
@@ -74,9 +72,6 @@ class PlayfieldEditor:
 
             except Exception as e:
                 self.__loader.logger.errorLog(e)
-
-
-            sleep(0.4)
 
     def __closeWindow(self):
         self.dead = True
@@ -254,9 +249,10 @@ class PlayfieldEditor:
         e.daemon=True
         e.start()
 
-        t = Thread(target=self.checker)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper(self, self.checker, [])
+        #t = Thread(target=self.checker)
+        #t.daemon = True
+        #t.start()
 
         self.__finished = True
 

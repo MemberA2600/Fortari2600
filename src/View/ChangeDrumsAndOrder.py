@@ -435,10 +435,10 @@ class ChangeDrumsAndOrder:
         self.__exitButton.pack_propagate(False)
         self.__exitButton.pack(side=BOTTOM, anchor = S, fill=X)
 
-
-        t = Thread(target = self.__checker)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.__checker, [])
+        #t = Thread(target = self.__checker)
+        #t.daemon = True
+        #t.start()
 
     def __fillDrumList(self, drumNotes):
         listBox = self.__drumListBox.getListBox()
@@ -474,9 +474,6 @@ class ChangeDrumsAndOrder:
         self.__fillOrderListBox(poz)
 
     def __checker(self):
-        from time import sleep
-
-        while self.dead == False:
             try:
                 if self.__selectedOrderList != self.__orderListBox.getSelected():
                     self.__selectedOrderList = self.__orderListBox.getSelected()

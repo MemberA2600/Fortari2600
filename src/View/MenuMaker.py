@@ -189,9 +189,10 @@ class MenuMaker:
         self.createBottomElements()
         self.createBottomButtons()
 
-        loop = Thread(target=self.__loop)
-        loop.daemon = True
-        loop.start()
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [])
+        #loop = Thread(target=self.__loop)
+        #loop.daemon = True
+        #loop.start()
 
         self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
         self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
@@ -786,9 +787,6 @@ class MenuMaker:
 
     def __loop(self):
 
-        from time import sleep
-
-        while self.dead == False and self.__loader.mainWindow.dead == False:
             try:
                 if self.__theyAreDisabled == True:
                     doIt = True
@@ -831,7 +829,6 @@ class MenuMaker:
                 #print(str(e))
                 pass
 
-            sleep(0.05)
 
     def createEditorFrame(self):
 

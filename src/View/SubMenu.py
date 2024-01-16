@@ -41,9 +41,11 @@ class SubMenu:
         from threading import Thread
         if checker!=None:
             self.__checker = checker
-            check = Thread(target=self.__checker)
-            check.daemon = True
-            check.start()
+            self.__loader.threadLooper.addToThreading(self, self.__checker, [])
+            
+            #check = Thread(target=self.__checker)
+            #check.daemon = True
+            #check.start()
 
         if addElements!=None:
             self.__addElements = addElements
@@ -64,8 +66,8 @@ class SubMenu:
         except Exception as e:
             self.__loader.logger.errorLog(e)
 
+        #self.__loader.threadLooper.addToThreading(self, self.__killIfKilled, [])
         from threading import Thread
-
         t = Thread(target=self.__killIfKilled)
         t.daemon = True
         t.start()
@@ -93,12 +95,10 @@ class SubMenu:
                 self.__loader.topLevels[last-1].deiconify()
                 self.__loader.topLevels[last-1].focus()
 
-
     def __killIfKilled(self):
-        from time import sleep
-        while self.__topLevel.winfo_exists():
-            sleep(0.0005)
-        del self.__loader.subMenuDict[self.__name]
+        if self.__topLevel.winfo_exists() == False and self.__name in self.__loader.subMenuDict:
+              del self.__loader.subMenuDict[self.__name]
+
 
     def killOther(self):
         num = 10
