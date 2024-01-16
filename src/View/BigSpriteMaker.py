@@ -99,6 +99,8 @@ class BigSpriteMaker:
         self.__controlFrame.pack_propagate(False)
         self.__controlFrame.pack(side=LEFT, anchor=E, fill=BOTH)
 
+        from threading import Thread
+
         one = Thread(target=self.__oneThread)
         one.daemon = True
         one.start()

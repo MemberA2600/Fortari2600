@@ -10,7 +10,8 @@ class ThreadLooper:
         self.__listOfThreads = []
         self.__running      = False
 
-        self.__wait = 0.01
+        self.__base = 0.01
+        self.__wait = self.__base
         self.__mainInited = False
 
         t = Thread(target=self.__loop)
@@ -37,7 +38,7 @@ class ThreadLooper:
                        if number > len(self.__listOfThreads) - 1: number = 0
 
                        if len(self.__listOfThreads) > 0:
-                          self.__wait = 0.01 / len(self.__listOfThreads)
+                          self.__wait = self.__base / len(self.__listOfThreads)
                           stop = False
                           dead = True
 
@@ -98,7 +99,7 @@ class ThreadLooper:
                                  #print(self.__listOfThreads[number][1])
                                  self.__listOfThreads[number][1](*self.__listOfThreads[number][2])
                        else:
-                           self.__wait = 0.01
+                           self.__wait = self.__base
                     else:
                         if self.__loader.config.getValueByKey("runThreads") == "True":
                             try:

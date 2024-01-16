@@ -21,7 +21,7 @@ class Rainbow:
         self.dead = False
         self.__num = 0
 
-        loader.threadLooper(self, self.loopThings, [])
+        loader.threadLooper.addToThreading(self, self.loopThings, [])
         #from threading import Thread
 
         #t = Thread(target=self.loopThings)

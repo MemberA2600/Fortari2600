@@ -108,6 +108,7 @@ class MainWindow:
     def getWindowSize(self):
         return (self.editor.winfo_width(), self.editor.winfo_height())
 
+    """
     def __scales(self):
         from time import sleep
         while self.dead == False:
@@ -130,6 +131,7 @@ class MainWindow:
                 self.__scaleX = self.__lastW / self.__originalW
                 self.__scaleY = self.__lastH / self.__originalH
             sleep(0.025)
+    """
 
     def __killRemaining(self):
         import gc
@@ -337,8 +339,8 @@ class MainWindow:
     def __loopColorThread(self):
         try:
             self.__colorNum += 1
-            if self.__colorNum == 256: colorNum = 0
-            hexaNum = hex(colorNum - colorNum % 2).replace("0x", "$")
+            if self.__colorNum == 256: self.__colorNum = 0
+            hexaNum = hex(self.__colorNum - self.__colorNum % 2).replace("0x", "$")
             if len(hexaNum) == 2: hexaNum = "$0" + hexaNum[1]
             self.__loopColor = self.__colorDict.getHEXValueFromTIA(hexaNum)
         except:

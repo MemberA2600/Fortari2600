@@ -92,29 +92,29 @@ class ScreenSetterFrameBase:
         self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
         self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
 
-        self.__loader.threadLooper(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
         #t = Thread(target=self.loop)
         #t.daemon = True
         #t.start()
 
     def loop(self):
-            try:
-                foundError = False
+        try:
+            foundError = False
 
-                for errorKey in self.__errors:
-                    if self.__errors[errorKey] == True:
-                       foundError = True
-                       self.setErrorText(errorKey)
-                       break
+            for errorKey in self.__errors:
+                if self.__errors[errorKey] == True:
+                    foundError = True
+                    self.setErrorText(errorKey)
+                    break
 
-                if foundError == False:
-                   self.clearErrorText()
+            if foundError == False:
+                self.clearErrorText()
 
-                if self.__countBack > 0: self.__countBack -=1
-                if self.__countBack == 1: self.__checkIfNewName()
+            if self.__countBack > 0: self.__countBack -= 1
+            if self.__countBack == 1: self.__checkIfNewName()
 
-            except Exception as e:
-                pass
+        except Exception as e:
+            pass
 
 
     def checkNameEntry(self, event):

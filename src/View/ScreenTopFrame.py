@@ -32,7 +32,7 @@ class ScreenTopFrame:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize * 1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize * 1.5), False, False, False)
 
-        self.__bank         = bank
+        self.__bank = bank
 
         self.__sizes = [self.__screenSize[0] // 3.75, self.__screenSize[1] // 3.15 - 55]
         self.__window = SubMenu(self.__loader, "screenItem", self.__sizes[0], self.__sizes[1], None, self.__addElements,

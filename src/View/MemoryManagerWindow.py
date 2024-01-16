@@ -883,7 +883,7 @@ class MemoryManagerWindow:
         )
         self.changeSlot('global')
 
-        self.__loader.threadLooper(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
 
         #from threading import Thread
         #t = Thread(target=self.loop)

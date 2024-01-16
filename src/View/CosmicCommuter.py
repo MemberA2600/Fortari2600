@@ -47,7 +47,7 @@ class CosmicCommuter:
         buffer.daemon = True
         buffer.start()
 
-        self.__loader.threadLooper.addToThreading([self, self.createSprites, []])
+        self.__loader.threadLooper.addToThreading(self, self.createSprites, [])
         #createSprites = Thread(target=self.createSprites)
         #createSprites.daemon = True
         #createSprites.start()

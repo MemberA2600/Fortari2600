@@ -467,9 +467,11 @@ class JukeBox:
         self.__setButtonsAndErros()
         self.__error = True
 
-        t = Thread(target=self.jukeAnimation)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.jukeAnimation, [])
+
+        #t = Thread(target=self.jukeAnimation)
+        #t.daemon = True
+        #t.start()
 
     def __changeDataListBox(self, event):
         num = int(str(event.widget).split(".")[-1].split("_")[-1])

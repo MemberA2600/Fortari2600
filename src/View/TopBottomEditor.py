@@ -241,9 +241,11 @@ class TopBottomEditor:
         t3.daemon = True
         t3.start()
 
-        loop = Thread(target=self.loop)
-        loop.daemon = True
-        loop.start()
+        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+
+        #loop = Thread(target=self.loop)
+        #loop.daemon = True
+        #loop.start()
 
     def clickedListBox(self, event):
         try:

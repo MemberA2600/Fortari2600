@@ -253,9 +253,11 @@ class Indicator:
 
         self.__textLabel.pack(padx=0, pady=0, fill=X, side=BOTTOM)
 
-        t = Thread(target=self.__loopThem)
-        t.daemon = True
-        t.start()
+        self.__loader.threadLooper.addToThreading(self, self.__loopThem, [])
+
+        #t = Thread(target=self.__loopThem)
+        #t.daemon = True
+        #t.start()
 
     def __loopThem(self):
         from mouse import get_position
