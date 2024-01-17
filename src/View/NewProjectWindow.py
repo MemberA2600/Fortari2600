@@ -87,6 +87,13 @@ class NewProjectWindow:
         return(self.OK)
 
     def __checker(self):
+        if self.__topLevel.winfo_exists() == False:
+           self.stopThread = True
+           if self.__topLevel in self.__loader.topLevels:
+              self.__loader.topLevels.remove(self.__topLevel)
+           if self in self.__loader.stopThreads:
+              self.__loader.topLevels.stopThreads(self)
+
         import os
         try:
                 path = str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText())

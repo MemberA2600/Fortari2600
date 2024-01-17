@@ -415,7 +415,7 @@ class SpriteEditor:
         e.daemon = True
         e.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.checker, [])
+        self.__loader.threadLooper.addToThreading(self, self.checker, [], 1)
         #t = Thread(target=self.checker)
         #t.daemon = True
         #t.start()

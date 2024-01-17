@@ -115,7 +115,7 @@ class BigSpriteMaker:
         self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
         self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
-        self.__loader.threadLooper.addToThreading(self, self.__loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
 
         #t = Thread(target=self.__loop)
         #t.daemon = True

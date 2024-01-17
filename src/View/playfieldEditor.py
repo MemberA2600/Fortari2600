@@ -37,9 +37,7 @@ class PlayfieldEditor:
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__largeFont = self.__fontManager.getFont(int(self.__fontSize*1.05), False, False, False)
 
-
-        if self.__loader.virtualMemory.kernel == "common":
-            self.__func = self.__addElementsCommon
+        self.__func = self.__addElementsCommon
 
         self.__ctrl = False
         self.__middle = False
@@ -81,6 +79,7 @@ class PlayfieldEditor:
 
 
     def __addElementsCommon(self, top):
+
         self.__topLevel = top
         self.__topLevelWindow = top.getTopLevel()
         self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
@@ -249,7 +248,7 @@ class PlayfieldEditor:
         e.daemon=True
         e.start()
 
-        self.__loader.threadLooper(self, self.checker, [])
+        self.__loader.threadLooper.addToThreading(self, self.checker, [], 1)
         #t = Thread(target=self.checker)
         #t.daemon = True
         #t.start()

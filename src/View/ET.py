@@ -10,6 +10,7 @@ class ET:
         self.__master = master
         self.__mainBoss = mainBoss
 
+        self.dead       = False
         self.stopThread = False
         self.__loader.stopThreads.append(self)
 
@@ -50,7 +51,7 @@ class ET:
         forest.daemon = True
         forest.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.drawET, [])
+        self.__loader.threadLooper.addToThreading(self, self.drawET, [], 1)
 
         #draw = Thread(target=self.drawET)
         #draw.daemon = True
@@ -106,6 +107,10 @@ class ET:
         self.centerET()
 
     def drawET(self):
+        if self.__master.getFrame().winfo_exists() == False:
+           self.stopThread = True
+           self.dead       = True
+
         try:
             moving = self.getDifference()
             if moving == False and self.__first == False:

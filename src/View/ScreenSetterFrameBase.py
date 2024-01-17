@@ -92,7 +92,7 @@ class ScreenSetterFrameBase:
         self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
         self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
         #t = Thread(target=self.loop)
         #t.daemon = True
         #t.start()

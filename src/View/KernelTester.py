@@ -127,7 +127,7 @@ class KernelTester:
         self.__testButton.pack_propagate(False)
         self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
 
-        self.__loader.threadLooper(self, self.checkIfAllValid, [])
+        self.__loader.threadLooper(self, self.checkIfAllValid, [], 0)
         #from threading import Thread
         #e = Thread(target=self.checkIfAllValid)
         #e.daemon = True

@@ -109,7 +109,7 @@ class EditorBigFrame:
         self.__focusOutItems = []
         self.__theNumOfLine  = 0
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 0)
 
         #t = Thread(target=self.loop)
         #t.daemon = True

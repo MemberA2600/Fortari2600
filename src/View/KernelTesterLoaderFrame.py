@@ -81,7 +81,7 @@ class KernelTesterLoaderFrame:
 
         self.valid = False
 
-        self.__loader.threadLooper.addToThreading(self, self.checkIfExists, [])
+        self.__loader.threadLooper.addToThreading(self, self.checkIfExists, [], 0)
 
         #from threading import Thread
         #e = Thread(target=self.checkIfExists)

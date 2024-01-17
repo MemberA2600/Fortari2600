@@ -430,7 +430,7 @@ class PictureToCode:
            #t = Thread(target=self.__stateButtons)
            #t.daemon = True
            #t.start()
-           self.__loader.threadLooper.addToThreading(self, self.__stateButtons, [])
+           self.__loader.threadLooper.addToThreading(self, self.__stateButtons, [], 1)
 
     def mirrorPFGoGo(self):
 

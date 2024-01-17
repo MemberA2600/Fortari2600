@@ -467,7 +467,7 @@ class JukeBox:
         self.__setButtonsAndErros()
         self.__error = True
 
-        self.__loader.threadLooper.addToThreading(self, self.jukeAnimation, [])
+        self.__loader.threadLooper.addToThreading(self, self.jukeAnimation, [], 1)
 
         #t = Thread(target=self.jukeAnimation)
         #t.daemon = True

@@ -265,7 +265,7 @@ class ConstantWindow:
         try:
            self.pageNumChangedThing(None)
 
-           self.__loader.threadLooper.addToThreading(self, self.loop, [])
+           self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
            #t = Thread(target=self.loop)
            #t.daemon = True
            #t.start()

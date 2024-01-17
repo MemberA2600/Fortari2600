@@ -142,7 +142,7 @@ class KernelChanger:
             if selectables[number] == self.__static.get():
                 self.__listBox.select_set(number)
 
-        self.__loader.threadLooper.addToThreading(self, self.enableDisable, [])
+        self.__loader.threadLooper.addToThreading(self, self.enableDisable, [], 1)
         #e = Thread(target=self.enableDisable)
         #e.daemon = True
         #e.start()

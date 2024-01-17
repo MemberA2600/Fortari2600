@@ -253,7 +253,7 @@ class Indicator:
 
         self.__textLabel.pack(padx=0, pady=0, fill=X, side=BOTTOM)
 
-        self.__loader.threadLooper.addToThreading(self, self.__loopThem, [])
+        self.__loader.threadLooper.addToThreading(self, self.__loopThem, [], 1)
 
         #t = Thread(target=self.__loopThem)
         #t.daemon = True

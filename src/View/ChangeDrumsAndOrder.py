@@ -435,7 +435,7 @@ class ChangeDrumsAndOrder:
         self.__exitButton.pack_propagate(False)
         self.__exitButton.pack(side=BOTTOM, anchor = S, fill=X)
 
-        self.__loader.threadLooper.addToThreading(self, self.__checker, [])
+        self.__loader.threadLooper.addToThreading(self, self.__checker, [], 2)
         #t = Thread(target = self.__checker)
         #t.daemon = True
         #t.start()

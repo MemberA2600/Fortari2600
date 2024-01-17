@@ -84,7 +84,7 @@ class MainWindow:
         self.editor.focus()
         self.__loader.tk.iconify()
 
-        self.__loader.threadLooper.addToThreading(self, self.__loopColorThread, [])
+        self.__loader.threadLooper.addToThreading(self, self.__loopColorThread, [], -1)
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()
 

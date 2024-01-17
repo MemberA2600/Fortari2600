@@ -47,7 +47,7 @@ class SubMenuOkCancelButtons:
 
         if enableDisableVar != None:
             self.__var = enableDisableVar
-            self.__loader.threadLooper.addToThreading(self, self.__changeOK, [])
+            self.__loader.threadLooper.addToThreading(self, self.__changeOK, [], 0)
 
     def __sendTrue(self):
         self.__function(True)

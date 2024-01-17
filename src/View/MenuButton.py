@@ -42,14 +42,14 @@ class MenuButton:
         self.__placer()
 
         if (self.__bindedVar != None):
-            self.__loader.threadLooper.addToThreading(self, self.checkBinded, [])
+            self.__loader.threadLooper.addToThreading(self, self.checkBinded, [], 0)
 
             #binder = Thread(target=self.checkBinded)
             #binder.daemon = True
             #binder.start()
 
         if (self.__bindedOut !=None):
-            self.__loader.threadLooper.addToThreading(self, self.__bindedOut, [self])
+            self.__loader.threadLooper.addToThreading(self, self.__bindedOut, [self], 0)
 
             #bind2 = Thread(target=self.__bindedOut, args=[self])
             #bind2.daemon = True

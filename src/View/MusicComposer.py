@@ -361,7 +361,7 @@ class MusicComposer:
         t5.daemon = True
         t5.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.checker, [])
+        self.__loader.threadLooper.addToThreading(self, self.checker, [], 1)
         #t99 = Thread(target=self.checker)
         #t99.daemon = True
         #t99.start()

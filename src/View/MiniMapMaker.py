@@ -617,9 +617,10 @@ class MiniMapMaker:
         self.__loadPlayField.pack_propagate(False)
         self.__loadPlayField.pack(side=LEFT, anchor=E, fill=X)
 
-        t2 = Thread(target=self.__loop)
-        t2.daemon = True
-        t2.start()
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
+        #t2 = Thread(target=self.__loop)
+        #t2.daemon = True
+        #t2.start()
         self.__finished2 = True
 
     def __loadPF(self):

@@ -33,7 +33,7 @@ class SpaceShip:
         self.__spaceLabel.pack(fill=BOTH)
         self.__item1 = None
 
-        self.__loader.threadLooper.addToThreading(self, self.__drawCanvas, [])
+        self.__loader.threadLooper.addToThreading(self, self.__drawCanvas, [], 0)
 
         #t = Thread(target=self.__drawCanvas)
         #t.daemon = True

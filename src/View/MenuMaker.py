@@ -189,7 +189,7 @@ class MenuMaker:
         self.createBottomElements()
         self.createBottomButtons()
 
-        self.__loader.threadLooper.addToThreading(self, self.__loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
         #loop = Thread(target=self.__loop)
         #loop.daemon = True
         #loop.start()

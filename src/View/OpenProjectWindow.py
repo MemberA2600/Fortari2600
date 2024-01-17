@@ -76,7 +76,7 @@ class OpenProjectWindow:
         try:
             self.__getAndSelect()
 
-            self.__loader.threadLooper.addToThreading(self, self.checkIfListBoxSelectChanged, [])
+            self.__loader.threadLooper.addToThreading(self, self.checkIfListBoxSelectChanged, [], 1)
             #self.__chg = Thread(target=self.checkIfListBoxSelectChanged)
             #self.__chg.daemon = True
             #self.__chg.start()
@@ -85,7 +85,7 @@ class OpenProjectWindow:
 
         self.__okCancel = SubMenuOkCancelButtons(self, self.__frame2, self.__loader, self.__normalFont, self.func, self.getOK)
 
-        self.__loader.threadLooper.addToThreading(self, self.checkIfOK, [])
+        self.__loader.threadLooper.addToThreading(self, self.checkIfOK, [], 1)
 
         from ET import ET
         self.__et = ET(self, self.__frame2, self.__loader, self.__topLevel)

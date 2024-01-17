@@ -10,7 +10,6 @@ class FontManager:
 
         self.__chars = {}
         lastChar = None
-        self.diesWithMainOnly = True
 
         f = open("config/letters.txt")
         txt = f.readlines()
@@ -29,8 +28,6 @@ class FontManager:
         self.__normalSize = 22
         self.__sizing()
 
-        self.__loader.threadLooper.addToThreading(self, self.autoSizes, [])
-
         #sizes= Thread(target=self.autoSizes)
         #sizes.start()
 
@@ -39,14 +36,6 @@ class FontManager:
            return(self.__chars[char.upper()])
         else:
            return(None)
-
-    def autoSizes(self):
-        if (self.__lastScaleX==self.__loader.mainWindow.getScales()[0] and self.__lastScaleX==self.__loader.mainWindow.getScales()[1]):
-            pass
-        else:
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[0]
-            self.__lastScaleX = self.__loader.mainWindow.getScales()[1]
-            self.__sizing()
 
     def __sizing(self):
         baseW = 1600

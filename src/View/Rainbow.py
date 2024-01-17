@@ -21,7 +21,7 @@ class Rainbow:
         self.dead = False
         self.__num = 0
 
-        loader.threadLooper.addToThreading(self, self.loopThings, [])
+        loader.threadLooper.addToThreading(self, self.loopThings, [], 1)
         #from threading import Thread
 
         #t = Thread(target=self.loopThings)
@@ -34,7 +34,5 @@ class Rainbow:
                 self.__num += 1
                 if self.__num == 39:
                     self.__num = 0
-
-                sleep(0.05)
             except:
-                pass
+                self.dead = True

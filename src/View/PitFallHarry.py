@@ -16,6 +16,7 @@ class PitFallHarry:
 
         self.__bg = "gold"
         self.__spriteNum = 0
+        self.dead = False
 
         self.__mainFrame = master.getTopLevel()
         self.__master    = master
@@ -31,7 +32,7 @@ class PitFallHarry:
         t.daemon = True
         t.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.__move, [])
+        self.__loader.threadLooper.addToThreading(self, self.__move, [], 1)
         #m = Thread(target=self.__move)
         #m.daemon = True
         #m.start()
@@ -133,6 +134,10 @@ class PitFallHarry:
             pass
 
     def __move(self):
+        if self.__mainFrame.winfo_exists() == False:
+           self.stopThread = True
+           self.dead       = True
+
         if self.__finished:
             self.__getDifference()
             if abs(self.__difference)<15:

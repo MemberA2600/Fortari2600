@@ -241,7 +241,7 @@ class TopBottomEditor:
         t3.daemon = True
         t3.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
         #loop = Thread(target=self.loop)
         #loop.daemon = True

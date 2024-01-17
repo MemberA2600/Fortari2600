@@ -883,7 +883,7 @@ class MemoryManagerWindow:
         )
         self.changeSlot('global')
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
         #from threading import Thread
         #t = Thread(target=self.loop)
@@ -1317,10 +1317,6 @@ class MemoryManagerWindow:
         return(None)
 
     def loop(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead == False and self.dead == False:
-            #self.__colorFiller.config(bg = self.__loader.mainWindow.getLoopColor())
-
             try:
                 if len(self.__variableList) > 0:
                     self.__insertVarButton.config(state = NORMAL)
@@ -1382,8 +1378,6 @@ class MemoryManagerWindow:
                         self.__arrMove1Button.config(state = DISABLED)
                     except:
                         pass
-
-            sleep(0.05)
 
     def getNameAndChange(self, event):
         if type(event) == str:

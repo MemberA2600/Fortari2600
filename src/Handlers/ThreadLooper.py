@@ -10,20 +10,23 @@ class ThreadLooper:
         self.__listOfThreads = []
         self.__running      = False
 
-        self.__base = 0.01
+        self.__base = 0.001
         self.__wait = self.__base
         self.__mainInited = False
+        self.__maxLevel = -1
 
         t = Thread(target=self.__loop)
         t.daemon = True
         t.start()
 
-    def addToThreading(self, object, function, args):
+    def addToThreading(self, object, function, args, level):
         for item in self.__listOfThreads:
             if item[0] == object and item[1] == function and item[2] == args:
                return
 
-        self.__listOfThreads.append([object, function, args])
+        if level > self.__maxLevel: self.__maxLevel = level
+
+        self.__listOfThreads.append([object, function, args, level])
 
     def __loop(self):
         number = 0
@@ -39,6 +42,11 @@ class ThreadLooper:
 
                        if len(self.__listOfThreads) > 0:
                           self.__wait = self.__base / len(self.__listOfThreads)
+
+                          if self.__listOfThreads[number][3] < self.__maxLevel and self.__listOfThreads[number][3] != -1:
+                             sleep(self.__wait)
+                             continue
+
                           stop = False
                           dead = True
 
@@ -85,10 +93,29 @@ class ThreadLooper:
                           except:
                               pass
 
+                          #print("does:", self.__listOfThreads[number][0], self.__listOfThreads[number][1])
+                          print(self.__maxLevel)
+
                           if stop or dead:
                              #print(self.__listOfThreads[number][0])
+                             currLevel = self.__listOfThreads[number][3]
+                             #print("delete:", self.__listOfThreads[number][0], self.__listOfThreads[number][1])
                              self.__listOfThreads.pop(number)
+
+                             found    = False
+                             maxLevel = -1
+                             for itemNum in range(0, len(self.__listOfThreads)):
+                                 if self.__listOfThreads[itemNum][3] > maxLevel: maxLevel = self.__listOfThreads[itemNum][3]
+                                 if self.__listOfThreads[itemNum][3] == currLevel:
+                                    found = True
+                                    #print("found:", self.__listOfThreads[itemNum][0], self.__listOfThreads[itemNum][1])
+                                    break
+
+                             if found == False: self.__maxLevel = maxLevel
+
                              if number > 0: number -= 1
+                             sleep(self.__wait)
+                             continue
                           else:
                              if self.__loader.config.getValueByKey("runThreads") == "True":
                                  t = Thread(target=self.__listOfThreads[number][1], args=self.__listOfThreads[number][2])

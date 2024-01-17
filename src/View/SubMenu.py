@@ -41,7 +41,7 @@ class SubMenu:
         from threading import Thread
         if checker!=None:
             self.__checker = checker
-            self.__loader.threadLooper.addToThreading(self, self.__checker, [])
+            self.__loader.threadLooper.addToThreading(self, self.__checker, [], 1)
             
             #check = Thread(target=self.__checker)
             #check.daemon = True
@@ -98,7 +98,11 @@ class SubMenu:
     def __killIfKilled(self):
         if self.__topLevel.winfo_exists() == False and self.__name in self.__loader.subMenuDict:
               del self.__loader.subMenuDict[self.__name]
-
+              self.stopThread = True
+              if self.__topLevel in self.__loader.topLevels:
+                 self.__loader.topLevels.remove(self.__topLevel)
+              if self in self.__loader.stopThreads:
+                 self.__loader.stopThreads.remove(self)
 
     def killOther(self):
         num = 10

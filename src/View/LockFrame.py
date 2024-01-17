@@ -48,7 +48,7 @@ class LockFrame:
         #t.daemon = True
         #t.start()
 
-        self.__loader.threadLooper.addToThreading(self, self.locker, [])
+        self.__loader.threadLooper.addToThreading(self, self.locker, [], 0)
 
         #l = Thread(target=self.locker)
         #l.daemon = True

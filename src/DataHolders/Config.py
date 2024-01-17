@@ -11,6 +11,12 @@ class Config:
             self.__config = dataReader.readDataFile("config/configDefault.txt")
 
         self.__projects = dataReader.readDataFile("config/projectlist.txt")
+        import os
+
+        for root, folders, files in os.walk("projects/"):
+            for folder in folders:
+                self.__projects[folder] = "projects/" + folder
+
         self.__checkIfProjectExists()
 
     def __checkIfProjectExists(self):
@@ -18,8 +24,8 @@ class Config:
 
         toBeDeleted=[]
         for key in self.__projects.keys():
-            if os.path.exists(self.__projects[key]) !=True:
-                toBeDeleted.append(key)
+            if os.path.exists(self.__projects[key]) != True:
+               toBeDeleted.append(key)
 
         for key in toBeDeleted:
             self.__projects.pop(key)

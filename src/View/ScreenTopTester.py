@@ -37,7 +37,7 @@ class ScreenTopTester:
 
         self.__sizes = [self.__screenSize[0] // 4, self.__screenSize[1] // 3.75]
 
-        self.__loader.threadLooping(self, self.decrementCounter, [])
+        self.__loader.threadLooping(self, self.decrementCounter, [], 2)
         #c = Thread(target = self.decrementCounter)
         #c.daemon = True
         #c.start()

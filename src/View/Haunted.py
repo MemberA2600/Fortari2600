@@ -61,7 +61,7 @@ class Haunted:
             (False, True, False, True)   : 8
         }
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [])
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
         #from threading import Thread
         #t = Thread(target=self.loop)
         #t.daemon = True

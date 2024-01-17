@@ -35,7 +35,7 @@ class AtariLogo:
 
         self.__setCurrentImage(0)
 
-        self.__loader.threadLooper.addToThreading(self, self.nextFrame, [])
+        self.__loader.threadLooper.addToThreading(self, self.nextFrame, [], 0)
 
     def __setCurrentImage(self, num):
         try:
