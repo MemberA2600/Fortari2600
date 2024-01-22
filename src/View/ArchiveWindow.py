@@ -251,7 +251,6 @@ class ArchiveWindow:
         self.__finished = True
 
     def getNumAndSize(self):
-        import os
         num = 0
         size = 0
 
@@ -294,8 +293,6 @@ class ArchiveWindow:
 
 
     def fillListBox(self):
-        import os
-
         self.__listBox.select_clear(0, END)
         self.__listBox.delete(0, END)
         self.__fileNames = []

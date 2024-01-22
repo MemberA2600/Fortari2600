@@ -126,9 +126,6 @@ class MidiConverter:
 
         self.songName = re.sub(r'\s+', " ", self.songName)
 
-        #import time as TIME
-        #start_time = TIME.time()
-
         if cutOut == None:
             cutOut = []
 
@@ -288,7 +285,6 @@ class MidiConverter:
 
         from threading import Thread
 
-
         self.__threadNum = 0
         for channel in newSorter:
             getChannel = Thread(target=self.__convertChannelData, args=[channel])
@@ -315,10 +311,7 @@ class MidiConverter:
 
         self.result = deepcopy(self.__tempResult)
 
-
-
         #print("--- %s seconds ---" % (TIME.time() - start_time))
-
 
     def __convertChannelData(self, c):
         self.__threadNum+=1

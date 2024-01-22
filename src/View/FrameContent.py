@@ -1,5 +1,4 @@
 from tkinter import Frame
-from threading import Thread
 
 class FrameContent:
 

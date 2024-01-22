@@ -1,6 +1,7 @@
 from PIL import ImageTk, Image as IMAGE
 from threading import Thread
 from tkinter import *
+from time import sleep
 
 class ET:
 
@@ -45,8 +46,6 @@ class ET:
 
         self.__setBuffer()
 
-        from threading import Thread
-
         forest = Thread(target=self.__forestD)
         forest.daemon = True
         forest.start()
@@ -58,7 +57,6 @@ class ET:
         #draw.start()
 
     def __forestD(self):
-        from time import sleep
 
         while self.__forestFrame.winfo_width()<2 or self.__forestCanvas.winfo_width() < 2:
            sleep(0.0001)
@@ -82,7 +80,6 @@ class ET:
         t.start()
 
     def __setBufferThread(self):
-        from time import sleep
         self.__imageBufferLeft = []
         self.__imageBufferRight = []
 

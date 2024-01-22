@@ -1,6 +1,3 @@
-from tkinter import *
-from threading import Thread
-from PIL import Image, ImageTk
 from SubMenu import SubMenu
 
 class LockManagerWindow:

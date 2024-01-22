@@ -1,10 +1,6 @@
 from tkinter import *
-from SubMenu import SubMenu
-from threading import Thread
 from copy import deepcopy
-from time import sleep
-import re
-
+from HexEntry import HexEntry
 
 class HalfBarWithText:
 
@@ -226,7 +222,6 @@ class HalfBarWithText:
         self.__constButton.pack_propagate(False)
         self.__constButton.pack(fill=X, side=TOP, anchor=N)
 
-        from HexEntry import HexEntry
         if self.isItHex(self.__data[5]):
             self.__color = [self.__data[5]]
         else:
@@ -381,7 +376,6 @@ class HalfBarWithText:
         self.__constButton2.pack_propagate(False)
         self.__constButton2.pack(fill=X, side=TOP, anchor=N)
 
-        from HexEntry import HexEntry
         if self.isItHex(self.__data[7]):
             self.__textColor = [self.__data[7]]
         else:

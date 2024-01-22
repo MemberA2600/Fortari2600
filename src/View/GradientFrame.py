@@ -1,8 +1,6 @@
 from tkinter import *
 from threading import Thread
-from copy import deepcopy
 from time import sleep
-import re
 
 class GradientFrame:
 
@@ -213,15 +211,11 @@ class GradientFrame:
         self.__changeData(self.__data)
 
     def changeState(self, state):
-        from threading import Thread
-
         t           = Thread(target=self.changeThread, args=[state])
         t.daemon    = True
         t.start()
 
     def changeThread(self, state):
-        from time import sleep
-
         while True:
             try:
                 for item in self.__buttons:

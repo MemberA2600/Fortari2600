@@ -1,4 +1,5 @@
 class MainWindowHandler:
+
     def __init__(self, loader):
         self.__loader = loader
         self.__loader.mainWindowHander = self

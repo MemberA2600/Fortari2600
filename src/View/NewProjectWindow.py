@@ -1,5 +1,4 @@
 from SubMenu import SubMenu
-from tkinter import *
 import os
 
 class NewProjectWindow:
@@ -61,7 +60,6 @@ class NewProjectWindow:
 
         self.__folderEntryWithButton.addButton("open", self.openFolder)
 
-        import os
         self.__folderEntryWithButton.setText(str(os.getcwd()+"/projects/").replace("\\", "/"))
 
         self.__projectLabel = SubMenuLabel(self.__topLevelWindow,
@@ -94,7 +92,6 @@ class NewProjectWindow:
            if self in self.__loader.stopThreads:
               self.__loader.topLevels.stopThreads(self)
 
-        import os
         try:
                 path = str(self.__folderEntryWithButton.getText()+os.sep+self.__projectEntryWithButton.getText())
                 if os.path.exists(self.__folderEntryWithButton.getText()) == True \

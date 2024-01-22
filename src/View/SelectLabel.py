@@ -1,4 +1,3 @@
-from threading import Thread
 from tkinter import *
 
 class SelectLabel:
@@ -21,9 +20,6 @@ class SelectLabel:
         self.__label.config(bg=self.__loader.colorPalettes.getColor("window"))
         self.__label.config(fg=self.__loader.colorPalettes.getColor("font"))
 
-        #align = Thread(target=self.dinamicallyAlign)
-        #align.daemon = True
-        #align.start()
         self.__setFont()
 
         self.__label.pack(side=TOP, anchor=W)

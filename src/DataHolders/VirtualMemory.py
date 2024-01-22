@@ -1,7 +1,6 @@
 from DataItem import DataItem
 import os
 from MemoryItem import MemoryItem
-from tkinter import END
 from copy import deepcopy
 from ObjectMaster import ObjectMaster
 

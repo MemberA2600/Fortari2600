@@ -1,10 +1,8 @@
 from SubMenu import SubMenu
-from SubMenuLabel import SubMenuLabel
-from SubMenuFrame import SubMenuFrame
 from tkinter import *
-import re
-from time import sleep
 from threading import Thread
+import os
+from Compiler import Compiler
 
 class SpriteEditor:
 
@@ -442,9 +440,6 @@ class SpriteEditor:
         t.start()
 
     def __testThread(self):
-
-        from Compiler import Compiler
-
         if self.__tileSetMode.get() == 1 :
             c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "tileSetTest",
                          [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",
@@ -477,7 +472,6 @@ class SpriteEditor:
         self.fillListBox(self.__bgBox.getListBox(), "backgrounds/", self.__listItems2)
 
     def fillListBox(self, listbox, folder, listitems):
-        import os
         listbox.selection_clear(0, END)
         listbox.delete(0, END)
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + folder):
@@ -1125,8 +1119,6 @@ class SpriteEditor:
                                       )
 
     def __openSprite(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -1204,8 +1196,6 @@ class SpriteEditor:
                 self.__topLevelWindow.focus()
 
     def __saveSprite(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -1234,7 +1224,6 @@ class SpriteEditor:
             self.changed=False
 
             fileName = self.__loader.mainWindow.projectPath + "sprites/"+self.__spriteLoader.getValue()+".asm"
-            from Compiler import Compiler
 
             spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getSpriteASM",
                          [self.__table, self.__colorTable, self.__height, self.__numOfFrames, "NTSC",

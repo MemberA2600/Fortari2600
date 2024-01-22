@@ -1,8 +1,7 @@
 # Based on https://www.biglist.com/lists/stella/archives/200311/msg00156.html
 # Written by Adam Wozniak (2003)
 
-from threading import Thread
-from time import sleep
+import numpy as np
 
 class TiaState:
     def __init__(self):
@@ -143,8 +142,6 @@ class TiaTone:
         return wav_obj
 
     def __saveBuffer(self):
-        import numpy as np
-
         data = []
         for d in self.buffer:
             data.append(np.uint8(d))
@@ -153,7 +150,6 @@ class TiaTone:
 
     def __writeDataToWav(self, data):
         from scipy.io.wavfile import write
-        import numpy as np
 
         data = np.array(data)
         try:
@@ -166,7 +162,3 @@ class TiaTone:
     def setAndPlay(self, AUDV, AUDC, AUDF, tv, duration):
         self.setTone(AUDV, AUDC, AUDF, tv)
         self.play(duration)
-
-#if __name__ == "__main__":
-#    T = TiaTone()
-#    T.setAndPlay(8,3,4,"NTSC",4)

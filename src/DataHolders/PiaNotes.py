@@ -1,5 +1,3 @@
-from TiaTone import TiaTone
-
 class PiaNotes:
     def __init__(self, loader):
         self.__loader = loader

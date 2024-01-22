@@ -1,4 +1,7 @@
 import re
+from copy import deepcopy
+from Assembler import Assembler
+import os
 
 class Block:
 
@@ -279,7 +282,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def testScreenElements(self):
@@ -339,13 +341,9 @@ class Compiler:
                 self.__mainCode = self.__mainCode.replace(keys[num], labelsToChange[origKey][num])
 
         self.doSave("temp/")
-
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def __removeDoublesFromDict(self, userData):
-        from copy import deepcopy
-
         bigData         = {}
         otherWayAround  = {}
         keysToBeChanged = {}
@@ -2549,8 +2547,6 @@ class Compiler:
 
 
     def generate_EmptyLines(self, name, data):
-        from copy import deepcopy
-
         text = "\n" + name + "\n\tLDA\t"
 
         varType = None
@@ -2816,8 +2812,6 @@ class Compiler:
 
 
     def testMenu(self):
-        from copy import deepcopy
-
         self.__lineData     = deepcopy(self.__data[0])
         self.__colorData    = deepcopy(self.__data[1])
         self.__lineNum      = self.__data[2]
@@ -2858,13 +2852,9 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        from Assembler import Assembler
-
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def menuASM(self):
-        from copy import deepcopy
-
         self.__lineData     = deepcopy(self.__data[0])
         self.__colorData    = deepcopy(self.__data[1])
         self.__lineNum      = self.__data[2]
@@ -2891,8 +2881,6 @@ class Compiler:
         self.__lineData = self.__lineData.split("\n")
         self.__lineData = self.__lineData[:(self.__segments[-1][1]+1)*8]
         for startNum in range(0, len(self.__lineData), 8):
-            from copy import deepcopy
-
             temp = deepcopy(self.__lineData[startNum:startNum+8])
             for fuckNum in range(0,8):
                 self.__lineData[startNum+fuckNum] = temp[7-fuckNum]
@@ -2950,8 +2938,6 @@ class Compiler:
 
 
     def testLandScape(self):
-        from copy import deepcopy
-
         self.__lineData = deepcopy(self.__data[0])
         self.__width = int(self.__data[1])
         self.__tv         = self.__data[2]
@@ -3013,8 +2999,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        from Assembler import Assembler
-
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
 
@@ -3040,8 +3024,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
         self.changePointerToZero(self.__data[1])
         self.doSave("temp/")
-        from Assembler import Assembler
-
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
 
@@ -3068,8 +3050,6 @@ class Compiler:
 
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
         self.doSave("temp/")
-        from Assembler import Assembler
-
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     """
@@ -3079,8 +3059,6 @@ class Compiler:
 
     """
     def generateMusicROM(self, mode):
-        import re
-
         self.__picturePath = self.__data[0]
 
         # valid: mono, stereo, double
@@ -3295,8 +3273,6 @@ class Compiler:
                 else:
                     delete = False
 
-                from Assembler import Assembler
-
                 assembler = Assembler(self.__loader, self.__pathToSave, True, "NTSC", delete)
             else:
                 self.__loader.fileDialogs.displayError("overflow", "overflowMessage", None, "Bank0: "+str(bytes[0])+"; Bank1: "+str(bytes[1]))
@@ -3350,8 +3326,6 @@ class Compiler:
         return(__music)
 
     def __getLargestDividerChannel(self, channelNum, tiaData, tv):
-        from copy import deepcopy
-
         largest = 1
         #dividers = [2, 3, 4, 5, 7, 9, 11, 13, 16, 17, 19, 23, 25]
         dividers = [2, 4, 8, 16, 32, 64, 128]
@@ -3382,7 +3356,6 @@ class Compiler:
         return(largest)
 
     def generateSongBytes(self, tiaData, tv):
-        from TiaNote import TiaNote
         Channels = ["", ""]
         tempDur = 0
         bytes = [0,0]
@@ -3667,8 +3640,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def getPFASM(self):
@@ -3717,8 +3688,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
     def getSpriteASM(self):
@@ -3810,8 +3779,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
     def __contructChanger(self, variables, constants):
@@ -4054,7 +4021,6 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        from Assembler import Assembler
         assembler = Assembler(self.__loader, "temp/", True, self.__tv, False)
 
 
@@ -4074,7 +4040,6 @@ class Compiler:
             tempLines.insert(0, text)
 
             if counter == self.__height-1:
-                from copy import deepcopy
 
                 tempLines[0]+="\t; ("+str(spriteNum)+")"
                 spriteNum += 1
@@ -4104,7 +4069,6 @@ class Compiler:
 
 
     def setPFandBGfromFiles(self, pfName, bgName, bgColor):
-        from copy import deepcopy
 
         self.__pixelData = []
         self.__colorData = []
@@ -4151,8 +4115,6 @@ class Compiler:
 
 
     def doSave(self, projectPath):
-        import os
-
         if projectPath == "temp/":
             try:
                 os.mkdir(projectPath+"bin/")

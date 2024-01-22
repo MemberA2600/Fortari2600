@@ -1,4 +1,8 @@
 from DataLine import DataLine
+from threading import Thread
+import os
+import re
+from copy import deepcopy
 
 class Assembler():
 
@@ -21,19 +25,14 @@ class Assembler():
             if __loader.config.getOSbits() == "64bit":
                 path.replace("32", "64")
 
-            from threading import Thread
             s = Thread(target=self.runStella, args=[path])
             s.daemon = True
             s.start()
 
         if deleteSrc == True:
-            import os
             os.remove(self.projectPath + "source.asm")
 
     def runStella(self, path):
-        import os
-        import subprocess
-
         #self.__tv = "pal"
         command = os.getcwd() + os.sep+path + ' "' +  os.getcwd() + os.sep + self.executeName +  '"'
         #print(command)
@@ -41,7 +40,6 @@ class Assembler():
         os.popen(command)
 
     def normalize(self, text):
-        import re
         new = []
 
         text = text.split("\n")
@@ -137,8 +135,6 @@ class Assembler():
         return(copied)
 
     def getSectionNames(self, code):
-        import re
-
         sections = {}
 
         for line in code:
@@ -160,9 +156,6 @@ class Assembler():
         return code
 
     def createSquence(self, code, opcodes, variables, registers):
-        import re
-        from copy import deepcopy
-
         code = code.split("\n")
 
         branchers = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
@@ -446,8 +439,6 @@ class Assembler():
         return(freebytes, codeLines, sections)
 
     def checkSARA(self, code):
-        import re
-
         if ("LDA" not in code.upper()) and ("STA" not in code.upper()):
             return(code)
         elif "LDA" in code.upper():
@@ -475,8 +466,6 @@ class Assembler():
 
 
     def checkForTooDistant(self, code, branchers):
-        from copy import deepcopy
-
         sections = {}
 
         num = 0
@@ -575,8 +564,6 @@ class Assembler():
             line.bytes.append(bytes([int(second, 10)]))
 
     def doTheMath(self, raw):
-        import re
-
         if ("+" not in raw) and ("-" not in raw):
             return(raw)
 
@@ -613,9 +600,6 @@ class Assembler():
 
 
     def lowHighNibble(self, raw):
-        import re
-
-
         if ("<" not in raw) and (">" not in raw):
             return(raw)
 
@@ -652,8 +636,6 @@ class Assembler():
         return ("#$"+numbers)
 
     def secondByteToNumeric(self, raw, variables, registers, sections):
-        import re
-
         tempraw = re.findall(r'[a-zA-Z_0-9\-]+[a-zA-Z_0-9]', raw)
         #print(raw, tempraw)
 
@@ -683,7 +665,6 @@ class Assembler():
 
 
     def getNextName(self):
-        import os
         base = self.projectPath.split("/")[-2]
         counter = 1
 
@@ -734,8 +715,6 @@ class Assembler():
         return variables
 
     def compile(self, path):
-        import re
-
         registers, opcodes =  self.__loader.io.loadRegOpCodes()
         file = open(path, "r")
         source = file.read()
@@ -752,7 +731,6 @@ class Assembler():
 
         name = self.getNextName()
 
-        import os
         try:
            os.makedirs(self.projectPath + "/asm_log")
            os.makedirs(self.projectPath + "/bin")
@@ -793,8 +771,6 @@ class Assembler():
 
             toWrite.append(fos)
 
-
-        import os
 
         file.write(os.linesep.join(toWrite))
         file.close()

@@ -1,3 +1,6 @@
+import subprocess
+import os
+
 class Executor:
 
     def __init__(self, loader):
@@ -5,50 +8,26 @@ class Executor:
         self.proc = None
 
     def killByForce(self, program):
-        import subprocess
         self.proc = subprocess.call('taskkill /IM /F "'+program+'.exe"', creationflags=0x08000000)
 
     def execute(self, program, args, hide):
-        import subprocess
-        from os import getcwd
-        programPath = getcwd()+"/applications/"+program.lower()+"/"+program+".exe"
+        programPath = os.getcwd()+"/applications/"+program.lower()+"/"+program+".exe"
 
         if hide == True:
             self.proc = subprocess.call('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
-            #subprocess.Popen('"'  + programPath + '" ' + " ".join(args), creationflags=0x08000000)
         else:
-            from subprocess import check_output, check_call
-            print(check_output('"'  + programPath + '" ' + " ".join(args)))
+            print(subprocess.check_output('"'  + programPath + '" ' + " ".join(args)))
 
     def __executeFortran(self, module, program, hide):
-        import subprocess
-        import sys
-        from os.path import abspath, exists
 
         programPath = "fortranApps/"+module+"/"+program+".exe"
-        path = abspath(programPath)
+        path = os.path.abspath(programPath)
 
         if hide == True:
             subprocess.call('"' + programPath+'"')
         else:
-            from subprocess import check_output, check_call
-            print(check_output('"' + programPath+'" '))
+            print(subprocess.check_output('"' + programPath+'" '))
 
-        #subprocess.check_call('"' + path+'"', stdout=sys.stdout, stderr=subprocess.STDOUT)
-
-
-        """
-        from os import getcwd
-        from os.path import abspath, exists
-        import ctypes
-
-        path = abspath("fortranApps/"+module+"/"+program+".dll")
-        print(path)
-        print(exists(path))
-        print(path)
-        fortran = ctypes.CDLL(path)
-        fortran.run()
-        """
 
     def __addSourceToFortran(self, module, input):
         if type(input) == str:
@@ -83,7 +62,6 @@ class Executor:
             file.close()
 
     def __getFortranResults(self, module, program, deleteOutPut):
-        import os
         if os.path.exists("temp/Output.txt"):
             file = open("temp/Output.txt", "r")
             t = file.read()

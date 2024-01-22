@@ -1,9 +1,9 @@
+import os
+
 
 class Config:
 
     def __init__(self, dataReader):
-        import os
-
         self.__dataReader = dataReader
         try:
             self.__config = dataReader.readDataFile("config/config.txt")
@@ -11,7 +11,6 @@ class Config:
             self.__config = dataReader.readDataFile("config/configDefault.txt")
 
         self.__projects = dataReader.readDataFile("config/projectlist.txt")
-        import os
 
         for root, folders, files in os.walk("projects/"):
             for folder in folders:
@@ -20,8 +19,6 @@ class Config:
         self.__checkIfProjectExists()
 
     def __checkIfProjectExists(self):
-        import os
-
         toBeDeleted=[]
         for key in self.__projects.keys():
             if os.path.exists(self.__projects[key]) != True:
@@ -46,7 +43,6 @@ class Config:
         self.__config[key] = value
 
     def setAutoSetter(self, autoSetter, fileDialogs):
-        from AutoSetter import AutoSetter
         self.__autoSetter = autoSetter
         if self.__config["autoSetter"] == "True":
             self.__autoSetter.run()
@@ -58,7 +54,6 @@ class Config:
         return(self.__projects[key])
 
     def addProjectPath(self, path):
-        import os
         name = path.split("/")[-2]
         if path.startswith(os.getcwd().replace("\\", "/")):
             path = path.replace(os.getcwd().replace("\\", "/"), "")

@@ -1,9 +1,5 @@
 from SubMenu import SubMenu
-from SubMenuLabel import SubMenuLabel
-from SubMenuFrame import SubMenuFrame
 from tkinter import *
-import re
-from time import sleep
 from threading import Thread
 
 class SoundPlayerEditor:
@@ -245,10 +241,6 @@ class SoundPlayerEditor:
         self.__createRainbow()
 
         self.__loader.threadLopper(self, self.checker, [])
-        #from threading import Thread
-        #t = Thread(target=self.checker)
-        #t.daemon = True
-        #t.start()
 
     def __checkLock(self, event):
         teszt = 0
@@ -361,8 +353,6 @@ class SoundPlayerEditor:
             self.__soundPlayer.playSound("Success")
 
     def __testThread(self):
-        from threading import Thread
-
         t = Thread(target=self.__test)
         t.daemon = True
         t.start()
@@ -415,9 +405,6 @@ class SoundPlayerEditor:
         self.__opened = False
 
     def __openWavAndConvertToLO(self, path):
-        import wave
-        import audioop
-
         try:
             if path == None:
                 path = self.__fileDialogs.askForFileName("openWav", False, ["wav", "*"], self.__loader.mainWindow.projectPath)
@@ -633,7 +620,6 @@ class SoundPlayerEditor:
         return teszt
 
     def __recordThread(self):
-        from threading import Thread
 
         t = Thread(target = self.__recordSound)
         t.daemon = True

@@ -1,5 +1,4 @@
 from tkinter.filedialog import *
-from tkinter import messagebox
 from tkinter.simpledialog import *
 
 class FileDialogs:

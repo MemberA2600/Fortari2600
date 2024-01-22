@@ -1,14 +1,10 @@
 from tkinter import *
-from SubMenu import SubMenu
+import os
 
 class KernelTester:
-
     def __init__(self, loader, clicked):
 
         self.dead = False
-
-        import os
-
 
         self.__loader = loader
         self.__dictionaries = self.__loader.dictionaries
@@ -95,7 +91,6 @@ class KernelTester:
         self.__openKernelFrame = KernelTesterLoaderFrame(self.__loader, self.__topLevelWindow,
                                                          round(self.__topLevel.getTopLevelDimensions()[1]/6), self.__smallFont,
                                                          "kernelFile", round(self.__topLevel.getTopLevelDimensions()[0]), self)
-        import os
 
         self.__openKernelFrame.setValue(os.getcwd().replace("\\", "/")+"/templates/skeletons/common_main_kernel.asm")
 
@@ -128,10 +123,6 @@ class KernelTester:
         self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
 
         self.__loader.threadLooper(self, self.checkIfAllValid, [], 0)
-        #from threading import Thread
-        #e = Thread(target=self.checkIfAllValid)
-        #e.daemon = True
-        #e.start()
 
     def checkIfAllValid(self):
             try:

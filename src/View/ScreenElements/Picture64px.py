@@ -1,10 +1,6 @@
 from tkinter import *
-from SubMenu import SubMenu
-from threading import Thread
-from copy import deepcopy
-from time import sleep
-
 from ScreenSetterFrameBase import ScreenSetterFrameBase
+import os
 
 class Picture64px:
 
@@ -67,8 +63,6 @@ class Picture64px:
         folder = self.__loader.mainWindow.projectPath + "64px"
 
         self.__varList = []
-
-        import os
         for root, dirs, files in os.walk(folder):
             for file in files:
                 if file.endswith(".asm"):
@@ -640,8 +634,6 @@ class Picture64px:
             pass
 
     def getMaxHeight(self):
-        import os
-
         fileName1 = self.__loader.mainWindow.projectPath+"64px/"     +\
                     self.__varList[self.__varListBox.curselection()[0]] +\
                     ".a26"

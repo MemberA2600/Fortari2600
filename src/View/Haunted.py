@@ -62,10 +62,6 @@ class Haunted:
         }
 
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
-        #from threading import Thread
-        #t = Thread(target=self.loop)
-        #t.daemon = True
-        #t.start()
 
     def setEyePoses(self):
 

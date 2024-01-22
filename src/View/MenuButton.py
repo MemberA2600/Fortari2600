@@ -1,6 +1,4 @@
 from tkinter import Button, NORMAL, DISABLED
-from PIL import ImageTk, Image
-from threading import Thread
 
 class MenuButton:
 

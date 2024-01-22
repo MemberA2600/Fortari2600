@@ -1,7 +1,8 @@
-from PIL import Image as IMG, ImageTk
+from PIL import Image as IMG, ImageTk, ImageOps
 from copy import deepcopy
 from tkinter import *
 from SubMenu import SubMenu
+from threading import Thread
 
 class PictureToCode:
 
@@ -100,8 +101,6 @@ class PictureToCode:
         imgColorData = imageSized.load()
 
         imageClone = deepcopy(imageSized)
-
-        from PIL import ImageOps
 
         if self.__mode == "playfield":
             if self.__invert.get():
@@ -950,7 +949,6 @@ class PictureToCode:
 
 
             if testing == True:
-                from threading import Thread
                 t = Thread(target=self.compileThread, args=[asm, h])
                 t.daemon=True
                 t.start()
@@ -977,9 +975,6 @@ class PictureToCode:
 
 
     def testingEditor(self):
-        from threading import Thread
-        from copy import deepcopy
-
         self.__backUp = deepcopy(self.__dataForEditor["lines"])
 
         t = Thread(target=self.testingEditorThread)
@@ -1886,8 +1881,6 @@ class PictureToCode:
         self.__topLevelWindow.focus()
 
     def testingThread(self):
-        from threading import Thread
-
         t = Thread(target=self.testing)
         t.daemon = True
         t.start()
@@ -1972,9 +1965,6 @@ class PictureToCode:
         self.updateBlackAndWhite()
 
     def blackAndWhite(self):
-
-        from copy import deepcopy
-
         #for slave in self.__imageFrame.pack_slaves():
         #    slave.destroy()
 
@@ -2003,8 +1993,6 @@ class PictureToCode:
 
     def updateBlackAndWhite(self):
         image = IMG.open(self.answer, "r")
-        from PIL import ImageOps
-        import numpy as np
 
         if self.__mode == "playfield":
             try:
@@ -2017,7 +2005,6 @@ class PictureToCode:
                 image = ImageOps.invert(image)
 
             if self.__right.get():
-                from PIL import ImageOps
                 image = ImageOps.mirror(image)
 
         width, height = image.size

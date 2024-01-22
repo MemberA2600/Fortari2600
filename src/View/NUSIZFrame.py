@@ -1,8 +1,4 @@
 from tkinter import *
-from threading import Thread
-from copy import deepcopy
-from time import sleep
-import re
 
 class NUSIZFrame:
 

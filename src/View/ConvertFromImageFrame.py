@@ -1,6 +1,5 @@
 from tkinter import *
 
-
 class ConvertFromImageFrame:
 
     def __init__(self, loader, motherFrame, ten, font, w, func, side, anchor):

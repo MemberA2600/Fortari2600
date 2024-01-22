@@ -1,5 +1,4 @@
 from tkinter import *
-from threading import Thread
 
 class SubMenuOkCancelButtons:
 

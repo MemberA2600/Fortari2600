@@ -1,6 +1,7 @@
 from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
+from Compiler import Compiler
 
 class MiniMapMaker:
 
@@ -1063,8 +1064,6 @@ class MiniMapMaker:
         file.write(txt)
         file.close()
 
-        from Compiler import Compiler
-
         asmData        = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getMiniMapData",
                         [self.__dataMatrix, self.__matrix, self.__numOfLinesVal.get()]).convertedData
 
@@ -1085,8 +1084,6 @@ class MiniMapMaker:
         t.start()
 
     def loadThread(self):
-        from Compiler import Compiler
-
         asmData        = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getMiniMapData",
                         [self.__dataMatrix, self.__matrix, self.__numOfLinesVal.get()]).convertedData
 

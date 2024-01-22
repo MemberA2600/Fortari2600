@@ -1,6 +1,5 @@
 from tkinter import *
-from PIL import Image as IMAGE, ImageTk
-from threading import Thread
+import random
 
 class SpaceShip:
     def __init__(self, loader, frame):
@@ -44,7 +43,6 @@ class SpaceShip:
         self.__other = other
 
     def __getRandom(self, min):
-        import random
         return(random.randint(10+min, 200+min))
 
     def __drawCanvas(self):
@@ -58,7 +56,6 @@ class SpaceShip:
                         if self.__other != None:
                             self.__other.fuckYou = False
 
-                        import random
                         if self.__other!=None:
                             self.__extraDelay = random.randint(125, 200)
                         else:

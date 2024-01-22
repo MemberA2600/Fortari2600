@@ -1,5 +1,7 @@
 from tkinter import *
 from SubMenu import SubMenu
+from threading import Thread
+from Compiler import Compiler
 
 class BigSpriteMaker:
 
@@ -98,8 +100,6 @@ class BigSpriteMaker:
                                    )
         self.__controlFrame.pack_propagate(False)
         self.__controlFrame.pack(side=LEFT, anchor=E, fill=BOTH)
-
-        from threading import Thread
 
         one = Thread(target=self.__oneThread)
         one.daemon = True
@@ -605,16 +605,12 @@ class BigSpriteMaker:
 
     def __loadTest(self):
         if self.__finished == True and self.__finished2 == True:
-            from threading import Thread
-
             test = Thread(target=self.__testThread)
             test.daemon = True
             test.start()
 
 
     def __testThread(self):
-        from Compiler import Compiler
-
         Compiler(self.__loader, self.__loader.virtualMemory.kernel, "testBigSprite",
                               [self.__dataLines, self.__lineHeight, self.__h, self.__activeMode,
                                self.__numOfFrames, "NTSC", "Test_BigSprite", self.__testColorSetter.getValue(),
@@ -816,8 +812,6 @@ class BigSpriteMaker:
         file = open(name1, "w")
         file.write(txt)
         file.close()
-
-        from Compiler import Compiler
 
         spriteData = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getBigSpriteASM",
                               [self.__dataLines, self.__lineHeight, self.__h, self.__activeMode,

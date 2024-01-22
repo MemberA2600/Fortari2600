@@ -1,7 +1,5 @@
 from tkinter import *
 from PIL import Image as IMAGE, ImageTk
-from threading import Thread
-from time import sleep
 
 class LoadingScreen():
     """This class only opens a loading screen image and swaits for 3 seccnds,
@@ -146,13 +144,10 @@ class LoadingScreen():
         return ImageTk.PhotoImage(source.resize((round(w*part), round(h))), IMAGE.ANTIALIAS)
 
     def bindThings(self):
-        from threading import Thread
-
         self.__clicked = 0
         import keyboard
 
         keyboard.on_press_key("6", self.pressed)
-
 
     def pressed(self, event):
 

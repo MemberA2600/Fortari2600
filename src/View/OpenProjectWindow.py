@@ -71,7 +71,6 @@ class OpenProjectWindow:
 
         self.__projectPathEntry = SubMenuEntryWithButton(self.__frame2, self.__loader, self.__smallFont)
         self.__projectPathEntry.addButton("open", self.openDialog)
-        from threading import Thread
 
         try:
             self.__getAndSelect()

@@ -1,11 +1,10 @@
 #Using VMG modules of https://github.com/cdodd/vgmparse
 
+from copy import deepcopy
+
 class VGMConverter:
 
     def __init__(self, loader, path, removePercuss, maxChannels, removeOutside, cutOut):
-
-        #import time
-        #start_time = time.time()
 
         self.__loader = loader
         self.__piaNotes = loader.piaNotes
@@ -212,8 +211,6 @@ class VGMConverter:
             "priority": 0
 
         }
-
-        from copy import deepcopy
 
         self.__channelAttributes = {}
 
@@ -579,8 +576,6 @@ class VGMConverter:
 
         for num in range(1, 96):
             noteCount[num] = 0
-
-        from copy import deepcopy
 
         one = {
             "channelCount": deepcopy(channelCount),

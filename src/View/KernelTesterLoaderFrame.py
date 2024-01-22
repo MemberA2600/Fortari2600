@@ -1,4 +1,5 @@
 from tkinter import *
+import os
 
 class KernelTesterLoaderFrame:
 
@@ -83,14 +84,7 @@ class KernelTesterLoaderFrame:
 
         self.__loader.threadLooper.addToThreading(self, self.checkIfExists, [], 0)
 
-        #from threading import Thread
-        #e = Thread(target=self.checkIfExists)
-        #e.daemon = True
-        #e.start()
-
     def checkIfExists(self):
-        import os
-
         if os.path.exists(self.__entryVal.get()):
            self.valid = True
         else:
@@ -115,7 +109,6 @@ class KernelTesterLoaderFrame:
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                           fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
                           )
-            import os
             if os.path.exists(self.__entryVal.get()):
                 widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                               fg=self.__loader.colorPalettes.getColor("boxFontNormal"),

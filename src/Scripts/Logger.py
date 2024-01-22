@@ -1,6 +1,6 @@
 import os
-from datetime import datetime
-
+import datetime
+from datetime import date as DATE
 
 class Logger:
 
@@ -8,7 +8,7 @@ class Logger:
         self.__loader = loader
         self.deleteOld()
 
-        self.logFileName = "logs"+os.sep+str(datetime.now())[0:10]+"_"+str(datetime.now())[11:19].replace(":","")+".txt"
+        self.logFileName = "logs"+os.sep+str(datetime.datetime.now())[0:10]+"_"+str(datetime.datetime.now())[11:19].replace(":","")+".txt"
         file = open(self.logFileName, "w", encoding="latin-1")
         file.close()
 
@@ -16,7 +16,7 @@ class Logger:
 
         for root, dirs, files in os.walk("logs"+os.sep):
             for file in files:
-                self.getDaysAndDelete(file[0:10], str(datetime.now())[0:10], root+os.sep+file)
+                self.getDaysAndDelete(file[0:10], str(datetime.datetime.now())[0:10], root+os.sep+file)
 
 
     def getDaysAndDelete(self, filedate, today, file):
@@ -27,17 +27,15 @@ class Logger:
         years = date.split("-")[0]
         months = date.split("-")[1]
         days = date.split("-")[2]
-        from datetime import date
 
-        d = date(int(years), int(months), int(days))
+        d = DATE(int(years), int(months), int(days))
         return(d)
-
 
     def addToLog(self, text):
         if self.__loader.config.getValueByKey("debug") == "True":
             try:
                 string= "**********************************"+os.linesep
-                string+="*** "+ str(datetime.now()) + " ***"+os.linesep
+                string+="*** "+ str(datetime.datetime.now()) + " ***"+os.linesep
                 string+= "**********************************"+os.linesep+os.linesep
                 string+=text+os.linesep
                 file = open(self.logFileName, "a", encoding="latin-1")
@@ -64,3 +62,4 @@ class Logger:
             text += key + " = " + str(var) + os.linesep
 
         self.addToLog(text)
+

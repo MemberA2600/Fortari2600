@@ -1,5 +1,4 @@
 from tkinter import *
-from threading import Thread
 
 class FrameWithLabelAndEntry:
 
@@ -91,30 +90,3 @@ class FrameWithLabelAndEntry:
             self.__label.config(state = NORMAL)
         else:
             self.__label.config(state = DISABLED)
-
-    def resize(self):
-        from time import sleep
-        while self.__loader.mainWindow.dead==False and self.__container!=None and self.stopThread==False:
-            if (self.__lastScaleX != self.__loader.frames["MemorySetter"].getScales()[0] or
-                    self.__lastScaleY != self.__loader.frames["MemorySetter"].getScales()[1]):
-                self.__lastScaleX = self.__loader.frames["MemorySetter"].getScales()[0]
-                self.__lastScaleY = self.__loader.frames["MemorySetter"].getScales()[1]
-
-
-                if self.__frame!=None:
-                    try:
-                        self.__frame.config(width=self.__w * self.__lastScaleX,
-                                             height=self.__h * self.__lastScaleY)
-                        self.__setFontSize()
-
-                    except Exception as e:
-                        self.__loader.logger.errorLog(e)
-
-                try:
-                    self.__label.config(font=self.__fontI)
-                    self.__entry.config(font=self.__font)
-
-                except Exception as e:
-                    self.__loader.logger.errorLog(e)
-
-            sleep(0.04)

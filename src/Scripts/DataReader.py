@@ -1,11 +1,9 @@
-
 class DataReader:
 
     def __init__(self):
         pass
 
     def readDataFile(self, path):
-
         data = []
 
         try:
@@ -25,12 +23,7 @@ class DataReader:
                 except:
                     pass
 
-        #for item in __dict:
-        #    print(item, __dict[item])
-
         return(__dict)
-
-
 
     def writeDataFile(self, path, keysValues):
         temp = []

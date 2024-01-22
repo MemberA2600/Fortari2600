@@ -1,10 +1,9 @@
 from SubMenu import SubMenu
-from SubMenuLabel import SubMenuLabel
-from SubMenuFrame import SubMenuFrame
 from tkinter import *
-import re
-from time import sleep
 from threading import Thread
+from Compiler import Compiler
+import os
+from copy import deepcopy
 
 class PlayfieldEditor:
 
@@ -235,9 +234,6 @@ class PlayfieldEditor:
             [19,20]
             ]
 
-        #print(self.__logicalX)
-        from copy import deepcopy
-
         for num in range(0,40):
             row.append("0")
 
@@ -275,8 +271,6 @@ class PlayfieldEditor:
         t.start()
 
     def __testThread(self):
-        from Compiler import Compiler
-
         c = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "pfTest", [self.__table, self.__colorTable, self.__heightSetter.getValue(), "NTSC"])
 
     def __importImage(self):
@@ -328,8 +322,6 @@ class PlayfieldEditor:
             self.changed = True
 
     def __openPlayfield(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -402,8 +394,6 @@ class PlayfieldEditor:
 
 
     def __savePlayfield(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -442,8 +432,6 @@ class PlayfieldEditor:
             self.__topLevelWindow.focus()
 
     def getASMOnly(self, name):
-        from Compiler import Compiler
-
         PFBGdata = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "getPFASM",
                             [self.__table,
                              self.__colorTable,
@@ -455,8 +443,6 @@ class PlayfieldEditor:
         return(PFBGdata.convertedPlayfield)
 
     def __openBackground(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -517,8 +503,6 @@ class PlayfieldEditor:
                 self.__topLevelWindow.focus()
 
     def __saveBackground(self):
-        import os
-
         if self.alreadyDone == False:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
@@ -598,7 +582,7 @@ class PlayfieldEditor:
             self.setInValid(self.__heightSetter.getEntry())
             return
 
-            self.setValid(self.__heightSetter.getEntry())
+        self.setValid(self.__heightSetter.getEntry())
 
     def checkHeightEntry2(self, event):
         try:
@@ -857,15 +841,10 @@ class PlayfieldEditor:
 
         if (X>3 and X<36):
             for pair in self.__logicalX:
-                from copy import deepcopy
                 if (X in pair):
                     pairCopy = deepcopy(pair)
                     pairCopy.remove(X)
                     self.changeColor(pairCopy[0], Y, button)
-
-
-
-
 
     def changeColor(self, X, Y, button):
         color = ""

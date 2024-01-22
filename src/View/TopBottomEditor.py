@@ -2,8 +2,6 @@ from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
 from copy import deepcopy
-from time import sleep
-
 
 class TopBottomEditor:
 

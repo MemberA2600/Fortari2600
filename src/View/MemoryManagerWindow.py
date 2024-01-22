@@ -885,11 +885,6 @@ class MemoryManagerWindow:
 
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
-        #from threading import Thread
-        #t = Thread(target=self.loop)
-        #t.daemon = True
-        #t.start()
-
     def __changeVarType(self, event):
         if self.__virtualMemory.types[list(self.__virtualMemory.types.keys())[self.__typeListBox.curselection()[0]]] < 4:
            self.__colorButton.config(state = DISABLED)

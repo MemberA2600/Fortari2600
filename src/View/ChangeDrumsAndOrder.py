@@ -266,13 +266,6 @@ class ChangeDrumsAndOrder:
 
         __drumNotes = sorted(__drumNotes.items(), key=lambda x: x[1], reverse=True)
 
-        from copy import deepcopy
-
-        #self.__tempDrumData = deepcopy(self.__drumData)
-
-
-        from threading import Thread
-
         instruments = self.__loader.io.loadWholeText("config/midiPercuss.txt").split("\n")
 
         self.__instruments = {}

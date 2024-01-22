@@ -2,9 +2,6 @@ import os
 from copy import deepcopy
 
 class Collector:
-    from sys import path as systemPath
-
-
     def __init__(self, systemPath):
 
         for root, dir, files in os.walk("src/", topdown=False):

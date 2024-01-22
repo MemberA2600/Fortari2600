@@ -1,10 +1,11 @@
 from SubMenu import SubMenu
-from SubMenuLabel import SubMenuLabel
-from SubMenuFrame import SubMenuFrame
 from tkinter import *
-import re
-from time import sleep
 from threading import Thread
+from MidiConverter import MidiConverter
+import os
+from Compiler import Compiler
+from random import randint
+from copy import deepcopy
 
 class MusicComposer:
 
@@ -592,10 +593,8 @@ class MusicComposer:
         self.__listBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
         self.__listBox.config(font=self.__smallFont)
 
-        from os import walk
-
         self.__listItems = ["*Fortari Logo*"]
-        for root, dirs, filenames in walk(self.__loader.mainWindow.projectPath + "/64px/"):
+        for root, dirs, filenames in os.walk(self.__loader.mainWindow.projectPath + "/64px/"):
             for filename in filenames:
                 self.__listItems.append(".".join(filename.split(".")[:-1]).split("/")[-1])
 
@@ -886,8 +885,6 @@ class MusicComposer:
         self.changed = True
 
     def __justBytesThread(self):
-        from threading import Thread
-
         if self.__calculatingThread == None:
             self.__bankLabelText.set(self.__dictionaries.getWordFromCurrentLanguage("calculating"))
             t = Thread(target=self.__justBytes, args=[True])
@@ -896,8 +893,6 @@ class MusicComposer:
             self.__calculatingThread = True
 
     def __justBytes(self, playSound):
-        from Compiler import Compiler
-
         numOfBanks = Compiler(self.__loader, "common",
                               "getMusicBytes", [
                                 self.__tiaScreens.composeData(self.__correctNotes,
@@ -935,7 +930,6 @@ class MusicComposer:
 
         self.__setBankLabelText(numOfBanks.bytes)
         if playSound == True:
-            from random import randint
             num = randint(0,1000)
             if num <995:
                 self.__loader.soundPlayer.playSound("OK")
@@ -1068,10 +1062,6 @@ class MusicComposer:
 
 
     def convertManyDOS(self, path):
-        from MidiConverter import MidiConverter
-
-        import os
-
         for root, dirs, files in os.walk(os.getcwd()+"/applications/dro2midi/", topdown=False):
             if root == os.getcwd()+"/applications/dro2midi/":
                 for f in files:
@@ -1125,17 +1115,13 @@ class MusicComposer:
         return (sidConverter.result, sidConverter.songName, sidConverter.artistName)
 
     def convertMidi(self, path):
-        from MidiConverter import MidiConverter
-
         midiConverter = MidiConverter(path, self.__loader, int(self.__removePercuss.get()),
                                       self.__maxChannels, int(self.__removeOutside.get()), 1.1, self.getRangeToCut(), True)
 
         return (midiConverter.result, midiConverter.songName, midiConverter.artistName)
 
 
-
     def __testingCurrent(self):
-        from threading import Thread
 
         t = Thread(target=self.__testingCurrentThread)
         t.daemon = True
@@ -1194,12 +1180,10 @@ class MusicComposer:
         else:
             path = "generatedMusicROMs/"
             try:
-                import os
                 os.mkdir("generatedMusicROMs")
             except:
                 pass
 
-        from Compiler import Compiler
         C = Compiler(self.__loader, "common", "music", [self.__picturePath, path, True, self.__artistName.get(),
                                                         self.__songTitle.get(), extracted, self.__banks,
                                                         self.__variables, self.__colorConstans, pictureData])
@@ -1216,9 +1200,6 @@ class MusicComposer:
 
 
     def __saveDataToFile(self):
-        import os
-
-
         fileName = self.__loader.mainWindow.projectPath+"musics/"+self.__artistName.get().replace(" ", "_").replace("?", "")+"_-_"+self.__songTitle.get().replace(" ", "_").replace("?", "")+".a26"
 
         if os.path.exists(fileName):
@@ -1263,14 +1244,11 @@ class MusicComposer:
         self.__soundPlayer.playSound("Success")
 
     def __saveASMThread(self, fileName):
-        from threading import Thread
-
         t = Thread(target=self.__saveASM, args=[fileName])
         t.daemon = True
         t.start()
 
     def __saveASM(self, fileName):
-        from Compiler import Compiler
         numOfBanks = Compiler(self.__loader, "common",
                               "getMusicBytes", [
                                 self.__tiaScreens.composeData(self.__correctNotes,
@@ -1830,8 +1808,6 @@ class MusicComposer:
         self.__draw = 1 - self.__draw
 
     def createPattenrs(self):
-        from copy import deepcopy
-
         pattern = []
         octave = [0,1,0,1,0,0,1,0,1,0,1,0]
         for num in range(0, 3):
@@ -2065,7 +2041,6 @@ class MusicComposer:
         elif len(notes) == 1:
             if type(notes[list(notes.keys())[0]]) == list:
                 if self.__correctNotes > 0:
-                    from random import randint
                     num = randint(0, len(notes[list(notes.keys())[0]])-1)
 
                     C = int(list(notes.keys())[0])

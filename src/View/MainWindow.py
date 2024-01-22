@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tkinter import *
 from MenuLabel import MenuLabel
 from ButtonMaker import ButtonMaker
 from tkinter.filedialog import *
@@ -107,31 +106,6 @@ class MainWindow:
 
     def getWindowSize(self):
         return (self.editor.winfo_width(), self.editor.winfo_height())
-
-    """
-    def __scales(self):
-        from time import sleep
-        while self.dead == False:
-
-            if self.__mainFocus == None:
-               self.__mainFocus = self.editor.focus_get()
-
-            if self.editor.focus_get() == self.__mainFocus:
-                if self.__loader.subMenuDict == {} and self.__subMenuOpened == True:
-                    self.__subMenuOpened = False
-                    self.__killRemaining()
-                else:
-                    self.__subMenuOpened = True
-
-                if (self.__lastW==self.getWindowSize()[0] and self.__lastH==self.getWindowSize()[1]):
-                    sleep(0.05)
-                    continue
-                self.__lastW = self.getWindowSize()[0]
-                self.__lastH = self.getWindowSize()[1]
-                self.__scaleX = self.__lastW / self.__originalW
-                self.__scaleY = self.__lastH / self.__originalH
-            sleep(0.025)
-    """
 
     def __killRemaining(self):
         import gc
@@ -547,64 +521,6 @@ class MainWindow:
                         self.__loader.virtualMemory.changeKernelMemory(old, new)
         item.changed = False
 
-    """
-    def __saveOnlyOne(self, bank, variable):
-        try:
-            if bank == "bank1":
-                variable = "global_variables"
-            path = self.projectPath+bank+os.sep+variable+".a26"
-            file = open(path, "w", encoding="latin-1")
-            BFG9000 = self.__loader.BFG9000.saveFrameToMemory(bank, variable)
-            if bank == "bank1" or variable == "local_variables":
-                self.__loader.virtualMemory.setVariablesFromMemory(bank)
-            file.write(self.__loader.virtualMemory.codes[bank][variable].code, variable)
-            file.close()
-            self.__loader.virtualMemory.codes[bank][variable].changed = False
-            #self.__loader.virtualMemory.emptyArchieved()
-            #item.archived = []
-            #item.cursor = 0
-        except Exception as e:
-            self.__fileDialogs.displayError("projectOpenError", "projectOpenErrorText",
-                                            {
-                                                "name": variable,
-                                                "bank": bank
-                                            },
-                                            str(e)
-                                            )
-
-   
-    
-    
-    def __changeFirstValidDeliminator(self, text, section):
-        if section not in ["subroutines","vblank", "enter", "leave", "overscan", "screen_bottom"]:
-            return (text)
-        newText=[]
-        delimiter = self.__config.getValueByKey("deliminator")
-        for line in text.split("\n"):
-            if line.startswith("*") or line.startswith("#"):
-                newText.append(line)
-            else:
-                valid = 0
-                for position in range(0, len(line)-len(delimiter)+1):
-                    if line[position] == "(":
-                        valid+=1
-                    elif line[position] == ")":
-                        valid-=1
-                    elif valid == 0:
-                        if line[position:position+len(delimiter)] == delimiter:
-                            line = line[:position] + "%DELIMINATOR%" + line[position+len(delimiter):]
-                            break
-                newText.append(line)
-
-    
-
-        return(os.linesep.join(newText))
-
-        #return(self.__config.getValueByKey("deliminator"))
-
-    """
-
-
     def __saveProject(self):
         #self.__saveOnlyOne("bank1", "bank_configurations", False)
         #self.__saveOnlyOne("bank1", "global_variables", False)
@@ -764,8 +680,6 @@ class MainWindow:
                 self.__undoButton.getButton().config(state=DISABLED)
         except:
             pass
-
-
 
     def __redoButtonHandler(self, button):
         try:

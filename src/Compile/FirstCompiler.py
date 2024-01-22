@@ -1,4 +1,6 @@
 from datetime import datetime
+from copy import deepcopy
+import re
 
 class FirstCompiler:
 
@@ -258,7 +260,6 @@ class FirstCompiler:
                              hasColor = True
                              break
                     else:
-                        import re
                         if len(re.findall(r'#?[$%]?[0-9a-fA-F]+', operand)) > 0:
                            if ";" in lines[lineNum]:
                                adder = " &COLOR"
@@ -472,7 +473,6 @@ class FirstCompiler:
             #print(line)
 
             if params["param#1"][0] == params["param#2"][0]:
-               from copy import deepcopy
 
                subline = deepcopy(line)
                subline["command"] = "*"
@@ -811,7 +811,6 @@ class FirstCompiler:
 
 
         elif self.isCommandInLineThat(line, "pow"):
-            from copy import deepcopy
             #params = self.getParamsWithTypesAndCheckSyntax(line)
 
             #allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
@@ -1384,7 +1383,6 @@ class FirstCompiler:
                   command = "LSR"
 
              if "param#2" not in params:
-                 from copy import deepcopy
                  params["param#2"] = deepcopy(params["param#1"])
                  params["param#1"] = ["1", "number"]
 
@@ -1657,8 +1655,6 @@ class FirstCompiler:
 
             line["compiled"] += compassLine
             line["compiled"] = self.simplifyCompassShit(line["compiled"], temps)
-
-            from copy import deepcopy
 
             subline = deepcopy(line)
             subline["command"] = ["call", [0, 3]]
@@ -2275,7 +2271,6 @@ class FirstCompiler:
             line["compiled"] = self.saveAValue(params, "param#2", "param#1", line)
 
         elif self.isCommandInLineThat(line, "init"):
-            from copy import deepcopy
 
             subLine = self.__editorBigFrame.getLineStructure(0, ["\tsetAll(" + params["param#1"][0] + ", 0)"], False)
             self.processLine(subLine, linesFeteched)
@@ -2764,8 +2759,6 @@ class FirstCompiler:
 
 
             if objectThings["extension"] == "a26":
-               import re
-
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):
                    param = objectThings["paramsWithSettings"][paramNum]
 
@@ -3596,8 +3589,6 @@ class FirstCompiler:
         return txt
 
     def isThereAnyLargerThan255(self, data):
-        import re
-
         numbers = re.findall(r'\d+', data)
         numberDict = {}
         numberList = []
@@ -4307,8 +4298,6 @@ class FirstCompiler:
            value[0] == "#":
            return False
 
-        import re
-
         beforeCommaValue    = value.split(",")[0]
         try:
             afterCommaValue = value.split(",")[1]
@@ -4421,8 +4410,6 @@ class FirstCompiler:
         return val
 
     def getTypeOfOperand(self, value):
-        import re
-
         for key in self.numberRegexes:
             if len(re.findall(self.numberRegexes[key], value.replace("#", ""))) > 0:
                if "#" in value: return "constant"

@@ -1,17 +1,17 @@
+from threading import Thread
+
 class SoundPlayer:
 
     def __init__(self, config):
         self.__config = config
 
     def playSound(self, name):
-        from threading import Thread
         self.path = "others/snd/"+name+".wav"
         if self.__config.getValueByKey("soundOn")=="True":
             sound = Thread(target=self.playThread)
             sound.start()
 
     def play(self, path):
-        from threading import Thread
         self.path = path
         sound = Thread(target=self.playThread)
         sound.start()

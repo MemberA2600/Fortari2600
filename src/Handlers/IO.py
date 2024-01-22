@@ -1,5 +1,6 @@
 import os
 from PIL import Image, ImageTk
+import shutil
 
 class IO:
 
@@ -32,12 +33,10 @@ class IO:
             return(False)
 
     def copyDirWithFiles(self, sourcedir, destdir):
-        from shutil import copytree
-        copytree(sourcedir, destdir)
+        shutil.copytree(sourcedir, destdir)
 
 
     def removeDirWithFiles(self, dir):
-        import shutil
         shutil.rmtree(dir)
 
     def loadWholeText(self, path):
@@ -63,7 +62,6 @@ class IO:
 
     def loadSyntax(self):
         from Command import Command
-        import webcolors
 
         skipFirst = True
         for item in self.loadWholeText("config"+os.sep+"syntax.csv").split("\n"):

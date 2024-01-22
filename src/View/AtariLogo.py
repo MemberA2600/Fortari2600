@@ -1,6 +1,4 @@
 from tkinter import *
-from PIL import Image as IMAGE, ImageTk
-#from threading import Thread
 
 class AtariLogo:
 

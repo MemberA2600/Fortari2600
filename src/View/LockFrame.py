@@ -43,16 +43,7 @@ class LockFrame:
         self.__locks = []
         self.saveLocks()
 
-        #from threading import Thread
-        #t = Thread(target=self.resize)
-        #t.daemon = True
-        #t.start()
-
         self.__loader.threadLooper.addToThreading(self, self.locker, [], 0)
-
-        #l = Thread(target=self.locker)
-        #l.daemon = True
-        #l.start()
 
     def getFrame(self):
         return(self.__frame)
@@ -111,49 +102,23 @@ class LockFrame:
             y= ((num-1)//3) * self.__frame.winfo_width()/3+5
         )
 
-    def resize(self):
-        from time import sleep
-        while self.__window.dead==False and self.stopThread==False:
-            if (self.__scaleLastX != self.__window.getScales()[0] or
-                    self.__scaleLastY != self.__window.getScales()[1]
-                ):
-                self.__scaleLastX = self.__window.getScales()[0]
-                self.__scaleLastY = self.__window.getScales()[1]
-                self.createLabels()
-                self.setButtonFont()
-                for num in range(1, 7):
-                    self.__locks[num - 1] = "LOL"
-                sleep(0.01)
-                continue
-
-            sleep(0.04)
-
     def locker(self):
-        from time import sleep
-        while self.__window.dead==False and self.stopThread==False:
+        state = NORMAL
+        if self.__window.projectPath == None:
+            state = DISABLED
+        if len(self.__loader.virtualMemory.kernel_types) > 1:
+            self.__button2.config(state=state)
+        self.__button.config(state=state)
+        for item in self.__labels:
+            try:
+                item.config(state=state)
+            except Exception as e:
+                self.__loader.logger.errorLog(e)
 
-            state=NORMAL
-            if self.__window.projectPath == None:
-                state=DISABLED
-            if len(self.__loader.virtualMemory.kernel_types) > 1:
-                self.__button2.config(state=state)
-            self.__button.config(state=state)
-            for item in self.__labels:
-                try:
-                    item.config(state=state)
-                except Exception as e:
-                    self.__loader.logger.errorLog(e)
-
-            for num in range(1,7):
-                if self.__locks[num-1] != self.__loader.virtualMemory.locks["bank"+str(num+2)]:
-                    self.__locks[num-1] = self.__loader.virtualMemory.locks["bank"+str(num+2)]
-                    if self.__locks[num-1] == None:
-                        self.__labels[num-1].config(image = self.__lockOff)
-                    else:
-                        self.__labels[num-1].config(image=self.__lockOn)
-
-            #import random
-            #num = random.randint(2,8)
-            #self.__loader.virtualMemory.locks["bank" + str(num)] = "meh"
-
-            sleep(0.5)
+        for num in range(1, 7):
+            if self.__locks[num - 1] != self.__loader.virtualMemory.locks["bank" + str(num + 2)]:
+                self.__locks[num - 1] = self.__loader.virtualMemory.locks["bank" + str(num + 2)]
+                if self.__locks[num - 1] == None:
+                    self.__labels[num - 1].config(image=self.__lockOff)
+                else:
+                    self.__labels[num - 1].config(image=self.__lockOn)

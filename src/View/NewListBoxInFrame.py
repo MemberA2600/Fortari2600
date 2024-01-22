@@ -1,5 +1,6 @@
 from tkinter import *
 from threading import Thread
+from time import sleep
 
 class NewListBoxInFrame():
 
@@ -121,13 +122,11 @@ class NewListBoxInFrame():
 
 
     def __callCheckFunction(self):
-        from time import sleep
         while self.__loader.mainWindow.dead == False and self.stopThread==False:
             self.__function(self.__listBox)
             sleep(0.1)
 
     def getSelectedName(self):
-        from time import sleep
         trial = 6
         while trial>0:
             try:

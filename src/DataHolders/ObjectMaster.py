@@ -1,6 +1,4 @@
 import os
-from threading import Thread
-from copy import deepcopy
 from Command  import Command
 from Compiler import Compiler
 
@@ -185,8 +183,6 @@ class ObjectMaster:
         self.objects["currentBank"] = self.objects[self.__loader.bigFrame.getCurrentBank()]
 
     def returnAllAboutTheObject(self, command):
-        import os
-
         delimiter = "%"
         listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
         for symbol in listOfValidDelimiters:
@@ -235,13 +231,12 @@ class ObjectMaster:
 
            path += "\\".join(listOfObjects) + ".asm"
 
-           from os.path import exists
-           if exists(path):
+           if os.exists(path):
               theObject["extension"] = "asm"
               found = True
            else:
               path = path[:-3] + "a26"
-              if exists(path):
+              if os.exists(path):
                   theObject["extension"] = "a26"
                   found = True
               else:

@@ -1,4 +1,5 @@
 from tkinter import Toplevel
+from threading import Thread
 
 class SubMenu:
 
@@ -9,7 +10,6 @@ class SubMenu:
         self.__name = name
 
         if len(self.__loader.subMenus)>maxNum:
-            from threading import Thread
             t = Thread(target=self.killOther)
             t.daemon = True
             t.start()
@@ -38,7 +38,6 @@ class SubMenu:
         self.__topLevel.deiconify()
         self.__topLevel.focus()
 
-        from threading import Thread
         if checker!=None:
             self.__checker = checker
             self.__loader.threadLooper.addToThreading(self, self.__checker, [], 1)
@@ -66,8 +65,6 @@ class SubMenu:
         except Exception as e:
             self.__loader.logger.errorLog(e)
 
-        #self.__loader.threadLooper.addToThreading(self, self.__killIfKilled, [])
-        from threading import Thread
         t = Thread(target=self.__killIfKilled)
         t.daemon = True
         t.start()

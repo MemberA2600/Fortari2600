@@ -1,6 +1,9 @@
 from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
+from copy import deepcopy
+from Compiler import Compiler
+from HexEntry import HexEntry
 
 class MenuMaker:
 
@@ -145,12 +148,6 @@ class MenuMaker:
         self.__backImage = self.__loader.io.getImg("backwards", None)
         self.__forImage = self.__loader.io.getImg("forwards", None)
 
-        """
-        t3 = Thread(target=self.createSetterMenu)
-        t3.daemon = True
-        t3.start()
-        """
-
         divider2 = 14
         self.createSetterMenu()
 
@@ -172,12 +169,6 @@ class MenuMaker:
 
         self.__createSegmentsFrame()
 
-        """
-        t4 = Thread(target=self.createBottomElements)
-        t4.daemon = True
-        t4.start()
-        """
-
         self.__buttonFrame = Frame(self.__topLevelWindow, width=round(self.__sizes[0]),
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    height = round(self.__sizes[1])
@@ -190,9 +181,6 @@ class MenuMaker:
         self.createBottomButtons()
 
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
-        #loop = Thread(target=self.__loop)
-        #loop.daemon = True
-        #loop.start()
 
         self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
         self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
@@ -317,8 +305,6 @@ class MenuMaker:
             bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
             fg=self.__loader.colorPalettes.getColor("boxFontNormal")
         )
-
-        from copy import deepcopy
 
         self.__segments = deepcopy(temp)
         txtTemp = []
@@ -508,8 +494,6 @@ class MenuMaker:
                    item = item.replace("\r","").split("-")
                    self.__segments.append([int(item[0]), int(item[1])])
 
-            from copy import deepcopy
-
             for lineNum in range(5, 8):
                 line = lines[lineNum].split(" ")
                 self.__colorValues[lineNum-5] = deepcopy(line)
@@ -574,8 +558,6 @@ class MenuMaker:
         #comments = "* Items="+str(self.__items)+"\n* Largest="+str(largest)+"\n* LineHeight=" + str(self.__lineHeight)+"\n"
         comments = "* Items=" + str(self.__items) + "\n* Largest=" + str(largest) + "\n"
 
-        from Compiler import Compiler
-
         f = open(name2, "w")
         f.write(
             comments +\
@@ -601,8 +583,6 @@ class MenuMaker:
         t.start()
 
     def __testThread(self):
-        from Compiler import Compiler
-
         bigText = ""
         for YLine in self.__dataLines:
             for Xline in YLine:
@@ -677,9 +657,6 @@ class MenuMaker:
 
         self.__backColorLabel.pack_propagate(False)
         self.__backColorLabel.pack(side=LEFT, anchor=E, fill=Y)
-
-        from HexEntry import HexEntry
-
 
         self.__backColor = ["$00"]
         self.__backColorEntry = HexEntry(self.__loader, self.theSecondEntryFrame, self.__colors,
@@ -885,8 +862,6 @@ class MenuMaker:
         self.__finishedThem[0] = True
 
     def createColorsFrame(self):
-        from HexEntry import HexEntry
-
         w = self.__editorColorsFrame.winfo_width() // 3
         h = self.__editorColorsFrame.winfo_height() // 8
 

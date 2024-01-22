@@ -22,11 +22,6 @@ class Rainbow:
         self.__num = 0
 
         loader.threadLooper.addToThreading(self, self.loopThings, [], 1)
-        #from threading import Thread
-
-        #t = Thread(target=self.loopThings)
-        #t.daemon = True
-        #t.start()
 
     def loopThings(self):
             try:

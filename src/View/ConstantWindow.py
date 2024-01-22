@@ -1,5 +1,6 @@
 from tkinter import *
 from SubMenu import SubMenu
+from copy import deepcopy
 
 class ConstantWindow:
 
@@ -185,7 +186,6 @@ class ConstantWindow:
                                  bankNum = "Bank" + str(bankNum)
                                  items.append(bankNum)
                           else:
-                             from copy import deepcopy
                              items = deepcopy(self.__loader.sections)
                              for item in items:
                                  if item not in self.__loader.mainWindow.validSections:

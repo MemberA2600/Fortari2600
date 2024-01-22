@@ -1,3 +1,8 @@
+from copy import deepcopy
+from time import sleep
+from threading import Thread
+from TiaNote import TiaNote
+
 class TiaScreens:
 
     def __init__(self, loader):
@@ -9,7 +14,6 @@ class TiaScreens:
         self.numOfFieldsW = 48
         self.__runningThreads = 2
 
-        from copy import deepcopy
         self.__noteTable = []
 
         self.__colors = {}
@@ -50,11 +54,9 @@ class TiaScreens:
             self.allData.append(deepcopy(screen))
 
     def copyScreen(self):
-        from copy import deepcopy
         self.screenBuffer = deepcopy(self.allData[self.currentChannel-1][self.currentScreen])
 
     def pasteScreen(self):
-        from copy import deepcopy
         self.allData[self.currentChannel-1][self.currentScreen] = deepcopy(self.screenBuffer)
 
     def insertBefore(self):
@@ -67,7 +69,6 @@ class TiaScreens:
         self.screenMax+=1
 
     def initWithGivenNumberOfScreens(self, screenNum):
-        from copy import deepcopy
 
         self.screenMax = screenNum
         self.allData = []
@@ -87,42 +88,14 @@ class TiaScreens:
         self.currentScreen = 0
 
     def insertDataFromConverted(self, data, theLen, screenMax):
-        from threading import Thread
-        from time import sleep
-
         self.__bruhuhuThreads = 0
         for num in range(0,4):
             t = Thread(target=self.__setChannelDataFromConverted, args=(data, num, theLen))
             t.daemon = True
             t.start()
 
-        """
-        for channel in self.allData:
-            for screen in channel:
-                theScreen = screen["screen"]
-                for X in range(0,48):
-                    Y = screen["Y"][X]
-                    note = theScreen[Y][X]
-                    if note["volume"]<0:
-                        print("szar")
-                    print(Y)
-        """
-
         while self.__bruhuhuThreads > 0:
             sleep(0.000000001)
-
-        """
-        __counter = 0
-        for num in range(0, theLen):
-            isEmpty = True
-            for key in data.keys():
-                if data[key][num]["volume"] > 0:
-                    isEmpty = False
-                    break
-            if isEmpty:
-                __counter+=1
-        print(__counter)
-        """
 
         self.screenMax = screenMax
         self.currentChannel = 1
@@ -132,9 +105,6 @@ class TiaScreens:
         cLen = len(data[list(data.keys())[0]])
         screenMax = cLen // self.numOfFieldsW
         self.initWithGivenNumberOfScreens(screenMax)
-
-        from threading import Thread
-        from time import sleep
 
         self.__bruhuhuThreads = 0
         for num in range(0,4):
@@ -297,8 +267,6 @@ class TiaScreens:
 
 
     def getWholeChannelDate(self, num):
-        from copy import deepcopy
-
         data = []
 
         for screen in range(0, self.screenMax+1):
@@ -318,8 +286,6 @@ class TiaScreens:
         return(";".join(data))
 
     def getLoadedInputAndSetData(self, musicComposer, data):
-        from time import sleep
-        from threading import Thread
         for c in range(0, 4):
             if ";" in data[c]:
                 data[c] = data[c].split(";")
@@ -363,10 +329,6 @@ class TiaScreens:
         musicComposer.reColorAll()
 
     def channelThread(self, data, num):
-        from copy import deepcopy
-        from threading import Thread
-        from time import sleep
-
         for s in data:
             self.allData[num].append(deepcopy(self.__screen))
             for noteNum in range(0, self.numOfFieldsW):
@@ -388,8 +350,6 @@ class TiaScreens:
 
 
     def __insert(self, N):
-        from copy import deepcopy
-
         for num in range(0,4):
             self.allData[num].insert(N, deepcopy(self.__screen))
 
@@ -482,50 +442,10 @@ class TiaScreens:
 
         return(sendBack)
 
-    """
-    def reAlign(self, musicEditor):
-        from Compiler import Compiler
-
-        numOfBanks = Compiler(self.__loader, "common",
-                              "getMusicBytes", [
-                                self.composeData(musicEditor.__correctNotes,
-                                                 musicEditor.__buzz,
-                                                 musicEditor.__fadeOutLen,
-                                                 musicEditor.__frameLen,
-                                                 musicEditor.__vibratio,
-                                                 musicEditor.__vibratio2,
-                                                 int(musicEditor.__removePercuss.get()),
-                                                 musicEditor.__maxChannels,
-                                                 int(musicEditor.__removeOutside.get()),
-                                                 "NTSC", musicEditor.getRangeToCut())])
-
-        name = (musicEditor.__artistName.get() + "_-_" + musicEditor.__songTitle.get()).replace(" ", "_")
-
-        banks = []
-
-        if numOfBanks.musicMode == "double":
-            try:
-                banks[0] = numOfBanks.bytes[0]
-            except:
-                pass
-
-            try:
-                banks[1] = numOfBanks.bytes[1]
-            except:
-                pass
-
-            print(banks)
-    """
-
     def composeData(self, correctNotes, buzz, fadeOutLen, frameLen, vibratio,
                     vibratio2, noPercuss, maxChannels, removeOutside, tv, cutRange, reAlign):
-        from TiaNote import TiaNote
+
         #compress the 4 channels into two
-        from copy import deepcopy
-
-        #import time as TIME
-        #start_time = TIME.time()
-
         data1 = [
             [],
             [],
@@ -652,12 +572,6 @@ class TiaScreens:
                                         N += int(num2)
                                     tiaNote.freq = round(N / len(dominantNote))
 
-
-
-
-
-        # print(data1[0][0].piaNote)
-        # processing vibratio
         if vibratio == 1 or vibratio2:
 
             if vibratio == 1 and vibratio2 == 1:
@@ -993,7 +907,6 @@ class TiaScreens:
         return(data3)
 
     def getNextNote(self, tiaNote, mini, maxi, prev):
-        from TiaNote import TiaNote
         nextNote = TiaNote(0,0,0,1,0)
 
         if (maxi > mini):

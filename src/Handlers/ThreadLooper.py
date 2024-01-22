@@ -94,12 +94,20 @@ class ThreadLooper:
                               pass
 
                           #print("does:", self.__listOfThreads[number][0], self.__listOfThreads[number][1])
-                          print(self.__maxLevel)
+                          #print(self.__maxLevel)
 
                           if stop or dead:
                              #print(self.__listOfThreads[number][0])
                              currLevel = self.__listOfThreads[number][3]
                              #print("delete:", self.__listOfThreads[number][0], self.__listOfThreads[number][1])
+                             if self.__listOfThreads[number][0] in self.__loader.stopThreads:
+                                self.__loader.stopThreads.remove(self.__listOfThreads[number][0])
+                                try:
+                                    if self.__listOfThreads[number][0].getTopLevel() in self.__loader.topLevels:
+                                       self.__loader.topLevels.remove(self.__listOfThreads[number][0].getTopLevel())
+                                except:
+                                    pass
+
                              self.__listOfThreads.pop(number)
 
                              found    = False

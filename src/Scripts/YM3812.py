@@ -629,9 +629,6 @@ class YM3812:
                     self.stream.channels[channel].slots[slot].changed = False
                 self.stream.channels[channel].newNote = False
 
-            #from copy import deepcopy
-            #self.stream.rythms = deepcopy(self.rythms)
-
         self.stream.rythmMode =  self.rythmMode
         self.stream.rythms["HH"] = self.rythms["HH"]
         self.stream.rythms["topCy"] = self.rythms["topCy"]
