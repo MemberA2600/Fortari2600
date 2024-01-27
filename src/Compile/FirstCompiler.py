@@ -468,6 +468,110 @@ class FirstCompiler:
 
             self.__checked = True
 
+        elif self.isCommandInLineThat(line, "sin"):
+            txt  = ""
+            var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+            var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+            self.__temps = self.collectUsedTemps()
+
+            addToRoutines = True
+            if var1 == False:
+               self.addToErrorList(line["lineNum"],
+                                   self.prepareError("compilerErrorVarNotFound",
+                                                     params["param#1"][0],
+                                                     "", "",
+                                                     str(line["lineNum"] + self.__startLine)))
+
+            value      = ""
+            wasANumber = None
+            if self.__error == False:
+               itIsComplex = False
+               if var2 != False:
+                  itIsComplex = var2.bcd or var2.type != "byte"
+
+               if itIsComplex == False:
+                  value = params["param#2"][0]
+                  if var2 == False:
+                     if params["param#2"][1] == "constant":
+                        value = "#" + str(self.__editorBigFrame.convertStringNumToNumber(self.getConstValue(params["param#2"][0]))%256)
+                     else:
+                        value = "#" + str(self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0])%256)
+
+                  txt = "\tLDX\t" + value + "\n"
+               else:
+                  txt = "\tLDA\t" + params["param#2"][0] + "\n" + self.convertAny2Any(var2, "TO", params, self.__temps) + "\n\tTAX\n"
+
+            txt += "\tLDA\t#BANK#_Sine,x\n".replace("#BANK#", self.__currentBank)
+
+            if value != "":
+               if value[0] == "#":
+                  num           = self.valOfNumber(value)
+                  wasANumber    = num
+                  txt           = self.__loader.io.loadCommandASM("sinTable").split("\n")[1:][num].replace('\tBYTE', "\tLDA") + "\n"
+                  addToRoutines = False
+
+            if "param#3" in params.keys():
+                var3 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+                itIsComplex = False
+
+                isIt0 = False
+                if var3 != False:
+                    itIsComplex = var3.bcd or var3.type != "byte"
+                else:
+                    num = params["param#3"][0]
+                    if num in self.__constants:
+                       num = self.__constants[num]
+
+                    isIt0 = self.isIt(num, 0)
+
+                if isIt0 == False:
+                   txt += "\tTAY\n"
+
+                   if itIsComplex == False:
+                        value = params["param#3"][0]
+                        if var3 == False:
+                            if params["param#3"][1] == "constant":
+                                value = "#" + str(self.__editorBigFrame.convertStringNumToNumber(
+                                    self.getConstValue(params["param#3"][0])) % 256)
+                            else:
+                                value = "#" + str(
+                                    self.__editorBigFrame.convertStringNumToNumber(params["param#3"][0]) % 256)
+
+                        txt += "\tLDX\t" + value + "\n"
+                   else:
+                        txt += "\tLDA\t" + params["param#3"][0] + "\n" + self.convertAny2Any(var3, "TO", params,
+                                                                                            self.__temps) + "\n\tTAX\n"
+
+                   self.__magicNumber += 1
+                   try:
+                       theOne = self.__temps[0]
+                       self.__temps.pop(0)
+                   except:
+                       self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorStatementTemps", params["param#3"][0],
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+
+                   if self.__error == False:
+                      name = "sinFlatten"
+
+                      if wasANumber != None:
+                         if wasANumber > 127:
+                            name += "_BiggerOnly"
+                         else:
+                            name += "_SmallerOnly"
+
+                      txt += "\tTYA\n" + self.__loader.io.loadCommandASM(name)\
+                             .replace("#BANK#", self.__currentBank).replace("#MAGIC#", str(self.__magicNumber)).replace("#TEMPVAR#", theOne)
+
+
+            if addToRoutines: self.toRoutines["sinTable"] = self.__loader.io.loadCommandASM("sinTable").replace("#BANK#", self.__currentBank)
+
+            txt += self.convertAny2Any(var1, "FROM", params, self.__temps) + "\n" + "\tSTA\t" + params["param#1"][0] + "\n"
+            self.checkASMCode(txt, line, linesFeteched)
+            if self.__error == False:
+               line["compiled"] = txt
+
         elif self.isCommandInLineThat(line, "add"):
             #params = self.getParamsWithTypesAndCheckSyntax(line)
             #print(line)
@@ -3988,6 +4092,8 @@ class FirstCompiler:
                       if subLine[0] not in ("*", "#", "!") or "#BANK#" in subLine:
                          labels.append(subLine)
                          labels.append(subLine.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
+
+        #print(labels)
 
         for line in lines:
             full = line
