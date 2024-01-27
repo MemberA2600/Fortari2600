@@ -56,8 +56,12 @@ class KernelTesterLoaderFrame:
                              )
         self.__entry.pack_propagate(False)
         self.__entry.pack(side=TOP, anchor=N, fill=BOTH)
-        self.__entry.bind("<KeyRelease>", self.checkIfValidFileName)
-        self.__entry.bind("<FocusOut>", self.checkIfValidFileName)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", self.checkIfValidFileName, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>", self.checkIfValidFileName, 0)
+
+        #self.__entry.bind("<KeyRelease>", self.checkIfValidFileName)
+        #self.__entry.bind("<FocusOut>", self.checkIfValidFileName)
 
 
         """

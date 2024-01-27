@@ -262,8 +262,13 @@ class Wall:
                 self.__indexNum.pack_propagate(False)
                 self.__indexNum.pack(fill=X, side=TOP, anchor=N)
 
-                self.__indexNum.bind("<FocusOut>", self.__chamgeConst)
-                self.__indexNum.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexNum, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexNum, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__indexNum.bind("<FocusOut>", self.__chamgeConst)
+                #self.__indexNum.bind("<KeyRelease>", self.__chamgeConst)
 
                 self.__varButton = Radiobutton(f, width=99999,
                                                  text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
@@ -368,8 +373,13 @@ class Wall:
                 self.__numOfLines.pack_propagate(False)
                 self.__numOfLines.pack(fill=X, side=TOP, anchor=N)
 
-                self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
-                self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
+                #self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
 
                 self.__setSprite = Radiobutton(f, width=99999,
                                                  text=self.__dictionaries.getWordFromCurrentLanguage("custom"),
@@ -530,9 +540,17 @@ class Wall:
 
         for listNum in range(0, len(self.__listBoxes)):
             l = self.__listBoxes[listNum]["listBox"]
-            l.bind("<ButtonRelease-1>", self.__changeSelected)
-            l.bind("<KeyRelease-Up>", self.__changeSelected)
-            l.bind("<KeyRelease-Down>", self.__changeSelected)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<ButtonRelease-1>", self.__changeSelected,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Up>", self.__changeSelected,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Down>", self.__changeSelected,
+                                                                1)
+
+            #l.bind("<ButtonRelease-1>", self.__changeSelected)
+            #l.bind("<KeyRelease-Up>", self.__changeSelected)
+            #l.bind("<KeyRelease-Down>", self.__changeSelected)
 
 
         if self.__data[11] == "#":

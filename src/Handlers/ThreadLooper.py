@@ -15,9 +15,16 @@ class ThreadLooper:
         self.__mainInited = False
         self.__maxLevel = -1
 
+        from BindingMaster import BindingMaster
+        self.bindingMaster = BindingMaster(loader, self)
+
         t = Thread(target=self.__loop)
         t.daemon = True
         t.start()
+
+    def returnLevel(self):
+        if self.__maxLevel < 0: return 0
+        return self.__maxLevel
 
     def addToThreading(self, object, function, args, level):
         for item in self.__listOfThreads:
@@ -122,6 +129,7 @@ class ThreadLooper:
                              if found == False: self.__maxLevel = maxLevel
 
                              if number > 0: number -= 1
+                             self.bindingMaster.loop()
                              sleep(self.__wait)
                              continue
                           else:
@@ -143,6 +151,7 @@ class ThreadLooper:
                             except:
                                 self.__running = False
 
+                    self.bindingMaster.loop()
                     sleep(self.__wait)
                 break
             except Exception as e:

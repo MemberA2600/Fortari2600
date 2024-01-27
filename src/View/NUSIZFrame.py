@@ -77,8 +77,12 @@ class NUSIZFrame:
 
         self.__setCanvas()
         self.__active = True
-        self.__entry.bind("<KeyRelease>", self.__changed)
-        self.__entry.bind("<FocusOut>", self.__changed)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", self.__changed, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>"  , self.__changed, 1)
+
+        #self.__entry.bind("<KeyRelease>", self.__changed)
+        #self.__entry.bind("<FocusOut>", self.__changed)
 
     def __setCanvas(self):
         self.__canvas.clipboard_clear()

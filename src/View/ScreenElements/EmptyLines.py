@@ -135,9 +135,13 @@ class EmptyLines:
         for var in self.__varList:
             self.__varListBox.insert(END, var)
 
-        self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
-        self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
-        self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "KeyRelease-Up>"   , self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.clickedListBox, 1)
+
+        #self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        #self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        #self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
         if "::" in self.__data[2]:
             self.__tempSet = self.__data[2]
@@ -164,8 +168,11 @@ class EmptyLines:
         self.__entry.pack_propagate(False)
         self.__entry.pack(fill=X, side = TOP, anchor = N)
 
-        self.__entry.bind("<FocusOut>", self.__chamgeConst)
-        self.__entry.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>"  , self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", self.__chamgeConst, 1)
+
+        #self.__entry.bind("<FocusOut>", self.__chamgeConst)
+        #self.__entry.bind("<KeyRelease>", self.__chamgeConst)
         self.__setterBase.registerError("mustBeVar2")
 
         self.setIt(None)

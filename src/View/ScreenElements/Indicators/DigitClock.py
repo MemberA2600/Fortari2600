@@ -274,10 +274,13 @@ class DigitClock:
             self.__varsAndLists[counter]["listbox"].select_set(selector)
             self.__varsAndLists[counter]["listbox"].yview(selector)
 
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varsAndLists[counter]["listbox"], "<ButtonRelease-1>", self.__changeDataVar, 1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varsAndLists[counter]["listbox"], "<KeyRelease-Up>"  , self.__changeDataVar, 1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varsAndLists[counter]["listbox"], "<KeyRelease-Down>", self.__changeDataVar, 1)
 
-            self.__varsAndLists[counter]["listbox"].bind("<ButtonRelease-1>", self.__changeDataVar)
-            self.__varsAndLists[counter]["listbox"].bind("<KeyRelease-Up>", self.__changeDataVar)
-            self.__varsAndLists[counter]["listbox"].bind("<KeyRelease-Down>", self.__changeDataVar)
+            #self.__varsAndLists[counter]["listbox"].bind("<ButtonRelease-1>", self.__changeDataVar)
+            #self.__varsAndLists[counter]["listbox"].bind("<KeyRelease-Up>", self.__changeDataVar)
+            #self.__varsAndLists[counter]["listbox"].bind("<KeyRelease-Down>", self.__changeDataVar)
             self.__data[3+counter] = self.__byteVars[selector].split("::")[1]
 
             counter += 1
@@ -323,8 +326,11 @@ class DigitClock:
         self.__dividerEntry.pack_propagate(False)
         self.__dividerEntry.pack(fill=X, side=TOP, anchor=N)
 
-        self.__dividerEntry.bind("<KeyRelease>", self.__changedDivider)
-        self.__dividerEntry.bind("<FocusOut>", self.__changedDivider)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dividerEntry, "<KeyRelease>", self.__changedDivider, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dividerEntry, "<FocusOut>"  , self.__changedDivider, 1)
+
+        #self.__dividerEntry.bind("<KeyRelease>", self.__changedDivider)
+        #self.__dividerEntry.bind("<FocusOut>", self.__changedDivider)
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame5,
@@ -388,9 +394,13 @@ class DigitClock:
 
         self.__colorVarListBoxSelected = self.__nibbleVars[0].split("::")[1]
 
-        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changeColorVar)
-        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changeColorVar)
-        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changeColorVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<<ButtonRelease-1>", self.__changeColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Up>"   , self.__changeColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>" , self.__changeColorVar, 1)
+
+        #self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changeColorVar)
+        #self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changeColorVar)
+        #self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changeColorVar)
 
         if self.isItHex(color):
            self.__colorSettings.set(1)
@@ -516,9 +526,13 @@ class DigitClock:
         self.__changedFontData(font)
         self.__saveIt = self.__fontOption1.get()
 
-        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFontVar)
-        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFontVar)
-        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFontVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<ButtonRelease-1>", self.__changeFontVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Up>"  , self.__changeFontVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Down>", self.__changeFontVar, 1)
+
+        #self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFontVar)
+        #self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFontVar)
+        #self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFontVar)
 
     def __changeFontVar(self, event):
         if self.__fontOption1.get() != 3: return

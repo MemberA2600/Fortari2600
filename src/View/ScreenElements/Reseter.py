@@ -119,7 +119,10 @@ class Reseter:
             c.pack_propagate(False)
             c.pack(fill=X, side=TOP, anchor=CENTER)
 
-            c.bind("<Enter>", self.__enter)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, c, "<Enter>", self.__enter,
+                                                                1)
+
+            #c.bind("<Enter>", self.__enter)
 
             self.__checkBoxes[item]["value"]    = d
             self.__checkBoxes[item]["box"]      = c
@@ -148,7 +151,9 @@ class Reseter:
             c.pack_propagate(False)
             c.pack(fill=X, side=TOP, anchor=CENTER)
 
-            c.bind("<Enter>", self.__enter)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, c, "<Enter>", self.__enter,
+                                                                1)
+            #c.bind("<Enter>", self.__enter)
 
             self.__checkBoxes[item]["value"] = d
             self.__checkBoxes[item]["box"] = c

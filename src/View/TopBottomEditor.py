@@ -1072,7 +1072,10 @@ class TopBottomEditor:
             b.pack_propagate(False)
             b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-            b.bind("<Button-1>", self.__changeSlot)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__changeSlot,
+                                                                1)
+
+            #b.bind("<Button-1>", self.__changeSlot)
             self.__bankButtons.append(b)
 
         self.__topButton = Button(f1, height=9999, width=9999,
@@ -1091,8 +1094,11 @@ class TopBottomEditor:
         self.__bottomButton.pack_propagate(False)
         self.__bottomButton.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__topButton.bind("<Button-1>", self.__changeScreenPart)
-        self.__bottomButton.bind("<Button-1>", self.__changeScreenPart)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topButton   , "<<Button-1>", self.__changeScreenPart, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__bottomButton, "<<Button-1>", self.__changeScreenPart, 1)
+
+        #self.__topButton.bind("<Button-1>", self.__changeScreenPart)
+        #self.__bottomButton.bind("<Button-1>", self.__changeScreenPart)
 
         self.__finishedThem[0] = True
 
@@ -1127,9 +1133,14 @@ class TopBottomEditor:
         self.__itemListScrollBar.config(command=self.__itemListBox.yview)
 
         self.__finishedThem[1] = True
-        self.__itemListBox.bind("<ButtonRelease-1>", self.clickedListBox)
-        self.__itemListBox.bind("<KeyRelease-Up>", self.clickedListBox)
-        self.__itemListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__itemListBox, "<ButtonRelease-1>", self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__itemListBox, "<KeyRelease-Up>"  , self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__itemListBox, "<KeyRelease-Down>", self.clickedListBox, 1)
+
+        #self.__itemListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        #self.__itemListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        #self.__itemListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
 
     def __changeSlot(self, event):

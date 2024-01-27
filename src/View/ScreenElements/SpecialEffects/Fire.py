@@ -121,9 +121,13 @@ class Fire:
         self.__listBox.pack(side=LEFT, anchor=W, fill=BOTH)
         self.__scrollBar.config(command=self.__listBox.yview)
 
-        self.__listBox.bind("<ButtonRelease-1>", self.__clickedListBox)
-        self.__listBox.bind("<KeyRelease-Up>", self.__clickedListBox)
-        self.__listBox.bind("<KeyRelease-Down>", self.__clickedListBox)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox, "<ButtonRelease-1>", self.__clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox, "<KeyRelease-Up>"  , self.__clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox, "<KeyRelease-Down>", self.__clickedListBox, 1)
+
+        #self.__listBox.bind("<ButtonRelease-1>", self.__clickedListBox)
+        #self.__listBox.bind("<KeyRelease-Up>", self.__clickedListBox)
+        #self.__listBox.bind("<KeyRelease-Down>", self.__clickedListBox)
 
         for item in self.__byteVars:
             self.__listBox.insert(END, item)
@@ -150,8 +154,11 @@ class Fire:
         self.__speedEntry.pack_propagate(False)
         self.__speedEntry.pack(fill=X, side = TOP, anchor = N)
 
-        self.__speedEntry.bind("<FocusOut>", self.__chamgeConst)
-        self.__speedEntry.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speedEntry, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speedEntry, "<FocusOut>"  , self.__chamgeConst, 1)
+
+        #self.__speedEntry.bind("<FocusOut>", self.__chamgeConst)
+        #self.__speedEntry.bind("<KeyRelease>", self.__chamgeConst)
 
         self.__particles = IntVar()
         self.__checkBox = Checkbutton(self.__constantsFrame,
@@ -190,8 +197,11 @@ class Fire:
         self.__heightEntry.pack_propagate(False)
         self.__heightEntry.pack(fill=X, side = TOP, anchor = N)
 
-        self.__heightEntry.bind("<FocusOut>", self.__chamgeConst)
-        self.__heightEntry.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<FocusOut>"  , self.__chamgeConst, 1)
+
+        #self.__heightEntry.bind("<FocusOut>", self.__chamgeConst)
+        #self.__heightEntry.bind("<KeyRelease>", self.__chamgeConst)
 
         selector = 0
         for itemNum in range(0, len(self.__byteVars)):

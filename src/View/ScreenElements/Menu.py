@@ -117,9 +117,13 @@ class Menu:
 
         self.__menuColors = []
 
-        self.__varListBox.bind("<ButtonRelease-1>", self.__changeMenu)
-        self.__varListBox.bind("<KeyRelease-Up>", self.__changeMenu)
-        self.__varListBox.bind("<KeyRelease-Down>", self.__changeMenu)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.__changeMenu, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Up>", self.__changeMenu, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.__changeMenu, 1)
+
+        #self.__varListBox.bind("<ButtonRelease-1>", self.__changeMenu)
+        #self.__varListBox.bind("<KeyRelease-Up>", self.__changeMenu)
+        #self.__varListBox.bind("<KeyRelease-Down>", self.__changeMenu)
 
         if self.__data[4] == "#":
            self.__getBasicDataOfPicture()
@@ -174,9 +178,13 @@ class Menu:
         self.__dataVarListBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
         self.__dataVarListBox.pack_propagate(False)
 
-        self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
-        self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
-        self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<ButtonRelease-1>", self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<KeyRelease-Up>"  , self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<KeyRelease-Down>", self.__changeListBoxItem, 1)
+
+        #self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
+        #self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
+        #self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
 
         self.__dataVarScrollBar.config(command=self.__dataVarListBox.yview)
 

@@ -55,9 +55,13 @@ class FrameLabelEntryUpDown:
         )
         self.__entry.pack(side=TOP, anchor = N, fill = BOTH)
 
-        self.__entry.bind("<FocusIn>", self.focusIn)
-        self.__entry.bind("<FocusOut>", self.__checkEntry)
-        self.__entry.bind("<KeyRelease>", self.__checkEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusIn>", self.focusIn, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>", self.__checkEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", self.__checkEntry, 1)
+
+        #self.__entry.bind("<FocusIn>", self.focusIn)
+        #self.__entry.bind("<FocusOut>", self.__checkEntry)
+        #self.__entry.bind("<KeyRelease>", self.__checkEntry)
         self.__min = mini
         self.__max = maxi
 

@@ -94,8 +94,11 @@ class MainWindow:
         self.__pressedHome = False
         self.__pressedShiftL = False
 
-        self.editor.bind("<Key>", self.pressed)
-        self.editor.bind("<KeyRelease>", self.released)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.editor, "<Key>"       , self.pressed, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.editor, "<KeyRelease>", self.released, 0)
+
+        #self.editor.bind("<Key>", self.pressed)
+        #self.editor.bind("<KeyRelease>", self.released)
 
     def __setProjectPath(self, path):
         self.projectPath=path

@@ -34,8 +34,11 @@ class Haunted:
 
         self.setEyePoses()
 
-        self.__topLevelWindow.bind("<KeyPress>"   , self.pressed  )
-        self.__topLevelWindow.bind("<KeyRelease>" , self.released )
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress>"  , self.pressed, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease>", self.released, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress>"   , self.pressed  )
+        #self.__topLevelWindow.bind("<KeyRelease>" , self.released )
 
         self.__eyePoz = 0
 

@@ -168,9 +168,16 @@ class Earth:
                self.__listBoxes[-1]["scrollBar"] = s
                self.__listBoxes[-1]["dataList"] = lists[num]
 
-               l.bind("<ButtonRelease-1>", self.__changeSelected)
-               l.bind("<KeyRelease-Up>", self.__changeSelected)
-               l.bind("<KeyRelease-Down>", self.__changeSelected)
+               self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<ButtonRelease-1>",
+                                                                   self.__changeSelected, 1)
+               self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Up>",
+                                                                   self.__changeSelected, 1)
+               self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Down>",
+                                                                   self.__changeSelected, 1)
+
+               #l.bind("<ButtonRelease-1>", self.__changeSelected)
+               #l.bind("<KeyRelease-Up>", self.__changeSelected)
+               #l.bind("<KeyRelease-Down>", self.__changeSelected)
         else:
 
             numberOfHexes = 56

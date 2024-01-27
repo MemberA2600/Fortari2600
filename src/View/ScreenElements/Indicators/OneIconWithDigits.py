@@ -233,9 +233,13 @@ class OneIconWithDigits:
                   self.__lastSelectedPictures[0] = self.__listOfPictures[itemNum]
                   break
 
-        self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
-        self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
-        self.__picListBox1.bind("<KeyRelease-Down>", self.__changedPicture1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<ButtonRelease-1>", self.__changedPicture1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<KeyRelease-Up>"  , self.__changedPicture1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<KeyRelease-Down>", self.__changedPicture1, 1)
+
+        #self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
+        #self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
+        #self.__picListBox1.bind("<KeyRelease-Down>", self.__changedPicture1)
 
         from NUSIZFrame import NUSIZFrame
 
@@ -347,10 +351,13 @@ class OneIconWithDigits:
 
                   break
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<ButtonRelease-1>", self.__changedColorVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Up>"  , self.__changedColorVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>", self.__changedColorVar1, 1)
 
-        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
-        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changedColorVar1)
-        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changedColorVar1)
+        #self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
+        #self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changedColorVar1)
+        #self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changedColorVar1)
 
         self.__dataVars = []
         for address in self.__loader.virtualMemory.memory.keys():
@@ -415,9 +422,13 @@ class OneIconWithDigits:
 
         self.__dataVarScrollBar1.config(command=self.__dataVarListBox1.yview)
 
-        self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<ButtonRelease-1>", self.__changedDataVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<KeyRelease-Up>"  , self.__changedDataVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<KeyRelease-Down>", self.__changedDataVar1, 1)
+
+        #self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
+        #self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
+        #self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
 
         self.__dataVarScrollBar2 = Scrollbar(self.__dataVarFrame2)
         self.__dataVarListBox2 = Listbox(self.__dataVarFrame2, width=200000,
@@ -442,9 +453,13 @@ class OneIconWithDigits:
             self.__dataVarListBox1.insert(END, item)
             self.__dataVarListBox2.insert(END, item)
 
-        self.__dataVarListBox2.bind("<ButtonRelease-1>", self.__changedDataVar2)
-        self.__dataVarListBox2.bind("<KeyRelease-Up>", self.__changedDataVar2)
-        self.__dataVarListBox2.bind("<KeyRelease-Down>", self.__changedDataVar2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<ButtonRelease-1>", self.__changedDataVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<KeyRelease-Up>"  , self.__changedDataVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<KeyRelease-Down>", self.__changedDataVar2, 1)
+
+        #self.__dataVarListBox2.bind("<ButtonRelease-1>", self.__changedDataVar2)
+        #self.__dataVarListBox2.bind("<KeyRelease-Up>", self.__changedDataVar2)
+        #self.__dataVarListBox2.bind("<KeyRelease-Down>", self.__changedDataVar2)
 
         if self.__data[7] == "#":
            self.__data[7] = self.__dataVars[0].split("::")[1]
@@ -554,8 +569,11 @@ class OneIconWithDigits:
         self.__indexEntry1.pack_propagate(False)
         self.__indexEntry1.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
-        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<FocusOut>"  , self.__changeIndexAndMirroring1, 1)
+
+        #self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
 
         self.__lastBits = ["%00000000", "%00000000"]
 
@@ -631,13 +649,19 @@ class OneIconWithDigits:
            self.__picVarListBox1.select_set(selector)
            self.__picVarListBox1.yview(selector)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<FocusOut>"  , self.__changeIndexAndMirroring1, 1)
 
-        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
-        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
 
-        self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
-        self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
-        self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<ButtonRelease-1>", self.__changedPicVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<KeyRelease-Up>"  , self.__changedPicVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<KeyRelease-Down>", self.__changedPicVar1, 1)
+
+        #self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
+        #self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
+        #self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame6,
@@ -677,8 +701,11 @@ class OneIconWithDigits:
         self.__digitsEntry.pack_propagate(False)
         self.__digitsEntry.pack(fill=X, side=TOP, anchor=N)
 
-        self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
-        self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__digitsEntry, "<KeyRelease>", self.__changeDigits, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__digitsEntry, "<FocusOut>"  , self.__changeDigits, 1)
+
+        #self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
+        #self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
 
         self.__fontLabel = Label(self.__frame5,
                               text=self.__dictionaries.getWordFromCurrentLanguage("spriteName") + ":",
@@ -778,11 +805,13 @@ class OneIconWithDigits:
         except:
             self.__fontListSelect = ["", ""]
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<ButtonRelease-1>", self.__changedFontVarListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Up>"  , self.__changedFontVarListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Down>", self.__changedFontVarListBox1, 1)
 
-
-        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changedFontVarListBox1)
-        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changedFontVarListBox1)
-        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changedFontVarListBox1)
+        #self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changedFontVarListBox1)
+        #self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changedFontVarListBox1)
+        #self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changedFontVarListBox1)
 
         for item in self.__listOfPictures2:
             self.__fontVarListBox1.insert(END, item)

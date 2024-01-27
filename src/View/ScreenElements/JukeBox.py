@@ -198,9 +198,13 @@ class JukeBox:
 
         self.__availableScrollBar.config(command=self.__availableListBox.yview)
 
-        self.__availableListBox.bind("<ButtonRelease-1>", self.aListBoxChanged)
-        self.__availableListBox.bind("<KeyRelease-Up>", self.aListBoxChanged)
-        self.__availableListBox.bind("<KeyRelease-Down>", self.aListBoxChanged)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__availableListBox, "<ButtonRelease-1>", self.aListBoxChanged, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__availableListBox, "<KeyRelease-Up>"  , self.aListBoxChanged, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__availableListBox, "<KeyRelease-Down>", self.aListBoxChanged, 1)
+
+        #self.__availableListBox.bind("<ButtonRelease-1>", self.aListBoxChanged)
+        #self.__availableListBox.bind("<KeyRelease-Up>", self.aListBoxChanged)
+        #self.__availableListBox.bind("<KeyRelease-Down>", self.aListBoxChanged)
 
         listOfMusic = self.__data[2]
         if    listOfMusic == "#": listOfMusic = []
@@ -308,9 +312,13 @@ class JukeBox:
             self.__addedListBox.insert(END, item)
             self.__addedListBoxItems.append(item)
 
-        self.__addedListBox.bind("<ButtonRelease-1>", self.aListBoxChanged)
-        self.__addedListBox.bind("<KeyRelease-Up>", self.aListBoxChanged)
-        self.__addedListBox.bind("<KeyRelease-Down>", self.aListBoxChanged)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__addedListBox, "<ButtonRelease-1>", self.aListBoxChanged, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__addedListBox, "<KeyRelease-Up>"  , self.aListBoxChanged, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__addedListBox, "<KeyRelease-Down>", self.aListBoxChanged, 1)
+
+        #self.__addedListBox.bind("<ButtonRelease-1>", self.aListBoxChanged)
+        #self.__addedListBox.bind("<KeyRelease-Up>", self.aListBoxChanged)
+        #self.__addedListBox.bind("<KeyRelease-Down>", self.aListBoxChanged)
 
         self.__selecteds = {"availableList": "",
                             "addedList": ""}
@@ -451,9 +459,16 @@ class JukeBox:
             self.__panelsFrames[-1]["selected"]  = data
             self.__panelsFrames[-1]["scrollbar"] = scrollBar
 
-            self.__panelsFrames[-1]["listbox"].bind("<ButtonRelease-1>", self.__changeDataListBox)
-            self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Up>", self.__changeDataListBox)
-            self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Down>", self.__changeDataListBox)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__panelsFrames[-1]["listbox"], "<ButtonRelease-1>", self.__changeDataListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__panelsFrames[-1]["listbox"], "<KeyRelease-Up>"  , self.__changeDataListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__panelsFrames[-1]["listbox"], "<KeyRelease-Down>", self.__changeDataListBox,
+                                                                1)
+
+            #self.__panelsFrames[-1]["listbox"].bind("<ButtonRelease-1>", self.__changeDataListBox)
+            #self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Up>", self.__changeDataListBox)
+            #self.__panelsFrames[-1]["listbox"].bind("<KeyRelease-Down>", self.__changeDataListBox)
 
 
         self.__setButtonsAndErros()

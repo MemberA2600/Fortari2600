@@ -233,8 +233,13 @@ class SnowFlakes:
                 self.__numOfLines.pack_propagate(False)
                 self.__numOfLines.pack(fill=X, side=TOP, anchor=N)
 
-                self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
-                self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
+                #self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
 
                 text = self.__dictionaries.getWordFromCurrentLanguage("container")
                 if text.endswith(":") == False: text = text + ":"
@@ -330,9 +335,16 @@ class SnowFlakes:
                 self.__button.pack(side=TOP, anchor=N)
 
             if num < 3:
-                l.bind("<ButtonRelease-1>", self.__changeSelected)
-                l.bind("<KeyRelease-Up>", self.__changeSelected)
-                l.bind("<KeyRelease-Down>", self.__changeSelected)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+
+                #l.bind("<ButtonRelease-1>", self.__changeSelected)
+                #l.bind("<KeyRelease-Up>", self.__changeSelected)
+                #l.bind("<KeyRelease-Down>", self.__changeSelected)
 
         if self.__data[3] == "#":
            self.__listBoxes[0]["selected"] = self.__listBoxes[0]["dataList"][0].split("::")[1]

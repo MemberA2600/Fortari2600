@@ -49,7 +49,8 @@ class VisualLoaderFrame:
                                  )
 
         self.__NameEntry.pack(side=LEFT, anchor=E, fill=BOTH)
-        self.__NameEntry.bind("<KeyRelease>", bindedFunc)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__NameEntry, "<KeyRelease>", bindedFunc, 1)
+        #self.__NameEntry.bind("<KeyRelease>", bindedFunc)
 
         self.__buttons = Frame(self.__subFrame, height=ten,
                                              bg=self.__loader.colorPalettes.getColor("window"))

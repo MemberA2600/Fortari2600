@@ -128,8 +128,13 @@ class DayTime:
                 self.__xConst.pack_propagate(False)
                 self.__xConst.pack(fill=BOTH, side=TOP, anchor=N)
 
-                self.__xConst.bind("<KeyRelease>", self.__changeConst)
-                self.__xConst.bind("<FocusOut>", self.__changeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xConst, "<KeyRelease>",
+                                                                    self.__changeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xConst, "<FocusOut>",
+                                                                    self.__changeConst, 1)
+
+                #self.__xConst.bind("<KeyRelease>", self.__changeConst)
+                #self.__xConst.bind("<FocusOut>", self.__changeConst)
 
                 self.__varButton = Radiobutton(f, width=99999,
                                                  text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
@@ -200,8 +205,13 @@ class DayTime:
                 self.__spriteSpeed1.pack_propagate(False)
                 self.__spriteSpeed1.pack(fill=BOTH, side=TOP, anchor=N)
 
-                self.__spriteSpeed1.bind("<KeyRelease>", self.__changeConst)
-                self.__spriteSpeed1.bind("<FocusOut>", self.__changeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSpeed1, "<KeyRelease>",
+                                                                    self.__changeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSpeed1, "<FocusOut>",
+                                                                    self.__changeConst, 1)
+
+                #self.__spriteSpeed1.bind("<KeyRelease>", self.__changeConst)
+                #self.__spriteSpeed1.bind("<FocusOut>", self.__changeConst)
 
                 l = Label(f,
                           text=self.__dictionaries.getWordFromCurrentLanguage("cloud") + ":",
@@ -225,8 +235,13 @@ class DayTime:
                 self.__spriteSpeed2.pack_propagate(False)
                 self.__spriteSpeed2.pack(fill=BOTH, side=TOP, anchor=N)
 
-                self.__spriteSpeed2.bind("<KeyRelease>", self.__changeConst)
-                self.__spriteSpeed2.bind("<FocusOut>", self.__changeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSpeed2, "<KeyRelease>",
+                                                                    self.__changeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSpeed2, "<FocusOut>",
+                                                                    self.__changeConst, 1)
+
+                #self.__spriteSpeed2.bind("<KeyRelease>", self.__changeConst)
+                #self.__spriteSpeed2.bind("<FocusOut>", self.__changeConst)
 
         if self.isItNum(self.__data[3]):
            self.__constOrVar.set(1)
@@ -270,9 +285,16 @@ class DayTime:
             self.__data[num + 3] = self.__listBoxes[num]["selected"]
 
         for num in range(0,4):
-            self.__listBoxes[num]["listBox"].bind("<ButtonRelease-1>", self.__changeListBox)
-            self.__listBoxes[num]["listBox"].bind("<KeyRelease-Up>", self.__changeListBox)
-            self.__listBoxes[num]["listBox"].bind("<KeyRelease-Down>", self.__changeListBox)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listBox"], "<ButtonRelease-1>", self.__changeListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listBox"], "<KeyRelease-Up>"  , self.__changeListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listBox"], "<KeyRelease-Down>", self.__changeListBox,
+                                                                1)
+
+            #self.__listBoxes[num]["listBox"].bind("<ButtonRelease-1>", self.__changeListBox)
+            #self.__listBoxes[num]["listBox"].bind("<KeyRelease-Up>", self.__changeListBox)
+            #self.__listBoxes[num]["listBox"].bind("<KeyRelease-Down>", self.__changeListBox)
 
         self.__spriteSpeed1Val.set(self.__data[7])
         self.__spriteSpeed2Val.set(self.__data[8])

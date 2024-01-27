@@ -42,5 +42,8 @@ class RobotFrameLabelEntry:
         self.entry.pack_propagate()
         self.entry.pack(side=TOP, anchor=N, fill=BOTH)
 
-        self.entry.bind("<KeyRelease>", checker)
-        self.entry.bind("<FocusOut>", checker)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.entry, "<KeyRelease>", checker, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.entry, "<FocusOut>"  , checker, 1)
+
+        #elf.entry.bind("<KeyRelease>", checker)
+        #self.entry.bind("<FocusOut>", checker)

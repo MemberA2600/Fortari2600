@@ -346,11 +346,17 @@ class TwoIconsTwoLines:
         self.__maxVarEntry2.pack_propagate(False)
         self.__maxVarEntry2.pack(fill=X, side=TOP, anchor=N)
 
-        self.__maxVarEntry1.bind("<KeyRelease>", self.__changeMaxEntry1)
-        self.__maxVarEntry1.bind("<FocusOut>", self.__changeMaxEntry1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry1, "<KeyRelease>", self.__changeMaxEntry1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry1, "<FocusOut>"  , self.__changeMaxEntry1, 1)
 
-        self.__maxVarEntry2.bind("<KeyRelease>", self.__changeMaxEntry2)
-        self.__maxVarEntry2.bind("<FocusOut>", self.__changeMaxEntry2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry2, "<KeyRelease>", self.__changeMaxEntry2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry2, "<FocusOut>"  , self.__changeMaxEntry2, 1)
+
+        #self.__maxVarEntry1.bind("<KeyRelease>", self.__changeMaxEntry1)
+        #self.__maxVarEntry1.bind("<FocusOut>", self.__changeMaxEntry1)
+
+        #self.__maxVarEntry2.bind("<KeyRelease>", self.__changeMaxEntry2)
+        #self.__maxVarEntry2.bind("<FocusOut>", self.__changeMaxEntry2)
 
         self.__dotMode2 = IntVar()
         self.__dotModeButton2 = Checkbutton(self.__frame5, width=99999,
@@ -367,13 +373,21 @@ class TwoIconsTwoLines:
         self.__dotModeButton2.pack_propagate(False)
         self.__dotModeButton2.pack(fill=X, side=TOP, anchor=N)
 
-        self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
-        self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
-        self.__picListBox1.bind("<KeyRelease-Down>", self.__changedPicture1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<ButtonRelease-1>", self.__changedPicture1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<KeyRelease-Up>"  , self.__changedPicture1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1, "<KeyRelease-Down>", self.__changedPicture1, 1)
 
-        self.__picListBox2.bind("<ButtonRelease-1>", self.__changedPicture2)
-        self.__picListBox2.bind("<KeyRelease-Up>", self.__changedPicture2)
-        self.__picListBox2.bind("<KeyRelease-Down>", self.__changedPicture2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox2, "<ButtonRelease-1>", self.__changedPicture2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox2, "<KeyRelease-Up>"  , self.__changedPicture2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox2, "<KeyRelease-Down>", self.__changedPicture2, 1)
+
+        #self.__picListBox1.bind("<ButtonRelease-1>", self.__changedPicture1)
+        #self.__picListBox1.bind("<KeyRelease-Up>", self.__changedPicture1)
+        #self.__picListBox1.bind("<KeyRelease-Down>", self.__changedPicture1)
+
+        #self.__picListBox2.bind("<ButtonRelease-1>", self.__changedPicture2)
+        #self.__picListBox2.bind("<KeyRelease-Up>", self.__changedPicture2)
+        #self.__picListBox2.bind("<KeyRelease-Down>", self.__changedPicture2)
 
         from NUSIZFrame import NUSIZFrame
 
@@ -654,13 +668,21 @@ class TwoIconsTwoLines:
             self.__dataVarListBox1.insert(END, item)
             self.__dataVarListBox2.insert(END, item)
 
-        self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
-        self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<ButtonRelease-1>", self.__changedDataVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<KeyRelease-Up>"  , self.__changedDataVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox1, "<KeyRelease-Down>", self.__changedDataVar1, 1)
 
-        self.__dataVarListBox2.bind("<ButtonRelease-1>", self.__changedDataVar2)
-        self.__dataVarListBox2.bind("<KeyRelease-Up>", self.__changedDataVar2)
-        self.__dataVarListBox2.bind("<KeyRelease-Down>", self.__changedDataVar2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<ButtonRelease-1>", self.__changedDataVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<KeyRelease-Up>"  , self.__changedDataVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox2, "<KeyRelease-Down>", self.__changedDataVar2, 1)
+
+        #self.__dataVarListBox1.bind("<ButtonRelease-1>", self.__changedDataVar1)
+        #self.__dataVarListBox1.bind("<KeyRelease-Up>", self.__changedDataVar1)
+        #self.__dataVarListBox1.bind("<KeyRelease-Down>", self.__changedDataVar1)
+
+        #self.__dataVarListBox2.bind("<ButtonRelease-1>", self.__changedDataVar2)
+        #self.__dataVarListBox2.bind("<KeyRelease-Up>", self.__changedDataVar2)
+        #self.__dataVarListBox2.bind("<KeyRelease-Down>", self.__changedDataVar2)
 
         if self.__data[12] == "#":
            self.__data[12] = self.__dataVars[0].split("::")[1]
@@ -858,11 +880,17 @@ class TwoIconsTwoLines:
         self.__indexEntry2.pack_propagate(False)
         self.__indexEntry2.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
-        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
 
-        self.__indexEntry2.bind("<KeyRelease>", self.__changeIndexAndMirroring2)
-        self.__indexEntry2.bind("<FocusOut>", self.__changeIndexAndMirroring2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry2, "<KeyRelease>", self.__changeIndexAndMirroring2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry2, "<KeyRelease>", self.__changeIndexAndMirroring2, 1)
+
+        #self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+
+        #self.__indexEntry2.bind("<KeyRelease>", self.__changeIndexAndMirroring2)
+        #self.__indexEntry2.bind("<FocusOut>", self.__changeIndexAndMirroring2)
 
         self.__lastBits = ["%00000000", "%00000000"]
 
@@ -997,7 +1025,23 @@ class TwoIconsTwoLines:
            self.__picVarListBox2.select_set(selector)
            self.__picVarListBox2.yview(selector)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<ButtonRelease-1>", self.__changedColorVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<<KeyRelease-Up>" , self.__changedColorVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>", self.__changedColorVar1, 1)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<ButtonRelease-1>", self.__changedColorVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<<KeyRelease-Up>" , self.__changedColorVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<KeyRelease-Down>", self.__changedColorVar2, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<ButtonRelease-1>", self.__changedPicVar1  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<<KeyRelease-Up>" , self.__changedPicVar1  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<KeyRelease-Down>", self.__changedPicVar1  , 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<ButtonRelease-1>", self.__changedPicVar2  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<<KeyRelease-Up>" , self.__changedPicVar2  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<KeyRelease-Down>", self.__changedPicVar2  , 1)
+
+        """
         self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changedColorVar1)
         self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changedColorVar1)
         self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changedColorVar1)
@@ -1013,6 +1057,7 @@ class TwoIconsTwoLines:
         self.__picVarListBox2.bind("<ButtonRelease-1>", self.__changedPicVar2)
         self.__picVarListBox2.bind("<KeyRelease-Up>", self.__changedPicVar2)
         self.__picVarListBox2.bind("<KeyRelease-Down>", self.__changedPicVar2)
+        """
 
         self.__rightVal = IntVar()
         self.__right = Checkbutton(self.__frame7, width=99999,

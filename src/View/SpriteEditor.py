@@ -153,11 +153,17 @@ class SpriteEditor:
         self.__index = 0
         self.__numOfFrames = 1
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>"            , self.drawMode, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         self.__mainFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
                                  height=
@@ -386,8 +392,11 @@ class SpriteEditor:
         self.__pfBox = SpriteEditorListBox(self.__loader, self.__listBoxFrame, self.__miniFont)
         self.__bgBox = SpriteEditorListBox(self.__loader, self.__listBoxFrame, self.__miniFont)
 
-        self.__pfBox.getListBox().bind("<Double-Button-1>", self.checkIfOther1)
-        self.__bgBox.getListBox().bind("<Double-Button-1>", self.checkIfOther2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__pfBox.getListBox(), "<Double-Button-1>", self.checkIfOther1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__pfBox.getListBox(), "<Double-Button-1>", self.checkIfOther1, 2)
+
+        #self.__pfBox.getListBox().bind("<Double-Button-1>", self.checkIfOther1)
+        #self.__bgBox.getListBox().bind("<Double-Button-1>", self.checkIfOther2)
 
         self.fillBoth()
 
@@ -696,8 +705,9 @@ class SpriteEditor:
             e1 = None
             e2 = None
 
-
-            self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease>", self.checkEntry,
+                                                                1)
+            #self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             if self.alreadyDone == False:
                 self.__soundPlayer.playSound("Pong")
@@ -717,7 +727,9 @@ class SpriteEditor:
                 eV1 = self.__colorEntryVar[str(Y)]
                 e1 = self.__colorEntries[str(Y)]
 
-            e1.bind("<FocusOut>", self.forceReDraw)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, e1, "<FocusOut>", self.forceReDraw,
+                                                                1)
+            #e1.bind("<FocusOut>", self.forceReDraw)
             eV1.set(self.__colorTable[Y])
             self.colorEntry(e1, eV1.get())
 
@@ -735,10 +747,16 @@ class SpriteEditor:
                     b = Button(f, name=(str(X) + "," + str(Y)),
                                relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
 
-                    b.bind("<Button-1>", self.clickedCommon)
-                    b.bind("<Button-3>", self.clickedCommon)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>",
+                                                                        self.clickedCommon, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
+                                                                        self.clickedCommon, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
+                                                                        self.enterCommon, 1)
+                    #b.bind("<Button-1>", self.clickedCommon)
+                    #b.bind("<Button-3>", self.clickedCommon)
 
-                    b.bind("<Enter>", self.enterCommon)
+                    #b.bind("<Enter>", self.enterCommon)
                     b.pack_propagate(False)
                     b.pack(fill=BOTH)
 

@@ -27,10 +27,10 @@ leave;[=>];[common];command;None;None;[overscan];None;None;None;False
 min;[minimalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 max;[maximalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
-or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];None;None;True
+or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];write;None;True
 pow;[power **];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
-rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];None;None;False
-rem;[remainder %];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];None;None;True
+rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];write;None;False
+rem;[remainder %];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 resetGame;[resG];[common];command;None;None;[overscan];None;None;None;False
 resetScreen;[resS];[common];command;None;None;[overscan];None;None;None;False
 return;[<=];[common];command;None;brackets;[subroutines];[number|variable|stringConst];read;None;False
@@ -42,6 +42,7 @@ set;[=];[common];command;None;brackets;[];[variable number|variable|stringConst]
 setAll;[setA =A];[common];command;None;brackets;[];[array number|variable|stringConst];write;None;False
 shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
+sin;[sinewave];[common];command;None;brackets;[];[variable number|variable|stringConst {number|variable|stringConst}];write;None;False
 sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False

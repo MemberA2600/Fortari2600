@@ -50,5 +50,8 @@ class SongInput:
         self.__entry.pack_propagate(False)
         self.__entry.pack(fill=BOTH)
 
-        self.__entry.bind("<FocusIn>", focusIn)
-        self.__entry.bind("<FocusOut>", focusOut)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>", focusOut, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusIn>" , focusIn, 1)
+
+        #self.__entry.bind("<FocusIn>", focusIn)
+        #self.__entry.bind("<FocusOut>", focusOut)

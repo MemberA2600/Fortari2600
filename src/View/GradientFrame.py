@@ -144,10 +144,15 @@ class GradientFrame:
         self.__gradButton4.pack_propagate(False)
         self.__gradButton4.pack(fill=Y, side=LEFT, anchor=E)
 
-        self.__gradButton1.bind("<ButtonRelease-1>", self.XXX)
-        self.__gradButton2.bind("<ButtonRelease-1>", self.XXX)
-        self.__gradButton3.bind("<ButtonRelease-1>", self.XXX)
-        self.__gradButton4.bind("<ButtonRelease-1>", self.XXX)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__gradButton1, "<ButtonRelease-1>", self.XXX, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__gradButton2, "<ButtonRelease-1>", self.XXX, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__gradButton3, "<ButtonRelease-1>", self.XXX, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__gradButton4, "<ButtonRelease-1>", self.XXX, 1)
+
+        #self.__gradButton1.bind("<ButtonRelease-1>", self.XXX)
+        #self.__gradButton2.bind("<ButtonRelease-1>", self.XXX)
+        #self.__gradButton3.bind("<ButtonRelease-1>", self.XXX)
+        #self.__gradButton4.bind("<ButtonRelease-1>", self.XXX)
 
         self.__buttons = [
             self.__gradButton1, self.__gradButton2,

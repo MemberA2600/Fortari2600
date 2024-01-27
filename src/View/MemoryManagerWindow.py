@@ -98,7 +98,10 @@ class MemoryManagerWindow:
                         text = name, font = self.__smallFont, width=999999999)
             b.pack_propagate(False)
             b.pack(fill=BOTH)
-            b.bind("<Button-1>", self.getNameAndChange)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.getNameAndChange, 1)
+
+            # b.bind("<Button-1>", self.getNameAndChange)
             self.__bankButtons[num] = [f, b]
 
         self.__variableHeader = Label(self.__bankChangerFrame, bg=self.__loader.colorPalettes.getColor("window"),
@@ -347,8 +350,11 @@ class MemoryManagerWindow:
         self.__varNameEntry.pack_propagate(False)
         self.__varNameEntry.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__varNameEntry.bind("<KeyRelease>", self.checkIfValid)
-        self.__varNameEntry.bind("<FocusOut>", self.checkIfValid)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varNameEntry, "<KeyRelease>", self.checkIfValid, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varNameEntry, "<FocusOut>"  , self.checkIfValid, 1)
+
+        #self.__varNameEntry.bind("<KeyRelease>", self.checkIfValid)
+        #self.__varNameEntry.bind("<FocusOut>", self.checkIfValid)
 
         self.__varError = StringVar()
         self.__varErrorLabel = Label(self.__varNameFrame, width=9999999,
@@ -385,9 +391,13 @@ class MemoryManagerWindow:
         self.__typeListBox.pack_propagate(False)
         self.__typeListBox.pack(fill=BOTH)
 
-        self.__typeListBox.bind("<ButtonRelease-1>", self.__changeVarType)
-        self.__typeListBox.bind("<KeyRelease-Up>", self.__changeVarType)
-        self.__typeListBox.bind("<KeyRelease-Down>", self.__changeVarType)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__typeListBox, "<ButtonRelease-1>", self.__changeVarType, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__typeListBox, "<KeyRelease-Up>", self.__changeVarType, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__typeListBox, "<KeyRelease-Down>", self.__changeVarType, 1)
+
+        #self.__typeListBox.bind("<ButtonRelease-1>", self.__changeVarType)
+        #self.__typeListBox.bind("<KeyRelease-Up>", self.__changeVarType)
+        #self.__typeListBox.bind("<KeyRelease-Down>", self.__changeVarType)
 
         self.__varTypes = self.__virtualMemory.types
 
@@ -621,8 +631,11 @@ class MemoryManagerWindow:
         self.__arrNameEntry.pack_propagate(False)
         self.__arrNameEntry.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.__arrNameEntry.bind("<KeyRelease>", self.checkIfValid)
-        self.__arrNameEntry.bind("<FocusOut>", self.checkIfValid)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__arrNameEntry, "<KeyRelease>", self.checkIfValid, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__arrNameEntry, "<FocusOut>"  , self.checkIfValid, 1)
+
+        #self.__arrNameEntry.bind("<KeyRelease>", self.checkIfValid)
+        #self.__arrNameEntry.bind("<FocusOut>", self.checkIfValid)
 
         self.__arrError = StringVar()
         self.__arrErrorLabel = Label(self.__arrNameFrame, width=9999999,
@@ -794,8 +807,11 @@ class MemoryManagerWindow:
         self.__sb2.config(command=self.__arrListBox2.yview)
         self.__arrListBox2.pack(side=LEFT, anchor=E, fill = BOTH)
 
-        self.__arrListBox1.bind("<Button-1>", self.__removeSelect)
-        self.__arrListBox2.bind("<Button-1>", self.__removeSelect)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__arrListBox1, "<Button-1>", self.__removeSelect, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__arrListBox2, "<Button-1>", self.__removeSelect, 1)
+
+        #self.__arrListBox1.bind("<Button-1>", self.__removeSelect)
+        #self.__arrListBox2.bind("<Button-1>", self.__removeSelect)
 
         self.__mainButtons = Frame(self.__buttonsFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                     width=((self.__topLevel.getTopLevelDimensions()[0] -

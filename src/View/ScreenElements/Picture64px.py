@@ -112,9 +112,17 @@ class Picture64px:
            self.__setterBase.changeErrorState("no64px", True)
            self.__varListBox.config(state = DISABLED)
         else:
-            self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
-            self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
-            self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.clickedListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<<KeyRelease-Up>", self.clickedListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.clickedListBox,
+                                                                1)
+
+            #self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+            #self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+            #self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
             self.__tempSet = self.__varList[0]
 
@@ -408,20 +416,33 @@ class Picture64px:
 
         ]
 
-        self.__indexEntry.bind("<FocusOut>", self.__chamgeConst)
-        self.__indexEntry.bind("<KeyRelease>", self.__chamgeConst)
-        self.__heightIndexEntry.bind("<FocusOut>", self.__chamgeConst)
-        self.__heightIndexEntry.bind("<KeyRelease>", self.__chamgeConst)
-        self.__varListBox1.bind("<ButtonRelease-1>", self.clickedListBox1)
-        self.__varListBox2.bind("<ButtonRelease-1>", self.clickedListBox1)
-        self.__varListBox1.bind("<KeyRelease-Up>", self.clickedListBox1)
-        self.__varListBox1.bind("<KeyRelease-Down>", self.clickedListBox1)
-        self.__varListBox2.bind("<KeyRelease-Up>", self.clickedListBox1)
-        self.__varListBox2.bind("<KeyRelease-Down>", self.clickedListBox1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry      , "<FocusOut>"       , self.__chamgeConst  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry      , "<KeyRelease>"     , self.__chamgeConst  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightIndexEntry, "<KeyRelease>"     , self.__chamgeConst  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightIndexEntry, "<KeyRelease>"     , self.__chamgeConst  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox1     , "<ButtonRelease-1>", self.clickedListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox2     , "<ButtonRelease-1>", self.clickedListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox1     , "<KeyRelease-Up>"  , self.clickedListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox1     , "<KeyRelease-Down>", self.clickedListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox2     , "<KeyRelease-Up>"  , self.clickedListBox1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox2     , "<KeyRelease-Down>", self.clickedListBox1, 1)
 
+        #self.__indexEntry.bind("<FocusOut>", self.__chamgeConst)
+        #self.__indexEntry.bind("<KeyRelease>", self.__chamgeConst)
+        #self.__heightIndexEntry.bind("<FocusOut>", self.__chamgeConst)
+        #self.__heightIndexEntry.bind("<KeyRelease>", self.__chamgeConst)
+        #self.__varListBox1.bind("<ButtonRelease-1>", self.clickedListBox1)
+        #self.__varListBox2.bind("<ButtonRelease-1>", self.clickedListBox1)
+        #self.__varListBox1.bind("<KeyRelease-Up>", self.clickedListBox1)
+        #self.__varListBox1.bind("<KeyRelease-Down>", self.clickedListBox1)
+        #self.__varListBox2.bind("<KeyRelease-Up>", self.clickedListBox1)
+        #self.__varListBox2.bind("<KeyRelease-Down>", self.clickedListBox1)
 
-        self.__heightEntry.bind("<FocusOut>", self.heightConstStuff)
-        self.__heightEntry.bind("<KeyRelease>", self.heightConstStuff)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<FocusOut>"  , self.heightConstStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<KeyRelease>", self.heightConstStuff, 1)
+
+        #self.__heightEntry.bind("<FocusOut>", self.heightConstStuff)
+        #self.__heightEntry.bind("<KeyRelease>", self.heightConstStuff)
 
         if wasHash == True:
            self.__heightVar.set(str(self.__maxH))

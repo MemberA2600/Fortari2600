@@ -31,8 +31,11 @@ class MenuButton:
                                command=self.__function,
                                state=DISABLED)
 
-        self.__button.bind("<Enter>", self.__functionEnter)
-        self.__button.bind("<Leave>", self.__functionLeave)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__button, "<Enter>", self.__functionEnter, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__button, "<Leave>", self.__functionLeave, 0)
+
+ #        self.__button.bind("<Enter>", self.__functionEnter)
+ #       self.__button.bind("<Leave>", self.__functionLeave)
         self.__button.config(bg=self.__loader.colorPalettes.getColor("window"))
 
         self.__button.config(image = self.__img)

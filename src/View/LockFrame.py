@@ -38,7 +38,7 @@ class LockFrame:
         self.setButtonFont()
 
         self.__button.pack(side=BOTTOM, fill=X, anchor=SW)
-
+        self.__button.un
 
         self.__locks = []
         self.saveLocks()

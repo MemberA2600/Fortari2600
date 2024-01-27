@@ -199,7 +199,10 @@ class BigSprite:
                                               activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=1
                                               )
-            self.__options[-1]["constant"].bind("<ButtonRelease-1>", self.__changeSettings)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__options[-1]["constant"], "<ButtonRelease-1>", self.__changeSettings,
+                                                                1)
+
+            #self.__options[-1]["constant"].bind("<ButtonRelease-1>", self.__changeSettings)
             self.__options[-1]["constant"].pack_propagate(False)
             self.__options[-1]["constant"].pack(fill=X, side=TOP, anchor=N)
 
@@ -214,7 +217,10 @@ class BigSprite:
                                               activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=2
                                               )
-            self.__options[-1]["variable"].bind("<ButtonRelease-1>", self.__changeSettings)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__options[-1]["variable"], "<ButtonRelease-1>", self.__changeSettings,
+                                                                1)
+            #self.__options[-1]["variable"].bind("<ButtonRelease-1>", self.__changeSettings)
             self.__options[-1]["variable"].pack_propagate(False)
 
         self.__labelXXX = Label(self.__frames[0],
@@ -331,12 +337,22 @@ class BigSprite:
            self.__mirrored1.set(0)
            self.__nusizVal.set("0")
 
-        self.__spriteSettingsVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
-        self.__spriteSettingsVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
-        self.__spriteSettingsVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSettingsVarListBox, "<ButtonRelease-1>", self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSettingsVarListBox, "<KeyRelease-Up>"  , self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSettingsVarListBox, "<KeyRelease-Down>", self.__changeListBoxItem, 1)
 
-        self.__spriteSettingsEntry.bind("<KeyRelease>", self.__changedSpriteConst)
-        self.__spriteSettingsEntry.bind("<FocusOut>", self.__changedSpriteConst)
+        #self.__spriteSettingsVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
+        #self.__spriteSettingsVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
+        #self.__spriteSettingsVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSettingsEntry, "<KeyRelease>", self.__changedSpriteConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__spriteSettingsEntry, "<FocusOut>"  , self.__changedSpriteConst, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nusizEntry, "<KeyRelease>", self.__changedSpriteConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nusizEntry, "<FocusOut>"  , self.__changedSpriteConst, 1)
+
+        #self.__spriteSettingsEntry.bind("<KeyRelease>", self.__changedSpriteConst)
+        #self.__spriteSettingsEntry.bind("<FocusOut>", self.__changedSpriteConst)
         self.__nusizEntry.bind("<KeyRelease>", self.__changedSpriteConst)
         self.__nusizEntry.bind("<FocusOut>", self.__changedSpriteConst)
 
@@ -392,9 +408,13 @@ class BigSprite:
            self.__constantHex.changeState(DISABLED)
            self.__options[1]["option"].set(2)
 
-        self.__backColorListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
-        self.__backColorListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
-        self.__backColorListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__backColorListBox, "<ButtonRelease-1>", self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__backColorListBox, "<KeyRelease-Up>"  , self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__backColorListBox, "<KeyRelease-Down>", self.__changeListBoxItem, 1)
+
+        #self.__backColorListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
+        #self.__backColorListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
+        #self.__backColorListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
 
         self.__xVal   = StringVar()
 
@@ -432,11 +452,19 @@ class BigSprite:
         for var in self.__byteVars:
             self.__xSettingsVarListBox.insert(END, var)
 
-        self.__xSettingsVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
-        self.__xSettingsVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
-        self.__xSettingsVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
-        self.__xEntry.bind("<KeyRelease>", self.__changeXEntry)
-        self.__xEntry.bind("<FocusOut>", self.__changeXEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xSettingsVarListBox, "<ButtonRelease-1>", self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xSettingsVarListBox, "<KeyRelease-Up>"  , self.__changeListBoxItem, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xSettingsVarListBox, "<KeyRelease-Down>", self.__changeListBoxItem, 1)
+
+        #self.__xSettingsVarListBox.bind("<ButtonRelease-1>", self.__changeListBoxItem)
+        #self.__xSettingsVarListBox.bind("<KeyRelease-Up>", self.__changeListBoxItem)
+        #self.__xSettingsVarListBox.bind("<KeyRelease-Down>", self.__changeListBoxItem)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xEntry, "<KeyRelease>", self.__changeXEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__xEntry, "<FocusOut>"  , self.__changeXEntry, 1)
+
+        #self.__xEntry.bind("<KeyRelease>", self.__changeXEntry)
+        #self.__xEntry.bind("<FocusOut>", self.__changeXEntry)
 
         self.__lastXSelected = [self.__byteVars[0].split("::")[1]]
 
@@ -594,15 +622,25 @@ class BigSprite:
 
         self.__modeOption.set(modes.index(mode)+1)
 
-        self.__heightEntry.bind("<KeyRelease>", self.__changeConstEntry)
-        self.__heightEntry.bind("<FocusOut>", self.__changeConstEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<KeyRelease>", self.__changeConstEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__heightEntry, "<FocusOut>"  , self.__changeConstEntry, 1)
 
-        self.__lineHeightEntry.bind("<KeyRelease>", self.__changeConstEntry)
-        self.__lineHeightEntry.bind("<FocusOut>", self.__changeConstEntry)
+        #self.__heightEntry.bind("<KeyRelease>", self.__changeConstEntry)
+        #self.__heightEntry.bind("<FocusOut>", self.__changeConstEntry)
 
-        self.__varListBox.bind("<ButtonRelease-1>", self.__changeSprite)
-        self.__varListBox.bind("<KeyRelease-Up>", self.__changeSprite)
-        self.__varListBox.bind("<KeyRelease-Down>", self.__changeSprite)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineHeightEntry, "<KeyRelease>", self.__changeConstEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineHeightEntry, "<FocusOut>"  , self.__changeConstEntry, 1)
+
+        #self.__lineHeightEntry.bind("<KeyRelease>", self.__changeConstEntry)
+        #self.__lineHeightEntry.bind("<FocusOut>", self.__changeConstEntry)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.__changeSprite, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Up>"  , self.__changeSprite, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.__changeSprite, 1)
+
+        #self.__varListBox.bind("<ButtonRelease-1>", self.__changeSprite)
+        #self.__varListBox.bind("<KeyRelease-Up>", self.__changeSprite)
+        #self.__varListBox.bind("<KeyRelease-Down>", self.__changeSprite)
 
     def __changeSprite(self, event):
         if self.__lastSprite != self.__listOfPictures[self.__varListBox.curselection()[0]]:

@@ -146,9 +146,14 @@ class ScreenTopTester:
                     )
             entry.pack_propagate(False)
             entry.pack(side=TOP, anchor=N, fill=BOTH)
-            entry.bind("<KeyPress>", self.startCounter)
-            entry.bind("<KeyRelease>", self.checkEntry)
-            entry.bind("<FocusOut>", self.checkEntry)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<KeyPress>"  , self.startCounter, 2)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<KeyRelease>", self.checkEntry  , 2)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<FocusOut>"  , self.checkEntry  , 2)
+
+            #entry.bind("<KeyPress>", self.startCounter)
+            #entry.bind("<KeyRelease>", self.checkEntry)
+            #entry.bind("<FocusOut>", self.checkEntry)
 
             self.__lines[num]["entry"] = entry
             self.__lines[num]["value"] = entryVal

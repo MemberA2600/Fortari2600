@@ -38,11 +38,17 @@ class BlinkingText:
 
         self.__topLevelWindow = self.__loader.topLevels[0]
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>"            , self.drawMode, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         itWasHash = False
         if "#" in data:
@@ -326,8 +332,12 @@ class BlinkingText:
                     self.__speed.pack_propagate(False)
                     self.__speed.pack(fill=X, side=TOP, anchor=N)
 
-                    self.__speed.bind("<FocusOut>", self.__chamgeConst)
-                    self.__speed.bind("<KeyRelease>", self.__chamgeConst)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speed, "<KeyRelease>",
+                                                                        self.__chamgeConst, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speed, "<FocusOut>",
+                                                                        self.__chamgeConst, 1)
+                    #self.__speed.bind("<FocusOut>", self.__chamgeConst)
+                    #self.__speed.bind("<KeyRelease>", self.__chamgeConst)
 
             elif num > 2:
                 l = Label(f, text=text[3],
@@ -373,9 +383,17 @@ class BlinkingText:
 
         for num in range(0, len(self.__listBoxes)):
             listBox = self.__listBoxes[num]["listBox"]
-            listBox.bind("<ButtonRelease-1>", self.__changeListBox)
-            listBox.bind("<KeyRelease-Up>", self.__changeListBox)
-            listBox.bind("<KeyRelease-Down>", self.__changeListBox)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<ButtonRelease-1>", self.__changeListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<KeyRelease-Up>"  , self.__changeListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<KeyRelease-Down>", self.__changeListBox,
+                                                                1)
+
+            #listBox.bind("<ButtonRelease-1>", self.__changeListBox)
+            #listBox.bind("<KeyRelease-Up>", self.__changeListBox)
+            #listBox.bind("<KeyRelease-Down>", self.__changeListBox)
 
         if self.__data[3] == "#": self.__data[3] = self.__listBoxes[0]["dataList"][0].split("::")[1]
         if self.__data[4] == "#": self.__data[4] = self.__listBoxes[1]["dataList"][0].split("::")[1]
@@ -486,9 +504,16 @@ class BlinkingText:
         for listOfButtons in self.__matrixButtons:
             for button in listOfButtons:
                 button.config(state = NORMAL)
-                button.bind("<Button-1>", self.__clicked)
-                button.bind("<Button-3>", self.__clicked)
-                button.bind("<Enter>", self.__enter)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<Button-1>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<Button-3>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<Enter>",
+                                                                    self.__enter, 1)
+                #button.bind("<Button-1>", self.__clicked)
+                #button.bind("<Button-3>", self.__clicked)
+                #button.bind("<Enter>", self.__enter)
 
     def genBottomBottom(self):
         self.__bottomOfBottom = Frame(self.__bottomFrame, height=9999999, width=999999,
@@ -524,8 +549,11 @@ class BlinkingText:
         self.__text.pack_propagate(False)
         self.__text.pack(fill=X, side=TOP, anchor=N)
 
-        self.__text.bind("<FocusOut>", self.__chamgeConstText)
-        self.__text.bind("<KeyRelease>", self.__chamgeConstText)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__text, "<KeyRelease>", self.__chamgeConstText, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__text, "<FocusOut>"  , self.__chamgeConstText, 1)
+
+        #self.__text.bind("<FocusOut>", self.__chamgeConstText)
+        #self.__text.bind("<KeyRelease>", self.__chamgeConstText)
 
         self.__genButton = Button(
             self.__genButtonFrame, width=999999,

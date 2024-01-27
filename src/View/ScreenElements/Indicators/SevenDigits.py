@@ -350,8 +350,11 @@ class SevenDigits:
         self.__digitsEntry.pack_propagate(False)
         self.__digitsEntry.pack(fill=X, side=TOP, anchor=N)
 
-        self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
-        self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__digitsEntry, "<KeyRelease>", self.__changeDigits, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__digitsEntry, "<FocusOut>"  , self.__changeDigits, 1)
+
+        #self.__digitsEntry.bind("<KeyRelease>", self.__changeDigits)
+        #self.__digitsEntry.bind("<FocusOut>", self.__changeDigits)
 
         self.__lastSelecteds = ["", "", "", "", "", "", ""]
 
@@ -380,9 +383,15 @@ class SevenDigits:
         self.__slotButton.pack(fill=X, side=TOP, anchor=N)
 
         for varListBox in self.__varListBoxes:
-            varListBox.bind("<ButtonRelease-1>", self.__changeVar)
-            varListBox.bind("<KeyRelease-Up>", self.__changeVar)
-            varListBox.bind("<KeyRelease-Down>", self.__changeVar)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, varListBox, "<ButtonRelease-1>", self.__changeVar,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, varListBox, "<KeyRelease-Up>", self.__changeVar,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, varListBox, "<KeyRelease-Down>", self.__changeVar,
+                                                                1)
+            #varListBox.bind("<ButtonRelease-1>", self.__changeVar)
+            #varListBox.bind("<KeyRelease-Up>", self.__changeVar)
+            #varListBox.bind("<KeyRelease-Down>", self.__changeVar)
 
         self.__fillDataVarListBoxes(False, True)
 
@@ -490,9 +499,13 @@ class SevenDigits:
         self.__changedFontData(font)
         self.__saveIt = self.__fontOption1.get()
 
-        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFontVar)
-        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFontVar)
-        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFontVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<ButtonRelease-1>", self.__changeFontVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Up>"  , self.__changeFontVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1, "<KeyRelease-Down>", self.__changeFontVar, 1)
+
+        #self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFontVar)
+        #self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFontVar)
+        #self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFontVar)
 
         from GradientFrame import GradientFrame
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame6,
@@ -555,9 +568,13 @@ class SevenDigits:
 
         for item in self.__nibbleVars: self.__colorVarListBox1.insert(END, item)
 
-        self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changeColorVar)
-        self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changeColorVar)
-        self.__colorVarListBox1.bind("<KeyRelease-Down>", self.__changeColorVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<ButtonRelease-1>", self.__changeColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Up>"  , self.__changeColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>", self.__changeColorVar, 1)
+
+        #self.__colorVarListBox1.bind("<ButtonRelease-1>", self.__changeColorVar)
+        #self.__colorVarListBox1.bind("<KeyRelease-Up>", self.__changeColorVar)
+        #self.__colorVarListBox1.bind("<KeyRlease-Down>", self.__changeColorVar)
 
         if self.isItHex(color):
            self.__colorSettings.set(1)

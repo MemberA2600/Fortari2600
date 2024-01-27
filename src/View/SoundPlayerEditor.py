@@ -117,13 +117,21 @@ class SoundPlayerEditor:
         self.__mouseHover     = False
         self.__mouseHoverSave = False
 
-        self.__openButton.bind("<Enter>", self.__mouseEnter)
-        self.__recordButton.bind("<Enter>", self.__mouseEnter)
-        self.__robotButton.bind("<Enter>", self.__mouseEnter)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__openButton  , "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__recordButton, "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__robotButton , "<Enter>", self.__mouseEnter, 1)
 
-        self.__openButton.bind("<Leave>", self.__mouseLeave)
-        self.__recordButton.bind("<Leave>", self.__mouseLeave)
-        self.__robotButton.bind("<Leave>", self.__mouseLeave)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__openButton  , "<Leave>", self.__mouseLeave, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__recordButton, "<Leave>", self.__mouseLeave, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__robotButton , "<Leave>", self.__mouseLeave, 1)
+
+        #self.__openButton.bind("<Enter>", self.__mouseEnter)
+        #self.__recordButton.bind("<Enter>", self.__mouseEnter)
+        #self.__robotButton.bind("<Enter>", self.__mouseEnter)
+
+        #self.__openButton.bind("<Leave>", self.__mouseLeave)
+        #self.__recordButton.bind("<Leave>", self.__mouseLeave)
+        #self.__robotButton.bind("<Leave>", self.__mouseLeave)
 
         self.__middleFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
                                  height= round(hei * 3 ))
@@ -169,8 +177,11 @@ class SoundPlayerEditor:
         self.__lockEntry.pack_propagate(False)
         self.__lockEntry.pack(side= LEFT, fill=BOTH, anchor = W)
 
-        self.__lockEntry.bind("<FocusOut>", self.__checkLock)
-        self.__lockEntry.bind("<KeyRelease>", self.__checkLock)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lockEntry, "<KeyRelease>", self.__checkLock, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lockEntry, "<FocusOut>"  , self.__checkLock, 1)
+
+        #self.__lockEntry.bind("<FocusOut>", self.__checkLock)
+        #self.__lockEntry.bind("<KeyRelease>", self.__checkLock)
 
         self.__checkLock(None)
 
@@ -189,9 +200,11 @@ class SoundPlayerEditor:
         self.__titleEntry.pack_propagate(False)
         self.__titleEntry.pack(fill=BOTH)
 
-        self.__titleEntry.bind("<FocusOut>", self.__checkFileName)
-        self.__titleEntry.bind("<KeyRelease>", self.__checkFileName)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__titleEntry, "<KeyRelease>", self.__checkFileName, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__titleEntry, "<FocusOut>"  , self.__checkFileName, 1)
 
+        #self.__titleEntry.bind("<FocusOut>", self.__checkFileName)
+        #self.__titleEntry.bind("<KeyRelease>", self.__checkFileName)
 
         self.__bottomFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
                                  height= hei)
@@ -231,12 +244,19 @@ class SoundPlayerEditor:
         self.__previewButton.pack_propagate(False)
         self.__previewButton.pack(fill=BOTH)
 
-        self.__playButton.bind("<Enter>", self.__mouseEnter)
-        self.__playButton.bind("<Leave>", self.__mouseLeave)
-        self.__saveButton.bind("<Enter>", self.__mouseEnter)
-        self.__saveButton.bind("<Leave>", self.__mouseLeave)
-        self.__previewButton.bind("<Enter>", self.__mouseEnter)
-        self.__previewButton.bind("<Leave>", self.__mouseLeave)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__playButton   , "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__playButton   , "<Leave>", self.__mouseLeave, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__saveButton   , "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__saveButton   , "<Leave>", self.__mouseLeave, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__previewButton, "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__previewButton, "<Leave>", self.__mouseLeave, 1)
+
+        #self.__playButton.bind("<Enter>", self.__mouseEnter)
+        #self.__playButton.bind("<Leave>", self.__mouseLeave)
+        #self.__saveButton.bind("<Enter>", self.__mouseEnter)
+        #self.__saveButton.bind("<Leave>", self.__mouseLeave)
+        #self.__previewButton.bind("<Enter>", self.__mouseEnter)
+        #self.__previewButton.bind("<Leave>", self.__mouseLeave)
 
         self.__createRainbow()
 
@@ -520,8 +540,11 @@ class SoundPlayerEditor:
         self.__timeEntry.pack_propagate()
         self.__timeEntry.pack(side=TOP, anchor=N, fill=BOTH)
 
-        self.__timeEntry.bind("<KeyRelease>", self.__checkInt)
-        self.__timeEntry.bind("<FocusOut>", self.__checkInt)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__timeEntry, "<KeyRelease>", self.__checkInt, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__timeEntry, "<FocusOut>"  , self.__checkInt, 1)
+
+        #self.__timeEntry.bind("<KeyRelease>", self.__checkInt)
+        #self.__timeEntry.bind("<FocusOut>", self.__checkInt)
 
         w = self.__topLevel.getTopLevelDimensions()[0]
         h = self.__topLevel.getTopLevelDimensions()[1]//5*3
@@ -544,6 +567,9 @@ class SoundPlayerEditor:
                                    command=self.__recordThread)
         self.__micButton.pack_propagate(False)
         self.__micButton.pack(fill=BOTH)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__micButton, "<Enter>", self.__mouseEnter, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__micButton, "<Leave>", self.__mouseLeave, 1)
 
         self.__micButton.bind("<Enter>", self.__mouseEnter)
         self.__micButton.bind("<Leave>", self.__mouseLeave)
@@ -738,8 +764,11 @@ class SoundPlayerEditor:
         self.__textEntry.pack_propagate()
         self.__textEntry.pack(side=TOP, anchor=N, fill=BOTH)
 
-        self.__textEntry.bind("<KeyRelease>", self.__checkInt)
-        self.__textEntry.bind("<FocusOut>", self.__checkInt)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<KeyRelease>", self.__checkInt, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<FocusOut>"  , self.__checkInt, 1)
+
+        #self.__textEntry.bind("<KeyRelease>", self.__checkInt)
+        #self.__textEntry.bind("<FocusOut>", self.__checkInt)
 
         from RoboButton import RoboButton
 

@@ -336,16 +336,30 @@ class Space:
 
            self.__constOrVar.set(2)
 
-        self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
-        self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
-        self.__speedConst.bind("<KeyRelease>", self.__changeEntry)
-        self.__speedConst.bind("<FocusOut>", self.__changeEntry)
-        self.__lineConst.bind("<KeyRelease>", self.__changeEntry)
-        self.__lineConst.bind("<FocusOut>", self.__changeEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Down>", self.__changeSelected, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Down>", self.__changeSelected, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speedConst, "<KeyRelease>", self.__changeEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speedConst, "<FocusOut>"  , self.__changeEntry, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineConst, "<KeyRelease>", self.__changeEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineConst, "<FocusOut>"  , self.__changeEntry, 1)
+
+        #self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
+        #self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
+        #self.__speedConst.bind("<KeyRelease>", self.__changeEntry)
+        #self.__speedConst.bind("<FocusOut>", self.__changeEntry)
+        #self.__lineConst.bind("<KeyRelease>", self.__changeEntry)
+        #self.__lineConst.bind("<FocusOut>", self.__changeEntry)
 
     def __changeEntry(self, event):
         if self.__constOrVar.get() == 2: return

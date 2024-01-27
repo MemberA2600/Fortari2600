@@ -154,9 +154,13 @@ class ChangeFrameColor:
         for var in self.__varList:
             self.__varListBox.insert(END, var)
 
-        self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
-        self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
-        self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Up>"  , self.clickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.clickedListBox, 1)
+
+        #self.__varListBox.bind("<ButtonRelease-1>", self.clickedListBox)
+        #self.__varListBox.bind("<KeyRelease-Up>", self.clickedListBox)
+        #self.__varListBox.bind("<KeyRelease-Down>", self.clickedListBox)
 
         self.__tempSet = self.__varList[0].split("::")[1]
         if "::" in self.__data[2]: self.__tempSet = self.__data[2]

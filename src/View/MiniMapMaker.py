@@ -177,8 +177,11 @@ class MiniMapMaker:
 
         self.__numOfLinesVal.set(str(self.__stepY))
 
-        self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
-        self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<FocusOut>"  , self.__chamgeConst, 1)
+
+        #self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
+        #self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
 
         while self.__layoutFrame.winfo_height() < 2: sleep(0.05)
 
@@ -253,19 +256,30 @@ class MiniMapMaker:
         self.__offsetEntry2.pack_propagate(False)
         self.__offsetEntry2.pack(fill=X, side=TOP, anchor=N)
 
-        self.__offsetEntry1.bind("<FocusOut>", self.__chamgeConst)
-        self.__offsetEntry1.bind("<KeyRelease>", self.__chamgeConst)
-        self.__offsetEntry2.bind("<FocusOut>", self.__chamgeConst)
-        self.__offsetEntry2.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__offsetEntry1, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__offsetEntry2, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__offsetEntry1, "<FocusOut>",   self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__offsetEntry2, "<FocusOut>",   self.__chamgeConst, 1)
+
+        #self.__offsetEntry1.bind("<FocusOut>", self.__chamgeConst)
+        #self.__offsetEntry1.bind("<KeyRelease>", self.__chamgeConst)
+        #self.__offsetEntry2.bind("<FocusOut>", self.__chamgeConst)
+        #self.__offsetEntry2.bind("<KeyRelease>", self.__chamgeConst)
 
         self.__offsetVal1.set(str(self.__indexX))
         self.__offsetVal2.set(str(self.__indexY))
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<<KeyPress-Control_L>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<<KeyPress-Control_R>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "Button-2>"             , self.drawMode, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         self.__controllerButtons = Frame(self.__layoutFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -494,10 +508,15 @@ class MiniMapMaker:
         self.__regionEntryVal1.set("0")
         self.__regionEntryVal2.set("0")
 
-        self.__regionEntry1.bind("<FocusOut>", self.__chamgeConst)
-        self.__regionEntry1.bind("<KeyRelease>", self.__chamgeConst)
-        self.__regionEntry2.bind("<FocusOut>", self.__chamgeConst)
-        self.__regionEntry2.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__regionEntry1, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__regionEntry1, "<FocusOut>"  , self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__regionEntry2, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__regionEntry2, "<FocusOut>"  , self.__chamgeConst, 1)
+
+        #self.__regionEntry1.bind("<FocusOut>", self.__chamgeConst)
+        #self.__regionEntry1.bind("<KeyRelease>", self.__chamgeConst)
+        #self.__regionEntry2.bind("<FocusOut>", self.__chamgeConst)
+        #self.__regionEntry2.bind("<KeyRelease>", self.__chamgeConst)
 
         self.__openSaveFrameTesting3 = Frame(self.__openSaveFrameTesting,
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -586,10 +605,15 @@ class MiniMapMaker:
         self.__dimensionEntryVal1.set(str(self.__matrix[0]))
         self.__dimensionEntryVal2.set(str(self.__matrix[1]))
 
-        self.__dimensionEntry1.bind("<FocusOut>", self.__chamgeConst)
-        self.__dimensionEntry1.bind("<KeyRelease>", self.__chamgeConst)
-        self.__dimensionEntry2.bind("<FocusOut>", self.__chamgeConst)
-        self.__dimensionEntry2.bind("<KeyRelease>", self.__chamgeConst)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dimensionEntry1, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dimensionEntry1, "<FocusOut>"  , self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dimensionEntry2, "<KeyRelease>", self.__chamgeConst, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dimensionEntry2, "<FocusOut>"  , self.__chamgeConst, 1)
+
+        #self.__dimensionEntry1.bind("<FocusOut>", self.__chamgeConst)
+        #self.__dimensionEntry1.bind("<KeyRelease>", self.__chamgeConst)
+        #self.__dimensionEntry2.bind("<FocusOut>", self.__chamgeConst)
+        #self.__dimensionEntry2.bind("<KeyRelease>", self.__chamgeConst)
 
         self.__checkVal = IntVar()
 
@@ -1140,9 +1164,15 @@ class MiniMapMaker:
 
                 self.__matrixButtons[-1].append(b)
 
-                b.bind("<Button-1>", self.__clicked)
-                b.bind("<Button-3>", self.__clicked)
-                b.bind("<Enter>", self.__enter)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
+                                                                    self.__enter, 1)
+                #b.bind("<Button-1>", self.__clicked)
+                #b.bind("<Button-3>", self.__clicked)
+                #b.bind("<Enter>", self.__enter)
 
         self.__createDataMatrix()
         self.__turnOnOff()

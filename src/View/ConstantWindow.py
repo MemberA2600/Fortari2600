@@ -163,8 +163,14 @@ class ConstantWindow:
 
                        self.__entries[name]   = e
                        self.__entryVars[name] = eVar
-                       e.bind("<FocusOut>"  , self.callChanger)
-                       e.bind("<KeyRelease>", self.callChangerDelayed)
+
+                       self.__loader.threadLooper.bindingMaster.addBinding(self, e, "<FocusOut>",
+                                                                           self.callChanger, 1)
+                       self.__loader.threadLooper.bindingMaster.addBinding(self, e, "<KeyRelease>",
+                                                                           self.callChangerDelayed, 1)
+
+                       #e.bind("<FocusOut>"  , self.callChanger)
+                       #e.bind("<KeyRelease>", self.callChangerDelayed)
 
                     else:
                        text = self.__dictionaries.getWordFromCurrentLanguage(self.__listOfColumnNames[subNum])
@@ -246,8 +252,13 @@ class ConstantWindow:
 
                 self.__pageNumE.pack_propagate(False)
                 self.__pageNumE.pack(side=LEFT, anchor=W, fill=BOTH)
-                self.__pageNumE.bind("<FocusOut>", self.pageNumChanged)
-                self.__pageNumE.bind("<KeyRelease>", self.pageNumChanged)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__pageNumE, "<KeyRelease>",
+                                                                    self.pageNumChanged, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__pageNumE, "<FocusOut>",
+                                                                    self.pageNumChanged, 1)
+                #self.__pageNumE.bind("<FocusOut>", self.pageNumChanged)
+                #self.__pageNumE.bind("<KeyRelease>", self.pageNumChanged)
 
         for key in self.__entries:
             self.__entries[key].config(state = NORMAL)

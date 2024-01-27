@@ -109,11 +109,17 @@ class BigSpriteMaker:
         two.daemon = True
         two.start()
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>", self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>", self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>", self.drawMode, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
 
@@ -210,8 +216,11 @@ class BigSpriteMaker:
         self.__playButton.pack_propagate(False)
         self.__playButton.pack(side=LEFT, anchor=W, fill=Y)
 
-        self.__indexEntry.bind("<KeyRelease>", self.__checkIndex)
-        self.__indexEntry.bind("<FocusOut>", self.__checkIndex)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry, "<KeyRelease>", self.__checkIndex, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry, "<FocusOut>", self.__checkIndex, 1)
+
+        #self.__indexEntry.bind("<KeyRelease>", self.__checkIndex)
+        #self.__indexEntry.bind("<FocusOut>", self.__checkIndex)
 
         self.__theSetters = Frame(self.__controlFrame, bg=self.__colors.getColor("window"),
                                   height=round(self.__sizes[1] // 32 * 6))
@@ -268,8 +277,9 @@ class BigSpriteMaker:
                                     variable=self.__moveHor
                                     )
         self.__horBox.pack(side=LEFT, anchor=N, fill=Y)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__horBox, "<Button-1>", self.__redrawCanvasClick, 1)
 
-        self.__horBox.bind("<Button-1>", self.__redrawCanvasClick)
+        #self.__horBox.bind("<Button-1>", self.__redrawCanvasClick)
         self.__redrawCanvas()
 
         self.__heightIndexF = Frame(self.__controlFrame, bg=self.__colors.getColor("window"),
@@ -344,8 +354,11 @@ class BigSpriteMaker:
         self.__YNumEntry.pack(fill=BOTH)
         self.__forYButton.pack(fill=BOTH)
 
-        self.__YNumEntry.bind("<KeyRelease>", self.__setYByEntry)
-        self.__YNumEntry.bind("<FocusOut>", self.__setYByEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__YNumEntry, "<KeyRelease>", self.__setYByEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__YNumEntry, "<FocusOut>", self.__setYByEntry, 1)
+
+        #self.__YNumEntry.bind("<KeyRelease>", self.__setYByEntry)
+        #self.__YNumEntry.bind("<FocusOut>", self.__setYByEntry)
 
 
         self.__spriteType = Frame(self.__controlFrame, bg=self.__colors.getColor("window"),
@@ -1104,10 +1117,17 @@ class BigSpriteMaker:
                 b.pack(side=LEFT, anchor=E, fill = BOTH)
                 self.__buttons[-1].append(b)
 
-                b.bind("<Button-1>", self.__clicked)
-                b.bind("<Button-3>", self.__clicked)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
+                                                                    self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
+                                                                    self.__enter, 1)
 
-                b.bind("<Enter>", self.__enter)
+                #b.bind("<Button-1>", self.__clicked)
+                #b.bind("<Button-3>", self.__clicked)
+
+                #b.bind("<Enter>", self.__enter)
 
             f0 = Frame(rowF, height = s, width = 9999999,
                             bg = self.__loader.colorPalettes.getColor("window"))

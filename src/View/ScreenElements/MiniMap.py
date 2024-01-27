@@ -162,9 +162,16 @@ class MiniMap:
                 for item in self.__listBoxes[-1]["dataList"]:
                     self.__listBoxes[-1]["listBox"].insert(END, item)
 
-                l.bind("<ButtonRelease-1>", self.__changeSelected)
-                l.bind("<KeyRelease-Up>", self.__changeSelected)
-                l.bind("<KeyRelease-Down>", self.__changeSelected)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+
+                #l.bind("<ButtonRelease-1>", self.__changeSelected)
+                #l.bind("<KeyRelease-Up>", self.__changeSelected)
+                #l.bind("<KeyRelease-Down>", self.__changeSelected)
 
             elif num in range(1, 3):
                 f1 = Frame(f, width=self.__w // maxFrames,
@@ -241,6 +248,19 @@ class MiniMap:
                 self.__listBoxes[-1]["selected"]    = ""
                 self.__listBoxes[-1]["dataList"]    = None
 
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l2, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l2, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l2, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+                """
                 l1.bind("<ButtonRelease-1>", self.__changeSelected)
                 l1.bind("<KeyRelease-Up>", self.__changeSelected)
                 l1.bind("<KeyRelease-Down>", self.__changeSelected)
@@ -248,7 +268,7 @@ class MiniMap:
                 l2.bind("<ButtonRelease-1>", self.__changeSelected)
                 l2.bind("<KeyRelease-Up>", self.__changeSelected)
                 l2.bind("<KeyRelease-Down>", self.__changeSelected)
-
+                """
                 # These listboxes are set later since we don't know the selected minimap source.
 
             elif num > 2:
@@ -320,9 +340,16 @@ class MiniMap:
                 self.__listBoxes[-1]["selected"]    = ""
                 self.__listBoxes[-1]["dataList"]    = self.__colorVars
 
-                l1.bind("<ButtonRelease-1>", self.__changeSelected)
-                l1.bind("<KeyRelease-Up>", self.__changeSelected)
-                l1.bind("<KeyRelease-Down>", self.__changeSelected)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l1, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+
+                #l1.bind("<ButtonRelease-1>", self.__changeSelected)
+                #l1.bind("<KeyRelease-Up>", self.__changeSelected)
+                #l1.bind("<KeyRelease-Down>", self.__changeSelected)
 
                 for item in self.__listBoxes[-1]["dataList"]:
                     self.__listBoxes[-1]["listBox"].insert(END, item)

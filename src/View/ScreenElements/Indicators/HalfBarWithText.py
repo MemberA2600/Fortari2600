@@ -183,10 +183,13 @@ class HalfBarWithText:
             self.__dataVarListBox.select_set(selector)
             self.__dataVarListBox.yview(selector)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<ButtonRelease-1>", self.__changedDataVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<KeyRelease-Up>"  , self.__changedDataVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox, "<KeyRelease-Down>", self.__changedDataVar, 1)
 
-        self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
-        self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
-        self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changedDataVar)
+        #self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changedDataVar)
+        #self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changedDataVar)
+        #self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changedDataVar)
 
         self.__maxVar = StringVar()
 
@@ -310,11 +313,18 @@ class HalfBarWithText:
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
                                              self.__changeData, self.__h, self.__data, self.dead, 8, "normal", 6)
 
-        self.__maxVarEntry.bind("<KeyRelease>", self.__changeMaxEntry)
-        self.__maxVarEntry.bind("<FocusOut>", self.__changeMaxEntry)
-        self.__colorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar)
-        self.__colorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar)
-        self.__colorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry    , "<KeyRelease>"     , self.__changeMaxEntry , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry    , "<FocusOut>"       , self.__changeMaxEntry , 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox, "<ButtonRelease-1>", self.__changedColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox, "<KeyRelease-Up>"  , self.__changedColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox, "<KeyRelease-Down>", self.__changedColorVar, 1)
+
+        #self.__maxVarEntry.bind("<KeyRelease>", self.__changeMaxEntry)
+        #self.__maxVarEntry.bind("<FocusOut>", self.__changeMaxEntry)
+        #self.__colorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar)
+        #self.__colorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar)
+        #self.__colorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar)
 
         try:
             self.__lastSet = self.__colorVars[self.__colorVarListBox.curselection()[0]]
@@ -338,8 +348,11 @@ class HalfBarWithText:
 
         self.__textVar.set(self.__data[8])
 
-        self.__textEntry.bind("<KeyRelease>", self.textChanged)
-        self.__textEntry.bind("<FocusOut>", self.textChanged)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<KeyRelease>", self.textChanged, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<FocusOut>"  , self.textChanged, 1)
+
+        #self.__textEntry.bind("<KeyRelease>", self.textChanged)
+        #self.__textEntry.bind("<FocusOut>", self.textChanged)
 
         self.__right = IntVar()
 
@@ -452,9 +465,13 @@ class HalfBarWithText:
         except:
             self.__lastSet2 = self.__colorVars[0]
 
-        self.__textColorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar2)
-        self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar2)
-        self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<ButtonRelease-1>", self.__changedColorVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<KeyRelease-Up>"  , self.__changedColorVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<KeyRelease-Down>", self.__changedColorVar2, 1)
+
+        #self.__textColorVarListBox.bind("<ButtonRelease-1>", self.__changedColorVar2)
+        #self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changedColorVar2)
+        #self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changedColorVar2)
 
         self.__dotMode = IntVar()
         self.__dotModeButton = Checkbutton(self.__frame2, width=99999,

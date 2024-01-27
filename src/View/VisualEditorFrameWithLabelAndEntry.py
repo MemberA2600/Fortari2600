@@ -47,10 +47,14 @@ class VisualEditorFrameWithLabelAndEntry:
                                   )
 
         if releaseBind!=None:
-            self.__entry.bind("<KeyRelease>", releaseBind)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", releaseBind,
+                                                                1)
+            #self.__entry.bind("<KeyRelease>", releaseBind)
 
         if focusBind!=None:
-            self.__entry.bind("<FocusOut>", focusBind)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>", focusBind,
+                                                                1)
+            #self.__entry.bind("<FocusOut>", focusBind)
         self.__entry.pack(side=LEFT, anchor=E, fill=BOTH)
 
     def getEntry(self):

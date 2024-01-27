@@ -182,14 +182,23 @@ class MenuMaker:
 
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>"  , self.shiftON , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>"            , self.drawMode, 1)
 
-        self.__topLevelWindow.bind("<KeyPress-Up>", self.up)
-        self.__topLevelWindow.bind("<KeyPress-Down>", self.down)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Up>"            , self.up   , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Down>"          , self.down , 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+
+        #self.__topLevelWindow.bind("<KeyPress-Up>", self.up)
+        #self.__topLevelWindow.bind("<KeyPress-Down>", self.down)
 
     def up(self, event):
         self.__selected -=1
@@ -227,8 +236,11 @@ class MenuMaker:
         self.__segmentsEntry.pack_propagate(False)
         self.__segmentsEntry.pack(side=LEFT, fill=BOTH)
 
-        self.__segmentsEntry.bind("<KeyRelease>", self.checkIfBullShit)
-        self.__segmentsEntry.bind("<FocusOut>", self.checkIfBullShit)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__segmentsEntry, "<KeyRelease>", self.checkIfBullShit, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__segmentsEntry, "<FocusOut>"  , self.checkIfBullShit, 1)
+
+        #self.__segmentsEntry.bind("<KeyRelease>", self.checkIfBullShit)
+        #self.__segmentsEntry.bind("<FocusOut>", self.checkIfBullShit)
         self.__invalids[self.__segmentsEntry] = False
 
     def checkIfBullShit(self, event):
@@ -418,8 +430,11 @@ class MenuMaker:
         self.__nameEntry.pack_propagate(False)
         self.__nameEntry.pack(side=LEFT, fill=BOTH)
 
-        self.__nameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
-        self.__nameEntry.bind("<FocusOut>", self.checkIfValidFileName)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nameEntry, "<KeyRelease>", self.checkIfValidFileName, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nameEntry, "<FocusOut>"  , self.checkIfValidFileName, 1)
+
+        #self.__nameEntry.bind("<KeyRelease>", self.checkIfValidFileName)
+        #self.__nameEntry.bind("<FocusOut>", self.checkIfValidFileName)
         self.__invalids[self.__nameEntry] = False
 
 
@@ -636,8 +651,11 @@ class MenuMaker:
         self.__frameNumEntry.pack_propagate(False)
         self.__frameNumEntry.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__frameNumEntry.bind("<KeyRelease>", self.__frameEntryCheck)
-        self.__frameNumEntry.bind("<FocusOut>", self.__frameEntryCheck)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__frameNumEntry, "<KeyRelease>", self.__frameEntryCheck, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__frameNumEntry, "<FocusOut>"  , self.__frameEntryCheck, 1)
+
+        #self.__frameNumEntry.bind("<KeyRelease>", self.__frameEntryCheck)
+        #self.__frameNumEntry.bind("<FocusOut>", self.__frameEntryCheck)
         self.__invalids[self.__frameNumEntry] = False
 
 
@@ -696,8 +714,11 @@ class MenuMaker:
         self.__lineHeightNumEntry.pack_propagate(False)
         self.__lineHeightNumEntry.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__lineHeightNumEntry.bind("<KeyRelease>", self.__lineHCheck)
-        self.__lineHeightNumEntry.bind("<FocusOut>", self.__lineHCheck)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineHeightNumEntry, "<KeyRelease>", self.__lineHCheck, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineHeightNumEntry, "<FocusOut>"  , self.__lineHCheck, 1)
+
+        #self.__lineHeightNumEntry.bind("<KeyRelease>", self.__lineHCheck)
+        #self.__lineHeightNumEntry.bind("<FocusOut>", self.__lineHCheck)
 
         self.__finishedThem[3] = True
 
@@ -854,10 +875,13 @@ class MenuMaker:
                 b.pack(side=LEFT, anchor=E, fill = BOTH)
                 self.__buttons[-1].append(b)
 
-                b.bind("<Button-1>", self.__clicked)
-                b.bind("<Button-3>", self.__clicked)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>", self.__clicked, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>"   , self.__enter  , 1)
 
-                b.bind("<Enter>", self.__enter)
+                #b.bind("<Button-1>", self.__clicked)
+                #b.bind("<Button-3>", self.__clicked)
+                #b.bind("<Enter>", self.__enter)
 
         self.__finishedThem[0] = True
 
@@ -988,8 +1012,11 @@ class MenuMaker:
         self.__itemEntry.pack_propagate(False)
         self.__itemEntry.pack(fill=BOTH, side = TOP, anchor = N)
 
-        self.__itemEntry.bind("<KeyRelease>", self.__itemEntyCheck)
-        self.__itemEntry.bind("<FocusOut>", self.__itemEntyCheck)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__itemEntry, "<KeyRelease>", self.__itemEntyCheck, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__itemEntry, "<FocusOut>"  , self.__itemEntyCheck, 1)
+
+        #self.__itemEntry.bind("<KeyRelease>", self.__itemEntyCheck)
+        #self.__itemEntry.bind("<FocusOut>", self.__itemEntyCheck)
 
         self.__editorItemSetterTextFrame = Frame(self.__editorItemSetterFrame, width=round(self.__sizes[0]*0.35),
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -1031,8 +1058,11 @@ class MenuMaker:
         self.__generateTB.pack_propagate(False)
         self.__generateTB.pack(fill=BOTH, side = TOP, anchor = N)
 
-        self.__textEntry.bind("<KeyRelease>", self.checkTXT)
-        self.__textEntry.bind("<FocusOut>", self.checkTXT)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<KeyRelease>", self.checkTXT, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textEntry, "<FocusOut>"  , self.checkTXT, 1)
+
+        #self.__textEntry.bind("<KeyRelease>", self.checkTXT)
+        #self.__textEntry.bind("<FocusOut>", self.checkTXT)
 
         self.__finishedThem[2] = True
 

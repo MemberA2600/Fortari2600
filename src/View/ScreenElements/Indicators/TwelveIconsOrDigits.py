@@ -585,21 +585,37 @@ class TwelveIconsOrDigits:
             self.__fontOptionButton1_3.config(state=DISABLED)
             self.__fontVarListBox1.config(state=DISABLED)
 
-        self.__picListBox1.bind("<ButtonRelease-1>", self.__changePicture)
-        self.__picListBox1.bind("<KeyRelease-Up>", self.__changePicture)
-        self.__picListBox1.bind("<KeyRelease-Down>", self.__changePicture)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1        , "<ButtonRelease-1>", self.__changePicture     , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1        , "<KeyRelease-Up>"  , self.__changePicture     , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picListBox1        , "<KeyRelease-Down>", self.__changePicture     , 1)
 
-        self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changeDataVar)
-        self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changeDataVar)
-        self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changeDataVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox     , "<ButtonRelease-1>", self.__changeDataVar     , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox     , "<KeyRelease-Up>"  , self.__changeDataVar     , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataVarListBox     , "<KeyRelease-Down>", self.__changeDataVar     , 1)
 
-        self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFont)
-        self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFont)
-        self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFont)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1    , "<ButtonRelease-1>", self.__changeFont        , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1    , "<KeyRelease-Up>"  , self.__changeFont        , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__fontVarListBox1    , "<KeyRelease-Down>", self.__changeFont        , 1)
 
-        self.__textColorVarListBox.bind("<ButtonRelease-1>", self.__changeFontColorVar)
-        self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changeFontColorVar)
-        self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changeFontColorVar)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<ButtonRelease-1>", self.__changeFontColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<KeyRelease-Up>"  , self.__changeFontColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__textColorVarListBox, "<KeyRelease-Down>", self.__changeFontColorVar, 1)
+
+        #self.__picListBox1.bind("<ButtonRelease-1>", self.__changePicture)
+        #self.__picListBox1.bind("<KeyRelease-Up>", self.__changePicture)
+        #self.__picListBox1.bind("<KeyRelease-Down>", self.__changePicture)
+
+        #self.__dataVarListBox.bind("<ButtonRelease-1>", self.__changeDataVar)
+        #self.__dataVarListBox.bind("<KeyRelease-Up>", self.__changeDataVar)
+        #self.__dataVarListBox.bind("<KeyRelease-Down>", self.__changeDataVar)
+
+        #self.__fontVarListBox1.bind("<ButtonRelease-1>", self.__changeFont)
+        #self.__fontVarListBox1.bind("<KeyRelease-Up>", self.__changeFont)
+        #self.__fontVarListBox1.bind("<KeyRelease-Down>", self.__changeFont)
+
+        #self.__textColorVarListBox.bind("<ButtonRelease-1>", self.__changeFontColorVar)
+        #self.__textColorVarListBox.bind("<KeyRelease-Up>", self.__changeFontColorVar)
+        #self.__textColorVarListBox.bind("<KeyRelease-Down>", self.__changeFontColorVar)
 
         self.__lastBits = "%00000000"
 
@@ -709,8 +725,11 @@ class TwelveIconsOrDigits:
         self.__indexEntry1.pack_propagate(False)
         self.__indexEntry1.pack(fill=BOTH, side=TOP, anchor=N)
 
-        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
-        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<FocusOut>"  , self.__changeIndexAndMirroring1, 1)
+
+        #self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
 
         self.__varButton3 = Radiobutton(self.__frame1_5, width=99999,
                                        text=self.__dictionaries.getWordFromCurrentLanguage("variable"),
@@ -784,12 +803,19 @@ class TwelveIconsOrDigits:
 
         self.__init     = False
 
-        self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
-        self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<KeyRelease>", self.__changeIndexAndMirroring1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry1, "<FocusOut>"  , self.__changeIndexAndMirroring1, 1)
 
-        self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
-        self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
-        self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
+        #self.__indexEntry1.bind("<KeyRelease>", self.__changeIndexAndMirroring1)
+        #self.__indexEntry1.bind("<FocusOut>", self.__changeIndexAndMirroring1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<ButtonRelease-1>", self.__changedPicVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<KeyRelease-Up>"  , self.__changedPicVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1, "<KeyRelease-Down>", self.__changedPicVar1, 1)
+
+        #self.__picVarListBox1.bind("<ButtonRelease-1>", self.__changedPicVar1)
+        #self.__picVarListBox1.bind("<KeyRelease-Up>", self.__changedPicVar1)
+        #self.__picVarListBox1.bind("<KeyRelease-Down>", self.__changedPicVar1)
 
 
     def __changeForce(self):

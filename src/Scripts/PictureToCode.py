@@ -161,10 +161,15 @@ class PictureToCode:
         self.__topLevelWindow = top.getTopLevel()
         self.__topLevelWindow.protocol('WM_DELETE_WINDOW', self.__closeWindow)
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.ctrlON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.ctrlOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.ctrlON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.ctrlOff)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>"  , self.ctrlON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.ctrlOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>"  , self.ctrlON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.ctrlOff, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.ctrlON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.ctrlOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.ctrlON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.ctrlOff)
 
         self.__canvasFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
                                     width=round(self.__topLevel.getTopLevelDimensions()[0]),
@@ -261,8 +266,11 @@ class PictureToCode:
               font=self.__normalFont, state = DISABLED
               )
 
-        self.__yEntry.bind("<KeyRelease>", self.checkYEntry)
-        self.__yEntry.bind("<FocusOut>", self.checkYEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yEntry, "<KeyRelease>", self.checkYEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yEntry, "<FocusOut>"  , self.checkYEntry, 1)
+
+        # self.__yEntry.bind("<KeyRelease>", self.checkYEntry)
+        # self.__yEntry.bind("<FocusOut>", self.checkYEntry)
 
         self.__yEntry.pack_propagate(False)
         self.__yEntry.pack(side=LEFT, fill=BOTH, anchor=CENTER)
@@ -749,8 +757,11 @@ class PictureToCode:
         button.pack_propagate(False)
         button.pack(fill=BOTH)
 
-        button.bind("<Button-1>", self.clicked)
-        button.bind("<Button-3>", self.clicked)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<Button-1>", self.clicked, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<Button-3>", self.clicked, 1)
+
+        #button.bind("<Button-1>", self.clicked)
+        #button.bind("<Button-3>", self.clicked)
 
         self.__editorButtons[name] = button
 
@@ -1562,7 +1573,8 @@ class PictureToCode:
                                   font=self.__normalFont
                               )
 
-        self.__number.bind("<KeyRelease>", self.__checkNumber)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__number, "<KeyRelease>", self.__checkNumber, 1)
+        #self.__number.bind("<KeyRelease>", self.__checkNumber)
 
         self.__number.pack(side=TOP, anchor=N, fill=X)
         self.__minus = self.__loader.io.getImg("negative", None)
@@ -1679,8 +1691,10 @@ class PictureToCode:
                   )
 
             self.__oneColorEntry.pack(side=LEFT, fill=Y)
-            self.__oneColorEntry.bind("<KeyRelease>", self.__checkHEX)
 
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__oneColorEntry, "<KeyRelease>", self.__checkHEX,
+                                                                1)
+            #self.__oneColorEntry.bind("<KeyRelease>", self.__checkHEX)
 
             self.__colorButton = Button(
                 self.__cBoxFrame2, width=9999999,
@@ -1722,7 +1736,10 @@ class PictureToCode:
                   )
 
             self.__thisEntry.pack(side=TOP, fill=BOTH)
-            self.__thisEntry.bind("<KeyRelease>", self.checkFileName)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__thisEntry, "<KeyRelease>", self.checkFileName,
+                                                                1)
+            # self.__thisEntry.bind("<KeyRelease>", self.checkFileName)
 
 
 

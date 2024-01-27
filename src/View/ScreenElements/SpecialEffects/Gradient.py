@@ -415,15 +415,24 @@ class Gradient:
             self.__listBox2.select_set(selector)
             self.__listBox2.yview(selector)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Down>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Down>", self.__changeSelected, 1)
 
-        self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
-        self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
-        self.__numOfLines.bind("<KeyRelease>", self.__changeEntry)
-        self.__numOfLines.bind("<FocusOut>", self.__changeEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<KeyRelease>"   , self.__changeEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<FocusOut>"     , self.__changeEntry, 1)
+
+        #self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
+        #self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
+        #self.__numOfLines.bind("<KeyRelease>", self.__changeEntry)
+        #self.__numOfLines.bind("<FocusOut>", self.__changeEntry)
 
         self.__hexEntries = {}
         self.__maxNum     = 32

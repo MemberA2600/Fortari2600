@@ -120,10 +120,14 @@ class EditorBigFrame:
         self.__sectionButtons = self.__editor.sectionButtons
 
         for button in self.__bankButtons:
-            button.bind("<ButtonRelease-1>", self.changeSomething)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<ButtonRelease-1>", self.changeSomething,
+                                                                0)
+            #button.bind("<ButtonRelease-1>", self.changeSomething)
 
         for button in self.__sectionButtons:
-            button.bind("<ButtonRelease-1>", self.changeSomething)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, button, "<ButtonRelease-1>", self.changeSomething,
+                                                                0)
+            #button.bind("<ButtonRelease-1>", self.changeSomething)
 
     def changeSomething(self, event):
         from copy import deepcopy
@@ -367,7 +371,8 @@ class EditorBigFrame:
                 self.__removeSlaves()
 
             self.activeMode = self.__selectedMode
-            self.__editor.editor.unbind("<Insert>")
+            self.__loader.threadLooper.bindingMaster.removeBindingManually(self, self.__editor.editor, "<Insert>", 0)
+            #self.__editor.editor.unbind("<Insert>")
 
             if self.__selectedMode == "intro":
                 self.__createIntroScreen()
@@ -526,17 +531,27 @@ class EditorBigFrame:
         self.__codeBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                         fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
-        self.__codeBox.bind("<Key>", self.__keyPressed)
-        self.__codeBox.bind("<KeyRelease>", self.__keyReleased)
-        self.__codeBox.bind("<MouseWheel>", self.__mouseWheel)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<Key>", self.__keyPressed, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<KeyRelease>", self.__keyReleased, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<MouseWheel>", self.__mouseWheel, 0)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__editor.editor, "<Insert>", self.__insertPressed, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<FocusOut>", self.__focusOutCodeEditor, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<ButtonRelease-1>", self.__focusInCodeEditor, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<FocusIn>", self.__focusInCodeEditor, 0)
+
+
+        #self.__codeBox.bind("<Key>", self.__keyPressed)
+        #self.__codeBox.bind("<KeyRelease>", self.__keyReleased)
+        #self.__codeBox.bind("<MouseWheel>", self.__mouseWheel)
         #self.__codeBox.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
         #self.__codeBox.bind("<FocusOut>", self.focusOut)
         #self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
 
-        self.__editor.editor.bind("<Insert>", self.__insertPressed)
-        self.__codeBox.bind("<FocusOut>", self.__focusOutCodeEditor)
-        self.__codeBox.bind("<ButtonRelease-1>", self.__focusInCodeEditor)
-        self.__codeBox.bind("<FocusIn>", self.__focusInCodeEditor)
+        #self.__editor.editor.bind("<Insert>", self.__insertPressed)
+        #self.__codeBox.bind("<FocusOut>", self.__focusOutCodeEditor)
+        #self.__codeBox.bind("<ButtonRelease-1>", self.__focusInCodeEditor)
+        #self.__codeBox.bind("<FocusIn>", self.__focusInCodeEditor)
 
 
         self.__currentBank    = "bank2"
@@ -600,8 +615,11 @@ class EditorBigFrame:
         self.__listBoxOnTheRight   = l
         self.firstTry = True
 
-        self.__listBoxOnTheRight.bind("<FocusIn>", self.__lbFocusIn)
-        self.__listBoxOnTheRight.bind("<FocusOut>", self.__lbFocusOut)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxOnTheRight, "<FocusIn>" , self.__lbFocusIn, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxOnTheRight, "<FocusOut>", self.__lbFocusOut, 0)
+
+        #self.__listBoxOnTheRight.bind("<FocusIn>", self.__lbFocusIn)
+        #self.__listBoxOnTheRight.bind("<FocusOut>", self.__lbFocusOut)
 
         fSize = self.__editor.getWindowSize()[1] // 6
 
@@ -640,8 +658,11 @@ class EditorBigFrame:
         self.__sentry.pack_propagate()
         self.__sentry.pack(side=TOP, anchor=N, fill=BOTH)
 
-        self.__sentry.bind("<FocusOut>", self.__changeHighLightWord)
-        self.__sentry.bind("<KeyRelease>", self.__changeHighLightWord)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__sentry, "<KeyRelease>", self.__changeHighLightWord, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__sentry, "<FocusOut>"  , self.__changeHighLightWord, 0)
+
+        #self.__sentry.bind("<FocusOut>", self.__changeHighLightWord)
+        #self.__sentry.bind("<KeyRelease>", self.__changeHighLightWord)
 
         self.__searchBoxFrame = Frame(self.__searchFrame, width=self.__editor.getWindowSize()[0],
                                    height=hSize,
@@ -1028,11 +1049,23 @@ class EditorBigFrame:
                     entry.pack(side=TOP, anchor=N, fill=BOTH)
                     self.__focusOutItems.append(entry)
 
-                entry.bind("<KeyRelease>", self.__focusInLineEditorEntry)
-                entry.bind("<FocusOut>", self.__focusOutLineEditorEntry)
-                entry.bind("<FocusIn>", self.__focusInLineEditorEntry)
-                entry.bind("<ButtonRelease-1>", self.__focusInLineEditorEntry)
-                entry.bind("<Return>", self.__EnterPressed)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<KeyRelease>",
+                                                                    self.__focusInLineEditorEntry, 0)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<FocusOut>",
+                                                                    self.__focusOutLineEditorEntry, 0)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<FocusIn>",
+                                                                    self.__focusInLineEditorEntry, 0)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<ButtonRelease-1>",
+                                                                    self.__focusInLineEditorEntry, 0)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<Return>",
+                                                                    self.__EnterPressed, 0)
+
+
+                #entry.bind("<KeyRelease>", self.__focusInLineEditorEntry)
+                #entry.bind("<FocusOut>", self.__focusOutLineEditorEntry)
+                #entry.bind("<FocusIn>", self.__focusInLineEditorEntry)
+                #entry.bind("<ButtonRelease-1>", self.__focusInLineEditorEntry)
+                #entry.bind("<Return>", self.__EnterPressed)
 
 
                 #entry.bind("<FocusOut>", self.__focusOut)

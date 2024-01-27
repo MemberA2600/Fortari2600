@@ -329,8 +329,13 @@ class _3DLandScape:
                 self.__numOfLines.pack_propagate(False)
                 self.__numOfLines.pack(fill=X, side=TOP, anchor=N)
 
-                self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
-                self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLines, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__numOfLines.bind("<FocusOut>", self.__chamgeConst)
+                #self.__numOfLines.bind("<KeyRelease>", self.__chamgeConst)
 
                 text = self.__dictionaries.getWordFromCurrentLanguage("linesOfPattern")
                 if text.endswith(":") == False: text = text + ":"
@@ -358,8 +363,14 @@ class _3DLandScape:
                 self.__patternLines.pack_propagate(False)
                 self.__patternLines.pack(fill=X, side=TOP, anchor=N)
 
-                self.__patternLines.bind("<FocusOut>", self.__chamgeConst)
-                self.__patternLines.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__patternLines, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__patternLines, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__patternLines.bind("<FocusOut>", self.__chamgeConst)
+                #self.__patternLines.bind("<KeyRelease>", self.__chamgeConst)
 
                 text = self.__dictionaries.getWordFromCurrentLanguage("speed")
                 if text.endswith(":") == False: text = text + ":"
@@ -387,8 +398,14 @@ class _3DLandScape:
                 self.__speed.pack_propagate(False)
                 self.__speed.pack(fill=X, side=TOP, anchor=N)
 
-                self.__speed.bind("<FocusOut>", self.__chamgeConst)
-                self.__speed.bind("<KeyRelease>", self.__chamgeConst)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speed, "<KeyRelease>",
+                                                                    self.__chamgeConst, 1)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__speed, "<FocusOut>",
+                                                                    self.__chamgeConst, 1)
+
+                #self.__speed.bind("<FocusOut>", self.__chamgeConst)
+                #self.__speed.bind("<KeyRelease>", self.__chamgeConst)
 
             elif num == 3:
                 h = self.__h // 24
@@ -449,6 +466,15 @@ class _3DLandScape:
                 self.__button.pack(side=TOP, anchor=N)
 
             if num < 2:
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<ButtonRelease-1>",
+                                                                    self.__changeSelected, 1)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Up>",
+                                                                    self.__changeSelected, 1)
+
+                self.__loader.threadLooper.bindingMaster.addBinding(self, l, "<KeyRelease-Down>",
+                                                                    self.__changeSelected, 1)
+
                 l.bind("<ButtonRelease-1>", self.__changeSelected)
                 l.bind("<KeyRelease-Up>", self.__changeSelected)
                 l.bind("<KeyRelease-Down>", self.__changeSelected)

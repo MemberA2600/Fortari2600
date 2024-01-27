@@ -101,8 +101,8 @@ class PlayfieldEditor:
         self.__theField.pack_propagate(False)
         self.__theField.pack(side=LEFT, anchor=W, fill=Y)
 
-
-        self.__topLevelWindow.bind("<Button-2>", self.drawMode)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>", self.drawMode, 1)
+        #self.__topLevelWindow.bind("<Button-2>", self.drawMode)
 
         calc2 = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)*15
 
@@ -656,8 +656,8 @@ class PlayfieldEditor:
             e1 = None
             e2 = None
 
-
-            self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease>", self.checkYEntry, 1)
+            #self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             if self.alreadyDone == False:
                 self.__soundPlayer.playSound("Pong")
@@ -709,10 +709,16 @@ class PlayfieldEditor:
                     b = Button(f, name=(str(X) + "," + str(Y)),
                                relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
 
-                    b.bind("<Button-1>", self.clickedCommon)
-                    b.bind("<Button-3>", self.clickedCommon)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>",
+                                                                        self.clickedCommon, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
+                                                                        self.clickedCommon, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
+                                                                        self.clickedCommon, 1)
+                    #b.bind("<Button-1>", self.clickedCommon)
+                    #b.bind("<Button-3>", self.clickedCommon)
 
-                    b.bind("<Enter>", self.enterCommon)
+                    #b.bind("<Enter>", self.enterCommon)
                     b.pack_propagate(False)
                     b.pack(fill=BOTH)
 

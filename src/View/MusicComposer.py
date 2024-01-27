@@ -367,16 +367,24 @@ class MusicComposer:
         #t99.daemon = True
         #t99.start()
 
-        self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
-        self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
-        self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>"  , self.shiftON      , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff     , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>"  , self.shiftON      , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff     , 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "Button-2>"             , self.button2      , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress>"            , self.pressedNumber, 1)
+
+        #self.__topLevelWindow.bind("<KeyPress-Control_L>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_L>", self.shiftOff)
+        #self.__topLevelWindow.bind("<KeyPress-Control_R>", self.shiftON)
+        #self.__topLevelWindow.bind("<KeyRelease-Control_R>", self.shiftOff)
         #self.__topLevelWindow.bind('<ButtonPress-1>', self.pressed)
         #self.__topLevelWindow.bind('<ButtonRelease-1>', self.released)
         #self.__topLevelWindow.bind('<ButtonPress-3>', self.pressed)
         #self.__topLevelWindow.bind('<ButtonRelease-3>', self.released)
-        self.__topLevelWindow.bind("<Button-2>", self.button2)
-        self.__topLevelWindow.bind("<KeyPress>", self.pressedNumber)
+        #self.__topLevelWindow.bind("<Button-2>", self.button2)
+        #self.__topLevelWindow.bind("<KeyPress>", self.pressedNumber)
 
         """
     def pressed(self, event):
@@ -491,17 +499,29 @@ class MusicComposer:
                                     font = self.__smallFont, width=2)
         self.__ignoreEntry1.pack_propagate(False)
 
-        self.__ignoreEntry1.bind("<FocusIn>", self.focusIn)
-        self.__ignoreEntry1.bind("<FocusOut>", self.__checkIgnoreEntries)
-        self.__ignoreEntry1.bind("<KeyRelease>", self.__checkIgnoreEntries)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry1   , "<FocusIn>"   , self.focusIn             , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry1   , "<FocusOut>"  , self.__checkIgnoreEntries, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry1   , "<KeyRelease>", self.__checkIgnoreEntries, 1)
 
-        self.__ignoreEntry2.bind("<FocusIn>", self.focusIn)
-        self.__ignoreEntry2.bind("<FocusOut>", self.__checkIgnoreEntries)
-        self.__ignoreEntry2.bind("<KeyRelease>", self.__checkIgnoreEntries)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry2   , "<FocusIn>"   , self.focusIn             , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry2   , "<FocusOut>"  , self.__checkIgnoreEntries, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__ignoreEntry2   , "<KeyRelease>", self.__checkIgnoreEntries, 1)
 
-        self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
-        self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
-        self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<FocusIn>"   , self.focusIn             , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<FocusOut>"  , self.__checkIgnoreEntries, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<KeyRelease>", self.__checkIgnoreEntries, 1)
+
+        #self.__ignoreEntry1.bind("<FocusIn>", self.focusIn)
+        #self.__ignoreEntry1.bind("<FocusOut>", self.__checkIgnoreEntries)
+        #self.__ignoreEntry1.bind("<KeyRelease>", self.__checkIgnoreEntries)
+
+        #self.__ignoreEntry2.bind("<FocusIn>", self.focusIn)
+        #self.__ignoreEntry2.bind("<FocusOut>", self.__checkIgnoreEntries)
+        #self.__ignoreEntry2.bind("<KeyRelease>", self.__checkIgnoreEntries)
+
+        #self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
+        #self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
+        #self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
 
 
         self.__ignoreLabel = Label(self.__ignoreFrame, text = " "*5 + self.__dictionaries.getWordFromCurrentLanguage("ignoreNotes")+" "*2,
@@ -1444,10 +1464,13 @@ class MusicComposer:
         self.__SetSelectedEntry.pack_propagate(False)
         self.__SetSelectedEntry.pack(fill=BOTH)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<FocusIn>"   , self.focusIn           , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<FocusOut>"  , self.checkSelectedEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__SetSelectedEntry, "<KeyRelease>", self.checkSelectedEntry, 1)
 
-        self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
-        self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
-        self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
+        #self.__SetSelectedEntry.bind("<FocusIn>", self.focusIn)
+        #self.__SetSelectedEntry.bind("<FocusOut>", self.checkSelectedEntry)
+        #self.__SetSelectedEntry.bind("<KeyRelease>", self.checkSelectedEntry)
 
 
         self.__ButtonNextFrame = Frame(self.__screenSetterDown,
@@ -1884,10 +1907,15 @@ class MusicComposer:
                 b.pack(fill=BOTH)
                 self.__piaNoteTable[str(counter) + "," + str(yY+89)] = b
 
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
+                                                                    self.enterCommon, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Leave>",
+                                                                    self.leave, 1)
+
                 # b.bind("<ButtonPress-1>", self.clickedButton)
                 # b.bind("<MouseWheel>", self.mouseWheel)
-                b.bind("<Enter>", self.enterCommon)
-                b.bind("<Leave>", self.leave)
+                #b.bind("<Enter>", self.enterCommon)
+                #b.bind("<Leave>", self.leave)
 
 
                 theX+=baseW
@@ -1911,9 +1939,12 @@ class MusicComposer:
                    text = text,
                    activebackground=self.__colors.getColor("highLight")
                    )
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<ButtonPress-1>",
+                                                            self.playNote1, 1)
         b.pack_propagate(False)
         b.pack(fill=BOTH)
-        b.bind("<ButtonPress-1>", self.playNote1)
+        #b.bind("<ButtonPress-1>", self.playNote1)
 
     def __drawField(self, frame, frameH, start, end, pattern, key):
 
@@ -2000,8 +2031,13 @@ class MusicComposer:
 
             # b.bind("<ButtonPress-1>", self.clickedButton)
             # b.bind("<MouseWheel>", self.mouseWheel)
-            b.bind("<Enter>", self.enterCommon)
-            b.bind("<Leave>", self.leave)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>", self.enterCommon,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Leave>", self.leave,
+                                                                1)
+            #b.bind("<Enter>", self.enterCommon)
+            #b.bind("<Leave>", self.leave)
 
     def clickedButton(self, event):
         if self.__runningThreads>0:
@@ -2136,7 +2172,9 @@ class MusicComposer:
 
                 #self.__piaNoteTable[str(channel) + "," + str(notes[channel])] = b
 
-                b.bind("<ButtonPress-1>", self.playNote1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<ButtonPress-1>",
+                                                                    self.playNote1, 1)
+                #b.bind("<ButtonPress-1>", self.playNote1)
                 #b.bind("<ButtonPress-1>", self.released())
 
                 b.pack_propagate(False)
@@ -2157,7 +2195,9 @@ class MusicComposer:
                                activebackground=self.__colors.getColor("highLight")
                                )
 
-                    b.bind("<ButtonPress-1>", self.playNote1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<ButtonPress-1>",
+                                                                        self.playNote1, 1)
+                    #b.bind("<ButtonPress-1>", self.playNote1)
                     # b.bind("<ButtonPress-1>", self.released())
 
                     b.pack_propagate(False)
@@ -2218,7 +2258,6 @@ class MusicComposer:
     def enterCommon(self, event):
         event.widget.bind("<ButtonPress-1>", self.clickedButton)
         event.widget.bind("<MouseWheel>", self.mouseWheel)
-
 
         if self.__runningThreads > 0:
             return

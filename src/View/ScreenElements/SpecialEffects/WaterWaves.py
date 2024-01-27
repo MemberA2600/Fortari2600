@@ -241,12 +241,20 @@ class WaterWaves:
            self.__listBox2.select_set(selector)
            self.__listBox2.yview(selector)
 
-        self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
-        self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
-        self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox1, "<KeyRelease-Down>", self.__changeSelected, 1)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<ButtonRelease-1>", self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Up>"  , self.__changeSelected, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBox2, "<KeyRelease-Down>", self.__changeSelected, 1)
+
+        #self.__listBox1.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox1.bind("<KeyRelease-Down>", self.__changeSelected)
+        #self.__listBox2.bind("<ButtonRelease-1>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Up>", self.__changeSelected)
+        #self.__listBox2.bind("<KeyRelease-Down>", self.__changeSelected)
 
         self.__hexValues  = []
         self.__hexEntries = []

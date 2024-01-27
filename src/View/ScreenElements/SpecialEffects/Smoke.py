@@ -149,9 +149,16 @@ class Smoke:
             self.__listBoxes[num]["listbox"].pack(side=LEFT, anchor=W, fill=BOTH)
             self.__listBoxes[num]["scrollbar"].config(command=self.__listBoxes[num]["listbox"].yview)
 
-            self.__listBoxes[num]["listbox"].bind("<ButtonRelease-1>", self.__clickedListBox)
-            self.__listBoxes[num]["listbox"].bind("<KeyRelease-Up>", self.__clickedListBox)
-            self.__listBoxes[num]["listbox"].bind("<KeyRelease-Down>", self.__clickedListBox)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listbox"], "<ButtonRelease-1>", self.__clickedListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listbox"], "<KeyRelease-Up>"  , self.__clickedListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__listBoxes[num]["listbox"], "<KeyRelease-Down>", self.__clickedListBox,
+                                                                1)
+
+            #self.__listBoxes[num]["listbox"].bind("<ButtonRelease-1>", self.__clickedListBox)
+            #self.__listBoxes[num]["listbox"].bind("<KeyRelease-Up>", self.__clickedListBox)
+            #self.__listBoxes[num]["listbox"].bind("<KeyRelease-Down>", self.__clickedListBox)
 
             if num != 0:
                 for item in self.__byteVars:

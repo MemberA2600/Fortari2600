@@ -86,8 +86,11 @@ class ScreenSetterFrameBase:
         self.registerError("nameAlready")
         self.registerError("delimiterInName")
 
-        self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
-        self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nameEntry, "<KeyRelease>", self.checkNameEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__nameEntry, "<FocusOut>"  , self.checkNameEntry, 1)
+
+        #self.__nameEntry.bind("<KeyRelease>", self.checkNameEntry)
+        #self.__nameEntry.bind("<FocusOut>", self.checkNameEntry)
 
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
         #t = Thread(target=self.loop)

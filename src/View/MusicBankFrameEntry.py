@@ -42,6 +42,10 @@ class MusicBankFrameEntry:
         self.__entry.pack_propagate(False)
         self.__entry.pack(fill=BOTH)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusIn>"   , self.focusIn    , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<FocusOut>"  , self.__checkBank, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__entry, "<KeyRelease>", self.__checkBank, 1)
+
         self.__entry.bind("<FocusIn>", self.focusIn)
         self.__entry.bind("<FocusOut>", self.__checkBank)
         self.__entry.bind("<KeyRelease>", self.__checkBank)

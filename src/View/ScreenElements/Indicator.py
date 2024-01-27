@@ -174,9 +174,13 @@ class Indicator:
             self.__w, self.__h - round(self.__h // 10 * 2.5), self.__currentBank, self.dead, self.__blankAnimation
         )
 
-        self.__indicatorListBox.bind("<ButtonRelease-1>", self.__changedType)
-        self.__indicatorListBox.bind("<KeyRelease-Up>", self.__changedType)
-        self.__indicatorListBox.bind("<KeyRelease-Down>", self.__changedType)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indicatorListBox, "<ButtonRelease-1>", self.__changedType, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indicatorListBox, "<KeyRelease-Up>"  , self.__changedType, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indicatorListBox, "<KeyRelease-Down>", self.__changedType, 1)
+
+        #self.__indicatorListBox.bind("<ButtonRelease-1>", self.__changedType)
+        #self.__indicatorListBox.bind("<KeyRelease-Up>", self.__changedType)
+        #self.__indicatorListBox.bind("<KeyRelease-Down>", self.__changedType)
 
     def __changedType(self, evenz):
         if self.__lastSelected != self.__indicatorListBox.curselection()[0]:

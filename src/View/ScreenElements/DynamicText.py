@@ -168,9 +168,16 @@ class DynamicText:
             self.__dataListBoxes[num]["listBox"].yview(selector)
             self.__dataListBoxes[num]["lastSelected"] = self.__byteVars[selector].split("::")[1]
 
-            listBox.bind("<ButtonRelease-1>", self.__changeDataListBox)
-            listBox.bind("<KeyRelease-Up>", self.__changeDataListBox)
-            listBox.bind("<KeyRelease-Down>", self.__changeDataListBox)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<ButtonRelease-1>", self.__changeDataListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<KeyRelease-Up>", self.__changeDataListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<KeyRelease-Down>", self.__changeDataListBox,
+                                                                1)
+
+            #listBox.bind("<ButtonRelease-1>", self.__changeDataListBox)
+            #listBox.bind("<KeyRelease-Up>", self.__changeDataListBox)
+            #listBox.bind("<KeyRelease-Down>", self.__changeDataListBox)
 
         cFrame = Frame(self.__uniqueFrame, width=thisW,
                               bg=self.__loader.colorPalettes.getColor("window"),
@@ -221,7 +228,10 @@ class DynamicText:
                                               activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=1
                                               )
-            optionButton1.bind("<ButtonRelease-1>", self.__changeColorSettings)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, optionButton1, "<ButtonRelease-1>", self.__changeColorSettings,
+                                                                1)
+            #optionButton1.bind("<ButtonRelease-1>", self.__changeColorSettings)
             optionButton1.pack_propagate(False)
             optionButton1.pack(fill=X, side=TOP, anchor=N)
 
@@ -248,7 +258,10 @@ class DynamicText:
                                               activeforeground=self.__loader.colorPalettes.getColor("font"),
                                               value=2
                                               )
-            optionButton2.bind("<ButtonRelease-1>", self.__changeColorSettings)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, optionButton2, "<ButtonRelease-1>", self.__changeColorSettings,
+                                                                1)
+            #optionButton2.bind("<ButtonRelease-1>", self.__changeColorSettings)
             optionButton2.pack_propagate(False)
             optionButton2.pack(fill=X, side=TOP, anchor=N)
             self.__colorData[num]["variableButton"] = optionButton2
@@ -291,9 +304,17 @@ class DynamicText:
                listBox.select_set(selector)
                listBox.yview(selector)
                self.__colorData[num]["lastSelected"] = self.__nibbleVars[selector].split("::")[1]
-            listBox.bind("<ButtonRelease-1>", self.__changeColorListBox)
-            listBox.bind("<KeyRelease-Up>", self.__changeColorListBox)
-            listBox.bind("<KeyRelease-Down>", self.__changeColorListBox)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<ButtonRelease-1>", self.__changeColorListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "KeyRelease-Up>"   , self.__changeColorListBox,
+                                                                1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, listBox, "<KeyRelease-Down>", self.__changeColorListBox,
+                                                                1)
+
+            #listBox.bind("<ButtonRelease-1>", self.__changeColorListBox)
+            #listBox.bind("<KeyRelease-Up>", self.__changeColorListBox)
+            #listBox.bind("<KeyRelease-Down>", self.__changeColorListBox)
 
         # from GradientFrame import GradientFrame
         # self.__gradientFrame = GradientFrame(self.__loader, self.__uniqueFrame,
