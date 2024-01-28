@@ -1,0 +1,15 @@
+	LDA	#TEMPVAR#	
+	AND	#$0F
+	ASL
+	ASL
+	ASL
+	ASL
+	STA	#TEMPVAR#
+
+	LDA	P0SpriteIndex
+	AND	#$0F
+	ORA	#TEMPVAR#
+	STA	P0SpriteIndex
+
+	
+

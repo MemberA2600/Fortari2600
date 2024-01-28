@@ -2726,6 +2726,8 @@ class FirstCompiler:
             pass
 
         else:
+            #This is where object related commands are handled.
+
             objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
             template     = objectThings["template"]
 
@@ -2861,7 +2863,6 @@ class FirstCompiler:
                               optionalText = self.editOptionalTemplate(objectThings,
                                              optD, params[paramName], pSettings, optionalCounter, data)
 
-
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):
                    param = objectThings["paramsWithSettings"][paramNum]
@@ -2885,11 +2886,28 @@ class FirstCompiler:
                template = "\n".join(template) + "\n" + optionalText + "\n"
 
             if "replaceNum" in objectThings.keys(): template = template.replace("ß", objectThings["replaceNum"])
+            if "0or1" in objectThings.keys():
+                f      = open("/".join(objectThings["path"].split("\\")[:-1]) + "/" + objectThings["0or1"][0] + ".asm", "r")
+                orText = f.read()
+                f.close()
+
+                template = template.replace("!!!0or1!!!", orText)
+
             if "#MAGIC#" in template:
                self.__magicNumber += 1
                template = template.replace("#MAGIC#", str(self.__magicNumber))
 
             template = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
+            if "#TEMPVAR#" in template:
+                try:
+                    tempVar = self.__temps[0]
+                    self.__temps.pop(0)
+                    template = template.replace("#TEMPVAR#", tempVar)
+                except:
+                    self.addToErrorList(line["lineNum"],
+                                        self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                          "", "",
+                                                          str(line["lineNum"] + self.__startLine)))
 
             if self.__error == False:
                self.exceptionList(objectThings["sysVars"], "add")
@@ -3062,6 +3080,10 @@ class FirstCompiler:
         elif objectThings["optional"][counter] in ('_heightOfPlayer'):
              firstLine = data.split("\n")[0]
              height = int(firstLine.split("=")[1])
+             optionalText = optionalText.replace("!!!Max!!!", str(height))
+        elif objectThings["optional"][counter] in ('_indexOfPlayer'):
+             secondLine = data.split("\n")[1]
+             height = int(secondLine.split("=")[1])
              optionalText = optionalText.replace("!!!Max!!!", str(height))
 
         return optionalText

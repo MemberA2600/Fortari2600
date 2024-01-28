@@ -231,12 +231,12 @@ class ObjectMaster:
 
            path += "\\".join(listOfObjects) + ".asm"
 
-           if os.exists(path):
+           if os.path.exists(path):
               theObject["extension"] = "asm"
               found = True
            else:
               path = path[:-3] + "a26"
-              if os.exists(path):
+              if os.path.exists(path):
                   theObject["extension"] = "a26"
                   found = True
               else:
