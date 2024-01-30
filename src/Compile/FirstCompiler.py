@@ -2864,17 +2864,18 @@ class FirstCompiler:
                            optionalCounter += 1
                            optP = "/".join(objectThings["path"].split("\\")[:-1])
 
-                           path  = optP + "/" + objectThings["optional"][optionalCounter] + ".asm"
-                           dataF = open(path, "r")
-                           optD  = dataF.read()
-                           dataF.close()
+                           if len(objectThings["optional"]) >= optionalCounter + 1:
+                               path  = optP + "/" + objectThings["optional"][optionalCounter] + ".asm"
+                               dataF = open(path, "r")
+                               optD  = dataF.read()
+                               dataF.close()
 
-                           if objectThings["extension"] == "asm":
-                              template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
-                                         optD, params[paramName], pSettings, optionalCounter, data))
-                           else:
-                              optionalText = self.editOptionalTemplate(objectThings,
-                                             optD, params[paramName], pSettings, optionalCounter, data)
+                               if objectThings["extension"] == "asm":
+                                  template = template.replace("!!!Optional!!!", self.editOptionalTemplate(objectThings,
+                                             optD, params[paramName], pSettings, optionalCounter, data))
+                               else:
+                                  optionalText = self.editOptionalTemplate(objectThings,
+                                                 optD, params[paramName], pSettings, optionalCounter, data)
 
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):

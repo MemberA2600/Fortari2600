@@ -1,0 +1,7 @@
+* params={variable|stringConst|number},{variable|stringConst|number}
+* param1=#VAR01#
+* param2=#VAR02#
+* addManuallyToSysVars=random,PﬂSpriteIndex
+*
+	rand(#TEMPVAR#,#VAR01#,#VAR02#)
+	playerﬂ%setPlayerSpriteIndex(#TEMPVAR#)
