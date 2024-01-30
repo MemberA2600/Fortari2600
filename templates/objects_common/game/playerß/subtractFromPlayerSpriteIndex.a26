@@ -1,0 +1,10 @@
+* params=variable|stringConst|number,{data}
+* param1=#VAR01#
+* param2=#NAME#,sprites,##NAME##
+* addManuallyToSysVars=random,PﬂSpriteIndex
+* optional=_indexOfPlayer
+*
+	asm("LDA", "PﬂSpriteIndex")
+::import=_playerﬂIndexTo8bit.a26
+	sub(#TEMPVAR#, #VAR01#)
+	playerﬂ%setPlayerSpriteIndex(#TEMPVAR#)

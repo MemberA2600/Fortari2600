@@ -304,6 +304,18 @@ class ObjectMaster:
            theObject["template"] = f.read()
            f.close()
 
+           if "::import" in theObject["template"]:
+               linesAgain = theObject["template"].split("\n")
+               for lNum in range(0, len(linesAgain)):
+                   if linesAgain[lNum].startswith("::import"):
+                      fileName = linesAgain[lNum].split("=")[1]
+                      if "ß" in fileName: fileName = fileName.replace("ß", rNum)
+                      f = open("\\".join(theObject["path"].split("\\")[:-1]) + "\\" + fileName, "r")
+                      linesAgain[lNum] = f.read()
+                      f.close()
+
+               theObject["template"] = "\n".join(linesAgain)
+
            if sysVar != None:
               theObject["template"] = theObject["template"].replace("#SYSVAR#", sysVar)
 

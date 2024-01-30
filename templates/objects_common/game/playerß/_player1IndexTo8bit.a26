@@ -1,0 +1,6 @@
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("STA", "#TEMPVAR#")
+

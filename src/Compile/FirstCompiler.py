@@ -455,13 +455,12 @@ class FirstCompiler:
                line["fullLine"] = " asm(" + line["param#1"][0] + ")"
             """
 
-            self.checkASMCode(txt, line, lines, linesFeteched)
+            self.checkASMCode(txt, line, linesFeteched)
 
             if self.__error == False:
-               if line["level"] > -1:
-                  line["compiled"] = txt
-               else:
-                  line["compiled"] = datas[0]
+               line["compiled"] = txt
+               #else:
+               #   line["compiled"] = datas[0]
 
             for key in self.__changeThese.keys():
                 line["compiled"] = line["compiled"].replace(key, self.__changeThese[key])
@@ -2756,6 +2755,10 @@ class FirstCompiler:
                            if tempString in template and tempString in self.__temps:
                               aelf.__temps.remove(tempString)
 
+                for paramName in params.keys():
+                    if params[paramName][0] == tempString:
+                       self.__temps.remove(tempString)
+
             for paramName in params.keys():
                 data = ""
                 ok = True
@@ -2834,7 +2837,7 @@ class FirstCompiler:
                                    if "TO"   in pSettings["converter"].upper(): direction = "TO"
                                    if "FROM" in pSettings["converter"].upper(): direction = "FROM"
 
-                               convert = self.convertAny2Any(params[paramName][0], direction, params, None)
+                               convert = self.convertAny2Any(params[paramName][0], direction, params, self.__temps)
 
                     if errType != None:
                        self.addToErrorList(line["lineNum"],
@@ -2911,12 +2914,12 @@ class FirstCompiler:
                template = "\n".join(template) + "\n" + optionalText + "\n"
 
             if "replaceNum" in objectThings.keys(): template = template.replace("ß", objectThings["replaceNum"])
-            if "0or1" in objectThings.keys():
-                f      = open("/".join(objectThings["path"].split("\\")[:-1]) + "/" + objectThings["0or1"][0] + ".asm", "r")
-                orText = f.read()
-                f.close()
-
-                template = template.replace("!!!0or1!!!", orText)
+            #if "0or1" in objectThings.keys():
+            #    f      = open("/".join(objectThings["path"].split("\\")[:-1]) + "/" + objectThings["0or1"][0] + ".asm", "r")
+            #    orText = f.read()
+            #    f.close()
+            #
+            #    template = template.replace("!!!0or1!!!", orText)
 
             if "#MAGIC#" in template:
                self.__magicNumber += 1
