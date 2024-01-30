@@ -1,0 +1,1 @@
+"D:\PyCharm\P\Fortari2600\venv\Scripts\pyarmor.exe" gen "D:\PyCharm\P\Fortari2600\venv\copyAdlib2__.py"

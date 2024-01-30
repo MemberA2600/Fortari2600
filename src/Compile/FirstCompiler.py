@@ -2732,6 +2732,7 @@ class FirstCompiler:
             template     = objectThings["template"]
 
             self.__temps = self.collectUsedTemps()
+
             dataReplacers = {
                 "playfields" : ["##NAME##", "playfield"],
                 "backgrounds": ["##NAME##", "background"],
@@ -2742,6 +2743,18 @@ class FirstCompiler:
             template     = objectThings["template"]
             optionalText = ""
             #print(params)
+
+            for num in range(1, 20):
+                num = str(num)
+                if len(num) == 1: num = "0" + num
+                tempString = "temp" + num
+
+                templateLines = template.split("\n")
+                for lineX in templateLines:
+                    if len(lineX) > 0:
+                       if lineX[0] not in ("#", "*", "!"):
+                           if tempString in template and tempString in self.__temps:
+                              aelf.__temps.remove(tempString)
 
             for paramName in params.keys():
                 data = ""
@@ -2872,6 +2885,17 @@ class FirstCompiler:
                       template = re.sub(regex, "", template)
                       template = template.replace(param["replacer"], "")
 
+               if "#TEMPVAR#" in template:
+                   try:
+                       tempVarOther = self.__temps[0]
+                       self.__temps.pop(0)
+                       template = template.replace("#TEMPVAR#", tempVarOther)
+                   except:
+                       self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+
                template = template.split("\n")
                for lineNum in range(0, len(template)):
                    subLine = template[lineNum]
@@ -2942,12 +2966,19 @@ class FirstCompiler:
             line["compiled"] = ""
 
     def useItThings(self, template, data, usage, objectThings):
-        if usage == "setMinAndMaxofPF":
-           firstLine = data.split("\n")[0]
-           height = int(firstLine.split("=")[1])
-           min = 26
-           max = 26 + (height - 42)
-           template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+        if   usage == "setMinAndMaxofPF":
+             firstLine = data.split("\n")[0]
+             height = int(firstLine.split("=")[1])
+             min = 26
+             max = 26 + (height - 42)
+             template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+
+        elif usage == "setMinAndMaxofPlayer":
+            firstLine = data.split("\n")[0]
+            height = int(firstLine.split("=")[1])
+            min = 1
+            max = height
+            template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
 
         return template
 
@@ -4732,6 +4763,7 @@ class FirstCompiler:
                                                                     .replace("#OPERAND#", str(operand))
 
     def isCommandInLineThat(self, line, command):
+        #print(">>", line, command)
         if line["command"][0] == command or line["command"][0] in self.__loader.syntaxList[command].alias:
            return True
         return False
