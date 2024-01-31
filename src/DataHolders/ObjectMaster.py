@@ -292,16 +292,17 @@ class ObjectMaster:
            #if found == False: print(command)
            thatWord = ["missile", "player"]
            for w in thatWord:
-               if w in path:
-                  for n in range(0, 2):
-                      rWord = w + str(n)
-                      if rWord in command:
-                         rNum  = str(n)
-                         theObject["replaceNum"] = rNum
-                         path  = path.replace(rWord, w + "ß")
-                         endIt = True
-                         break
-                  if endIt: break
+               if path != None:
+                   if w in path:
+                      for n in range(0, 2):
+                          rWord = w + str(n)
+                          if rWord in command:
+                             rNum  = str(n)
+                             theObject["replaceNum"] = rNum
+                             path  = path.replace(rWord, w + "ß")
+                             endIt = True
+                             break
+                      if endIt: break
                if endIt: break
 
            theObject["path"]     = path.replace("/", "\\")
@@ -412,7 +413,7 @@ class ObjectMaster:
                theObject["paramsWithSettings"].append({})
                last = theObject["paramsWithSettings"][-1]
                last["param"]    = theObject["params"][num]
-               print(lines)
+               #print(lines)
                lineOfVar        = lines[num + 1].split("=")[1].split(",")
                last["replacer"] = lineOfVar[0]
 

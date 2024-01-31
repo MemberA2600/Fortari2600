@@ -3486,6 +3486,8 @@ class EditorBigFrame:
         if commandVar == None:
            commandVar = self.__objectMaster.createFakeCommandOnObjectProcess(currentLineStructure["command"][0])
 
+        # This is where you check hardcoded if a param is ok.
+
         """
         if command == "const" or command in self.__syntaxList["const"].alias:
            if returnBack[0][0] == "string" and returnBack[1][0] == "number":
@@ -3634,9 +3636,9 @@ class EditorBigFrame:
 
            if returnBack[1][0] in ["number", "stringConst"]:
               if returnBack[1][0] == "number":
-                 num = int(param2[0].replace("#", ""))
+                 num = self.convertStringNumToNumber(param2[0])
               else:
-                 num = int(self.__constants[param2[0].replace("#", "")])
+                 num = self.convertStringNumToNumber(self.__constants[param2[0].replace("#", "")])
 
               largest = 7
               if returnBack[0][0] == "variable":
@@ -3645,9 +3647,38 @@ class EditorBigFrame:
 
               if num > largest or num < 0: returnBack[1][0] = "error"
 
+        if "setSubMenuTileDataBy" in command:
+           try:
+               if "Num" in command:
+                   if returnBack[1][0] == "number":
+                       num = self.convertStringNumToNumber(param2[0])
+                   else:
+                       num = self.convertStringNumToNumber(self.__constants[param2[0]])
+
+                   if num > 24 or num < 1: returnBack[1][0] = "error"
+               else:
+                   if returnBack[1][0] == "number":
+                       num1 = self.convertStringNumToNumber(param2[0])
+                   else:
+                       num1 = self.convertStringNumToNumber(self.__constants[param2[0]])
+
+                   if returnBack[2][0] == "number":
+                       num2 = self.convertStringNumToNumber(param3[0])
+                   else:
+                       num2 = self.convertStringNumToNumber(self.__constants[param3[0]])
+
+                   if num1 > 4 or num1 < 1: returnBack[1][0] = "error"
+                   if num2 > 6 or num2 < 1: returnBack[2][0] = "error"
+           except:
+               pass
+
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
-
+            if self.__currentSection not in self.__syntaxList["do-items"].sectionsAllowed:
+               for itemNum in range(1, 4):
+                   if "param#" + str(itemNum) in params:
+                      if params["param#" + str(itemNum)][0] == "item":
+                         returnBack[itemNum - 1][0] = "error"
         #print(returnBack)
         return returnBack
 

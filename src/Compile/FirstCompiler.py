@@ -18,7 +18,12 @@ class FirstCompiler:
             "#SECTION#": section,
             "#FULL#": bank + "_" + section
         }
-        self.exiters = self.__editorBigFrame.exiters
+        self.exiters    = self.__editorBigFrame.exiters
+        self.stupidList = []
+
+        for num1 in range(1, 5):
+            for num2 in range(1, 7):
+                self.stupidList.append(str(num1) + "_" + str(num2))
 
         self.__fullTextLabels  = []
         for line in self.__fullText:
@@ -271,6 +276,14 @@ class FirstCompiler:
 
 
     def LDATAYLDA(self, text):
+
+        listOfWhat = ["\tLSR\n\tASL\n",
+                      "\tASL\n\tLSR\n"]
+
+        for what in listOfWhat:
+            while what in text:
+                text = text.replace(what, "")
+
         lines = text.replace("\r", "").split("\n")
 
         for lineNum in range(2, len(lines)):
@@ -2757,7 +2770,8 @@ class FirstCompiler:
 
                 for paramName in params.keys():
                     if params[paramName][0] == tempString:
-                       self.__temps.remove(tempString)
+                       if tempString in self.__temps:
+                          self.__temps.remove(tempString)
 
             for paramName in params.keys():
                 data = ""
@@ -2888,6 +2902,65 @@ class FirstCompiler:
                 if objectThings["loadAndUse"][0] == "param#0":
                    dummy = "dummy1=256\n" * 10
                    template = self.useItThings(template, dummy, objectThings["loadAndUse"][1], objectThings)
+
+            if "ifConstParams" in objectThings.keys():
+                types = []
+                for num in objectThings["ifConstParams"]:
+                    types.append(params["param#" + num][1])
+                if "variable" not in types:
+                    if   objectThings["ifConstFunc"][0] == "setSubMenuTitleData":
+                         template = ""
+                         values = []
+
+                         for num in objectThings["ifConstParams"]:
+                             pType = params["param#" + num][1]
+                             pVal  = params["param#" + num][0]
+
+                             if pType == "constant":
+                                pVal = str(self.__constants[pVal])
+                             if "#" in pVal:
+                                pVal = pVal.replace("#", "")
+
+                             values.append(pVal)
+
+                         tileVarNum = ""
+                         if len(values) == 2:
+                            tileVarNum  = values[0] + "_" + values[1]
+                         else:
+                            n = int(values[0]) - 1
+
+                            tileVarNum = self.stupidList[n]
+
+                         theVarName = params["param#1"][0]
+                         theVar     = self.__loader.virtualMemory.getVariableByName2(theVarName)
+
+                         to8Bit   = ""
+                         if theVar == False:
+                            if theVarName in self.__constants: theVarName = str(self.__constants[theVarName])
+                            theVarName = self.valOfNumber(theVarName)%16
+                            theVarName = "#" + str(theVarName)
+                         else:
+                            if theVar.type != "byte" or theVar.bcd:
+                               to8Bit = self.convertAny2Any(theVar, "TO", params, self.__temps)
+
+                         tileVarNum = "Tile" + tileVarNum
+                         ander      = ""
+                         other      = ""
+
+                         if int(tileVarNum[-1])%2 == 0:
+                            other      = "\tASL\n" * 4
+                            ander      = "\tAND\t#$0F\n"
+                            tileVarNum = tileVarNum[:-1] + str(int(tileVarNum[-1]) - 1)
+                         else:
+                            other      = "\tAND\t#$0F\n"
+                            ander      = "\tAND\t#$F0\n"
+
+                         template = "\tLDA\t" + theVarName + "\n" + to8Bit + "\n" + other + "\tSTA\t#TEMPVAR#\n" +\
+                                    "\tLDA\t" + tileVarNum + "\n" + ander  + "\tORA\t#TEMPVAR#\n" + "\tSTA\t" + tileVarNum + "\n"
+
+
+
+
 
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):
@@ -4522,6 +4595,7 @@ class FirstCompiler:
         numOfBytesFormat = beforeCommaFormat.count("A") // 2
         if value.startswith("#"): numOfBytesFormat = 1
 
+        #print(value, beforeCommaValue)
         #print(self.sizeOfNumber(value, ""), numOfBytesFormat)
         return self.sizeOfNumber(value, "") == numOfBytesFormat
 
@@ -4533,6 +4607,7 @@ class FirstCompiler:
 
     def sizeOfNumber(self, value, typ):
         value = self.removeAritmeticPart(value)
+        value = value.split(",")[0]
 
         makeItHalf = 1
 
@@ -4554,6 +4629,7 @@ class FirstCompiler:
             if value.startswith("#"):
                return 1
 
+        #print(typ)
         numberValue = self.__editorBigFrame.convertStringNumToNumber(value)
         if numberValue > 255:
            return 2 // makeItHalf

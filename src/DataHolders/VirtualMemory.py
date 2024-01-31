@@ -404,7 +404,7 @@ class VirtualMemory:
                 continue
             else:
                 if line.split("=")[0] == "bank1":
-                    self.kernel = line.split("=")[1].replace("\n","").replace("\r","")
+                    self.kernel = line.split("=")[1].replace("\n","").replace("\r","").split(",")[0]
                 else:
                     from Lock import Lock
                     self.locks[line.split("=")[0]] = Lock(line.split("=")[1].replace("\n","").replace("\r",""))
