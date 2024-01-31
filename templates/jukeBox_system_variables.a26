@@ -1,0 +1,11 @@
+MusicPointer0_LO=byte,non-iter,non-link,binary,non-Color
+MusicPointer0_HI=byte,non-iter,non-link,binary,non-Color
+MusicPointer1_LO=byte,non-iter,non-link,binary,non-Color
+MusicPointer1_HI=byte,non-iter,non-link,binary,non-Color
+MusicDuration0=byte,non-iter,linkable,binary,non-Color
+MusicDuration1=byte,non-iter,linkable,binary,non-Color
+JukeBox_Controller=byte,non-iter,non-link,binary,non-Color
+MusicPointerBackUp0_LO=byte,non-iter,non-link,binary,non-Color
+MusicPointerBackUp0_HI=byte,non-iter,non-link,binary,non-Color
+MusicPointerBackUp1_LO=byte,non-iter,non-link,binary,non-Color
+MusicPointerBackUp1_HI=byte,non-iter,non-link,binary,non-Color

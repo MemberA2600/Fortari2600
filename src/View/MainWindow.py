@@ -516,12 +516,25 @@ class MainWindow:
         # item.code = self.__loader.io.loadWholeText(path).replace("%DELIMINATOR%", self.__config.getValueByKey("deliminator"))
         item.code = self.__loader.io.loadWholeText(path)
         if bank=="bank1" and variable =="bank_configurations":
-            old = self.__loader.virtualMemory.kernel
+            old     = self.__loader.virtualMemory.kernel
+            oldJuke = self.__loader.virtualMemory.includeJukeBox
+            oldIncl = self.__loader.virtualMemory.includeKernelData
+
             for line in item.code.split(os.linesep):
                 if line.startswith("bank1"):
-                    new = line.split("=")[1].replace("\n", "").replace("\r", "")
-                    if old != new:
-                        self.__loader.virtualMemory.changeKernelMemory(old, new)
+                    line = line.split("=")[1].replace("\n", "").replace("\r", "").split(",")
+                    self.__loader.virtualMemory.kernel  = line[0]
+                    #if old != new:
+                    #   self.__loader.virtualMemory.changeKernelMemory(old, new)
+                    self.__loader.virtualMemory.includeKernelData(bool(line[1]))
+                    self.__loader.virtualMemory.includeJukeBox(bool(line[2]))
+
+                    if old     != self.__loader.virtualMemory.kernel            \
+                    or oldIncl != self.__loader.virtualMemory.includeKernelData \
+                    or oldJuke != self.__loader.virtualMemory.includeJukeBox:
+                       self.__loader.virtualMemory.resetMemory()
+                       #self.__loader.virtualMemory.addSystemMemory()
+
         item.changed = False
 
     def __saveProject(self):

@@ -132,7 +132,8 @@ class ScreenTopFrame:
             for file in files:
                 if root == "src/View/ScreenElements" and ".py" in file:
                    if file == "JukeBox.py":
-                      if self.getIfThereIsAlreadyAJukeBoxAdded() == True: continue
+                      if self.getIfThereIsAlreadyAJukeBoxAdded()    == True \
+                      or self.__loader.virtualMemory.includeJukeBox == False: continue
 
                    self.__listBoxItems.append(file.replace(".py", ""))
                    self.__itemListBox.insert(END, file.replace(".py", ""))

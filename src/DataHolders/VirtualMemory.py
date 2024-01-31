@@ -18,6 +18,8 @@ class VirtualMemory:
         self.changedCodes = {}
         self.objectMaster = ObjectMaster(loader)
         self.excludeForBank1Routines = ["temp18", "temp19"]
+        self.includeJukeBox    = True
+        self.includeKernelData = True
 
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
@@ -225,19 +227,28 @@ class VirtualMemory:
 
 
     def addSystemMemory(self):
-        d = self.__loader.dataReader.readDataFile("templates"+os.sep+self.kernel+"_system_variables.a26")
-        for key in d:
-            #print(key, d[key])
-            self.addVariable(key, d[key].split(",")[0], "global", False, False)
-            self.getVariableByName(key, "bank1").system=True
-            if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
-                self.getVariableByName(key, "bank1").iterable = False
-            if d[key].split(",")[2].replace(" ","").replace("\t", "") == "non-link":
-                self.getVariableByName(key, "bank1").linkable = False
-            if d[key].split(",")[3].replace(" ","").replace("\t", "") == "BCD":
-                self.getVariableByName(key, "bank1").bcd = True
-            if d[key].split(",")[4].replace(" ","").replace("\t", "") == "colorVar":
-                self.getVariableByName(key, "bank1").colorVar = True
+        datas = []
+        if self.includeKernelData:
+           datas.append(self.__loader.dataReader.readDataFile("templates"+os.sep+self.kernel+"_system_variables.a26"))
+        else:
+           datas.append(self.__loader.dataReader.readDataFile("templates" + os.sep + "empty_system_variables.a26"))
+
+        if self.includeJukeBox:
+           datas.append(self.__loader.dataReader.readDataFile("templates" + os.sep + "jukeBox_system_variables.a26"))
+
+        for d in datas:
+            for key in d:
+                #print(key, d[key])
+                self.addVariable(key, d[key].split(",")[0], "global", False, False)
+                self.getVariableByName(key, "bank1").system=True
+                if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
+                    self.getVariableByName(key, "bank1").iterable = False
+                if d[key].split(",")[2].replace(" ","").replace("\t", "") == "non-link":
+                    self.getVariableByName(key, "bank1").linkable = False
+                if d[key].split(",")[3].replace(" ","").replace("\t", "") == "BCD":
+                    self.getVariableByName(key, "bank1").bcd = True
+                if d[key].split(",")[4].replace(" ","").replace("\t", "") == "colorVar":
+                    self.getVariableByName(key, "bank1").colorVar = True
 
     def addArray(self, name):
         self.arrays[name] = {}
@@ -401,7 +412,7 @@ class VirtualMemory:
     def createTheBankConfigFromMemory(self):
         text = []
         text.append("*** This is where you set the details of banks such as name, role, and so on.")
-        text.append(str("bank1="+self.kernel))
+        text.append(str("bank1=" + self.kernel + "," + str(self.includeKernelData), + "," + str(self.includeJukeBox)))
         for bank in self.locks.keys():
             if self.locks[bank]!=None:
                 text.append(bank+f"={self.locks[bank].name},{self.locks[bank].type},{str(self.locks[bank].number)}")
@@ -515,7 +526,6 @@ class VirtualMemory:
 
         if mode=="all":
             for num in range(1,9):
-
                 self.moveMemorytoVariables("bank"+str(num))
         else:
             self.moveMemorytoVariables(mode)
