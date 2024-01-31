@@ -7,6 +7,7 @@ class ObjectMaster:
     def __init__(self, loader):
         self.__loader   = loader
         self.__compiler = Compiler(self.__loader, "common", "dummy", None)
+        self.__listOfSourceTXTs = ["colorChangers"]
 
         self.objects = {}
         for num in range(2, 9):
@@ -71,38 +72,39 @@ class ObjectMaster:
                             firstLine = f.read().replace("\r", "").split("\n")[0]
                             f.close()
 
-                            if firstLine[0] in ["*", "#"]:
+                            if firstLine[0] in ["*", "#"] and len(firstLine) > 1:
                                 listOfParams = firstLine.split("=")[1]
                                 key = name + "(" + listOfParams + ")"
                             else:
                                 key = name
                             objRoot[key] = text
 
-        f = open(self.objRoot + "listOfColorChangers.txt", "r")
-        lines = f.read().replace("\r", "").split("\n")
-        f.close()
+        for txtName in self.__listOfSourceTXTs:
+            f = open(self.objRoot + "listOf" + txtName + ".txt", "r")
+            lines = f.read().replace("\r", "").split("\n")
+            f.close()
 
-        for line in lines:
-            if len(line) > 0:
-                name = line.split("=")[0]
-                params = line.split("=")[1].split(",")
-                sysVar = params[0]
-                parent = params[1]
+            for line in lines:
+                if len(line) > 0:
+                    name = line.split("=")[0]
+                    params = line.split("=")[1].split(",")
+                    sysVar = params[0]
+                    parent = params[1]
 
-                try:
-                    path = "templates/objects_" + self.__loader.virtualMemory.kernel + "/colorChangers"
-                except:
-                    path = "templates/objects_common/colorChangers"
+                    try:
+                        path = "templates/objects_" + self.__loader.virtualMemory.kernel + "/"+ txtName
+                    except:
+                        path = "templates/objects_common/" + txtName
 
-                for root, dirs, files in os.walk(path):
-                    for file in files:
-                        if file.endswith(".asm") or file.endswith(".a26"):
-                            f = open(root + "/" + file)
-                            text = f.read().replace("#SYSVAR#", sysVar)
-                            f.close()
+                    for root, dirs, files in os.walk(path):
+                        for file in files:
+                            if file.endswith(".asm") or file.endswith(".a26"):
+                                f = open(root + "/" + file)
+                                text = f.read().replace("#SYSVAR#", sysVar)
+                                f.close()
 
-                            command = file.replace("#VARNAME#", name)[:-4]
-                            self.objects[parent][command] = text
+                                command = file.replace("#VARNAME#", name)[:-4]
+                                self.objects[parent][command] = text
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -243,42 +245,46 @@ class ObjectMaster:
                   path  = None
                   theObject["extension"] = None
 
-                  f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOfColorChangers.txt", "r")
-                  lines = f.read().replace("\r", "").split("\n")
-                  f.close()
+                  paths = []
+                  for txtName in self.__listOfSourceTXTs:
+                      #path.append("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf" + txtName + ".txt")
 
-                  commandComp = listOfObjects[-1]
+                      f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName+".txt", "r")
+                      lines = f.read().replace("\r", "").split("\n")
+                      f.close()
 
-                  for line in lines:
-                      if len(line) > 0:
-                          name = line.split("=")[0]
-                          params = line.split("=")[1].split(",")
-                          sysVar = params[0]
-                          parent = params[1]
+                      commandComp = listOfObjects[-1]
 
-                          for mainPath in [
-                              "templates/objects_" + self.__loader.virtualMemory.kernel + "/colorChangers",
-                              "templates/objects_" + self.__loader.virtualMemory.kernel + "/game"
-                          ]:
-                              for root, dirs, files in os.walk(mainPath):
-                                  for file in files:
-                                      if file.endswith(".asm") or file.endswith(".a26"):
-                                          f = open(root + "/" + file)
-                                          text = f.read().replace("#SYSVAR#", sysVar)
-                                          f.close()
+                      for line in lines:
+                          if len(line) > 0:
+                              name = line.split("=")[0]
+                              params = line.split("=")[1].split(",")
+                              sysVar = params[0]
+                              parent = params[1]
 
-                                          commandC = file.replace("#VARNAME#", name)[:-4]
-                                          #print(commandC, commandComp)
+                              for mainPath in [
+                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
+                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/game"
+                              ]:
+                                  for root, dirs, files in os.walk(mainPath):
+                                      for file in files:
+                                          if file.endswith(".asm") or file.endswith(".a26"):
+                                              f = open(root + "/" + file)
+                                              text = f.read().replace("#SYSVAR#", sysVar)
+                                              f.close()
 
-                                          if commandC == commandComp:
-                                             found                  = True
-                                             path                   = root + "/" + file
-                                             theObject["extension"] = path[-3:]
-                                             break
+                                              commandC = file.replace("#VARNAME#", name)[:-4]
+                                              #print(commandC, commandComp)
+
+                                              if commandC == commandComp:
+                                                 found                  = True
+                                                 path                   = root + "/" + file
+                                                 theObject["extension"] = path[-3:]
+                                                 break
+                                      if found: break
                                   if found: break
-                              if found: break
+                          if found: break
                       if found: break
-
 
            rNum  = None
            endIt = False
@@ -323,10 +329,12 @@ class ObjectMaster:
               theObject["template"] = theObject["template"].replace("ß", rNum)
 
            lines = theObject["template"].replace("\r", "").split("\n")
-           try:
-               pList = lines[0].split("=")[1].split(",")
-           except:
-               pList = []
+           pList = []
+           if "params" in lines[0].split("=")[0]:
+               try:
+                   pList = lines[0].split("=")[1].split(",")
+               except:
+                   pList = []
 
            theObject["params"] = []
            validOnes = ["variable", "string", "stringConst", "number", "data"]
@@ -404,6 +412,7 @@ class ObjectMaster:
                theObject["paramsWithSettings"].append({})
                last = theObject["paramsWithSettings"][-1]
                last["param"]    = theObject["params"][num]
+               print(lines)
                lineOfVar        = lines[num + 1].split("=")[1].split(",")
                last["replacer"] = lineOfVar[0]
 
@@ -437,11 +446,13 @@ class ObjectMaster:
 
         #if "loadAndUse" in theObject.keys(): print(theObject["loadAndUse"])
 
-        ##or key in theObject:
-        #    print(key + ":", theObject[key])
         if "addManuallyToSysVars" in theObject.keys():
             for var in theObject["addManuallyToSysVars"]: theObject["sysVars"].append(var)
             del theObject["addManuallyToSysVars"]
+
+        #for key in theObject:
+        #    print(key + ":", theObject[key])
+
         return theObject
 
     def createFakeCommandOnObjectProcess(self, command):

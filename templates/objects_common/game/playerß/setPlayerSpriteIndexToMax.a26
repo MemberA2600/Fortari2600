@@ -1,0 +1,6 @@
+* params=data
+* param1=#NAME#,sprites,##NAME##
+* loadAndUse=param#1,setMinAndMaxofPlayerSpriteIndex
+* addManuallyToSysVars=P0SpriteIndex
+*
+	playerﬂ%setPlayerSpriteIndex(!!!Max!!!)

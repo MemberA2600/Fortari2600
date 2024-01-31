@@ -1,0 +1,5 @@
+*
+* loadAndUse=param#0,setMinAndMaxofPlayerSpriteIndex
+* addManuallyToSysVars=P0SpriteIndex
+*
+	playerﬂ%setPlayerSpriteIndex(!!!Min!!!)

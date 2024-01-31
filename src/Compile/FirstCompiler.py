@@ -2880,6 +2880,15 @@ class FirstCompiler:
                                   optionalText = self.editOptionalTemplate(objectThings,
                                                  optD, params[paramName], pSettings, optionalCounter, data)
 
+            if "loadAndUse" in objectThings.keys():
+                #
+                # This is only used on "Min" settings where the min requires no real data
+                #
+
+                if objectThings["loadAndUse"][0] == "param#0":
+                   dummy = "dummy1=256\n" * 10
+                   template = self.useItThings(template, dummy, objectThings["loadAndUse"][1], objectThings)
+
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):
                    param = objectThings["paramsWithSettings"][paramNum]
@@ -2979,9 +2988,14 @@ class FirstCompiler:
 
         elif usage == "setMinAndMaxofPlayer":
             firstLine = data.split("\n")[0]
-            height = int(firstLine.split("=")[1])
+            max = int(firstLine.split("=")[1])
             min = 1
-            max = height
+            template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
+
+        elif usage == "setMinAndMaxofPlayerSpriteIndex":
+            secondLine = data.split("\n")[1]
+            max = int(secondLine.split("=")[1])
+            min = 0
             template = template.replace("!!!Max!!!", str(max)).replace("!!!Min!!!", str(min))
 
         return template

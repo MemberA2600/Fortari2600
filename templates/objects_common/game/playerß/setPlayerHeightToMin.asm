@@ -1,6 +1,5 @@
-* params=data
-* param1=#NAME#,sprites,##NAME##
-* loadAndUse=param#1,setMinAndMaxofPlayer
+*
+* loadAndUse=param#0,setMinAndMaxofPlayer
 *
 	LDA	#!!!Min!!!
 	STA	PßHeight
