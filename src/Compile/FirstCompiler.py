@@ -2540,6 +2540,81 @@ class FirstCompiler:
 
         #elif self.isCommandInLineThat(line, "const"):
         #    line["compiled"] = ""
+        elif self.isCommandInLineThat(line, "smallest") or self.isCommandInLineThat(line, "largest"):
+            if self.isCommandInLineThat(line, "smallest"):
+               mode = "SMALLEST"
+            else:
+               mode = "BIGGEST"
+
+            self.__temps = self.collectUsedTemps()
+
+            tempVar = params["param#1"][0]
+            saveVar = self.__loader.virtualMemory.getVariableByName2(tempVar)
+            if saveVar == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound",
+                                                      saveVar,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            if self.__error == False:
+                isTempUsed = False
+                if saveVar.type != "byte" or saveVar.bcd:
+                    isTempUsed = True
+                    try:
+                        tempVar = self.__temps[0]
+                        self.__temps.pop(0)
+                    except:
+                        self.addToErrorList(line["lineNum"],
+                                            self.prepareError("compilerErrorStatementTemps", params["param#3"][0],
+                                                              "", "",
+                                                              str(line["lineNum"] + self.__startLine)))
+                if self.__error == False:
+                    array = params["param#2"][0]
+
+                    if array not in self.__loader.virtualMemory.arrays.keys() or \
+                            (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1", "global"]):
+                        self.addToErrorList(line["lineNum"],
+                                            self.prepareError("compilerErrorArrayNotFound", array,
+                                                              "", "",
+                                                              str(line["lineNum"] + self.__startLine)))
+                    if self.__error == False:
+                        if mode == 'BIGGEST':
+                           txt = "\tLDA\t#0\n\tSTA\t"   + tempVar + "\n"
+                        else:
+                           txt = "\tLDA\t#255\n\tSTA\t" + tempVar + "\n"
+
+                        index = -1
+                        for varName in self.__virtualMemory.arrays[array]:
+                            index += 1
+                            if self.__error: break
+
+                            subTxt = "\tLDA\t" + varName + "\n"
+                            var = self.__loader.virtualMemory.getVariableByName2(varName)
+                            if var == False:
+                                self.addToErrorList(line["lineNum"],
+                                                    self.prepareError("compilerErrorVarNotFound",
+                                                                      varName,
+                                                                      "", "",
+                                                                      str(line["lineNum"] + self.__startLine)))
+                            subTxt += self.convertAny2Any(varName, "TO", params, self.__temps) + "\n"
+
+                            if mode == "BIGGEST":
+                               com  = "BCC"
+                            else:
+                               com  = "BCS"
+
+                            subTxt += "\tCMP\t" + tempVar + "\n\t" + com + "\t#BANK#_#MAGIC#_DontSave_" + str(index) \
+                                  + "\n\tSTA\t" + tempVar + "\n"         +   "#BANK#_#MAGIC#_DontSave_" + str(index) + "\n"
+
+                            txt += subTxt
+
+                    if self.__error == False:
+                       if isTempUsed:
+                          txt += "\tLDA\t" + tempVar + "\n" + self.convertAny2Any(saveVar, "FROM", params, self.__temps) + "\n\tSTA\t" + params["param#1"][0] + "\n"
+                       line["compiled"] = txt
+
+
         elif self.isCommandInLineThat(line, "min") or self.isCommandInLineThat(line, "max"):
             self.__temps = self.collectUsedTemps()
 

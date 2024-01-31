@@ -9,7 +9,7 @@ maxUndo=20
 debug=False
 keepLogs=0
 codeBoxFont=14
-validObjDelimiters=% . ::
+validObjDelimiters=% .
 validLineDelimiters=! ; .
 validNotEQ=!= /= ~= <> NOT= .NEQ.
 validEQ=== = .EQ. 

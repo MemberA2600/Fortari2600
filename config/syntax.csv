@@ -23,7 +23,7 @@ flip;[! not ~];[common];command;None;brackets;[];[number|variable|stringConst {v
 goto;[go];[common];command;None;brackets;[leave];[number|stringConst|variable];None;None;False
 incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False
 init;[initizalize];[common];command;None;brackets;[];[array];write;None;False
-largest;[biggest];[common];command;None;brackets;[];[variable array];write;None;True
+largest;[biggest];[common];command;None;brackets;[];[variable array];write;None;False
 leave;[=>];[common];command;None;None;[overscan];None;None;None;False
 min;[minimalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 max;[maximalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
@@ -44,7 +44,7 @@ setAll;[setA =A];[common];command;None;brackets;[];[array number|variable|string
 shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sin;[sinewave];[common];command;None;brackets;[];[variable number|variable|stringConst {number|variable|stringConst}];write;None;False
-smallest;[tiniest];[common];command;None;brackets;[];[variable array];write;None;True
+smallest;[tiniest];[common];command;None;brackets;[];[variable array];write;None;False
 sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True
 sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True
 subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False

@@ -1,4 +1,5 @@
 from tkinter import *
+from threading import Thread
 
 class EditorBigFrame:
 
@@ -103,7 +104,6 @@ class EditorBigFrame:
         self.__highLightWord       = None
         self.__highLightIgnoreCase = True
 
-        from threading import Thread
         self.__ctrl = False
 
         self.__focusOutItems = []
@@ -416,6 +416,7 @@ class EditorBigFrame:
                 else:
                     button.config(state=state)
 
+            #print(self.__foundError)
             if self.__foundError == False:
                 self.__compileASMButton.config(state=NORMAL)
             else:
@@ -1146,8 +1147,6 @@ class EditorBigFrame:
         objectList = self.__objectMaster.getStartingObjects()
         objectList.append("game")
 
-        from threading import Thread
-
         t = Thread(target = self.setItThreadMehh)
         t.daemon = True
         t.start()
@@ -1409,8 +1408,6 @@ class EditorBigFrame:
         self.__setTinting("whole")
 
     def __setTinting(self, mode):
-        from threading import Thread
-
         if mode not in self.__threadBuffer.keys():
            self.__threadBuffer[mode] = []
 
@@ -1913,6 +1910,7 @@ class EditorBigFrame:
                    if caller == "lineTinting":
                       if item[0] == "error":
                          n = 5
+                         self.__foundError = True
                       else:
                          n = None
 
@@ -2431,7 +2429,6 @@ class EditorBigFrame:
 
         #print(wordsForList)
 
-        from threading import Thread
         t = Thread(target=self.fillListBox, args=[wordsForList])
         t.daemon = True
         t.start()
@@ -3003,17 +3000,6 @@ class EditorBigFrame:
         else:
             command = self.__objectMaster.createFakeCommandOnObjectProcess(lineStructure["command"][0])
 
-        #blockStringConst = False
-        """
-        listOfBlockers   = ["const"]
-
-        for c in listOfBlockers:
-            if lineStructure["command"][0] == c or \
-               lineStructure["command"][0] in self.__syntaxList[c].alias:
-               blockStringConst = True
-               break
-        """
-
         paramTypeList = paramType.split("|")
         delimiters = self.__config.getValueByKey("validStringDelimiters")
 
@@ -3487,27 +3473,7 @@ class EditorBigFrame:
            commandVar = self.__objectMaster.createFakeCommandOnObjectProcess(currentLineStructure["command"][0])
 
         # This is where you check hardcoded if a param is ok.
-
-        """
-        if command == "const" or command in self.__syntaxList["const"].alias:
-           if returnBack[0][0] == "string" and returnBack[1][0] == "number":
-              if param1[0] in self.__constants.keys():
-                 returnBack[0][0] = "error"
-              else:
-                 self.__constants[param1[0]] = {
-                    "alias": [param1[0].upper(), param1[0].lower()],
-                    "value": param2[0]
-                 }
-
-           elif returnBack[0][0] == "stringConst":
-               returnBack[0][0] = "error"
-
-           if currentLineStructure["param#3"][0] not in ["", None, "None"]:
-              if returnBack[2][0] == "string":
-                 if currentLineStructure["param#3"][0].lower()[1:-1] not in ("section", "bank", "global"):
-                    returnBack[2][0] = "error"
-        
-        """
+        #print(returnBack)
         if   command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
            if returnBack[0][0] == "string":
               if self.__subroutines == []: self.__subroutines = self.collectNamesByCommandFromSections("subroutine",
@@ -3631,6 +3597,7 @@ class EditorBigFrame:
              else:
                 if returnBack[0][0] != "variable": returnBack[0][0] = "error"
 
+        #print(returnBack)
         if command == "bitOn"  or command in self.__syntaxList["bitOn"].alias  or \
            command == "bitOff" or command in self.__syntaxList["bitOff"].alias:
 
@@ -4060,8 +4027,6 @@ class EditorBigFrame:
     def updateLineDisplay(self, lineStructure):
         self.createFakeCodeEditorItems(lineStructure, self.__codeEditorItems)
 
-        from threading import Thread
-
         t = Thread(target = self.setItThreadMehh)
         t.daemon = True
         t.start()
@@ -4227,7 +4192,9 @@ class EditorBigFrame:
         return largest
 
     def addTag(self, Y, X1, X2, tag, errCallNum):
-        #if tag == "error": print(errCallNum)
+        #if tag == "error":
+        #   print(errCallNum)
+        #   if errCallNum == 5: raise ValueError
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":
