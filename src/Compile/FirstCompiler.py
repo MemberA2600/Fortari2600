@@ -2925,9 +2925,9 @@ class FirstCompiler:
 
                          tileVarNum = ""
                          if len(values) == 2:
-                            tileVarNum  = values[0] + "_" + values[1]
+                            tileVarNum  = str(int(values[0]) + 1) + "_" + str(int(values[1]) + 1)
                          else:
-                            n = int(values[0]) - 1
+                            n = int(values[0])
 
                             tileVarNum = self.stupidList[n]
 

@@ -12,7 +12,7 @@
 	TAX
 	TYA	
 	ROR	
-	BMI	#BANK#_#MAGIC#_ItIsOdd_1
+	BPL	#BANK#_#MAGIC#_ItIsOdd_1
 	TXA
 	ASL
 	ASL
@@ -26,18 +26,18 @@
 
 	TYA	
 !!!to8bit2!!!
-	CMP 	#25
+	CMP 	#24
 	BCC	#BANK#_#MAGIC#_No24Load
-	LDA	#24
+	LDA	#23
 #BANK#_#MAGIC#_No24Load
-	SEC
-	SBC	#1
+****	SEC
+****	SBC	#1
 	LSR
 	TAX
 
 	TYA	
 	ROR	
-	BMI	#BANK#_#MAGIC#_ItIsOdd_2
+	BPL	#BANK#_#MAGIC#_ItIsOdd_2
 	LDA	Tile1_1,x
 	AND	#$0F
 	JMP	#BANK#_#MAGIC#_WasEven_2

@@ -3655,7 +3655,7 @@ class EditorBigFrame:
                    else:
                        num = self.convertStringNumToNumber(self.__constants[param2[0]])
 
-                   if num > 24 or num < 1: returnBack[1][0] = "error"
+                   if num > 23 or num < 0: returnBack[1][0] = "error"
                else:
                    if returnBack[1][0] == "number":
                        num1 = self.convertStringNumToNumber(param2[0])
@@ -3667,8 +3667,8 @@ class EditorBigFrame:
                    else:
                        num2 = self.convertStringNumToNumber(self.__constants[param3[0]])
 
-                   if num1 > 4 or num1 < 1: returnBack[1][0] = "error"
-                   if num2 > 6 or num2 < 1: returnBack[2][0] = "error"
+                   if num1 > 3 or num1 < 0: returnBack[1][0] = "error"
+                   if num2 > 5 or num2 < 0: returnBack[2][0] = "error"
            except:
                pass
 
