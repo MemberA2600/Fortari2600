@@ -1,0 +1,10 @@
+PozYOfPlayer0=P0Y,player0
+PozYOfPlayer1=P1Y,player1
+PozYOfMissile0=M0Y,missile0
+PozYOfMissile1=M1Y,missile1
+PozYOfBall=BLY,ball
+PozXOfPlayer0=P0X,player0
+PozXOfPlayer1=P1X,player1
+PozXOfMissile0=M0X,missile0
+PozXOfMissile1=M1X,missile1
+PozXOfBall=BLX,ball

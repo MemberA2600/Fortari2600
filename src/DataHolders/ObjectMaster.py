@@ -7,7 +7,7 @@ class ObjectMaster:
     def __init__(self, loader):
         self.__loader   = loader
         self.__compiler = Compiler(self.__loader, "common", "dummy", None)
-        self.__listOfSourceTXTs = ["colorChangers"]
+        self.__listOfSourceTXTs = ["colorChangers", "simpleSetters"]
 
         self.objects = {}
         for num in range(2, 9):
@@ -80,7 +80,7 @@ class ObjectMaster:
                             objRoot[key] = text
 
         for txtName in self.__listOfSourceTXTs:
-            f = open(self.objRoot + "listOf" + txtName + ".txt", "r")
+            f = open(self.objRoot + "listOf" + txtName[0].upper() + txtName[1:] + ".txt", "r")
             lines = f.read().replace("\r", "").split("\n")
             f.close()
 
@@ -249,7 +249,7 @@ class ObjectMaster:
                   for txtName in self.__listOfSourceTXTs:
                       #path.append("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf" + txtName + ".txt")
 
-                      f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName+".txt", "r")
+                      f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName[0].upper() + txtName[1:]+".txt", "r")
                       lines = f.read().replace("\r", "").split("\n")
                       f.close()
 
