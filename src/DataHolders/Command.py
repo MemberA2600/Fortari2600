@@ -21,7 +21,7 @@ class Command:
            for a in self.alias:
                newAlias.append("end-"+a.split("-")[0])
 
-           newString = "["+" ".join(newAlias) +"]"+"," + data[1] + "," + "end-command" + ",None,None,"+data[5]+",None,None,"+data[8]+",False"
+           newString = "["+" ".join(newAlias) +"]"+"," + data[1] + "," + "end-command" + ",None,None,"+data[5]+",None,None,"+data[8]+",False,0"
            self.__loader.syntaxList[newName] = Command(loader, newName, newString)
         else:
             self.endNeeded = False
@@ -64,9 +64,11 @@ class Command:
         else:
            self.flexSave = False
 
+        self.fixSave = data[10]
+
         for a in self.alias:
             newString = "[],[common],command,"+data[3].lower()+","+data[4].lower() + "," + data[5] +\
-                         "," + data[6] + "," + data[7] + "," + data[8] + "," + data[9]
+                         "," + data[6] + "," + data[7] + "," + data[8] + "," + data[9] + "," + data[10]
             self.__loader.syntaxList[a] = Command(loader, a, newString)
 
     def changeAliasToName(self, name, text):

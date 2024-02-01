@@ -771,6 +771,131 @@ class FirstCompiler:
                    "#MAGIC#", str(self.__magicNumber))
                self.__magicNumber += 1
 
+        elif self.isCommandInLineThat(line, "copy"):
+            array1 = line["param#1"][0]
+            if array1 not in self.__loader.virtualMemory.arrays.keys() or \
+                    (self.__virtualMemory.getArrayValidity(array1) not in [self.__currentBank, "bank1", "global"]):
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorArrayNotFound", array1,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            array2 = line["param#2"][0]
+            if array2 not in self.__loader.virtualMemory.arrays.keys() or \
+                    (self.__virtualMemory.getArrayValidity(array2) not in [self.__currentBank, "bank1", "global"]):
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorArrayNotFound", array2,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+            txt = ""
+            if self.__error == False:
+               lenght = min([len(self.__loader.virtualMemory.arrays[array1]),
+                         len(self.__loader.virtualMemory.arrays[array2])])
+
+               varKeys1 = list(self.__loader.virtualMemory.arrays[array1].keys())
+               varKeys2 = list(self.__loader.virtualMemory.arrays[array2].keys())
+
+               for num in range(0, lenght):
+                   varName1 = varKeys1[num]
+                   varName2 = varKeys2[num]
+
+                   var1     = self.__loader.virtualMemory.arrays[array1][varName1]
+                   var2     = self.__loader.virtualMemory.arrays[array2][varName2]
+
+                   """ 
+                   var1 = self.__loader.virtualMemory.getVariableByName2(varName1)
+                   var2 = self.__loader.virtualMemory.getVariableByName2(varName2)
+
+                   print(varName1)
+
+                   if var1 == False:
+                      self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorVarNotFound", varName1,
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+                   if var2 == False:
+                      self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorVarNotFound", varName2,
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+                   """
+                   subline = deepcopy(line)
+                   subline["command"][0] = "set"
+                   subline["param#1"][0] = varName1
+                   subline["param#2"][0] = varName2
+
+                   subline["fullLine"] = "\tset(" + varName1 +"," + varName2 + ")"
+                   subline["compiled"] = ""
+
+                   self.processLine(subline, linesFeteched)
+                   if self.__error: break
+
+                   txt += subline["compiled"] + "\n"
+
+            if self.__error == False:
+               self.checkASMCode(txt, line, linesFeteched)
+
+               if self.__error == False: line["compiled"] = txt
+
+            return
+
+        elif self.isCommandInLineThat(line, "randAll"):
+            self.exceptionList(["random"], "add")
+            txt = ""
+
+            array = line["param#1"][0]
+            if array not in self.__loader.virtualMemory.arrays.keys() or \
+                    (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1", "global"]):
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorArrayNotFound", array,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            counter = -1
+            if self.__error == False:
+               for varName in self.__loader.virtualMemory.arrays[array]:
+                   counter += 1
+                   var = self.__loader.virtualMemory.getVariableByName2(varName)
+                   if var == False:
+                      self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+                   else:
+                      subline = deepcopy(line)
+                      subline["command"][0] = "rand"
+                      subline["param#1"][0] = varName
+                      subline["fullLine"] = "\trand(" + subline["param#1"][0]
+                      for key in ["param#2", "param#3"]:
+                          if key in subline.keys():
+                              subline["fullLine"] += ", " + subline[key][0]
+                      subline["fullLine"] += ")"
+                      subline["compiled"]  = ""
+
+                      self.processLine(subline, linesFeteched)
+                      if self.__error:
+                         break
+                      else:
+                         subTxt = subline["compiled"]
+                         subTxt = subTxt.split("\n")
+                         for lNum in range(0, len(subTxt)):
+                             if "STA" in subTxt[lNum].upper() and "random" in subTxt[lNum]:
+                                 subTxt.pop(lNum)
+                                 break
+
+                         txt += "\n".join(subTxt) + "\n"
+                         if counter%2 == 0:
+                            txt += "\tORA\tcounter\n\tSTA\trandom\n"
+                         else:
+                            txt += "\tLSR\n\tTAX\n\tORA\tcounter,x\n\tSTA\trandom\n"
+
+               if self.__error == False:
+                   self.checkASMCode(txt, line, linesFeteched)
+
+            if self.__error == False: line["compiled"] = txt
+            self.exceptionList(["random"], "delete")
+            return
+
         elif self.isCommandInLineThat(line, "rand"):
             #params    = self.getParamsWithTypesAndCheckSyntax(line)
             template  = self.__loader.io.loadCommandASM("rand")
@@ -3812,6 +3937,7 @@ class FirstCompiler:
                params[paramName1][1] = "variable"
 
         allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+        #print(params)
         var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], self.__currentBank)
         if var2 == False:
             var2 = self.__loader.virtualMemory.getVariableByName(params[paramName2][0], "bank1")
@@ -4792,6 +4918,8 @@ class FirstCompiler:
                   mustHave = False
                   paramType = paramType[1:-1]
 
+               dummy, ioMethod = self.__editorBigFrame.returnParamsOfObjects(commandName)
+
                if command.flexSave == True and num == 1 and \
                   line["param#" + str(len(command.params))][0] in self.__noneList:
                   paramType = "variable"
@@ -4806,6 +4934,7 @@ class FirstCompiler:
                param                 = None
                paramTypeAndDimension = None
                for param in paramTypes:
+                   #print(ioMethod)
                    foundIt, paramTypeAndDimension = self.__editorBigFrame.checkIfParamIsOK(param, curParam,
                                                                                            ioMethod, None,
                                                                                            "dummy", mustHave, "param#"+str(num),

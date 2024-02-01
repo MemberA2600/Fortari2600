@@ -19,6 +19,6 @@ number=peachpuff3
 array=brown
 constStringBack=black
 constStringFont=lime
-subroutine=cyan
+subroutine=DarkOrchid1
 unreachable=maroon1
 data=hotpink4

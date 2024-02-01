@@ -2743,9 +2743,9 @@ class EditorBigFrame:
         paramNum = int(cursorIn.split("#")[1]) - 1
         canBeThese = []
 
+        #print(cursorIn)
         try:
             canBeThese = params[paramNum].split("|")
-
         except Exception as e:
             #print(str(e))
             # print("error:", params, paramNum )
@@ -2762,9 +2762,17 @@ class EditorBigFrame:
                                                                                                                    "None",
                                                                                                                    None]:
                 return True
+        else:
+            if   self.__syntaxList[linstructure["command"][0]].fixSave == "A":
+                 return True
+            elif self.__syntaxList[linstructure["command"][0]].fixSave != "0":
+                 if self.__syntaxList[linstructure["command"][0]].fixSave == cursorIn[-1]: return True
+                 return False
 
         #if cursorIn == "param#1" or cursorIn == "param#3": print(cursorIn)
         if len(canBeThese) > 0: return False
+
+        #print(cursorIn)
 
         if self.__syntaxList[linstructure["command"][0]].does == "write":
            return True
@@ -2977,7 +2985,7 @@ class EditorBigFrame:
         foundIt = False
         noneList   = ["None", None, ""]
 
-        #print(paramType, param, mustHave)
+        #print(paramType, param, mustHave, cursorIn)
 
         command = None
         for c in self.__loader.syntaxList.keys():
@@ -3006,6 +3014,16 @@ class EditorBigFrame:
         if self.doesItWriteInParam(lineStructure, cursorIn, "editor") == False:
            #if lineStructure["command"][0] == "add" and cursorIn == "param#1": print("!!!")
            ioMethod = "read"
+
+        if command.fixSave == "A":
+           ioMethod = "write"
+        elif command.fixSave != "0":
+           if command.fixSave == cursorIn[-1]:
+              ioMethod = "write"
+           else:
+              ioMethod = "read"
+
+        #print(cursorIn, ioMethod)
 
         varOnly = False
         if command.flexSave == True:
@@ -3071,7 +3089,7 @@ class EditorBigFrame:
                 writable, readOnly, all = self.__virtualMemory.returnArraysOnValidity(self.__currentBank)
                 if param in all:
                     foundIt = True
-
+                    #print(param, ioMethod)
                     if ioMethod == "write" and (param in readOnly):
                        returnBack.append(["error", dimension])
                     else:
@@ -3494,7 +3512,14 @@ class EditorBigFrame:
                if param1[0] not in self.__subroutines:
                   returnBack[0][0] = "error"
 
-        elif command == "rand" or command in self.__syntaxList["rand"].alias:
+        elif command == "copy" or command in self.__syntaxList["copy"].alias:
+            if param1[0] == param2[0]:
+               #returnBack[0][0] = "error"
+               returnBack[1][0] = "error"
+
+        elif command == "rand"    or command in self.__syntaxList["rand"].alias      or \
+             command == "randAll" or command in self.__syntaxList["randAll"].alias   :
+            #print(returnBack)
             if returnBack[1][0] in ["number", "stringConst"] and \
                returnBack[2][0] in ["number", "stringConst"]:
 
