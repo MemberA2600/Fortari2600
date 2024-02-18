@@ -1,6 +1,6 @@
 import os
 
-wordToFind = '.kernel ='
+wordToFind = 'save8bitsToAny2'
 
 for root, dirs, files in os.walk(os.getcwd()+"/src", False):
     for file in files:

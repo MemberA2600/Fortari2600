@@ -580,6 +580,7 @@ class FirstCompiler:
             if addToRoutines: self.toRoutines["sinTable"] = self.__loader.io.loadCommandASM("sinTable").replace("#BANK#", self.__currentBank)
 
             txt += self.convertAny2Any(var1, "FROM", params, self.__temps) + "\n" + "\tSTA\t" + params["param#1"][0] + "\n"
+
             self.checkASMCode(txt, line, linesFeteched)
             if self.__error == False:
                line["compiled"] = txt
@@ -2820,6 +2821,14 @@ class FirstCompiler:
             if self.__error == False:
                line["compiled"] = template
 
+        elif self.isCommandInLineThat(line, "peek"):
+            register = self.__virtualMemory.registers[params["param#1"][0]]
+            var      = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+
+        elif self.isCommandInLineThat(line, "poke"):
+            register = self.__virtualMemory.registers[params["param#1"][0]]
+            var      = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+
         elif self.isCommandInLineThat(line, "bitOn") or self.isCommandInLineThat(line, "bitOff"):
             sourceTxt        = ""
             convertSecondTxt = ""
@@ -3158,10 +3167,6 @@ class FirstCompiler:
                          template = "\tLDA\t" + theVarName + "\n" + to8Bit + "\n" + other + "\tSTA\t#TEMPVAR#\n" +\
                                     "\tLDA\t" + tileVarNum + "\n" + ander  + "\tORA\t#TEMPVAR#\n" + "\tSTA\t" + tileVarNum + "\n"
 
-
-
-
-
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):
                    param = objectThings["paramsWithSettings"][paramNum]
@@ -3359,7 +3364,10 @@ class FirstCompiler:
         if "1" not in _and and _and != "": _or  = ""
         if "0" not in  _or and  _or != "": _and = ""
 
-        return "\tLDA\t" + name + "\n" + _and + _or + "\tSTA\t" + name + "\n"
+        if variable.register == False:
+           return "\tLDA\t" + name + "\n" + _and + _or + "\tSTA\t" + name + "\n"
+        else:
+           return _or.replace("ORA", "LDA") + "\tSTA\t" + name + "\n"
 
     def generateAndOr(self, command, bitsToInsert, largestBit, bitLen):
 
@@ -3776,7 +3784,7 @@ class FirstCompiler:
                        .replace("#TEMP1#", temp1).replace("#TEMP2#", temp2)
 
                if var.type != "byte":
-                  txt += self.__mainCompiler.save8bitsToAny2(var.usedBits, varName)
+                  txt += self.__mainCompiler.save8bitsToAny2(var.usedBits, varName, var.register)
 
            return txt
 

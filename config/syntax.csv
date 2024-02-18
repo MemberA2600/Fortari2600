@@ -1,54 +1,56 @@
 command;[aliasnames]; [kernels]; type; needs end?; needs brackets?; [where it can be used]; [params]; io method; fixed level;flexSave;fixSavePoz
-add;[addition +];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-and;[& &&];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
+add;[addition +];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+and;[& &&];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 asm;[assembly];[common];command;None;brackets;[];[string {string}];None;None;False;0
-bitOn;[on];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-bitOff;[off];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-calc;[calculate compute comp];[common];command;None;brackets;[];[variable statement];write;None;False;1
-call;[exec execute];[common];command;None;brackets;[!subroutines];[subroutine {variable}];write;None;False;0
-callIf;[execIf executeIf];[common];command;None;brackets;[!subroutines];[statement subroutine {variable}];write;None;False;0
-case;[when];[common];command;None;brackets;[];[variable|number|statement|stringConst];read;None;False;0
+bitOn;[on];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+bitOff;[off];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+calc;[calculate compute comp];[common];command;None;brackets;[];[variable|register statement];write;None;False;1
+call;[exec execute];[common];command;None;brackets;[!subroutines screenroutines];[subroutine {variable|register}];write;None;False;0
+callIf;[execIf executeIf];[common];command;None;brackets;[!subroutines screenroutines];[statement|portState subroutine {variable|register}];write;None;False;0
+case;[when];[common];command;None;brackets;[];[variable|register|number|statement|stringConst|portState];read;None;False;0
 copy;[clone];[common];command;None;brackets;[];[array array];write;None;False;1
 cycle;[continue next];[common];command;None;None;[];None;None;None;False;0
-decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;False;1
+decr;[decrement --];[common];command;None;brackets;[];[variable|register];write;None;False;1
 default;[other else];[common];command;None;None;[];None;None;None;False;0
-div;[divide /];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
+div;[divide /];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 do-items;[for-items perform-items foreach];[common];command;end;brackets;[!screenroutines];[array];item;None;False;0
-do-times;[for-times perform-times];[common];command;end;brackets;[];[number|stringConst|variable];read;None;False;0
-do-until;[for-until perform-until];[common];command;end;brackets;[];[statement];read;None;False;0
-do-while;[for-while perform-while];[common];command;end;brackets;[];[statement];read;None;False;0
+do-times;[for-times perform-times];[common];command;end;brackets;[];[number|stringConst|variable|register];read;None;False;0
+do-until;[for-until perform-until];[common];command;end;brackets;[];[statement|portState];read;None;False;0
+do-while;[for-while perform-while];[common];command;end;brackets;[];[statement|portState];read;None;False;0
 do-frames;[for-frames perform-frames];[common];command;end;brackets;[];[number|stringConst {number|stringConst}];read;None;False;0
 do;[for perform];[common];command;end;None;[];None;None;None;False;0
 exit;[break next-sentence];[common];command;None;None;[];None;None;None;False;0
-flip;[! not ~];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
-goto;[go];[common];command;None;brackets;[leave];[number|stringConst|variable];None;None;False;0
-incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;False;1
+flip;[! not ~];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
+goto;[go];[common];command;None;brackets;[leave];[number|stringConst|variable|register];None;None;False;0
+incr;[increment ++];[common];command;None;brackets;[];[variable|register];write;None;False;1
 init;[initizalize];[common];command;None;brackets;[];[array];write;None;False;1
-largest;[biggest];[common];command;None;brackets;[];[variable array];write;None;False;1
+largest;[biggest];[common];command;None;brackets;[];[variable|register array];write;None;False;1
 leave;[=>];[common];command;None;None;[overscan];None;None;None;False;0
-min;[minimalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-max;[maximalize];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-multi;[multiply *];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-or;[| ||];[common];command;None;brackets;[];[variable number|variable|stringConst {variable}];write;None;True;0
-pow;[power **];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
-rand;[random];[common];command;None;brackets;[];[variable {number|variable|stringConst} {number|variable|stringConst}];write;None;False;1
-randAll;[randomAll];[common];command;None;brackets;[];[array {number|variable|stringConst} {number|variable|stringConst}];write;None;False;1
-rem;[remainder %];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
+min;[minimalize];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+max;[maximalize];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+multi;[multiply *];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+or;[| ||];[common];command;None;brackets;[];[variable|register number|variable|register|stringConst {variable|register}];write;None;True;0
+peek;[regRead registerRead];[common];command;None;brackets;[];[register variable];read;None;False;2
+poke;[regWrite registerWrite];[common];command;None;brackets;[];[register number|variable|stringConst];write;None;False;1
+pow;[power **];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
+rand;[random];[common];command;None;brackets;[];[variable|register {number|variable|register|stringConst} {number|variable|register|stringConst}];write;None;False;1
+randAll;[randomAll];[common];command;None;brackets;[];[array {number|variable|register|stringConst} {number|variable|register|stringConst}];write;None;False;1
+rem;[remainder %];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 resetGame;[resG];[common];command;None;None;[overscan];None;None;None;False;0
 resetScreen;[resS];[common];command;None;None;[overscan];None;None;None;False;0
-return;[<=];[common];command;None;brackets;[subroutines];[number|variable|stringConst];read;None;False;0
-rollL;[rol <-];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
-rollR;[ror ->];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
+return;[<=];[common];command;None;brackets;[subroutines];[number|variable|register|stringConst];read;None;False;0
+rollL;[rol <-];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
+rollR;[ror ->];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
 screen;[scr];[common];command;end;brackets;[screenroutines];[string];None;0;False;0
-select;[switch evaluate];[common];command;end;brackets;[];[variable|stringConst|number];read;None;False;0
-set;[=];[common];command;None;brackets;[];[variable number|variable|stringConst];write;None;False;1
-setAll;[setA =A];[common];command;None;brackets;[];[array number|variable|stringConst];write;None;False;1
-shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
-shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
-sin;[sinewave];[common];command;None;brackets;[];[variable number|variable|stringConst {number|variable|stringConst}];write;None;False;1
-smallest;[tiniest];[common];command;None;brackets;[];[variable array];write;None;False;1
-sqrt;[];[common];command;None;brackets;[];[number|variable|stringConst {variable}];write;None;True;0
-sub;[subtract -];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
+select;[switch evaluate];[common];command;end;brackets;[];[variable|register|stringConst|number];read;None;False;0
+set;[=];[common];command;None;brackets;[];[variable|register number|variable|register|stringConst];write;None;False;1
+setAll;[setA =A];[common];command;None;brackets;[];[array number|variable|register|stringConst];write;None;False;1
+shiftL;[asl <<];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
+shiftR;[lsr >>];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
+sin;[sinewave];[common];command;None;brackets;[];[variable|register number|variable|register|stringConst {number|variable|register|stringConst}];write;None;False;1
+smallest;[tiniest];[common];command;None;brackets;[];[variable|register array];write;None;False;1
+sqrt;[];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
+sub;[subtract -];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False;0
-swap;[<<>>];[common];command;None;brackets;[];[variable variable];write;None;False;A
-xor;[eor ^];[common];command;None;brackets;[];[number|variable|stringConst number|variable|stringConst {variable}];write;None;True;0
+swap;[<<>>];[common];command;None;brackets;[];[variable|register variable|register];write;None;False;A
+xor;[eor ^];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0

@@ -22,3 +22,5 @@ constStringFont=lime
 subroutine=DarkOrchid1
 unreachable=maroon1
 data=hotpink4
+register=cornsilk3
+portState=lawngreen

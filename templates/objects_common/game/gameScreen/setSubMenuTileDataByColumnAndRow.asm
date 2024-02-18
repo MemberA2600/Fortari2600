@@ -1,4 +1,4 @@
-* params=variable|stringConst|number,variable|stringConst|number,variable|stringConst|number
+* params=variable|stringConst|number|register,variable|stringConst|number|register,variable|stringConst|number|register
 * param1=#VAR01#,!!!to8bit1!!!
 * param2=#VAR02#,!!!to8bit2!!!
 * param3=#VAR03#,!!!to8bit3!!!

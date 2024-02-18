@@ -1,4 +1,4 @@
-* params={variable|stringConst|number},{variable|stringConst|number}
+* params={variable|stringConst|number|register},{variable|stringConst|number|register}
 * param1=#VAR01#
 * param2=#VAR02#
 * addManuallyToSysVars=random

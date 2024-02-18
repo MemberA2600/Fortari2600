@@ -1,4 +1,4 @@
-* params=variable|stringConst|number,{data}
+* params=variable|stringConst|number|register,{data}
 * param1=#VAR01#,!!!to8bit!!!
 * param2=#NAME#,playfields,##NAME##
 * direction=TO

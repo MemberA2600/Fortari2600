@@ -1,4 +1,4 @@
-* params=variable|stringConst|number
+* params=variable|stringConst|number|register
 * param1=#VAR01#,!!!to8bit!!!
 * direction=TO
 *

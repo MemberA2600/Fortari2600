@@ -1895,6 +1895,13 @@ class EditorBigFrame:
 
         #print(errorPositions, addError, currentLineStructure["command"][0])
 
+        if self.__config.getValueByKey("advanced") != "True":
+           for commandName in ("asm", "peek", "poke"):
+               #commandName = "asm"
+               if currentLineStructure["command"][0] == commandName or currentLineStructure["command"][0] in self.__syntaxList[commandName].alias:
+                  hasValidCommand = False
+                  break
+
         if (currentLineStructure["("] != -1 or caller == "lineEditor") and\
             currentLineStructure["param#1"] not in [None, "None", ""]\
             and hasValidCommand == True:
@@ -2627,6 +2634,19 @@ class EditorBigFrame:
             for item in listOfData:
                 wordsForList.append([item, "data"])
 
+        elif listType == "register" and self.__config.getValueByKey("advanced") == "True":
+            if self.doesItWriteInParam(lineStructure, cursorIn, "editor"):
+               okLetters = ["w", "b"]
+            else:
+               okLetters = ["r", "b"]
+
+            for reg in self.__virtualMemory.registers.keys():
+                if self.__virtualMemory.registers[reg]["allowedIO"] in okLetters and \
+                   self.__currentSection in self.__virtualMemory.registers[reg]["allowedSections"]:
+
+                   if varOnly == False:
+                      wordsForList.append([reg, "register"])
+
         # Maybe "statement" will be important here to??
 
         wordsForList.sort()
@@ -3184,6 +3204,27 @@ class EditorBigFrame:
                  if param in listOfData:
                     returnBack.append(["data", dimension])
                     foundIt = True
+
+            elif pType == "register":
+                 if printMe: print(pType)
+
+                 if self.__config.getValueByKey("advanced") == "True":
+                     if ioMethod == "write":
+                        okLetters = ["w", "b"]
+                     else:
+                        okLetters = ["r", "b"]
+
+                     if param in self.__virtualMemory.registers.keys():
+                         if self.__virtualMemory.registers[param]["allowedIO"] in okLetters                   and \
+                            self.__currentSection in self.__virtualMemory.registers[param]["allowedSections"] and \
+                            varOnly == False                                                                      :
+                            returnBack.append(["register", dimension])
+                            foundIt = True
+                         else:
+                            returnBack.append(["error", dimension])
+                            foundIt = True
+                 else:
+                     returnBack.append(["error", dimension])
 
         if foundIt == False:
            if mustHave == False and param in noneList:
@@ -4405,6 +4446,16 @@ class EditorBigFrame:
             "data": {
                 "foreground": self.__loader.colorPalettes.getColor("data"),
                 "font": self.__boldUnderlinedFont
+            },
+
+            "register": {
+                "foreground": self.__loader.colorPalettes.getColor("register"),
+                "font": self.__normalFont
+            },
+
+            "portState": {
+                "foreground": self.__loader.colorPalettes.getColor("portState"),
+                "font": self.__undelinedFont
             }
         }
 

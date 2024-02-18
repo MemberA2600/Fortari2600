@@ -21,11 +21,39 @@ class VirtualMemory:
         self.includeJukeBox    = True
         self.includeKernelData = True
 
+        self.registers = {}
+        txt = self.__loader.io.loadWholeText("templates/6507Registers_Editor.a26").split("\n")
+        for line in txt:
+            key                 = line.split("=")[0]
+            self.registers[key] = {}
+            valueList           = line.split("=")[1].split(",")
+
+            self.registers[key]["allowedIO"]       = valueList[0]
+            if valueList[0] == "-":
+               self.registers[key]["allowedSections"] = []
+            else:
+               if valueList[1] == "[]":
+                  self.registers[key]["allowedSections"] = self.__loader.sections
+               else:
+                  self.registers[key]["allowedSections"] = []
+                  datas = valueList[1][1:-1]
+                  if datas[0] == "!":
+                     datas[1:] = datas.split(" ")
+                     for s in self.__loader.sections:
+                         if s not in datas:
+                            self.registers[key]["allowedSections"].append(s)
+                  else:
+                     datas     = datas.split(" ")
+                     for d in datas:
+                         self.registers[key]["allowedSections"].append(d)
+
+            self.registers[key]["bitMask"]       = valueList[2]
+            self.registers[key]["colorVar"]      = bool(valueList[3])
+
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
                 if "main_kernel" in file:
                     self.kernel_types.append(file.replace("_main_kernel.asm", ""))
-
 
         for num in range(1,9):
             bankNum = "bank"+str(num)
@@ -282,6 +310,9 @@ class VirtualMemory:
         return(False)
 
     def getVariableByName(self, name, bank):
+        if name in self.registers:
+           return self.convertRegisterToVariable(name)
+
         section="local_variables"
         if bank == "bank1":
             section = "global_variables"
@@ -391,11 +422,60 @@ class VirtualMemory:
         return(num)
 
     def getVariableByName2(self, name):
+        if name in self.registers:
+           return self.convertRegisterToVariable(name)
+
         for address in self.memory.keys():
             for variable in self.memory[address].variables.keys():
                 if variable == name:
                     return self.memory[address].variables[variable]
         return False
+
+    def convertRegisterToVariable(self, name):
+        from Variable import Variable
+
+        register = self.registers[name]
+
+        if  register["allowedIO"] in ["r", "-"]:
+            iter = False
+        else:
+            iter = True
+
+        if  register["allowedIO"] == "-":
+            link = False
+        else:
+            link = True
+
+        mask     = register["bitMask"]
+        firstOne = -1
+        lastOne  = -1
+
+        bits = []
+
+        reversed = mask[::-1]
+        for num in range(0, 8):
+            if reversed[num] == "1":
+               if firstOne == -1:
+                  firstOne = num
+               lastOne = num
+               bits.append(num)
+
+        length = lastOne - firstOne + 1
+        typ = "other"
+
+        for t in self.types.keys():
+            if length == self.types[t]:
+               typ = t
+               break
+
+        var = Variable(typ, bits, "global", register["colorVar"], False)
+
+        var.system   = True
+        var.iterable = iter
+        var.linkable = link
+        var.register = True
+
+        return var
 
     def setLocksAfterLoading(self):
         lines = self.codes["bank1"]["bank_configurations"].code.split("\n")

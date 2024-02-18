@@ -229,18 +229,22 @@ class Compiler:
                            "\tORA\t"   + varName + "\n\tSTA\t" + varName + "\n"
         return(text)
 
-    def save8bitsToAny2(self, bits, varName):
+    def save8bitsToAny2(self, bits, varName, register):
         startingBit = min(bits)
-        text = "\tTAX\n\tLDA\t" + varName + "\n"
-        forAND = ""
 
-        for num in range(7, -1, -1):
-            if num in bits:
-                forAND += "0"
-            else:
-                forAND += "1"
+        if register == False:
+            text = "\tTAX\n\tLDA\t" + varName + "\n"
+            forAND = ""
 
-        text += "\tAND\t#%" + forAND + "\n\tSTA\t" + varName + "\n\tTXA\n"
+            for num in range(7, -1, -1):
+                if num in bits:
+                    forAND += "0"
+                else:
+                    forAND += "1"
+
+            text += "\tAND\t#%" + forAND + "\n\tSTA\t" + varName + "\n\tTXA\n"
+        else:
+            txt = ""
 
         shifting = ""
         if (8 - startingBit) < startingBit:
