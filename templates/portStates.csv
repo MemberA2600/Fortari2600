@@ -1,0 +1,233 @@
+Basic Name;Alias List;Code
+port0_0;[port0_0000 port0_none];\tLDA\tSWCHA\n\tAND\t#%00000000\n\tCMP\t#%00000000\n\tBNE\t#LABEL#\n
+port0_1;[port0_0001];\tLDA\tSWCHA\n\tAND\t#%00010000\n\tCMP\t#%00010000\n\tBNE\t#LABEL#\n
+port0_2;[port0_0010];\tLDA\tSWCHA\n\tAND\t#%00100000\n\tCMP\t#%00100000\n\tBNE\t#LABEL#\n
+port0_3;[port0_0011];\tLDA\tSWCHA\n\tAND\t#%00110000\n\tCMP\t#%00110000\n\tBNE\t#LABEL#\n
+port0_4;[port0_0100];\tLDA\tSWCHA\n\tAND\t#%01000000\n\tCMP\t#%01000000\n\tBNE\t#LABEL#\n
+port0_5;[port0_0101];\tLDA\tSWCHA\n\tAND\t#%01010000\n\tCMP\t#%01010000\n\tBNE\t#LABEL#\n
+port0_6;[port0_0110];\tLDA\tSWCHA\n\tAND\t#%01100000\n\tCMP\t#%01100000\n\tBNE\t#LABEL#\n
+port0_7;[port0_0111];\tLDA\tSWCHA\n\tAND\t#%01110000\n\tCMP\t#%01110000\n\tBNE\t#LABEL#\n
+port0_8;[port0_1000];\tLDA\tSWCHA\n\tAND\t#%10000000\n\tCMP\t#%10000000\n\tBNE\t#LABEL#\n
+port0_9;[port0_1001];\tLDA\tSWCHA\n\tAND\t#%10010000\n\tCMP\t#%10010000\n\tBNE\t#LABEL#\n
+port0_10;[port0_1010 port0_A];\tLDA\tSWCHA\n\tAND\t#%10100000\n\tCMP\t#%10100000\n\tBNE\t#LABEL#\n
+port0_11;[port0_1011 port0_B];\tLDA\tSWCHA\n\tAND\t#%10110000\n\tCMP\t#%10110000\n\tBNE\t#LABEL#\n
+port0_12;[port0_1100 port0_C];\tLDA\tSWCHA\n\tAND\t#%11000000\n\tCMP\t#%11000000\n\tBNE\t#LABEL#\n
+port0_13;[port0_1101 port0_D];\tLDA\tSWCHA\n\tAND\t#%11010000\n\tCMP\t#%11010000\n\tBNE\t#LABEL#\n
+port0_14;[port0_1110 port0_E];\tLDA\tSWCHA\n\tAND\t#%11100000\n\tCMP\t#%11100000\n\tBNE\t#LABEL#\n
+port0_15;[port0_1111 port0_all port0_F];\tLDA\tSWCHA\n\tAND\t#%11110000\n\tCMP\t#%11110000\n\tBNE\t#LABEL#\n
+port1_0;[port1_0000 port1_none];\tLDA\tSWCHA\n\tAND\t#%00000000\n\tCMP\t#%00000000\n\tBNE\t#LABEL#\n
+port1_1;[port1_0001];\tLDA\tSWCHA\n\tAND\t#%00000001\n\tCMP\t#%00000001\n\tBNE\t#LABEL#\n
+port1_2;[port1_0010];\tLDA\tSWCHA\n\tAND\t#%00000010\n\tCMP\t#%00000010\n\tBNE\t#LABEL#\n
+port1_3;[port1_0011];\tLDA\tSWCHA\n\tAND\t#%00000011\n\tCMP\t#%00000011\n\tBNE\t#LABEL#\n
+port1_4;[port1_0100];\tLDA\tSWCHA\n\tAND\t#%00000100\n\tCMP\t#%00000100\n\tBNE\t#LABEL#\n
+port1_5;[port1_0101];\tLDA\tSWCHA\n\tAND\t#%00000101\n\tCMP\t#%00000101\n\tBNE\t#LABEL#\n
+port1_6;[port1_0110];\tLDA\tSWCHA\n\tAND\t#%00000110\n\tCMP\t#%00000110\n\tBNE\t#LABEL#\n
+port1_7;[port1_0111];\tLDA\tSWCHA\n\tAND\t#%00000111\n\tCMP\t#%00000111\n\tBNE\t#LABEL#\n
+port1_8;[port1_1000];\tLDA\tSWCHA\n\tAND\t#%00001000\n\tCMP\t#%00001000\n\tBNE\t#LABEL#\n
+port1_9;[port1_1001];\tLDA\tSWCHA\n\tAND\t#%00001001\n\tCMP\t#%00001001\n\tBNE\t#LABEL#\n
+port1_10;[port1_1010 port1_A];\tLDA\tSWCHA\n\tAND\t#%00001010\n\tCMP\t#%00001010\n\tBNE\t#LABEL#\n
+port1_11;[port1_1011 port1_B];\tLDA\tSWCHA\n\tAND\t#%00001011\n\tCMP\t#%00001011\n\tBNE\t#LABEL#\n
+port1_12;[port1_1100 port1_C];\tLDA\tSWCHA\n\tAND\t#%00001100\n\tCMP\t#%00001100\n\tBNE\t#LABEL#\n
+port1_13;[port1_1101 port1_D];\tLDA\tSWCHA\n\tAND\t#%00001101\n\tCMP\t#%00001101\n\tBNE\t#LABEL#\n
+port1_14;[port1_1110 port1_E];\tLDA\tSWCHA\n\tAND\t#%00001110\n\tCMP\t#%00001110\n\tBNE\t#LABEL#\n
+port1_15;[port1_1111 port1_all port1_F];\tLDA\tSWCHA\n\tAND\t#%00001111\n\tCMP\t#%00001111\n\tBNE\t#LABEL#\n
+joy0_upNotPressed;[joy0_!up joy0_/up joy0_~up joy0_notUp];\tLDA\tSWCHA\n\tAND\t#%00010000\n\tCMP\t#%00010000\n\tBNE\t#LABEL#\n
+joy0_downNotPressed;[joy0_!down joy0_/down joy0_~down joy0_noDown];\tLDA\tSWCHA\n\tAND\t#%00100000\n\tCMP\t#%00100000\n\tBNE\t#LABEL#\n
+joy0_leftNotPressed;[joy0_!left joy0_/left joy0_~left joy0_noLeft];\tBIT\tSWCHA\n\tBVC\t#LABEL#\n
+joy0_rightNotPressed;[joy0_!right joy0_/right joy0_~right joy0_noRight];\tBIT\tSWCHA\n\tBPL\t#LABEL#\n
+joy1_upNotPressed;[joy1_!up joy1_/up joy1_~up joy1_noUp];\tLDA\tSWCHA\n\tAND\t#%00000001\n\tCMP\t#%00000001\n\tBNE\t#LABEL#\n
+joy1_downNotPressed;[joy1_!down joy1_/down joy1_~down joy1_noDown];\tLDA\tSWCHA\n\tAND\t#%00000010\n\tCMP\t#%00000010\n\tBNE\t#LABEL#\n
+joy1_leftNotPressed;[joy1_!left joy1_/left joy1_~left joy1_noLeft];\tLDA\tSWCHA\n\tAND\t#%00000100\n\tCMP\t#%00000100\n\tBNE\t#LABEL#\n
+joy1_rightNotPressed;[joy1_!right joy1_/right joy1_~right joy1_noRight];\tLDA\tSWCHA\n\tAND\t#%00001000\n\tCMP\t#%00001000\n\tBNE\t#LABEL#\n
+joy0_noDirectionPressed;[joy0_noDir joy0_!dir joy0_/dir joy0_~dir];\tLDA\tSWCHA\n\tAND\t#%11110000\n\tCMP\t#%11110000\n\tBNE\t#LABEL#\n
+joy1_noDirectionPressed;[joy1_noDir joy1_!dir joy1_/dir joy1_~dir];\tLDA\tSWCHA\n\tAND\t#%00001111\n\tCMP\t#%00001111\n\tBNE\t#LABEL#\n
+joy0_upLeftNotPressed;[joy0_!upLeft joy0_/upLeft joy0_~upLeft joy0_noUpLeft];\tLDA\tSWCHA\n\tAND\t#%01010000\n\tCMP\t#%01010000\n\tBNE\t#LABEL#\n
+joy0_upRightNotPressed;[joy0_!upRight joy0_/upRight joy0_~upRight joy0_noUpRight];\tLDA\tSWCHA\n\tAND\t#%10010000\n\tCMP\t#%10010000\n\tBNE\t#LABEL#\n
+joy0_downLeftNotPressed;[joy0_!downLeft joy0_/downLeft joy0_~downLeft joy0_noDownLeft];\tLDA\tSWCHA\n\tAND\t#%01100000\n\tCMP\t#%01100000\n\tBNE\t#LABEL#\n
+joy0_downRightNotPressed;[joy0_!downRight joy0_/downRight joy0_~downRight joy0_noDownRight];\tLDA\tSWCHA\n\tAND\t#%10100000\n\tCMP\t#%10100000\n\tBNE\t#LABEL#\n
+joy1_upLeftNotPressed;[joy1_!upLeft joy1_/upLeft joy1_~upLeft joy1_noUpLeft];\tLDA\tSWCHA\n\tAND\t#%00000101\n\tCMP\t#%00000101\n\tBNE\t#LABEL#\n
+joy1_upRightNotPressed;[joy1_!upRight joy1_/upRight joy1_~upRight joy1_noUpRight];\tLDA\tSWCHA\n\tAND\t#%00001001\n\tCMP\t#%00001001\n\tBNE\t#LABEL#\n
+joy1_downLeftNotPressed;[joy1_!downLeft joy1_/downLeft joy1_~downLeft joy1_noDownLeft];\tLDA\tSWCHA\n\tAND\t#%00000110\n\tCMP\t#%00000110\n\tBNE\t#LABEL#\n
+joy1_downRightNotPressed;[joy1_!downRight joy1_/downRight joy1_~downRight joy1_noDownRight];\tLDA\tSWCHA\n\tAND\t#%00001010\n\tCMP\t#%00001010\n\tBNE\t#LABEL#\n
+joy0_noHorizontalDirectionPressed;[joy0_noHorDir joy0_!horDir joy0_/horDir joy0_~horDir joy0_noHorDir];\tLDA\tSWCHA\n\tAND\t#%11000000\n\tCMP\t#%11000000\n\tBNE\t#LABEL#\n
+joy0_noVerticalDirectionPressed;[joy0_noVerDir joy0_!verDir joy0_/verDir joy0_~verDir joy0_noVerDir];\tLDA\tSWCHA\n\tAND\t#%00110000\n\tCMP\t#%00110000\n\tBNE\t#LABEL#\n
+joy1_noHorizontalDirectionPressed;[joy1_noHorDir joy1_!horDir joy1_/horDir joy1_~horDir joy1_noHorDir];\tLDA\tSWCHA\n\tAND\t#%00001100\n\tCMP\t#%00001100\n\tBNE\t#LABEL#\n
+joy1_noVerticalDirectionPressed;[joy1_noVerDir joy1_!verDir joy1_/verDir joy1_~verDir joy1_noVerDir];\tLDA\tSWCHA\n\tAND\t#%00000011\n\tCMP\t#%00000011\n\tBNE\t#LABEL#\n
+joy0_upPressed;[joy0_up];\tLDA\tSWCHA\n\tAND\t#%00010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_downPressed;[joy0_down];\tLDA\tSWCHA\n\tAND\t#%00100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_leftPressed;[joy0_left];\tBIT\tSWCHA\n\tBVS\t#LABEL#\n
+joy0_rightPressed;[joy0_right];\tBIT\tSWCHA\n\tBMI\t#LABEL#\n
+joy1_upPressed;[joy1_up];\tLDA\tSWCHA\n\tAND\t#%00000001\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_downPressed;[joy1_down];\tLDA\tSWCHA\n\tAND\t#%00000010\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_leftPressed;[joy1_left];\tLDA\tSWCHA\n\tAND\t#%00000100\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_rightPressed;[joy1_right];\tLDA\tSWCHA\n\tAND\t#%00001000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_anyDirectionPressed;[joy0_anyDir];\tLDA\tSWCHA\n\tAND\t#%11110000\n\tCMP\t#%11110000\n\tBEQ\t#LABEL#\n
+joy1_anyDirectionPressed;[joy1_anyDir];\tLDA\tSWCHA\n\tAND\t#%00001111\n\tCMP\t#%00001111\n\tBEQ\t#LABEL#\n
+joy0_anyHorizontalDirectionPressed;[joy0_anyHorDir];\tLDA\tSWCHA\n\tAND\t#%11000000\n\tCMP\t#%11000000\n\tBEQ\t#LABEL#\n
+joy0_anyVerticalDirectionPressed;[joy0_anyVerDir];\tLDA\tSWCHA\n\tAND\t#%00110000\n\tCMP\t#%00110000\n\tBEQ\t#LABEL#\n
+joy1_anyHorizontalDirectionPressed;[joy1_anyHorDir];\tLDA\tSWCHA\n\tAND\t#%00001100\n\tCMP\t#%00001100\n\tBEQ\t#LABEL#\n
+joy1_anyVerticalDirectionPressed;[joy1_anyVerDir];\tLDA\tSWCHA\n\tAND\t#%00000011\n\tCMP\t#%00000011\n\tBEQ\t#LABEL#\n
+joy0_upLeftPressed;[joy0_upLeft];\tLDA\tSWCHA\n\tAND\t#%01010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_upRightPressed;[joy0_upRight];\tLDA\tSWCHA\n\tAND\t#%10010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_downLeftPressed;[joy0_downLeft];\tLDA\tSWCHA\n\tAND\t#%01100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_downRightPressed;[joy0_downRight];\tLDA\tSWCHA\n\tAND\t#%10100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_upLeftPressed;[joy1_upLeft];\tLDA\tSWCHA\n\tAND\t#%00000101\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_upRightPressed;[joy1_upRight];\tLDA\tSWCHA\n\tAND\t#%00001001\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_downLeftPressed;[joy1_downLeft];\tLDA\tSWCHA\n\tAND\t#%00000110\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_downRightPressed;[joy1_downRight];\tLDA\tSWCHA\n\tAND\t#%00001010\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_firePressed;[joy0_fire];\tBIT\tINPT4\n\tBPL\t#LABEL#\n
+joy0_fireNotPressed;[joy0_!fire joy0_/fire joy0_~fire joy0_noFire];\tBIT\tINPT4\n\tBMI\t#LABEL#\n
+joy1_firePressed;[joy1_fire];\tBIT\tINPT5\n\tBPL\t#LABEL#\n
+joy1_fireNotPressed;[joy1_!fire joy1_/fire joy1_~fire joy1_noFire];\tBIT\tINPT5\n\tBMI\t#LABEL#\n
+joy0_nonePressed;[joy0_none];\tBIT\tINPT4\n\tBMI\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%11110000\n\tCMP\t#%11110000\n\tBNE\t#LABEL#\n
+joy1_nonePressed;[joy1_none];\tBIT\tINPT5\n\tBMI\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001111\n\tCMP\t#%00001111\n\tBNE\t#LABEL#\n
+joy0_fireUpPressed;[joy0_fireUp];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireDownPressed;[joy0_fireDown];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireLeftPressed;[joy0_fireLeft];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tBIT\tSWCHA\n\tBVS\t#LABEL#\n
+joy0_fireRightPressed;[joy0_fireRight];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tBIT\tSWCHA\n\tBMI\t#LABEL#\n
+joy0_fireUpLeftPressed;[joy0_fireUpLeft];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%01010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireUpRightPressed;[joy0_fireUpRight];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%10010000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireDownLeftPressed;[joy0_fireDownLeft];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%01100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireDownRightPressed;[joy0_fireDownRight];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%10100000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireUpLeftPressed;[joy1_fireUpLeft];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000101\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireUpRightPressed;[joy1_fireUpRight];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001001\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireDownLeftPressed;[joy1_fireDownLeft];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000110\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireDownRightPressed;[joy1_fireDownRight];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001010\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireUpPressed;[joy1_fireUp];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000001\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireDownPressed;[joy1_fireDown];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000010\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireLeftPressed;[joy1_fireLeft];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000100\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy1_fireRightPressed;[joy1_fireRight];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+joy0_fireAnyHorizontalDirection;[joy0_fireAnyHorDir];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%11000000\n\tCMP\t#%11000000\n\tBEQ\t#LABEL#\n
+joy0_fireAnyVerticalDirection;[joy0_fireAnyVerDir];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00110000\n\tCMP\t#%00110000\n\tBEQ\t#LABEL#\n
+joy0_fireAnyDirection;[joy0_fireAnyDir];\tBIT\tINPT4\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%11110000\n\tCMP\t#%11110000\n\tBEQ\t#LABEL#\n
+joy1_fireAnyHorizontalDirection;[joy1_fireAnyHorDir];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001100\n\tCMP\t#%11000000\n\tBEQ\t#LABEL#\n
+joy1_fireAnyVerticalDirection;[joy1_fireAnyVerDir];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00000011\n\tCMP\t#%00110000\n\tBEQ\t#LABEL#\n
+joy1_fireAnyDirection;[joy1_fireAnyDir];\tBIT\tINPT5\n\tBPL\t#LABEL#\n\tLDA\tSWCHA\n\tAND\t#%00001111\n\tCMP\t#%11110000\n\tBEQ\t#LABEL#\n
+switches_0;[switches_00000000 switches_00 sw_0 sw_00000000 sw_00];\tLDA\tSWCHB\n\tCMP\t#%00000000\n\tBNE\t#LABEL#\n
+switches_1;[switches_00000001 switches_01 sw_1 sw_00000001 sw_01];\tLDA\tSWCHB\n\tCMP\t#%00000001\n\tBNE\t#LABEL#\n
+switches_2;[switches_00000010 switches_02 sw_2 sw_00000010 sw_02];\tLDA\tSWCHB\n\tCMP\t#%00000010\n\tBNE\t#LABEL#\n
+switches_3;[switches_00000011 switches_03 sw_3 sw_00000011 sw_03];\tLDA\tSWCHB\n\tCMP\t#%00000011\n\tBNE\t#LABEL#\n
+switches_8;[switches_00001000 switches_08 sw_8 sw_00001000 sw_08];\tLDA\tSWCHB\n\tCMP\t#%00001000\n\tBNE\t#LABEL#\n
+switches_9;[switches_00001001 switches_09 sw_9 sw_00001001 sw_09];\tLDA\tSWCHB\n\tCMP\t#%00001001\n\tBNE\t#LABEL#\n
+switches_10;[switches_00001010 switches_0A sw_10 sw_00001010 sw_0A];\tLDA\tSWCHB\n\tCMP\t#%00001010\n\tBNE\t#LABEL#\n
+switches_11;[switches_00001011 switches_0B sw_11 sw_00001011 sw_0B];\tLDA\tSWCHB\n\tCMP\t#%00001011\n\tBNE\t#LABEL#\n
+switches_64;[switches_01000000 switches_40 sw_64 sw_01000000 sw_40];\tBIT\tSWCHB\n\tBVC\t#LABEL#\n
+switches_65;[switches_01000001 switches_41 sw_65 sw_01000001 sw_41];\tLDA\tSWCHB\n\tCMP\t#%01000001\n\tBNE\t#LABEL#\n
+switches_66;[switches_01000010 switches_42 sw_66 sw_01000010 sw_42];\tLDA\tSWCHB\n\tCMP\t#%01000010\n\tBNE\t#LABEL#\n
+switches_67;[switches_01000011 switches_43 sw_67 sw_01000011 sw_43];\tLDA\tSWCHB\n\tCMP\t#%01000011\n\tBNE\t#LABEL#\n
+switches_72;[switches_01001000 switches_48 sw_72 sw_01001000 sw_48];\tLDA\tSWCHB\n\tCMP\t#%01001000\n\tBNE\t#LABEL#\n
+switches_73;[switches_01001001 switches_49 sw_73 sw_01001001 sw_49];\tLDA\tSWCHB\n\tCMP\t#%01001001\n\tBNE\t#LABEL#\n
+switches_74;[switches_01001010 switches_4A sw_74 sw_01001010 sw_4A];\tLDA\tSWCHB\n\tCMP\t#%01001010\n\tBNE\t#LABEL#\n
+switches_75;[switches_01001011 switches_4B sw_75 sw_01001011 sw_4B];\tLDA\tSWCHB\n\tCMP\t#%01001011\n\tBNE\t#LABEL#\n
+switches_128;[switches_10000000 switches_80 sw_128 sw_10000000 sw_80];\tBIT\tSWCHB\n\tBPL\t#LABEL#\n
+switches_129;[switches_10000001 switches_81 sw_129 sw_10000001 sw_81];\tLDA\tSWCHB\n\tCMP\t#%10000001\n\tBNE\t#LABEL#\n
+switches_130;[switches_10000010 switches_82 sw_130 sw_10000010 sw_82];\tLDA\tSWCHB\n\tCMP\t#%10000010\n\tBNE\t#LABEL#\n
+switches_131;[switches_10000011 switches_83 sw_131 sw_10000011 sw_83];\tLDA\tSWCHB\n\tCMP\t#%10000011\n\tBNE\t#LABEL#\n
+switches_136;[switches_10001000 switches_88 sw_136 sw_10001000 sw_88];\tLDA\tSWCHB\n\tCMP\t#%10001000\n\tBNE\t#LABEL#\n
+switches_137;[switches_10001001 switches_89 sw_137 sw_10001001 sw_89];\tLDA\tSWCHB\n\tCMP\t#%10001001\n\tBNE\t#LABEL#\n
+switches_138;[switches_10001010 switches_8A sw_138 sw_10001010 sw_8A];\tLDA\tSWCHB\n\tCMP\t#%10001010\n\tBNE\t#LABEL#\n
+switches_139;[switches_10001011 switches_8B sw_139 sw_10001011 sw_8B];\tLDA\tSWCHB\n\tCMP\t#%10001011\n\tBNE\t#LABEL#\n
+switches_192;[switches_11000000 switches_C0 sw_192 sw_11000000 sw_C0];\tLDA\tSWCHB\n\tCMP\t#%11000000\n\tBNE\t#LABEL#\n
+switches_193;[switches_11000001 switches_C1 sw_193 sw_11000001 sw_C1];\tLDA\tSWCHB\n\tCMP\t#%11000001\n\tBNE\t#LABEL#\n
+switches_194;[switches_11000010 switches_C2 sw_194 sw_11000010 sw_C2];\tLDA\tSWCHB\n\tCMP\t#%11000010\n\tBNE\t#LABEL#\n
+switches_195;[switches_11000011 switches_C3 sw_195 sw_11000011 sw_C3];\tLDA\tSWCHB\n\tCMP\t#%11000011\n\tBNE\t#LABEL#\n
+switches_200;[switches_11001000 switches_C8 sw_200 sw_11001000 sw_C8];\tLDA\tSWCHB\n\tCMP\t#%11001000\n\tBNE\t#LABEL#\n
+switches_201;[switches_11001001 switches_C9 sw_201 sw_11001001 sw_C9];\tLDA\tSWCHB\n\tCMP\t#%11001001\n\tBNE\t#LABEL#\n
+switches_202;[switches_11001010 switches_CA sw_202 sw_11001010 sw_CA];\tLDA\tSWCHB\n\tCMP\t#%11001010\n\tBNE\t#LABEL#\n
+switches_203;[switches_11001011 switches_CB sw_203 sw_11001011 sw_CB];\tLDA\tSWCHB\n\tCMP\t#%11001011\n\tBNE\t#LABEL#\n
+swiches_resetNotPressed;[switches_!reset switches_/reset switches_~reset sw_!reset sw_/reset sw_~reset] ;\tLDA\tSWCHB\n\tAND\t#%00000001\n\tCMP\t#%00000001\n\tBNE\t#LABEL#\n
+swiches_selectNotPressed;[switches_!select switches_/select switches_~select sw_!select sw_/select sw_~select] ;\tLDA\tSWCHB\n\tAND\t#%00000010\n\tCMP\t#%00000010\n\tBNE\t#LABEL#\n
+swiches_colorSet;switches_color sw_color] ;\tLDA\tSWCHB\n\tAND\t#%00001000\n\tCMP\t#%00001000\n\tBNE\t#LABEL#\n
+swiches_player0amateur;[switches_p0Amateur sw_p0Amateur switches_p0A sw_p0A] ;\tBIT\tSWCHB\n\tBVS\t#LABEL#\n
+swiches_player1amateur;[switches_p1Amateur sw_p1Amateur switches_p1A sw_p1A] ;\tBIT\tSWCHB\n\tBMI\t#LABEL#\n
+swiches_resetPressed;[switches_reset sw_reset;\tLDA\tSWCHB\n\tAND\t#%00000001\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+swiches_selectPressed;[switches_select sw_select] ;\tLDA\tSWCHB\n\tAND\t#%00000010\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+swiches_blackAndWhiteSet;switches_bw sw_bw] ;\tLDA\tSWCHB\n\tAND\t#%00001000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+swiches_player0Pro;[switches_p0Pro sw_p0Pro switches_p0P sw_p0P] ;\tBIT\tSWCHB\n\tBVC\t#LABEL#\n
+swiches_player1Pro;[switches_p1Pro sw_p1Pro switches_p1P sw_p1P] ;\tBIT\tSWCHB\n\tBPL\t#LABEL#\n
+switches_noSwitchPressed;[switches_noSW sw_noSW];\tLDA\tSWCHB\n\tAND\t#%00000011\n\tCMP\t#%00000011\n\tBNE\t#LABEL#\n
+switches_anySwitchPressed;[switches_anySW sw_anySW];\tLDA\tSWCHB\n\tAND\t#%00000011\n\tCMP\t#%00000011\n\tBEQ\t#LABEL#\n
+switches_resetSelectPressed;[switches_resetSelect sw_resetSelect switches_bothPressed switches_both sw_both];\tLDA\tSWCHB\n\tAND\t#%00000011\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+switches_bothPlayersAreAmateurs;[switches_bothAmateur switches_bothA sw_bothA sw_bothAmateurs];\tLDA\tSWCHB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+switches_bothPlayersArePros;[switches_bothPros switches_bothP sw_bothP sw_bothPros];\tLDA\tSWCHB\n\tAND\t#%11000000\n\tCMP\t#%11000000\n\tBNE\t#LABEL#\n
+switches_anyPlayerIsPro;[switches_anyPro switches_anyP sw_anyP sw_anyPro];\tLDA\tSWCHB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBEQ\t#LABEL#\n
+collision_player0Missile0;[col_p0M0 collision_missile0Player0 col_m0P0];\tBIT\tCXM0P\n\tBVC\t#LABEL#\n
+collision_player1Missile0;[col_p1M0 collision_missile0Player1 col_m0P1];\tBIT\tCXM0P\n\tBPL\t#LABEL#\n
+collision_player0Missile1;[col_p0M1 collision_missile1Player0 col_m1P0];\tBIT\tCXM1P\n\tBPL\t#LABEL#\n
+collision_player1Missile1;[col_p1M1 collision_missile1Player1 col_m1P1];\tBIT\tCXM1P\n\tBVC\t#LABEL#\n
+collision_noPlayer0Missile0;[col_!p0M0 collision_noMissile0Player0 col_!m0P0 col_/p0M0 col_/m0P0 col_~p0M0 col_~m0P0];\tBIT\tCXM0P\n\tBVS\t#LABEL#\n
+collision_noPlayer1Missile0;[col_!p1M0 collision_noMissile0Player1 col_!m0P1 col_/p1M0 col_/m0P1 col_~p0M1 col_~m0P1];\tBIT\tCXM0P\n\tBMI\t#LABEL#\n
+collision_noPlayer0Missile1;[col_!p0M1 collision_noMissile1Player0 col_!m1P0 col_/p0M1 col_/m1P0 col_~p0M1 col_~m1P0];\tBIT\tCXM1P\n\tBMI\t#LABEL#\n
+collision_noPlayer1Missile1;[col_!p1M1 collision_noMissile1Player1 col_!m1P1 col_/p1M1 col_/m1P1 col_~p1M1 col_~m1P1];\tBIT\tCXM1P\n\tBVS\t#LABEL#\n
+collision_missile0NoPlayer;[col_m0NoP collision_m0NoP];\tLDA\tCXM0P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+collision_missile1NoPlayer;[col_m1NoP collision_m1NoP];\tLDA\tCXM1P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n
+collision_missile0AnyPlayer;[col_m0AnyP collision_m0AnyP];\tLDA\tCXM0P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBEQ\t#LABEL#\n
+collision_missile1AnyPlayer;[col_m1AnyP collision_m1AnyP];\tLDA\tCXM1P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBEQ\t#LABEL#\n
+collision_player0NoMissile;[col_p0NoM collision_p0NoM];\tBIT\tCXM0P\n\tBVS\t#LABEL#\n\tBIT\tCXM1P\n\tBMI\t#LABEL#\n
+collision_player1NoMissile;[col_p1NoM collision_p1NoM];\tBIT\tCXM0P\n\tBMI\t#LABEL#\n\tBIT\tCXM1P\n\tBVS\t#LABEL#\n
+collision_player0AnyMissile;[col_p0AnyM collision_p0AnyM];\tBIT\tCXM0P\n\tBVS\t#OKLABEL#\n\tBIT\tCXM1P\n\tBPL\t#LABEL#\n#OKLABEL#
+collision_player1AnyMissile;[col_p1AnyM collision_p1AnyM];\tBIT\tCXM1P\n\tBVS\t#OKLABEL#\n\tBIT\tCXM0P\n\tBPL\t#LABEL#\n#OKLABEL#
+collision_player0Playfield;[col_player0Playfield col_p0PF collision_p0PF];\tBIT\tCXP0FB\n\tBPL\t#LABEL#\n
+collision_player0Ball;[col_player0Ball col_p0BL collision_p0BL];\tBIT\tCXP0FB\n\tBVC\t#LABEL#\n
+collision_player1Playfield;[col_player1Playfield col_p1PF collision_p1PF];\tBIT\tCXP1FB\n\tBPL\t#LABEL#\n
+collision_player1Ball;[col_player1Ball col_p1BL collision_p1BL];\tBIT\tCXP1FB\n\tBVC\t#LABEL#\n
+collision_noPlayer0Playfield;[col_noPlayer0Playfield col_!p0PF collision_!p0PF col_/p0PF collision_/p0PF col_~p0PF collision_~p0PF];\tBIT\tCXP0FB\n\tBMI\t#LABEL#\n
+collision_noPlayer1Playfield;[col_noPlayer1Playfield col_!p1PF collision_!p1PF col_/p1PF collision_/p1PF col_~p1PF collision_~p1PF];\tBIT\tCXP1FB\n\tBMI\t#LABEL#\n
+collision_noPlayer0Ball;[col_noPlayer0Ball col_!p0BL collision_!p0BL col_/p0BL collision_/p0BL col_~p0BL collision_~p0BL];\tBIT\tCXP0FB\n\tBVS\t#LABEL#\n
+collision_noPlayer1Ball;[col_noPlayer1Ball col_!p1BL collision_!p1BL col_/p1BL collision_/p1BL col_~p1BL collision_~p1BL];\tBIT\tCXP1FB\n\tBVS\t#LABEL#\n
+collision_ballPlayer0;[col_ballPlayer0 col_blP0 collision_blP0];\tBIT\tCXP0FB\n\tBVC\t#LABEL#\n
+collision_playfieldPlayer0;[col_pfPlayer0 col_pfP0 collision_pfP0];\tBIT\tCXP0FB\n\tBPL\t#LABEL#\n
+collision_ballPlayer1;[col_ballPlayer1 col_blP1 collision_blP1];\tBIT\tCXP1FB\n\tBVC\t#LABEL#\n
+collision_playfieldPlayer1;[col_pfPlayer1 col_pfP1 collision_pfP1];\tBIT\tCXP1FB\n\tBPL\t#LABEL#\n
+collision_noBallPlayer0;[collision_!blP0 collision_/blP0 collision_~blP0 col_noBallPlayer0 col_!blP0 col_/blP0 col_~blP0];\tBIT\tCXP0FB\n\tBVS\t#LABEL#\n
+collision_noPFPlayer0;[collision_!pfP0 collision_/pfP0 collision_~pfP0 col_noPlayfieldPlayer0 col_!pfP0 col_/blP0 col_~pfP0];\tBIT\tCXP0FB\n\tBMI\t#LABEL#\n
+collision_noBallPlayer1;[collision_!blP1 collision_/blP1 collision_~blP1 col_noBallPlayer1 col_!blP1 col_/blP1 col_~blP1];\tBIT\tCXP1FB\n\tBVS\t#LABEL#\n
+collision_noPFPlayer1;[collision_!pfP1 collision_/pfP1 collision_~pfP1 col_noPlayfieldPlayer1 col_!pfP1 col_/blP1 col_~pfP1];\tBIT\tCXP1FB\n\tBMI\t#LABEL#\n
+collision_playfieldAnyPlayer;[collision_pfAnyP col_playfieldAnyPlayer col_pfAnyP];\tBIT\tCXP0FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXP1FB\n\tBPL\t#LABEL#\n#OKLABEL#\n
+collision_ballAnyPlayer;[collision_ballAnyP col_ballAnyPlayer col_ballAnyP];\tBIT\tCXP0FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXP1FB\n\tBVC\t#LABEL#\n#OKLABEL#\n
+collision_playfieldNoPlayer;[collision_pfNoP col_playfieldNoPlayer col_pfNoP];\tBIT\tCXP0FB\n\tBMI\t#LABEL#\n\tBIT\tCXP1FB\n\tBMI\t#LABEL#\n
+collision_ballNoPlayer;[collision_blNoP col_ballNoPlayer col_blNoP];\tBIT\tCXP0FB\n\tBVS\t#LABEL#\n\tBIT\tCXP1FB\n\tBVS\t#LABEL#\n
+collision_missile0Playfield;[collision_m0PF col_missile0Playfield col_m0PF];\tBIT\tCXM0FB\n\tBPL\t#LABEL#\n
+collision_missile0Ball;[collision_m0BL col_missile0Ball col_m0BL];\tBIT\tCXM0FB\n\tBVC\t#LABEL#\n
+collision_missile1Playfield;[collision_m1PF col_missile1Playfield col_m1PF];\tBIT\tCXM1FB\n\tBPL\t#LABEL#\n
+collision_missile1Ball;[collision_m1BL col_missile1Ball col_m1BL];\tBIT\tCXM1FB\n\tBVC\t#LABEL#\n
+collision_noMissile0Playfield;[col_noMissile0Playfield collision_!m0PF collision_/m0PF collision_~m0PF col_!m0PF col_/m0PF col_~m0PF];\tBIT\tCXM0FB\n\tBMI\t#LABEL#\n
+collision_noMissile0Ball;[col_noMissile0Ball collision_!m0BL collision_/m0BL collision_~m0BL col_!m0BL col_/m0BL col_~m0BL];\tBIT\tCXM0FB\n\tBVS\t#LABEL#\n
+collision_noMissile1Playfield;[col_noMissile1Playfield collision_!m1PF collision_/m1PF collision_~m1PF col_!m1PF col_/m1PF col_~m1PF];\tBIT\tCXM1FB\n\tBMI\t#LABEL#\n
+collision_noMissile1Ball;[col_noMissile1Ball collision_!m1BL collision_/m1BL collision_~m1BL col_!m1BL col_/m1BL col_~m1BL];\tBIT\tCXM1FB\n\tBVS\t#LABEL#\n
+collision_playfieldMissile0;[col_playfieldMissile0 collision_pfM0 col_pfM0];\tBIT\tCXM0FB\n\tBPL\t#LABEL#\n
+collision_playfieldMissile1;[col_playfieldMissile1 collision_pfM1 col_pfM1];\tBIT\tCXM1FB\n\tBPL\t#LABEL#\n
+collision_noPlayfieldMissile0;[col_noPlayfieldMissile0 collision_!pfM0 collision_/pfM0 collision_~pfM0 col_!pfM0 col_/pfM0 col_~pfM0];\tBIT\tCXM0FB\n\tBMI\t#LABEL#\n
+collision_noPlayfieldMissile1;[col_noPlayfieldMissile1 collision_!pfM1 collision_/pfM1 collision_~pfM1 col_!pfM1 col_/pfM1 col_~pfM1];\tBIT\tCXM1FB\n\tBMI\t#LABEL#\n
+collision_playfieldNoMissile;[col_playfieldNoMissile collisison_pfNoM col_pfNoM];\tBIT\tCXM0FB\n\tBMI\t#LABEL#\n\tBIT\tCXM1FB\n\tBMI\t#LABEL#\n
+collision_playfieldAnyMissile;[col_playfieldAnyMissile collisison_pfAnyM col_pfAnyM];\tBIT\tCXM0FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXM1FB\n\tBPL\t#LABEL#\n#OKLABEL#\n
+collision_ballMissile0;[col_ballMissile0 collision_blM0 col_blM0];\tBIT\tCXM0FB\n\tBVC\t#LABEL#\n
+collision_ballMissile1;[col_ballMissile1 collision_blM1 col_blM1];\tBIT\tCXM1FB\n\tBVC\t#LABEL#\n
+collision_noBallMissile0;[col_noBallMissile0 collision_!blM0 collision_/blM0 collision_~blM0 col_!blM0 col_/blM0 col_~blM0];\tBIT\tCXM0FB\n\tBVS\t#LABEL#\n
+collision_noBallMissile1;[col_noBallMissile1 collision_!blM1 collision_/blM1 collision_~blM1 col_!blM1 col_/blM1 col_~pfM1];\tBIT\tCXM1FB\n\tBVS\t#LABEL#\n
+collision_ballNoMissile;[col_ballNoMissile collisison_blNoM col_blNoM];\tBIT\tCXM0FB\n\tBVS\t#LABEL#\n\tBIT\tCXM1FB\n\tBVS\t#LABEL#\n
+collision_ballAnyMissile;[col_ballAnyMissile collisison_blAnyM col_blAnyM];\tBIT\tCXM0FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXM1FB\n\tBVC\t#LABEL#\n#OKLABEL#\n
+collision_ballPlayfield;[col_ballPlayfield collision_blPF col_blPF];\tBIT\tCXBLPF\n\tBMI\t#LABEL#\n
+collision_playfieldBall;[col_playfieldBall collision_pfBL col_pfBL];\tBIT\tCXBLPF\n\tBMI\t#LABEL#\n
+collision_noBallPlayfield;[col_noBallPlayfield collision_!blPF col_!blPF collision_/blPF col_/blPF collision_~blPF col_~blPF];\tBIT\tCXBLPF\n\tBPL\t#LABEL#\n
+collision_noPlayfieldBall;[col_noPlayfieldBall collision_!pfBL col_!pfBL collision_/pfBL col_/pfBL collision_~pfBL col_~pfBL];\tBIT\tCXBLPF\n\tBPL\t#LABEL#\n
+collision_player0Player1;[col_player0Player1 collision_p0P1 col_p0P1];\tBIT\tCXPPMM\n\tBPL\t#LABEL#\n
+collision_player1Player0;[col_player1Player0 collision_p1P0 col_p1P0];\tBIT\tCXPPMM\n\tBPL\t#LABEL#\n
+collision-missile0Missile1;[col_missile0Missile1 collision_m0M1 col_m0M1];\tBIT\tCXPPMM\n\tBVC\t#LABEL#\n
+collision-missile1Missile0;[col_missile1Missile0 collision_m1M0 col_m1M0];\tBIT\tCXPPMM\n\tBVC\t#LABEL#\n
+collision_noPlayer0Player1;[col_noPlayer0Player1 collision_!p0P1 collision_/p0P1 collision_~p0P1 col_!p0P1 col_/p0P1 col_~p0P1];\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n
+collision_noPlayer1Player0;[col_noPlayer1Player0 collision_!p1P0 collision_/p1P0 collision_~p1P0 col_!p1P0 col_/p1P0 col_~p1P0];\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n
+collision_noMissile0Missile1;[col_noMissile0Missile1 collision_!m0M1 collision_/m0M1 collision_~m0M1 col_!m0M1 col_/m0M1 col_~m0M1];\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n
+collision_noMissile1Missile0;[col_noMissile1Missile0 collision_!m1M0 collision_/m1M0 collision_~m1M0 col_!m1M0 col_/m1M0 col_~m1M0];\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n
+collision_player0None;[col_player0None col_p0No collision_p0No collision_!p0 collision_/p0 collision_~p0 col_!p0 col_/p0 col_~p0];\tBIT\tCXM0P\n\tBVS\t#LABEL#\n\tBIT\tCXM1P\n\tBMI\t#LABEL#\n\tLDA\tCXP0FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n
+collision_player0Any;[collision_p0A col_player0Any col_p0A];\tBIT\tCXM0P\n\tBVS\t#OKLABEL#\n\tBIT\tCXM1P\n\tBMI\t#OKLABEL#\n\tLDA\tCXP0FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n#OKLABEL#\n
+collision_player1None;[col_player1None col_p1No collision_p1No collision_!p1 collision_/p1 collision_~p1 col_!p1 col_/p1 col_~p1];\tBIT\tCXM1P\n\tBVS\t#LABEL#\n\tBIT\tCXM0P\n\tBMI\t#LABEL#\n\tLDA\tCXP1FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n
+collision_player1Any;[collision_p1A col_player0Any col_p1A];\tBIT\tCXM1P\n\tBVS\t#OKLABEL#\n\tBIT\tCXM0P\n\tBMI\t#OKLABEL#\n\tLDA\tCXP1FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tBIT\tCXPPMM\n\tBMI\t#LABEL#\n#OKLABEL#\n
+collision_missile0None;[col_missile0None collision_!m0 col_!m0 collision_/m0 col_/m0 collision_~m0 col_~m0];\tLDA\tCXM0P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tLDA\tCXM0FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n
+collision_missile0Any;[col_missile0Any collision_m0A col_m0A];\tLDA\tCXM0P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tLDA\tCXM0FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n#OKLABEL#
+collision_missile1None;[col_missile1None collision_!m1 col_!m1_collision_/m1 col_/m1 collision_~m1 col_~m1];\tLDA\tCXM1P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tLDA\tCXM1FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#LABEL#\n\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n
+collision_missile1Any;[col_missile1Any collision_m1A col_m1A];\tLDA\tCXM1P\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tLDA\tCXM1FB\n\tAND\t#%11000000\n\tCMP\t#0\n\tBNE\t#OKLABEL#\n\tBIT\tCXPPMM\n\tBVS\t#LABEL#\n#OKLABEL#
+collision_ballNone;[col_ballNone collision_!bl col_!bl collision_/bl col_/bl collision_~bl col_~bl];\tBIT\tCXP0FB\n\tBVS\t#LABEL#\n\tBIT\tCXP1FB\n\tBVS\t#LABEL#\n\tBIT\tCXM0FB\n\tBVS\t#LABEL#\n\tBIT\tCXM1FB\n\tBVS\t#LABEL#\n\tBIT\tCXBLPF\n\tBMI\t#LABEL#\n
+collision_ballAny;[col_ballAny col_blA collision_blA];\tBIT\tCXP0FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXP1FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXM0FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXM1FB\n\tBVS\t#OKLABEL#\n\tBIT\tCXBLPF\n\tBPL\t#LABEL#\n#OKLABEL#\n
+collision_playfieldNone;[col_playfieldNone collision_!pf col_!pf collision_/pf col_/pf collision_~pf col_~pf];\tBIT\tCXP0FB\n\tBMI\t#LABEL#\n\tBIT\tCXP1FB\n\tBMI\t#LABEL#\n\tBIT\tCXM0FB\n\tBMI\t#LABEL#\n\tBIT\tCXM1FB\n\tBMI\t#LABEL#\n\tBIT\tCXBLPF\n\tBMI\t#LABEL#\n
+collision_playFieldAny;[col_playfieldAny col_pfA collision_pfA];\tBIT\tCXP0FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXP1FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXM0FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXM1FB\n\tBMI\t#OKLABEL#\n\tBIT\tCXBLPF\n\tBPL\t#LABEL#\n#OKLABEL#\n

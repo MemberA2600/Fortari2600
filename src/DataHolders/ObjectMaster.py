@@ -475,6 +475,7 @@ class ObjectMaster:
             data.append(object["ioMethod"])
             data.append("None")
             data.append("False")
+            data.append("False")
 
             #print(Command(self.__loader, name, ",".join(data)).params)
             return Command(self.__loader, name, ",".join(data))

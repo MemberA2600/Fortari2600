@@ -416,6 +416,9 @@ class EditorBigFrame:
                 else:
                     button.config(state=state)
 
+                if secs[self.__sectionButtons.index(button)] == "screenroutines" and self.__config.getValueByKey("advanced") == False:
+                   button.config(state=DISABLED)
+
             #print(self.__foundError)
             if self.__foundError == False:
                 self.__compileASMButton.config(state=NORMAL)
@@ -2507,6 +2510,9 @@ class EditorBigFrame:
 
         noneList = ["", None, "None"]
 
+        #if listType == "error": raise ValueError
+        #print(currentWord, listType)
+
         command = None
         for c in self.__loader.syntaxList.keys():
             if lineStructure["command"][0] == c or lineStructure["command"][0] in self.__syntaxList[c].alias:
@@ -2627,12 +2633,14 @@ class EditorBigFrame:
         elif listType == "subroutine":
             subList = self.collectNamesByCommandFromSections("subroutine", None)
             for sub in subList:
-                wordsForList.append([sub, "subroutine"])
+                if sub.startswith(currentWord) or currentWord == "":
+                   wordsForList.append([sub, "subroutine"])
 
         elif listType == "data":
             listOfData = self.getListOfData(lineStructure["command"][0])
             for item in listOfData:
-                wordsForList.append([item, "data"])
+                if item.startswith(currentWord) or currentWord == "":
+                   wordsForList.append([item, "data"])
 
         elif listType == "register" and self.__config.getValueByKey("advanced") == "True":
             if self.doesItWriteInParam(lineStructure, cursorIn, "editor"):
@@ -2641,11 +2649,18 @@ class EditorBigFrame:
                okLetters = ["r", "b"]
 
             for reg in self.__virtualMemory.registers.keys():
-                if self.__virtualMemory.registers[reg]["allowedIO"] in okLetters and \
-                   self.__currentSection in self.__virtualMemory.registers[reg]["allowedSections"]:
+                if reg.startswith(currentWord) or currentWord == "":
+                    if self.__virtualMemory.registers[reg]["allowedIO"] in okLetters and \
+                       self.__currentSection in self.__virtualMemory.registers[reg]["allowedSections"]:
 
-                   if varOnly == False:
-                      wordsForList.append([reg, "register"])
+                       if varOnly == False:
+                          wordsForList.append([reg, "register"])
+
+        elif listType == "portState":
+             for s in self.__virtualMemory.returnAllPortStatesAsList():
+                 #print(s)
+                 if s.startswith(currentWord) or currentWord == "":
+                    wordsForList.append([s, "portState"])
 
         # Maybe "statement" will be important here to??
 
@@ -3007,6 +3022,7 @@ class EditorBigFrame:
 
         #print(paramType, param, mustHave, cursorIn)
 
+        forceBreak = False
         command = None
         for c in self.__loader.syntaxList.keys():
             if lineStructure["command"][0] == c or lineStructure["command"][0] in self.__syntaxList[c].alias:
@@ -3053,8 +3069,16 @@ class EditorBigFrame:
                  ioMethod = "write"
                  varOnly  = True
 
+        if "statement" in paramTypeList:
+            if paramTypeList[-1] != "statement":
+               paramTypeList.remove("statement")
+               paramTypeList.append("statement")
+
+
+        #print(paramTypeList)
+
         for pType in paramTypeList:
-            if foundIt == True: break
+            if foundIt == True or forceBreak == True: break
 
             if param in noneList:
                foundStartOfString = False
@@ -3063,7 +3087,7 @@ class EditorBigFrame:
                if foundStartOfString == False: continue
 
             printMe = False
-
+            #print(pType)
             if pType == "variable":
                 if printMe: print(pType)
                 writable, readOnly, all, nonSystem = self.__virtualMemory.returnVariablesForBank(self.__currentBank)
@@ -3176,6 +3200,8 @@ class EditorBigFrame:
                     # foundIt = True
 
             elif pType == "statement":
+                if param in self.__virtualMemory.returnAllPortStatesAsList(): continue
+
                 if printMe: print(pType)
 
                 needComprassion = True
@@ -3189,9 +3215,9 @@ class EditorBigFrame:
 
                 addIndex = lineStructure[cursorIn][1][0]
                 statementData = self.getStatementStructure(param, needComprassion, stringAllowed, addIndex, lineStructure)
-                self.__statement = statementData
                 foundIt = True
 
+                #print(statementData)
                 # if cursorIn == "param#1": raise ValueError
 
                 for item in statementData:
@@ -3225,6 +3251,24 @@ class EditorBigFrame:
                             foundIt = True
                  else:
                      returnBack.append(["error", dimension])
+
+            elif pType == "portState":
+                 if printMe: print(pType)
+                 #print("oh")
+                 #print(self.__loader.returnCodeOfPortState(param))
+                 if self.__loader.virtualMemory.returnCodeOfPortState(param) != False:
+                    returnBack.append(["portState", dimension])
+                    foundIt = True
+
+                 if len(param) > 0 and foundIt ==  False:
+                    for item in self.__loader.virtualMemory.returnAllPortStatesAsList():
+                        try:
+                            item = item[0:len(param)]
+                        except:
+                            pass
+
+                        if item == param:
+                           forceBreak = True
 
         if foundIt == False:
            if mustHave == False and param in noneList:

@@ -421,6 +421,7 @@ class FirstCompiler:
                             if name[-1] == thisIsTheResult:
                                 if var.color == True and hasColor == False:
                                     hasColor  = True
+                                    #print(params[name][0])
                                     if annotation == "":
                                        annotation = "\t; &COLOR"
                                     else:
@@ -1855,48 +1856,45 @@ class FirstCompiler:
 
 
         elif self.isCommandInLineThat(line, "callIf"):
-            statement = line["param#1"][0]
-            smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
-                                                                         statement, line)
-            smallerCommandLines = smallerCommands.split("\n")
+            statement     = line["param#1"][0]
+            portStateCode = self.__virtualMemory.returnCodeOfPortState(statement)
 
-            line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
+            if portStateCode == False:
+                smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
+                                                                             statement, line)
+                smallerCommandLines = smallerCommands.split("\n")
 
-            """
-            for subLine in smallerCommandLines:
-                if subLine == "": continue
+                line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
 
-                subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
-                                                                          False)
-                subLineStructure["fullLine"] = subLine
-                for key in line:
-                    if key not in subLineStructure.keys():
-                        subLineStructure[key] = line[key]
 
-                self.processLine(subLineStructure, linesFeteched)
-                if self.__error == False:
-                    line["compiled"] += subLineStructure["compiled"] + "\n"
+                self.__magicNumber += 1
+                label = self.__currentBank + "_" + str(self.__magicNumber) + "_CallIf_JumpOver"
 
-            line["compiled"] = "\n".join(line["compiled"].split("\n")[:-1])
-            """
-            self.__magicNumber += 1
-            label = self.__currentBank + "_" + str(self.__magicNumber) + "_CallIf_JumpOver"
-
-            currentComprass = self.findCompass(statement)
-            compassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
-                                                         label)
+                currentComprass = self.findCompass(statement)
+                compassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
+                                                             label)
 
 
 
-            listOfThem = ["BEQ", "BNE", "BCC", "BCS"]
-            for itemNum in range(0, len(listOfThem)):
-                item = listOfThem[itemNum]
-                if item in compassLine:
-                    compassLine = compassLine.replace(item, listOfThem[itemNum^1])
-                    break
+                listOfThem = ["BEQ", "BNE", "BCC", "BCS"]
+                for itemNum in range(0, len(listOfThem)):
+                    item = listOfThem[itemNum]
+                    if item in compassLine:
+                        compassLine = compassLine.replace(item, listOfThem[itemNum^1])
+                        break
 
-            line["compiled"] += compassLine
-            line["compiled"] = self.simplifyCompassShit(line["compiled"], temps)
+                line["compiled"] += compassLine
+                line["compiled"] = self.simplifyCompassShit(line["compiled"], temps)
+
+                #print(line["compiled"].split("\n"))
+            else:
+                line["compiled"] = portStateCode
+                self.__magicNumber += 1
+
+                label   = self.__currentBank + "_" + str(self.__magicNumber) + "_CallIf_JumpOver"
+                labelOk = self.__currentBank + "_" + str(self.__magicNumber) + "_CallIf_OK"
+
+                line["compiled"] = line["compiled"].replace("#LABEL#", label).replace("#OKLABEL#" , labelOk)
 
             subline = deepcopy(line)
             subline["command"] = ["call", [0, 3]]
@@ -1906,17 +1904,15 @@ class FirstCompiler:
 
             subline["fullLine"] = "\tcall(" + subline["param#1"][0]
             if subline["param#2"][0] not in [None, "None", ""]:
-               subline["fullLine"] += ", " + subline["param#2"][0] + ")"
+                subline["fullLine"] += ", " + subline["param#2"][0] + ")"
 
             subline["fullLine"] += ")"
-            subline["compiled"]  = ""
+            subline["compiled"] = ""
 
             self.processLine(subline, linesFeteched)
             line["compiled"] += subline["compiled"]
-            #self.checkASMCode(line["compiled"], line)
 
             line["compiled"] += label + "\n"
-            #print(line["compiled"].split("\n"))
 
         elif line["command"][0].split("-")[0] in ["do", "perform", "for", "foreach"]:
             command     = None
@@ -2084,61 +2080,49 @@ class FirstCompiler:
                    txt += name + "Loop" + "\n"
 
                    statement = line["param#1"][0]
-                   smallerCommands, temps = self.convertStatementToSmallerCodes("do-until",
-                                                                                statement, line)
-                   smallerCommandLines = smallerCommands.split("\n")
+                   portStateCode = self.__virtualMemory.returnCodeOfPortState(statement)
 
-                   #print(smallerCommandLines)
+                   if portStateCode == False:
+                       smallerCommands, temps = self.convertStatementToSmallerCodes("do-until",
+                                                                                    statement, line)
+                       smallerCommandLines = smallerCommands.split("\n")
 
-                   if self.__error == False:
+                       #print(smallerCommandLines)
 
-                       txt = self.comprassThing(smallerCommandLines, line, linesFeteched)
+                       if self.__error == False:
 
-                       #print(txt)
+                           txt = self.comprassThing(smallerCommandLines, line, linesFeteched)
 
-                       """
-                       for subLine in smallerCommandLines:
-                           if subLine == "": continue
+                           currentComprass = self.findCompass(statement)
 
-                           subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
-                                                                                     False)
-                           subLineStructure["fullLine"] = subLine
-                           for key in line:
-                               if key not in subLineStructure.keys():
-                                   subLineStructure[key] = line[key]
+                           comprassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
+                                                                        name + "End")
 
-                           #print(">>>", subLine)
+                           for opc in self.__branchers:
+                               if opc in comprassLine:
+                                  opcode = opc
+                                  break
 
-                           self.processLine(subLineStructure, linesFeteched)
-                           #print(self.__error, subLine)
-                           if self.__error == False:
-                               txt += subLineStructure["compiled"] + "\n"
+                           if commandName == "do-while":
+                              for itemNum in range(0, len(self.__branchers)):
+                                  if opcode == self.__branchers[itemNum]:
+                                     if itemNum % 2 == 0:
+                                        itemNum += 1
+                                     else:
+                                        itemNum -= 1
+                                     comprassLine = comprassLine.replace(opcode, self.__branchers[itemNum])
+                                     break
+                           txt += comprassLine
+                           txt  = self.simplifyCompassShit(txt, temps)
+                   else:
+                       txt = portStateCode
 
-                       txt = "\n".join(txt.split("\n")[:-1])
-                       """
-                       currentComprass = self.findCompass(statement)
+                       label   = name + "End"
+                       labelOk = name + "OK"
 
-                       comprassLine = self.fuseTempsAndLogical(temps[0], temps[1], currentComprass,
-                                                                    name + "End")
+                       txt = txt.replace("#LABEL#", label).replace("#OKLABEL#", labelOk)
 
-                       for opc in self.__branchers:
-                           if opc in comprassLine:
-                              opcode = opc
-                              break
-
-                       if commandName == "do-while":
-                          for itemNum in range(0, len(self.__branchers)):
-                              if opcode == self.__branchers[itemNum]:
-                                 if itemNum % 2 == 0:
-                                    itemNum += 1
-                                 else:
-                                    itemNum -= 1
-                                 comprassLine = comprassLine.replace(opcode, self.__branchers[itemNum])
-                                 break
-                       txt += comprassLine
-                       txt  = self.simplifyCompassShit(txt, temps)
-
-            line["compiled"] = txt
+                   line["compiled"] = txt
 
         elif self.isCommandInLineThat(line, "select"):
              line["magicNumber"] = str(self.__magicNumber)
@@ -2290,34 +2274,27 @@ class FirstCompiler:
                             caseLine = linesFeteched[case["lineNum"]]
 
                             statement = caseLine["param#1"][0]
-                            smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
-                                                                                  statement, caseLine)
-                            smallerCommandLines = smallerCommands.split("\n")
+                            portStateCode = self.__virtualMemory.returnCodeOfPortState(statement)
 
-                            if self.__error == True: break
+                            if portStateCode == False:
+                                smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
+                                                                                      statement, caseLine)
+                                smallerCommandLines = smallerCommands.split("\n")
 
-                            line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
+                                if self.__error == True: break
 
-                            """    
-                            for subLine in smallerCommandLines:
-                                if subLine == "": continue
+                                line["compiled"] = self.comprassThing(smallerCommandLines, line, linesFeteched)
 
-                                subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine],
-                                                                                          False)
-                                subLineStructure["fullLine"] = subLine
-                                for key in line:
-                                    if key not in subLineStructure.keys():
-                                        subLineStructure[key] = line[key]
+                                currentComprass = self.findCompass(statement)
+                                line["compiled"] += self.fuseTempsAndLogical(temps[0], temps[1], currentComprass, name + "Case_" + str(caseNum))
+                                line["compiled"]  = self.simplifyCompassShit(line["compiled"], temps)
+                            else:
+                                line["compiled"] = portStateCode
 
-                                self.processLine(subLineStructure, linesFeteched)
-                                if self.__error == False:
-                                   line["compiled"] += subLineStructure["compiled"] + "\n"
+                                label   = name + "Case_"   + str(caseNum)
+                                labelOk = name + "CaseOK_" + str(caseNum)
+                                line["compiled"] = line["compiled"].replace("#LABEL#", label).replace("#OKLABEL#", labelOk)
 
-                            line["compiled"] = "\n".join(line["compiled"].split("\n")[:-1])
-                            """
-                            currentComprass = self.findCompass(statement)
-                            line["compiled"] += self.fuseTempsAndLogical(temps[0], temps[1], currentComprass, name + "Case_" + str(caseNum))
-                            linf["compiled"]  = self.simplifyCompassShit(line["compiled"], temps)
 
                         if len(defaults) > 0:
                             line["compiled"] += "\tJMP\t" + name + "Default" + "\n"
@@ -2821,13 +2798,36 @@ class FirstCompiler:
             if self.__error == False:
                line["compiled"] = template
 
-        elif self.isCommandInLineThat(line, "peek"):
+        elif self.isCommandInLineThat(line, "peek") or self.isCommandInLineThat(line, "poke"):
+            if self.isCommandInLineThat(line, "peek"):
+               mode = "peek"
+            else:
+               mode = "poke"
+
             register = self.__virtualMemory.registers[params["param#1"][0]]
             var      = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
 
-        elif self.isCommandInLineThat(line, "poke"):
-            register = self.__virtualMemory.registers[params["param#1"][0]]
-            var      = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+            self.__temps = self.collectUsedTemps()
+
+            txt = ""
+
+            if mode == "poke":
+               to8Bit = ""
+               if var != False:
+                  to8Bit = self.convertAny2Any(params["param#2"][0], "TO", params, self.__temps)
+
+               txt = "\tLDA\t" + params["param#2"][0] + "\n" + to8Bit + "\n\tSTA\t" + params["param#1"][0] + "\n"
+
+            else:
+                from8bit = ""
+                if var != False:
+                    from8bit = self.convertAny2Any(params["param#2"][0], "FROM", params, self.__temps)
+
+                txt = "\tLDA\t" + params["param#1"][0] + "\n" + from8bit + "\n\tSTA\t" + params["param#2"][0] + "\n"
+
+            self.checkASMCode(txt, line, linesFeteched)
+            if self.__error == False:
+                line["compiled"] = txt
 
         elif self.isCommandInLineThat(line, "bitOn") or self.isCommandInLineThat(line, "bitOff"):
             sourceTxt        = ""
@@ -2943,8 +2943,9 @@ class FirstCompiler:
             else:
                 line["compiled"]   = ""
 
-        elif line["command"][0].startswith("end"):
-            pass
+        elif line["command"][0].startswith("end") \
+          or self.isCommandInLineThat(line, "exit") :
+             pass
 
         else:
             #This is where object related commands are handled.
@@ -4631,7 +4632,7 @@ class FirstCompiler:
 
                       hexa = hex(numberValue).replace("0x", "")
                       if len(hexa) % 2 != 0: hexa = "0" + hexa
-                      hexa = "$" + hexa
+                      hexa = "$" + hexa.upper()
 
                       if hexa not in self.__registers.keys() and hexa not in self.__validMemoryAddresses:
                          self.addToErrorList(lineStructure["lineNum"],
@@ -4668,7 +4669,7 @@ class FirstCompiler:
                                mode = "read"
                       else:
                           special = "CPU"
-                          if int(hexa[1:]) > 29:
+                          if int("0x" + hexa[1:], 16) > 29:
                              mode = "read"
                           else:
                              mode = "write"

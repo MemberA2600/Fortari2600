@@ -48,7 +48,10 @@ class VirtualMemory:
                          self.registers[key]["allowedSections"].append(d)
 
             self.registers[key]["bitMask"]       = valueList[2]
-            self.registers[key]["colorVar"]      = bool(valueList[3])
+            if valueList[3] == "True":
+               self.registers[key]["colorVar"]   = True
+            else:
+               self.registers[key]["colorVar"]   = False
 
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
@@ -84,8 +87,52 @@ class VirtualMemory:
             "byte": 8
         }
 
+        self.__portStates = {}
+        txt = self.__loader.io.loadWholeText("templates/portStates.csv")
+
+        for line in txt.split("\n")[1:]:
+            if line == "": continue
+            line = line.split(";")
+            self.__portStates[line[0]]          = {}
+            self.__portStates[line[0]]["alias"] = line[1][1:-1].split(" ")
+            self.__portStates[line[0]]["code"]  = line[2]
+            self.__portStates[line[0]]["code"]  = self.__portStates[line[0]]["code"].replace(r"\n", "\n").replace(r"\t", "\t")
+
+
+        #for key in self.__portStates:
+            #print(">>"+key+"<<", "\n", self.__portStates[key]["code"])
+            #if "col " in key or "col " in self.__portStates[key]["alias"] or "collision " in key or "collision " in self.__portStates[key]["alias"]: print("fucked " + key)
+
         self.resetMemory()
         self.emptyArchieved()
+
+    def returnAllPortStatesAsList(self):
+        listToReturn = []
+
+        for key in self.__portStates.keys():
+            listToReturn.append(key)
+            #if key == "" or key == " " : print("1", key)
+            for k in self.__portStates[key]["alias"]:
+                #if "k" == " " or k == "": print("2", key)
+                listToReturn.append(k)
+
+        return listToReturn
+
+    def returnCodeOfPortState(self, nameOrAlias):
+        name = ""
+
+        if nameOrAlias in self.__portStates.keys():
+           name = nameOrAlias
+        else:
+           for key in self.__portStates.keys():
+               if nameOrAlias in self.__portStates[key]["alias"]:
+                  name = key
+                  break
+
+        if name == "":
+           return False
+        else:
+           return self.__portStates[name]["code"]
 
     def archieve(self):
         self.archieved = self.archieved[:self.cursor+1]

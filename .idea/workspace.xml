@@ -5,54 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/venv/portStates.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/ColorPalettes/default.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/ColorPalettes/default.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.txt" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/syntax.csv" beforeDir="false" afterPath="$PROJECT_DIR$/config/syntax.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-02-01_181826.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/search.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-02-18_082505.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/Variable.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/Variable.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/EditorBigFrame.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/EditorBigFrame.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/addTo#VARNAME#.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/addTo#VARNAME#.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/addTo#VARNAME#KeepBaseColor.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/addTo#VARNAME#KeepBaseColor.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#KeepBaseColor.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#KeepBaseColor.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#ToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#ToRandom.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#ToRandomKeepBaseColor.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/set#VARNAME#ToRandomKeepBaseColor.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/subtractFrom#VARNAME#.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/subtractFrom#VARNAME#.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/colorChangers/subtractFrom#VARNAME#KeepBaseColor.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/colorChangers/subtractFrom#VARNAME#KeepBaseColor.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/ball/setBallSize.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/ball/setBallSize.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setGameScreenSkipMode.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setGameScreenSkipMode.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setNumberOfSubMenuLines.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setNumberOfSubMenuLines.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSpriteMissileBorderBehaviour.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSpriteMissileBorderBehaviour.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuMode.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuMode.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuSelectedTileData.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuSelectedTileData.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuTileDataByColumnAndRow.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuTileDataByColumnAndRow.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuTileDataByNum.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/gameScreen/setSubMenuTileDataByNum.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/missileß/setMissileSize.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/missileß/setMissileSize.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/addToPlayerHeight.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/addToPlayerHeight.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/addToPlayerSpriteIndex.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/addToPlayerSpriteIndex.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeight.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeight.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeightToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeightToRandom.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeightToRandomWithData.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerHeightToRandomWithData.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerNumberSpacingSize.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerNumberSpacingSize.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndex.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndex.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndexToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndexToRandom.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndexToRandomWithData.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/setPlayerSpriteIndexToRandomWithData.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/subtractFromPlayerHeight.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/subtractFromPlayerHeight.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playerß/subtractFromPlayerSpriteIndex.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playerß/subtractFromPlayerSpriteIndex.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/addToPlayfieldIndex.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/addToPlayfieldIndex.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndex.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndex.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandom.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandomWithData.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/setPlayfieldIndexToRandomWithData.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/subtractFromPlayfieldIndex.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/subtractFromPlayfieldIndex.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/simpleSetters/addTo#VARNAME#.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/simpleSetters/addTo#VARNAME#.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/simpleSetters/set#VARNAME#.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/simpleSetters/set#VARNAME#.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/simpleSetters/set#VARNAME#ToRandom.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/simpleSetters/set#VARNAME#ToRandom.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/objects_common/simpleSetters/subtractFrom#VARNAME#.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/simpleSetters/subtractFrom#VARNAME#.a26" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +36,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$convertToPiss.coverage" NAME="convertToPiss Coverage Results" MODIFIED="1640362789468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$bitShiftTester.coverage" NAME="bitShiftTester Coverage Results" MODIFIED="1651602090369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$AutoSetter.coverage" NAME="AutoSetter Coverage Results" MODIFIED="1618118363590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/App" />
-    <SUITE FILE_PATH="coverage/Fortari2600$EditorBigFrame.coverage" NAME="EditorBigFrame Coverage Results" MODIFIED="1708196745037" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
+    <SUITE FILE_PATH="coverage/Fortari2600$EditorBigFrame.coverage" NAME="EditorBigFrame Coverage Results" MODIFIED="1709098090486" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$JukeBox.coverage" NAME="JukeBox Coverage Results" MODIFIED="1705426553131" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View/ScreenElements" />
     <SUITE FILE_PATH="coverage/Fortari2600$6507Compiler.coverage" NAME="6507Compiler Coverage Results" MODIFIED="1628274705135" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../6507Compiler" />
     <SUITE FILE_PATH="coverage/Fortari2600$shiftSpecial.coverage" NAME="shiftSpecial Coverage Results" MODIFIED="1701454533410" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -94,12 +54,13 @@
     <SUITE FILE_PATH="coverage/Fortari2600$CopyToAdlib.coverage" NAME="CopyToAdlib Coverage Results" MODIFIED="1656440283290" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$IO.coverage" NAME="IO Coverage Results" MODIFIED="1703266182779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
+    <SUITE FILE_PATH="coverage/Fortari2600$portStates.coverage" NAME="portStates Coverage Results" MODIFIED="1708289987293" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$YM3812.coverage" NAME="YM3812 Coverage Results" MODIFIED="1641233588785" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$CosmicCommuter.coverage" NAME="CosmicCommuter Coverage Results" MODIFIED="1703685041879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1708241105074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1709127406895" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1708240847708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -120,11 +81,11 @@
     <SUITE FILE_PATH="coverage/Fortari2600$listUnUsed.coverage" NAME="listUnUsed Coverage Results" MODIFIED="1646555393544" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$PlayfieldEditor.coverage" NAME="PlayfieldEditor Coverage Results" MODIFIED="1627069290081" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$rrrr.coverage" NAME="rrrr Coverage Results" MODIFIED="1679739971134" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$FirstCompiler.coverage" NAME="FirstCompiler Coverage Results" MODIFIED="1706734881424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
+    <SUITE FILE_PATH="coverage/Fortari2600$FirstCompiler.coverage" NAME="FirstCompiler Coverage Results" MODIFIED="1709103176753" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$Wall.coverage" NAME="Wall Coverage Results" MODIFIED="1665922121638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View/ScreenElements" />
     <SUITE FILE_PATH="coverage/Fortari2600$patternwater.coverage" NAME="patternwater Coverage Results" MODIFIED="1666948761116" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$sinewave.coverage" NAME="sinewave Coverage Results" MODIFIED="1706201065507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$VirtualMemory.coverage" NAME="VirtualMemory Coverage Results" MODIFIED="1619683310789" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/DataHolders" />
+    <SUITE FILE_PATH="coverage/Fortari2600$VirtualMemory.coverage" NAME="VirtualMemory Coverage Results" MODIFIED="1708792645235" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/DataHolders" />
     <SUITE FILE_PATH="coverage/Fortari2600$Dictionary.coverage" NAME="Dictionary Coverage Results" MODIFIED="1618066138203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/Fortari2600$Logger.coverage" NAME="Logger Coverage Results" MODIFIED="1705647365372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
     <SUITE FILE_PATH="coverage/Fortari2600$PictureToCode.coverage" NAME="PictureToCode Coverage Results" MODIFIED="1637764542757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Scripts" />
@@ -245,44 +206,44 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="505" />
+          <entry key="project.closed" value="506" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="5" />
           <entry key="project.open.time.3" value="85" />
-          <entry key="project.open.time.4" value="438" />
-          <entry key="project.open.time.5" value="92" />
-          <entry key="project.open.time.6" value="18" />
+          <entry key="project.open.time.4" value="439" />
+          <entry key="project.open.time.5" value="93" />
+          <entry key="project.open.time.6" value="20" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="3" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="649" />
+          <entry key="project.opened" value="653" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="7" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="1213" />
+          <entry key="py" value="1216" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="1213" />
+          <entry key="Python" value="1216" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="428070" />
+          <entry key="py" value="432047" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="428070" />
+          <entry key="Python" value="432047" />
         </counts>
       </usages-collector>
     </session>
@@ -292,25 +253,13 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="616">
-              <caret line="3370" lean-forward="true" selection-start-line="3370" selection-end-line="3370" />
+            <state relative-caret-position="792">
+              <caret line="2322" column="27" selection-start-line="2322" selection-start-column="27" selection-end-line="2322" selection-end-column="27" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="296">
-              <caret line="234" selection-start-line="234" selection-end-line="234" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -319,33 +268,44 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
-              <caret line="475" column="27" selection-start-line="475" selection-start-column="27" selection-end-line="475" selection-end-column="27" />
+            <state relative-caret-position="449">
+              <caret line="113" column="13" selection-start-line="113" selection-start-column="13" selection-end-line="113" selection-end-column="13" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1708238424679" expanded="true" signature="16147:17173" ph="..." />
+                <marker date="1709115270994" expanded="true" signature="4211:4565" ph="..." />
+                <marker date="1709115270994" expanded="true" signature="4629:5010" ph="..." />
+                <marker date="1709115270994" expanded="true" signature="17899:18925" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/DataHolders/Variable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="192">
-              <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="635">
-              <caret line="3226" column="60" selection-start-line="3226" selection-start-column="60" selection-end-line="3226" selection-end-column="60" />
+            <state relative-caret-position="376">
+              <caret line="3261" column="56" selection-start-line="3261" selection-start-column="56" selection-end-line="3261" selection-end-column="56" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="392">
+              <caret line="65" selection-start-line="65" selection-end-line="65" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="728">
+              <caret line="478" lean-forward="true" selection-start-line="478" selection-end-line="478" />
             </state>
           </provider>
         </entry>
@@ -361,25 +321,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;asm&quot;</find>
-      <find>lineTinting</find>
-      <find>hasValidCommand</find>
-      <find>__syntaxList</find>
-      <find>screen</find>
-      <find>re</find>
-      <find>Here</find>
-      <find>fixSave</find>
-      <find>here</find>
-      <find>isCom</find>
-      <find>registers.keys</find>
-      <find>var</find>
-      <find>getVar</find>
-      <find>import Var</find>
-      <find>setupList</find>
-      <find>linkable</find>
-      <find>from V</find>
-      <find>bitMask</find>
-      <find>Any2any</find>
       <find>&quot;register&quot;</find>
       <find>types</find>
       <find>peek</find>
@@ -391,6 +332,25 @@
       <find>save8bitsToAny</find>
       <find>save8bitsToAny2</find>
       <find>bitChanger</find>
+      <find>&amp;Color</find>
+      <find>colorVar</find>
+      <find>buttons</find>
+      <find>__sectionButtons</find>
+      <find>callIf</find>
+      <find>&quot;case&quot;</find>
+      <find>compass</find>
+      <find>portStateCode</find>
+      <find>end-</find>
+      <find>&quot;exit&quot;</find>
+      <find>fuseTempsAndLogical</find>
+      <find>here</find>
+      <find>portStat</find>
+      <find>statement</find>
+      <find>statement&quot;</find>
+      <find>portState</find>
+      <find>portState&quot;</find>
+      <find>setupList</find>
+      <find>&quot;portState</find>
     </findStrings>
     <replaceStrings>
       <replace>__byteVars</replace>
@@ -431,7 +391,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/ScreenSetterFrameBase.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenTopTester.py" />
         <option value="$PROJECT_DIR$/src/View/SongInput.py" />
         <option value="$PROJECT_DIR$/src/View/SoundPlayerEditor.py" />
@@ -474,14 +433,15 @@
         <option value="$PROJECT_DIR$/src/View/NewProjectWindow.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenTopFrame.py" />
         <option value="$PROJECT_DIR$/src/View/MainWindow.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/Command.py" />
         <option value="$PROJECT_DIR$/src/DataHolders/Variable.py" />
-        <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
-        <option value="$PROJECT_DIR$/src/View/EditorBigFrame.py" />
         <option value="$PROJECT_DIR$/search.py" />
         <option value="$PROJECT_DIR$/src/Compile/Compiler.py" />
+        <option value="$PROJECT_DIR$/venv/portStates.py" />
         <option value="$PROJECT_DIR$/src/Compile/FirstCompiler.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/Command.py" />
+        <option value="$PROJECT_DIR$/src/DataHolders/ObjectMaster.py" />
+        <option value="$PROJECT_DIR$/src/View/EditorBigFrame.py" />
       </list>
     </option>
   </component>
@@ -523,6 +483,26 @@
               <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="Compile" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Fortari2600" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+            </path>
+            <path>
+              <item name="Fortari2600" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="&lt; Python 3.7 (Fortari2600) &gt;" type="70bed36:NamedLibraryElementNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -611,6 +591,28 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="VirtualMemory" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="Fortari2600" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/DataHolders" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -633,29 +635,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="search" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="Fortari2600" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/search.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="sinewave" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="portStates" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Fortari2600" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -668,7 +648,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/sinewave.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/venv/portStates.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -679,18 +659,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.main" />
-      <item itemvalue="Python.search" />
-      <item itemvalue="Python.sinewave" />
-      <item itemvalue="Python.FirstCompiler" />
       <item itemvalue="Python.EditorBigFrame" />
+      <item itemvalue="Python.portStates" />
+      <item itemvalue="Python.VirtualMemory" />
+      <item itemvalue="Python.FirstCompiler" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.main" />
-        <item itemvalue="Python.search" />
-        <item itemvalue="Python.EditorBigFrame" />
         <item itemvalue="Python.FirstCompiler" />
-        <item itemvalue="Python.sinewave" />
+        <item itemvalue="Python.EditorBigFrame" />
+        <item itemvalue="Python.VirtualMemory" />
+        <item itemvalue="Python.portStates" />
       </list>
     </recent_temporary>
   </component>
@@ -718,20 +698,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.43111527" visible="true" weight="0.165" />
-      <window_info id="Structure" order="1" sideWeight="0.56888473" side_tool="true" visible="true" weight="0.165" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.42665038" visible="true" weight="0.165" />
+      <window_info id="Structure" order="1" sideWeight="0.57334965" side_tool="true" visible="true" weight="0.165" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.65375" weight="0.23336457" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.654375" visible="true" weight="0.23336457" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49743262" weight="0.39925024" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.34625" side_tool="true" weight="0.23336457" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.345625" side_tool="true" weight="0.23336457" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -773,13 +754,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="52" lean-forward="true" selection-start-line="52" selection-end-line="52" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/VisualLoaderFrame.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="248">
@@ -1007,10 +981,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="24" column="13" selection-start-line="24" selection-start-column="13" selection-end-line="24" selection-end-column="13" />
-          <folding>
-            <marker date="1706339227498" expanded="true" signature="20:21" ph="..." />
-            <marker date="1706339227498" expanded="true" signature="1868:2488" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1060,52 +1030,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="304" column="16" selection-start-line="304" selection-start-column="16" selection-end-line="304" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/Config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="21" column="22" lean-forward="true" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="396">
-          <caret line="66" column="20" selection-start-line="66" selection-start-column="13" selection-end-line="66" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Variable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="475" column="27" selection-start-line="475" selection-start-column="27" selection-end-line="475" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1708238424679" expanded="true" signature="16147:17173" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="635">
-          <caret line="3226" column="60" selection-start-line="3226" selection-start-column="60" selection-end-line="3226" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1116,10 +1044,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/venv/portStates.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/Variable.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="12" column="30" selection-start-line="12" selection-start-column="30" selection-end-line="12" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="296">
-          <caret line="234" selection-start-line="234" selection-end-line="234" />
+        <state relative-caret-position="739">
+          <caret line="190" selection-start-line="190" selection-end-line="190" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
@@ -1128,10 +1070,47 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="3370" lean-forward="true" selection-start-line="3370" selection-end-line="3370" />
+        <state relative-caret-position="792">
+          <caret line="2322" column="27" selection-start-line="2322" selection-start-column="27" selection-end-line="2322" selection-end-column="27" />
           <folding>
             <element signature="e#0#29#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="113" column="13" selection-start-line="113" selection-start-column="13" selection-end-line="113" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1709115270994" expanded="true" signature="4211:4565" ph="..." />
+            <marker date="1709115270994" expanded="true" signature="4629:5010" ph="..." />
+            <marker date="1709115270994" expanded="true" signature="17899:18925" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="392">
+          <caret line="65" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="728">
+          <caret line="478" lean-forward="true" selection-start-line="478" selection-end-line="478" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="3261" column="56" selection-start-line="3261" selection-start-column="56" selection-end-line="3261" selection-end-column="56" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>
