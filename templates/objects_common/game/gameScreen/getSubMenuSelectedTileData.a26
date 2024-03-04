@@ -1,0 +1,9 @@
+* params=variable|register
+* param1=#VAR01#
+* addManuallyToSysVars=Tile1_1
+*
+	asm("LDA", "TileSelected")
+	asm("AND", "#$0F")
+	asm("STA", "#TEMPVAR#")
+
+	gameScreen%getSubMenuTileDataByNum(#VAR01#, #TEMPVAR#)

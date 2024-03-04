@@ -2,12 +2,13 @@
 * param1=#VAR01#,!!!to8bit!!!
 * direction=TO
 *
+	LDA	TileSelected
+	AND	#%00111111
+	STA	TileSelected
 	LDA	#VAR01#		
 !!!to8bit!!!
-	AND 	#%00000001
-	ROR
-	STA	temp01
-	LDA	NoGameMode
-	AND	#01111111
-	ORA	temp01
-	STA	NoGameMode
+	AND	#%00011111
+	ORA	TileSelected
+	STA	TileSelected
+
+	

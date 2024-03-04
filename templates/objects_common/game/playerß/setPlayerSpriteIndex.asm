@@ -10,4 +10,3 @@
 	STA	#TEMPVAR#
 !!!Optional!!!
 ::import=_savePlayerﬂIndex.asm
-

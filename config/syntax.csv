@@ -7,7 +7,7 @@ bitOff;[off];[common];command;None;brackets;[];[number|variable|register|stringC
 calc;[calculate compute comp];[common];command;None;brackets;[];[variable|register statement];write;None;False;1
 call;[exec execute];[common];command;None;brackets;[!subroutines screenroutines];[subroutine {variable|register}];write;None;False;0
 callIf;[execIf executeIf];[common];command;None;brackets;[!subroutines screenroutines];[statement|portState subroutine {variable|register}];write;None;False;0
-case;[when];[common];command;None;brackets;[];[variable|register|number|statement|stringConst|portState];read;None;False;0
+case;[when if];[common];command;None;brackets;[];[variable|register|number|statement|stringConst|portState];read;None;False;0
 copy;[clone];[common];command;None;brackets;[];[array array];write;None;False;1
 cycle;[continue next];[common];command;None;None;[];None;None;None;False;0
 decr;[decrement --];[common];command;None;brackets;[];[variable|register];write;None;False;1
@@ -35,6 +35,7 @@ poke;[regWrite registerWrite];[common];command;None;brackets;[];[register number
 pow;[power **];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 rand;[random];[common];command;None;brackets;[];[variable|register {number|variable|register|stringConst} {number|variable|register|stringConst}];write;None;False;1
 randAll;[randomAll];[common];command;None;brackets;[];[array {number|variable|register|stringConst} {number|variable|register|stringConst}];write;None;False;1
+randXorCounter;[randEorCounter randomXorCounter randomEorCounter rand^counter random^counter r^c rXc];[common];command;None;None;[];None;write;None;False;0
 rem;[remainder %];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 resetGame;[resG];[common];command;None;None;[overscan];None;None;None;False;0
 resetScreen;[resS];[common];command;None;None;[overscan];None;None;None;False;0

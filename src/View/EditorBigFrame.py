@@ -3693,10 +3693,13 @@ class EditorBigFrame:
                if   temp[0][0] == "variable" and returnBack[0][0] not in ["number", "stringConst", "variable"]:
                     returnBack[0][0] = "error"
                elif temp[0][0] in ["stringConst", "number"]:
-                    isThatStatement, filler = self.isThatADamnStatement(currentLineStructure, currentLineStructure["param#1"][1])
-                    if isThatStatement == False:
-                       for item in returnBack:
-                           item[0] = "error"
+                    #print(currentLineStructure["param#1"][0])
+                    if self.__virtualMemory.returnCodeOfPortState(currentLineStructure["param#1"][0]) == False:
+                        #print("fuck")
+                        isThatStatement, filler = self.isThatADamnStatement(currentLineStructure, currentLineStructure["param#1"][1])
+                        if isThatStatement == False:
+                           for item in returnBack:
+                               item[0] = "error"
 
         elif commandVar.flexSave == True:
              theCommand = self.__loader.syntaxList[command]

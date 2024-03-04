@@ -4,7 +4,7 @@
 * param3=#VAR03#,!!!to8bit3!!!
 * direction=TO
 * ifConstParams=2,3
-* ifConstFunc=setSubMenuTitleData
+* ifConstFunc=setSubMenuTileData
 *
 	LDA	#VAR02#
 !!!to8bit2!!!

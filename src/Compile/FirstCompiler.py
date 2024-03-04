@@ -320,7 +320,7 @@ class FirstCompiler:
                 if opcode1[:2].upper() != "LD": continue
                 if opcode3[:2].upper() != "LD": continue
                 if opcode2[0].upper()  != "T"   or\
-            "S" in opcode2                    : continue
+                    "S" in opcode2                    : continue
 
                 for letter1 in ["A", "Y", "X"]:
                     for letter2 in ["A", "Y", "X"]:
@@ -896,6 +896,10 @@ class FirstCompiler:
 
             if self.__error == False: line["compiled"] = txt
             self.exceptionList(["random"], "delete")
+            return
+
+        elif self.isCommandInLineThat(line, "randXorCounter"):
+            line["compiled"] = "\tLDA\trandom\t\n\tEOR\tcounter\n\tSTA\trandom\n"
             return
 
         elif self.isCommandInLineThat(line, "rand"):
@@ -3076,7 +3080,16 @@ class FirstCompiler:
 
                        if "converter" in pSettings:
                            converter   = pSettings["converter"]
-                           template    = template.replace(converter, convert)
+
+                           template    = template.split("\n")
+                           for templateLineNum in range(0, len(template)):
+                               if template[templateLineNum] != "":
+                                  if template[templateLineNum][0] not in ("*", "#"):
+                                     template[templateLineNum] = template[templateLineNum].replace(converter, convert)
+
+                           template = "\n".join(template)
+
+                           #template    = template.replace(converter, convert)
 
                        if "folder" in pSettings.keys():
                           dataR     = dataReplacers[pSettings["folder"]][0]
@@ -3118,7 +3131,7 @@ class FirstCompiler:
                 for num in objectThings["ifConstParams"]:
                     types.append(params["param#" + num][1])
                 if "variable" not in types:
-                    if   objectThings["ifConstFunc"][0] == "setSubMenuTitleData":
+                    if   objectThings["ifConstFunc"][0][1:] == "etSubMenuTileData":
                          template = ""
                          values = []
 
@@ -3144,29 +3157,54 @@ class FirstCompiler:
                          theVarName = params["param#1"][0]
                          theVar     = self.__loader.virtualMemory.getVariableByName2(theVarName)
 
-                         to8Bit   = ""
-                         if theVar == False:
-                            if theVarName in self.__constants: theVarName = str(self.__constants[theVarName])
-                            theVarName = self.valOfNumber(theVarName)%16
-                            theVarName = "#" + str(theVarName)
+                         if objectThings["ifConstFunc"][0][0] == "s":
+                             to8Bit   = ""
+                             if theVar == False:
+                                if theVarName in self.__constants: theVarName = str(self.__constants[theVarName])
+                                theVarName = self.valOfNumber(theVarName)%16
+                                theVarName = "#" + str(theVarName)
+                             else:
+                                if theVar.type != "byte" or theVar.bcd:
+                                   to8Bit = self.convertAny2Any(theVar, "TO", params, self.__temps)
+
+                             tileVarNum = "Tile" + tileVarNum
+                             ander      = ""
+                             other      = ""
+
+                             if int(tileVarNum[-1])%2 == 0:
+                                other      = "\tASL\n" * 4
+                                ander      = "\tAND\t#$0F\n"
+                                tileVarNum = tileVarNum[:-1] + str(int(tileVarNum[-1]) - 1)
+                             else:
+                                other      = "\tAND\t#$0F\n"
+                                ander      = "\tAND\t#$F0\n"
+
+                             template = "\tLDA\t" + theVarName + "\n" + to8Bit + "\n" + other + "\tSTA\t#TEMPVAR#\n" +\
+                                        "\tLDA\t" + tileVarNum + "\n" + ander  + "\tORA\t#TEMPVAR#\n" + "\tSTA\t" + tileVarNum + "\n"
                          else:
-                            if theVar.type != "byte" or theVar.bcd:
-                               to8Bit = self.convertAny2Any(theVar, "TO", params, self.__temps)
+                             from8bit = ""
+                             if theVar == False:
+                                 self.addToErrorList(line["lineNum"],
+                                                     self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
+                                                                       "", "",
+                                                                       str(line["lineNum"] + self.__startLine)))
+                             else:
+                                 tileVarNum = "Tile" + tileVarNum
+                                 ander = ""
+                                 other = ""
 
-                         tileVarNum = "Tile" + tileVarNum
-                         ander      = ""
-                         other      = ""
+                                 if theVar.type != "byte" or theVar.bcd:
+                                     from8bit = self.convertAny2Any(theVar, "FROM", params, self.__temps)
 
-                         if int(tileVarNum[-1])%2 == 0:
-                            other      = "\tASL\n" * 4
-                            ander      = "\tAND\t#$0F\n"
-                            tileVarNum = tileVarNum[:-1] + str(int(tileVarNum[-1]) - 1)
-                         else:
-                            other      = "\tAND\t#$0F\n"
-                            ander      = "\tAND\t#$F0\n"
+                                 if int(tileVarNum[-1]) % 2 == 0:
+                                     other = "\tLSR\n" * 4
+                                     ander = "\tAND\t#$F0\n"
+                                     tileVarNum = tileVarNum[:-1] + str(int(tileVarNum[-1]) - 1)
+                                 else:
+                                     ander = "\tAND\t#$0F\n"
 
-                         template = "\tLDA\t" + theVarName + "\n" + to8Bit + "\n" + other + "\tSTA\t#TEMPVAR#\n" +\
-                                    "\tLDA\t" + tileVarNum + "\n" + ander  + "\tORA\t#TEMPVAR#\n" + "\tSTA\t" + tileVarNum + "\n"
+                                 template = "\tLDA\t" + tileVarNum + "\n" + ander + other + from8bit + "\n" "\tSTA\t" + theVarName + "\n"
+
 
             if objectThings["extension"] == "a26":
                for paramNum in range(0, len(objectThings["paramsWithSettings"])):

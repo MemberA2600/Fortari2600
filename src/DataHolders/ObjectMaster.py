@@ -79,6 +79,10 @@ class ObjectMaster:
                                 key = name
                             objRoot[key] = text
 
+        f = open(self.objRoot + "get#VARNAME#.asm")
+        getTemplate = f.read()
+        f.close()
+
         for txtName in self.__listOfSourceTXTs:
             f = open(self.objRoot + "listOf" + txtName[0].upper() + txtName[1:] + ".txt", "r")
             lines = f.read().replace("\r", "").split("\n")
@@ -105,6 +109,19 @@ class ObjectMaster:
 
                                 command = file.replace("#VARNAME#", name)[:-4]
                                 self.objects[parent][command] = text
+
+                                getCommandName = "get" + name
+                                if getCommandName in self.objects[parent]:
+                                   continue
+
+                                text = getTemplate.replace("#SYSVAR#", sysVar)
+                                #if "color" in txtName:
+                                #    text = text.replace("#COLORANNOTATION#", "\t; &COLOR")
+                                #else:
+                                #    text = text.replace("#COLORANNOTATION#", "")
+
+                                self.objects[parent][getCommandName] = text
+
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -264,7 +281,8 @@ class ObjectMaster:
 
                               for mainPath in [
                                   "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
-                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/game"
+                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/game",
+                                  "templates/objects_" + self.__loader.virtualMemory.kernel
                               ]:
                                   for root, dirs, files in os.walk(mainPath):
                                       for file in files:
@@ -305,6 +323,7 @@ class ObjectMaster:
                       if endIt: break
                if endIt: break
 
+           #print(path)
            theObject["path"]     = path.replace("/", "\\")
 
            f = open(path, "r")
@@ -338,7 +357,7 @@ class ObjectMaster:
                    pList = []
 
            theObject["params"] = []
-           validOnes = ["variable", "string", "stringConst", "number", "data"]
+           validOnes = ["variable", "string", "stringConst", "number", "data", "register"]
 
            #print(pList)
            paramNum = -1
@@ -360,6 +379,8 @@ class ObjectMaster:
                    theObject["params"].append(p)
                else:
                    theObject["params"].append("variable")
+
+           #print(theObject["params"])
 
            theObject["sysVars"] = []
            import re
