@@ -1,0 +1,14 @@
+* params=variable|stringConst|number|register,number|stringConst,{data}
+* param1=#VAR01#
+* param2=#VAR02#
+* param3=#NAME#,playfields,##NAME##
+* addManuallyToSysVars=pfIndex
+*
+	sub(#VAR02#, 1, #TEMPVAR#)
+	and(counter, #TEMPVAR#, #TEMPVAR#)
+
+	select("True")
+	case(counter = #TEMPVAR#)
+	case(#TEMPVAR# = 0)
+		playfield%addToPlayfieldIndex(#VAR01#, #NAME#)
+	end-select

@@ -151,24 +151,6 @@ class EditorBigFrame:
 
         self.loadCurrentFromMemory()
 
-    """
-    def __focusIn(self, event):
-        self.__focused  = event.widget
-        self.__focused2 = event.widget
-
-        textToPrint = self.__getFakeLine(self.__codeEditorItems)
-
-        selectPosizions = []
-        errorPositions = []
-
-        objectList = self.__objectMaster.getStartingObjects()
-        objectList.append("game")
-
-        self.__lineTinting(textToPrint, objectList, self.__theNumOfLine,
-                           selectPosizions, errorPositions, "lineEditor", None, None, True)
-
-    """
-
     def __insertPressed(self, event):
         self.__insertSelectedFromBox()
         #self.__focused2.focus()
@@ -962,7 +944,7 @@ class EditorBigFrame:
 
            c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
                                                                      selection[1]),
-                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END))
+                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END), False)
            print(c.result)
            print(c.errorList)
 
@@ -1528,6 +1510,7 @@ class EditorBigFrame:
         self.__foundError = False
         lineEditorTempDict = {}
 
+        #print(type(line))
         delimiterPoz = self.getFirstValidDelimiterPoz(line)
         yOnTextBox = lineNum + 1
 
@@ -1589,6 +1572,7 @@ class EditorBigFrame:
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                 endFound = self.findEnd(currentLineStructure, lineNum, text)
+                #print(endFound)
                 if endFound == False:
                    addError = True
                    if caller == 'firstCompiler':
@@ -1655,6 +1639,7 @@ class EditorBigFrame:
                 foundAllRelatedForCaseDefault = self.foundAllRelatedForCaseDefault(currentLineStructure, lineNum, text, False)
 
                 if foundAllRelatedForCaseDefault["select"] == False or foundAllRelatedForCaseDefault["end-select"] == False:
+                   #print(text)
                    addError = True
                    if caller == 'firstCompiler':
                       if foundAllRelatedForCaseDefault["select"] == False:
@@ -1967,7 +1952,7 @@ class EditorBigFrame:
                 pass
 
            if num1 != None:
-               if (num1 != 1 and self.isPowerOfTwo(num1)) or num1 < 1 == False:
+               if (num1 != 1 and self.isPowerOfTwo(num1) == False) or num1 < 1:
                     if caller == "lineTinting":
                         self.addTag(yOnTextBox, currentLineStructure["param#1"][1][0],
                                    currentLineStructure["param#1"][1][1]+1,
@@ -2929,7 +2914,8 @@ class EditorBigFrame:
                 send = self.__finderLoop(currentLineStructure, startPoz, text, direction, item,
                                          lvlNum, splitBy, splitPoz, forceEndPoz, False)
 
-        return send
+        #print(numList, searchItems)
+        return False
 
     def findEnd(self, currentLineStructure, lineNum, text):
         endCommand = "end-" + currentLineStructure["command"][0].split("-")[0]
@@ -2969,10 +2955,19 @@ class EditorBigFrame:
         if forceEndPoz != None:
            endPoz = forceEndPoz
 
+        #if compareWord == "end-select": print("\n".join(text), direction, level, startPoz, endPoz)
+        #print(text)
+
+        #listOfTrials = []
+
         for compareLineNum in range(startPoz, endPoz, adder):
 
             compareLineStructure = self.getLineStructure(compareLineNum, text, True)
             ehhWord = compareLineStructure["command"][0]
+
+            #if "comment" not in compareLineStructure.keys(): compareLineStructure["comment"] = ["", [-1, -1]]
+
+            #listOfTrials.append([compareWord, ehhWord, level, compareLineStructure["level"], text[compareLineNum], compareLineStructure["comment"][0], compareLineNum])
 
             if ehhWord == None: continue
             if splitBy != None:
@@ -2981,10 +2976,39 @@ class EditorBigFrame:
             if printMe == True:
                print(compareWord, compareLineNum, ehhWord, ehhWord == compareWord, level == compareLineStructure["level"])
 
-            if ehhWord == compareWord and level == compareLineStructure["level"]:
+            if (ehhWord == compareWord) and level == compareLineStructure["level"]:
                return [compareLineStructure["lineNum"], compareLineStructure["command"][1]]
 
+
+        #for item in listOfTrials:
+        #    print(item)
+
+        #for lineNum in range(0, len(text)):
+        #    print(lineNum, text[lineNum])
+
         return False
+
+    """
+    def checkIfCommandInLebel(self, command, text):
+        text = text.split("\n")
+        wordList = [command.lower(), command.upper()]
+
+        c = command.split("-")
+        for comNum in range(0, len(c)):
+            c[comNum] = c[comNum][0].upper() + c[comNum][1:].lower()
+
+        w = "-".join(c)
+        wordList.append(w)
+
+
+        for word in wordList:
+            for line in text:
+                if word in line: return True
+
+        #print(command, text)
+
+        return False
+    """
 
     def returnParamsOfObjects(self, command):
 
@@ -4110,7 +4134,7 @@ class EditorBigFrame:
 
                if lineStructure["command"][0].split("-")[0].upper() == "END": level -= 1
                if level < 0: level = 0
-
+               #print(level)
                lineStructure["level"] = level
 
         if lineNum == self.__cursorPoz[0]-1:
@@ -4308,6 +4332,7 @@ class EditorBigFrame:
         #if tag == "error":
         #   print(errCallNum)
         #   if errCallNum == 5: raise ValueError
+
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":

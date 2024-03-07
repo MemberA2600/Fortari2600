@@ -242,7 +242,7 @@ class ObjectMaster:
         found        = False
 
         if theObject["exist"] == True:
-           path = os.getcwd() + "\\templates\\objects\\"
+           path = os.getcwd() + "\\templates\\objects_common\\"
            if theObject["screen"] == True:
               path = os.getcwd() + "\\templates\\objects_screenItems\\"
            else:
@@ -250,11 +250,15 @@ class ObjectMaster:
 
            path += "\\".join(listOfObjects) + ".asm"
 
+           #print(path)
+
            if os.path.exists(path):
               theObject["extension"] = "asm"
               found = True
            else:
               path = path[:-3] + "a26"
+
+              #print(path)
               if os.path.exists(path):
                   theObject["extension"] = "a26"
                   found = True
@@ -371,6 +375,7 @@ class ObjectMaster:
 
                them = p.split("|")
                ok = True
+               #print(them)
                for item in them:
                    if item not in validOnes:
                        ok = False

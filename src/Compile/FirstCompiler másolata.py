@@ -4,12 +4,14 @@ import re
 
 class FirstCompiler:
 
-    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine, fullText, allowSysVars):
+    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine, fullText):
 
         self.__loader         = loader
         self.__editorBigFrame = editorBigFrame
         self.__text           = text.replace("\t", " ").split("\n")
-        self.__allowSys       = allowSysVars
+        self.__textBackUp     = [self.__text]
+        self.__textLevl       = 0
+        self.__lastLevel      = 0
 
         self.__fullText       = fullText.replace("\t", " ").split("\n")
         self.__noneList = ["", "None", None, []]
@@ -102,12 +104,6 @@ class FirstCompiler:
             "nonSystem" : nonSystem
         }
 
-        if self.__allowSys:
-           self.__variablesOfBank["readOnly"]  = []
-           self.__variablesOfBank["writable"]  = self.__variablesOfBank["all"]
-           self.__variablesOfBank["nonSystem"] = self.__variablesOfBank["all"]
-
-
         self.numberRegexes    = {"dec": r'^\d{1,3}$',
                                  "bin": r'^[b|%][0-1]{1,8}$',
                                  "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'}
@@ -135,7 +131,21 @@ class FirstCompiler:
 
         linesFeteched = self.createFetchedLines(self.__text, False)
 
-        self.__mode = mode
+        """
+        test = "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp02\n" + "\tLDA\ttemp01\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp03\n" + \
+               "\tSTA\ttemp04\n" + "\tASL\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp05\n" + "\tLDA\ttemp04\n" + "\tLDA\ttemp01\n" + "\tSTA\ttemp06\n"
+
+        print(self.checkForNotNeededExtraLDA(test))
+        """
+
+        """    
+        text = "\tJMP\tFos\n\tLDA\t#0\nPacal\n\tSTA\ttemp01\nFos\n\tLDA\t#1\n"
+        print(self.detectUnreachableCode(text))
+        """
+
+        #text = "\tLDA\t#3\n\tTAY\n\tLDA\ttemp01\n"
+        #text = "\tLDA\ttemp02\n\tTAX\n\tLDA\ttemp01\n"
+        #print(self.LDATAYLDA(text))
 
         self.compileBuild(linesFeteched, mode)
 
@@ -193,8 +203,7 @@ class FirstCompiler:
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                #if "%" in line["command"][0]: print("SSSS")
                self.processLine(line, linesFeteched)
-
-               #if "add" in line["command"][0]: print("xxx", line["compiled"], "xxx")
+               #if "%" in line["command"][0]: print("xxx", line["compiled"], "xxx")
                line["compiled"].replace("##", "#")
                self.colorAnnotationAfter(line)
 
@@ -642,7 +651,9 @@ class FirstCompiler:
                         return
 
             changeText = self.prepareAdd(params, False)
+
             if self.__error == False: self.createASMTextFromLine(line, "add", params, changeText, annotation, linesFeteched)
+            # print(params)
 
         elif self.isCommandInLineThat(line, "sub"):
             #params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -2938,17 +2949,48 @@ class FirstCompiler:
             template = template.split("\n")
 
             self.preBuildTemplate(template)
-            self.convertASMlinesToASMCommands(template)
-
+            #print(len(template))
             #print("\n".join(template))
 
-            result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), self.__addComments,
-                                   self.__mode, self.__currentBank, self.__currentSection, self.__startLine, "\n".join(self.__fullText), True).result
+            __linesF = self.createFetchedLines(template, True)
 
+            #print("\n###\n", "\n".join(template), "\n###\n")
+            #print("----")
+            #for l in __linesF:
+            #    print(l["command"][0], l["level"])
+            #print("----")
 
-            result = self.reformatResult(result)
+            self.__textLevl += 1
+            self.__textBackUp.append(deepcopy(template))
+            self.__text = self.__textBackUp[self.__textLevl]
 
-            template = result + "\n" + optionalText + "\n"
+            for lineXXX in __linesF:
+                if lineXXX["lineNum"] != -1:
+                   lineXXX["lineNum"] += (self.__textLevl - 1)
+
+            #print(self.__textLevl, self.__text)
+
+            for lineNum in range(0, len(template)):
+                if self.__error: break
+
+                subLine    = template[lineNum]
+                lineStruct = __linesF[lineNum]
+
+                if len(subLine) > 0:
+                   if subLine[0] not in ["*", "#", "!"] and subLine.isspace() == False:
+                      self.exceptionList(objectThings["sysVars"], "add")
+
+                      self.processLine(lineStruct, __linesF)
+                      if "compiled" not in lineStruct.keys(): lineStruct["compiled"] = ""
+
+                      self.exceptionList(objectThings["sysVars"], "delete")
+                      template[lineNum] = lineStruct["compiled"]
+
+            self.__textLevl -= 1
+            self.__textBackUp.pop(-1)
+            self.__text = self.__textBackUp[self.__textLevl]
+
+            template = "\n".join(template) + "\n" + optionalText + "\n"
 
             if "replaceNum" in objectThings.keys(): template = template.replace("ß", objectThings["replaceNum"])
 
@@ -3002,52 +3044,6 @@ class FirstCompiler:
                 print("ERROR -- ERROR -- ERROR")
                 print(line["compiled"])
             line["compiled"] = ""
-
-    def reformatResult(self, result):
-        result = result.split("\n")
-        newRes = []
-
-        for line in result:
-            if len(line) > 0:
-               if   line.startswith("*** \t;"):
-                    newRes.append(line.replace("*** \t;", "***"))
-               elif "asm(" in line:
-                    startPoz = -1
-                    endPoz   = -1
-                    for charNum in range(0, len(line)):
-                        if line[charNum] == "(":
-                           startPoz = charNum + 2
-                           break
-
-                    for charNum in range(len(line)-1, -1, -1):
-                        if line[charNum] == ")":
-                           endPoz = charNum - 1
-                           break
-
-                    newRes.append(line[startPoz:endPoz])
-               else:
-                    newRes.append(line)
-
-        return "\n".join(newRes)
-
-    def convertASMlinesToASMCommands(self, template):
-        newTemplate = []
-        for lineNum in range(0, len(template)):
-            justAdd = True
-
-            if len(template[lineNum]) > 0:
-                if template[lineNum][0] not in ("#", "*", "!"):
-                   lineStruct = self.__editorBigFrame.getLineStructure(0, [template[lineNum]], False)
-                   if lineStruct["command"][0] in self.__noneList:
-                      justAdd = False
-                      lines = template[lineNum].split("\n")
-                      for line in lines:
-                          newTemplate.append(' asm("' + line + '")')
-
-            if justAdd: newTemplate.append(template[lineNum])
-
-        #print("\n".join(newTemplate))
-        template = newTemplate
 
     def getObjTemplate(self, line, params):
         if params == None: params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -4242,6 +4238,7 @@ class FirstCompiler:
             else:
                 template = template.replace(varName, params[name][0])
 
+        #print(template)
         self.checkASMCode(template, line, linesFetched)
         if self.__error == False: line["compiled"] = template
 
@@ -4516,7 +4513,7 @@ class FirstCompiler:
         params["param#" + str(num)][0] = val
 
     def collectLabelsFromRoutines(self, labels):
-        sources = [self.toRoutines, self.bank1Data, {"dummy":  "\n".join(self.__text)}]
+        sources = [self.toRoutines, self.bank1Data, {"dummy":  "\n".join(self.__textBackUp[self.__textLevl])}]
         #sources = [self.toRoutines, self.bank1Data]
 
         for source in sources:

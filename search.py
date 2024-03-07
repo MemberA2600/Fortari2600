@@ -1,6 +1,6 @@
 import os
 
-wordToFind = 'save8bitsToAny2'
+wordToFind = 'processLine'
 
 for root, dirs, files in os.walk(os.getcwd()+"/src", False):
     for file in files:

@@ -45,9 +45,10 @@ pfIndex = $a3
 ************************
 SubMenu = $a4		; 0-1 : SubMenuLines
 NoGameMode = $a4	; 2-4 : BankToJump
-bankToJump = $a4	; 5 : FREE
+bankToJump = $a4	; 5 : ScrollDirection
 SubMenuLines = $a4	; 6 : Go to SubMenu
-************************  7 : No Game Mode
+ScrollDirection = $a4	; 7 : No Game Mode
+************************  
 
 *** Player Settings
 P0SpritePointer = $a5		; 16bit
