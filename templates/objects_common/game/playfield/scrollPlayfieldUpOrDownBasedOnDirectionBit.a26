@@ -1,6 +1,7 @@
 * params=variable|stringConst|number|register,{data}
 * param1=#VAR01#
-* param2=#NAME#,playfields,##NAME##
+* param2=#VAR02#,!!!dummy!!!,powerOfTwoOnly
+* param3=#NAME#,playfields,##NAME##
 * addManuallyToSysVars=pfIndex
 *
-	playfield%addToPlayFieldIndex(#VAR01#, #VAR02#)
+	playfield%addToPlayFieldIndex(#VAR01#, #VAR02#, #NAME#)

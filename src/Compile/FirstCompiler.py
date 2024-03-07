@@ -2931,6 +2931,75 @@ class FirstCompiler:
           or self.isCommandInLineThat(line, "exit") :
              pass
 
+        elif self.isCommandInLineThat(line, "sum") or self.isCommandInLineThat(line, "avg"):
+            varName = params["param#1"][0]
+            arrName = params["param#2"][0]
+
+            var = self.__loader.virtualMemory.getVariableByName2(varName)
+            if var == False:
+                self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorVarNotFound",
+                                                      varName,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            if arrName not in self.__loader.virtualMemory.arrays.keys() or \
+                             (self.__virtualMemory.getArrayValidity(arrName) not in [self.__currentBank, "bank1", "global"]):
+                              self.addToErrorList(line["lineNum"],
+                                                      self.prepareError("compilerErrorArrayNotFound", arrName,
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine)))
+
+            if self.__error == False:
+               self.__temps = self.collectUsedTemps()
+
+               try:
+                   tempVarName = self.__temps[0]
+                   self.__temps.pop(0)
+               except:
+                   self.addToErrorList(self.__thisLine["lineNum"],
+                                       self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                         "", "",
+                                                         str(self.__thisLine["lineNum"] + self.__startLine)))
+               first = True
+               for inpVarname in self.__loader.virtualMemory.arrays[arrName]:
+                   inputVar = self.__loader.virtualMemory.getVariableByName2(inpVarname)
+                   if inputVar == False:
+                       self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorVarNotFound",
+                                                             inpVarname,
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine)))
+                       break
+
+                   if first:
+                      first = False
+                      txt = "\tLDA\t" + inpVarname + "\n" + self.convertAny2Any(inputVar, "TO", params, self.__temps) + "\n"
+                   else:
+                      if inputVar.type == "byte" and inputVar.bcd == False:
+                         txt += "\tCLC\n\tADC\t" + inpVarname + "\n"
+                      else:
+                         txt += "\tSTA\t" + tempVarName + "\n\tLDA\t" + inpVarname + "\n\t" + \
+                                self.convertAny2Any(inputVar, "TO", params, self.__temps)   + \
+                                "\n\tCLC\n\tADC\t" + tempVarName + "\n"
+
+               if self.__error == False:
+                  txt +=  self.convertAny2Any(var, "FROM", params, self.__temps) + "\n\tSTA\t" + varName + "\n"
+                  if self.isCommandInLineThat(line, "avg"):
+                     subLine          = " div(" + varName + "," + str(len(self.__loader.virtualMemory.arrays[arrName])) + ")"
+                     subLineStructure = self.__editorBigFrame.getLineStructure(0, [subLine], False)
+
+                     self.processLine(subLineStructure, linesFeteched)
+
+                     if self.__error == False:
+                        txt += subLineStructure["compiled"]
+
+                  if self.__error == False:
+                     self.checkASMCode(txt, line, linesFeteched)
+                     if self.__error == False:
+                        line["compiled"] = txt
+                        return
+
         else:
             #This is where object related commands are handled.
 

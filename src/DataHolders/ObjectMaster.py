@@ -454,6 +454,8 @@ class ObjectMaster:
                   else:
                      if len(lineOfVar) > 1:
                         last["converter"] = lineOfVar[1]
+                     if len(lineOfVar) > 2:
+                        last["restriction"] = lineOfVar[2]
 
            nextIndex = len(theObject["params"]) + 1
            for index in range(nextIndex, len(lines)):

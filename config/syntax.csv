@@ -2,6 +2,7 @@ command;[aliasnames]; [kernels]; type; needs end?; needs brackets?; [where it ca
 add;[addition +];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 and;[& &&];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 asm;[assembly];[common];command;None;brackets;[];[string {string}];None;None;False;0
+avg;[average];[common];command;None;brackets;[];[variable|register array];write;None;False;1
 bitOn;[on];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 bitOff;[off];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 calc;[calculate compute comp];[common];command;None;brackets;[];[variable|register statement];write;None;False;1
@@ -53,5 +54,6 @@ smallest;[tiniest];[common];command;None;brackets;[];[variable|register array];w
 sqrt;[];[common];command;None;brackets;[];[number|variable|register|stringConst {variable|register}];write;None;True;0
 sub;[subtract -];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0
 subroutine;[procedure subr proc];[common];command;end;brackets;[subroutines];[string];None;0;False;0
+sum;[summarize];[common];command;None;brackets;[];[variable|register array];write;None;False;1
 swap;[<<>>];[common];command;None;brackets;[];[variable|register variable|register];write;None;False;A
 xor;[eor ^];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0

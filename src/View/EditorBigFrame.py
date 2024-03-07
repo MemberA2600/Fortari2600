@@ -3776,6 +3776,30 @@ class EditorBigFrame:
            except:
                pass
 
+        objectThings = self.__objectMaster.returnAllAboutTheObject(currentLineStructure["command"][0])
+        if "paramsWithSettings" in objectThings.keys():
+            objCounter = -1
+            ppp = [param1[0], param2[0], param3[0]]
+
+            for objParam in objectThings["paramsWithSettings"]:
+                objCounter += 1
+                if ppp[objCounter] in ["", "None", None]:
+                    break
+
+                if "restriction" in objParam.keys():
+                    if objParam["restriction"] == "powerOfTwoOnly":
+                        num = None
+                        try:
+                            try:
+                                num = self.convertStringNumToNumber(ppp[objCounter])
+                            except:
+                                num = self.convertStringNumToNumber(self.__constants[ppp[objCounter]])
+
+                            if self.isPowerOfTwo(num) == False: returnBack[objCounter][0] = "error"
+                        except:
+                            returnBack[objCounter][0] = "error"
+
+
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
             if self.__currentSection not in self.__syntaxList["do-items"].sectionsAllowed:
