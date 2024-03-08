@@ -20,6 +20,7 @@ class VirtualMemory:
         self.excludeForBank1Routines = ["temp18", "temp19"]
         self.includeJukeBox    = True
         self.includeKernelData = True
+        self.__kernelOnlyVars = {}
 
         self.registers = {}
         txt = self.__loader.io.loadWholeText("templates/6507Registers_Editor.a26").split("\n")
@@ -325,6 +326,24 @@ class VirtualMemory:
                 if d[key].split(",")[4].replace(" ","").replace("\t", "") == "colorVar":
                     self.getVariableByName(key, "bank1").colorVar = True
 
+        self.__kernelOnlyVars = {}
+        kernelCode = self.__loader.io.loadKernelElement(self.kernel, "main_kernel").split('\n')
+        for line in kernelCode:
+            line = line.split(";")[0].strip().split(" = ")
+            if len(line) > 1:
+                var = line[0]
+                val = line[1]
+                if "$" in val:
+                    found = False
+                    for d in datas:
+                        if var in d.keys():
+                           found = True
+                           break
+
+                    if found == False:
+                       self.__kernelOnlyVars[var] = val.upper()
+                       #print(var, val.upper())
+
     def addArray(self, name):
         self.arrays[name] = {}
 
@@ -354,6 +373,11 @@ class VirtualMemory:
                 #print(id, name)
                 if name == id:
                     return(address)
+
+        for var in self.__kernelOnlyVars:
+            if var == name:
+               return self.__kernelOnlyVars[var]
+
         return(False)
 
     def getVariableByName(self, name, bank):
@@ -380,6 +404,7 @@ class VirtualMemory:
                     else:
                         if validity == self.memory[address].variables[variable].validity:
                             return(True)
+
         return(False)
 
     def removeVariable(self, name, validity):
@@ -723,6 +748,12 @@ class VirtualMemory:
                         writatble.append(variable)
                      elif var.linkable == True:
                         readOnly.append(variable)
+
+
+        for var in self.__kernelOnlyVars.keys():
+            if var not in all:
+               all.append(var)
+               readOnly.append(var)
 
         return writatble, readOnly, all, nonSystem
 

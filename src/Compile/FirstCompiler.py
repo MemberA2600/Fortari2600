@@ -222,6 +222,7 @@ class FirstCompiler:
                 textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
 
         self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
+        #print("\n>>>>>>>>>>>>>>>>>\n", self.result, "\n<<<<<<<<<<<<<<<<<<<<<<<<\n")
 
     def colorAnnotationAfter(self, line):
         if "&COLOR" in line["compiled"]: return
@@ -3007,13 +3008,15 @@ class FirstCompiler:
             template = template.split("\n")
 
             self.preBuildTemplate(template)
-            self.convertASMlinesToASMCommands(template)
 
-            #print("\n".join(template))
+            template = self.convertASMlinesToASMCommands(template)
 
-            result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), self.__addComments,
+            #print("\n>>\n", "\n".join(template), "\n<<\n")
+
+            result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), False,
                                    self.__mode, self.__currentBank, self.__currentSection, self.__startLine, "\n".join(self.__fullText), True).result
 
+            #print("\n>>\n", "\n".join(template), "\n<<\n")
 
             result = self.reformatResult(result)
 
@@ -3102,21 +3105,44 @@ class FirstCompiler:
     def convertASMlinesToASMCommands(self, template):
         newTemplate = []
         for lineNum in range(0, len(template)):
-            justAdd = True
+            justAdd    = True
 
             if len(template[lineNum]) > 0:
                 if template[lineNum][0] not in ("#", "*", "!"):
                    lineStruct = self.__editorBigFrame.getLineStructure(0, [template[lineNum]], False)
-                   if lineStruct["command"][0] in self.__noneList:
-                      justAdd = False
-                      lines = template[lineNum].split("\n")
-                      for line in lines:
-                          newTemplate.append(' asm("' + line + '")')
 
-            if justAdd: newTemplate.append(template[lineNum])
+                   if lineStruct["command"][0] not in self.__noneList:
+                      for regNum in self.__opcodes.keys():
+                          if lineStruct["command"][0].upper() == self.__opcodes[regNum]["opcode"]:
+                             #print("&&&", template[lineNum])
+
+                             #print("#1)", lineStruct["command"][0])
+                             if lineStruct["("] != -1 and lineStruct[")"] != -1 and len(lineStruct["commas"]) > 1:
+                                break
+
+                             opcode, value = self.getOpCodeAndOperandFromASMLine(template[lineNum])
+
+                             #print("#2)", lineStruct["command"][0])
+                             if opcode.upper() != self.__opcodes[regNum]["opcode"]: break
+
+                             if self.__opcodes[regNum]["format"] != None or value != "":
+                                if self.checkIfASMhasrightOperand(self.__opcodes[regNum], value) == False: continue
+
+                             justAdd = False
+                             lines = template[lineNum].split("\n")
+                             for line in lines:
+                                 newTemplate.append(' asm("' + line + '")')
+                                 #print("xxx", line)
+                             break
+
+            if justAdd:
+               newTemplate.append(template[lineNum])
+               #print("yyy", template[lineNum])
 
         #print("\n".join(newTemplate))
-        template = newTemplate
+        return newTemplate
+
+
 
     def getObjTemplate(self, line, params):
         if params == None: params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -3147,7 +3173,7 @@ class FirstCompiler:
                 if len(lineX) > 0:
                     if lineX[0] not in ("#", "*", "!"):
                         if tempString in template and tempString in self.__temps:
-                            aelf.__temps.remove(tempString)
+                            self.__temps.remove(tempString)
 
             for paramName in params.keys():
                 if params[paramName][0] == tempString:
@@ -3216,7 +3242,7 @@ class FirstCompiler:
                     dataF = open(path, "r")
                     data = dataF.read()
                     dataF.close()
-                    saveIt = self.__currentBank + "_" + params[paramName][0] + "_" + dataReplacers[pSettings["folder"]][
+                    saveIt   = self.__currentBank + "_" + params[paramName][0] + "_" + dataReplacers[pSettings["folder"]][
                         1]
 
                     if "loadAndUse" in objectThings.keys():
@@ -3253,7 +3279,21 @@ class FirstCompiler:
                     # print("noError")
                     if "replacer" in pSettings:
                         replacer = pSettings["replacer"]
-                        template = template.replace(replacer, saveIt)
+                        if params[paramName][1] != "data":
+                           template = template.replace(replacer, saveIt)
+                        else:
+                           if objectThings["extension"] == "asm":
+                              template = template.replace(replacer, saveIt)
+                           else:
+                              template = template.split("\n")
+                              for lineNum in range(0, len(template)):
+                                  lineS = self.__editorBigFrame.getLineStructure(0, [template[lineNum]], False)
+                                  if self.isCommandInLineThat(lineS, "asm"):
+                                     template[lineNum] = template[lineNum].replace(replacer, saveIt)
+                                  else:
+                                     template[lineNum] = template[lineNum].replace(replacer, params[paramName][0])
+                              template = "\n".join(template)
+
 
                     if "converter" in pSettings:
                         converter = pSettings["converter"]
@@ -4975,6 +5015,7 @@ class FirstCompiler:
         except:
             afterCommaFormat = ""
 
+        #if value == "ScrollDirection":
         #print("1")
         if afterCommaFormat != afterCommaValue: return False
         beforeCommaFormat = beforeCommaFormat.upper()
@@ -5105,6 +5146,7 @@ class FirstCompiler:
     def getParamsWithTypesAndCheckSyntax(self, line):
         params = {}
 
+        #print(line)
         command = None
         for commandName in self.__loader.syntaxList.keys():
             if self.isCommandInLineThat(line, commandName):

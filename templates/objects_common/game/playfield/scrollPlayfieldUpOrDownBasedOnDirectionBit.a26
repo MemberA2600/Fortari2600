@@ -1,7 +1,15 @@
-* params=variable|stringConst|number|register,{data}
+* params=variable|stringConst|number|register,number|stringConst,{data}
 * param1=#VAR01#
 * param2=#VAR02#,!!!dummy!!!,powerOfTwoOnly
 * param3=#NAME#,playfields,##NAME##
 * addManuallyToSysVars=pfIndex
 *
-	playfield%addToPlayFieldIndex(#VAR01#, #VAR02#, #NAME#)
+	
+	playfield%getIfAutoScrollDirectionIsSetToDown(#TEMPVAR#)
+
+	select("True")
+	case(temp01 = 1)
+	   playfield%scrollPlayfieldDown(#VAR01#,#VAR02#,#NAME#)
+	else  
+	   playfield%scrollPlayfieldUp(#VAR01#,#VAR02#,#NAME#)		
+	end-select
