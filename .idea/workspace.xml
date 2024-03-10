@@ -2,15 +2,15 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/src/Handlers/BindingMaster.py" line="8" />
-    <bookmark url="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py" line="3533" mnemonic="2" />
+    <bookmark url="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py" line="3565" mnemonic="2" />
     <bookmark url="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-03-07_181321.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-03-08_124350.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/FirstCompiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataHolders/VirtualMemory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/getIfAutoScrollDirectionIsSetToDown.asm" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/objects_common/game/playfield/scrollPlayfieldUpOrDownBasedOnDirectionBit.a26" beforeDir="false" afterPath="$PROJECT_DIR$/templates/objects_common/game/playfield/scrollPlayfieldUpOrDownBasedOnDirectionBit.a26" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -59,7 +59,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$CosmicCommuter.coverage" NAME="CosmicCommuter Coverage Results" MODIFIED="1703685041879" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
     <SUITE FILE_PATH="coverage/Fortari2600$TopBottomEditor.coverage" NAME="TopBottomEditor Coverage Results" MODIFIED="1656786701575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1709898230251" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1710057478742" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1709720180396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$Assembler.coverage" NAME="Assembler Coverage Results" MODIFIED="1634371564770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Compile" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -205,44 +205,44 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="515" />
+          <entry key="project.closed" value="517" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="5" />
           <entry key="project.open.time.3" value="86" />
           <entry key="project.open.time.4" value="446" />
-          <entry key="project.open.time.5" value="95" />
-          <entry key="project.open.time.6" value="21" />
+          <entry key="project.open.time.5" value="96" />
+          <entry key="project.open.time.6" value="22" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="4" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="1" />
-          <entry key="project.opened" value="665" />
+          <entry key="project.opened" value="667" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="asm" value="7" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="1224" />
+          <entry key="py" value="1225" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="1224" />
+          <entry key="Python" value="1225" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="446676" />
+          <entry key="py" value="447580" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="446676" />
+          <entry key="Python" value="447580" />
         </counts>
       </usages-collector>
     </session>
@@ -255,16 +255,25 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="3024" column="83" lean-forward="true" selection-start-line="3024" selection-start-column="83" selection-end-line="3024" selection-end-column="84" />
+            <state relative-caret-position="328">
+              <caret line="3038" column="34" selection-start-line="3038" selection-start-column="34" selection-end-line="3038" selection-end-column="34" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
-                <marker date="1709898230247" expanded="true" signature="5914:5918" ph="..." />
-                <marker date="1709898230247" expanded="true" signature="7800:7806" ph="..." />
-                <marker date="1709898230247" expanded="true" signature="153104:153978" ph="..." />
-                <marker date="1709898230247" expanded="true" signature="155887:155896" ph="..." />
-                <marker date="1709898230247" expanded="true" signature="155976:155977" ph="..." />
+                <marker date="1710056756213" expanded="true" signature="6829:6833" ph="..." />
+                <marker date="1710056756213" expanded="true" signature="8715:8721" ph="..." />
+                <marker date="1710056756213" expanded="true" signature="154141:155015" ph="..." />
+                <marker date="1710056756213" expanded="true" signature="157299:157308" ph="..." />
+                <marker date="1710056756213" expanded="true" signature="157388:157389" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="52832">
+              <caret line="3305" column="28" selection-start-line="3305" selection-start-column="8" selection-end-line="3305" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -272,7 +281,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-4966">
+            <state relative-caret-position="6416">
               <caret line="405" column="40" selection-start-line="405" selection-start-column="40" selection-end-line="405" selection-end-column="40" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
@@ -303,7 +312,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
+            <state relative-caret-position="4048">
               <caret line="255" column="31" selection-start-line="255" selection-start-column="25" selection-end-line="255" selection-end-column="31" />
             </state>
           </provider>
@@ -312,7 +321,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="248">
+            <state relative-caret-position="63536">
               <caret line="3972" column="19" selection-start-line="3972" selection-start-column="13" selection-end-line="3972" selection-end-column="19" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
@@ -333,19 +342,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>extens</find>
-      <find>&quot;&gt;&gt;&quot;</find>
-      <find>&quot;&gt;&gt;</find>
-      <find>object</find>
-      <find>syntax</find>
-      <find>getLineS</find>
-      <find>__opcode</find>
-      <find>commas</find>
-      <find>need</find>
       <find>opcode</find>
       <find>opc</find>
       <find>lineSettin</find>
-      <find>checkIfASMhasrightOperand</find>
       <find>kernel</find>
       <find>__variablesOfBank</find>
       <find>loadKer</find>
@@ -357,12 +356,22 @@
       <find>address</find>
       <find>&gt;&gt;&quot;</find>
       <find>&quot;asm(</find>
-      <find>&quot;asm&quot;</find>
       <find>getOpCodeAndOperandFromASMLine</find>
       <find>linesFe</find>
       <find>asm</find>
       <find>firstCom</find>
       <find>firstCompiler</find>
+      <find>re.sub</find>
+      <find>###</find>
+      <find>&quot;loadAndUse&quot;</find>
+      <find>findAndDotALLReplace</find>
+      <find>&quot;asm&quot;</find>
+      <find>__opcodes</find>
+      <find>alias</find>
+      <find>convertASM</find>
+      <find>labels</find>
+      <find>checkIfASMhasrightOperand</find>
+      <find>reformatResult</find>
     </findStrings>
     <replaceStrings>
       <replace>__changed</replace>
@@ -477,7 +486,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -526,6 +534,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -717,19 +726,19 @@
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.41237113" visible="true" weight="0.165" />
-      <window_info id="Structure" order="1" sideWeight="0.58762884" side_tool="true" visible="true" weight="0.165" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.40953544" visible="true" weight="0.165" />
+      <window_info id="Structure" order="1" sideWeight="0.59046453" side_tool="true" visible="true" weight="0.165" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.65" weight="0.23336457" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.64875" weight="0.23336457" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49743262" weight="0.39925024" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.35" side_tool="true" weight="0.23336457" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.35125" side_tool="true" visible="true" weight="0.23336457" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -1061,45 +1070,43 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="912">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Handlers/IO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="137" column="14" selection-start-line="137" selection-start-column="8" selection-end-line="137" selection-end-column="14" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
+    <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="255" column="31" selection-start-line="255" selection-start-column="25" selection-end-line="255" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="3972" column="19" selection-start-line="3972" selection-start-column="13" selection-end-line="3972" selection-end-column="19" />
+        <state relative-caret-position="328">
+          <caret line="3038" column="34" selection-start-line="3038" selection-start-column="34" selection-end-line="3038" selection-end-column="34" />
           <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1709821023429" expanded="true" signature="125744:125749" ph="..." />
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1710056756213" expanded="true" signature="6829:6833" ph="..." />
+            <marker date="1710056756213" expanded="true" signature="8715:8721" ph="..." />
+            <marker date="1710056756213" expanded="true" signature="154141:155015" ph="..." />
+            <marker date="1710056756213" expanded="true" signature="157299:157308" ph="..." />
+            <marker date="1710056756213" expanded="true" signature="157388:157389" ph="..." />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="268" column="83" lean-forward="true" selection-start-line="268" selection-start-column="26" selection-end-line="268" selection-end-column="83" />
+        <state relative-caret-position="52832">
+          <caret line="3305" column="28" selection-start-line="3305" selection-start-column="8" selection-end-line="3305" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6416">
+          <caret line="405" column="40" selection-start-line="405" selection-start-column="40" selection-end-line="405" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1709897319118" expanded="true" signature="4246:4600" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1110,28 +1117,27 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/Command.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4966">
-          <caret line="405" column="40" selection-start-line="405" selection-start-column="40" selection-end-line="405" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1709897319118" expanded="true" signature="4246:4600" ph="..." />
-          </folding>
+        <state relative-caret-position="912">
+          <caret line="57" selection-start-line="57" selection-end-line="57" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/ObjectMaster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="3024" column="83" lean-forward="true" selection-start-line="3024" selection-start-column="83" selection-end-line="3024" selection-end-column="84" />
+        <state relative-caret-position="4048">
+          <caret line="255" column="31" selection-start-line="255" selection-start-column="25" selection-end-line="255" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/EditorBigFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="63536">
+          <caret line="3972" column="19" selection-start-line="3972" selection-start-column="13" selection-end-line="3972" selection-end-column="19" />
           <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1709898230247" expanded="true" signature="5914:5918" ph="..." />
-            <marker date="1709898230247" expanded="true" signature="7800:7806" ph="..." />
-            <marker date="1709898230247" expanded="true" signature="153104:153978" ph="..." />
-            <marker date="1709898230247" expanded="true" signature="155887:155896" ph="..." />
-            <marker date="1709898230247" expanded="true" signature="155976:155977" ph="..." />
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1709821023429" expanded="true" signature="125744:125749" ph="..." />
           </folding>
         </state>
       </provider>

@@ -137,6 +137,24 @@ class FirstCompiler:
 
         self.__mode = mode
 
+        self.__canBeFortariCommandAndASMOpCode = []
+        for regNum in self.__opcodes:
+            lineSettings = self.__opcodes[regNum]
+            if lineSettings["opcode"].lower() in self.__loader.syntaxList.keys():
+               if lineSettings["opcode"].lower() not in self.__canBeFortariCommandAndASMOpCode:
+                  self.__canBeFortariCommandAndASMOpCode.append(lineSettings["opcode"].lower())
+               continue
+
+            for key in self.__loader.syntaxList.keys():
+                foundOne = False
+                if lineSettings["opcode"].lower() in self.__loader.syntaxList[key].alias:
+                   if lineSettings["opcode"].lower() not in self.__canBeFortariCommandAndASMOpCode:
+                      self.__canBeFortariCommandAndASMOpCode.append(lineSettings["opcode"].lower())
+                   foundOne = True
+                   break
+                if foundOne: break
+
+
         self.compileBuild(linesFeteched, mode)
 
     def checkIfCodeUnreachable(self, linesFeteched, level):
@@ -3005,20 +3023,22 @@ class FirstCompiler:
             #This is where object related commands are handled.
 
             template, optionalText, objectThings = self.getObjTemplate(line, params)
-            template = template.split("\n")
 
-            self.preBuildTemplate(template)
+            if objectThings["extension"] == "a26":
+               template = template.split("\n")
+               self.preBuildTemplate(template)
+               template = self.convertASMlinesToASMCommands(template)
 
-            template = self.convertASMlinesToASMCommands(template)
+               #print("\n>>\n", "\n".join(template), "\n<<\n")
 
-            #print("\n>>\n", "\n".join(template), "\n<<\n")
-
-            result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), False,
+               result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), False,
                                    self.__mode, self.__currentBank, self.__currentSection, self.__startLine, "\n".join(self.__fullText), True).result
 
-            #print("\n>>\n", "\n".join(template), "\n<<\n")
+               #print("\n>>\n", "\n".join(template), "\n<<\n")
 
-            result = self.reformatResult(result)
+               result = self.reformatResult(result)
+            else:
+               result = template
 
             template = result + "\n" + optionalText + "\n"
 
@@ -3112,34 +3132,41 @@ class FirstCompiler:
                    lineStruct = self.__editorBigFrame.getLineStructure(0, [template[lineNum]], False)
 
                    if lineStruct["command"][0] not in self.__noneList:
-                      for regNum in self.__opcodes.keys():
-                          if lineStruct["command"][0].upper() == self.__opcodes[regNum]["opcode"]:
-                             #print("&&&", template[lineNum])
+                      if  lineStruct["command"][0].lower() in self.__canBeFortariCommandAndASMOpCode:
+                          for regNum in self.__opcodes.keys():
+                              if lineStruct["command"][0].upper() == self.__opcodes[regNum]["opcode"]:
 
-                             #print("#1)", lineStruct["command"][0])
-                             if lineStruct["("] != -1 and lineStruct[")"] != -1 and len(lineStruct["commas"]) > 1:
-                                break
+                                 #print("#1)", lineStruct["command"][0])
+                                 if lineStruct["("] != -1 and lineStruct[")"] != -1 and len(lineStruct["commas"]) > 1:
+                                    break
 
-                             opcode, value = self.getOpCodeAndOperandFromASMLine(template[lineNum])
+                                 opcode, value = self.getOpCodeAndOperandFromASMLine(template[lineNum])
 
-                             #print("#2)", lineStruct["command"][0])
-                             if opcode.upper() != self.__opcodes[regNum]["opcode"]: break
+                                 #print("#2)", lineStruct["command"][0])
+                                 if opcode.upper() != self.__opcodes[regNum]["opcode"]: break
 
-                             if self.__opcodes[regNum]["format"] != None or value != "":
-                                if self.checkIfASMhasrightOperand(self.__opcodes[regNum], value) == False: continue
+                                 if self.__opcodes[regNum]["format"] != None or value != "":
+                                    if self.checkIfASMhasrightOperand(self.__opcodes[regNum], value) == False: continue
 
-                             justAdd = False
-                             lines = template[lineNum].split("\n")
-                             for line in lines:
-                                 newTemplate.append(' asm("' + line + '")')
-                                 #print("xxx", line)
-                             break
+                                 #print("#3)", lineStruct["command"][0])
+
+                                 justAdd = False
+                                 break
+                      else:
+                          for regNum in self.__opcodes.keys():
+                              if lineStruct["command"][0].upper() == self.__opcodes[regNum]["opcode"]:
+                                 justAdd = False
+                                 break
 
             if justAdd:
                newTemplate.append(template[lineNum])
+            else:
+               lines = template[lineNum].split("\n")
+               for line in lines:
+                   newTemplate.append(' asm("' + line + '")')
                #print("yyy", template[lineNum])
 
-        #print("\n".join(newTemplate))
+        #print("shit", "\n".join(newTemplate))
         return newTemplate
 
 
@@ -3348,6 +3375,10 @@ class FirstCompiler:
             if objectThings["loadAndUse"][0] == "param#0":
                 dummy = "dummy1=256\n" * 10
                 template = self.useItThings(template, dummy, objectThings["loadAndUse"][1], objectThings)
+        else:
+            if "#DELETE" in template:
+                template = re.sub(r'###DELETE-FROM.+###FELETE-TO', "", template, flags=re.DOTALL)
+
 
         if "ifConstParams" in objectThings.keys():
             types = []
@@ -3448,6 +3479,7 @@ class FirstCompiler:
                                                           "", "",
                                                           str(line["lineNum"] + self.__startLine)))
 
+        #print("\n###1\n", template, "\n###2\n")
         return template, optionalText, objectThings
 
     def preBuildTemplate(self, template):

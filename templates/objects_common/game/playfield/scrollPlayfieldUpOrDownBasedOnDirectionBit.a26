@@ -2,14 +2,29 @@
 * param1=#VAR01#
 * param2=#VAR02#,!!!dummy!!!,powerOfTwoOnly
 * param3=#NAME#,playfields,##NAME##
-* addManuallyToSysVars=pfIndex
+* addManuallyToSysVars=pfIndex,ScrollDirection
+* loadAndUse=param#3,setMinAndMaxofPF
 *
 	
-	playfield%getIfAutoScrollDirectionIsSetToDown(#TEMPVAR#)
+	playfield%getIfPlayfieldAutoScrollDirectionIsSetToDown(#TEMPVAR#)
 
 	select("True")
 	case(temp01 = 1)
 	   playfield%scrollPlayfieldDown(#VAR01#,#VAR02#,#NAME#)
-	else  
-	   playfield%scrollPlayfieldUp(#VAR01#,#VAR02#,#NAME#)		
+
+###DELETE-FROM	   	
+	   select(pfIndex)		
+	   case(!!!Min!!!)
+		playfield%setPlayfieldAutoScrollDirectionBitToUp 	
+	   end-select	   	
+###DELETE-TO
+	default  
+	   playfield%scrollPlayfieldUp(#VAR01#,#VAR02#,#NAME#)	
+
+###DELETE-FROM
+	   select(pfIndex)		
+	   case(!!!Max!!!)
+		playfield%setPlayfieldAutoScrollDirectionBitToDown
+	   end-select	
+###DELETE-TO
 	end-select
