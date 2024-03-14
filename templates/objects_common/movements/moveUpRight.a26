@@ -1,0 +1,6 @@
+* params=variable|stringConst|number|register
+* param1=#VAR01#
+* addManuallyToSysVars=#SYSVAR#
+*
+	#PARENT#%subtractFromPozY(#VAR01#)
+	#PARENT#%addToPozX(#VAR01#)

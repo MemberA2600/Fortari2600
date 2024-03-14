@@ -94,7 +94,7 @@ class ObjectMaster:
                 if len(line) > 0:
                     name = line.split("=")[0]
                     params = line.split("=")[1].split(",")
-                    sysVar = params[0]
+                    sysVar = params[0].replace(" ", ",")
                     parent = params[1]
 
                     try:
@@ -263,7 +263,6 @@ class ObjectMaster:
            else:
               path = path[:-3] + "a26"
 
-              #print(path)
               if os.path.exists(path):
                   theObject["extension"] = "a26"
                   found = True
@@ -275,7 +274,8 @@ class ObjectMaster:
                   for txtName in self.__listOfSourceTXTs:
                       #path.append("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf" + txtName + ".txt")
 
-                      f = open("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName[0].upper() + txtName[1:]+".txt", "r")
+                      xxxPath = "templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName[0].upper() + txtName[1:]+".txt"
+                      f = open(xxxPath, "r")
                       lines = f.read().replace("\r", "").split("\n")
                       f.close()
 
@@ -286,30 +286,41 @@ class ObjectMaster:
                           if len(line) > 0:
                               name = line.split("=")[0]
                               params = line.split("=")[1].split(",")
-                              sysVar = params[0]
                               parent = params[1]
 
-                              for mainPath in [
-                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
-                                  "templates/objects_" + self.__loader.virtualMemory.kernel + "/game",
-                                  "templates/objects_" + self.__loader.virtualMemory.kernel
-                              ]:
+                              if txtName == self.__listOfSourceTXTs[-1]:
+                                  paths =[
+                                      "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
+                                      "templates/objects_" + self.__loader.virtualMemory.kernel + "/game",
+                                      "templates/objects_" + self.__loader.virtualMemory.kernel
+                                  ]
+                              else:
+                                  paths = ["templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName]
+
+                              for mainPath in paths:
                                   for root, dirs, files in os.walk(mainPath):
                                       for file in files:
                                           if file.endswith(".asm") or file.endswith(".a26"):
-                                              f = open(root + "/" + file)
-                                              text = f.read().replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
-                                              f.close()
-
+                                              #f = open(root + "/" + file)
+                                              #text = f.read().replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
+                                              #f.close()
                                               commandC = file.replace("#VARNAME#", name)[:-4]
                                               #print(commandC, commandComp)
 
+                                              #print(mainPath)
                                               if commandC == commandComp and parent == parentComp:
-                                                 #print(parent, file, "\n", commandC, text)
+                                                 #print(file, name, commandC)
+                                                 if "#VARNAME#" not in file and name != commandC: continue
+
+                                                 #print(parent, file, commandC, params[0], line, txtName, mainPath, xxxPath)
                                                  found                  = True
                                                  path                   = root + "/" + file
                                                  theObject["extension"] = path[-3:]
+                                                 sysVar = params[0].replace(" ", ",")
+                                                 #print(sysVar)
+
                                                  break
+                                          if found: break
                                       if found: break
                                   if found: break
                           if found: break
@@ -353,6 +364,7 @@ class ObjectMaster:
 
                theObject["template"] = "\n".join(linesAgain)
 
+           #print(sysVar)
            if sysVar != None:
               theObject["template"] = theObject["template"].replace("#SYSVAR#", sysVar)
 
@@ -470,13 +482,15 @@ class ObjectMaster:
            for index in range(nextIndex, len(lines)):
                if len(lines[index]) == 0: break
                if lines[index][0] not in ("*", "#"): break
-               #print(lines[index].split("=")[0])
+               #print(lines[index].split("="))
                try:
                    name = lines[index].split("=")[0].split(" ")[1]
                    theObject[name] = []
                    params = lines[index].split("=")[1].split(",")
                    theObject[name] = params
+                   #print(name, theObject[name])
                except Exception as e:
+                   #print(str(e), lines[index])
                    continue
 
         else:
@@ -484,9 +498,13 @@ class ObjectMaster:
 
         #if "loadAndUse" in theObject.keys(): print(theObject["loadAndUse"])
 
+        #print(theObject["template"])
+
         if "addManuallyToSysVars" in theObject.keys():
             for var in theObject["addManuallyToSysVars"]: theObject["sysVars"].append(var)
             del theObject["addManuallyToSysVars"]
+
+        #print(theObject["sysVars"])
 
         #for key in theObject:
         #    print(key + ":", theObject[key])

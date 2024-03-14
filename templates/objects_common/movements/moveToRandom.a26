@@ -1,0 +1,7 @@
+* params={variable|stringConst|number|register},{variable|stringConst|number|register}
+* param1=#VAR01#
+* param2=#VAR02#
+* addManuallyToSysVars=#SYSVAR#,random
+*
+	#PARENT#%setPozXToRandom(#VAR01#, #VAR02#)
+	#PARENT#%setPozYToRandom(#VAR01#, #VAR02#)

@@ -3065,7 +3065,7 @@ class FirstCompiler:
                self.checkASMCode(template, line, linesFeteched)
                self.exceptionList(objectThings["sysVars"], "delete")
 
-               print(objectThings["sysVars"])
+               #print(objectThings["sysVars"])
 
                if self.__error == False:
                   line["compiled"] = template
