@@ -7,7 +7,8 @@ class ObjectMaster:
     def __init__(self, loader):
         self.__loader   = loader
         self.__compiler = Compiler(self.__loader, "common", "dummy", None)
-        self.__listOfSourceTXTs = ["colorChangers", "simpleSetters"]
+        self.__listOfSourceTXTs = ["colorChangers", "simpleSetters", "movements"]
+        self.__noGetter = ["movements"]
 
         self.objects = {}
         for num in range(2, 9):
@@ -84,6 +85,7 @@ class ObjectMaster:
         f.close()
 
         for txtName in self.__listOfSourceTXTs:
+
             f = open(self.objRoot + "listOf" + txtName[0].upper() + txtName[1:] + ".txt", "r")
             lines = f.read().replace("\r", "").split("\n")
             f.close()
@@ -114,12 +116,15 @@ class ObjectMaster:
                                 if getCommandName in self.objects[parent]:
                                    continue
 
-                                text = getTemplate.replace("#SYSVAR#", sysVar)
+                                if txtName in self.__noGetter: continue
+
+                                text = getTemplate.replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
+
                                 #if "color" in txtName:
                                 #    text = text.replace("#COLORANNOTATION#", "\t; &COLOR")
                                 #else:
                                 #    text = text.replace("#COLORANNOTATION#", "")
-
+                                #print(txtName, file+"\n", text)
                                 self.objects[parent][getCommandName] = text
 
 
@@ -275,6 +280,7 @@ class ObjectMaster:
                       f.close()
 
                       commandComp = listOfObjects[-1]
+                      parentComp  = listOfObjects[0]
 
                       for line in lines:
                           if len(line) > 0:
@@ -292,13 +298,14 @@ class ObjectMaster:
                                       for file in files:
                                           if file.endswith(".asm") or file.endswith(".a26"):
                                               f = open(root + "/" + file)
-                                              text = f.read().replace("#SYSVAR#", sysVar)
+                                              text = f.read().replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
                                               f.close()
 
                                               commandC = file.replace("#VARNAME#", name)[:-4]
                                               #print(commandC, commandComp)
 
-                                              if commandC == commandComp:
+                                              if commandC == commandComp and parent == parentComp:
+                                                 #print(parent, file, "\n", commandC, text)
                                                  found                  = True
                                                  path                   = root + "/" + file
                                                  theObject["extension"] = path[-3:]
@@ -348,6 +355,8 @@ class ObjectMaster:
 
            if sysVar != None:
               theObject["template"] = theObject["template"].replace("#SYSVAR#", sysVar)
+
+           theObject["template"] = theObject["template"].replace("#PARENT#", listOfObjects[0])
 
            if rNum != None:
               theObject["template"] = theObject["template"].replace("ß", rNum)

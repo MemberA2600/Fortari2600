@@ -1,0 +1,5 @@
+* params=variable|stringConst|number|register
+* param1=#VAR01#
+* addManuallyToSysVars=#SYSVAR#
+*
+	#PARENT#%addToPozY(#VAR01#)

@@ -184,6 +184,13 @@ class EditorBigFrame:
                insertText = selected
 
            theLine = theLine[:cutPoz] + insertText + theLine[self.__cursorPoz[1]:]
+           if "(" not in theLine:
+               objectThings = self.__objectMaster.returnAllAboutTheObject(theLine.strip())
+               if "params" in objectThings.keys():
+                   if len(objectThings["params"]) > 0:
+                      theLine = text[self.__cursorPoz[0] - 1]
+                      theLine = theLine[:cutPoz] + insertText + "(" + theLine[self.__cursorPoz[1]:]
+
            text[self.__cursorPoz[0]-1] = theLine
 
            self.updateText(text)
