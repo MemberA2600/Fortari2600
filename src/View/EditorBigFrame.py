@@ -445,7 +445,8 @@ class EditorBigFrame:
 
                t = self.__threadBuffer["whole"][0]
                t.start()
-               self.__threadBuffer['whole'] = []
+               self.__threadBuffer = {"whole": []}
+
             else:
                keys = list(self.__threadBuffer.keys())
                keys.remove("whole")
@@ -454,14 +455,13 @@ class EditorBigFrame:
                    if self.__threadBuffer["whole"] != []:
                       t = self.__threadBuffer["whole"][0]
                       t.start()
-                      self.__threadBuffer['whole'] = []
+                      self.__threadBuffer = {"whole": []}
                       break
 
                    if self.__threadBuffer[key] != []:
                       t = self.__threadBuffer[key][0]
                       t.start()
                       self.__threadBuffer[key] = []
-
 
     def __removeSlaves(self):
         self.__mainFrame.config(bg = self.__loader.colorPalettes.getColor("window"))
@@ -949,9 +949,12 @@ class EditorBigFrame:
         else:
            from FirstCompiler import FirstCompiler
 
+           #self.__loader.alreadyCollectedLabels = []
            c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
                                                                      selection[1]),
                              True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END), False)
+
+           self.__loader.alreadyCollectedLabels = []
            print(c.result)
            print(c.errorList)
 
@@ -1947,13 +1950,13 @@ class EditorBigFrame:
                try:
                    num1 = self.convertStringNumToNumber(currentLineStructure["param#1"][0])
                except:
-                   num1 = self.convertStringNumToNumber(self.__constants[currentLineStructure["param#1"][0]])
+                   num1 = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(currentLineStructure["param#1"][0])])
 
                if currentLineStructure["param#2"][0] not in [None, "None", ""]:
                   try:
                       num2 = self.convertStringNumToNumber(currentLineStructure["param#2"][0])
                   except:
-                      num2 = self.convertStringNumToNumber(self.__constants[currentLineStructure["param#2"][0]])
+                      num2 = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(currentLineStructure["param#2"][0])])
 
            except:
                 pass
@@ -3310,6 +3313,15 @@ class EditorBigFrame:
         #print(returnBack)
         if sendBack: return foundIt, returnBack[-1]
 
+    def getConstKeyNameFromAlias(self, key):
+        if key in self.__constants.keys():
+           return key
+
+        for k in self.__constants.keys():
+            if k in self.__constants[k]["alias"]: return k
+
+        return False
+
     def getListOfData(self, object):
         if type(object) == str: object = self.__objectMaster.returnAllAboutTheObject(object)
         fNames = []
@@ -3642,12 +3654,12 @@ class EditorBigFrame:
                if returnBack[1][0] == "number":
                   var1 = int(param2[0].replace("#", ""))
                else:
-                  var1 = int(self.__constants[param2[0].replace("#", "")])
+                  var1 = int(self.__constants[self.getConstKeyNameFromAlias(param2[0])].replace("#", ""))
 
                if returnBack[2][0] == "number":
                   var2 = int(param3[0].replace("#", ""))
                else:
-                  var2 = int(self.__constants[param3[0].replace("#", "")])
+                  var2 = int(self.__constants[self.getConstKeyNameFromAlias(param3[0])].replace("#", ""))
 
                if var1 > var2:
                   returnBack[1][0] = "error"
@@ -3659,7 +3671,7 @@ class EditorBigFrame:
                   if returnBack[2][0] == "number":
                       var = int(param3[0].replace("#", ""))
                   else:
-                      var = int(self.__constants[param3[0].replace("#", "")])
+                      var = int(self.__constants[self.getConstKeyNameFromAlias(param3[0])].replace("#", ""))
 
                   if "0" in bin(var).replace("0b", ""):
                      returnBack[2][0] = "error"
@@ -3668,7 +3680,7 @@ class EditorBigFrame:
                   if returnBack[1][0] == "number":
                      var = int(param2[0].replace("#", ""))
                   else:
-                     var = int(self.__constants[param2[0].replace("#", "")])
+                     var = int(self.__constants[self.getConstKeyNameFromAlias(param2[0])].replace("#", ""))
 
                   if "0" in bin(var).replace("0b", ""):
                      returnBack[1][0] = "error"
@@ -3682,7 +3694,7 @@ class EditorBigFrame:
             valid  = False
             number = None
             if returnBack[0][0] == "stringConst":
-               number = self.__constants[param1[0].replace("#", "")]
+               number = self.__constants[self.getConstKeyNameFromAlias(param1[0])].replace("#", "")
                if int(param1[0].replace("#", "")) > 1 and int(param1[0].replace("#", "")) < 9:
                   valid  = True
             elif returnBack[0][0] == "number":
@@ -3700,7 +3712,8 @@ class EditorBigFrame:
 
         elif command == "select" or command in self.__syntaxList["select"].alias:
             if returnBack[0][0] == "stringConst":
-               if self.convertStringNumToNumber(self.__constants[param1[0]]["value"]) != 1:
+               #print(self.__constants.keys())
+               if self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(param1[0])]["value"]) != 1:
                    returnBack[0][0] = "error"
             elif returnBack[0][0] == "number":
                 if self.convertStringNumToNumber(param1[0]) not in [0, 1]:
@@ -3749,7 +3762,7 @@ class EditorBigFrame:
               if returnBack[1][0] == "number":
                  num = self.convertStringNumToNumber(param2[0])
               else:
-                 num = self.convertStringNumToNumber(self.__constants[param2[0].replace("#", "")])
+                 num = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(param2[0])].replace("#", ""))
 
               largest = 7
               if returnBack[0][0] == "variable":
@@ -3764,19 +3777,19 @@ class EditorBigFrame:
                    if returnBack[1][0] == "number":
                        num = self.convertStringNumToNumber(param2[0])
                    else:
-                       num = self.convertStringNumToNumber(self.__constants[param2[0]])
+                       num = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(param2[0])])
 
                    if num > 23 or num < 0: returnBack[1][0] = "error"
                else:
                    if returnBack[1][0] == "number":
                        num1 = self.convertStringNumToNumber(param2[0])
                    else:
-                       num1 = self.convertStringNumToNumber(self.__constants[param2[0]])
+                       num1 = self.convertStringNumToNumber(self.getConstKeyNameFromAlias(self.__constants[param2[0]]))
 
                    if returnBack[2][0] == "number":
                        num2 = self.convertStringNumToNumber(param3[0])
                    else:
-                       num2 = self.convertStringNumToNumber(self.__constants[param3[0]])
+                       num2 = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(param3[0])])
 
                    if num1 > 3 or num1 < 0: returnBack[1][0] = "error"
                    if num2 > 5 or num2 < 0: returnBack[2][0] = "error"
@@ -3800,7 +3813,7 @@ class EditorBigFrame:
                             try:
                                 num = self.convertStringNumToNumber(ppp[objCounter])
                             except:
-                                num = self.convertStringNumToNumber(self.__constants[ppp[objCounter]])
+                                num = self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(ppp[objCounter])])
 
                             if self.isPowerOfTwo(num) == False: returnBack[objCounter][0] = "error"
                         except:

@@ -1,0 +1,146 @@
+* params=variable|stringConst|number|register,variable|stringConst|number|register,variable|stringConst|number|register
+* param1=#VAR01#
+* param2=#VAR02#
+* param2=#VAR03#
+* addManuallyToSysVars=#SYSVAR#
+*
+
+*
+*	Moves the inputs to temporal variables since we won't know if
+*	these are constants, simple 8bit binary variables of some kind
+*	of true horror, like a BCD 3bit number...
+*	(why would anyone do that, I don't know)
+*
+*	#SYSVAR1#: Starting and current X of #PARENT#.
+*	#SYSVAR2#: Starting and current Y of #PARENT#.
+*
+*	#TEMPVAR1#: Destination X.
+*	#TEMPVAR2#: Destination Y.
+*	#TEMPVAR3#: Speed (pixels / frame).
+*	#TEMPVAR4#: Controlling bits.
+*		    7: #TEMPVAR1# smaller than #SYSVAR1#  	
+*		    6: #TEMPVAR2# smaller than #SYSVAR2#  
+*
+*	#TEMPVAR5#: Distance of X.
+*	#TEMPVAR6#: Distance of Y.
+*	#TEMPVAR7#: Scale of X.
+*	#TEMPVAR8#: Scale of Y.
+*
+	set(#TEMPVAR1#, #VAR01#)
+	set(#TEMPVAR2#, #VAR02#)
+	set(#TEMPVAR3#, #VAR03#)
+
+	select("TRUE")
+	case(#TEMPVAR1# > #SYSVAR1#)
+	    asm("LDA", "#TEMPVAR4#") 	
+	    asm("AND", "#%01111111") 	
+	    asm("STA", "#TEMPVAR4#") 	
+
+            sub(#TEMPVAR1#, #SYSVAR1#, #TEMPVAR5#) 	    	
+
+	default
+	    asm("LDA", "#TEMPVAR4#") 	
+	    asm("ORA", "#%10000000") 	
+	    asm("STA", "#TEMPVAR4#") 
+
+            sub(#SYSVAR1#, #TEMPVAR1#, #TEMPVAR5#) 
+
+	end-select
+	
+	select("TRUE")
+	case(#TEMPVAR2# > #SYSVAR2#)
+	    asm("LDA", "#TEMPVAR4#") 	
+	    asm("AND", "#%10111111") 	
+	    asm("STA", "#TEMPVAR4#") 	
+
+            sub(#TEMPVAR2#, #SYSVAR2#, #TEMPVAR6#) 	    	
+
+	default
+	    asm("LDA", "#TEMPVAR4#") 	
+	    asm("ORA", "#%01000000") 	
+	    asm("STA", "#TEMPVAR4#") 
+
+            sub(#SYSVAR2#, #TEMPVAR2#, #TEMPVAR6#) 
+
+	end-select
+
+	select("TRUE")
+	case(#TEMPVAR2# > #SYSVAR2#)
+
+	end-select
+
+	asm("LDA", "#1")
+	asm("STA", "#TEMPVAR7#")
+	asm("STA", "#TEMPVAR8#")
+
+	select("TRUE")
+	case(#TEMPVAR5# > #TEMPVAR6#)
+		divide(#TEMPVAR5#,#TEMPVAR6#,#TEMPVAR7#)
+	default
+		divide(#TEMPVAR6#,#TEMPVAR5#,#TEMPVAR8#)
+	end-select
+
+	multi(#TEMPVAR7#, #TEMPVAR3#)
+	multi(#TEMPVAR8#, #TEMPVAR3#)
+
+	asm("LDX", "#TEMPVAR7#")
+
+	asm("LDA", "#TEMPVAR4#")
+	asm("BMI", "#BANK#_MoveTowards_Loop_Sub_#MAGIC#_1")
+	
+	asm("#BANK#_MoveTowards_Loop_Add_#MAGIC#_1")
+	asm("CPX", "#0")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_1")
+	asm("LDA", "#SYSVAR1#")	
+	asm("CMP", "#TEMPVAR1#")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_1")
+	asm("CLC")
+	asm("ADC", "#1")
+	asm("DEX")
+	asm("JMP", "#BANK#_MoveTowards_Loop_Add_#MAGIC#_1")
+
+	asm("#BANK#_MoveTowards_Loop_Sub_#MAGIC#_1")
+	asm("CPX", "#0")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_1")
+	asm("LDA", "#SYSVAR1#")	
+	asm("CMP", "#TEMPVAR1#")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_1")
+	asm("SEC")
+	asm("SBC", "#1")
+	asm("DEX")
+	asm("JMP", "#BANK#_MoveTowards_Loop_Sub_#MAGIC#_1")
+
+	asm("#BANK#_MoveTowards_End_#MAGIC#_1")	
+	asm("STA", "#SYSVAR1#")
+
+
+
+	asm("LDX", "#TEMPVAR8#")
+
+	asm("LDA", "#TEMPVAR4#")
+	asm("BVS", "#BANK#_MoveTowards_Loop_Sub_#MAGIC#_2")
+	
+	asm("#BANK#_MoveTowards_Loop_Add_#MAGIC#_2")
+	asm("CPX", "#0")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_2")
+	asm("LDA", "#SYSVAR2#")	
+	asm("CMP", "#TEMPVAR2#")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_2")
+	asm("CLC")
+	asm("ADC", "#1")
+	asm("DEX")
+	asm("JMP", "#BANK#_MoveTowards_Loop_Add_#MAGIC#_2")
+
+	asm("#BANK#_MoveTowards_Loop_Sub_#MAGIC#_2")
+	asm("CPX", "#0")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_2")
+	asm("LDA", "#SYSVAR2#")	
+	asm("CMP", "#TEMPVAR2#")
+	asm("BEQ", "#BANK#_MoveTowards_End_#MAGIC#_2")
+	asm("SEC")
+	asm("SBC", "#1")
+	asm("DEX")
+	asm("JMP", "#BANK#_MoveTowards_Loop_Sub_#MAGIC#_2")
+
+	asm("#BANK#_MoveTowards_End_#MAGIC#_2")	
+	asm("STA", "#SYSVAR2#")

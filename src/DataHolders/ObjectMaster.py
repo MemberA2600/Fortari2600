@@ -207,6 +207,7 @@ class ObjectMaster:
         self.objects["currentBank"] = self.objects[self.__loader.bigFrame.getCurrentBank()]
 
     def returnAllAboutTheObject(self, command):
+        #print("#1")
         delimiter = "%"
         listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
         for symbol in listOfValidDelimiters:
@@ -367,6 +368,14 @@ class ObjectMaster:
            #print(sysVar)
            if sysVar != None:
               theObject["template"] = theObject["template"].replace("#SYSVAR#", sysVar)
+              for sysNum in range(1, 20):
+                  sysText = "#SYSVAR" + str(sysNum) + "#"
+                  sysVars = sysVar.split(",")
+
+                  if sysText in theObject["template"]:
+                     theObject["template"] = theObject["template"].replace(sysText, sysVars[sysNum-1])
+                  else:
+                     break
 
            theObject["template"] = theObject["template"].replace("#PARENT#", listOfObjects[0])
 
@@ -509,6 +518,7 @@ class ObjectMaster:
         #for key in theObject:
         #    print(key + ":", theObject[key])
 
+        #print("#2")
         return theObject
 
     def createFakeCommandOnObjectProcess(self, command):

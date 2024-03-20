@@ -1,0 +1,14 @@
+* params=variable|stringConst|number|register
+* param1=#VAR01#
+* addManuallyToSysVars=#SYSVAR#
+*
+	select("True")
+	case(joy1_up)
+		#PARENT#%moveUp(#VAR01#)	
+	case(joy1_down)
+		#PARENT#%moveDown(#VAR01#)
+	case(joy1_left)
+		#PARENT#%moveLeft(#VAR01#)
+	case(joy1_right)
+		#PARENT#%moveRight(#VAR01#)
+	end-select

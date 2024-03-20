@@ -10,6 +10,7 @@ class FirstCompiler:
         self.__editorBigFrame = editorBigFrame
         self.__text           = text.replace("\t", " ").split("\n")
         self.__allowSys       = allowSysVars
+        self.__testFirst      = True
 
         self.__fullText       = fullText.replace("\t", " ").split("\n")
         self.__noneList = ["", "None", None, []]
@@ -22,7 +23,7 @@ class FirstCompiler:
         }
         self.exiters    = self.__editorBigFrame.exiters
         self.stupidList = []
-        self.__alreadyCollectedLabels = []
+        self.__alreadyCollectedLabels = self.__loader.alreadyCollectedLabels
 
         for num1 in range(1, 5):
             for num2 in range(1, 7):
@@ -2277,6 +2278,8 @@ class FirstCompiler:
                             caseLine = linesFeteched[case["lineNum"]]
 
                             statement = caseLine["param#1"][0]
+
+                            #print(statement)
                             portStateCode = self.__virtualMemory.returnCodeOfPortState(statement)
 
                             if portStateCode == False:
@@ -3470,16 +3473,24 @@ class FirstCompiler:
                     template = re.sub(regex, "", template)
                     template = template.replace(param["replacer"], "")
 
-            if "#TEMPVAR#" in template:
-                try:
-                    tempVarOther = self.__temps[0]
-                    self.__temps.pop(0)
-                    template = template.replace("#TEMPVAR#", tempVarOther)
-                except:
-                    self.addToErrorList(line["lineNum"],
-                                        self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
-                                                          "", "",
-                                                          str(line["lineNum"] + self.__startLine)))
+            for tempNum in range(0, 20):
+                if tempNum == 0:
+                   tempText = "#TEMPVAR#"
+                else:
+                   tempText = "#TEMPVAR"+str(tempNum)+"#"
+
+                if tempText in template:
+                    try:
+                        tempVarOther = self.__temps[0]
+                        self.__temps.pop(0)
+                        template = template.replace(tempText, tempVarOther)
+                    except:
+                        self.addToErrorList(line["lineNum"],
+                                            self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                              "", "",
+                                                              str(line["lineNum"] + self.__startLine)))
+                else:
+                    if tempNum > 0: break
 
         #print("\n###1\n", template, "\n###2\n")
         return template, optionalText, objectThings
@@ -4700,6 +4711,14 @@ class FirstCompiler:
     def removeTheOnesFromTheFirstThatIsInTheSecond(self, list1, list2):
         list1 = [item for item in list1 if item not in list2]
 
+    def changeMagicAndOthersInLine(self, line):
+        for pNum in range(1, 4):
+            paramName = "param#" + str(pNum)
+            if line[paramName][0] not in self.__noneList:
+               line[paramName][0] = line[paramName][0].replace("#BANK#"   , self.__currentBank)   \
+                                                      .replace("#SECTION#", self.__currentSection)\
+                                                      .replace("#MAGIC#"  , str(self.__magicNumber))
+
     def checkASMCode(self, template, lineStructure, linesFetched):
         #if "add" in template: raise ValueError
 
@@ -4712,6 +4731,17 @@ class FirstCompiler:
 
         labels = []
         self.collectLabelsFromRoutines(labels)
+
+        self.__magicNumber += 1
+
+        if self.isCommandInLineThat(lineStructure, "asm"):
+           self.changeMagicAndOthersInLine(lineStructure)
+           """
+           if lineStructure["param#1"] not in self.__noneList:
+              if lineStructure["param#1"][0][1:-1] not in [" ", "\t", "\n"] and " = " not in lineStructure["param#1"][0]:
+                 print(lineStructure["param#1"][0][1:-1])
+                 return
+           """
 
         for line in linesFetched:
             for key in ["labelsBefore", "labelsAfter"]:
@@ -4735,12 +4765,50 @@ class FirstCompiler:
                          labels.append(subLine)
                          labels.append(subLine.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
 
-        #print(labels, template)
+            if self.isCommandInLineThat(line, "asm"):
+               if line["param#1"][0] not in self.__noneList:
+                  lineTxt = line["param#1"][0][1:-1]
+                  if lineTxt not in self.__noneList:
+                     if lineTxt[0] not in [" ", "\t", "\n"] and " = " not in lineTxt:
+                        skip = False
+                        if len(lineTxt) == 3:
+                            for regNum in self.__opcodes:
+                                lineSettings = self.__opcodes[regNum]
+                                if lineSettings["opcode"].lower() == lineTxt.lower():
+                                   skip = True
+                                   break
+
+                        if skip == False:
+                           #print(lineTxt)
+                           for charNum in range(0, len(lineTxt)):
+                               if lineTxt[charNum] in [" ", "\t", "\n"]:
+                                  labels.append(lineTxt[:charNum])
+                                  labels.append(lineTxt[:charNum].replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection))
+
+                                  break
+                               elif charNum == len(lineTxt) - 1:
+                                  labels.append(lineTxt)
+                                  labels.append(lineTxt.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection).replace("#MAGIC#", str(self.__magicNumber)))
+
+                                  break
+
+                     self.changeMagicAndOthersInLine(line)
+                     #print(labels, template)
+
         for l in labels:
             if l not in self.__alreadyCollectedLabels:
                self.__alreadyCollectedLabels.append(l)
 
         labels = self.__alreadyCollectedLabels
+
+        #if self.__testFirst:
+           #self.__testFirst = False
+
+           #for l in labels: print(l)
+
+           #for line in linesFetched:
+           #    if self.isCommandInLineThat(line, "asm"):
+           #       print(line["param#1"], line["param#2"])
 
         for line in lines:
             full = line
@@ -4770,14 +4838,24 @@ class FirstCompiler:
                        for key in lineStructure.keys():
                            if type(lineStructure[key]) == list and lineStructure[key] != []:
                                if lineStructure[key][0] not in self.__noneList:
-                                  lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
-                                  self.__changeThese[replacer] = replaceIt
+                                  #print(key, lineStructure[key][0])
+                                  if type(lineStructure[key][0]) == str:
+                                     lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                                     self.__changeThese[replacer] = replaceIt
 
                if line[1] in labels                     or\
                   line[1] in self.__fullTextLabels      or\
                   line[1][0] == "*"                     or\
                   line[1] in self.__labelsOfMainKenrel:
                   continue
+               """ 
+               else:
+                  if self.__testFirst:
+                     for l in labels:
+                         print(l)
+                     self.__testFirst = False
+                  print(">>", line[1])
+               """
 
             if self.isCommandInLineThat(lineStructure, "asm"):
                 for replacer in self.__replacers.keys():
@@ -4833,6 +4911,16 @@ class FirstCompiler:
                    continue
 
             foundCommand = False
+
+            if line[0] in labels                    or\
+               line[0] in self.__fullTextLabels     or\
+               line[0] in self.__labelsOfMainKenrel : continue
+
+            #print(line,
+            #      line in labels                     or\
+            #      line in self.__fullTextLabels      or\
+            #      line in self.__labelsOfMainKenrel  or line in self.__alreadyCollectedLabels)
+
             for item in self.__opcodes:
                 lineSettings = self.__opcodes[item]
 
@@ -4988,6 +5076,10 @@ class FirstCompiler:
 
             if foundCommand == False:
                #print(line, errorVal)
+               if self.__testFirst:
+                  self.__testFirst = False
+                  #print(labels, line in labels, type(line))
+
                self.addToErrorList(lineStructure["lineNum"], self.prepareErrorASM("compilerErrorASMOpCode",
                                                      command, value, lineStructure["lineNum"]))
 
