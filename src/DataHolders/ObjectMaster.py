@@ -127,6 +127,40 @@ class ObjectMaster:
                                 #print(txtName, file+"\n", text)
                                 self.objects[parent][getCommandName] = text
 
+        f = open(self.objRoot + "detectPointBasedCollisionOn#VARNAME#.a26")
+        detectTemplate = f.read()
+        f.close()
+
+        f = open(self.objRoot + "itemsOfDetection.txt")
+        items = f.read().replace("\r", "").split("\n")
+        f.close()
+
+        for item1 in items:
+            for item2 in items:
+                if item1 == item2:                       continue
+                if "=" not in item1 or "=" not in item2: continue
+
+                parent        = item1.split("=")[0]
+                varName       = item2.split("=")[0]
+
+                parentVars    = item1.split("=")[1].split(",")
+                varNameVars   = item1.split("=")[1].split(",")
+
+                nameOfcommand = "detectPointBasedCollisionOn" + varName[0].upper() + varName[1:]
+
+                sysVars       =       parentVars [0] +\
+                                "," + parentVars [1] +\
+                                "," + varNameVars[0] +\
+                                "," + varNameVars[1]
+
+                text        = detectTemplate.replace("#SYSVAR#", sysVars)
+                sysVarsList = sysVars.split(",")
+
+                for varNum in range(0, 4):
+                    sysName = "#SYSVAR" + str(varNum + 1) + "#"
+                    text    = text.replace(sysName, sysVarsList[varNum])
+
+                self.objects[parent][nameOfcommand] = text
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -271,61 +305,94 @@ class ObjectMaster:
                   path  = None
                   theObject["extension"] = None
 
-                  paths = []
-                  for txtName in self.__listOfSourceTXTs:
-                      #path.append("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf" + txtName + ".txt")
+                  if listOfObjects[-1].startswith("detectPointBasedCollisionOn"):
+                     parent     = listOfObjects[0]
+                     varName    = listOfObjects[-1].replace("detectPointBasedCollisionOn", "").lower()
 
-                      xxxPath = "templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName[0].upper() + txtName[1:]+".txt"
-                      f = open(xxxPath, "r")
-                      lines = f.read().replace("\r", "").split("\n")
-                      f.close()
+                     f = open(self.objRoot + "itemsOfDetection.txt")
+                     items = f.read().replace("\r", "").split("\n")
+                     f.close()
 
-                      commandComp = listOfObjects[-1]
-                      parentComp  = listOfObjects[0]
+                     path  = self.objRoot + "detectPointBasedCollisionOn#VARNAME#.a26"
+                     found = True
 
-                      for line in lines:
-                          if len(line) > 0:
-                              name = line.split("=")[0]
-                              params = line.split("=")[1].split(",")
-                              parent = params[1]
+                     parentVars  = []
+                     varNameVars = []
 
-                              if txtName == self.__listOfSourceTXTs[-1]:
-                                  paths =[
-                                      "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
-                                      "templates/objects_" + self.__loader.virtualMemory.kernel + "/game",
-                                      "templates/objects_" + self.__loader.virtualMemory.kernel
-                                  ]
-                              else:
-                                  paths = ["templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName]
+                     for line in items:
+                         item     = line.split("=")[0]
 
-                              for mainPath in paths:
-                                  for root, dirs, files in os.walk(mainPath):
-                                      for file in files:
-                                          if file.endswith(".asm") or file.endswith(".a26"):
-                                              #f = open(root + "/" + file)
-                                              #text = f.read().replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
-                                              #f.close()
-                                              commandC = file.replace("#VARNAME#", name)[:-4]
-                                              #print(commandC, commandComp)
+                         if   item        == parent:
+                              parentVars  =  line.split("=")[1].split(",")
+                         elif item        ==  varName:
+                              varNameVars =  line.split("=")[1].split(",")
 
-                                              #print(mainPath)
-                                              if commandC == commandComp and parent == parentComp:
-                                                 #print(file, name, commandC)
-                                                 if "#VARNAME#" not in file and name != commandC: continue
+                         if parentVars != [] and varNameVars != []: break
 
-                                                 #print(parent, file, commandC, params[0], line, txtName, mainPath, xxxPath)
-                                                 found                  = True
-                                                 path                   = root + "/" + file
-                                                 theObject["extension"] = path[-3:]
-                                                 sysVar = params[0].replace(" ", ",")
-                                                 #print(sysVar)
+                     theObject["extension"] = "a26"
+                     sysVar    = parentVars[0] + \
+                               "," + parentVars[1] + \
+                               "," + varNameVars[0] + \
+                               "," + varNameVars[1]
 
-                                                 break
+
+
+                  else:
+                      paths = []
+                      for txtName in self.__listOfSourceTXTs:
+                          #path.append("templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf" + txtName + ".txt")
+
+                          xxxPath = "templates/objects_" + self.__loader.virtualMemory.kernel + "/listOf"+txtName[0].upper() + txtName[1:]+".txt"
+                          f = open(xxxPath, "r")
+                          lines = f.read().replace("\r", "").split("\n")
+                          f.close()
+
+                          commandComp = listOfObjects[-1]
+                          parentComp  = listOfObjects[0]
+
+                          for line in lines:
+                              if len(line) > 0:
+                                  name = line.split("=")[0]
+                                  params = line.split("=")[1].split(",")
+                                  parent = params[1]
+
+                                  if txtName == self.__listOfSourceTXTs[-1]:
+                                      paths =[
+                                          "templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName,
+                                          "templates/objects_" + self.__loader.virtualMemory.kernel + "/game",
+                                          "templates/objects_" + self.__loader.virtualMemory.kernel
+                                      ]
+                                  else:
+                                      paths = ["templates/objects_" + self.__loader.virtualMemory.kernel + "/" + txtName]
+
+                                  for mainPath in paths:
+                                      for root, dirs, files in os.walk(mainPath):
+                                          for file in files:
+                                              if file.endswith(".asm") or file.endswith(".a26"):
+                                                  #f = open(root + "/" + file)
+                                                  #text = f.read().replace("#SYSVAR#", sysVar).replace("#PARENT#", parent)
+                                                  #f.close()
+                                                  commandC = file.replace("#VARNAME#", name)[:-4]
+                                                  #print(commandC, commandComp)
+
+                                                  #print(mainPath)
+                                                  if commandC == commandComp and parent == parentComp:
+                                                     #print(file, name, commandC)
+                                                     if "#VARNAME#" not in file and name != commandC: continue
+
+                                                     #print(parent, file, commandC, params[0], line, txtName, mainPath, xxxPath)
+                                                     found                  = True
+                                                     path                   = root + "/" + file
+                                                     theObject["extension"] = path[-3:]
+                                                     sysVar = params[0].replace(" ", ",")
+                                                     #print(sysVar)
+
+                                                     break
+                                              if found: break
                                           if found: break
                                       if found: break
-                                  if found: break
+                              if found: break
                           if found: break
-                      if found: break
 
            rNum  = None
            endIt = False

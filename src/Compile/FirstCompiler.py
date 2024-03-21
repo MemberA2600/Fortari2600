@@ -1631,11 +1631,17 @@ class FirstCompiler:
              if "param#2" not in params:
                  params["param#2"] = deepcopy(params["param#1"])
                  params["param#1"] = ["1", "number"]
+             else:
+                 if params["param#1"][0] == "0": return
 
              var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
              var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
 
-             if var2.type == "bit": return
+             if var2.type == "bit":
+                 if  command in ("ROL", "ROR"): return
+                 else:
+                     params["param#0"] = ["0", "number"]
+                     txt = self.saveAValue(params, "param#0", "param#2", line)
 
              if var2 == False:
                  self.addToErrorList(line["lineNum"],
@@ -2493,6 +2499,7 @@ class FirstCompiler:
                     line["compiled"] += self.__loader.io.loadCommandASM("returnFromBank1")
 
         elif self.isCommandInLineThat(line, "set"):
+            #print(line, params)
             line["compiled"] = self.saveAValue(params, "param#2", "param#1", line)
 
         elif self.isCommandInLineThat(line, "init"):

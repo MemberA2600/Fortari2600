@@ -1,0 +1,50 @@
+* params=variable|register,variable|stringConst|number|register
+* param1=#VAR01#
+* param2=#VAR02#
+* addManuallyToSysVars=#SYSVAR#
+
+*
+* This one requires a lot of temporal variables as well!
+*
+*	#TEMPVAR1#: The distance variable, converted to 8bits
+*	#TEMPVAR2#: The difference of #SYSVAR1# - #SYSVAR3#
+*	#TEMPVAR3#: The difference of #SYSVAR2# - #SYSVAR4#
+*	#TEMPVAR4#: Hold the temporal value to be saved on #VAR02#
+*
+* System variables has the meening:
+*
+*	#SYSVAR1#: The parent object's X position	
+*	#SYSVAR2#: The parent object's Y position
+*	#SYSVAR3#: The colliding object's X position	
+*	#SYSVAR4#: The colliding object's Y position
+*
+	set(#TEMPVAR1#, #VAR02#)
+	
+	select("TRUE")
+	case (#SYSVAR1# > #SYSVAR3#)
+	     sub(#SYSVAR1#, #SYSVAR3#, #TEMPVAR2#)
+	default
+	     sub(#SYSVAR3#, #SYSVAR1#, #TEMPVAR2#)
+	end-select
+
+	select("TRUE")
+	case (#SYSVAR2# > #SYSVAR4#)
+	     sub(#SYSVAR2#, #SYSVAR4#, #TEMPVAR3#)
+	default
+	     sub(#SYSVAR4#, #SYSVAR2#, #TEMPVAR3#)
+	end-select
+
+	set(#TEMPVAR4#, 0)
+
+	select("TRUE")
+	case (#TEMPVAR1# >= #TEMPVAR2#)
+	     add(#TEMPVAR4#, 1)
+	end-select
+
+	select("TRUE")
+	case (#TEMPVAR1# >= #TEMPVAR3#)
+	     add(#TEMPVAR4#, 1)
+	end-select
+
+	lsr(#TEMPVAR4#)
+	set(#VAR01#, #TEMPVAR4#)
