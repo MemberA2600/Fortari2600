@@ -2,49 +2,449 @@
 * param1=#VAR01#
 * param2=#VAR02#
 * addManuallyToSysVars=#SYSVAR#
+* addManuallyRoutines=movementTables
+*
 
 *
 * This one requires a lot of temporal variables as well!
 *
-*	#TEMPVAR1#: The distance variable, converted to 8bits
-*	#TEMPVAR2#: The difference of #SYSVAR1# - #SYSVAR3#
-*	#TEMPVAR3#: The difference of #SYSVAR2# - #SYSVAR4#
-*	#TEMPVAR4#: Hold the temporal value to be saved on #VAR02#
+*	#TEMPVAR1#:  The distance variable, converted to 8bits
+*	#TEMPVAR2#:  The difference of X
+*	#TEMPVAR3#:  The difference of Y
+*	#TEMPVAR4#:  Hold the temporal value to be saved on #VAR02#
 *
-* System variables has the meening:
+*	#TEMPVAR5#:  The parent object's X position centered 1
+*	#TEMPVAR6#:  The parent object's X position centered 2
+*	#TEMPVAR7#:  The parent object's X position centered 3
+*	#TEMPVAR8#:  The parent object's Y position centered
+*	#TEMPVAR9#:  The colliding object's X position centered 1
+*	#TEMPVAR10#: The colliding object's X position centered 2
+*	#TEMPVAR11#: The colliding object's X position centered 3
+*	#TEMPVAR12#: The colliding object's Y position centered
+*	#TEMPVAR13#: Number of checks needed because of the multipled sprites 1
+*	#TEMPVAR14#: Number of checks needed because of the multipled sprites 2
 *
-*	#SYSVAR1#: The parent object's X position	
-*	#SYSVAR2#: The parent object's Y position
-*	#SYSVAR3#: The colliding object's X position	
-*	#SYSVAR4#: The colliding object's Y position
+*	#TEMPVAR15#: Temp
+*	#TEMPVAR16#: Temp
 *
+
+###PARENT-Player0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR13#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P0X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P0Y")
+	asm("STA", "#TEMPVAR8#")
+
+###PARENT-Player0-End
+###PARENT-Player1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR13#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P1X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P1Y")
+	asm("STA", "#TEMPVAR8#")
+
+###PARENT-Player1-End
+###PARENT-Missile0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR13#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M0X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+
+	asm("LDA", "M0Y")
+	asm("STA", "#TEMPVAR8#")
+
+###PARENT-Missile0-End
+###PARENT-Missile1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR13#")
+	
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M1X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+
+	asm("LDA", "M1Y")
+	asm("STA", "#TEMPVAR8#")
+
+###PARENT-Missile1-End
+###PARENT-Ball
+	asm("LDA", "#0")
+	asm("STA", "#TEMPVAR13#")
+
+	asm("LDA", "pfSettings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "BLX")
+	asm("STA", "#TEMPVAR5#")
+
+	asm("LDA", "BLY")
+	asm("STA", "#TEMPVAR8#")
+
+###PARENT-Ball-End
+###COLLIDING-Player0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR14#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_2")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P0X")		
+****	asm("STA", "#TEMPVAR9#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR9#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_2")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P0Y")
+	asm("STA", "#TEMPVAR12#")
+
+###COLLIDING-Player0-End
+###COLLIDING-Player1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR14#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_2")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P1X")		
+****	asm("STA", "#TEMPVAR9#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR9#")
+	asm("BYTE", "#0")
+
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_2")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P1Y")
+	asm("STA", "#TEMPVAR12#")
+
+###COLLIDING-Player1-End
+###COLLIDING-Missile0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR14#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_2")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M0X")		
+****	asm("STA", "#TEMPVAR9#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR9#")
+	asm("BYTE", "#0")
+
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_2")
+
+	asm("LDA", "M0Y")
+	asm("STA", "#TEMPVAR12#")
+
+###COLLIDING-Missile0-End
+###COLLIDING-Missile1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR14#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_2")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M1X")		
+****	asm("STA", "#TEMPVAR9#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR9#")
+	asm("BYTE", "#0")
+
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_2")
+
+	asm("LDA", "M1Y")
+	asm("STA", "#TEMPVAR12#")
+
+###COLLIDING-Missile1-End
+###COLLIDING-Ball
+	asm("LDA", "#0")
+	asm("STA", "#TEMPVAR14#")
+
+	asm("LDA", "pfSettings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "BLX")
+	asm("STA", "#TEMPVAR9#")
+
+	asm("LDA", "BLY")
+	asm("STA", "#TEMPVAR12#")
+
+###COLLIDING-Ball-End
+
 	set(#TEMPVAR1#, #VAR02#)
 	
+	asm("LDA", "#0")
+	asm("STA", "#TEMPVAR4#")
+	
+	asm("LDX", "#TEMPVAR13#")
+
+	asm("#BANK#_CheckLoop_On_Parent_#MAGIC#")
+	asm("LDA", "#TEMPVAR5#,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDY", "#TEMPVAR14#")	
+
+	asm("#BANK#_CheckLoop_On_Collidor_#MAGIC#")
+****	asm("LDA", "#TEMPVAR9#,y")
+	asm("BYTE", "#$89")
+	asm("BYTE", "##TEMPVAR9#")
+	asm("BYTE", "#0")
+	asm("STA", "#TEMPVAR16#")
+
 	select("TRUE")
-	case (#SYSVAR1# > #SYSVAR3#)
-	     sub(#SYSVAR1#, #SYSVAR3#, #TEMPVAR2#)
+	case(#TEMPVAR15# > #TEMPVAR16#)
+	     sub(#TEMPVAR15#, #TEMPVAR16#)
+	     select("TRUE")
+             case(#TEMPVAR15# <= #TEMPVAR1#)	   	
+		 add(#TEMPVAR4#, 1)
+		 asm("JMP", "#BANK#_CheckLoop_End_#MAGIC#")
+	     end-select 	
 	default
-	     sub(#SYSVAR3#, #SYSVAR1#, #TEMPVAR2#)
+	     sub(#TEMPVAR16#, #TEMPVAR15#)	
+	     select("TRUE")
+             case(#TEMPVAR16# <= #TEMPVAR1#)	   	
+		 add(#TEMPVAR4#, 1)
+		 asm("JMP", "#BANK#_CheckLoop_End_#MAGIC#")
+	     end-select 
 	end-select
 
-	select("TRUE")
-	case (#SYSVAR2# > #SYSVAR4#)
-	     sub(#SYSVAR2#, #SYSVAR4#, #TEMPVAR3#)
-	default
-	     sub(#SYSVAR4#, #SYSVAR2#, #TEMPVAR3#)
+	asm("DEY")
+	asm("BPL", "#BANK#_CheckLoop_On_Collidor_#MAGIC#")
+	
+	asm("DEX")
+	asm("BPL", "#BANK#_CheckLoop_On_Parent_#MAGIC#")
+
+	asm("#BANK#_CheckLoop_End_#MAGIC#")
+
+	select(#TEMPVAR4#)
+	case(1)
+		select("TRUE")
+		case(#TEMPVAR8# > #TEMPVAR12#)	 
+		     sub(#TEMPVAR8#, #TEMPVAR12#)		
+		     select("TRUE")
+                     case(#TEMPVAR8# <= #TEMPVAR1#)	   	
+		          add(#TEMPVAR4#, 1)
+	             end-select 
+
+		default
+		     sub(#TEMPVAR12#, #TEMPVAR8#)
+		     select("TRUE")
+                     case(#TEMPVAR12# <= #TEMPVAR1#)	   	
+		          add(#TEMPVAR4#, 1)
+	             end-select 
+		end-select
 	end-select
-
-	set(#TEMPVAR4#, 0)
-
-	select("TRUE")
-	case (#TEMPVAR1# >= #TEMPVAR2#)
-	     add(#TEMPVAR4#, 1)
-	end-select
-
-	select("TRUE")
-	case (#TEMPVAR1# >= #TEMPVAR3#)
-	     add(#TEMPVAR4#, 1)
-	end-select
-
-	lsr(#TEMPVAR4#)
-	set(#VAR01#, #TEMPVAR4#)
+	
+	asm("LDA", "#TEMPVAR4#")
+	asm("LSR")
+	asm("STA", "#VAR01#")

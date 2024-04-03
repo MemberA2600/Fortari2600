@@ -1,5 +1,5 @@
-player0=P0X,P0Y
-player1=P1X,P1Y
-missile0=M0X,M0Y
-missile1=M1X,M1Y
-ball=BLX,BLY
+player0=P0X,P0Y,P0Height,P0Settings
+player1=P1X,P1Y,P1Height,P1Settings
+missile0=M0X,M0Y,P0Settings
+missile1=M1X,M1Y,P1Settings
+ball=BLX,BLY,pfSettings

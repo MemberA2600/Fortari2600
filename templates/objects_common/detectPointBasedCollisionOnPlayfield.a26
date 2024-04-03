@@ -1,0 +1,541 @@
+* params=variable|register,variable|stringConst|number|register,data
+* param1=#VAR01#
+* param2=#VAR02#
+* param3=##NAME##,playfields,##NAME##
+* addManuallyToSysVars=#SYSVAR#
+* addManuallyRoutines=movementTables,inverted
+*
+
+*
+* This one requires a lot of temporal variables as well!
+*
+*	#TEMPVAR1#:  The distance variable, converted to 8bits
+*	#TEMPVAR2#:  The difference of X
+*	#TEMPVAR3#:  The difference of Y
+*	#TEMPVAR4#:  Hold the temporal value to be saved on #VAR02#
+*
+*	#TEMPVAR5#:  The parent object's X position centered 1
+*	#TEMPVAR6#:  The parent object's X position centered 2
+*	#TEMPVAR7#:  The parent object's X position centered 3
+*	#TEMPVAR8#:  The parent object's Y position centered
+*	#TEMPVAR9#:  Number of checks needed because of the multipled sprites
+*
+*	#TEMPVAR10#:  PF0_1
+*	#TEMPVAR11#:  PF1_1	
+*	#TEMPVAR12#:  PF2_1
+*	#TEMPVAR13#:  PF2_2 (mirrored PF2_1)
+*	#TEMPVAR14#:  PF1_2 (mirrored PF1_1)	
+*	#TEMPVAR15#:  PF0_2 
+
+*	#TEMPVAR16#:  Temp
+*	#TEMPVAR17#:  Temp
+*	#TEMPVAR18#:  Temp
+*	#TEMPVAR19#:  Temp
+*
+
+###PARENT-Player0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR9#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P0X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P0Y")
+	asm("STA", "#TEMPVAR8#")
+
+	asm("LDA", "P0Height")	
+	asm("STA", "#TEMPVAR17#")
+
+###PARENT-Player0-End
+###PARENT-Player1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR9#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Center_Adders_On_NUSIZ_For_Player,x")
+	asm("CLC")
+	asm("ADC", "P1X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Player_Sprites_#MAGIC#_1")
+
+	asm("LDA", "P0Height")	
+	asm("LSR")
+	asm("CLC")
+	asm("ADC", "P1Y")
+	asm("STA", "#TEMPVAR8#")
+
+	asm("LDA", "P1Height")	
+	asm("STA", "#TEMPVAR17#")
+
+###PARENT-Player1-End
+###PARENT-Missile0
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P0Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR9#")
+
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M0X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+
+	asm("LDA", "M0Y")
+	asm("STA", "#TEMPVAR8#")
+
+	asm("LDA", "#1")	
+	asm("STA", "#TEMPVAR17#")
+
+###PARENT-Missile0-End
+###PARENT-Missile1
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "P1Settings")
+	asm("AND", "#%00000111")
+	asm("TAX")
+	asm("STA", "#TEMPVAR15#")
+	multi(#TEMPVAR15#, 3)
+
+	asm("LDY", "#BANK#_Number_Of_Checks,x")
+	asm("STY", "#TEMPVAR9#")
+	
+	asm("TYA")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR15#")
+	asm("TAX")
+
+	asm("#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+	asm("LDA", "#BANK#_X_Poz_X_On_NUSIZ_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "M1X")		
+****	asm("STA", "#TEMPVAR5#,y")
+	asm("BYTE", "#$95")
+	asm("BYTE", "##TEMPVAR5#")
+	asm("BYTE", "#0")
+
+	asm("DEX")
+	asm("DEY")
+	asm("BPL", "#BANK#_Check_Collision_On_Missile_#MAGIC#_1")
+
+	asm("LDA", "M1Y")
+	asm("STA", "#TEMPVAR8#")
+
+	asm("LDA", "#1")	
+	asm("STA", "#TEMPVAR17#")
+
+###PARENT-Missile1-End
+###PARENT-Ball
+	asm("LDA", "#0")
+	asm("STA", "#TEMPVAR9#")
+
+	asm("LDA", "pfSettings")
+	asm("AND", "#%00110000")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("LSR")
+	asm("TAX")
+	asm("LDA", "#BANK#_X_Center_Added_For_Missile,x")
+	asm("CLC")
+	asm("ADC", "BLX")
+	asm("STA", "#TEMPVAR5#")
+
+	asm("LDA", "BLY")
+	asm("STA", "#TEMPVAR8#")
+
+	asm("LDA", "#1")	
+	asm("STA", "#TEMPVAR17#")
+
+###PARENT-Ball-End
+
+	set(#TEMPVAR1#, #VAR02#)
+
+	asm("LSR", "#TEMPVAR17#")
+*
+*	Start at objY + pfHeight + (objHeight / 2) - difference var
+*	End   at objY + pfHeight + (objHeight / 2) + difference var
+*
+	asm("LDA", "#TEMPVAR8#")
+	asm("CLC")
+	asm("ADC", "#TEMPVAR17#")
+	asm("SEC")
+	asm("SBC", "#TEMPVAR1#")
+	asm("CLC")
+	asm("ADC", "pfIndex")
+	asm("STA", "#TEMPVAR17#")
+
+	asm("CLC")
+	asm("ADC", "#TEMPVAR1#")	
+	asm("ADC", "#TEMPVAR1#")
+	asm("ADC", "#1")
+	asm("STA", "#TEMPVAR18#")
+
+	asm("LDA", "#TEMPVAR17#")
+	asm("#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#")
+	asm("TAY")
+
+	asm("LDA", "##NAME##_00,y")
+	asm("STA", "#TEMPVAR15#")
+	asm("TAX")
+	asm("LDA", "##BANK##_InvertedBytes,x")
+	asm("AND", "#$F0")
+	asm("STA", "#TEMPVAR10#")
+
+	asm("LDA", "#TEMPVAR15#")
+	asm("AND", "#$F0")
+	asm("STA", "#TEMPVAR15#")
+
+	asm("LDA", "##NAME##_01,y")
+	asm("STA", "#TEMPVAR11#")
+	asm("TAX")
+	asm("LDA", "##BANK##_InvertedBytes,x")
+	asm("STA", "#TEMPVAR14#")	
+
+	asm("LDA", "##NAME##_02,y")
+	asm("STA", "#TEMPVAR13#")
+	asm("TAX")
+	asm("LDA", "##BANK##_InvertedBytes,x")
+	asm("STA", "#TEMPVAR12#")
+
+*
+*	One playfield pixel is 4 pixels wide and there are 40 pixels, so,
+*	we can guess that the resolution is 160 pixels. On the other hand, because of
+*	the timing sprites cannot collide all the pixels.
+*
+*	PF0_1 should be at 0-3, so 0-15, so first limit is 16.
+*	Limits are last (pixel + 1) * 4
+*
+*	PF0_1: 0-3
+*	PF1_1: 4-11
+*	PF2_1: 12-19
+*	PF2_2: 20-27
+*	PF1_2: 28-35
+*	PF0_2: 36-39
+*
+	asm("#BANK#_Limit_1_#MAGIC# = 16"  )
+	asm("#BANK#_Limit_2_#MAGIC# = 48"  )
+	asm("#BANK#_Limit_3_#MAGIC# = 80"  )
+	asm("#BANK#_Limit_4_#MAGIC# = 112" )
+	asm("#BANK#_Limit_5_#MAGIC# = 144" )
+
+	asm("LDA", "#0")
+	asm("STA", "#TEMPVAR4#")
+
+	asm("LDX", "#TEMPVAR9#")
+	asm("#BANK#_Check_Colliding_Playfield_On_X_#MAGIC#")
+	
+	asm("LDA", "#TEMPVAR5#,x")
+	asm("STA", "#TEMPVAR16#")
+
+	select("TRUE")
+	case(#TEMPVAR16# < #BANK#_Limit_1_#MAGIC#)
+            asm("LDA", "#TEMPVAR16#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_1_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR10#")	
+
+            asm("#BANK#_Smaller_Loop_1_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_1_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_1_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_1_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_1_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_1_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_1_#MAGIC#")
+
+	    asm("#BANK#_Loop_1_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+  	 	
+	case(#TEMPVAR16# < #BANK#_Limit_2_#MAGIC#)
+            asm("LDA", "#TEMPVAR16#")
+	    asm("SEC")
+	    asm("SBC", "##BANK#_Limit_1_#MAGIC#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_2_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR11#")	
+
+            asm("#BANK#_Smaller_Loop_2_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_2_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_2_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_2_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_2_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_2_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_2_#MAGIC#")
+
+	    asm("#BANK#_Loop_2_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+
+	case(#TEMPVAR16# < #BANK#_Limit_3_#MAGIC#)
+            asm("LDA", "#TEMPVAR16#")
+	    asm("SEC")
+	    asm("SBC", "##BANK#_Limit_2_#MAGIC#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_3_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR12#")	
+
+            asm("#BANK#_Smaller_Loop_3_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_3_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_3_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_3_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_3_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_3_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_3_#MAGIC#")
+
+	    asm("#BANK#_Loop_3_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+
+	case(#TEMPVAR16# < #BANK#_Limit_4_#MAGIC#)
+            asm("LDA", "#TEMPVAR16#")
+	    asm("SEC")
+	    asm("SBC", "##BANK#_Limit_3_#MAGIC#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_4_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR13#")	
+
+            asm("#BANK#_Smaller_Loop_4_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_4_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_4_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_4_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_4_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_4_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_4_#MAGIC#")
+
+	    asm("#BANK#_Loop_4_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+
+	case(#TEMPVAR16# < #BANK#_Limit_5_#MAGIC#)
+	    asm("LDA", "#TEMPVAR16#")
+	    asm("SEC")
+	    asm("SBC", "##BANK#_Limit_4_#MAGIC#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_5_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR14#")	
+
+            asm("#BANK#_Smaller_Loop_5_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_5_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_5_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_5_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_5_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_5_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_5_#MAGIC#")
+
+	    asm("#BANK#_Loop_5_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+
+	default
+            asm("LDA", "#TEMPVAR16#")
+	    asm("SEC")
+	    asm("SBC", "##BANK#_Limit_5_#MAGIC#")
+	    asm("LSR")
+	    asm("LSR")
+	    asm("CMP", "#4")
+	    asm("BCS", "#BANK#_Not_Smaller_6_#MAGIC#")
+
+	    asm("TAX")
+	    asm("LDA", "#TEMPVAR15#")	
+
+            asm("#BANK#_Smaller_Loop_6_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_6_#MAGIC#_End")	    
+	    asm("LSR")
+            asm("JMP", "#BANK#_Smaller_Loop_6_#MAGIC#")
+
+	    asm("#BANK#_Not_Smaller_6_#MAGIC#")
+	    asm("STA", "#TEMPVAR19#")
+	    asm("LDA", "#8")
+	    asm("SEC")
+	    asm("SBC", 	"#TEMPVAR19#")
+	    asm("TAX")
+	
+            asm("#BANK#_Not_Smaller_Loop_6_#MAGIC#")		
+	    asm("DEX")
+	    asm("BMI", "#BANK#_Loop_6_#MAGIC#_End")	    
+	    asm("ROR")
+            asm("JMP", "#BANK#_Not_Smaller_Loop_6_#MAGIC#")
+
+	    asm("#BANK#_Loop_6_#MAGIC#_End")
+
+	    asm("AND", "#1")
+            asm("STA", "#VAR01#")
+	    asm("CMP", "#1")
+	    asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+
+	end-select
+
+	asm("#BANK#_Check_Colliding_Playfield_On_X_#MAGIC#_End")
+	asm("INC", "#TEMPVAR17#")
+	asm("LDA", "#TEMPVAR17#")
+	asm("CMP", "#TEMPVAR18#")
+	asm("BEQ", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")
+	asm("JMP", "#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#")
+
+	asm("#BANK#_Check_Colliding_Playfield_On_Y_#MAGIC#_End")

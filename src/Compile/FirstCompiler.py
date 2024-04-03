@@ -4,8 +4,7 @@ import re
 
 class FirstCompiler:
 
-    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine, fullText, allowSysVars):
-
+    def __init__(self, loader, editorBigFrame, text, addComments, mode, bank, section, startLine, fullText, allowSysVars, bank1Data):
         self.__loader         = loader
         self.__editorBigFrame = editorBigFrame
         self.__text           = text.replace("\t", " ").split("\n")
@@ -69,7 +68,7 @@ class FirstCompiler:
         self.__currentBank    = bank
         self.__objectMaster   = self.__loader.virtualMemory.objectMaster
         self.toRoutines       = {}
-        self.bank1Data        = {}
+        self.bank1Data        = bank1Data
         self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
         self.__jumpers        = ["JMP", "JSR"]
         self.__exceptions     = []
@@ -206,17 +205,20 @@ class FirstCompiler:
         return linesFeteched
 
     def compileBuild(self, linesFeteched, mode):
+        #import time
+
         for line in linesFeteched:
             self.__error = False
-
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
                #if "%" in line["command"][0]: print("SSSS")
+               #start = time.time()
                self.processLine(line, linesFeteched)
+               #end   = time.time()
+               #print(">>", line["fullLine"], end-start)
 
                #if "add" in line["command"][0]: print("xxx", line["compiled"], "xxx")
                line["compiled"].replace("##", "#")
                self.colorAnnotationAfter(line)
-
         textToReturn = ""
         currentLineNum = 0
 
@@ -238,7 +240,15 @@ class FirstCompiler:
                                 textToReturn += "\tasm(\"" + tLine + "\")\n"
 
             if line["comment"][0] not in self.__noneList:
-                textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
+               if line["compiled"] not in self.__noneList:
+                  textToReturn = textToReturn[:-1] + "\t; " + line["comment"][0] + "\n"
+               else:
+                  if textToReturn.endswith("\n") == False:
+                     textToReturn += "\n"
+                  if line["comment"][0][0] not in ["*", "#"]:
+                     textToReturn += "* "
+
+                  textToReturn += line["comment"][0] + "\n"
 
         self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
         #print("\n>>>>>>>>>>>>>>>>>\n", self.result, "\n<<<<<<<<<<<<<<<<<<<<<<<<\n")
@@ -484,6 +494,8 @@ class FirstCompiler:
                line["compiled"] = txt
                #else:
                #   line["compiled"] = datas[0]
+            #else:
+               #print(line)
 
             for key in self.__changeThese.keys():
                 line["compiled"] = line["compiled"].replace(key, self.__changeThese[key])
@@ -2289,6 +2301,7 @@ class FirstCompiler:
                             portStateCode = self.__virtualMemory.returnCodeOfPortState(statement)
 
                             if portStateCode == False:
+                                #print(statement)
                                 smallerCommands, temps = self.convertStatementToSmallerCodes("comprass",
                                                                                       statement, caseLine)
                                 smallerCommandLines = smallerCommands.split("\n")
@@ -3034,19 +3047,55 @@ class FirstCompiler:
 
             template, optionalText, objectThings = self.getObjTemplate(line, params)
 
+            if "addManuallyRoutines" in objectThings.keys():
+                listOfThem = objectThings["addManuallyRoutines"]
+                for item in listOfThem:
+                    if item not in self.toRoutines.keys():
+                       path = "templates/skeletons/" + item + ".asm"
+                       f = open(path, "r")
+                       self.toRoutines[item] = f.read().replace("#BANK#", self.__currentBank)
+                       for lineTxt in self.toRoutines[item].split("\n"):
+                           if lineTxt not in self.__noneList:
+                               if lineTxt[0] not in [" ", "\t", "\n", "*"] and " = " not in lineTxt:
+                                   skip = False
+                                   if len(lineTxt) == 3:
+                                       for regNum in self.__opcodes:
+                                           lineSettings = self.__opcodes[regNum]
+                                           if lineSettings["opcode"].lower() == lineTxt.lower():
+                                              skip = True
+                                              break
+
+                                   if skip == False:
+                                       # print(lineTxt)
+                                       for charNum in range(0, len(lineTxt)):
+                                           if lineTxt[charNum] in [" ", "\t", "\n"]:
+                                               self.__alreadyCollectedLabels.append(lineTxt[:charNum])
+                                               self.__alreadyCollectedLabels.append(
+                                                   lineTxt[:charNum].replace("#BANK#", self.__currentBank).replace(
+                                                       "#SECTION#", self.__currentSection))
+                                               break
+                                           elif charNum == len(lineTxt) - 1:
+                                               self.__alreadyCollectedLabels.append(lineTxt)
+                                               self.__alreadyCollectedLabels.append(
+                                                   lineTxt.replace("#BANK#", self.__currentBank).replace("#SECTION#",
+                                                                                                         self.__currentSection))
+                                               break
+
+                       f.close()
+
             if objectThings["extension"] == "a26":
                template = template.split("\n")
                self.preBuildTemplate(template)
                template = self.convertASMlinesToASMCommands(template)
 
                #print("\n>>\n", "\n".join(template), "\n<<\n")
-
+               #for line in template:
+               #    print(">>>", line)
                result = FirstCompiler(self.__loader, self.__editorBigFrame, "\n".join(template), False,
-                                   self.__mode, self.__currentBank, self.__currentSection, self.__startLine, "\n".join(self.__fullText), True).result
-
+                                   self.__mode, self.__currentBank, self.__currentSection, self.__startLine, "\n".join(self.__fullText), True, self.bank1Data).result
                #print("\n>>\n", "\n".join(template), "\n<<\n")
-
                result = self.reformatResult(result)
+               #print("---", result)
             else:
                result = template
 
@@ -3104,35 +3153,51 @@ class FirstCompiler:
         else:
             if "compiled" in line:
                 print("ERROR -- ERROR -- ERROR")
-                print(line["compiled"])
+                #raise ValueError
+                try:
+                    print(line["fullLine"], line["compiled"])
+                except:
+                    print(line, line["compiled"])
+
             line["compiled"] = ""
 
     def reformatResult(self, result):
+        #print("\nZZZZZZZZZZZZZZ\n", result, "\nZZZZZZZZZZZZZZ\n")
+
         result = result.split("\n")
         newRes = []
 
         for line in result:
+            try:
+                comment = line.split(";")[1]
+            except:
+                comment = ""
+
+            line    = line.split(";")[0]
+
             if len(line) > 0:
                if   line.startswith("*** \t;"):
                     newRes.append(line.replace("*** \t;", "***"))
-               elif "asm(" in line:
-                    startPoz = -1
-                    endPoz   = -1
-                    for charNum in range(0, len(line)):
-                        if line[charNum] == "(":
-                           startPoz = charNum + 2
-                           break
-
-                    for charNum in range(len(line)-1, -1, -1):
-                        if line[charNum] == ")":
-                           endPoz = charNum - 1
-                           break
-
-                    newRes.append(line[startPoz:endPoz])
+               elif len(re.findall(r'asm\s*\(', line)) > 0 and line[0] not in ["*", "#"] :
+                    newRes.append(self.removeASMtag(line))
                else:
                     newRes.append(line)
 
+            if len(comment) > 0:
+               newRes[-1] = newRes[-1] + "\t; " + comment
+
         return "\n".join(newRes)
+
+    def removeASMtag(self, line):
+        lineS = self.__editorBigFrame.getLineStructure(0, line, False)
+        if lineS["param#2"][0] in self.__noneList:
+           line = lineS["param#1"][0][1:-1]
+        else:
+           line = lineS["param#1"][0][1:-1] + " " + lineS["param#2"][0][1:-1]
+
+        for charNum in range(0, len(line)):
+            if line[charNum].isspace() == False:
+               return(" " + line[charNum:])
 
     def convertASMlinesToASMCommands(self, template):
         newTemplate = []
@@ -3181,14 +3246,35 @@ class FirstCompiler:
         #print("shit", "\n".join(newTemplate))
         return newTemplate
 
+    def findAndSubstitueLocalConstants(self, template):
+        template    = template.split("\n")
+        newTemplate = ""
 
+        constants   = {}
+        for line in template:
+            if line != "":
+               if ((line[0] not in ["*", "#", " ", "\n", "\t"]) or
+                  (len(re.findall(r'asm\s*\(', line)) > 0 and line[0] not in ["*", "#"])) and " = " in line:
+                  if len(re.findall(r'asm\s*\(', line)) > 0:
+                     line = self.removeASMtag(line)
+
+                  line = line.split("=")
+                  constants[line[0].strip()] = line[1].strip()
+               else:
+                  newTemplate += line + "\n"
+
+        if constants == {}: return "\n".join(template)
+
+        for key in constants:
+            newTemplate = newTemplate.replace(key, constants[key])
+
+        #print(newTemplate)
+        return newTemplate
 
     def getObjTemplate(self, line, params):
         if params == None: params = self.getParamsWithTypesAndCheckSyntax(line)
         
         objectThings = self.__objectMaster.returnAllAboutTheObject(line["command"][0])
-        template = objectThings["template"]
-
         self.__temps = self.collectUsedTemps()
 
         dataReplacers = {
@@ -3199,6 +3285,8 @@ class FirstCompiler:
         optionalCounter = -1
 
         template = objectThings["template"]
+        template = self.findAndSubstitueLocalConstants(template)
+
         optionalText = ""
         # print(params)
 
@@ -3353,8 +3441,8 @@ class FirstCompiler:
                                dataReplacers[pSettings["folder"]][1]
                         data = data.replace(dataR, name)
                         template = template.replace(dataR, name).replace(replacer, name)
-
                         self.bank1Data[name] = data
+
 
                     # print("optional" in objectThings.keys(), optional)
                     if "optional" in objectThings.keys() and optional:
@@ -3909,6 +3997,7 @@ class FirstCompiler:
         return returnB
 
     def getOpCodeAndOperandFromASMLine(self, line):
+        #print(">>", line)
         asmStructure = self.__editorBigFrame.getLineStructure(0, [line], False)
         if self.isCommandInLineThat(asmStructure, "asm"):
            if asmStructure["param#2"][0] not in self.__noneList:
@@ -4729,12 +4818,15 @@ class FirstCompiler:
     def checkASMCode(self, template, lineStructure, linesFetched):
         #if "add" in template: raise ValueError
 
+        #if lineStructure["command"][0] == "multi":
+        #   if self.__testFirst:
+        #      self.__testFirst = False
+        #   else:
+        #      raise ValueError
+
+        #print("--\n", template, "\n--\n")
         template = template.replace("#BANK#", self.__currentBank).replace("#SECTION#", self.__currentSection)
         lines = template.split("\n")
-#        for line in lines:
- #           if "BNE" in line:
-  #              print("faszom")
-   #             raise ValueError
 
         labels = []
         self.collectLabelsFromRoutines(labels)
@@ -4743,12 +4835,6 @@ class FirstCompiler:
 
         if self.isCommandInLineThat(lineStructure, "asm"):
            self.changeMagicAndOthersInLine(lineStructure)
-           """
-           if lineStructure["param#1"] not in self.__noneList:
-              if lineStructure["param#1"][0][1:-1] not in [" ", "\t", "\n"] and " = " not in lineStructure["param#1"][0]:
-                 print(lineStructure["param#1"][0][1:-1])
-                 return
-           """
 
         for line in linesFetched:
             for key in ["labelsBefore", "labelsAfter"]:
@@ -4776,7 +4862,7 @@ class FirstCompiler:
                if line["param#1"][0] not in self.__noneList:
                   lineTxt = line["param#1"][0][1:-1]
                   if lineTxt not in self.__noneList:
-                     if lineTxt[0] not in [" ", "\t", "\n"] and " = " not in lineTxt:
+                     if lineTxt[0] not in [" ", "\t", "\n", "*"] and " = " not in lineTxt:
                         skip = False
                         if len(lineTxt) == 3:
                             for regNum in self.__opcodes:
@@ -4806,7 +4892,13 @@ class FirstCompiler:
             if l not in self.__alreadyCollectedLabels:
                self.__alreadyCollectedLabels.append(l)
 
-        labels = self.__alreadyCollectedLabels
+        for l in self.__alreadyCollectedLabels:
+            ijkl = l.replace(self.__currentBank, "#BANK#").replace(self.__currentSection, "#SECTION#")
+            if l != ijkl and ijkl not in self.__alreadyCollectedLabels:
+               self.__alreadyCollectedLabels.append(ijkl)
+
+        labels     = list(set(self.__alreadyCollectedLabels))
+        printError = False
 
         #if self.__testFirst:
            #self.__testFirst = False
@@ -4819,6 +4911,8 @@ class FirstCompiler:
 
         for line in lines:
             full = line
+            #print(">>", line)
+            #if 'P0X")' in line: raise ValueError
 
             if line.replace("\t", " ").startswith(" ") == False: continue
             if line[0] in ["*", "#", "!"]: continue
@@ -4855,50 +4949,45 @@ class FirstCompiler:
                   line[1][0] == "*"                     or\
                   line[1] in self.__labelsOfMainKenrel:
                   continue
-               """ 
-               else:
-                  if self.__testFirst:
-                     for l in labels:
-                         print(l)
-                     self.__testFirst = False
-                  print(">>", line[1])
-               """
 
             if self.isCommandInLineThat(lineStructure, "asm"):
-                for replacer in self.__replacers.keys():
-                    replaceIt = self.__replacers[replacer]
+                if line[0].upper() != "BYTE" and len(line[0]) > 3:
+                    for replacer in self.__replacers.keys():
+                        replaceIt = self.__replacers[replacer]
 
-                    if replacer in line[0]:
-                        line[0] = line[0].replace(replacer, replaceIt)
-                        for key in lineStructure.keys():
-                            if type(lineStructure[key]) == list and lineStructure[key] != []:
-                                if lineStructure[key][0] not in self.__noneList:
-                                    lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
-                                    self.__changeThese[replacer] = replaceIt
+                        if replacer in line[0]:
+                            line[0] = line[0].replace(replacer, replaceIt)
+                            for key in lineStructure.keys():
+                                if type(lineStructure[key]) == list and lineStructure[key] != []:
+                                    if lineStructure[key][0] not in self.__noneList:
+                                        lineStructure[key][0] = lineStructure[key][0].replace(replacer, replaceIt)
+                                        self.__changeThese[replacer] = replaceIt
 
-                if line[0] in labels or line[0] in self.__fullTextLabels:
-                   lineStructure["level"] = -1
+                    if line[0] in labels or line[0] in self.__fullTextLabels:
+                       lineStructure["level"] = -1
 
-                   if self.__fullTextLabels.count(line[0]) > 1:
-                      self.addToErrorList(lineStructure["lineNum"],
-                                          self.prepareErrorASM("compilerErrorASMDuplicateLabel",
-                                                                "", line[0],
-                                                                lineStructure["lineNum"]))
+                       if self.__fullTextLabels.count(line[0]) > 1:
+                           if printError: print("OHNO Duplicate", line[0])
+                           self.addToErrorList(lineStructure["lineNum"],
+                                              self.prepareErrorASM("compilerErrorASMDuplicateLabel",
+                                                                    "", line[0],
+                                                                    lineStructure["lineNum"]))
 
-                   if self.__labelsOfMainKenrel.count(line[0]) > 0:
-                      self.addToErrorList(lineStructure["lineNum"],
-                                          self.prepareErrorASM("compilerErrorASMDKernelLabel",
-                                                                "", line[0],
-                                                                lineStructure["lineNum"]))
+                       if self.__labelsOfMainKenrel.count(line[0]) > 0:
+                           if printError: print("OHNO KernelLabel", line[0])
+                           self.addToErrorList(lineStructure["lineNum"],
+                                              self.prepareErrorASM("compilerErrorASMDKernelLabel",
+                                                                    "", line[0],
+                                                                    lineStructure["lineNum"]))
 
-                   if len(line[0]) < 8:
-                      self.addToErrorList(lineStructure["lineNum"],
-                                           self.prepareErrorASM("compilerErrorASMKernelLabelShort",
-                                                                "", line[0],
-                                                                lineStructure["lineNum"]))
+                       if len(line[0]) < 8:
+                           if printError: print("OHNO Too Short", line[0])
+                           self.addToErrorList(lineStructure["lineNum"],
+                                               self.prepareErrorASM("compilerErrorASMKernelLabelShort",
+                                                                    "", line[0],
+                                                                    lineStructure["lineNum"]))
 
-                continue
-
+                    continue
 
             command = line[0]
             if len(line) > 1:
@@ -4912,9 +5001,15 @@ class FirstCompiler:
                    t = self.valOfNumber(line[1])
                    continue
                except:
+                   varName  = line[1]
+                   if varName.startswith("#"): varName = varName[1:]
+
+                   if self.__loader.virtualMemory.getVariableByName2(varName) != False:
+                      continue
+
                    self.prepareErrorASM("compilerErrorASMByteInvalidParameter",
-                                        "", line[1],
-                                        lineStructure["lineNum"])
+                                         "", line[1],
+                                         lineStructure["lineNum"])
                    continue
 
             foundCommand = False
@@ -4956,10 +5051,17 @@ class FirstCompiler:
                              if splitValue[1] == splitFormat[1]:
                                 foundCommand = True
                                 break
+
                    errorVal = 1
                    #print("1", value)
+                   #if line[0] == "ADC":
+                   #   if line[1] == 'M0X")': raise ValueError
 
-                   if self.checkIfASMhasrightOperand(lineSettings, value) == False: continue
+                   if self.checkIfASMhasrightOperand(lineSettings, value) == False:
+                      if self.__testFirst:
+                         self.__testFirst = False
+                         #print(self.bank1Data)
+                      continue
 
                    errorVal = 2
 
@@ -5009,7 +5111,8 @@ class FirstCompiler:
                       hexa = "$" + hexa.upper()
 
                       if hexa not in self.__registers.keys() and hexa not in self.__validMemoryAddresses:
-                         self.addToErrorList(lineStructure["lineNum"],
+                          if printError: print(line, errorVal)
+                          self.addToErrorList(lineStructure["lineNum"],
                                              self.prepareErrorASM("compilerErrorASMRegisterAddr",
                                                                    command, value,
                                                                    lineStructure["lineNum"]))
@@ -5074,6 +5177,7 @@ class FirstCompiler:
                          eText = special
 
                       eText += opcodeDoes[0].upper() + opcodeDoes[1:]
+                      if printError: print(line, errorVal)
                       self.addToErrorList(lineStructure["lineNum"],
                                           self.prepareErrorASM("compilerErrorASM"+eText,
                                                                command, value,
@@ -5082,7 +5186,7 @@ class FirstCompiler:
                    break
 
             if foundCommand == False:
-               #print(line, errorVal)
+               if printError: print(line, errorVal) #, lineStructure)
                if self.__testFirst:
                   self.__testFirst = False
                   #print(labels, line in labels, type(line))
@@ -5111,7 +5215,11 @@ class FirstCompiler:
            return "write"
 
     def checkIfASMhasrightOperand(self, lineSettings, value):
-        #print(value)
+        printMe = False
+        if printMe: print(value)
+
+        #if value.startswith("#BANK#") or value.startswith(self.__currentBank): print("ehhh")
+
         labels = []
         self.collectLabelsFromRoutines(labels)
 
@@ -5148,12 +5256,13 @@ class FirstCompiler:
         except:
             afterCommaFormat = ""
 
-        #if value == "ScrollDirection":
-        #print("1")
+        if printMe: print("1")
+        #if value.startswith("#BANK#") or value.startswith(self.__currentBank): print(beforeCommaFormat, afterCommaFormat)
         if afterCommaFormat != afterCommaValue: return False
         beforeCommaFormat = beforeCommaFormat.upper()
 
-        #print("2")
+        #if value.startswith("#BANK#") or value.startswith(self.__currentBank): print("ehhh")
+        if printMe: print("2")
         onlyBody = beforeCommaValue.replace("#", "").replace(">", "").replace("<", "")
         for reg in self.__registers:
             if self.__registers[reg] == onlyBody.upper():
@@ -5170,7 +5279,7 @@ class FirstCompiler:
            thisIs = "aaaa," + afterCommaValue
            if lineSettings["format"] == thisIs: return True
 
-        #print("3")
+        if printMe: print("3")
         if "#" in beforeCommaValue and beforeCommaValue not in labels:
            allA = "#AA"
         else:
@@ -5368,6 +5477,7 @@ class FirstCompiler:
         listOfErrors = self.__editorBigFrame.callLineTintingFromFirstCompiler(line["fullLine"], line["lineNum"], self.__text)
         #if listOfErrors != []: print(self.__text)
 
+        #print(listOfErrors)
         errorNames = {"noEndFound": {"#COMMAND#": line["command"][0],
                                      "#END#": "end-" + line["command"][0].split("-")[0]},
                       "noStartFound": {"#COMMAND#": line["command"][0]},
@@ -5438,6 +5548,9 @@ class FirstCompiler:
         self.__error = True
         #print(text)
         #raise ValueError
+        #if val == "asm":
+        #   print(text)
+        #   raise ValueError
 
         return self.__dictionaries.getWordFromCurrentLanguage(text)\
                     .replace("#VAL#", val).replace("#VAR#", var).replace("#BANK#", self.__currentBank)\
@@ -5445,7 +5558,7 @@ class FirstCompiler:
 
     def prepareErrorASM(self, text, opcode, operand, lineNum):
         self.__error = True
-        #raise ValueError
+        #if operand.startswith("#BANK#") or operand.startswith(self.__currentBank): raise ValueError
 
         return (self.__dictionaries.getWordFromCurrentLanguage("compilerErrorASM") + " " +\
                self.__dictionaries.getWordFromCurrentLanguage(text)).replace("#LINENUM#", str(lineNum))\

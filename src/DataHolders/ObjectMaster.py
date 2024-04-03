@@ -131,9 +131,18 @@ class ObjectMaster:
         detectTemplate = f.read()
         f.close()
 
+        f = open(self.objRoot + "detectPointBasedCollisionOnPlayfield.a26")
+        detectPFTemplate = f.read()
+        f.close()
+
         f = open(self.objRoot + "itemsOfDetection.txt")
         items = f.read().replace("\r", "").split("\n")
         f.close()
+
+        itemList = []
+        for itemLine in items:
+            lineVar = itemLine.split("=")[0]
+            itemList.append(lineVar)
 
         for item1 in items:
             for item2 in items:
@@ -148,19 +157,49 @@ class ObjectMaster:
 
                 nameOfcommand = "detectPointBasedCollisionOn" + varName[0].upper() + varName[1:]
 
-                sysVars       =       parentVars [0] +\
-                                "," + parentVars [1] +\
-                                "," + varNameVars[0] +\
-                                "," + varNameVars[1]
+                sysVars       = self.createSysVarsString(parentVars, varNameVars)
 
                 text        = detectTemplate.replace("#SYSVAR#", sysVars)
                 sysVarsList = sysVars.split(",")
 
+                """ 
                 for varNum in range(0, 4):
                     sysName = "#SYSVAR" + str(varNum + 1) + "#"
                     text    = text.replace(sysName, sysVarsList[varNum])
+                """
 
+                #itemList.remove(parent)
+                #itemList.remove(varName)
+
+                text = self.removeNotNeeded(itemList, text, parent, varName)
                 self.objects[parent][nameOfcommand] = text
+
+                if "detectPointBasedCollisionOnPlayfield" not in self.objects[parent].keys():
+                    sysVars = self.createSysVarsString(parentVars, [])
+
+                    text = detectPFTemplate.replace("#SYSVAR#", sysVars)
+                    text = self.removeNotNeeded(itemList, text, parent, "")
+
+                    sysVarsList = sysVars.split(",")
+
+                    """
+                    for varNum in range(0, 4):
+                        sysName = "#SYSVAR" + str(varNum + 1) + "#"
+                        text = text.replace(sysName, sysVarsList[varNum])
+                    """
+
+                    self.objects[parent]["detectPointBasedCollisionOnPlayfield"] = text
+
+    def createSysVarsString(self, list1, list2):
+        newList = []
+
+        for item in list1:
+            newList.append(item)
+
+        for item in list2:
+            newList.append(item)
+
+        return ",".join(newList)
 
     def __changeCurrentBankPointer(self, bankNum):
         if type(bankNum) == int:
@@ -240,6 +279,29 @@ class ObjectMaster:
 
         self.objects["currentBank"] = self.objects[self.__loader.bigFrame.getCurrentBank()]
 
+    def removeNotNeeded(self, itemsList, text, parent, colliding):
+        import re
+
+        tags = []
+        for word in itemsList:
+            openTag   = "###PARENT-"  + word[0].upper() + word[1:].lower()
+            tags.append(openTag)
+
+            openTag = "###COLLIDING-" + word[0].upper() + word[1:].lower()
+            tags.append(openTag)
+
+        openTag = "###PARENT-"    + parent[0].upper()    + parent[1:].lower()
+        tags.remove(openTag)
+
+        if colliding != "":
+           openTag = "###COLLIDING-" + colliding[0].upper() + colliding[1:].lower()
+           tags.remove(openTag)
+
+        for word in tags:
+            text = re.sub(rf'{word}.+{word+"-End"}', "", text, flags=re.DOTALL)
+
+        return text
+
     def returnAllAboutTheObject(self, command):
         #print("#1")
         delimiter = "%"
@@ -280,6 +342,8 @@ class ObjectMaster:
 
         sysVar       = None
         found        = False
+        itemList     = []
+        itemVars     = []
 
         if theObject["exist"] == True:
            path = os.getcwd() + "\\templates\\objects_common\\"
@@ -306,36 +370,69 @@ class ObjectMaster:
                   theObject["extension"] = None
 
                   if listOfObjects[-1].startswith("detectPointBasedCollisionOn"):
-                     parent     = listOfObjects[0]
-                     varName    = listOfObjects[-1].replace("detectPointBasedCollisionOn", "").lower()
+                     if listOfObjects[-1].endswith("Playfield"):
+                         parent     = listOfObjects[0]
+                         varName    = "playfield"
 
-                     f = open(self.objRoot + "itemsOfDetection.txt")
-                     items = f.read().replace("\r", "").split("\n")
-                     f.close()
+                         f = open(self.objRoot + "itemsOfDetection.txt")
+                         items = f.read().replace("\r", "").split("\n")
+                         f.close()
 
-                     path  = self.objRoot + "detectPointBasedCollisionOn#VARNAME#.a26"
-                     found = True
+                         for itemLine in items:
+                             lineVar = itemLine.split("=")[0]
+                             #if lineOfVar != parent:
+                             itemList.append(lineVar)
 
-                     parentVars  = []
-                     varNameVars = []
+                         itemVars = [parent, ""]
 
-                     for line in items:
-                         item     = line.split("=")[0]
+                         path = self.objRoot + "detectPointBasedCollisionOnPlayfield.a26"
+                         found = True
 
-                         if   item        == parent:
-                              parentVars  =  line.split("=")[1].split(",")
-                         elif item        ==  varName:
-                              varNameVars =  line.split("=")[1].split(",")
+                         parentVars = []
 
-                         if parentVars != [] and varNameVars != []: break
+                         for line in items:
+                             item     = line.split("=")[0]
 
-                     theObject["extension"] = "a26"
-                     sysVar    = parentVars[0] + \
-                               "," + parentVars[1] + \
-                               "," + varNameVars[0] + \
-                               "," + varNameVars[1]
+                             if   item        == parent:
+                                  parentVars  =  line.split("=")[1].split(",")
+                                  break
 
+                         theObject["extension"] = "a26"
+                         sysVar    = self.createSysVarsString(parentVars, [])
 
+                     else:
+                         parent     = listOfObjects[0]
+                         varName    = listOfObjects[-1].replace("detectPointBasedCollisionOn", "").lower()
+
+                         f = open(self.objRoot + "itemsOfDetection.txt")
+                         items = f.read().replace("\r", "").split("\n")
+                         f.close()
+
+                         for itemLine in items:
+                             lineVar = itemLine.split("=")[0]
+                             #if lineOfVar not in [parent, varName]:
+                             itemList.append(lineVar)
+
+                         path  = self.objRoot + "detectPointBasedCollisionOn#VARNAME#.a26"
+                         found = True
+
+                         itemVars = [parent, varName]
+
+                         parentVars  = []
+                         varNameVars = []
+
+                         for line in items:
+                             item     = line.split("=")[0]
+
+                             if   item        == parent:
+                                  parentVars  =  line.split("=")[1].split(",")
+                             elif item        ==  varName:
+                                  varNameVars =  line.split("=")[1].split(",")
+
+                             if parentVars != [] and varNameVars != []: break
+
+                         theObject["extension"] = "a26"
+                         sysVar = self.createSysVarsString(parentVars, varNameVars)
 
                   else:
                       paths = []
@@ -445,6 +542,8 @@ class ObjectMaster:
                      break
 
            theObject["template"] = theObject["template"].replace("#PARENT#", listOfObjects[0])
+           if itemList != []:
+               theObject["template"] = self.removeNotNeeded(itemList, theObject["template"], itemVars[0], itemVars[1])
 
            if rNum != None:
               theObject["template"] = theObject["template"].replace("ß", rNum)
@@ -456,6 +555,7 @@ class ObjectMaster:
                    pList = lines[0].split("=")[1].split(",")
                except:
                    pList = []
+
 
            theObject["params"] = []
            validOnes = ["variable", "string", "stringConst", "number", "data", "register"]

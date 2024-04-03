@@ -950,9 +950,10 @@ class EditorBigFrame:
            from FirstCompiler import FirstCompiler
 
            #self.__loader.alreadyCollectedLabels = []
+
            c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
                                                                      selection[1]),
-                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END), False)
+                             True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END), False, {})
 
            self.__loader.alreadyCollectedLabels = []
            print(c.result)
@@ -3971,6 +3972,11 @@ class EditorBigFrame:
         return line[startPoz:endPoz]
 
     def getLineStructure(self, lineNum, text, checkLevel):
+        #try:
+        #    if "ADC" in text[lineNum]: print(text[lineNum])
+        #except:
+        #    pass
+
         if lineNum == None: lineNum = self.__cursorPoz[0]-1
 
         if text == None:
@@ -4189,6 +4195,7 @@ class EditorBigFrame:
             if "fullLine" not in lineStructure and "command" in lineStructure: self.getFullLine(lineStructure)
         except:
             pass
+
 
         return(lineStructure)
 
