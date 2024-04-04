@@ -57,6 +57,9 @@ class VisualEditorFrameWithLabelAndEntry:
             #self.__entry.bind("<FocusOut>", focusBind)
         self.__entry.pack(side=LEFT, anchor=E, fill=BOTH)
 
+    def setLabelText(self, txt):
+        self.__label.config(text = txt)
+
     def getEntry(self):
         return(self.__entry)
 

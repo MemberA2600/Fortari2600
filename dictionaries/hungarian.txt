@@ -483,3 +483,5 @@ constantValiditySection=Érvényes Szekciók
 global=Globális
 bank=Bank
 section=Szekció
+repeatingIsOnTop=Ismétlõdõ Felül (= P0)
+repeatingPattern=Ismétlõdõ Minta

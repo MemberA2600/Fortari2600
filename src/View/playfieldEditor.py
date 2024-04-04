@@ -637,11 +637,7 @@ class PlayfieldEditor:
         self.__ctrl = False
 
     def drawMode(self, event):
-        if self.__draw == 1:
-            self.__draw = 0
-        else:
-            self.__draw = 1
-
+        self.__draw = 1 - self.__draw
 
     def generateTableCommon(self):
         w = round(self.__topLevel.getTopLevelDimensions()[0]/40*self.__puff)
@@ -656,7 +652,7 @@ class PlayfieldEditor:
             e1 = None
             e2 = None
 
-            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease>", self.checkYEntry, 1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease>", self.checkEntry, 1)
             #self.__topLevelWindow.bind("<KeyRelease>", self.checkEntry)
 
             if self.alreadyDone == False:
@@ -714,7 +710,7 @@ class PlayfieldEditor:
                     self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
                                                                         self.clickedCommon, 1)
                     self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Enter>",
-                                                                        self.clickedCommon, 1)
+                                                                        self.enterCommon, 1)
                     #b.bind("<Button-1>", self.clickedCommon)
                     #b.bind("<Button-3>", self.clickedCommon)
 
@@ -797,7 +793,7 @@ class PlayfieldEditor:
 
     def enterCommon(self, event):
         if self.__draw:
-            self.clickedCommon(event)
+           self.clickedCommon(event)
 
     def redrawCanvas(self):
         if self.firstLoad == True:

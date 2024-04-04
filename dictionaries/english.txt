@@ -484,3 +484,5 @@ constantValiditySection=Valid Sections
 global=Global
 bank=Bank
 section=Section
+repeatingIsOnTop=Repeating on Top (= P0)
+repeatingPattern=Repeating Pattern
