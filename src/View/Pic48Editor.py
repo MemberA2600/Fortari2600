@@ -174,7 +174,7 @@ class Pic48Editor:
                     self.__changeIndex(self.__frameNum - 1)
 
                if     self.__isPlaying == False:
-                 self.__forButton.config(image=self.__forImage)
+                 self.__playButton.config(image=self.__playImage)
 
                  if   self.__frameNum == 1 and self.__indexEntry.cget("state") == NORMAL:
                       self.__indexEntry.config(state = DISABLED)
@@ -186,6 +186,15 @@ class Pic48Editor:
                       self.__playButton.config(state=NORMAL)
                       self.__backButton.config(state=NORMAL)
                       self.__forButton.config(state=NORMAL)
+               else:
+                  self.__playButton.config(image=self.__stopImage)
+                  if self.__frameNum == 1:
+                      self.__isPlaying = False
+
+                  elif self.__frameNum > 1:
+                       self.__indexEntry.config(state=DISABLED)
+                       self.__backButton.config(state=DISABLED)
+                       self.__forButton.config(state=DISABLED)
 
                if self.__repeatingOnTop != self.__boxButtonVal.get():
                   self.__repeatingOnTop = self.__boxButtonVal.get()
@@ -285,27 +294,27 @@ class Pic48Editor:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry, "<KeyRelease>", self.__checkIndexEntry, 1)
 
         self.__backSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "$00", self.__setterFrame, self.__sizes[1] // 25, "testColor", self.__normalFont,
+            self.__loader, "$00", self.__setterFrame, self.__sizes[1] // 25, "testColor", self.__smallFont,
             self.checkBGColorEntry, self.checkBGColorEntry)
 
         self.checkBGColorEntry(None)
 
         self.__speedSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "testSpeed", self.__normalFont,
+            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "testSpeed", self.__smallFont,
             self.checkSpeedEntry, self.checkSpeedEntry)
 
         self.__linesSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, str(self.__numOfLines), self.__setterFrame, self.__sizes[1] // 25, "numOfLines", self.__normalFont,
+            self.__loader, str(self.__numOfLines), self.__setterFrame, self.__sizes[1] // 25, "numOfLines", self.__smallFont,
             self.checkLineNumEntry, self.checkLineNumEntry)
 
         self.__linesSetter.setLabelText(self.__dictionaries.getWordFromCurrentLanguage("numOfLines") + ":")
 
         self.__frameNumSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "frameNum", self.__normalFont,
+            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "frameNum", self.__smallFont,
             self.checkFrameNum, self.checkFrameNum)
 
         self.__indexSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "0", self.__setterFrame, self.__sizes[1] // 25, "index", self.__normalFont,
+            self.__loader, "0", self.__setterFrame, self.__sizes[1] // 25, "index", self.__smallFont,
             self.checkYIndex, self.checkYIndex)
 
         self.__speed = 1
@@ -352,36 +361,49 @@ class Pic48Editor:
         self.__forYIndexButton.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__boxFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width())
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
         self.__boxFrame.pack_propagate(False)
         self.__boxFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__boxButtonVal = IntVar()
         self.__boxButton = Checkbutton(self.__boxFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
-                                    font=self.__smallFont, text=self.__dictionaries.getWordFromCurrentLanguage("repeatingIsOnTop"),
+                                    font=self.__miniFont, text=self.__dictionaries.getWordFromCurrentLanguage("repeatingIsOnTop"),
                                     variable=self.__boxButtonVal
                                     )
         self.__boxButton.pack(side=LEFT, anchor=N, fill=X)
 
+        self.__boxFrame2 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
+        self.__boxFrame2.pack_propagate(False)
+        self.__boxFrame2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__boxButtonVal2 = IntVar()
+        self.__boxButton2 = Checkbutton(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
+                                    font=self.__miniFont, text=self.__dictionaries.getWordFromCurrentLanguage("addBorders"),
+                                    variable=self.__boxButtonVal2
+                                    )
+        self.__boxButton2.pack(side=LEFT, anchor=N, fill=X)
+
         self.__patternMainFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 16, width = self.__setterFrame.winfo_width())
+                                 height=self.__sizes[1] // 18, width = self.__setterFrame.winfo_width())
         self.__patternMainFrame.pack_propagate(False)
         self.__patternMainFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__patternLabelFrame = Frame(self.__patternMainFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 16, width = self.__setterFrame.winfo_width() // 4 * 3)
+                                 height=self.__sizes[1] // 18, width = self.__setterFrame.winfo_width() // 4 * 3)
         self.__patternLabelFrame.pack_propagate(False)
         self.__patternLabelFrame.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__patternButtonFrame = Frame(self.__patternMainFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 16, width = self.__setterFrame.winfo_width() // 4)
+                                 height=self.__sizes[1] // 18, width = self.__setterFrame.winfo_width() // 4)
         self.__patternButtonFrame.pack_propagate(False)
         self.__patternButtonFrame.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__patternLabel = Label(self.__patternLabelFrame,
                                     text=self.__dictionaries.getWordFromCurrentLanguage("repeatingPattern"),
-                                    font=self.__normalFont, fg=self.__colors.getColor("font"),
+                                    font=self.__smallFont, fg=self.__colors.getColor("font"),
                                     bg=self.__colors.getColor("window")
                                     )
 
@@ -389,14 +411,81 @@ class Pic48Editor:
         self.__patternLabel.pack(side=LEFT, anchor=E, fill=BOTH)
 
         self.__repeatingPattern = FortariMB(self.__loader, self.__patternButtonFrame, DISABLED,
-                                            self.__normalFont, self.__pattern, self.__patterns, False, False,
+                                            self.__smallFont, self.__pattern, self.__patterns, False, False,
                                             self.selectedChanged, [self.__pattern])
 
-
         self.__disabledOnes.append(self.__boxButton)
+        self.__disabledOnes.append(self.__boxButton2)
         self.__disabledOnes.append(self.__repeatingPattern)
 
+        from VisualLoaderFrame import VisualLoaderFrame
+
+        self.__loaderFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] //12, width = self.__setterFrame.winfo_width())
+        self.__loaderFrame.pack_propagate(False)
+        self.__loaderFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__testerFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width())
+        self.__testerFrame.pack_propagate(False)
+        self.__testerFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__importFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width())
+        self.__importFrame.pack_propagate(False)
+        self.__importFrame.pack(side=TOP, anchor=N, fill=X)
+
+        while (self.__loaderFrame.winfo_width() < 2): sleep(0.00001)
+
+        self.__spriteLoader = VisualLoaderFrame(self.__loader, self.__loaderFrame, self.__loaderFrame.winfo_height()//2, self.__smallFont, self.__miniFont,
+                                                None, "Better_Than_AI", "loadPicture", self.checkIfValidFileName,
+                                                self.__setterFrame.winfo_width() // 2, self.__open, self.__save)
+
+        while (self.__testerFrame.winfo_width() < 2): sleep(0.00001)
+
+        from EmuTestFrame import EmuTestFrame
+
+        self.__testWithEmulatorFrame = EmuTestFrame(self.__loader, self.__testerFrame, self.__testerFrame.winfo_height(), self.__normalFont,
+                                                    self.__setterFrame.winfo_width() // 2, self.__loadTest, BOTTOM, S)
+
+        while (self.__importFrame.winfo_width() < 2): sleep(0.00001)
+
+        from ConvertFromImageFrame import ConvertFromImageFrame
+
+        self.__convertFromImage = ConvertFromImageFrame(self.__loader, self.__importFrame, self.__importFrame.winfo_height(), self.__normalFont,
+                                                        self.__setterFrame.winfo_width() // 2, self.__importImage,
+                                                        TOP, N)
+
         self.__finished[2] = True
+
+    def checkIfValidFileName(self, event):
+        name = str(event.widget).split(".")[-1]
+
+        widget = self.__spriteLoader.getEntry()
+        value = self.__spriteLoader.getValue()
+
+
+        if self.__loader.io.checkIfValidFileName(value) and (" " not in value):
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                      )
+
+        else:
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      )
+
+    def __importImage(self):
+        pass
+
+    def __loadTest(self):
+        pass
+
+    def __open(self):
+        pass
+
+    def __save(self):
+        pass
 
     def __decYIndex(self):
         self.checkYIndex(-1)
@@ -405,7 +494,8 @@ class Pic48Editor:
         self.checkYIndex(1)
 
     def selectedChanged(self):
-        pass
+        self.__pattern = self.__repeatingPattern.getSelected()
+        self.reDrawCanvas(None)
 
     def checkYIndex(self, event):
         if type(event) != int:
@@ -423,8 +513,8 @@ class Pic48Editor:
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
 
-        if num > self.__numOfLines - (self.__ySize // len(self.__xSize)):
-           num = self.__numOfLines - (self.__ySize // len(self.__xSize))
+        if   num > self.__numOfLines - (self.__ySize // len(self.__xSize)):
+             num = self.__numOfLines - (self.__ySize // len(self.__xSize))
 
         if   num < 0:
              num = 0
@@ -437,6 +527,14 @@ class Pic48Editor:
         self.__indexSetter.setValue(str(num))
         entry.icursor(len(str(num)))
 
+    def checkIfThereIsSomethingOnThePrev(self, y, key, x, button):
+        prevFrame = self.__frameIndex - 1
+        if prevFrame < 0: prevFrame = self.__frameNum - 1
+
+        if self.__data[prevFrame][y][key][x] == 1:
+           self.colorTile(button, 2, key)
+
+
     def fillEditorEntries(self):
         for y in range(self.__Y, self.__Y + (self.__ySize // len(self.__xSize))):
             for key in self.__data[self.__frameIndex][y]:
@@ -446,6 +544,9 @@ class Pic48Editor:
                         self.__dataLines[y - self.__Y][key]["buttons"][x],
                         self.__dataLines[y - self.__Y][key]["values"][x],
                         key)
+
+                    if self.__frameNum > 1 and self.__data[self.__frameIndex][y][key][x] == 0:
+                        self.checkIfThereIsSomethingOnThePrev(y, key, x, self.__dataLines[y - self.__Y][key]["buttons"][x])
 
             for key in self.__colorData[self.__frameIndex][y]:
                 self.__colorDataLines[y-self.__Y]["entries"][key].setValue(
@@ -490,6 +591,8 @@ class Pic48Editor:
                               self.colorTile(button,
                                              self.__dataLines[y][key]["values"][index], key
                                              )
+                              if self.__frameNum > 1 and self.__data[self.__frameIndex][y + self.__Y][key][index] == 0:
+                                 self.checkIfThereIsSomethingOnThePrev(y + self.__Y, key, index, button)
 
                            else:
                               button.config(state = DISABLED, bg = self.__colors.getColor("fontDisabled"))
@@ -625,7 +728,17 @@ class Pic48Editor:
         self.__changeIndex(1, True, True)
 
     def __play(self):
-        pass
+        self.__isPlaying = 1 - self.__isPlaying
+
+        if self.__isPlaying:
+           p = Thread(target = self.__playThread)
+           p.daemon = True
+           p.start()
+
+    def __playThread(self):
+        while (self.__isPlaying and self.dead == False and self.__loader.mainWindow.dead == False):
+            self.__changeIndex(1, True, True)
+            sleep(1 / (self.__speed // 2) )
 
     def __changeIndex(self, val, relative, update):
         old = self.__frameIndex
@@ -767,6 +880,10 @@ class Pic48Editor:
                         val    = self.__dataLines[y][key]["values"][x]
                         lenght = lenghts[key]
 
+                        if key == "layerRepeating":
+                           segmentNum = x // (self.__xSize[1] // 3)
+                           if self.__pattern[segmentNum] == "0": val = 0
+
                         if val != 0:
                            self.__canvas.create_rectangle( x    * lenght * xUnit,  y      * yUnit,
                                                           (x+1) * lenght * xUnit, (y + 1) * yUnit,
@@ -900,6 +1017,9 @@ class Pic48Editor:
 
         self.__data[self.__frameIndex][theY + self.__Y][levelKey][theX] = self.__dataLines[theY][levelKey]["values"][theX]
 
+        if self.__frameNum > 1 and self.__dataLines[theY][levelKey]["values"][theX] == 0:
+           self.checkIfThereIsSomethingOnThePrev(theY + self.__Y, levelkey, theX, button)
+
         if self.ignore == False:
            if levelKey == "layerRepeating":
                others = self.getOtherTwoX(theX)
@@ -929,9 +1049,9 @@ class Pic48Editor:
         return returnMe
 
     def colorTile(self, button, value, levelKey):
-        colors = {self.__keys[0]: ["boxBackNormal", "boxFontNormal"],
-                  self.__keys[1]: ["fontDisabled" , "boxFontNormal"],
-                  self.__keys[2]: ["boxBackNormal", "boxFontNormal"],
+        colors = {self.__keys[0]: ["boxBackNormal", "boxFontNormal", "highLight"],
+                  self.__keys[1]: ["fontDisabled" , "boxFontNormal", "highLight"],
+                  self.__keys[2]: ["boxBackNormal", "boxFontNormal", "highLight"],
                   }
         button.config(bg = self.__colors.getColor(colors[levelKey][value]))
 
@@ -947,6 +1067,4 @@ class Pic48Editor:
     def shiftOff(self, event):
         self.__ctrl = False
 
-    def __save(self):
-        pass
 

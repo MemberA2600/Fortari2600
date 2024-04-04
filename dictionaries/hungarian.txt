@@ -485,3 +485,4 @@ bank=Bank
 section=Szekció
 repeatingIsOnTop=Ismétlõdõ Felül (= P0)
 repeatingPattern=Ismétlõdõ Minta
+addBorders=Keretezés

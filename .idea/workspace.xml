@@ -9,10 +9,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-04-03_121128.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-04-04_084611.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/View/MiniMapMaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MiniMapMaker.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Pic48Editor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Pic48Editor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/playfieldEditor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/playfieldEditor.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +31,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1712213170273" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1712222149790" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1709720180396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -226,26 +225,26 @@
         <counts>
           <entry key="asm" value="7" />
           <entry key="pstat" value="1" />
-          <entry key="py" value="1242" />
+          <entry key="py" value="1245" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="Profiler Session" value="1" />
-          <entry key="Python" value="1242" />
+          <entry key="Python" value="1245" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="477389" />
+          <entry key="py" value="479157" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="477389" />
+          <entry key="Python" value="479157" />
         </counts>
       </usages-collector>
     </session>
@@ -258,24 +257,22 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="376">
-              <caret line="428" column="21" lean-forward="true" selection-start-line="428" selection-start-column="21" selection-end-line="428" selection-end-column="21" />
+            <state relative-caret-position="72">
+              <caret line="433" column="61" selection-start-line="433" selection-start-column="61" selection-end-line="433" selection-end-column="61" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1712213170270" expanded="true" signature="19363:19454" ph="..." />
-                <marker date="1712213170270" expanded="true" signature="19480:19499" ph="..." />
-                <marker date="1712213170270" expanded="true" signature="20446:21335" ph="..." />
-                <marker date="1712213170270" expanded="true" signature="21370:27208" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="23730:23749" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="23783:23789" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="23806:23861" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="23883:23974" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="24000:24101" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="24130:24139" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="25186:25286" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="25315:26424" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="26459:32522" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="33563:33759" ph="..." />
+                <marker date="1712222149787" expanded="true" signature="33806:33815" ph="..." />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/View/FortariMB.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="117" column="19" selection-start-line="117" selection-start-column="14" selection-end-line="117" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -283,8 +280,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="200" selection-start-line="200" selection-end-line="207" selection-end-column="60" />
+            <state relative-caret-position="248">
+              <caret line="376" column="32" selection-start-line="376" selection-start-column="26" selection-end-line="376" selection-end-column="32" />
               <folding>
                 <element signature="e#0#27#0" expanded="true" />
               </folding>
@@ -315,29 +312,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>&quot;entries&quot;</find>
-      <find>backColor</find>
-      <find>bgC</find>
-      <find>checkBox</find>
-      <find>import</find>
-      <find>FortariMB</find>
-      <find>checkBGColorEntry</find>
-      <find>reDrawCanvas</find>
-      <find>self.__canvas</find>
-      <find>getDom</find>
-      <find>getRGBValueFromTIA</find>
-      <find>getHexValueFromTIA</find>
-      <find>__canvas</find>
-      <find>canvas</find>
-      <find>fortariMB</find>
-      <find>Label</find>
-      <find>Labels</find>
-      <find>defaultSelected</find>
-      <find>__pattern</find>
-      <find>state</find>
-      <find>__disabledOnes</find>
-      <find>label</find>
-      <find>forButtonű</find>
       <find>forButton</find>
       <find>Left</find>
       <find>__forYIndexButton</find>
@@ -345,6 +319,29 @@
       <find>inc</find>
       <find>loop</find>
       <find>__Y</find>
+      <find>state</find>
+      <find>tileColor</find>
+      <find>getColor</find>
+      <find>tile</find>
+      <find>self.__frameNum &gt; 1</find>
+      <find>checkIfThereIsSomethingOnThePrev</find>
+      <find>colorTile</find>
+      <find>getOtherTwoX</find>
+      <find>t</find>
+      <find>redraw</find>
+      <find>isPLay</find>
+      <find>__playButton</find>
+      <find>isplay</find>
+      <find>self.__play</find>
+      <find>start</find>
+      <find>save</find>
+      <find>__play</find>
+      <find>checkIfValid</find>
+      <find>VisualLoaderFrame</find>
+      <find>w</find>
+      <find>import</find>
+      <find>__save</find>
+      <find>importIma</find>
     </findStrings>
     <replaceStrings>
       <replace>__changed</replace>
@@ -385,7 +382,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/View/VisualLoaderFrame.py" />
         <option value="$PROJECT_DIR$/venv/sinewave.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/BigSprite.py" />
         <option value="$PROJECT_DIR$/src/View/ScreenElements/ChangeFrameColor.py" />
@@ -435,6 +431,7 @@
         <option value="$PROJECT_DIR$/src/View/PlayfieldEditor.py" />
         <option value="$PROJECT_DIR$/src/View/VisualEditorFrameWithLabelAndEntry.py" />
         <option value="$PROJECT_DIR$/src/View/SpriteEditor.py" />
+        <option value="$PROJECT_DIR$/src/View/MiniMapMaker.py" />
         <option value="$PROJECT_DIR$/src/View/Pic48Editor.py" />
       </list>
     </option>
@@ -700,19 +697,19 @@
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6515892" visible="true" weight="0.165" />
-      <window_info id="Structure" order="1" sideWeight="0.34841076" side_tool="true" visible="true" weight="0.165" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.6503667" visible="true" weight="0.165" />
+      <window_info id="Structure" order="1" sideWeight="0.34963325" side_tool="true" visible="true" weight="0.165" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.641875" visible="true" weight="0.23336457" />
+      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.64125" visible="true" weight="0.23336457" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49743262" weight="0.39925024" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.358125" side_tool="true" visible="true" weight="0.23336457" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.35875" side_tool="true" visible="true" weight="0.23336457" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -759,13 +756,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/DigitClock.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="396" column="39" selection-start-line="396" selection-start-column="35" selection-end-line="396" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/FullBar.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="331">
@@ -1040,13 +1030,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MiniMapMaker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="1148" selection-start-line="1148" selection-end-line="1153" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/DataHolders/ColorPalettes.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="288">
@@ -1058,13 +1041,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="264">
           <caret line="56" selection-start-line="56" selection-end-line="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="248">
-          <caret line="776" column="21" selection-start-line="776" selection-start-column="15" selection-end-line="776" selection-end-column="21" />
         </state>
       </provider>
     </entry>
@@ -1095,6 +1071,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/FortariMB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="298">
+          <caret line="64" column="19" selection-start-line="64" selection-start-column="8" selection-end-line="64" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MenuMaker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="488">
@@ -1105,33 +1088,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/VisualLoaderFrame.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="34" column="37" selection-start-line="34" selection-start-column="37" selection-end-line="34" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MiniMapMaker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="728">
+          <caret line="862" column="23" selection-start-line="862" selection-start-column="23" selection-end-line="862" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="200" selection-start-line="200" selection-end-line="207" selection-end-column="60" />
+        <state relative-caret-position="248">
+          <caret line="376" column="32" selection-start-line="376" selection-start-column="26" selection-end-line="376" selection-end-column="32" />
           <folding>
             <element signature="e#0#27#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/FortariMB.py">
+    <entry file="file://$PROJECT_DIR$/src/View/PlayfieldEditor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="117" column="19" selection-start-line="117" selection-start-column="14" selection-end-line="117" selection-end-column="19" />
+        <state relative-caret-position="264">
+          <caret line="211" column="59" lean-forward="true" selection-start-line="207" selection-start-column="8" selection-end-line="211" selection-end-column="59" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="428" column="21" lean-forward="true" selection-start-line="428" selection-start-column="21" selection-end-line="428" selection-end-column="21" />
+        <state relative-caret-position="72">
+          <caret line="433" column="61" selection-start-line="433" selection-start-column="61" selection-end-line="433" selection-end-column="61" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1712213170270" expanded="true" signature="19363:19454" ph="..." />
-            <marker date="1712213170270" expanded="true" signature="19480:19499" ph="..." />
-            <marker date="1712213170270" expanded="true" signature="20446:21335" ph="..." />
-            <marker date="1712213170270" expanded="true" signature="21370:27208" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="23730:23749" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="23783:23789" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="23806:23861" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="23883:23974" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="24000:24101" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="24130:24139" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="25186:25286" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="25315:26424" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="26459:32522" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="33563:33759" ph="..." />
+            <marker date="1712222149787" expanded="true" signature="33806:33815" ph="..." />
           </folding>
         </state>
       </provider>

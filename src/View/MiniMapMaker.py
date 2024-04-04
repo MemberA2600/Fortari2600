@@ -834,30 +834,33 @@ class MiniMapMaker:
                self.__changed = False
 
             if self.__finished and self.__finished2:
-               if self.__indexY > 0:
-                   self.__upButton.config(state = NORMAL)
-               else:
-                   self.__upButton.config(state=DISABLED)
+               try:
+                   if self.__indexY > 0:
+                       self.__upButton.config(state = NORMAL)
+                   else:
+                       self.__upButton.config(state=DISABLED)
 
-               if self.__indexY < self.getMsximum("Y"):
-                   self.__downButton.config(state = NORMAL)
-               else:
-                   self.__downButton.config(state = DISABLED)
+                   if self.__indexY < self.getMsximum("Y"):
+                       self.__downButton.config(state = NORMAL)
+                   else:
+                       self.__downButton.config(state = DISABLED)
 
-               if self.__indexX > 0:
-                   self.__leftButton.config(state = NORMAL)
-               else:
-                   self.__leftButton.config(state = DISABLED)
+                   if self.__indexX > 0:
+                       self.__leftButton.config(state = NORMAL)
+                   else:
+                       self.__leftButton.config(state = DISABLED)
 
-               if self.__indexX < self.getMsximum("X"):
-                   self.__rightButton.config(state = NORMAL)
-               else:
-                   self.__rightButton.config(state = DISABLED)
+                   if self.__indexX < self.getMsximum("X"):
+                       self.__rightButton.config(state = NORMAL)
+                   else:
+                       self.__rightButton.config(state = DISABLED)
 
-               if self.__changed == False:
-                   self.__spriteLoader.disableSave()
-               else:
-                   self.__spriteLoader.enableSave()
+                   if self.__changed == False:
+                       self.__spriteLoader.disableSave()
+                   else:
+                       self.__spriteLoader.enableSave()
+               except:
+                   pass
 
     def __chamgeConst(self, event):
         if self.__finished == False: return
