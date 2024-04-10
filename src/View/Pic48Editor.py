@@ -36,7 +36,7 @@ class Pic48Editor:
         self.__ctrl           = False
         self.__middle         = False
         self.__draw           = 0
-        self.__repeatingOnTop = False
+        self.__repeatingOnTop = True
 
         self.__Y            = 0
         self.__frameNum     = 1
@@ -366,6 +366,8 @@ class Pic48Editor:
         self.__boxFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__boxButtonVal = IntVar()
+        self.__boxButtonVal.set(1)
+
         self.__boxButton = Checkbutton(self.__boxFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
                                     font=self.__miniFont, text=self.__dictionaries.getWordFromCurrentLanguage("repeatingIsOnTop"),
@@ -476,7 +478,16 @@ class Pic48Editor:
                                       )
 
     def __importImage(self):
-        pass
+        from Import48pxPictureWindow import Import48pxPictureWindow
+
+        if self.__frameNum == 1:
+            initMode = False
+        else:
+            initMode = True
+
+        import48pxPictureWindow = Import48pxPictureWindow(self.__loader, self.__frameNum, self.__numOfLines,
+                                                          self.__repeatingOnTop, self.__pattern, self.__patterns
+                                                          )
 
     def __loadTest(self):
         pass

@@ -486,3 +486,6 @@ section=Szekció
 repeatingIsOnTop=Ismétlõdõ Felül (= P0)
 repeatingPattern=Ismétlõdõ Minta
 addBorders=Keretezés
+initMode=Inicializálás
+autoDetect=Automatikus Beállítás
+repeatingIsOnTop2=Ismétlõdõ\nFelül

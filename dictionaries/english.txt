@@ -487,3 +487,6 @@ section=Section
 repeatingIsOnTop=Repeating on Top (= P0)
 repeatingPattern=Repeating Pattern
 addBorders=Add Borders
+initMode=Init Mode
+autoDetect=Autodetect Settings
+repeatingIsOnTop2=Repeating\non Top
