@@ -227,6 +227,7 @@ EnterKernel
 	STA	ENAM0		
 	STA	ENAM1		 
 	STA	ENABL
+	STA	CXCLR
 
 	BIT	SubMenu
 	BVC	StayHere	; Go to the SubMenu Kernel
@@ -390,7 +391,6 @@ NoBallTurnOff
 
 	STA	WSYNC
 	
-
 	LDA	temp01		; pfIndex 3 (12)	
 	TAY			; 2(14)
 

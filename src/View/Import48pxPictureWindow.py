@@ -17,6 +17,7 @@ class Import48pxPictureWindow:
         self.dead = False
         self.changed = False
         self.__loader.stopThreads.append(self)
+        self.__first = True
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -49,9 +50,12 @@ class Import48pxPictureWindow:
         self.__patterns       = patterns
         self.__pattern        = pattern
         self.__w              = 48
-        self.__tolerance      = 4
+        self.__tolerance      = 8
         self.__segmentMethod  = "AVG"
         self.__segmentMethods = ["AND", "OR", "AVG"]
+        self.__finished       = True
+        self.__invert         = False
+        self.__forceBlack     = False
 
         self.__tresConst      = 42
 
@@ -62,7 +66,7 @@ class Import48pxPictureWindow:
 
         self.result = None
 
-        if self.answer != "" or os.path.exists(self.answer) == False:
+        if self.answer != "" and os.path.exists(self.answer) == True:
            self.__imageBackUp = IMG.open(self.answer, "r")
            if self.__imageBackUp.mode != "RGB":
               self.__imageBackUp       = self.__imageBackUp.convert("RGB")
@@ -75,6 +79,10 @@ class Import48pxPictureWindow:
 
            self.__window = SubMenu(self.__loader, "loadPicture", self.__sizes[0], self.__sizes[1], None, self.__addElements,
                                 2)
+        else:
+           self.__loader.mainWindow.editor.attributes('-disabled', True)
+           self.__loader.topLevels[-1].focus_force()
+
         self.dead   = True
 
     def __closeWindow(self):
@@ -202,22 +210,22 @@ class Import48pxPictureWindow:
         if self.__boxButtonVal.get() == False: self.__boxButton2.config(state = DISABLED)
 
         self.__setterFrame = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 10, width = self.__sizes[0])
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0])
         self.__setterFrame.pack_propagate(False)
         self.__setterFrame.pack(side=TOP, anchor=N, fill=X)
 
         self.__setterFrame1 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 10, width = self.__sizes[0] // 3)
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
         self.__setterFrame1.pack_propagate(False)
         self.__setterFrame1.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__setterFrame2 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 10, width = self.__sizes[0] // 3)
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
         self.__setterFrame2.pack_propagate(False)
         self.__setterFrame2.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__setterFrame3 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 10, width = self.__sizes[0] // 3)
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
         self.__setterFrame3.pack_propagate(False)
         self.__setterFrame3.pack(side=LEFT, anchor=E, fill=Y)
 
@@ -241,8 +249,8 @@ class Import48pxPictureWindow:
         if self.__auto:
            self.__numOfLinesEntry.config(state = DISABLED)
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<FocusOut>"  , self.__tresChanged, 2)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<KeyRelease>", self.__tresChanged, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<FocusOut>"  , self.__numOfLinesChanged, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<KeyRelease>", self.__numOfLinesChanged, 2)
 
         self.__boxButtonVal3 = IntVar()
         self.__boxButtonVal3.set(self.__repeatingOnTop)
@@ -252,7 +260,7 @@ class Import48pxPictureWindow:
                                     font=self.__normalFont, text=self.__dictionaries.getWordFromCurrentLanguage("repeatingIsOnTop2").replace("\\n", "\n"),
                                     variable=self.__boxButtonVal3
                                     )
-        self.__boxButton3.pack(side=TOP, anchor=N, fill=Y)
+        self.__boxButton3.pack(side=TOP, anchor=CENTER, fill=Y)
 
         self.__pattenLabel = Label(self.__setterFrame3, text=self.__dictionaries.getWordFromCurrentLanguage("repeatingPattern"),
                                   bg = self.__loader.colorPalettes.getColor("window"),
@@ -275,16 +283,184 @@ class Import48pxPictureWindow:
         if self.__auto:
            self.__boxButton3.config(state = DISABLED)
 
+        self.__setterFrame_ = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0])
+        self.__setterFrame_.pack_propagate(False)
+        self.__setterFrame_.pack(side=TOP, anchor=N, fill=X)
+
+        self.__setterFrame4 = Frame(self.__setterFrame_, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
+        self.__setterFrame4.pack_propagate(False)
+        self.__setterFrame4.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__setterFrame5 = Frame(self.__setterFrame_, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
+        self.__setterFrame5.pack_propagate(False)
+        self.__setterFrame5.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__setterFrame6 = Frame(self.__setterFrame_, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 12, width = self.__sizes[0] // 3)
+        self.__setterFrame6.pack_propagate(False)
+        self.__setterFrame6.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__toleranceVar  = StringVar()
+        self.__boxButtonVal4 = IntVar()
+
+        self.__boxButtonVal4.set(self.__oneColorBG)
+        self.__toleranceVar.set(str(self.__tolerance))
+
+        self.__boxButton4 = Checkbutton(self.__setterFrame5, bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                    font=self.__normalFont, text=self.__dictionaries.getWordFromCurrentLanguage("oneColor2").replace("\\n", "\n"),
+                                    variable=self.__boxButtonVal4
+                                    )
+        self.__boxButton4.pack(side=TOP, anchor=CENTER, fill=Y)
+
+        self.__errorToleranceLabel = Label(self.__setterFrame4, text=self.__dictionaries.getWordFromCurrentLanguage("eTolerance"),
+                                  bg = self.__loader.colorPalettes.getColor("window"),
+                                  fg = self.__loader.colorPalettes.getColor("font"), justify = "center",
+                                  font=self.__normalFont
+                                  )
+        self.__errorToleranceLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__errorToleranceEntry    = Entry(self.__setterFrame4, text=self.__dictionaries.getWordFromCurrentLanguage("thresholdSetter"),
+                                  bg = self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                  fg = self.__loader.colorPalettes.getColor("boxFontNormal"), justify = "center",
+                                  textvariable=self.__toleranceVar, width=999999999,
+                                  font=self.__normalFont
+                              )
+        self.__errorToleranceEntry.pack(side=TOP, anchor=N, fill=X)
+
+        if self.__auto:
+           self.__numOfLinesEntry.config(state = DISABLED)
+           #self.__boxButton4.config(state = DISABLED)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__errorToleranceEntry, "<FocusOut>"  , self.__eTorChanged, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__errorToleranceEntry, "<KeyRelease>", self.__eTorChanged, 2)
+
+        self.__segmentLabel = Label(self.__setterFrame6, text=self.__dictionaries.getWordFromCurrentLanguage("segmentMethod"),
+                                  bg = self.__loader.colorPalettes.getColor("window"),
+                                  fg = self.__loader.colorPalettes.getColor("font"), justify = "center",
+                                  font=self.__normalFont
+                                  )
+        self.__segmentLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__segmentSetter = FortariMB(self.__loader, self.__setterFrame6, status,
+                                            self.__smallFont, self.__segmentMethod, self.__segmentMethods, False, False,
+                                            self.selectedChanged2, [self.__segmentMethod])
+
+        self.__setterFrame__ = Frame(self.__topLevelWindow, bg=self.__loader.colorPalettes.getColor("window"),
+                                    height=self.__sizes[1] // 12, width=self.__sizes[0])
+        self.__setterFrame__.pack_propagate(False)
+        self.__setterFrame__.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__setterFrame7 = Frame(self.__setterFrame__, bg=self.__loader.colorPalettes.getColor("window"),
+                                    height=self.__sizes[1] // 12, width=self.__sizes[0] // 3)
+        self.__setterFrame7.pack_propagate(False)
+        self.__setterFrame7.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__setterFrame8 = Frame(self.__setterFrame__, bg=self.__loader.colorPalettes.getColor("window"),
+                                    height=self.__sizes[1] // 12, width=self.__sizes[0] // 3)
+        self.__setterFrame8.pack_propagate(False)
+        self.__setterFrame8.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__setterFrame9 = Frame(self.__setterFrame__, bg=self.__loader.colorPalettes.getColor("window"),
+                                    height=self.__sizes[1] // 12, width=self.__sizes[0] // 3)
+        self.__setterFrame9.pack_propagate(False)
+        self.__setterFrame9.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__okButton = Button(self.__setterFrame8,
+                                    bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("font"),
+                                    activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                    activeforeground=self.__loader.colorPalettes.getColor("font"),
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
+                                    font=self.__normalFont, command=self.saveToData
+                                    )
+        self.__okButton.pack_propagate(False)
+        self.__okButton.pack(side=BOTTOM, anchor=S, fill=BOTH)
+
+        self.__boxButtonVal5 = IntVar()
+        self.__boxButtonVal6 = IntVar()
+
+        self.__boxButtonVal5.set(self.__invert)
+        self.__boxButtonVal5.set(self.__forceBlack)
+
+        self.__boxButton5 = Checkbutton(self.__setterFrame7, bg=self.__loader.colorPalettes.getColor("window"),
+                                        fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                        font=self.__normalFont,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("invertColors").replace("\\n",
+                                                                                                                 "\n"),
+                                        variable=self.__boxButtonVal5
+                                        )
+        self.__boxButton5.pack(side=TOP, anchor=CENTER, fill=Y)
+
+        self.__boxButton6 = Checkbutton(self.__setterFrame9, bg=self.__loader.colorPalettes.getColor("window"),
+                                        fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                        font=self.__normalFont,
+                                        text=self.__dictionaries.getWordFromCurrentLanguage("forceBlack").replace("\\n",
+                                                                                                                 "\n"),
+                                        variable=self.__boxButtonVal6
+                                        )
+        self.__boxButton6.pack(side=TOP, anchor=CENTER, fill=Y)
+
+        if self.__auto:
+           self.__boxButton5.config(state = DISABLED)
+           self.__boxButton6.config(state = DISABLED)
+
         t1 = Thread(target=self.imageThread)
         t1.daemon = True
         t1.start()
 
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 2)
 
-    def selectedChanged(self, event):
-        if self.__pattern != self.__repeatingPattern.getValue():
-           self.__pattern  = self.__repeatingPattern.getValue()
-           self.generate2600Picture()
+    def saveToData(self):
+        start = (len(self.__colorData) - self.__numOfLines) // 2
+        end   =  len(self.__colorData) - start
+
+        data = deepcopy(self.__colorData[start:end])
+
+        self.result = {
+            "numberOfLines"   : self.__numOfLines,
+            "data"            : data,
+            "repeatingOnTop"  : self.__repeatingOnTop,
+            "repeatPattern"   : self.__pattern
+        }
+
+        self.__closeWindow()
+
+    def selectedChanged2(self):
+        if self.__segmentMethod != self.__segmentSetter.getSelected():
+           self.__segmentMethod  = self.__segmentSetter.getSelected()
+           self.gen2600()
+
+    def __eTorChanged(self, event):
+        val = self.__toleranceVar.get()
+        entry = self.__errorToleranceEntry
+
+        try:
+            num = int(val)
+        except:
+            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            return
+
+        entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
+        if num < 0:
+            num = 0
+        elif num > 48:
+            num = 48
+
+        if self.__tolerance != num:
+            self.__tolerance = num
+            self.gen2600()
+
+        self.__toleranceVar.set(str(num))
+        entry.icursor(len(str(num)))
+
+    def selectedChanged(self):
+        if self.__pattern != self.__repeatingPattern.getSelected():
+           self.__pattern  = self.__repeatingPattern.getSelected()
+           self.gen2600()
 
     def __numOfLinesChanged(self, event):
         val = self.__numOfLinesVar.get()
@@ -299,11 +475,11 @@ class Import48pxPictureWindow:
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
 
         if   num < 1  : num = 1
-        elif num > 255: num = 255
+        elif num > self.__h: num = self.__h
 
         if self.__numOfLines != num:
            self.__numOfLines  = num
-           self.generate2600Picture()
+           self.gen2600()
 
         self.__numOfLinesVar.set(str(num))
         entry.icursor(len(str(num)))
@@ -312,42 +488,82 @@ class Import48pxPictureWindow:
         boxChange = False
         update    = False
 
-        if self.__initMode != self.__boxButtonVal.get():
-           self.__initMode  = self.__boxButtonVal.get()
-           boxChange        = True
+        try:
+            if self.__finished:
+               self.__okButton.config(state = NORMAL)
+            else:
+               self.__okButton.config(state = DISABLED)
 
-        if self.__auto     != self.__boxButtonVal2.get():
-           self.__auto      = self.__boxButtonVal2.get()
-           boxChange        = True
+            if self.__initMode != self.__boxButtonVal.get():
+               self.__initMode  = self.__boxButtonVal.get()
+               boxChange        = True
 
-        if self.__repeatingOnTop != self.__boxButtonVal3.get():
-           self.__repeatingOnTop  = self.__boxButtonVal3.get()
-           boxChange        = True
+            if self.__auto     != self.__boxButtonVal2.get():
+               self.__auto      = self.__boxButtonVal2.get()
+               boxChange        = True
 
-        if boxChange:
-           #print(self.__initMode, self.__auto, False == 0)
-           if self.__initMode and self.__auto:
-              self.__boxButton3.config(state      = DISABLED)
-              self.__numOfLinesEntry.config(state = DISABLED)
-              self.__repeatingPattern.changeState(DISABLED)
+            if self.__repeatingOnTop != self.__boxButtonVal3.get():
+               self.__repeatingOnTop  = self.__boxButtonVal3.get()
+               boxChange        = True
 
-           elif self.__initMode and self.__auto == False:
-              self.__boxButton2.config(state=NORMAL)
-              self.__boxButton3.config(state=NORMAL)
-              self.__numOfLinesEntry.config(state=NORMAL)
-              self.__repeatingPattern.changeState(NORMAL)
+            if self.__oneColorBG != self.__boxButtonVal4.get():
+               self.__oneColorBG  = self.__boxButtonVal4.get()
+               boxChange        = True
 
-           else:
-              self.__auto = False
-              self.__boxButtonVal2.set(0)
-              self.__boxButton2.config(state      = DISABLED)
-              self.__boxButton2.config(state      = DISABLED)
-              self.__boxButton3.config(state      = DISABLED)
-              self.__numOfLinesEntry.config(state = DISABLED)
-              self.__repeatingPattern.changeState(DISABLED)
+            if self.__invert != self.__boxButtonVal5.get():
+               self.__invert  = self.__boxButtonVal5.get()
+               boxChange        = True
 
-           update = True
-           self.generate2600Picture()
+            if self.__forceBlack != self.__boxButtonVal6.get():
+               self.__forceBlack  = self.__boxButtonVal6.get()
+               boxChange        = True
+
+            if boxChange:
+               #print(self.__initMode, self.__auto, False == 0)
+               if self.__initMode and self.__auto:
+                  self.__boxButton3.config(state      = DISABLED)
+                  self.__numOfLinesEntry.config(state = DISABLED)
+                  self.__repeatingPattern.changeState(DISABLED)
+                  self.__boxButton5.config(state      = DISABLED)
+                  self.__boxButton6.config(state      = DISABLED)
+                  self.__segmentSetter.changeState(DISABLED)
+
+               elif self.__initMode and self.__auto == False:
+                  self.__boxButton2.config(state=NORMAL)
+                  self.__boxButton3.config(state=NORMAL)
+                  self.__numOfLinesEntry.config(state=NORMAL)
+                  self.__repeatingPattern.changeState(NORMAL)
+                  self.__boxButton5.config(state      = NORMAL)
+                  self.__boxButton6.config(state      = NORMAL)
+                  self.__segmentSetter.changeState(NORMAL)
+               else:
+                  self.__auto = False
+                  self.__boxButtonVal2.set(0)
+                  self.__boxButton2.config(state      = DISABLED)
+                  self.__boxButton3.config(state      = DISABLED)
+                  self.__numOfLinesEntry.config(state = DISABLED)
+                  self.__repeatingPattern.changeState(DISABLED)
+                  self.__boxButton5.config(state      = DISABLED)
+                  self.__boxButton6.config(state      = DISABLED)
+                  self.__segmentSetter.changeState(DISABLED)
+
+               update = True
+               self.gen2600()
+        except:
+            pass
+
+    def gen2600(self):
+        t = Thread(target=self.generate2600Pic)
+        t.daemon = True
+        t.start()
+
+    def generate2600Pic(self):
+        while (self.__finished == False): sleep(0.0005)
+        self.__finished = False
+        self.__okButton.config(state=DISABLED)
+
+        self.generate2600Picture()
+        self.drawCanvas()
 
     def __tresChanged(self, event):
         val = self.__tres.get()
@@ -367,13 +583,21 @@ class Import48pxPictureWindow:
 
         if self.__tresConst != num:
             self.__tresConst = num
-            self.convertImageAndReDrawCanvas()
+
+            t1 = Thread(target=self.imageThread)
+            t1.daemon = True
+            t1.start()
 
         self.__tres.set(str(num))
         entry.icursor(len(str(num)))
 
     def imageThread(self):
-        while(self.__imgLabel.winfo_width() < 2): sleep(0.00005)
+        while (self.__finished == False): sleep(0.0005)
+        self.__finished = False
+        self.__okButton.config(state=DISABLED)
+
+        while(self.__imgLabel.winfo_width() < 2): sleep(0.0005)
+
         self.convertImageAndReDrawCanvas()
 
     def convertImageAndReDrawCanvas(self):
@@ -401,8 +625,10 @@ class Import48pxPictureWindow:
         start = (len(self.__colorData) - self.__numOfLines) // 2
         end   =  len(self.__colorData) - start
 
-        order = ["BG", "PF", "P1", "P0"]
+        order   = ["BG", "PF", "P1", "P0"]
+        actualY = -1
         for y in range(start, end):
+            actualY += 1
             for item in order:
                 colorLine = None
                 for num in self.__colorData[y].keys():
@@ -415,22 +641,24 @@ class Import48pxPictureWindow:
                 c =  self.__colorDict.getHEXValueFromTIA(colorLine[2])
 
                 if   item == "BG":
-                     self.__canvas.create_rectangle(0, y * yUnit,
-                                                   self.__canvas.winfo_width(), (y + 1) * yUnit,
+                     self.__canvas.create_rectangle(0, actualY * yUnit,
+                                                   self.__canvas.winfo_width(), (actualY + 1) * yUnit,
                                                    outline="", fill=c)
                 elif item == "PF":
                      for x in range(0, 12):
                          if colorLine[0][x] == 1:
-                            self.__canvas.create_rectangle(x * 4 * xUnit, y * yUnit,
-                                                        (x + 1) * 4 * xUnit, (y + 1) * yUnit,
+                            self.__canvas.create_rectangle(x * 4 * xUnit, actualY * yUnit,
+                                                        (x + 1) * 4 * xUnit, (actualY + 1) * yUnit,
                                                         outline="", fill=c)
                 elif item in ["P0", "P1"]:
                      for x in range(0, 48):
                          if colorLine[0][x] == 1:
-                             self.__canvas.create_rectangle(x * xUnit, y * yUnit,
-                                                            (x + 1) * xUnit, (y + 1) * yUnit,
+                             self.__canvas.create_rectangle(x * xUnit, actualY * yUnit,
+                                                            (x + 1) * xUnit, (actualY + 1) * yUnit,
                                                             outline="", fill=c)
 
+        self.__finished = True
+        self.__okButton.config(state=NORMAL)
 
     def __drawTemp(self):
         xUnit = self.__canvas.winfo_width()  // 48
@@ -804,7 +1032,17 @@ class Import48pxPictureWindow:
             self.__colorData.append(deepcopy(colorData))
 
         #self.__drawTemp()
+
+        wasFirst = False
+        if self.__first or self.__auto:
+            if self.__first:
+               self.__first = False
+               wasFirst     = True
+            self.__setAutoMergeMethodAndBackground()
+
         self.__setRulesAndReArrange()
+        if self.__forceBlack or self.__invert or self.__auto or wasFirst:
+           self.__swapPFBG()
 
         #self.__oneColorBG = False
         if self.__oneColorBG:
@@ -837,6 +1075,194 @@ class Import48pxPictureWindow:
                    if line[val][3] == "BG":
                       line[val][2]  = thatColor
 
+    def __swapPFBG(self):
+        if self.__auto:
+           self.__invert     = False
+           self.__forceBlack = False
+
+           swappable = 0
+           black     = 0
+           all       = 0
+           for y in range(0, self.__h):
+               BG = None
+               PF = None
+               for val in self.__colorData[y].keys():
+                   if self.__colorData[y][val][3] == "PF":
+                       PF = self.__colorData[y][val]
+                   elif self.__colorData[y][val][3] == "BG":
+                       BG = self.__colorData[y][val]
+
+                   if PF != None and BG != None:
+                       break
+
+               if PF != None and BG != None:
+                   bgColor = PF[2]
+                   pfColor = BG[2]
+                   pfData  = PF[0]
+                   all    += 1
+
+                   if (pfColor != "$00" and bgColor == "$00"):
+                       black += 1
+                       continue
+
+                   if pfData.count(0) > len(pfData) // 2:
+                      swappable += 1
+                      continue
+
+           if swappable > all // 2:
+              self.__invert = True
+           if black > all // 2:
+              self.__forceBlack = True
+
+           self.__boxButtonVal5.set(self.__invert)
+           self.__boxButtonVal6.set(self.__forceBlack)
+
+
+        if self.__auto == False and self.__forceBlack == False:
+           return
+
+        for y in range(0, self.__h):
+            BG = None
+            PF = None
+            for val in self.__colorData[y].keys():
+                if   self.__colorData[y][val][3] == "PF":
+                     PF = self.__colorData[y][val]
+                elif self.__colorData[y][val][3] == "BG":
+                     BG = self.__colorData[y][val]
+
+                if PF != None and BG != None:
+                   break
+
+            if PF != None and BG != None:
+               bgColor = PF[2]
+               pfColor = BG[2]
+               pfData  = PF[0]
+
+               if (pfColor != "$00" and bgColor == "$00" and self.__forceBlack) or self.__invert:
+                  PF[2]   = pfColor
+                  BG[2]   = bgColor
+
+                  for x in range(0, len(pfData)):
+                      pfData[x] = 1 - pfData[x]
+
+
+    def __setAutoMergeMethodAndBackground(self):
+        colors     = {}
+        forMerging = [0, 0, 0]
+
+        for y in range(0, self.__h):
+            for val in self.__colorData[y].keys():
+                if self.__colorData[y][val][0].count(1) > 1:
+                   if val not in colors:
+                      colors[val]     = []
+
+                   if self.__colorData[y][val][0].count(1) > 0:
+                      colors[val].append(self.__colorData[y][val][2])
+
+                   for methodNum in range(0, len(self.__segmentMethods)):
+                       method = self.__segmentMethods[methodNum]
+                       segmentsRepeat = []
+                       #    self.__colorData[y][val][0][0 :16],
+                       #    self.__colorData[y][val][0][16:32],
+                       #    self.__colorData[y][val][0][32:48]
+                       #]
+
+                       for number in range(0, 3):
+                           if self.__pattern[number] == "1":
+                              segmentsRepeat.append(self.__colorData[y][val][0][number * 16 : (number + 1) + 16])
+
+                       segmentsPF = []
+                       for startX in range(0, 48, 4):
+                           segmentsPF.append(self.__colorData[y][val][0][startX : startX + 4])
+
+                       if len(segmentsRepeat) > 1:
+                          for x in range(0, 16):
+                              pixels = []
+                              for segment in segmentsRepeat:
+                                  pixels.append(segment[x])
+
+                              if pixels.count(1) > 1 and pixels.count(0) > 1:
+                                 value = 0
+                                 if   method == "AVG":
+                                      value = round(sum(pixels) / len(pixels))
+                                 elif method == "AND":
+                                      if pixels.count(0) == 0:
+                                         value = 1
+                                      else:
+                                         value = 0
+                                 elif method == "OR":
+                                      if pixels.count(1) == 0:
+                                         value = 0
+                                      else:
+                                         value = 1
+
+                                 forMerging[methodNum] += pixels.count(value)
+
+                       for segmentNum in range(0, 12):
+                           pixels = segmentsPF[segmentNum]
+                           if pixels.count(1) > 1 and pixels.count(0) > 1:
+                               value = 0
+                               if method == "AVG":
+                                   value = round(sum(pixels) / len(pixels))
+                               elif method == "AND":
+                                   if pixels.count(0) == 0:
+                                       value = 1
+                                   else:
+                                       value = 0
+                               elif method == "OR":
+                                   if pixels.count(1) == 0:
+                                       value = 0
+                                   else:
+                                       value = 1
+
+                               forMerging[methodNum] += pixels.count(value)
+
+        largest    = 0
+        largestOne = ""
+        for methodNum in range(0, len(self.__segmentMethods)):
+            method = self.__segmentMethods[methodNum]
+
+            if forMerging[methodNum] > largest:
+               forMerging[methodNum] = largest
+               largestOne            = method
+
+        self.__segmentMethod = largestOne
+        self.__segmentSetter.deSelect()
+        self.__segmentSetter.select(self.__segmentMethod, True)
+
+        """"
+
+        self.__oneColorBG = False
+        for val in colors.keys():
+            temp = {}
+            numOfKeys = 0
+            for c in colors[val]:
+                key = c[1] + hex(int("0x" + c[2], 16) // (self.__tolerance // 2 + 1)).replace("0x", "").upper()
+                if key not in temp.keys():
+                   temp[key]  = 1
+                   numOfKeys += 1
+                else:
+                   temp[key] += 1
+
+            largest    = 0
+            largestOne = ""
+
+            for key in temp:
+                if temp[key] > largest:
+                   largest    = temp[key]
+                   largestOne = key
+
+            if numOfKeys == 0: continue
+
+            #print(largest, numOfKeys, temp.keys())
+            if largest / numOfKeys > 0.9:
+              self.__oneColorBG = True
+              break
+
+        #print(self.__oneColorBG, self.__segmentMethod)
+
+        self.__boxButtonVal4.set(self.__oneColorBG)
+        """
 
     def imageTo4Colors(self, image, tres):
         i = deepcopy(image)

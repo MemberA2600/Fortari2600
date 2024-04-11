@@ -380,13 +380,51 @@ class Pic48Editor:
         self.__boxFrame2.pack_propagate(False)
         self.__boxFrame2.pack(side=TOP, anchor=N, fill=X)
 
-        self.__boxButtonVal2 = IntVar()
-        self.__boxButton2 = Checkbutton(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
-                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
-                                    font=self.__miniFont, text=self.__dictionaries.getWordFromCurrentLanguage("addBorders"),
-                                    variable=self.__boxButtonVal2
+        #self.__boxButtonVal2 = IntVar()
+        #self.__boxButton2 = Checkbutton(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+        #                            fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
+        #                            font=self.__miniFont, text=self.__dictionaries.getWordFromCurrentLanguage("addBorders"),
+        #                            variable=self.__boxButtonVal2
+        #                            )
+        #self.__boxButton2.pack(side=LEFT, anchor=N, fill=X)
+        self.__borderLabel = Label(self.__boxFrame2,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("setBorder"),
+                                    font=self.__miniFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window")
                                     )
-        self.__boxButton2.pack(side=LEFT, anchor=N, fill=X)
+
+        self.__borderLabel.pack_propagate(False)
+        self.__borderLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__boxFrame2_ = Frame(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
+        self.__boxFrame2_.pack_propagate(False)
+        self.__boxFrame2_.pack(side=TOP, anchor=N, fill=BOTH)
+
+        while (self.__boxFrame2_.winfo_width() < 2): sleep(0.000005)
+
+        self.__smallData  = [0,0,0,0,
+                             0,0,0,0,
+                             0,0,0,0,
+                             0,0]
+        self.__smallBoxes = []
+        for num in range(0, 14):
+            f = Frame(self.__boxFrame2_, bg=self.__loader.colorPalettes.getColor("window"),
+                      height=self.__sizes[1] // 22, width = self.__boxFrame2_.winfo_width() // 14)
+            f.pack_propagate(False)
+            f.pack(side=LEFT, anchor=W, fill=Y)
+
+            self.__frames.append(f)
+
+            b = Button(f, name = "small" + str(num),
+                       bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                       relief=GROOVE, activebackground=self.__colors.getColor("highLight"))
+            b.pack_propagate(False)
+            b.pack(fill=BOTH)
+
+            self.__smallBoxes.append(b)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__clickedSmall, 1)
+            self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>", self.__clickedSmall, 1)
 
         self.__patternMainFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  height=self.__sizes[1] // 18, width = self.__setterFrame.winfo_width())
@@ -417,7 +455,7 @@ class Pic48Editor:
                                             self.selectedChanged, [self.__pattern])
 
         self.__disabledOnes.append(self.__boxButton)
-        self.__disabledOnes.append(self.__boxButton2)
+        #self.__disabledOnes.append(self.__boxButton2)
         self.__disabledOnes.append(self.__repeatingPattern)
 
         from VisualLoaderFrame import VisualLoaderFrame
@@ -460,6 +498,32 @@ class Pic48Editor:
 
         self.__finished[2] = True
 
+    def __clickedSmall(self, event):
+        button = event.widget
+        name   = str(button).split(".")[-1]
+        try:
+            mouseButton = int(str(event).split(" ")[3].split("=")[1])
+        except:
+            if self.__ctrl:
+                mouseButton = 3
+            else:
+                mouseButton = 1
+
+        buttonNum = int(name.replace("small", ""))
+        valueColors = ["boxBackNormal", "boxFontNormal"]
+
+        if mouseButton == 1:
+           self.__smallData[buttonNum]            = 1 - self.__smallData[buttonNum]
+           self.__smallBoxes[buttonNum].config(bg = self.__colors.getColor(valueColors[self.__smallData[buttonNum]]))
+        else:
+           for num in range(0, 14):
+               if num > buttonNum:
+                  self.__smallData[num] = 0
+               else:
+                  self.__smallData[num] = 1
+
+               self.__smallBoxes[num].config(bg=self.__colors.getColor(valueColors[self.__smallData[num]]))
+
     def checkIfValidFileName(self, event):
         name = str(event.widget).split(".")[-1]
 
@@ -480,7 +544,7 @@ class Pic48Editor:
     def __importImage(self):
         from Import48pxPictureWindow import Import48pxPictureWindow
 
-        if self.__frameNum == 1:
+        if self.__frameNum != 1:
             initMode = False
         else:
             initMode = True
@@ -488,6 +552,82 @@ class Pic48Editor:
         import48pxPictureWindow = Import48pxPictureWindow(self.__loader, self.__frameNum, self.__numOfLines,
                                                           self.__repeatingOnTop, self.__pattern, self.__patterns
                                                           )
+
+        if import48pxPictureWindow.result != None:
+           if initMode:
+              self.__numOfLines = import48pxPictureWindow.result["numberOfLines"]
+              self.__linesSetter.setValue(str(self.__numOfLines))
+              self.checkLineNumEntry(None)
+
+              self.__repeatingOnTop = import48pxPictureWindow.result["repeatingOnTop"]
+              self.__boxButtonVal.set(self.__repeatingOnTop)
+
+              self.__pattern        = import48pxPictureWindow.result["repeatPattern"]
+              self.__repeatingPattern.deSelect()
+              self.__repeatingPattern.select(self.__pattern, True)
+
+           difference = self.__numOfLines - len(self.__data[self.__frameIndex])
+           if difference > 0:
+              for fNum in range(0, self.__frameNum):
+                  for xxx in range(0, difference):
+                      self.__data[fNum]     .append(deepcopy(self.__temp))
+                      self.__colorData[fNum].append(deepcopy(self.__colorTemp))
+
+           for y in range(0, import48pxPictureWindow.result["numberOfLines"]):
+              source    = import48pxPictureWindow.result["data"][y]
+              destPixel = self.__data     [self.__frameIndex][y]
+              destColor = self.__colorData[self.__frameIndex][y]
+
+              keyKeys   = {
+                  "layerPlayfield": ["PF", None],
+                  "background"    : ["BG", None],
+                  "layerUnique"   : [""  , None],
+                  "layerRepeating": [""  , None],
+              }
+
+              if import48pxPictureWindow.result["repeatingOnTop"]:
+                 keyKeys["layerUnique"]   [0] = "P1"
+                 keyKeys["layerRepeating"][0] = "P0"
+              else:
+                 keyKeys["layerUnique"]   [0] = "P0"
+                 keyKeys["layerRepeating"][0] = "P1"
+
+              for key in keyKeys:
+                  for val in source.keys():
+                      if source[val][3] == keyKeys[key][0]:
+                         keyKeys[key][1] = [source[val][0], source[val][2]]
+                         break
+
+                  if keyKeys[key][1] == None:
+                     empty = []
+                     if key != "background":
+                        for num in range(0, 48):
+                           if key == "layerPlayfield" and num > 11:
+                              break
+                           empty.append(0)
+
+                        destPixel[key] = deepcopy(empty)
+                     destColor[key] = "$00"
+                  else:
+                     if key != "background":
+                        destPixel[key] = deepcopy(keyKeys[key][1][0])
+                     destColor[key] = keyKeys[key][1][1]
+
+                     if key == "layerRepeating":
+                        for num in range(0, 3):
+                            if self.__pattern[num] == '1':
+                               start = (num    ) * 16
+                               end   = (num + 1) * 16
+                               segment = deepcopy(keyKeys[key][1][0][start:end])
+
+                               for x in range(0,16):
+                                   keyKeys[key][1][0][x     ] = segment[x]
+                                   keyKeys[key][1][0][x + 16] = segment[x]
+                                   keyKeys[key][1][0][x + 32] = segment[x]
+
+           self.fillEditorEntries()
+           self.reDrawCanvas(None)
+
 
     def __loadTest(self):
         pass
@@ -865,7 +1005,7 @@ class Pic48Editor:
         #self.__canvas.config(bg = self.__colorDict.getHEXValueFromTIA(self.__backColor))
 
         xUnit = self.__canvas.winfo_width()  // self.__xSize[0]
-        yUnit = self.__canvas.winfo_height() // self.__numOfLines
+        yUnit = self.__canvas.winfo_height() // len(self.__dataLines)
 
         order = {
             False: [self.__keys[3], self.__keys[2], self.__keys[1], self.__keys[0]],
