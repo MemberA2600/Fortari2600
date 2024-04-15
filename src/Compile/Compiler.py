@@ -75,6 +75,182 @@ class Compiler:
                 self.__getMiniMapASM()
             elif self.__mode == "miniMapTest":
                 self.__testMiniMap()
+            elif self.__mode == "48pxData":
+                self.__48pxData()
+
+    def __48pxData(self):
+        pixelData    = self.__data[0]
+        colorData    = self.__data[1]
+        numOfFrames  = self.__data[2]
+        numOfLines   = self.__data[3]
+        repeatPatten = self.__data[4]
+        borderData   = self.__data[5]
+        repeatOnTop  = self.__data[6]
+        background   = self.__data[7]
+        speed        = self.__data[8]
+
+        if repeatOnTop:
+           repeat = "P0"
+           simple = "P1"
+        else:
+           repeat = "P1"
+           simple = "P0"
+
+        text          = "* Height=" + str(numOfLines) + "\n* Frames=" + str(numOfFrames) + "\n" +\
+                        "* Repeating=" + repeat + "\n"                                          +\
+                        "#NAME#_Frames_Max_Index  = " + str(numOfFrames - 1) + "\n"             + \
+                        "#NAME#_LineNum_Number_Of_Lines = " + str(numOfLines) + "\n"            +\
+                        "#NAME#_LineNum_Max_Index = " + str(numOfLines-1) + "\n"
+
+        # "layerPlayfield" "background" "layerUnique" "layerRepeating"
+
+        organizedData = {}
+        for key in colorData[0][0].keys():
+            organizedData[key] = []
+            for frameNum in range(0, numOfFrames):
+                organizedData[key].append([])
+                for y in range(0, numOfLines):
+                    organizedData[key][frameNum].append([])
+                    organizedData[key][frameNum][y] = {"color": colorData[frameNum][y][key]}
+
+                    if key != "background":
+                       organizedData[key][frameNum][y]["pixels"] = ""
+
+                       if key != "layerPlayfield":
+                          maximum = 48
+                       else:
+                          maximum = 12
+
+                       for x in range(0, maximum):
+                           #print(frameNum, y, key, x)
+                           organizedData[key][frameNum][y]["pixels"] += str(pixelData[frameNum][y][key][x])
+
+        pf0Data       = borderData[0 :4 ][::-1]
+        pf1Data       = borderData[4 :12]
+        pf2Databits76 = borderData[12:14][::-1]
+
+        for dataHolder in [pf0Data, pf1Data, pf2Databits76]:
+            for x in range(0, len(dataHolder)):
+                dataHolder[x] = str(dataHolder[x])
+
+        pfText        = "#NAME#_PF0_Data = #%" + "".join(pf0Data) + "0000\n" + \
+                        "#NAME#_PF1_Data = #%" + "".join(pf1Data) + "\n"
+
+        align         = "\n\t_align " +  str(numOfFrames * numOfLines) + "\n"
+
+        pfTexts       = [align + "#NAME#_PF2_Data_Left_1\n",
+                         align + "#NAME#_PF2_Data_Left_2\n",
+                         align + "#NAME#_PF2_Data_Right_1\n",
+                         align + "#NAME#_PF2_Data_Right_2\n"]
+
+        zeroVals = [[2, 3, 6, 7], [0, 1, 4, 5]]
+        for num in range(0, 4):
+            for frameNum in range(0, numOfFrames):
+                firstF = True
+                for y in range(numOfLines-1, -1, -1):
+                    if num < 2:
+                       pfD = "".join(pf2Databits76) + "".join(organizedData["layerPlayfield"][frameNum][y]["pixels"][0:6])[::-1]
+                    else:
+                       pfD = "".join(organizedData["layerPlayfield"][frameNum][y]["pixels"][6:12]) + "".join(pf2Databits76)[::-1]
+
+                    for num2 in zeroVals[num%2]:
+                        if   num2 == 0:
+                             pfD = "00" + pfD[2:]
+                        elif num2 == 1:
+                             continue
+                        elif num2 == 6:
+                             pfD = pfD[:6] + "00"
+                        elif num2 == 7:
+                             continue
+                        else:
+                             pfD = pfD[:num2] + "0" + pfD[num2 + 1 :]
+
+                    comment = ""
+                    if firstF and numOfFrames > 1:
+                       comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames-1)
+                       firstF  = False
+
+                    pfTexts[num] += "\tBYTE\t#%" + pfD + comment + "\n"
+            #pfTexts[num] = "\n".join(pfTexts[num]) + "\n"
+            pfText      += pfTexts[num]
+
+        text += pfText
+
+        repeatingSprite1 = align + "#NAME#_Repeating_1\n"
+        repeatingSprite2 = align + "#NAME#_Repeating_2\n"
+
+        patternMatches = {
+            "100": ["00",0 ],
+            "010": ["00",16],
+            "001": ["00",32],
+            "110": ["01",0 ],
+            "011": ["01",16],
+            "101": ["02",0 ],
+            "111": ["03",0 ]
+        }
+        baseX = 40
+
+        text += "\n#NAME#_Repeating_NUSIZ = #$" + patternMatches[repeatPatten][0]                        + \
+                "\n#NAME#_Repeating_Add_To_X = "+ str(patternMatches[repeatPatten][1]+baseX)    + "\n" + \
+                "\n#NAME#_Simple_X = " + str(baseX) + "\n"
+
+        for frameNum in range(0, numOfFrames):
+            firstF = True
+            for y in range(numOfLines - 1, -1, -1):
+                comment = ""
+                if firstF and numOfFrames > 1:
+                    comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames - 1)
+                    firstF = False
+
+                repeatingSprite1 += "\tBYTE\t#%" + organizedData["layerRepeating"][frameNum][y]["pixels"][0:8]  + comment + "\n"
+                repeatingSprite2 += "\tBYTE\t#%" + organizedData["layerRepeating"][frameNum][y]["pixels"][8:16] + comment + "\n"
+
+        text += repeatingSprite1 + repeatingSprite2
+
+        simpleSprite = []
+        for num in range(1, 7):
+            simpleSprite.append(align + "#NAME#_Simple_" + str(num) +"\n")
+
+        for frameNum in range(0, numOfFrames):
+            firstF = True
+            for y in range(numOfLines - 1, -1, -1):
+                comment = ""
+                if firstF and numOfFrames > 1:
+                    comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames - 1)
+                    firstF = False
+
+                for num in range(0, 6):
+                    simpleSprite[num] += "\tBYTE\t#%" + organizedData["layerUnique"]\
+                                         [frameNum][y]["pixels"][(num * 8) : (num + 1) * 8] + comment + "\n"
+
+        for num in range(0, 6):
+            text + "\n".join(simpleSprite[num])
+
+        keysAndNames = {
+            "layerPlayfield": "Playfield",
+            "background"    : "Background",
+            "layerUnique"   : "Simple",
+            "layerRepeating": "Repeating"
+        }
+        for key in keysAndNames:
+            colorText = align + "#NAME#_" + keysAndNames[key] + "\n"
+            for frameNum in range(0, numOfFrames):
+                firstF = True
+                for y in range(numOfLines - 1, -1, -1):
+                    comment = ""
+                    if firstF and numOfFrames > 1:
+                        comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames - 1)
+                        firstF = False
+
+                    colorText += "\tBYTE\t#" + organizedData[key][frameNum][y]["color"] + "\n"
+
+            text += colorText
+
+        if self.__mode == "48pxData":
+            self.converted = text
+            print(text)
+        else:
+            return text
 
     def __getMiniMapASM(self):
         dataMatrix          = self.__data[0]
@@ -100,7 +276,7 @@ class Compiler:
                   "#NAME#_MiniMap_Y_Max = " + str(matrixDimensions[0]) + "\n" + \
                   "#NAME#_MiniMap_StepY = " + str(stepY) + "\n\n"
 
-        theText = "\n\t_align\t"+str(matrixDimensions[1] * 4) + "\n" + \
+        theText += "\n\t_align\t"+str(matrixDimensions[1] * 4) + "\n" + \
                   "#NAME#_MiniMap_PointerTable\n"
 
         for theX in range(0, matrixDimensions[1]):

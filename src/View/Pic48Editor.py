@@ -7,6 +7,7 @@ from HexEntry import HexEntry
 from time import sleep
 from VisualEditorFrameWithLabelAndEntry import VisualEditorFrameWithLabelAndEntry
 from FortariMB import FortariMB
+import os
 
 class Pic48Editor:
 
@@ -36,7 +37,7 @@ class Pic48Editor:
         self.__ctrl           = False
         self.__middle         = False
         self.__draw           = 0
-        self.__repeatingOnTop = True
+        self.__repeatingOnTop = False
 
         self.__Y            = 0
         self.__frameNum     = 1
@@ -45,6 +46,7 @@ class Pic48Editor:
         self.__finished     = [False, False, False]
         self.__enabledThem  = False
         self.__disabledOnes = []
+        self.__firstClick   = True
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -158,6 +160,13 @@ class Pic48Editor:
         try:
             if False in self.__finished:
                return
+
+            if self.__firstClick: self.changed = False
+
+            if self.changed == False:
+                self.__spriteLoader.disableSave()
+            else:
+                self.__spriteLoader.enableSave()
 
             if self.__enabledThem == False:
                self.__enabledThem = True
@@ -524,6 +533,9 @@ class Pic48Editor:
 
                self.__smallBoxes[num].config(bg=self.__colors.getColor(valueColors[self.__smallData[num]]))
 
+        if self.__firstClick:
+            self.__firstClick = False
+
     def checkIfValidFileName(self, event):
         name = str(event.widget).split(".")[-1]
 
@@ -552,6 +564,9 @@ class Pic48Editor:
         import48pxPictureWindow = Import48pxPictureWindow(self.__loader, self.__frameNum, self.__numOfLines,
                                                           self.__repeatingOnTop, self.__pattern, self.__patterns
                                                           )
+
+        self.__topLevelWindow.focus_force()
+        self.__topLevelWindow.deiconify()
 
         if import48pxPictureWindow.result != None:
            if initMode:
@@ -626,17 +641,177 @@ class Pic48Editor:
                                    keyKeys[key][1][0][x + 32] = segment[x]
 
            self.fillEditorEntries()
+           if self.__firstClick:
+              self.__firstClick = False
            self.reDrawCanvas(None)
-
 
     def __loadTest(self):
         pass
 
     def __open(self):
-        pass
+        if False not in self.__finished:
+            if self.changed == True:
+                answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+                if answer == "Yes":
+                    self.__save()
+                elif answer == "Cancel":
+                    self.__topLevelWindow.deiconify()
+                    self.__topLevelWindow.focus()
+                    return
+
+            fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                      self.__loader.mainWindow.projectPath + "48px/")
+
+            if fpath == "":
+               return
+
+            #if True:
+            try:
+                file = open(fpath, "r")
+                data = file.read().replace("\r", "").split("\n")
+                file.close()
+
+                header     = data[0].split(" ")
+
+                kernel     =      header[0]
+                numOfLines = int( header[1])
+                frameNum   = int( header[2])
+                repeating  = bool(header[3])
+                pattern    =      header[4]
+                smallsStr  =      header[5]
+
+                smalls     = []
+                for char in smallsStr:
+                    smalls.append(int(char))
+
+                compatibles = {
+                    "common": ["common"]
+                }
+
+                self.__spriteLoader.setValue(".".join(fpath.split("/")[-1].split(".")[:-1]))
+                if kernel not in compatibles[self.__loader.virtualMemory.kernel]:
+                    if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
+                        self.__topLevelWindow.deiconify()
+                        self.__topLevelWindow.focus()
+                        return
+
+                #wasFrameNum      = frameNum
+                #wasNumberOfLines = self.__numOfLines
+
+                self.__frameNum   = frameNum
+                self.__frameNumSetter.setValue(self.__frameNum)
+                self.__frameIndex = 0
+
+                self.__numOfLines = numOfLines
+                self.__linesSetter.setValue(self.__numOfLines)
+
+                self.__repeatingOnTop = repeating
+                self.__boxButtonVal.set(self.__repeatingOnTop)
+
+                self.__pattern    = pattern
+                self.__repeatingPattern.deSelect()
+                self.__repeatingPattern.select(self.__pattern, True)
+
+                self.__smallData = smalls
+                valueColors = ["boxBackNormal", "boxFontNormal"]
+
+                for num in range(0, len(self.__smallData)):
+                    if self.__smallData[num] == 1:
+                        self.__smallBoxes[num].config(bg=self.__colors.getColor(valueColors[self.__smallData[num]]))
+
+                self.__data      = []
+                self.__colorData = []
+
+                for frame in range(0, self.__frameNum):
+                    self.__data     .append([])
+                    self.__colorData.append([])
+
+                    for lnum in range(0, self.__numOfLines):
+                        self.__data[-1]     .append(deepcopy(self.__temp))
+                        self.__colorData[-1].append(deepcopy(self.__colorTemp))
+
+                        for keyNum in range(0, 4):
+                            key    = self.__keys[keyNum]
+                            offset = 1 + (self.__numOfLines * frame) + (lnum * 4) + keyNum
+
+                            sourceLine = data[offset].split(" ")
+
+                            if key != "background":
+                               for pixelNum in range(0, len(sourceLine[0])):
+                                   self.__data[frame][lnum][key][pixelNum] = int(sourceLine[0][pixelNum])
+                               self.__colorData[frame][lnum][key] = sourceLine[1]
+                            else:
+                               self.__colorData[frame][lnum][key] = sourceLine[0]
+
+                self.__changeIndex(0, False, True)
+                self.numOfLinesChanged(numOfLines)
+                self.fillEditorEntries()
+
+                self.__soundPlayer.playSound("Success")
+                #self.__firstClick = True
+                self.changed = False
+                #self.__spriteLoader.disableSave()
+
+            except Exception as e:
+                self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
 
     def __save(self):
-        pass
+        if False not in self.__finished:
+           pass
+
+        if self.changed == True:
+            fileName = self.__loader.mainWindow.projectPath + "48px/" + self.__spriteLoader.getValue() + ".a26"
+            if os.path.exists(fileName):
+                answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
+                if answer == "No":
+                    return
+
+            smalls = ""
+            for num in self.__smallData:
+                smalls += str(num)
+
+            headerLine = [
+                self.__loader.virtualMemory.kernel, str(self.__numOfLines), str(self.__frameNum), str(self.__repeatingOnTop), self.__pattern, smalls
+            ]
+
+            linesToWrite = [" ".join(headerLine)]
+            for frame in range(0, self.__frameNum):
+                for y in range(0, self.__numOfLines):
+                    for key in self.__keys:
+                        line = ""
+                        if key != "background":
+                           for x in range(0, len(self.__data[frame][y][key])):
+                               line += str(self.__data[frame][y][key][x])
+
+                           linesToWrite.append(line + " " + self.__colorData[frame][y][key])
+                        else:
+                           linesToWrite.append(self.__colorData[frame][y][key])
+
+            file = open(fileName, "w")
+            file.write("\n".join(linesToWrite))
+            file.close()
+            self.__soundPlayer.playSound("Success")
+            self.changed = False
+
+            fileName = self.__loader.mainWindow.projectPath + "48px/" + self.__spriteLoader.getValue() + ".asm"
+
+            data = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "48pxData",
+                                  [self.__data, self.__colorData, self.__frameNum, self.__numOfLines, self.__pattern, self.__smallData,
+                                   self.__repeatingOnTop, self.__backColor, self.__speed,
+                                   "NTSC","#NAME#"]).converted
+
+            file = open(fileName, "w")
+            file.write(data)
+            file.close()
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
+
+            self.__topLevelWindow.deiconify()
+            self.__topLevelWindow.focus()
 
     def __decYIndex(self):
         self.checkYIndex(-1)
@@ -671,6 +846,8 @@ class Pic48Editor:
              num = 0
 
         if num != self.__Y:
+            if self.__firstClick:
+                self.__firstClick = False
             self.__Y = num
             self.fillEditorEntries()
             self.reDrawCanvas(None)
@@ -725,6 +902,8 @@ class Pic48Editor:
             self.__numOfLines = num
             self.checkFrameNum(None)
             self.checkYIndex(None)
+            if self.__firstClick:
+                self.__firstClick = False
             self.reDrawCanvas(None)
 
         self.__linesSetter.setValue(str(num))
@@ -1167,6 +1346,9 @@ class Pic48Editor:
         self.colorTile(button, self.__dataLines[theY][levelKey]["values"][theX], levelKey)
 
         self.__data[self.__frameIndex][theY + self.__Y][levelKey][theX] = self.__dataLines[theY][levelKey]["values"][theX]
+
+        if self.__firstClick:
+           self.__firstClick = False
 
         if self.__frameNum > 1 and self.__dataLines[theY][levelKey]["values"][theX] == 0:
            self.checkIfThereIsSomethingOnThePrev(theY + self.__Y, levelkey, theX, button)
