@@ -77,6 +77,59 @@ class Compiler:
                 self.__testMiniMap()
             elif self.__mode == "48pxData":
                 self.__48pxData()
+            elif self.__mode == "48pxTest":
+                self.__48pxTest()
+
+    def __48pxTest(self):
+        repeatOnTop  = self.__data[6]
+        background   = self.__data[7]
+        speed        = self.__data[8]
+        tv           = self.__data[9]
+        name         = self.__data[10]
+        bank         = self.__data[11]
+
+        data = self.__48pxData()
+        self.__mainCode     = self.__io.loadKernelElement(self.__kernel, "main_kernel")
+        self.__enterCode    =  self.__io.loadTestElementPlain("48pxEnter")
+        self.__overScan     =  self.__io.loadTestElementPlain("48pxOverScan")
+        self.__screenTop = self.__loader.io.loadSubModule("48pxPicture_Kernel")
+
+        if repeatOnTop:
+           repeat = "0"
+           simple = "1"
+        else:
+            repeat = "1"
+            simple = "0"
+
+        replacers = {"#DSPHEIGHT#"          : "dspHeight",
+                     "#SETTERS#"            : "setters",
+                     "#SPEED#"              : str(speed),
+                     "#BACKGROUND#"         : str(background),
+                     "ßR"                   : repeat,
+                     "ßS"                   : simple,
+                     "#NAME#"               : bank + "_" + name
+                     }
+
+
+        for key in replacers:
+            self.__enterCode   = self.__enterCode .replace(key, replacers[key])
+            self.__screenTop   = self.__screenTop .replace(key, replacers[key])
+            self.__overScan    = self.__overScan  .replace(key, replacers[key])
+
+        data = data.replace("#NAME#", replacers["#NAME#"])
+
+        self.__mainCode = self.__mainCode.replace("!!!TV!!!", tv)
+        self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
+        self.__mainCode = self.__mainCode.replace("!!!SCREENTOP_BANK2!!!", self.__screenTop)
+        self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScan)
+        self.__mainCode = self.__mainCode.replace("!!!USER_DATA_BANK2!!!", self.__reAlignDataSection(data))
+
+        # self.__mainCode = self.registerMemory(self.__mainCode)
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
+
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
 
     def __48pxData(self):
         pixelData    = self.__data[0]
@@ -86,8 +139,6 @@ class Compiler:
         repeatPatten = self.__data[4]
         borderData   = self.__data[5]
         repeatOnTop  = self.__data[6]
-        background   = self.__data[7]
-        speed        = self.__data[8]
 
         if repeatOnTop:
            repeat = "P0"
@@ -125,52 +176,61 @@ class Compiler:
                            #print(frameNum, y, key, x)
                            organizedData[key][frameNum][y]["pixels"] += str(pixelData[frameNum][y][key][x])
 
-        pf0Data       = borderData[0 :4 ][::-1]
-        pf1Data       = borderData[4 :12]
-        pf2Databits76 = borderData[12:14][::-1]
+                organizedData[key][frameNum].append([])
+                organizedData[key][frameNum][-1] = {"color": organizedData[key][frameNum][-2]["color"]}
+                organizedData[key][frameNum][-1]["pixels"] = "0" * maximum
 
-        for dataHolder in [pf0Data, pf1Data, pf2Databits76]:
-            for x in range(0, len(dataHolder)):
-                dataHolder[x] = str(dataHolder[x])
+        numOfLines  += 1
 
-        pfText        = "#NAME#_PF0_Data = #%" + "".join(pf0Data) + "0000\n" + \
-                        "#NAME#_PF1_Data = #%" + "".join(pf1Data) + "\n"
+        # pf0Data       = borderData[0 :4 ][::-1]
+        # pf1Data       = borderData[4 :12]
+        #pf2Databits76   = borderData[12:14][::-1]
+
+        #for dataHolder in [pf0Data, pf1Data, pf2Databits76]:
+        #    for x in range(0, len(dataHolder)):
+        #        dataHolder[x] = str(dataHolder[x])
+        #pfText        = "#NAME#_PF0_Data = #%" + "".join(pf0Data) + "0000\n" + \
+        #                "#NAME#_PF1_Data = #%" + "".join(pf1Data) + "\n"
+
+        pfText        = ""
 
         align         = "\n\t_align " +  str(numOfFrames * numOfLines) + "\n"
 
-        pfTexts       = [align + "#NAME#_PF2_Data_Left_1\n",
-                         align + "#NAME#_PF2_Data_Left_2\n",
-                         align + "#NAME#_PF2_Data_Right_1\n",
-                         align + "#NAME#_PF2_Data_Right_2\n"]
+        #pfTexts       = [align + "#NAME#_PF2_Data_Left_1\n",
+        #                 align + "#NAME#_PF2_Data_Left_2\n",
+        #                 align + "#NAME#_PF2_Data_Right_1\n",
+        #                 align + "#NAME#_PF2_Data_Right_2\n"]
 
-        zeroVals = [[2, 3, 6, 7], [0, 1, 4, 5]]
-        for num in range(0, 4):
+        pfTexts       = [align + "#NAME#_PF2_Data_1\n",
+                         align + "#NAME#_PF2_Data_2\n"]
+
+        zeroVals  = [[2, 3, 6, 7, 10, 11], [0, 1, 4, 5, 8, 9]]
+
+        for num in range(0, 2):
             for frameNum in range(0, numOfFrames):
                 firstF = True
                 for y in range(numOfLines-1, -1, -1):
-                    if num < 2:
-                       pfD = "".join(pf2Databits76) + "".join(organizedData["layerPlayfield"][frameNum][y]["pixels"][0:6])[::-1]
-                    else:
-                       pfD = "".join(organizedData["layerPlayfield"][frameNum][y]["pixels"][6:12]) + "".join(pf2Databits76)[::-1]
 
-                    for num2 in zeroVals[num%2]:
-                        if   num2 == 0:
-                             pfD = "00" + pfD[2:]
-                        elif num2 == 1:
-                             continue
-                        elif num2 == 6:
-                             pfD = pfD[:6] + "00"
-                        elif num2 == 7:
-                             continue
+                    pfPixels = "".join(organizedData["layerPlayfield"][frameNum][y]["pixels"])
+
+                    newPixels = ""
+                    for num2 in range(0, 12):
+                        if num2 in zeroVals[num % 2]:
+                           newPixels += "0"
                         else:
-                             pfD = pfD[:num2] + "0" + pfD[num2 + 1 :]
+                           newPixels += pfPixels[num2]
+
+                    #if num > 1:
+                    p = newPixels[::-1][2:10]
+                    #else:
+                    #    p = newPixels[::-1][2:8]
 
                     comment = ""
                     if firstF and numOfFrames > 1:
                        comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames-1)
                        firstF  = False
 
-                    pfTexts[num] += "\tBYTE\t#%" + pfD + comment + "\n"
+                    pfTexts[num] += "\tBYTE\t#%" + p + comment + "\n"
             #pfTexts[num] = "\n".join(pfTexts[num]) + "\n"
             pfText      += pfTexts[num]
 
@@ -188,11 +248,11 @@ class Compiler:
             "101": ["02",0 ],
             "111": ["03",0 ]
         }
-        baseX = 40
+        #baseX = 71
 
-        text += "\n#NAME#_Repeating_NUSIZ = #$" + patternMatches[repeatPatten][0]                        + \
-                "\n#NAME#_Repeating_Add_To_X = "+ str(patternMatches[repeatPatten][1]+baseX)    + "\n" + \
-                "\n#NAME#_Simple_X = " + str(baseX) + "\n"
+        text += "\n#NAME#_Repeating_NUSIZ = #$" + patternMatches[repeatPatten][0]         + \
+                "\n#NAME#_Repeating_Add_To_X = "+ str(patternMatches[repeatPatten][1])    + "\n"
+            #    "\n#NAME#_Simple_X = " + str(baseX) + "\n"
 
         for frameNum in range(0, numOfFrames):
             firstF = True
@@ -202,6 +262,7 @@ class Compiler:
                     comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames - 1)
                     firstF = False
 
+                #print(y, organizedData["layerRepeating"][frameNum][y]["pixels"])
                 repeatingSprite1 += "\tBYTE\t#%" + organizedData["layerRepeating"][frameNum][y]["pixels"][0:8]  + comment + "\n"
                 repeatingSprite2 += "\tBYTE\t#%" + organizedData["layerRepeating"][frameNum][y]["pixels"][8:16] + comment + "\n"
 
@@ -219,18 +280,23 @@ class Compiler:
                     comment = "\t; Frame: " + str(frameNum) + "/" + str(numOfFrames - 1)
                     firstF = False
 
+                #print(y, organizedData["layerUnique"][frameNum][y]["pixels"], end = "")
                 for num in range(0, 6):
                     simpleSprite[num] += "\tBYTE\t#%" + organizedData["layerUnique"]\
                                          [frameNum][y]["pixels"][(num * 8) : (num + 1) * 8] + comment + "\n"
+                    #print(", " + organizedData["layerUnique"][frameNum][y]["pixels"][(num * 8) : (num + 1) * 8], end="")
+
+                #print("")
 
         for num in range(0, 6):
-            text + "\n".join(simpleSprite[num])
+            text += simpleSprite[num]
+
 
         keysAndNames = {
-            "layerPlayfield": "Playfield",
-            "background"    : "Background",
-            "layerUnique"   : "Simple",
-            "layerRepeating": "Repeating"
+            "layerPlayfield": "Playfield_Color",
+            #"background"    : "Background_Color",
+            "layerUnique"   : "Simple_Color",
+            "layerRepeating": "Repeating_Color"
         }
         for key in keysAndNames:
             colorText = align + "#NAME#_" + keysAndNames[key] + "\n"
@@ -248,9 +314,9 @@ class Compiler:
 
         if self.__mode == "48pxData":
             self.converted = text
-            print(text)
         else:
             return text
+
 
     def __getMiniMapASM(self):
         dataMatrix          = self.__data[0]
@@ -2865,25 +2931,25 @@ class Compiler:
         temp = []
         byteCounter = 0
         first = True
-        lastIndex   = 0
+        lastIndex = 0
         for line in text:
-            if ("ALIGN" not in line.upper()) and line.replace(" ", "").replace("\t", "") != "" and\
-               line.startswith("*") == False and line.startswith("#") == False:
-                if line.startswith(" ")  == False and\
-                   line.startswith("\t") == False and\
-                   ("=" not in line):
+            if ("ALIGN" not in line.upper()) and line.replace(" ", "").replace("\t", "") != "" and \
+                    line.startswith("*") == False and line.startswith("#") == False:
+                if line.startswith(" ") == False and \
+                        line.startswith("\t") == False and \
+                        ("=" not in line):
                     if first == False:
-                       temp[lastIndex] = "\n\t_align\t" + str(byteCounter) + "\n"
+                        temp[lastIndex] = "\n\t_align\t" + str(byteCounter) + "\n"
                     else:
-                       first = False
+                        first = False
                     byteCounter = 0
                     temp.append("!!!ALIGN!!!\n")
                     lastIndex = len(temp) - 1
                     temp.append(line)
 
-                elif line.startswith(" ") == False and\
-                   line.startswith("\t")  == False and\
-                   ("=" in line):
+                elif line.startswith(" ") == False and \
+                        line.startswith("\t") == False and \
+                        ("=" in line):
                     temp.append(line)
                 else:
                     temp.append(line)
@@ -2891,52 +2957,9 @@ class Compiler:
 
         temp[lastIndex] = "\t_align\t" + str(byteCounter) + "\n"
 
-        return(self.__preAlign2("\n".join(temp)))
+        return (self.__preAlign2("\n".join(temp)))
 
-        """
-        text = self.preAlign(text)
 
-        text = text.split("\n")
-
-        temp = []
-        for line in text:
-            if line != "" and ("align" not in line.lower()):
-                temp.append(line)
-
-        byteCounter = 0
-
-        last        = []
-        for line in temp:
-
-            if "byte" in line.lower():
-                byteCounter += 1
-                last[-1].append(line)
-            else:
-                last.append([])
-                last[-1].append("\n"+line)
-
-                if byteCounter > 256:
-                   last[-2].insert(0, "\n\talign\t256\n")
-                   bytes1 = 0
-                   bytes2 = 0
-
-                   for line in last[-2]:
-                       if "byte" in line.lower():
-                           bytes1 += 1
-
-                   for line in last[-1]:
-                       if "byte" in line.lower():
-                           bytes2 += 1
-
-                   byteCounter = bytes1 + bytes2
-
-        last[0].insert(0, "\n\talign\t256\n")
-
-        txt = ""
-        for item in last:
-            for subItem in item:
-                txt += subItem + "\n"
-        """
     def __preAlign2(self, text):
         textData = text.split("_align")
         newData = [textData[0]]
@@ -4191,8 +4214,6 @@ class Compiler:
 
         if self.__kernel == "common":
             self.__convertedSpite = self.convertPixelsToSpriteFrameLine("TestSprite")
-
-
 
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)

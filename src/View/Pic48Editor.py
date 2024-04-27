@@ -47,6 +47,8 @@ class Pic48Editor:
         self.__enabledThem  = False
         self.__disabledOnes = []
         self.__firstClick   = True
+        self.__doingStuff   = False
+
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -57,7 +59,9 @@ class Pic48Editor:
         self.__dataLines = []
         self.__xSize  = [48, 48, 12]
         self.__ySize  = 48
-        self.__keys   = ["layerUnique", "layerRepeating" , "layerPlayfield", "background"]
+        #self.__keys   = ["layerUnique", "layerRepeating" , "layerPlayfield", "background"]
+        self.__keys = ["layerUnique", "layerRepeating", "layerPlayfield"]
+        self.ignore   = False
         self.ignore   = False
 
         self.__data      = [[]]
@@ -77,6 +81,7 @@ class Pic48Editor:
 
         self.__patterns = ["100", "010", "001", "110", "011", "101", "111"]
         self.__pattern = "010"
+        self.__disabledPFButtons = [0, 1, 10, 11]
 
         self.__sizes = [self.__screenSize[0] // 1.65 // self.__xSize[0] * self.__xSize[0],
                         (self.__screenSize[1] //1.20 - 55) // self.__ySize * self.__ySize]
@@ -113,7 +118,7 @@ class Pic48Editor:
 
         self.__colorFrame = Frame(self.__topLevelWindow,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 20 * 3, height=self.__sizes[1]
+                  width=self.__sizes[0] // 20 * 2, height=self.__sizes[1]
                   )
         self.__colorFrame.pack_propagate(False)
         self.__colorFrame.pack(side=LEFT, anchor=E, fill=Y)
@@ -308,8 +313,9 @@ class Pic48Editor:
 
         self.checkBGColorEntry(None)
 
+        self.__speed = 0
         self.__speedSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "testSpeed", self.__smallFont,
+            self.__loader, str(self.__speed), self.__setterFrame, self.__sizes[1] // 25, "testSpeed", self.__smallFont,
             self.checkSpeedEntry, self.checkSpeedEntry)
 
         self.__linesSetter = VisualEditorFrameWithLabelAndEntry(
@@ -325,8 +331,6 @@ class Pic48Editor:
         self.__indexSetter = VisualEditorFrameWithLabelAndEntry(
             self.__loader, "0", self.__setterFrame, self.__sizes[1] // 25, "index", self.__smallFont,
             self.checkYIndex, self.checkYIndex)
-
-        self.__speed = 1
 
         self.__backSetter.getEntry().config(state     = DISABLED)
         self.__linesSetter.getEntry().config(state    = DISABLED)
@@ -396,6 +400,7 @@ class Pic48Editor:
         #                            variable=self.__boxButtonVal2
         #                            )
         #self.__boxButton2.pack(side=LEFT, anchor=N, fill=X)
+        """
         self.__borderLabel = Label(self.__boxFrame2,
                                     text=self.__dictionaries.getWordFromCurrentLanguage("setBorder"),
                                     font=self.__miniFont, fg=self.__colors.getColor("font"),
@@ -411,12 +416,15 @@ class Pic48Editor:
         self.__boxFrame2_.pack(side=TOP, anchor=N, fill=BOTH)
 
         while (self.__boxFrame2_.winfo_width() < 2): sleep(0.000005)
+        """
 
         self.__smallData  = [0,0,0,0,
                              0,0,0,0,
                              0,0,0,0,
                              0,0]
         self.__smallBoxes = []
+
+        """
         for num in range(0, 14):
             f = Frame(self.__boxFrame2_, bg=self.__loader.colorPalettes.getColor("window"),
                       height=self.__sizes[1] // 22, width = self.__boxFrame2_.winfo_width() // 14)
@@ -434,6 +442,7 @@ class Pic48Editor:
             self.__smallBoxes.append(b)
             self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__clickedSmall, 1)
             self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>", self.__clickedSmall, 1)
+        """
 
         self.__patternMainFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
                                  height=self.__sizes[1] // 18, width = self.__setterFrame.winfo_width())
@@ -533,6 +542,8 @@ class Pic48Editor:
 
                self.__smallBoxes[num].config(bg=self.__colors.getColor(valueColors[self.__smallData[num]]))
 
+        self.changed = True
+
         if self.__firstClick:
             self.__firstClick = False
 
@@ -595,7 +606,7 @@ class Pic48Editor:
 
               keyKeys   = {
                   "layerPlayfield": ["PF", None],
-                  "background"    : ["BG", None],
+               #   "background"    : ["BG", None],
                   "layerUnique"   : [""  , None],
                   "layerRepeating": [""  , None],
               }
@@ -615,17 +626,15 @@ class Pic48Editor:
 
                   if keyKeys[key][1] == None:
                      empty = []
-                     if key != "background":
-                        for num in range(0, 48):
-                           if key == "layerPlayfield" and num > 11:
-                              break
-                           empty.append(0)
+                     #if key != "background":
+                     for num in range(0, 48):
+                         if key == "layerPlayfield" and num > 11:
+                            break
+                         empty.append(0)
 
-                        destPixel[key] = deepcopy(empty)
+                     destPixel[key] = deepcopy(empty)
                      destColor[key] = "$00"
                   else:
-                     if key != "background":
-                        destPixel[key] = deepcopy(keyKeys[key][1][0])
                      destColor[key] = keyKeys[key][1][1]
 
                      if key == "layerRepeating":
@@ -640,16 +649,31 @@ class Pic48Editor:
                                    keyKeys[key][1][0][x + 16] = segment[x]
                                    keyKeys[key][1][0][x + 32] = segment[x]
 
+                     #if key != "background":
+                     destPixel[key] = deepcopy(keyKeys[key][1][0])
+                     if key == "layerPlayfield":
+                        destPixel[key][5:7] = [0, 0]
+
            self.fillEditorEntries()
            if self.__firstClick:
               self.__firstClick = False
            self.reDrawCanvas(None)
 
     def __loadTest(self):
-        pass
+        t = Thread(target=self.__testThread)
+        t.daemon = True
+        t.start()
+
+    def __testThread(self):
+        Compiler(self.__loader, self.__loader.virtualMemory.kernel, "48pxTest",
+                 [self.__data, self.__colorData, self.__frameNum, self.__numOfLines, self.__pattern, self.__smallData,
+                  self.__repeatingOnTop, self.__backColor, self.__speed,
+                  "NTSC", "Pic48Test", "bank2"])
 
     def __open(self):
         if False not in self.__finished:
+            self.__doingStuff = True
+
             if self.changed == True:
                 answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
                 if answer == "Yes":
@@ -730,27 +754,29 @@ class Pic48Editor:
                         self.__data[-1]     .append(deepcopy(self.__temp))
                         self.__colorData[-1].append(deepcopy(self.__colorTemp))
 
-                        for keyNum in range(0, 4):
+                        for keyNum in range(0, 3):
                             key    = self.__keys[keyNum]
-                            offset = 1 + (self.__numOfLines * frame) + (lnum * 4) + keyNum
+                            offset = 1 + (self.__numOfLines * frame) + (lnum * 3) + keyNum
 
                             sourceLine = data[offset].split(" ")
 
-                            if key != "background":
-                               for pixelNum in range(0, len(sourceLine[0])):
-                                   self.__data[frame][lnum][key][pixelNum] = int(sourceLine[0][pixelNum])
-                               self.__colorData[frame][lnum][key] = sourceLine[1]
-                            else:
-                               self.__colorData[frame][lnum][key] = sourceLine[0]
+#                            if key != "background":
+                            for pixelNum in range(0, len(sourceLine[0])):
+                                self.__data[frame][lnum][key][pixelNum] = int(sourceLine[0][pixelNum])
+                            self.__colorData[frame][lnum][key] = sourceLine[1]
+#                            else:
+#                               self.__colorData[frame][lnum][key] = sourceLine[0]
 
                 self.__changeIndex(0, False, True)
                 self.numOfLinesChanged(numOfLines)
                 self.fillEditorEntries()
+                self.reDrawCanvas(None)
 
                 self.__soundPlayer.playSound("Success")
                 #self.__firstClick = True
                 self.changed = False
                 #self.__spriteLoader.disableSave()
+                self.__doingStuff = False
 
             except Exception as e:
                 self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
@@ -763,12 +789,14 @@ class Pic48Editor:
            pass
 
         if self.changed == True:
+
             fileName = self.__loader.mainWindow.projectPath + "48px/" + self.__spriteLoader.getValue() + ".a26"
             if os.path.exists(fileName):
                 answer = self.__fileDialogs.askYesOrNo("fileExists", "overWrite")
                 if answer == "No":
                     return
 
+            self.__doingStuff = True
             smalls = ""
             for num in self.__smallData:
                 smalls += str(num)
@@ -801,7 +829,7 @@ class Pic48Editor:
             data = Compiler(self.__loader, self.__loader.virtualMemory.kernel, "48pxData",
                                   [self.__data, self.__colorData, self.__frameNum, self.__numOfLines, self.__pattern, self.__smallData,
                                    self.__repeatingOnTop, self.__backColor, self.__speed,
-                                   "NTSC","#NAME#"]).converted
+                                   "NTSC","#NAME#", "bank2"]).converted
 
             file = open(fileName, "w")
             file.write(data)
@@ -812,6 +840,8 @@ class Pic48Editor:
 
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
+            self.__doingStuff = False
+
 
     def __decYIndex(self):
         self.checkYIndex(-1)
@@ -867,6 +897,7 @@ class Pic48Editor:
         for y in range(self.__Y, self.__Y + (self.__ySize // len(self.__xSize))):
             for key in self.__data[self.__frameIndex][y]:
                 for x in range(0, len(self.__data[self.__frameIndex][y][key])):
+                    #print(key, len(self.__data[self.__frameIndex][y][key]))
                     self.__dataLines[y-self.__Y][key]["values"][x] = self.__data[self.__frameIndex][y][key][x]
                     self.colorTile(
                         self.__dataLines[y - self.__Y][key]["buttons"][x],
@@ -895,7 +926,7 @@ class Pic48Editor:
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
         if   num < 1:   num = 1
-        elif num > 255: num = 255
+        elif num > 255:  num = 255
 
         if self.__numOfLines != num:
             self.numOfLinesChanged(num)
@@ -916,7 +947,7 @@ class Pic48Editor:
                        index = -1
                        for button in self.__dataLines[y][key]["buttons"]:
                            index += 1
-                           if y < newNum:
+                           if y < newNum and (key != self.__keys[2] or index not in self.__disabledPFButtons):
                               button.config(state = NORMAL)
                               self.colorTile(button,
                                              self.__dataLines[y][key]["values"][index], key
@@ -949,8 +980,8 @@ class Pic48Editor:
             return
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
-        if   num < 1  : num = 1
-        elif num > 16 : num = 16
+        if   num < 0  : num = 0
+        elif num > 7 : num = 7
 
         self.__speed = num
         self.__speedSetter.setValue(str(num))
@@ -1096,14 +1127,14 @@ class Pic48Editor:
         self.__colorDataLines = []
         self.__colorTemp      = {self.__keys[0]: "$1E",
                                  self.__keys[1]: "$44",
-                                 self.__keys[2]: "$0E",
-                                 self.__keys[3]: "$00"}
+                                 self.__keys[2]: "$0E"}
+                             #    self.__keys[3]: "$00"}
 
 
         for y in range(0, self.__ySize // (len(self.__xSize))):
             fBig      = Frame(self.__colorFrame,
                               bg    = self.__loader.colorPalettes.getColor("boxBackNormal"),
-                              width = sizeX, height= sizeY
+                              width = sizeX // 3 * 2 , height= sizeY
                               )
             fBig.pack_propagate(False)
             fBig.pack(side=TOP, anchor=N, fill=X)
@@ -1114,36 +1145,37 @@ class Pic48Editor:
                 {
                     "colors":  {self.__keys[0]: [self.__colorTemp[self.__keys[0]]],
                                 self.__keys[1]: [self.__colorTemp[self.__keys[1]]],
-                                self.__keys[2]: [self.__colorTemp[self.__keys[2]]],
-                                self.__keys[3]: [self.__colorTemp[self.__keys[3]]]},
-                    "entries": {self.__keys[0]:  None  , self.__keys[1]:  None  , self.__keys[2]:  None  , self.__keys[3]:  None  }
-                }
-            )
+                                self.__keys[2]: [self.__colorTemp[self.__keys[2]]] },
+                             #   self.__keys[3]: [self.__colorTemp[self.__keys[3]]]},
+                    "entries": {self.__keys[0]:  None  , self.__keys[1]:  None  , self.__keys[2]:  None  }
+                                #self.__keys[3]:  None  }
+                })
+
 
             self.__colorData[0].append(deepcopy(self.__colorTemp))
 
             fBig1      = Frame(fBig,
                               bg    = self.__loader.colorPalettes.getColor("window"),
-                              width = sizeX // 2, height= sizeY
+                              width = sizeX, height= sizeY
                               )
             fBig1.pack_propagate(False)
             fBig1.pack(side=LEFT, anchor=E, fill=Y)
             self.__frames.append(fBig1)
 
-            fBig2      = Frame(fBig,
-                              bg    = self.__loader.colorPalettes.getColor("window"),
-                              width = sizeX // 2, height= sizeY
-                              )
-            fBig2.pack_propagate(False)
-            fBig2.pack(side=LEFT, anchor=E, fill=BOTH)
-            self.__frames.append(fBig2)
+            #fBig2      = Frame(fBig,
+            #                  bg    = self.__loader.colorPalettes.getColor("window"),
+            #                  width = sizeX // 2, height= sizeY
+            #                  )
+            #fBig2.pack_propagate(False)
+            #fBig2.pack(side=LEFT, anchor=E, fill=BOTH)
+            #self.__frames.append(fBig2)
 
-            self.__colorDataLines[-1]["entries"][self.__keys[3]] = HexEntry(self.__loader, fBig2, self.__colors,
-                                                                   self.__colorDict, self.__bigFont,
-                                                                   self.__colorDataLines[-1]["colors"][self.__keys[3]],
-                                                                   0, None, self.changedColorValie)
-            self.__colorDataLines[-1]["entries"][self.__keys[3]].changeState(DISABLED)
-            self.__disabledOnes.append(self.__colorDataLines[-1]["entries"][self.__keys[3]])
+            #self.__colorDataLines[-1]["entries"][self.__keys[3]] = HexEntry(self.__loader, fBig2, self.__colors,
+            #                                                       self.__colorDict, self.__bigFont,
+            #                                                       self.__colorDataLines[-1]["colors"][self.__keys[3]],
+            #                                                       0, None, self.changedColorValie)
+            #self.__colorDataLines[-1]["entries"][self.__keys[3]].changeState(DISABLED)
+            #self.__disabledOnes.append(self.__colorDataLines[-1]["entries"][self.__keys[3]])
 
             for subNum in range(0, len(self.__xSize)):
                 fSub = Frame(fBig1,
@@ -1172,6 +1204,7 @@ class Pic48Editor:
                    break
 
         self.reDrawCanvas(None)
+        self.changed = True
 
     def reDrawCanvas(self, dummy):
         if False in self.__finished:
@@ -1187,8 +1220,10 @@ class Pic48Editor:
         yUnit = self.__canvas.winfo_height() // len(self.__dataLines)
 
         order = {
-            False: [self.__keys[3], self.__keys[2], self.__keys[1], self.__keys[0]],
-            True:  [self.__keys[3], self.__keys[2], self.__keys[0], self.__keys[1]]
+            #False: [self.__keys[3], self.__keys[2], self.__keys[1], self.__keys[0]],
+            #True:  [self.__keys[3], self.__keys[2], self.__keys[0], self.__keys[1]]
+             False: [self.__keys[2], self.__keys[1], self.__keys[0]],
+             True:  [self.__keys[2], self.__keys[0], self.__keys[1]]
         }
 
         lenghts = {
@@ -1200,13 +1235,13 @@ class Pic48Editor:
         for y in range(0, len(self.__dataLines)):
             for key in order[self.__repeatingOnTop]:
                 c = self.__colorDict.getHEXValueFromTIA(self.__colorDataLines[y]["colors"][key][0])
-                if key not in self.__dataLines[y].keys():
-                   self.__canvas.create_rectangle(0                          , y      * yUnit,
-                                                  self.__canvas.winfo_width(),(y + 1) * yUnit,
-                                                  outline = "", fill = c)
-
-                else:
-                    for x in range(0, len(self.__dataLines[y][key]["values"])):
+                #if key not in self.__dataLines[y].keys():
+                #   self.__canvas.create_rectangle(0                          , y      * yUnit,
+                #                                  self.__canvas.winfo_width(),(y + 1) * yUnit,
+                #                                  outline = "", fill = c)
+                #
+                #else:
+                for x in range(0, len(self.__dataLines[y][key]["values"])):
                         val    = self.__dataLines[y][key]["values"][x]
                         lenght = lenghts[key]
 
@@ -1290,7 +1325,7 @@ class Pic48Editor:
 
                         self.__frames.append(fSubSub)
 
-                        colors = ["boxBackNormal", "fontDisabled"]
+                        colors = ["boxBackNormal", "highLight"]
 
                         b = Button(fSubSub, name=(self.__keys[sub] + "_" + xNum + "," + str(y)),
                                    bg=self.__loader.colorPalettes.getColor(colors[sub%2]), state = DISABLED,
@@ -1300,7 +1335,11 @@ class Pic48Editor:
 
                         self.__dataLines[-1][self.__keys[sub]]["buttons"].append(b)
                         self.__dataLines[-1][self.__keys[sub]]["values"] .append(0)
-                        self.__disabledOnes.append(b)
+
+                        if sub == 2 and int(xNum) in self.__disabledPFButtons:
+                           b.config(bg = self.__loader.colorPalettes.getColor("fontDisabled"))
+                        else:
+                           self.__disabledOnes.append(b)
 
                         self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__clicked, 1)
                         self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>", self.__clicked, 1)
@@ -1309,6 +1348,8 @@ class Pic48Editor:
         self.__finished[0] = True
 
     def __clicked(self, event):
+        if self.__doingStuff: return
+
         button = event.widget
         if button.cget("state") == DISABLED or\
            False in self.__finished: return
@@ -1383,10 +1424,16 @@ class Pic48Editor:
 
     def colorTile(self, button, value, levelKey):
         colors = {self.__keys[0]: ["boxBackNormal", "boxFontNormal", "highLight"],
-                  self.__keys[1]: ["fontDisabled" , "boxFontNormal", "highLight"],
+                  self.__keys[1]: ["highLight"    , "boxFontNormal", "highLight"],
                   self.__keys[2]: ["boxBackNormal", "boxFontNormal", "highLight"],
                   }
         button.config(bg = self.__colors.getColor(colors[levelKey][value]))
+        if levelKey == self.__keys[2]:
+            name = str(button).split(".")[-1]
+            theX = int(name.split("_")[1].split(",")[0])
+
+            if theX in self.__disabledPFButtons:
+               button.config(state = DISABLED, bg = self.__colors.getColor("fontDisabled"))
 
     def __enter(self, event):
         if self.__draw: self.__clicked(event)

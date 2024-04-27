@@ -58,6 +58,9 @@ class Import48pxPictureWindow:
         self.__forceBlack     = False
 
         self.__tresConst      = 42
+        self.__doHole         = True
+        #self.__holers         = (4, 5, 6, 7)
+        self.__holers = (0, 1, 10, 11)
 
         formats = ["bmp", "dds", "eps", "gif", "dib", "ico", "jpg", "jpeg", "pcx", "png", "tga", "tiff", "pdf"]
 
@@ -306,15 +309,17 @@ class Import48pxPictureWindow:
         self.__toleranceVar  = StringVar()
         self.__boxButtonVal4 = IntVar()
 
-        self.__boxButtonVal4.set(self.__oneColorBG)
+        #self.__boxButtonVal4.set(self.__oneColorBG)
         self.__toleranceVar.set(str(self.__tolerance))
 
+        """
         self.__boxButton4 = Checkbutton(self.__setterFrame5, bg=self.__loader.colorPalettes.getColor("window"),
                                     fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
                                     font=self.__normalFont, text=self.__dictionaries.getWordFromCurrentLanguage("oneColor2").replace("\\n", "\n"),
                                     variable=self.__boxButtonVal4
                                     )
         self.__boxButton4.pack(side=TOP, anchor=CENTER, fill=Y)
+        """
 
         self.__errorToleranceLabel = Label(self.__setterFrame4, text=self.__dictionaries.getWordFromCurrentLanguage("eTolerance"),
                                   bg = self.__loader.colorPalettes.getColor("window"),
@@ -380,6 +385,7 @@ class Import48pxPictureWindow:
         self.__okButton.pack_propagate(False)
         self.__okButton.pack(side=BOTTOM, anchor=S, fill=BOTH)
 
+        """
         self.__boxButtonVal5 = IntVar()
         self.__boxButtonVal6 = IntVar()
 
@@ -404,9 +410,12 @@ class Import48pxPictureWindow:
                                         )
         self.__boxButton6.pack(side=TOP, anchor=CENTER, fill=Y)
 
+
         if self.__auto:
            self.__boxButton5.config(state = DISABLED)
            self.__boxButton6.config(state = DISABLED)
+
+        """
 
         t1 = Thread(target=self.imageThread)
         t1.daemon = True
@@ -510,13 +519,13 @@ class Import48pxPictureWindow:
                self.__oneColorBG  = self.__boxButtonVal4.get()
                boxChange        = True
 
-            if self.__invert != self.__boxButtonVal5.get():
-               self.__invert  = self.__boxButtonVal5.get()
-               boxChange        = True
+            #if self.__invert != self.__boxButtonVal5.get():
+            #   self.__invert  = self.__boxButtonVal5.get()
+            #   boxChange        = True
 
-            if self.__forceBlack != self.__boxButtonVal6.get():
-               self.__forceBlack  = self.__boxButtonVal6.get()
-               boxChange        = True
+            #if self.__forceBlack != self.__boxButtonVal6.get():
+            #   self.__forceBlack  = self.__boxButtonVal6.get()
+            #   boxChange        = True
 
             if boxChange:
                #print(self.__initMode, self.__auto, False == 0)
@@ -524,8 +533,8 @@ class Import48pxPictureWindow:
                   self.__boxButton3.config(state      = DISABLED)
                   self.__numOfLinesEntry.config(state = DISABLED)
                   self.__repeatingPattern.changeState(DISABLED)
-                  self.__boxButton5.config(state      = DISABLED)
-                  self.__boxButton6.config(state      = DISABLED)
+                 # self.__boxButton5.config(state      = DISABLED)
+                 # self.__boxButton6.config(state      = DISABLED)
                   self.__segmentSetter.changeState(DISABLED)
 
                elif self.__initMode and self.__auto == False:
@@ -533,8 +542,8 @@ class Import48pxPictureWindow:
                   self.__boxButton3.config(state=NORMAL)
                   self.__numOfLinesEntry.config(state=NORMAL)
                   self.__repeatingPattern.changeState(NORMAL)
-                  self.__boxButton5.config(state      = NORMAL)
-                  self.__boxButton6.config(state      = NORMAL)
+                #  self.__boxButton5.config(state      = NORMAL)
+                #  self.__boxButton6.config(state      = NORMAL)
                   self.__segmentSetter.changeState(NORMAL)
                else:
                   self.__auto = False
@@ -543,14 +552,14 @@ class Import48pxPictureWindow:
                   self.__boxButton3.config(state      = DISABLED)
                   self.__numOfLinesEntry.config(state = DISABLED)
                   self.__repeatingPattern.changeState(DISABLED)
-                  self.__boxButton5.config(state      = DISABLED)
-                  self.__boxButton6.config(state      = DISABLED)
+                #  self.__boxButton5.config(state      = DISABLED)
+                #  self.__boxButton6.config(state      = DISABLED)
                   self.__segmentSetter.changeState(DISABLED)
 
                update = True
                self.gen2600()
-        except:
-            pass
+        except Exception as e:
+            print(str(e))
 
     def gen2600(self):
         t = Thread(target=self.generate2600Pic)
@@ -625,7 +634,8 @@ class Import48pxPictureWindow:
         start = (len(self.__colorData) - self.__numOfLines) // 2
         end   =  len(self.__colorData) - start
 
-        order   = ["BG", "PF", "P1", "P0"]
+        #order   = ["BG", "PF", "P1", "P0"]
+        order = ["PF", "P1", "P0"]
         actualY = -1
         for y in range(start, end):
             actualY += 1
@@ -646,6 +656,8 @@ class Import48pxPictureWindow:
                                                    outline="", fill=c)
                 elif item == "PF":
                      for x in range(0, 12):
+                         if x in self.__holers and self.__doHole: continue
+
                          if colorLine[0][x] == 1:
                             self.__canvas.create_rectangle(x * 4 * xUnit, actualY * yUnit,
                                                         (x + 1) * 4 * xUnit, (actualY + 1) * yUnit,
@@ -690,7 +702,7 @@ class Import48pxPictureWindow:
             values              = [0, 85, 170, 255]
             onesRepeating       = []
             onesBulky           = []
-
+            hasHolers           = []
             rules = {}
 
             lineSettings = {}
@@ -751,6 +763,17 @@ class Import48pxPictureWindow:
 
                 lineSettings[val]['bulky']     = False
                 lineSettings[val]['repeating'] = False
+                
+                countInHoles = 0
+
+                for index in self.__holers:
+                    if self.__colorData[y][val][0][index] == 1: countInHoles += 1
+                
+                lineSettings[val]['hasHole']  =  countInHoles <= self.__tolerance // 4
+                lineSettings[val]['holeVal']  = self.__colorData[y][val][0][20:28].count(1)
+
+                if lineSettings[val]['hasHole']: hasHolers.append(val)
+                #print(lineSettings[val]['hasHole'])
 
                 samePixelAsRepeated  = 0
                 samePixelAsPlayfield = 0
@@ -778,6 +801,33 @@ class Import48pxPictureWindow:
             #print(onesBulky, onesRepeating, values)
                 #print(y, val, samePixelAsRepeated, samePixelAsPlayfield)
 
+            becamePF = False
+
+            if len(hasHolers) > 0 and len(values) > 1:
+               least    = 8
+               leastOne = ""
+               bulky    = False
+               rep      = False
+
+               for val in hasHolers:
+                   if lineSettings[val]["holeVal"] < least:
+                      least    = lineSettings[val]["holeVal"]
+                      bulky    = val in onesBulky
+                      rep      = val in onesRepeating
+                      leastOne = val
+
+               values.remove(leastOne)
+               elements.remove("PF")
+               hasHolers.remove(leastOne)
+               if bulky: onesBulky    .remove(leastOne)
+               if rep  : onesRepeating.remove(leastOne)
+
+               self.__colorData[y][leastOne][3] = "PF"
+               self.__colorData[y][leastOne][0] = deepcopy(lineSettings[leastOne]["couldBePlayfield"])
+               rules["PF"] = leastOne
+               becamePF = leastOne
+               xXx      = 0
+
             if len(onesRepeating) > 0 and len(values) > 1:
                largest    = 0
                largestOne = ""
@@ -798,7 +848,7 @@ class Import48pxPictureWindow:
                if largestOne in onesBulky:
                   onesBulky.remove(largestOne)
 
-            if len(onesBulky) > 0 and len(values) > 1:
+            if len(onesBulky) > 0 and len(values) > 1 and "PF" in elements:
                largest = 0
                largestOne = ""
 
@@ -812,6 +862,8 @@ class Import48pxPictureWindow:
                self.__colorData[y][largestOne][3] = "PF"
                self.__colorData[y][largestOne][0] = deepcopy(lineSettings[largestOne]["couldBePlayfield"])
                rules["PF"] = largestOne
+               becamePF = largestOne
+               xXx      = 1
 
             if len(values) > 0:
                if len(values) > 1 and simple in elements:
@@ -889,11 +941,23 @@ class Import48pxPictureWindow:
                        self.__colorData[y][largestOne][4] = True
                        rules["PF"] = largestOne
                        self.__colorData[y][largestOne][0] = deepcopy(lineSettings[largestOne]["couldBePlayfield"])
+                       becamePF = largestOne
+                       xXx      = 2
 
                if len(values) > 0 and len(elements) > 0:
                   self.__colorData[y][values[0]][3] = elements[0]
                   if elements[0] == "PF":
                      self.__colorData[y][values[0]][0] = deepcopy(lineSettings[values[0]]["couldBePlayfield"])
+                     becamePF = values[0]
+                     xXx = 3
+
+            if self.__doHole:
+                for key in self.__colorData[y].keys():
+                   if self.__colorData[y][key][3] == "PF":
+                      for index in self.__holers:
+                          self.__colorData[y][key][0][index] = 0
+               #else:
+               #   print("OK", xXx)
 
     def generate2600Picture(self):
         i                  = deepcopy(self.__imageBackUp)
@@ -1114,8 +1178,8 @@ class Import48pxPictureWindow:
            if black > all // 2:
               self.__forceBlack = True
 
-           self.__boxButtonVal5.set(self.__invert)
-           self.__boxButtonVal6.set(self.__forceBlack)
+           #self.__boxButtonVal5.set(self.__invert)
+           #self.__boxButtonVal6.set(self.__forceBlack)
 
 
         if self.__auto == False and self.__forceBlack == False:
