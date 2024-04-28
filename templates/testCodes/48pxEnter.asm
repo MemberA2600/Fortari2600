@@ -1,5 +1,6 @@
 #DSPHEIGHT# = $d2
 #SETTERS# = $d3
+#INDEX# = $d4
 *
 *	Setters:
 *	0-3: frameIndex
@@ -8,6 +9,9 @@
 
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
+
+	LDA	#0
+	STA	#INDEX#
 
 	LDA	#NAME#_LineNum_Number_Of_Lines
 	CMP	#70

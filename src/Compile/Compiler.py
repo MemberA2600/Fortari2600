@@ -107,7 +107,8 @@ class Compiler:
                      "#BACKGROUND#"         : str(background),
                      "ßR"                   : repeat,
                      "ßS"                   : simple,
-                     "#NAME#"               : bank + "_" + name
+                     "#NAME#"               : bank + "_" + name,
+                     "#INDEX#"              : "spriteIndex"
                      }
 
 

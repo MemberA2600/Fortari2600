@@ -622,6 +622,8 @@ class Import48pxPictureWindow:
         self.__imgLabel.config(image = self.__iConvertedLabel)
 
         self.generate2600Picture()
+        #print(self.__oneColorBG, self.__forceBlack)
+
         self.drawCanvas()
 
     def drawCanvas(self):
@@ -803,7 +805,7 @@ class Import48pxPictureWindow:
 
             becamePF = False
 
-            if len(hasHolers) > 0 and len(values) > 1:
+            if len(hasHolers) > 0 and len(values) > 1 and self.__doHole:
                least    = 8
                leastOne = ""
                bulky    = False
@@ -816,17 +818,19 @@ class Import48pxPictureWindow:
                       rep      = val in onesRepeating
                       leastOne = val
 
-               values.remove(leastOne)
-               elements.remove("PF")
-               hasHolers.remove(leastOne)
-               if bulky: onesBulky    .remove(leastOne)
-               if rep  : onesRepeating.remove(leastOne)
 
-               self.__colorData[y][leastOne][3] = "PF"
-               self.__colorData[y][leastOne][0] = deepcopy(lineSettings[leastOne]["couldBePlayfield"])
-               rules["PF"] = leastOne
-               becamePF = leastOne
-               xXx      = 0
+               if leastOne != "":
+                   values.remove(leastOne)
+                   elements.remove("PF")
+                   hasHolers.remove(leastOne)
+                   if bulky: onesBulky    .remove(leastOne)
+                   if rep  : onesRepeating.remove(leastOne)
+
+                   self.__colorData[y][leastOne][3] = "PF"
+                   self.__colorData[y][leastOne][0] = deepcopy(lineSettings[leastOne]["couldBePlayfield"])
+                   rules["PF"] = leastOne
+                   becamePF = leastOne
+                   xXx      = 0
 
             if len(onesRepeating) > 0 and len(values) > 1:
                largest    = 0
@@ -1293,6 +1297,8 @@ class Import48pxPictureWindow:
         self.__segmentMethod = largestOne
         self.__segmentSetter.deSelect()
         self.__segmentSetter.select(self.__segmentMethod, True)
+        #print(self.__segmentMethod)
+
 
         """"
 

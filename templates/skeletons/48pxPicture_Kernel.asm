@@ -224,17 +224,26 @@
 	DEX
 	BPL	#NAME#_48PxPicture_ExtraLines_1
 #NAME#_48PxPicture_ExtraLines_1_End		
-	LDY	temp03
+*
+*	Set start index
+*
+	LDA	##NAME#_LineNum_Number_Of_Lines
+	SEC	
+	SBC	#DSPHEIGHT#
 
-***	LDA	#255
-***	STA	PF2
-***	STA	GRPßS
+	CMP	#INDEX#
+	BCS	#NAME#_No_Change_Index
+	STA	#INDEX#
+#NAME#_No_Change_Index
 
-***	LDA	#$88
-***	STA	COLUPF
-
-**	LDA	#$1e
-**	STA	COLUPßS
+	CLC
+	ADC	temp02
+	STA	temp02
+	
+	LDA	temp03
+	CLC
+	ADC	#INDEX#
+	TAY
 	
 	STA	WSYNC
 	LDA	counter		; 3
