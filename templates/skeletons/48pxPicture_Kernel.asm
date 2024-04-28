@@ -191,28 +191,41 @@
 	LDA	##NAME#_LineNum_Number_Of_Lines	; 2 (20)
 #NAME#_48PxPicture_THANKGOD_SMALLER2
 	STA	#DSPHEIGHT#			; 3 (23)
+*
+* 	Check Index
+*
 
-	LDA	##NAME#_LineNum_Number_Of_Lines	; 2 (25)
-	SEC					; 2 (27)
-	SBC	#DSPHEIGHT#			; 3 (30)
-	LSR					; 2 (32)
-	STA	temp01				; 3 (35)
-	TAX					; 2 (37)
+	LDA	##NAME#_LineNum_Number_Of_Lines
+	SEC	
+	SBC	#DSPHEIGHT#
+	TAX
+	STA	temp01
+
+	LDA	#INDEX#
+	CMP	temp01
+	BCC	#NAME#_No_Change_Index
+
+	LDA	temp01
+	STA	#INDEX#
+#NAME#_No_Change_Index
+
 *
 *	temp01 is the number of line to skip on start and end
 *	
-	CLC					; 2 (39)
-	ADC	temp19				; 3 (42)
-	SBC	#1				; 2 (44)
+	LDA	temp19				; 3 (42)
+	CLC
+	ADC	temp01
+	SEC
+	SBC	#INDEX#
 	STA	temp02				; 3 (47)
 *
 *	temp02 is the index of the last line to not display.
 *
 	LDA	##NAME#_LineNum_Max_Index	; 2 (47)
-	SEC					; 2 (49)
-	SBC	temp01				; 3 (52)
 	CLC					; 2 (54)
 	ADC	temp19				; 3 (57)
+	SEC
+	SBC	#INDEX#
 	STA	temp03				; 3 (60)
 *
 *	temp03 is the number of additional indexes.
@@ -224,26 +237,7 @@
 	DEX
 	BPL	#NAME#_48PxPicture_ExtraLines_1
 #NAME#_48PxPicture_ExtraLines_1_End		
-*
-*	Set start index
-*
-	LDA	##NAME#_LineNum_Number_Of_Lines
-	SEC	
-	SBC	#DSPHEIGHT#
-
-	CMP	#INDEX#
-	BCS	#NAME#_No_Change_Index
-	STA	#INDEX#
-#NAME#_No_Change_Index
-
-	CLC
-	ADC	temp02
-	STA	temp02
-	
-	LDA	temp03
-	CLC
-	ADC	#INDEX#
-	TAY
+	LDY	temp03
 	
 	STA	WSYNC
 	LDA	counter		; 3
@@ -252,7 +246,7 @@
 	BEQ	#NAME#_48PxPicture_Even_Start ; 2 (9)
 	JMP	#NAME#_48PxPicture_Odd_Start  ; 3 (12)
 
-	align	256
+	_align	130
 #NAME#_48PxPicture_Even_Start	
 	LDA	#$00		; 2 (11)
 	STA	HMP0		; 3 (14)
@@ -340,7 +334,7 @@
 	BNE	#NAME#_48PxPicture_Even_FirstLine (73)
 	JMP	#NAME#_48PxPicture_Kernel_End
 
-	align	256
+	_align	145
 #NAME#_48PxPicture_Odd_Start
 	LDA	#$00			; 2 
 	STA	HMP0			; 3

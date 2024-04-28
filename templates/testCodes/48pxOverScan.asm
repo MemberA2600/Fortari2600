@@ -6,22 +6,14 @@
 *	-Fire adds 1 to animation frame manually 
 *
 
-	BIT	SWCHA
-	BVS	NoLeftPressed
-	DEC	#INDEX#
-	
-	JMP	NoRightPressed
-NoLeftPressed
-	BMI	NoRightPressed
-	INC	#INDEX#
-NoRightPressed
-
-	LDX	#$FF
-	STX	$F0
-
 	LDA	#$10
 	BIT	SWCHA
 	BNE	NoUpPressed
+	
+	LDA	#DSPHEIGHT#
+	CMP	#1
+	BEQ	NoDownPressed
+
 	DEC	#DSPHEIGHT#
 
 	JMP	NoDownPressed
@@ -32,3 +24,18 @@ NoUpPressed
 	INC	#DSPHEIGHT#	
 
 NoDownPressed
+
+	BIT	SWCHA
+	BVS	NoLeftPressed
+
+	LDA	#INDEX#
+	CMP	#0
+	BEQ	NoRightPressed
+	DEC	#INDEX#	
+	JMP	NoRightPressed
+NoLeftPressed
+	BMI	NoRightPressed
+	
+	INC	#INDEX#
+
+NoRightPressed
