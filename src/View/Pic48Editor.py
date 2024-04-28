@@ -889,11 +889,16 @@ class Pic48Editor:
         prevFrame = self.__frameIndex - 1
         if prevFrame < 0: prevFrame = self.__frameNum - 1
 
-        if self.__data[prevFrame][y][key][x] == 1:
-           self.colorTile(button, 2, key)
-
+        #try:
+        if True:
+           if self.__data[prevFrame][y][key][x] == 1:
+              self.colorTile(button, 2, key)
+        #except:
+        #   print(prevFrame, y, key, x, self.__frameNum)
 
     def fillEditorEntries(self):
+        #self.numOfLinesChanged(self.__numOfLines)
+
         for y in range(self.__Y, self.__Y + (self.__ySize // len(self.__xSize))):
             for key in self.__data[self.__frameIndex][y]:
                 for x in range(0, len(self.__data[self.__frameIndex][y][key])):
@@ -1018,7 +1023,7 @@ class Pic48Editor:
            for num in range(0, (numOfFrames - len(self.__data))):
                self.__data     .append([])
                self.__colorData.append([])
-               for num2 in range(0, self.__numOfLines):
+               for num2 in range(0, len(self.__data[0])):
                   self.__data     [-1].append(deepcopy(self.__temp     ))
                   self.__colorData[-1].append(deepcopy(self.__colorTemp))
 
@@ -1080,6 +1085,7 @@ class Pic48Editor:
         self.__changeIndex(num, False, True)
         entry.icursor(len(str(num)))
         self.fillEditorEntries()
+
         self.reDrawCanvas(None)
 
     def __decIndex(self):
@@ -1392,7 +1398,7 @@ class Pic48Editor:
            self.__firstClick = False
 
         if self.__frameNum > 1 and self.__dataLines[theY][levelKey]["values"][theX] == 0:
-           self.checkIfThereIsSomethingOnThePrev(theY + self.__Y, levelkey, theX, button)
+           self.checkIfThereIsSomethingOnThePrev(theY + self.__Y, levelKey, theX, button)
 
         if self.ignore == False:
            if levelKey == "layerRepeating":
@@ -1428,12 +1434,16 @@ class Pic48Editor:
                   self.__keys[2]: ["boxBackNormal", "boxFontNormal", "highLight"],
                   }
         button.config(bg = self.__colors.getColor(colors[levelKey][value]))
-        if levelKey == self.__keys[2]:
-            name = str(button).split(".")[-1]
-            theX = int(name.split("_")[1].split(",")[0])
+        name = str(button).split(".")[-1]
+        theX = int(name.split("_")[1].split(",")[0])
+        theY = int(name.split("_")[1].split(",")[1])
 
-            if theX in self.__disabledPFButtons:
-               button.config(state = DISABLED, bg = self.__colors.getColor("fontDisabled"))
+        if levelKey == self.__keys[2]:
+           if theX in self.__disabledPFButtons:
+              button.config(state = DISABLED, bg = self.__colors.getColor("fontDisabled"))
+
+        if theY > self.__numOfLines - 1:
+           button.config(state=DISABLED, bg=self.__colors.getColor("fontDisabled"))
 
     def __enter(self, event):
         if self.__draw: self.__clicked(event)
