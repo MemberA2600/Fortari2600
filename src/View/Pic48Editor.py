@@ -756,7 +756,7 @@ class Pic48Editor:
 
                         for keyNum in range(0, 3):
                             key    = self.__keys[keyNum]
-                            offset = 1 + (self.__numOfLines * frame) + (lnum * 3) + keyNum
+                            offset = 1 + (self.__numOfLines * frame * 3) + (lnum * 3) + keyNum
 
                             sourceLine = data[offset].split(" ")
 
@@ -783,6 +783,10 @@ class Pic48Editor:
 
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
+
+            #for frame in range(0, self.__frameNum):
+            #    for lnum in range(0, self.__numOfLines):
+            #        print(frame, lnum, self.__data[frame][lnum][self.__keys[2]])
 
     def __save(self):
         if False not in self.__finished:
@@ -900,6 +904,7 @@ class Pic48Editor:
         #self.numOfLinesChanged(self.__numOfLines)
 
         for y in range(self.__Y, self.__Y + (self.__ySize // len(self.__xSize))):
+            if y > self.__numOfLines - 1: break
             for key in self.__data[self.__frameIndex][y]:
                 for x in range(0, len(self.__data[self.__frameIndex][y][key])):
                     #print(key, len(self.__data[self.__frameIndex][y][key]))
@@ -934,8 +939,8 @@ class Pic48Editor:
         elif num > 255:  num = 255
 
         if self.__numOfLines != num:
-            self.numOfLinesChanged(num)
             self.__numOfLines = num
+            self.numOfLinesChanged(num)
             self.checkFrameNum(None)
             self.checkYIndex(None)
             if self.__firstClick:
@@ -1239,6 +1244,7 @@ class Pic48Editor:
         }
 
         for y in range(0, len(self.__dataLines)):
+            if y > self.__numOfLines - 1: break
             for key in order[self.__repeatingOnTop]:
                 c = self.__colorDict.getHEXValueFromTIA(self.__colorDataLines[y]["colors"][key][0])
                 #if key not in self.__dataLines[y].keys():
@@ -1433,7 +1439,7 @@ class Pic48Editor:
                   self.__keys[1]: ["highLight"    , "boxFontNormal", "highLight"],
                   self.__keys[2]: ["boxBackNormal", "boxFontNormal", "highLight"],
                   }
-        button.config(bg = self.__colors.getColor(colors[levelKey][value]))
+        button.config(bg = self.__colors.getColor(colors[levelKey][value]), state = NORMAL)
         name = str(button).split(".")[-1]
         theX = int(name.split("_")[1].split(",")[0])
         theY = int(name.split("_")[1].split(",")[1])
