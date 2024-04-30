@@ -1,6 +1,7 @@
 #DSPHEIGHT# = $d2
 #SETTERS# = $d3
 #INDEX# = $d4
+stopBits = $d5
 *
 *	Setters:
 *	0-3: frameIndex
@@ -29,6 +30,7 @@ THANKGOD_SMALLER2
 	ASL
 	ASL
 	ASL
+	AND 	#%01110000
 	STA	#SETTERS#
 
 	LDA	##BACKGROUND#

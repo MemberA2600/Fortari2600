@@ -59,21 +59,27 @@
 	AND	#NAME#_48PxPicture_BitMask,x	; 4 (37)
 	CMP	#NAME#_48PxPicture_BitMask,x	; 4 (41)
 	BNE	#NAME#_48PxPicture_JumpOver_SYNC ; 2 (43)
+
 	LDA	#SETTERS#			; 3 (46)
-	AND	#$0F				; 2 (48)
-	CLC					; 2 (50)
-	ADC	#1				; 2 (52)
-	AND	#$F0				; 2 (54)
-	CMP	##NAME#_Frames_Max_Index	; 2 (56)
-	BCC	#NAME#_48PxPicture_FrameNum_OK	; 2 (58)
-	LDA	##NAME#_Frames_Max_Index	; 2 (60)
+	AND	#$F0
+	STA	temp01
+			
+	LDA	#SETTERS#
+	AND	#$0F
+	CLC					
+	ADC	#1				
+	AND	#$0F				
+	STA	temp02
+
+	LDA	##NAME#_Frames_Max_Index
+	CMP	temp02
+	BCS	#NAME#_48PxPicture_FrameNum_OK	
+	LDA	#0	
+	STA	temp02	 
 #NAME#_48PxPicture_FrameNum_OK	
-	STA	temp01				; 3 (63)	
-	LDA	#SETTERS#			; 3 (66)
-	AND	#$F0				; 2 (68)
-	ORA	temp01				; 3 (71)
-	STA	#SETTERS#			; 3 (74)	
-#NAME#_48PxPicture_FrameNum_OK	
+	LDA	temp02
+	ORA	temp01				 
+	STA	#SETTERS#			 	
 	JMP	#NAME#_48PxPicture_FrameNum_Jump_Over
 *
 *	One frame wasted!!
@@ -154,30 +160,20 @@
 	DEX					; 2 (16)
 	BMI	#NAME#_48PxPicture_SetIndexEnd  ; 2 (18)
 	CLC					; 2 (20)
-*
-*	6 * index, max: 15 * 6 = 90!!
-*
-*	0: 18 (no extra 2 at beginning)
-*	1: 20 + 6  = 26
-*	2:    + 12 = 32
-*	.......
-*       8:    + 48 = 68 !!!
-*       9:    + 54 = 76 !!!
-*	.......
-*       15:   + 90 = 107 (76 + 31)
-*
+
 #NAME#_48PxPicture_SetIndex
-	ADC	#NAME#_LineNum_Number_Of_Lines			; 2 
+	ADC	##NAME#_LineNum_Number_Of_Lines			; 2 
+	ADC	#1
 	DEX					; 2 
 	BPL	#NAME#_48PxPicture_SetIndex	; 2  
 #NAME#_48PxPicture_SetIndexEnd
-	CPY	#9				; 2
+	CPY	#6				; 2
 	BCS	#NAME#_48PxPicture_NoExtraSync  ; 2
 	STA	WSYNC				; 3 (7)
 #NAME#_48PxPicture_NoExtraSync
 	STA	WSYNC
 	STA	temp19				; 3 
-	LDA	#SETTERS#
+
 *
 *	temp19 holds the first index of the current frame!
 *	

@@ -1109,8 +1109,8 @@ class Pic48Editor:
 
     def __playThread(self):
         while (self.__isPlaying and self.dead == False and self.__loader.mainWindow.dead == False):
+            sleep(2 / ((self.__speed * 2) + 1) )
             self.__changeIndex(1, True, True)
-            sleep(1 / (self.__speed // 2) )
 
     def __changeIndex(self, val, relative, update):
         old = self.__frameIndex
