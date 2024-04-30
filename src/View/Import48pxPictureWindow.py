@@ -62,6 +62,8 @@ class Import48pxPictureWindow:
         #self.__holers         = (4, 5, 6, 7)
         self.__holers = (0, 1, 10, 11)
 
+        self.__skipNum = 0
+
         formats = ["bmp", "dds", "eps", "gif", "dib", "ico", "jpg", "jpeg", "pcx", "png", "tga", "tiff", "pdf"]
 
         self.answer = self.__fileDialogs.askForFileName("loadPicture",
