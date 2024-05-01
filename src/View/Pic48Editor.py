@@ -388,11 +388,6 @@ class Pic48Editor:
                                     )
         self.__boxButton.pack(side=LEFT, anchor=N, fill=X)
 
-        self.__boxFrame2 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
-        self.__boxFrame2.pack_propagate(False)
-        self.__boxFrame2.pack(side=TOP, anchor=N, fill=X)
-
         #self.__boxButtonVal2 = IntVar()
         #self.__boxButton2 = Checkbutton(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
         #                            fg=self.__loader.colorPalettes.getColor("boxFontNormal"), state = DISABLED,
@@ -475,6 +470,39 @@ class Pic48Editor:
         self.__disabledOnes.append(self.__boxButton)
         #self.__disabledOnes.append(self.__boxButton2)
         self.__disabledOnes.append(self.__repeatingPattern)
+
+        self.__boxFrame2 = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
+        self.__boxFrame2.pack_propagate(False)
+        self.__boxFrame2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__boxFrame2_1 = Frame(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width() // 3 * 2)
+        self.__boxFrame2_1.pack_propagate(False)
+        self.__boxFrame2_1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__openCanvasFrame = Label(self.__boxFrame2_1,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("openCanvas"),
+                                    font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window")
+                                    )
+
+        self.__openCanvasFrame.pack_propagate(False)
+        self.__openCanvasFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__boxFrame2_2 = Frame(self.__boxFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width() // 3 * 2)
+        self.__boxFrame2_2.pack_propagate(False)
+        self.__boxFrame2_2.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__48pxCanvasPic = self.__loader.io.getImg("48PxCanvas", None)
+        self.__openCanvasButton = Button(self.__boxFrame2_2, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__48pxCanvasPic,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__openCanvasEditor)
+
+        self.__openCanvasButton.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__disabledOnes.append(self.__openCanvasButton)
 
         from VisualLoaderFrame import VisualLoaderFrame
 
@@ -563,6 +591,17 @@ class Pic48Editor:
             widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                       fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
                                       )
+
+    def __openCanvasEditor(self):
+        from CanvasEditor48px import CanvasEditor48px
+
+        canvasEditor48px = CanvasEditor48px(self.__loader, self.__numOfLines,
+                                            self.__repeatingOnTop, self.__pattern, self.__data[self.__frameIndex],
+                                            self.__colorData[self.__frameIndex], self.__backColor, self.__keys
+                                            )
+
+        self.__topLevelWindow.focus_force()
+        self.__topLevelWindow.deiconify()
 
     def __importImage(self):
         from Import48pxPictureWindow import Import48pxPictureWindow

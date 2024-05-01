@@ -8,7 +8,7 @@ import os
 
 class Import48pxPictureWindow:
 
-    def __init__(self, loader, initMode, numOfLines, repeatingOnTop, pattern, patterns):
+    def __init__(self, loader, frameNum, numOfLines, repeatingOnTop, pattern, patterns):
         self.__loader = loader
 
         self.__loader = loader
@@ -39,6 +39,11 @@ class Import48pxPictureWindow:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
 
         self.__sizes = [self.__screenSize[0] // 2.25, self.__screenSize[1] // 1.40]
+
+        if frameNum == 1:
+           initMode = True
+        else:
+           initMode = False
 
         self.__initMode       = initMode
         self.__wasInit        = initMode

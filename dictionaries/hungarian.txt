@@ -494,3 +494,5 @@ eTolerance=Hibatûrés
 segmentMethod=Egységesítési Mód
 forceBlack=Fekete Mindig Háttér
 setBorder=Keretezõ PF
+48pxCanvas=48Px Képszerkesztõ
+openCanvas=Képszerkesztõ Megnyitása
