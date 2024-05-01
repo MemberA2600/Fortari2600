@@ -496,3 +496,7 @@ forceBlack=Fekete Mindig Háttér
 setBorder=Keretezõ PF
 48pxCanvas=48Px Képszerkesztõ
 openCanvas=Képszerkesztõ Megnyitása
+drawLayer=Rajzolandó Réteg
+playfieldLayer=Playfield Réteg
+uniqueLayer=Egyedi Réteg
+repeatingLayer=Ismétlõdõ Réteg

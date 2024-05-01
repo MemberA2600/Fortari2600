@@ -497,3 +497,7 @@ forceBlack=Force Black to BG
 setBorder=Set Border PF
 48pxCanvas=48Px Canvas Editor
 openCanvas=Open Canvas Editor
+drawLayer=Layer to Draw
+playfieldLayer=Playfield Layer
+uniqueLayer=Unique Layer
+repeatingLayer=Repeating Layer
