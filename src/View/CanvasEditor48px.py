@@ -46,6 +46,9 @@ class CanvasEditor48px:
         self.__data           = deepcopy(data)
         self.__colorData      = deepcopy(colorData)
 
+        self.__dataP          = data
+        self.__colorDataP     = colorData
+
         self.__finished       = [False, False]
         self.__bg             = bg
 
@@ -53,11 +56,16 @@ class CanvasEditor48px:
         self.__h              = 48
         self.__Y              = 0
 
-        self.__pickedColor    = "$0E"
-        self.__mouse1         = False
-        self.__mouse3         = False
+        self.__savedPoz = [-1, -1]
+        self.__altButton = None
 
-        self.__enteredButton  = None
+        self.__ctrl           = False
+        self.__alt           = False
+
+        self.__middle         = False
+        self.__draw           = 0
+
+        self.__pickedColor    = "$0E"
         self.__drawLayer      = "uniqueLayer"
 
         self.__keyPairs       = {
@@ -103,34 +111,27 @@ class CanvasEditor48px:
         t2.daemon = True
         t2.start()
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-1>", self.mouseClicked, 2)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-3>", self.mouseClicked, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Alt_L>",
+                                                            self.altOn, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Alt_L>",
+                                                            self.altOff, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Alt_R>",
+                                                            self.altOn, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Alt_R>",
+                                                            self.altOff, 2)
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<ButtonRelease-1>", self.mouseReleased, 2)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<ButtonRelease-3>", self.mouseReleased, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>",
+                                                            self.shiftON, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>",
+                                                            self.shiftOff, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>",
+                                                            self.shiftON, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>",
+                                                            self.shiftOff, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>", self.drawMode, 2)
 
-        self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
+        #self.__loader.threadLooper.addToThreading(self, self.__loop, [], 2)
 
-    def mouseClicked(self, event):
-        mouseButton = int(str(event).split(" ")[3].split("=")[1])
-
-        if   mouseButton == 1:
-             self.__mouse1 = True
-        elif mouseButton == 3:
-             self.__mouse3 = True
-
-    def mouseReleased(self, event):
-        mouseButton = int(str(event).split(" ")[3].split("=")[1])
-
-        if   mouseButton == 1:
-             self.__mouse1 = False
-        elif mouseButton == 3:
-             self.__mouse3 = False
-
-    def enteredFrame(self, event):
-        if False in self.__finished: return
-
-        self.__enteredButton = event.widget
 
     def __createCanvasFrameButtons(self):
         while self.__canvasFrame.winfo_width() < 2: sleep(0.00005)
@@ -169,7 +170,12 @@ class CanvasEditor48px:
                 f.pack(side=LEFT, anchor=E, fill=Y)
 
                 self.__loader.threadLooper.bindingMaster.addBinding(self, f, "<Enter>",
-                                                                    self.enteredFrame, 2)
+                                                                    self.__enter, 2)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, f, "<Button-1>",
+                                                                    self.__clicked, 2)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, f, "<Button-3>",
+                                                                    self.__clicked, 2)
+
                 self.__canvasData[-1]["pixels"].append([f, "BG"])
 
             clineFrame = Frame(self.__colorsFrame,
@@ -300,7 +306,7 @@ class CanvasEditor48px:
             y   = int(name.split("_")[0])
             key = name.split("_")[1]
 
-            self.__pickedColor = self.__canvasData[y]["colors"][key]
+            self.__pickedColor = self.__canvasData[y]["colors"][key][2]
 
             keyNums = {"PF": 2, "PR": 1, "PS": 0}
 
@@ -312,6 +318,10 @@ class CanvasEditor48px:
 
     def setLineDataAndColor(self, y):
         yWithOffset = y + self.__Y
+
+        repeatingValids = [0, 1, 2]
+        for num in range(0, 3):
+            if self.__pattern[num] == "0": repeatingValids.remove(num)
 
         if yWithOffset < self.__numOfLines:
             self.__canvasData[y]["enabled"] = True
@@ -327,6 +337,10 @@ class CanvasEditor48px:
 
                 #self.__canvasData[y]["colors"][keyPair][1].config(state = NORMAL)
 
+                self.__canvasData[y]["colors"][keyPair][1].config(
+                    text = keyPair + " (" + self.__canvasData[y]["colors"][keyPair][2] + ")"
+                )
+
             for x in range(0, self.__w):
                 simplePixel    = self.__data[yWithOffset][self.__keyPairs["PS"]][x]
                 repeatPixel    = self.__data[yWithOffset][self.__keyPairs["PR"]][x]
@@ -340,11 +354,11 @@ class CanvasEditor48px:
                     if simplePixel == 1:
                         pixel = "PS"
 
-                    if repeatPixel == 1:
+                    if repeatPixel == 1 and x // 16 in repeatingValids:
                         pixel = "PR"
 
                 else:
-                    if repeatPixel == 1:
+                    if repeatPixel == 1 and x // 16 in repeatingValids:
                         pixel = "PR"
 
                     if simplePixel == 1:
@@ -376,73 +390,151 @@ class CanvasEditor48px:
 
     def __loop(self):
         try:
+        #if True:
             if False in self.__finished:
                return
-
-            if self.__mouse1 or self.__mouse3:
-               if self.__enteredButton != None:
-                  self.processEnter()
-                  self.__enteredButton = None
 
         except Exception as e:
                print(str(e))
                pass
 
-    def processEnter(self):
-        name = str(self.__enteredButton).split(".")[-1]
-        y = int(name.split("_")[0])
-        x = int(name.split("_")[1])
-
-        pfColor          = self.__canvasData[y]["colors"]["PF"][2]
-        repeatColor      = self.__canvasData[y]["colors"]["PR"][2]
-        simpleColor      = self.__canvasData[y]["colors"]["PS"][2]
-
-        currentDisplayed = self.__canvasData[y]["pixels"][x][1]
-
-        if self.__mouse1:
-           doNothing = {
-                "BG": self.__bg, "PF": pfColor, "PR": repeatColor, "PS": simpleColor
+    def changeSinglePixel(self, y, x, color, layer):
+        if layer == "removeLayer":
+           pixelName = "BG"
+        else:
+           p = {
+               self.__selectables[0]: "PS",
+               self.__selectables[1]: "PR",
+               self.__selectables[2]: "PF"
            }
 
-           if doNothing[currentDisplayed] == self.__pickedColor: return
+           found = False
+           for key in p.keys():
+               val = p[key]
+               if self.__pickedColor == self.__canvasData[y]["colors"][val][2]:
+                  found     = True
+                  pixelName = val
+                  self.__layerPicker.deSelect()
+                  self.__layerPicker.select(key, True)
+                  layer = key
 
-           """ 
-           editingMode = ""
-           if self.__pickedColor in doNothing.values():
-              for key in doNothing:
-                  if doNothing[key] == self.__pickedColor:
-                     editingMode = key
-                     break
-           else:
-              onesNotUsedOnLine = ["PF", "PR", "PS"]
-              for theX in range(0, 48):
-                  if theX == x: continue
-                  item = self.__canvasData[y]["pixels"][theX][1]
-                  if item in onesNotUsedOnLine:
-                     onesNotUsedOnLine.remove(item)
+                  break
 
-                  if len(onesNotUsedOnLine) == 0:
-                     break
+           if found == False:
+              pixelName = p[layer]
 
-              affectedOtherPixels = 0
-              if currentDisplayed == "PF":
-                  
+        if pixelName == "PF" and (x < 8 or x > 39)             : return
+        if pixelName == "PR" and self.__pattern[x // 16] == "0": return
 
-              if len(onesNotUsedOnLine) > 0:
-                 pass
-              """
+        itWas = self.__canvasData[y]["pixels"][x][1]
+        self.__canvasData[y]["pixels"][x][1] = pixelName
 
+        repPozStart = x // 16
+        otherPoz = [0, 1, 2]
 
+        for num in range(0, 3):
+            if self.__pattern[num] == "0":
+               otherPoz.remove(num)
 
-        elif self.__mouse3:
+        try:
+            otherPoz.remove(repPozStart)
+        except:
             pass
 
-    def changeSinglePixel(self, y, x, color, mode):
-        pass
+        updateThese = {
+            False: ["PF", "BG"],
+            True:  ["PF", "BG", "PS"]
+        }
+
+        updateList = updateThese[self.__repeatingOnTop]
+
+        for refX in range(repPozStart * 16, (repPozStart + 1) * 16):
+            if self.__canvasData[y]["pixels"][refX][1] == "PR":
+               for base in otherPoz:
+                   base *= 16
+                   updatePoz = base + (refX % 16)
+                   if self.__canvasData[y]["pixels"][updatePoz][1] in updateList:
+                      self.__canvasData[y]["pixels"][updatePoz][1] = "PR"
+
+            if self.__canvasData[y]["pixels"][refX][1] in updateList:
+               for base in otherPoz:
+                   base *= 16
+                   updatePoz = base + (refX % 16)
+                   if self.__canvasData[y]["pixels"][updatePoz][1] == "PR":
+                      self.__canvasData[y]["pixels"][updatePoz][1] = "BG"
+
+        for x4 in range(2, 10):
+            numOfBGs = 0
+            numOfPFs = 0
+
+            for subX in range(x4 * 4, (x4 + 1) * 4):
+                if self.__canvasData[y]["pixels"][subX][1] == "PF": numOfPFs += 1
+                if self.__canvasData[y]["pixels"][subX][1] == "BG": numOfBGs += 1
+
+            if numOfPFs > 0 and numOfBGs > 0:
+                for subX in range(x4 * 4, (x4 + 1) * 4):
+                    if   pixelName == "PF" or (pixelName == "BG" and itWas in ("PR", "PS")):
+                         if self.__canvasData[y]["pixels"][subX][1] == "BG":
+                            self.__canvasData[y]["pixels"][subX][1]  = "PF"
+                    elif pixelName == "BG":
+                        if self.__canvasData[y]["pixels"][subX][1] == "PF":
+                            self.__canvasData[y]["pixels"][subX][1] = "BG"
+
+        if layer != "removeLayer":
+           self.__canvasData[y]["colors"][pixelName][2] = color
+           self.__canvasData[y]["colors"][pixelName][1].config(
+                text=pixelName + " (" + color + ")")
+           self.__setColor(self.__canvasData[y]["colors"][pixelName][1], color)
+
+        for subX in range(0, 48):
+            if self.__canvasData[y]["pixels"][subX][1] != "BG":
+                saveColor = self.__canvasData[y]["colors"][self.__canvasData[y]["pixels"][subX][1]][2]
+            else:
+                saveColor = self.__bg
+
+            self.__setColor(self.__canvasData[y]["pixels"][subX][0], saveColor
+                            )
+
+        self.updateDataFromCanvas(y)
 
     def updateDataFromCanvas(self, y):
         dataY = y + self.__Y
 
+        for key in self.__colorData[dataY].keys():
+            for keyPair in self.__keyPairs:
+                if self.__keyPairs[keyPair] == key:
+                   break
+
+            self.__colorData[dataY][key] = self.__canvasData[y]["colors"][keyPair][2]
+
+        ones = [0, 1, 2]
+        values = [
+            self.__keyPairs["PS"], self.__keyPairs["PR"], self.__keyPairs["PF"]
+        ]
+
+        for x in range(0, 48):
+            pfX = x // 4
+            pfInit = x % 4
+
+            relX = x % 16
+
+            self.__data[dataY][values[0]][x] = 0
+            for num in ones:
+                thatX = (num * 16) + relX
+                self.__data[dataY][values[1]][thatX] = 0
+
+            if pfInit == 0:
+               self.__data[dataY][values[2]][pfX] = 0
+
+            val = self.__canvasData[y]["pixels"][x][1]
+            if val == "PS":
+                self.__data[dataY][values[0]][x] = 1
+            elif val == "PF":
+                self.__data[dataY][values[2]][pfX] = 1
+            elif val == "PR":
+                for num in ones:
+                    thatX = (num * 16) + relX
+                    self.__data[dataY][values[1]][thatX] = 1
 
     def __setColor(self, frame, color):
         try:
@@ -463,3 +555,80 @@ class CanvasEditor48px:
             frame.config(bg=color1, fg=color2)
         except Exception as e:
             frame.config(bg=self.__colorDict.getHEXValueFromTIA(color))
+
+    def drawMode(self, event):
+        self.__draw = 1 - self.__draw
+
+    def shiftON(self, event):
+        self.__ctrl = True
+
+    def shiftOff(self, event):
+        self.__ctrl = False
+
+    def altOn(self, event):
+        if self.__altButton != None:
+           name = str(self.__altButton).split(".")[-1]
+           x = int(name.split("_")[1])
+           y = int(name.split("_")[0])
+
+           self.__savedPoz = [x, y]
+
+        self.__alt = True
+
+    def altOff(self, event):
+        self.__alt = False
+
+    def __enter(self, event):
+        if self.__alt == False:
+           self.__altButton = event.widget
+
+        if self.__draw: self.__clicked(event)
+
+    def __clicked(self, event):
+        button = event.widget
+        name = str(button).split(".")[-1]
+        try:
+            mouseButton = int(str(event).split(" ")[3].split("=")[1])
+        except:
+            if self.__ctrl:
+                mouseButton = 3
+            else:
+                mouseButton = 1
+
+        y = int(name.split("_")[0])
+        x = int(name.split("_")[1])
+
+        if y >= self.__numOfLines -  self.__Y: return
+
+        if self.__alt:
+           if self.__savedPoz[0] != x and self.__savedPoz[1] != y:
+              return
+
+        if self.__draw:
+            if self.__ctrl:
+               layer = "removeLayer"
+            else:
+               layer = self.__layerPicker.getSelected()
+        else:
+            if self.__ctrl:
+               if mouseButton == 3:
+                  layer = "removeLayer"
+               else:
+                  layer = self.__layerPicker.getSelected()
+            else:
+                val   = self.__canvasData[y]["pixels"][x][1]
+                layer = self.__layerPicker.getSelected()
+
+                p = {
+                    self.__selectables[0]: "PS",
+                    self.__selectables[1]: "PR",
+                    self.__selectables[2]: "PF"
+                }
+
+                for key in p:
+                    if p[key] == val:
+                       if key == layer:
+                          layer = "removeLayer"
+                       break
+
+        self.changeSinglePixel(y, x, self.__pickedColor, layer)
