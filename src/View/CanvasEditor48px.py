@@ -74,6 +74,13 @@ class CanvasEditor48px:
         self.__keyPairs       = {
             "PS": keys[0], "PR": keys[1], "PF": keys[2]
         }
+
+        self.__selectables = [
+            self.__dictionaries.getWordFromCurrentLanguage("uniqueLayer"),
+            self.__dictionaries.getWordFromCurrentLanguage("repeatingLayer"),
+            self.__dictionaries.getWordFromCurrentLanguage("playfieldLayer")
+        ]
+
         self.__disabledOnes = []
 
         self.__window = SubMenu(self.__loader, "48pxCanvas", self.__sizes[0], self.__sizes[1], None,
@@ -346,12 +353,6 @@ class CanvasEditor48px:
 
         self.__layerPickerLabel.pack_propagate(False)
         self.__layerPickerLabel.pack(side=TOP, anchor=N, fill=X)
-
-        self.__selectables = [
-            self.__dictionaries.getWordFromCurrentLanguage("uniqueLayer"),
-            self.__dictionaries.getWordFromCurrentLanguage("repeatingLayer"),
-            self.__dictionaries.getWordFromCurrentLanguage("playfieldLayer")
-        ]
 
         self.__layerPicker = FortariMB(self.__loader, self.__layerPickerFrame, NORMAL,
                                             self.__smallFont, self.__selectables[0], self.__selectables, False, False,
@@ -865,8 +866,11 @@ class CanvasEditor48px:
                       isIt = True
                    break
 
-        if changeOnState and self.capsLockState() and isIt:
-           frame.config(bg=self.__colors.getColor("highLight"))
+        if changeOnState and self.capsLockState():
+           if isIt:
+              frame.config(bg=self.__colors.getColor("boxFontUnSaved"))
+           else:
+              frame.config(bg=self.__colors.getColor("boxBackUnSaved"))
         else:
             try:
                 t = int("0x"+color[-1], 16)
