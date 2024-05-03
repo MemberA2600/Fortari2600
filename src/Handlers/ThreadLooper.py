@@ -13,7 +13,11 @@ class ThreadLooper:
         self.__base = 0.001
         self.__wait = self.__base
         self.__mainInited = False
-        self.__maxLevel = -1
+        self.__maxLevel    = -1
+        self.disableAll    = False
+        self.wasDisableAll = False
+
+        self.__numOfTopLevels = 0
 
         from BindingMaster import BindingMaster
         self.bindingMaster = BindingMaster(loader, self)
@@ -35,6 +39,38 @@ class ThreadLooper:
 
         self.__listOfThreads.append([object, function, args, level])
 
+    def enableDisable(self):
+        forceIt = False
+
+        if self.disableAll != self.wasDisableAll:
+           self.wasDisableAll = self.disableAll
+           if self.disableAll == True:
+               self.__loader.mainWindow.editor.attributes('-disabled', True)
+               try:
+                   for top in self.__loader.topLevels:
+                       top.attributes('-disabled', True)
+               except Exception as e:
+                  print(str(e))
+           else:
+               forceIt = True
+
+        if forceIt or self.__numOfTopLevels != len(self.__loader.topLevels):
+           self.__numOfTopLevels = len(self.__loader.topLevels)
+
+           if self.__numOfTopLevels == 0:
+              self.__loader.mainWindow.editor.attributes('-disabled', False)
+              self.__loader.mainWindow.editor.deiconify()
+              self.__loader.mainWindow.editor.focus()
+           else:
+              self.__loader.mainWindow.editor.attributes('-disabled', True)
+              for num in range(0, len(self.__loader.topLevels)):
+                  if num < len(self.__loader.topLevels) - 1:
+                     self.__loader.topLevels[num].attributes('-disabled', True)
+                  else:
+                     self.__loader.topLevels[num].attributes('-disabled', False)
+                     self.__loader.topLevels[num].deiconify()
+                     self.__loader.topLevels[num].focus()
+
     def __loop(self):
         number = 0
         t = None
@@ -43,6 +79,8 @@ class ThreadLooper:
             try:
                 while self.__loader.mainWindow.dead == False:
                     self.__mainInited = True
+                    self.enableDisable()
+
                     if self.__running == False:
                        number += 1
                        if number > len(self.__listOfThreads) - 1: number = 0

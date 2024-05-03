@@ -370,6 +370,9 @@ class EditorBigFrame:
             elif self.__selectedMode == "job":
                 self.__createJobWindows()
 
+            self.__loader.mainWindow.editor.deiconify()
+            self.__loader.mainWindow.editor.focus()
+
         if self.__counter > 0:
             self.__counter -= 1
 

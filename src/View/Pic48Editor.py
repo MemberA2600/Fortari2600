@@ -595,13 +595,22 @@ class Pic48Editor:
     def __openCanvasEditor(self):
         from CanvasEditor48px import CanvasEditor48px
 
+        saved = [False]
+
         canvasEditor48px = CanvasEditor48px(self.__loader, self.__numOfLines,
                                             self.__repeatingOnTop, self.__pattern, self.__data[self.__frameIndex],
-                                            self.__colorData[self.__frameIndex], self.__backColor, self.__keys
+                                            self.__colorData[self.__frameIndex], self.__backColor, self.__keys, saved
                                             )
 
         self.__topLevelWindow.focus_force()
         self.__topLevelWindow.deiconify()
+        if saved[0]:
+           self.__data     [self.__frameIndex] = deepcopy(canvasEditor48px.result[0])
+           self.__colorData[self.__frameIndex] = deepcopy(canvasEditor48px.result[1])
+
+           self.fillEditorEntries()
+           self.reDrawCanvas(None)
+           self.changed = True
 
     def __importImage(self):
         from Import48pxPictureWindow import Import48pxPictureWindow

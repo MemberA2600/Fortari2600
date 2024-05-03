@@ -10,12 +10,15 @@ class FileDialogs:
 
 
     def changeWindowState(self, state):
+        """
         try:
             self.__loader.mainWindow.editor.attributes('-disabled', state)
             for top in self.__loader.topLevels:
                 top.attributes('-disabled', state)
         except:
             pass
+        """
+        self.__loader.threadLooper.disableAll = state
 
     def askForInteger(self, title, p):
         self.changeWindowState(True)

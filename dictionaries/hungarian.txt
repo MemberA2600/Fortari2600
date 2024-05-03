@@ -500,3 +500,7 @@ drawLayer=Rajzolandó Réteg
 playfieldLayer=Playfield Réteg
 uniqueLayer=Egyedi Réteg
 repeatingLayer=Ismétlõdõ Réteg
+shiftImage=Képeltolás
+frameNotSaved=Nem Mentett Kép
+frameNotSavedMessage=A jelenlegi képen nem mentett adatok vannak! Mentsem?
+pickedColor=Kiválasztott Szín

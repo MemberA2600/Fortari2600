@@ -4,14 +4,18 @@ from copy import deepcopy
 from time import sleep
 from threading import Thread
 from FortariMB import FortariMB
+from VisualEditorFrameWithLabelAndEntry import VisualEditorFrameWithLabelAndEntry
+from HexEntry import HexEntry
+import win32api
 
 class CanvasEditor48px:
 
-    def __init__(self, loader, numOfLines, repeatingOnTop, pattern, data, colorData, bg, keys):
+    def __init__(self, loader, numOfLines, repeatingOnTop, pattern, data, colorData, bg, keys, saved):
         self.__loader = loader
 
         self.__loader = loader
         self.__mainWindow = self.__loader.mainWindow
+        self.__saved = saved
 
         self.dead = False
         self.changed = False
@@ -46,8 +50,7 @@ class CanvasEditor48px:
         self.__data           = deepcopy(data)
         self.__colorData      = deepcopy(colorData)
 
-        self.__dataP          = data
-        self.__colorDataP     = colorData
+        self.result           = None
 
         self.__finished       = [False, False]
         self.__bg             = bg
@@ -71,6 +74,7 @@ class CanvasEditor48px:
         self.__keyPairs       = {
             "PS": keys[0], "PR": keys[1], "PF": keys[2]
         }
+        self.__disabledOnes = []
 
         self.__window = SubMenu(self.__loader, "48pxCanvas", self.__sizes[0], self.__sizes[1], None,
                                 self.__addElements,
@@ -82,6 +86,8 @@ class CanvasEditor48px:
         self.__topLevelWindow.destroy()
         self.__loader.topLevels.remove(self.__topLevelWindow)
 
+    def capsLockState(self):
+        return win32api.GetKeyState(0x14) == 1
 
     def __addElements(self, top):
         self.__topLevel = top
@@ -130,8 +136,19 @@ class CanvasEditor48px:
                                                             self.shiftOff, 2)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Button-2>", self.drawMode, 2)
 
-        #self.__loader.threadLooper.addToThreading(self, self.__loop, [], 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Lock-KeyPress>"  , self.reColor, 2)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<Lock-KeyRelease>", self.reColor, 2)
 
+        self.__loader.threadLooper.addToThreading(self, self.__loop, [], 2)
+
+    def reColor(self, event):
+        for y in range(0, self.__h):
+            for x in range(0, self.__w):
+                key = self.__canvasData[y]["pixels"][x][1]
+
+                if key != "BG":
+                   self.__setColor(self.__canvasData[y]["pixels"][x][0],
+                                   self.__canvasData[y]["colors"][key][2], True, key)
 
     def __createCanvasFrameButtons(self):
         while self.__canvasFrame.winfo_width() < 2: sleep(0.00005)
@@ -202,15 +219,49 @@ class CanvasEditor48px:
                 b.pack_propagate(False)
                 b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-                self.__setColor(b, self.__bg)
+                self.__setColor(b, self.__bg, False, None)
                 self.__canvasData[-1]["colors"][key][0] = f
                 self.__canvasData[-1]["colors"][key][1] = b
 
                 self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__colorPicked, 2)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>", self.__changeColorFromPicked, 2)
 
             self.setLineDataAndColor(y)
 
         self.__finished[0] = True
+
+    def __changeColorFromPicked(self, event):
+        if self.__pickedColor == self.__bg: return
+
+        button = event.widget
+        name   = str(button).split(".")[-1]
+
+        y   = int(name.split("_")[0])
+        key = name.split("_")[1]
+
+        #for otherKey in self.__canvasData[y]["colors"].keys():
+        #    if self.__canvasData[y]["colors"][otherKey][2] == self.__pickedColor:
+        #       return
+
+        self.__setColor(button, self.__pickedColor, False, None)
+        button.config(text = key + " (" + self.__pickedColor + ")")
+        self.__canvasData[y]["colors"][key][2] = self.__pickedColor
+
+        p = {
+            self.__selectables[0]: "PS",
+            self.__selectables[1]: "PR",
+            self.__selectables[2]: "PF"
+        }
+
+        for k in p.keys():
+            if p[k] == key:
+               self.__drawLayer = k
+               self.__layerPicker.deSelect()
+               self.__layerPicker.select(k, True)
+
+        for x in range(0, 48):
+            if self.__canvasData[y]["pixels"][x][1] == key:
+               self.__setColor(self.__canvasData[y]["pixels"][x][0], self.__pickedColor, True, key)
 
     def __createSetterThings(self):
         while self.__setterFrame.winfo_width() < 2: sleep(0.00005)
@@ -258,14 +309,31 @@ class CanvasEditor48px:
                 b.pack_propagate(False)
                 b.pack(side=LEFT, anchor=E, fill=BOTH)
 
-                self.__setColor(b, name)
+                self.__setColor(b, name, False, None)
                 self.__colorPickerButtons.append(b)
 
                 self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>", self.__colorPicked, 2)
 
+        self.__pickedColorFrame = Frame(self.__setterFrame,
+                                bg=self.__loader.colorPalettes.getColor("window"),
+                                width=self.__setterFrame.winfo_width(), height=self.__setterFrame.winfo_height() // 24)
+
+        self.__pickedColorFrame.pack_propagate(False)
+        self.__pickedColorFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__pickedColorLabel = Label(self.__pickedColorFrame,
+                                text=self.__dictionaries.getWordFromCurrentLanguage("pickedColor") + " ($??)",
+                                font = self.__smallFont,
+                                bg=self.__loader.colorPalettes.getColor("window"),
+                                fg=self.__loader.colorPalettes.getColor("font"),
+                                width=self.__setterFrame.winfo_width(), height=self.__setterFrame.winfo_height() // 24)
+
+        self.__pickedColorLabel.pack_propagate(False)
+        self.__pickedColorLabel.pack(side=TOP, anchor=N, fill=BOTH)
+
         self.__layerPickerFrame = Frame(self.__setterFrame,
                                 bg=self.__loader.colorPalettes.getColor("window"),
-                                width=self.__setterFrame.winfo_width(), height=self.__setterFrame.winfo_height() // 9 * 2)
+                                width=self.__setterFrame.winfo_width(), height=self.__setterFrame.winfo_height() // 12)
 
         self.__layerPickerFrame.pack_propagate(False)
         self.__layerPickerFrame.pack(side=TOP, anchor=N, fill=X)
@@ -291,7 +359,211 @@ class CanvasEditor48px:
 
         self.__drawLayer = self.__selectables[0]
 
+        self.__backImage = self.__loader.io.getImg("backwards", None)
+        self.__forImage = self.__loader.io.getImg("forwards", None)
+
+        self.__indexSetters = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    width=self.__setterFrame.winfo_width(),
+                                    height=self.__setterFrame.winfo_height() // 24)
+        self.__indexSetters.pack_propagate(False)
+        self.__indexSetters.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__indexSetter = VisualEditorFrameWithLabelAndEntry(
+            self.__loader, "0", self.__indexSetters, self.__setterFrame.winfo_height() // 24, "index", self.__smallFont,
+            self.checkYIndex, self.checkYIndex)
+        self.__indexSetter.getEntry().config(state    = DISABLED)
+        self.__disabledOnes.append(self.__indexSetter.getEntry())
+
+        self.__indexButtons = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width())
+        self.__indexButtons.pack_propagate(False)
+        self.__indexButtons.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__indexButtonLeft = Frame(self.__indexButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width() // 2)
+        self.__indexButtonLeft.pack_propagate(False)
+        self.__indexButtonLeft.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__indexButtonRight = Frame(self.__indexButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width() // 2)
+        self.__indexButtonRight.pack_propagate(False)
+        self.__indexButtonRight.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__backYIndexButton = Button(self.__indexButtonLeft, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__backImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__decYIndex)
+
+        self.__forYIndexButton = Button(self.__indexButtonRight, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__forImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__incYIndex)
+
+        self.__backYIndexButton.pack_propagate(False)
+        self.__backYIndexButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__forYIndexButton.pack_propagate(False)
+        self.__forYIndexButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__disabledOnes.append(self.__backYIndexButton)
+        self.__disabledOnes.append(self.__forYIndexButton)
+
+        self.__shiftings = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    width=self.__setterFrame.winfo_width(),
+                                    height=self.__setterFrame.winfo_height() // 24)
+        self.__shiftings.pack_propagate(False)
+        self.__shiftings.pack(side=TOP, anchor=N, fill=X)
+
+        self.__shiftLabel = Label(self.__shiftings,
+                                    text=self.__dictionaries.getWordFromCurrentLanguage("shiftImage"),
+                                    font=self.__smallFont, fg=self.__colors.getColor("font"),
+                                    bg=self.__colors.getColor("window")
+                                    )
+
+        self.__shiftLabel.pack_propagate(False)
+        self.__shiftLabel.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__shiftButtons = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width())
+        self.__shiftButtons.pack_propagate(False)
+        self.__shiftButtons.pack(side=TOP, anchor=N, fill=X)
+
+
+        self.__shiftButtonLeft = Frame(self.__shiftButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width() // 2)
+        self.__shiftButtonLeft.pack_propagate(False)
+        self.__shiftButtonLeft.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__shiftButtonRight = Frame(self.__shiftButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__setterFrame.winfo_height() // 24, width = self.__setterFrame.winfo_width() // 2)
+        self.__shiftButtonRight.pack_propagate(False)
+        self.__shiftButtonRight.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__shitUpButton = Button(self.__shiftButtonLeft, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__backImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__shiftUp)
+
+        self.__shitDownButton = Button(self.__shiftButtonRight, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__forImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__shiftDown)
+
+        self.__shitUpButton.pack_propagate(False)
+        self.__shitUpButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__shitDownButton.pack_propagate(False)
+        self.__shitDownButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__disabledOnes.append(self.__shitUpButton)
+        self.__disabledOnes.append(self.__shitDownButton)
+
+        self.__okCancelButtons = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                    height=self.__setterFrame.winfo_height() // 24,
+                                    width=self.__setterFrame.winfo_width())
+        self.__okCancelButtons.pack_propagate(False)
+        self.__okCancelButtons.pack(side=TOP, anchor=N, fill=X)
+
+        self.__okFrame = Frame(self.__okCancelButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                       height=self.__setterFrame.winfo_height() // 24,
+                                       width=self.__setterFrame.winfo_width() // 2)
+        self.__okFrame.pack_propagate(False)
+        self.__okFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__cancelFrame = Frame(self.__okCancelButtons, bg=self.__loader.colorPalettes.getColor("window"),
+                                        height=self.__setterFrame.winfo_height() // 24,
+                                        width=self.__setterFrame.winfo_width() // 2)
+        self.__cancelFrame.pack_propagate(False)
+        self.__cancelFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__okButton = Button(self.__okFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                     text = self.__dictionaries.getWordFromCurrentLanguage("ok"), font = self.__normalFont,
+                                     fg=self.__loader.colorPalettes.getColor("font"),
+                                     width=round(self.__sizes[0]), state=DISABLED, command=self.__ok)
+
+        self.__cancelButton = Button(self.__cancelFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("cancel"), font=self.__normalFont,
+                                     fg=self.__loader.colorPalettes.getColor("font"),
+                                     width=round(self.__sizes[0]), state=DISABLED, command=self.__cancel)
+
+        self.__okButton.pack_propagate(False)
+        self.__okButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__cancelButton.pack_propagate(False)
+        self.__cancelButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__disabledOnes.append(self.__okButton)
+        self.__disabledOnes.append(self.__cancelButton)
+
         self.__finished[1] = True
+
+    def __cancel(self):
+        if self.changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("frameNotSaved", "frameNotSavedMessage")
+            if answer == "Yes":
+                self.__ok()
+                return
+
+        self.__closeWindow()
+
+    def __ok(self):
+        self.result = [self.__data, self.__colorData]
+
+        self.__saved[0]   = True
+        self.__closeWindow()
+
+    def __shiftUp(self):
+        self.shiftImage(-1)
+
+    def __shiftDown(self):
+        self.shiftImage(1)
+
+    def __decYIndex(self):
+        self.checkYIndex(-1)
+
+    def __incYIndex(self):
+        self.checkYIndex(1)
+
+    def shiftImage(self, offset):
+        newData      = []
+        newColorData = []
+
+        for y in range(0 - offset, 0 - offset + self.__numOfLines):
+            y = y % self.__numOfLines
+
+            newData     .append(deepcopy(self.__data     [y]))
+            newColorData.append(deepcopy(self.__colorData[y]))
+
+        self.__data      = newData
+        self.__colorData = newColorData
+
+        for y in range(0, self.__h):
+            self.setLineDataAndColor(y)
+
+    def checkYIndex(self, event):
+        if type(event) != int:
+           val   = self.__indexSetter.getValue()
+        else:
+           val   = self.__Y + event
+
+        entry = self.__indexSetter.getEntry()
+
+        try:
+            num = int(val)
+        except:
+            entry.config(bg=self.__colors.getColor("boxBackUnSaved"), fg=self.__colors.getColor("boxFontUnSaved"))
+            return
+
+        entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
+
+        if num > self.__numOfLines - self.__h: num = self.__numOfLines - self.__h
+        if num < 0: num = 0
+
+        self.__Y = num
+        self.__indexSetter.setValue(str(num))
+        entry.icursor(len(str(num)))
+
+        for n in range(0, self.__h):
+            self.setLineDataAndColor(n)
 
     def layerChanged(self):
         self.__drawLayer = self.__layerPicker.getSelected()
@@ -333,7 +605,7 @@ class CanvasEditor48px:
 
                 self.__canvasData[y]["colors"][keyPair][2] = self.__colorData[yWithOffset][key]
                 self.__setColor(self.__canvasData[y]["colors"][keyPair][1],
-                                self.__canvasData[y]["colors"][keyPair][2])
+                                self.__canvasData[y]["colors"][keyPair][2], False, None)
 
                 #self.__canvasData[y]["colors"][keyPair][1].config(state = NORMAL)
 
@@ -368,10 +640,10 @@ class CanvasEditor48px:
 
                 self.__canvasData[y]["pixels"][x][1] = pixel
                 if pixel == "BG":
-                   self.__setColor(self.__canvasData[y]["pixels"][x][0], self.__bg)
+                   self.__setColor(self.__canvasData[y]["pixels"][x][0], self.__bg, False, None)
                 else:
                    self.__setColor(self.__canvasData[y]["pixels"][x][0],
-                                   self.__canvasData[y]["colors"][pixel][2])
+                                   self.__canvasData[y]["colors"][pixel][2], True, pixel)
 
         else:
             self.__canvasData[y]["enabled"] = False
@@ -394,11 +666,39 @@ class CanvasEditor48px:
             if False in self.__finished:
                return
 
+            self.__setColor(self.__pickedColorLabel, self.__pickedColor, False, None)
+            self.__pickedColorLabel.config(
+                text = self.__dictionaries.getWordFromCurrentLanguage("pickedColor") + " (" + self.__pickedColor + ")"
+            )
+
+            if self.__disabledOnes != []:
+               for item in self.__disabledOnes:
+                   if type(item) in (HexEntry, FortariMB):
+                      item.changeState(NORMAL)
+                   else:
+                      item.config(state = NORMAL)
+
+               self.__disabledOnes = []
+
+
+            if self.__Y == 0:
+               self.__backYIndexButton.config(state = DISABLED)
+            else:
+               self.__backYIndexButton.config(state=NORMAL)
+
+            if self.__Y < self.__numOfLines - self.__h and self.__numOfLines > self.__h:
+               self.__forYIndexButton.config(state=NORMAL)
+            else:
+               self.__forYIndexButton.config(state=DISABLED)
+
         except Exception as e:
                print(str(e))
                pass
 
     def changeSinglePixel(self, y, x, color, layer):
+        #if color == self.__bg:
+        #   layer = "removeLayer"
+
         if layer == "removeLayer":
            pixelName = "BG"
         else:
@@ -408,6 +708,7 @@ class CanvasEditor48px:
                self.__selectables[2]: "PF"
            }
 
+           """ 
            found = False
            for key in p.keys():
                val = p[key]
@@ -419,12 +720,14 @@ class CanvasEditor48px:
                   layer = key
 
                   break
-
-           if found == False:
-              pixelName = p[layer]
+           """
+           #if found == False:
+           pixelName = p[layer]
 
         if pixelName == "PF" and (x < 8 or x > 39)             : return
         if pixelName == "PR" and self.__pattern[x // 16] == "0": return
+
+        self.changed = True
 
         itWas = self.__canvasData[y]["pixels"][x][1]
         self.__canvasData[y]["pixels"][x][1] = pixelName
@@ -436,10 +739,12 @@ class CanvasEditor48px:
             if self.__pattern[num] == "0":
                otherPoz.remove(num)
 
+        inRep = True
         try:
             otherPoz.remove(repPozStart)
         except:
-            pass
+            repPozStart = otherPoz[0]
+            otherPoz.remove(repPozStart)
 
         updateThese = {
             False: ["PF", "BG"],
@@ -480,21 +785,30 @@ class CanvasEditor48px:
                         if self.__canvasData[y]["pixels"][subX][1] == "PF":
                             self.__canvasData[y]["pixels"][subX][1] = "BG"
 
-        if layer != "removeLayer":
+        #if layer != "removeLayer":
+        if pixelName != "BG":
            self.__canvasData[y]["colors"][pixelName][2] = color
            self.__canvasData[y]["colors"][pixelName][1].config(
                 text=pixelName + " (" + color + ")")
-           self.__setColor(self.__canvasData[y]["colors"][pixelName][1], color)
+           self.__setColor(self.__canvasData[y]["colors"][pixelName][1], color, False, None)
+
+           self.__pickedColor = color
+           self.__layerPicker.deSelect()
+           for keyKey in p.keys():
+               if p[keyKey] == pixelName:
+                  self.__layerPicker.select(keyKey, True)
+                  self.__drawLayer = keyKey
+                  break
 
         for subX in range(0, 48):
             if self.__canvasData[y]["pixels"][subX][1] != "BG":
                 saveColor = self.__canvasData[y]["colors"][self.__canvasData[y]["pixels"][subX][1]][2]
+                self.__setColor(self.__canvasData[y]["pixels"][subX][0], saveColor, True,
+                                self.__canvasData[y]["pixels"][subX][1]
+                                )
             else:
                 saveColor = self.__bg
-
-            self.__setColor(self.__canvasData[y]["pixels"][subX][0], saveColor
-                            )
-
+                self.__setColor(self.__canvasData[y]["pixels"][subX][0], saveColor, False, None)
         self.updateDataFromCanvas(y)
 
     def updateDataFromCanvas(self, y):
@@ -536,25 +850,42 @@ class CanvasEditor48px:
                     thatX = (num * 16) + relX
                     self.__data[dataY][values[1]][thatX] = 1
 
-    def __setColor(self, frame, color):
-        try:
-            t = int("0x"+color[-1], 16)
-            if t % 2 == 1:
-               t = t-1
-               color = color[:-1]+hex(t).replace("0x","")
+    def __setColor(self, frame, color, changeOnState, key):
+        isIt = False
+        if key !=  None:
+            p = {
+                self.__selectables[0]: "PS",
+                self.__selectables[1]: "PR",
+                self.__selectables[2]: "PF"
+            }
 
-            color1 = self.__colorDict.getHEXValueFromTIA(color)
+            for keyPair in p.keys():
+                if p[keyPair] == key:
+                   if keyPair == self.__drawLayer:
+                      isIt = True
+                   break
 
-            num = int("0x"+color[2], 16)
-            if num>8:
-                num = color[:2]+hex(num-6).replace("0x","")
-            else:
-                num = color[:2]+hex(num+6).replace("0x","")
+        if changeOnState and self.capsLockState() and isIt:
+           frame.config(bg=self.__colors.getColor("highLight"))
+        else:
+            try:
+                t = int("0x"+color[-1], 16)
+                if t % 2 == 1:
+                   t = t-1
+                   color = color[:-1]+hex(t).replace("0x","")
 
-            color2 = self.__colorDict.getHEXValueFromTIA(num)
-            frame.config(bg=color1, fg=color2)
-        except Exception as e:
-            frame.config(bg=self.__colorDict.getHEXValueFromTIA(color))
+                color1 = self.__colorDict.getHEXValueFromTIA(color)
+
+                num = int("0x"+color[2], 16)
+                if num>8:
+                    num = color[:2]+hex(num-6).replace("0x","")
+                else:
+                    num = color[:2]+hex(num+6).replace("0x","")
+
+                color2 = self.__colorDict.getHEXValueFromTIA(num)
+                frame.config(bg=color1, fg=color2)
+            except Exception as e:
+                frame.config(bg=self.__colorDict.getHEXValueFromTIA(color))
 
     def drawMode(self, event):
         self.__draw = 1 - self.__draw
