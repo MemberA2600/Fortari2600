@@ -831,12 +831,12 @@ class CanvasEditor48px:
             pfX = x // 4
             pfInit = x % 4
 
-            relX = x % 16
-
             self.__data[dataY][values[0]][x] = 0
-            for num in ones:
-                thatX = (num * 16) + relX
-                self.__data[dataY][values[1]][thatX] = 0
+            self.__data[dataY][values[1]][x] = 0
+
+            #for num in ones:
+            #    thatX = (num * 16) + relX
+            #    self.__data[dataY][values[1]][thatX] = 0
 
             if pfInit == 0:
                self.__data[dataY][values[2]][pfX] = 0
@@ -847,9 +847,14 @@ class CanvasEditor48px:
             elif val == "PF":
                 self.__data[dataY][values[2]][pfX] = 1
             elif val == "PR":
-                for num in ones:
-                    thatX = (num * 16) + relX
-                    self.__data[dataY][values[1]][thatX] = 1
+                self.__data[dataY][values[1]][x] = 1
+
+                #for num in ones:
+                #    thatX = (num * 16) + relX
+                #    self.__data[dataY][values[1]][thatX] = 1
+
+
+        print(self.__data[y]["layerRepeating"])
 
     def __setColor(self, frame, color, changeOnState, key):
         isIt = False
