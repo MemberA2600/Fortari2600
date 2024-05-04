@@ -70,6 +70,7 @@ class CanvasEditor48px:
 
         self.__pickedColor    = "$0E"
         self.__drawLayer      = "uniqueLayer"
+        self.__wasDrawLayer   = self.__drawLayer
 
         self.__keyPairs       = {
             "PS": keys[0], "PR": keys[1], "PF": keys[2]
@@ -238,7 +239,7 @@ class CanvasEditor48px:
         self.__finished[0] = True
 
     def __changeColorFromPicked(self, event):
-        if self.__pickedColor == self.__bg: return
+        #if self.__pickedColor == self.__bg: return
 
         button = event.widget
         name   = str(button).split(".")[-1]
@@ -588,6 +589,7 @@ class CanvasEditor48px:
                 self.__selectables[keyNums[key]],
                 True
             )
+            self.__drawLayer = self.__layerPicker.getSelected()
 
     def setLineDataAndColor(self, y):
         yWithOffset = y + self.__Y
@@ -666,6 +668,11 @@ class CanvasEditor48px:
         #if True:
             if False in self.__finished:
                return
+
+            if self.__wasDrawLayer != self.__drawLayer:
+               self.__wasDrawLayer  = self.__drawLayer
+               if self.capsLockState():
+                  self.reColor(None)
 
             self.__setColor(self.__pickedColorLabel, self.__pickedColor, False, None)
             self.__pickedColorLabel.config(
@@ -854,7 +861,7 @@ class CanvasEditor48px:
                 #    self.__data[dataY][values[1]][thatX] = 1
 
 
-        print(self.__data[y]["layerRepeating"])
+        #print(self.__data[y]["layerRepeating"])
 
     def __setColor(self, frame, color, changeOnState, key):
         isIt = False

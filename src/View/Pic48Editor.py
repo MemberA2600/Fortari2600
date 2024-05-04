@@ -608,9 +608,27 @@ class Pic48Editor:
            self.__data     [self.__frameIndex] = deepcopy(canvasEditor48px.result[0])
            self.__colorData[self.__frameIndex] = deepcopy(canvasEditor48px.result[1])
 
+           for y in range(0, self.__numOfLines):
+               repeating  = self.__data[self.__frameIndex][y]["layerRepeating"]
+
+               startIndex = -1
+               others     = []
+               for num in range(0, 3):
+                   if self.__pattern[num] == "1":
+                      if startIndex == -1: startIndex = num * 16
+                   else:
+                      others.append(num * 16)
+
+               for x in range(startIndex, startIndex + 16):
+                   for otherStartX in others:
+                       otherX            = otherStartX + (x - startIndex)
+                       repeating[otherX] = repeating[x]
+
            self.fillEditorEntries()
            self.reDrawCanvas(None)
+           self.__spriteLoader.enableSave()
            self.changed = True
+
 
     def __importImage(self):
         from Import48pxPictureWindow import Import48pxPictureWindow
