@@ -203,6 +203,11 @@ class Pic48Editor:
                if   self.__frameIndex >= self.__frameNum:
                     self.checkFrameNum(self.__frameNum - 1)
 
+               if self.__frameNum == 1:
+                  self.__copyFromButton.config(state = DISABLED)
+               else:
+                  self.__copyFromButton.config(state = NORMAL)
+
                if     self.__isPlaying == False:
                  self.__playButton.config(image=self.__playImage)
 
@@ -524,6 +529,20 @@ class Pic48Editor:
 
         self.__disabledOnes.append(self.__openCanvasButton)
 
+        self.__copyFromFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                 height=self.__sizes[1] // 22, width = self.__setterFrame.winfo_width())
+
+        self.__copyFromFrame.pack_propagate(False)
+        self.__copyFromFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__copyFromButton = Button(self.__copyFromFrame, bg=self.__loader.colorPalettes.getColor("window"),
+                                   text = self.__dictionaries.getWordFromCurrentLanguage("copyFromPrev"), state = DISABLED,
+                                   fg = self.__loader.colorPalettes.getColor("font"), font = self.__normalFont,
+                                   width=round(self.__sizes[0]), command=self.__copyFromPrevious)
+
+        self.__copyFromButton.pack(side=LEFT, anchor=E, fill=BOTH)
+
+
         from VisualLoaderFrame import VisualLoaderFrame
 
         self.__loaderFrame = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
@@ -563,6 +582,19 @@ class Pic48Editor:
                                                         TOP, N)
 
         self.__finished[2] = True
+
+    def __copyFromPrevious(self):
+        sourceFrame = self.__frameIndex - 1
+        if sourceFrame < 0:
+           sourceFrame = self.__frameNum - 1
+
+        self.__data[self.__frameIndex]      = deepcopy(self.__data[sourceFrame])
+        self.__colorData[self.__frameIndex] = deepcopy(self.__colorData[sourceFrame])
+
+        self.fillEditorEntries()
+        self.reDrawCanvas(None)
+        self.__spriteLoader.enableSave()
+        self.changed = True
 
     def __clickedSmall(self, event):
         button = event.widget

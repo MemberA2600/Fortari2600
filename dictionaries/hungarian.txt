@@ -504,3 +504,4 @@ shiftImage=Képeltolás
 frameNotSaved=Nem Mentett Kép
 frameNotSavedMessage=A jelenlegi képen nem mentett adatok vannak! Mentsem?
 pickedColor=Kiválasztott Szín
+copyFromPrev=Másolás az Elõzõrõl

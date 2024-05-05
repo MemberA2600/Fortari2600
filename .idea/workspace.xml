@@ -8,34 +8,22 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-05-04_211356.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-05-05_095151.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test.a26" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/View/CanvasEditor48px.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/CanvasEditor48px.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test2.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test2.a26" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test2.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Cirno_Test2.asm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/Pic48Editor.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/Pic48Editor.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0005.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0006.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0007.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0008.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0009.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0010.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0011.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0005.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0006.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0007.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0008.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0009.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0010.bin" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0011.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/free.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" afterPath="$PROJECT_DIR$/temp/source.asm" afterDir="false" />
     </list>
@@ -58,7 +46,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1714895511137" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1714926786954" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1714738538361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -237,19 +225,19 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="580" />
+          <entry key="project.closed" value="581" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="5" />
           <entry key="project.open.time.3" value="92" />
-          <entry key="project.open.time.4" value="490" />
+          <entry key="project.open.time.4" value="491" />
           <entry key="project.open.time.5" value="120" />
           <entry key="project.open.time.6" value="34" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="4" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="3" />
-          <entry key="project.opened" value="756" />
+          <entry key="project.opened" value="757" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -269,13 +257,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="543258" />
+          <entry key="py" value="543798" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="543258" />
+          <entry key="Python" value="543798" />
         </counts>
       </usages-collector>
     </session>
@@ -288,7 +276,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/CanvasEditor48px.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="584">
+            <state relative-caret-position="4288">
               <caret line="276" column="47" selection-start-line="276" selection-start-column="47" selection-end-line="276" selection-end-column="47" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
@@ -302,7 +290,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
+            <state relative-caret-position="4304">
               <caret line="272" selection-start-line="272" selection-end-line="272" />
             </state>
           </provider>
@@ -311,10 +299,11 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="552">
-              <caret line="1080" lean-forward="true" selection-start-line="1080" selection-end-line="1080" />
+            <state relative-caret-position="408">
+              <caret line="596" column="27" selection-start-line="596" selection-start-column="27" selection-end-line="596" selection-end-column="27" />
               <folding>
-                <marker date="1714895511133" expanded="true" signature="43099:44062" ph="..." />
+                <marker date="1714926786950" expanded="true" signature="28742:29168" ph="..." />
+                <marker date="1714926786950" expanded="true" signature="44588:45551" ph="..." />
               </folding>
             </state>
           </provider>
@@ -340,11 +329,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__indexSetter</find>
-      <find>__indexSetter.getEntry</find>
-      <find>setter</find>
-      <find>__linesSetter</find>
-      <find>checkY</find>
       <find>__indexVal</find>
       <find>checkFrameNum</find>
       <find>frameIndex</find>
@@ -366,10 +350,15 @@
       <find>killer</find>
       <find>__wasSmaller</find>
       <find>__killerIndex</find>
-      <find>loop</find>
       <find>check</find>
       <find>numOfLines</find>
       <find>numOfLinesChanged</find>
+      <find>loop</find>
+      <find>__copyFromPrevious</find>
+      <find>__keys</find>
+      <find>self.__data</find>
+      <find>self.__keys</find>
+      <find>__colorData</find>
     </findStrings>
     <replaceStrings>
       <replace>commandBack</replace>
@@ -725,8 +714,8 @@
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.579194" visible="true" weight="0.205625" />
-      <window_info id="Structure" order="1" sideWeight="0.420806" side_tool="true" visible="true" weight="0.205625" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5782568" visible="true" weight="0.205625" />
+      <window_info id="Structure" order="1" sideWeight="0.4217432" side_tool="true" visible="true" weight="0.205625" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49935815" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
@@ -1113,7 +1102,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/CanvasEditor48px.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="584">
+        <state relative-caret-position="4288">
           <caret line="276" column="47" selection-start-line="276" selection-start-column="47" selection-end-line="276" selection-end-column="47" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
@@ -1125,7 +1114,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
+        <state relative-caret-position="4304">
           <caret line="272" selection-start-line="272" selection-end-line="272" />
         </state>
       </provider>
@@ -1139,10 +1128,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="552">
-          <caret line="1080" lean-forward="true" selection-start-line="1080" selection-end-line="1080" />
+        <state relative-caret-position="408">
+          <caret line="596" column="27" selection-start-line="596" selection-start-column="27" selection-end-line="596" selection-end-column="27" />
           <folding>
-            <marker date="1714895511133" expanded="true" signature="43099:44062" ph="..." />
+            <marker date="1714926786950" expanded="true" signature="28742:29168" ph="..." />
+            <marker date="1714926786950" expanded="true" signature="44588:45551" ph="..." />
           </folding>
         </state>
       </provider>

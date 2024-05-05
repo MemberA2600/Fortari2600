@@ -505,3 +505,4 @@ shiftImage=Shift Image
 frameNotSaved=Frame Not Saved
 frameNotSavedMessage=Current Frame has pending changes! Save them?
 pickedColor=Picked Color
+copyFromPrev=Copy from Previous
