@@ -271,6 +271,8 @@ class CanvasEditor48px:
             if self.__canvasData[y]["pixels"][x][1] == key:
                self.__setColor(self.__canvasData[y]["pixels"][x][0], self.__pickedColor, True, key)
 
+        self.updateDataFromCanvas(y)
+
     def __createSetterThings(self):
         while self.__setterFrame.winfo_width() < 2: sleep(0.00005)
 

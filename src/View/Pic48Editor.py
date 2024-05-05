@@ -49,6 +49,9 @@ class Pic48Editor:
         self.__firstClick   = True
         self.__doingStuff   = False
 
+        #self.__checkIfSmaller = False
+        #self.__wasSmaller     = False
+        #self.__killerIndex    = -1
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -168,6 +171,19 @@ class Pic48Editor:
 
             if self.__firstClick: self.changed = False
 
+            """
+            if self.__checkIfSmaller:
+               self.__checkIfSmaller = False
+               if self.__wasSmaller:
+                  self.__wasSmaller = False
+                  self.checkYIndex(0, True)
+                  print(self.__numOfLines)
+                  self.fillEditorEntries()
+                  self.reDrawCanvas(None)
+            """
+
+
+
             if self.changed == False:
                 self.__spriteLoader.disableSave()
             else:
@@ -185,7 +201,7 @@ class Pic48Editor:
                self.__disabledOnes = []
             else:
                if   self.__frameIndex >= self.__frameNum:
-                    self.__changeIndex(self.__frameNum - 1)
+                    self.checkFrameNum(self.__frameNum - 1)
 
                if     self.__isPlaying == False:
                  self.__playButton.config(image=self.__playImage)
@@ -307,29 +323,33 @@ class Pic48Editor:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry, "<FocusOut>", self.__checkIndexEntry, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexEntry, "<KeyRelease>", self.__checkIndexEntry, 1)
 
+        theSize = 30
+
         self.__backSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "$00", self.__setterFrame, self.__sizes[1] // 25, "testColor", self.__smallFont,
+            self.__loader, "$00", self.__setterFrame, self.__sizes[1] // theSize, "testColor", self.__smallFont,
             self.checkBGColorEntry, self.checkBGColorEntry)
 
         self.checkBGColorEntry(None)
 
+        #theSetters
+
         self.__speed = 0
         self.__speedSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, str(self.__speed), self.__setterFrame, self.__sizes[1] // 25, "testSpeed", self.__smallFont,
+            self.__loader, str(self.__speed), self.__setterFrame, self.__sizes[1] // theSize, "testSpeed", self.__smallFont,
             self.checkSpeedEntry, self.checkSpeedEntry)
 
         self.__linesSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, str(self.__numOfLines), self.__setterFrame, self.__sizes[1] // 25, "numOfLines", self.__smallFont,
+            self.__loader, str(self.__numOfLines), self.__setterFrame, self.__sizes[1] // theSize, "numOfLines", self.__smallFont,
             self.checkLineNumEntry, self.checkLineNumEntry)
 
         self.__linesSetter.setLabelText(self.__dictionaries.getWordFromCurrentLanguage("numOfLines") + ":")
 
         self.__frameNumSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "1", self.__setterFrame, self.__sizes[1] // 25, "frameNum", self.__smallFont,
+            self.__loader, "1", self.__setterFrame, self.__sizes[1] // theSize, "frameNum", self.__smallFont,
             self.checkFrameNum, self.checkFrameNum)
 
         self.__indexSetter = VisualEditorFrameWithLabelAndEntry(
-            self.__loader, "0", self.__setterFrame, self.__sizes[1] // 25, "index", self.__smallFont,
+            self.__loader, "0", self.__setterFrame, self.__sizes[1] // theSize, "index", self.__smallFont,
             self.checkYIndex, self.checkYIndex)
 
         self.__backSetter.getEntry().config(state     = DISABLED)
@@ -345,17 +365,17 @@ class Pic48Editor:
         self.__disabledOnes.append(self.__indexSetter.getEntry())
 
         self.__indexButtons = Frame(self.__setterFrame, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width())
+                                 height=self.__sizes[1] // theSize, width = self.__setterFrame.winfo_width())
         self.__indexButtons.pack_propagate(False)
         self.__indexButtons.pack(side=TOP, anchor=N, fill=X)
 
         self.__indexButtonLeft = Frame(self.__indexButtons, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width() // 2)
+                                 height=self.__sizes[1] // theSize, width = self.__setterFrame.winfo_width() // 2)
         self.__indexButtonLeft.pack_propagate(False)
         self.__indexButtonLeft.pack(side=LEFT, anchor=E, fill=Y)
 
         self.__indexButtonRight = Frame(self.__indexButtons, bg=self.__loader.colorPalettes.getColor("window"),
-                                 height=self.__sizes[1] // 20, width = self.__setterFrame.winfo_width() // 2)
+                                 height=self.__sizes[1] // theSize, width = self.__setterFrame.winfo_width() // 2)
         self.__indexButtonRight.pack_propagate(False)
         self.__indexButtonRight.pack(side=LEFT, anchor=E, fill=BOTH)
 
@@ -833,7 +853,7 @@ class Pic48Editor:
 #                            else:
 #                               self.__colorData[frame][lnum][key] = sourceLine[0]
 
-                self.__changeIndex(0, False, True)
+                self.__changeIndex(0, False, True, False)
                 self.numOfLinesChanged(numOfLines)
                 self.fillEditorEntries()
                 self.reDrawCanvas(None)
@@ -914,16 +934,16 @@ class Pic48Editor:
 
 
     def __decYIndex(self):
-        self.checkYIndex(-1)
+        self.checkYIndex(-1, False)
 
     def __incYIndex(self):
-        self.checkYIndex(1)
+        self.checkYIndex(1, False)
 
     def selectedChanged(self):
         self.__pattern = self.__repeatingPattern.getSelected()
         self.reDrawCanvas(None)
 
-    def checkYIndex(self, event):
+    def checkYIndex(self, event, force):
         if type(event) != int:
            val   = self.__indexSetter.getValue()
         else:
@@ -939,13 +959,15 @@ class Pic48Editor:
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
 
+        #print(num, self.__numOfLines, self.__ySize, len(self.__xSize))
+
         if   num > self.__numOfLines - (self.__ySize // len(self.__xSize)):
              num = self.__numOfLines - (self.__ySize // len(self.__xSize))
 
         if   num < 0:
              num = 0
 
-        if num != self.__Y:
+        if num != self.__Y or force:
             if self.__firstClick:
                 self.__firstClick = False
             self.__Y = num
@@ -1005,13 +1027,25 @@ class Pic48Editor:
         elif num > 255:  num = 255
 
         if self.__numOfLines != num:
+            """
+            if  self.__numOfLines > num:
+                self.__wasSmaller  = True
+                self.__killerIndex = self.__Y
+                self.__killerLines = self.__numOfLines
+            """
+
             self.__numOfLines = num
             self.numOfLinesChanged(num)
             self.checkFrameNum(None)
-            self.checkYIndex(None)
+            self.checkYIndex(0, False)
+
+            #self.__Y = 0
+            #self.__indexSetter.setValue("0")
+
             if self.__firstClick:
                 self.__firstClick = False
             self.reDrawCanvas(None)
+            #self.__checkIfSmaller = True
 
         self.__linesSetter.setValue(str(num))
         entry.icursor(len(str(num)))
@@ -1044,6 +1078,9 @@ class Pic48Editor:
                while (len(self.__data[indexNum]) < newNum):
                       self.__data[indexNum]     .append(deepcopy(self.__temp     ))
                       self.__colorData[indexNum].append(deepcopy(self.__colorTemp))
+
+        self.fillEditorEntries()
+        self.reDrawCanvas(None)
 
     def checkSpeedEntry(self, event):
         val   = self.__speedSetter.getValue()
@@ -1153,17 +1190,17 @@ class Pic48Editor:
         elif  num > self.__frameNum - 1: num = self.__frameNum - 1
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"), fg=self.__colors.getColor("boxFontNormal"))
-        self.__changeIndex(num, False, True)
+        self.__changeIndex(num, False, True, False)
         entry.icursor(len(str(num)))
         self.fillEditorEntries()
 
         self.reDrawCanvas(None)
 
     def __decIndex(self):
-        self.__changeIndex(-1, True, True)
+        self.__changeIndex(-1, True, True, False)
 
     def __incIndex(self):
-        self.__changeIndex(1, True, True)
+        self.__changeIndex(1, True, True, False)
 
     def __play(self):
         self.__isPlaying = 1 - self.__isPlaying
@@ -1176,9 +1213,9 @@ class Pic48Editor:
     def __playThread(self):
         while (self.__isPlaying and self.dead == False and self.__loader.mainWindow.dead == False):
             sleep(2 / ((self.__speed * 2) + 1) )
-            self.__changeIndex(1, True, True)
+            self.__changeIndex(1, True, True, False)
 
-    def __changeIndex(self, val, relative, update):
+    def __changeIndex(self, val, relative, update, force):
         old = self.__frameIndex
 
         if relative:
@@ -1191,7 +1228,7 @@ class Pic48Editor:
 
         if update: self.__indexVal.set(str(self.__frameIndex))
 
-        if old != self.__frameIndex:
+        if old != self.__frameIndex or force:
            self.fillEditorEntries()
            self.reDrawCanvas(None)
 

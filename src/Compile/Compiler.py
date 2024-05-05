@@ -202,8 +202,10 @@ class Compiler:
         #                 align + "#NAME#_PF2_Data_Right_1\n",
         #                 align + "#NAME#_PF2_Data_Right_2\n"]
 
-        pfTexts       = [align + "#NAME#_PF2_Data_1\n",
-                         align + "#NAME#_PF2_Data_2\n"]
+        empty = "\tBYTE\t#0\n"
+
+        pfTexts       = [align + "#NAME#_PF2_Data_1\n" + empty,
+                         align + "#NAME#_PF2_Data_2\n" + empty]
 
         zeroVals  = [[2, 3, 6, 7, 10, 11], [0, 1, 4, 5, 8, 9]]
 
@@ -237,8 +239,8 @@ class Compiler:
 
         text += pfText
 
-        repeatingSprite1 = align + "#NAME#_Repeating_1\n"
-        repeatingSprite2 = align + "#NAME#_Repeating_2\n"
+        repeatingSprite1 = align + "#NAME#_Repeating_1\n" + empty
+        repeatingSprite2 = align + "#NAME#_Repeating_2\n" + empty
 
         patternMatches = {
             "100": ["00",0 ],
@@ -271,7 +273,7 @@ class Compiler:
 
         simpleSprite = []
         for num in range(1, 7):
-            simpleSprite.append(align + "#NAME#_Simple_" + str(num) +"\n")
+            simpleSprite.append(align + "#NAME#_Simple_" + str(num) +"\n" +  empty)
 
         for frameNum in range(0, numOfFrames):
             firstF = True
@@ -300,7 +302,7 @@ class Compiler:
             "layerRepeating": "Repeating_Color"
         }
         for key in keysAndNames:
-            colorText = align + "#NAME#_" + keysAndNames[key] + "\n"
+            colorText = align + "#NAME#_" + keysAndNames[key] + "\n" + empty
             for frameNum in range(0, numOfFrames):
                 firstF = True
                 for y in range(numOfLines - 1, -1, -1):
