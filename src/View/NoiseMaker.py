@@ -291,9 +291,12 @@ class NoiseMaker:
         for key in self.__keys:
             for x in range(0, 32):
                 if len(self.__dataLines[key]["buttons"][0]) > 0:
-                   self.setButtonOnKeyAndX(key, x)
+                   if key != "duration":
+                      self.setButtonOnKeyAndX(key, x)
 
     def setButtonOnKeyAndX(self, key, x):
+        if key == "duration": return
+
         if x >= self.__wWw:
             if key == "frequency":
                h = 32
@@ -351,8 +354,8 @@ class NoiseMaker:
                          )
             return False
 
-        if   num < min(self.__validOnes[key]): num   = min(validOnes[key])
-        elif num > max(self.__validOnes[key]): num   = max(validOnes[key])
+        if   num < min(self.__validOnes[key]): num   = min(self.__validOnes[key])
+        elif num > max(self.__validOnes[key]): num   = max(self.__validOnes[key])
         elif num not in self.__validOnes[key]:
              diff = 99
              num2 = -1
@@ -370,7 +373,8 @@ class NoiseMaker:
         entryVal.set(str(num))
         entry.icursor(len(str(num)))
 
-        self.setButtonOnKeyAndX(key, x)
+        if key != "duration":
+           self.setButtonOnKeyAndX(key, x)
         self.changed = True
         return True
 
@@ -389,7 +393,8 @@ class NoiseMaker:
         self.__dataLines[key]["entryVals"][x].set(str(y))
         self.__dataLines[key]["entries"][x].config(bg = self.__colors.getColor("boxBackNormal"), fg = self.__colors.getColor("boxFontNormal"))
 
-        self.setButtonOnKeyAndX(key, x)
+        if key != "duration":
+           self.setButtonOnKeyAndX(key, x)
 
         self.__tia.setAndPlay(int(self.__dataLines["volume"]["entryVals"][x].get()),
                               int(self.__dataLines["channel"]["entryVals"][x].get()),
@@ -494,14 +499,37 @@ class NoiseMaker:
         self.__loaderFrame.pack_propagate(False)
         self.__loaderFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__testerFrame = Frame(self.__interfaceFrame,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__sizes[0], height=fSiez
+                  )
+        self.__testerFrame.pack_propagate(False)
+        self.__testerFrame.pack(side=TOP, anchor=N, fill=X)
+
         while self.__loaderFrame.winfo_width() < 2: sleep(0.000005)
 
         self.__spriteLoader = VisualLoaderFrame(self.__loader, self.__loaderFrame, self.__loaderFrame.winfo_height() // 2, self.__smallFont, self.__miniFont,
                                                 None, "PixelFarts", "openSoundFx", self.checkIfValidFileName,
                                                 self.__interfaceFrame.winfo_width() // 2, self.__open, self.__save)
 
+        while (self.__testerFrame.winfo_width() < 2): sleep(0.00001)
+
+        from EmuTestFrame import EmuTestFrame
+
+        self.__testWithEmulatorFrame = EmuTestFrame(self.__loader, self.__testerFrame,
+                                                    self.__testerFrame.winfo_height()     , self.__normalFont,
+                                                    self.__testerFrame.winfo_width()  // 2, self.__loadTest, BOTTOM, S)
 
         self.__finished[2] = True
+
+    def __loadTest(self):
+        t = Thread(target=self.__testThread)
+        t.daemon = True
+        t.start()
+
+    def __testThread(self):
+        Compiler(self.__loader, self.__loader.virtualMemory.kernel, "soundFxTest",
+                 [self.__dataLines, self.__wWw, "NTSC", "#NAME#", "bank2"])
 
     def checkIfValidFileName(self, event):
         name = str(event.widget).split(".")[-1]

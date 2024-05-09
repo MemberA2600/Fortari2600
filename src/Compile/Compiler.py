@@ -81,6 +81,30 @@ class Compiler:
                 self.__48pxTest()
             elif self.__mode == "soundFxData":
                 self.__soundFxData()
+            elif self.__mode == "soundFxTest":
+                self.__soundFxTest()
+
+    def __soundFxTest(self):
+        data = self.__soundFxData()
+
+        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__pictureData = self.__loader.io.loadWholeText("templates/testCodes/pressFire.asm")
+        self.__h = 83
+
+        self.__init = (self.__loader.io.loadWholeText("templates/testCodes/64pxPictureEnter.asm").replace("FULLHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPHEIGHT", str(self.__h))
+                                                                                                 .replace("DSPINDEX", "0"))
+        self.__engine = self.__loader.io.loadWholeText("templates/skeletons/64pxPicture.asm")
+        self.__overScan = self.__loader.io.loadWholeText("templates/testCodes/soundFxOverScan.asm")
+
+        self.__kernelText = (self.__kernelText.replace("!!!OVERSCAN_BANK2!!!", self.__overScan).replace("!!!ENTER_BANK2!!!", self.__init)
+                            .replace("!!!SCREENTOP_BANK2!!!", self.__engine).replace("!!!USER_DATA_BANK2!!!", self.__pictureData + "\n" + data)
+                             .replace("!!!TV!!!", "NTSC")
+                             ).replace("#NAME#", "TestSound")
+
+        self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__kernelText)
+        self.doSave("temp/")
+        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
     def __soundFxData(self):
         data         = self.__data[0]
@@ -89,9 +113,12 @@ class Compiler:
         name         = self.__data[3]
         bank         = self.__data[4]
 
-        text    = "* Len=" + str(length)               + "\n" +\
-                  "\t_align\t" + str((length * 2) + 1) + "\n" +\
+        text    = "* Len=" + str(length)               + "\n" + \
+                  "* Bytes=#BYTES#\n" + \
+                  "\t_align\t#BYTES#\n" +\
                   name + "_SoundFX\n"
+
+        bytes = (length * 2) + 1
 
         for x in range(0, length):
             volume    = int(data["volume"]   ["entryVals"][x].get())
@@ -103,15 +130,21 @@ class Compiler:
                 "volume": 4, "channel": 4, "frequency": 5, "duration": 3
             }
 
+            origVol   = volume
             volume    = self.convertToBin(volume   , bitNums["volume"]   )
             channel   = self.convertToBin(channel  , bitNums["channel"]  )
             frequency = self.convertToBin(frequency, bitNums["frequency"])
             duration  = self.convertToBin(duration , bitNums["duration"] )
 
-            text     += "\tBYTE\t#%" + channel  + volume    + "\n" +\
-                        "\tBYTE\t#%" + duration + frequency + "\n"
+            if origVol > 0:
+                text     += "\tBYTE\t#%" + channel  + volume    + "\n" +\
+                            "\tBYTE\t#%" + duration + frequency + "\n"
+            else:
+                text     += "\tBYTE\t#%" + duration + "00000\n"
+                bytes    -= 1
 
         text    += "\tBYTE\t#$F0\t ; End Byte\n"
+        text     = text.replace("#BYTES#", str(bytes))
 
         if self.__mode == "soundFxData":
             self.converted = text
