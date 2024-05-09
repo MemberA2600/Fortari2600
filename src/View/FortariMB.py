@@ -53,8 +53,13 @@ class FortariMB:
         self.__menuButtonName = mName
         self.__menuButton = m
 
-        for item in self.__defaultSelected:
-            self.select(item, True)
+        if multiSelect:
+            self.select(defaultSelected   , True)
+        else:
+            self.select(defaultSelected[0], True)
+
+        #for item in self.__defaultSelected:
+        #    self.select(item, True)
 
     def __clicked(self):
         if self.multiSelect == False:

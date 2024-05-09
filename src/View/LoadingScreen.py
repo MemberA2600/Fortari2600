@@ -12,6 +12,7 @@ class LoadingScreen():
         self.__loader = loader
         self.__w_Size=round(800*(size[0]/1600))
         self.__h_Size=round(self.__w_Size*0.56)
+        self.__shouldClick = False
 
         self.__Loading_Window=Toplevel()
         self.__Loading_Window.geometry("%dx%d+%d+%d" % (self.__w_Size, self.__h_Size,
@@ -41,6 +42,7 @@ class LoadingScreen():
         self.__loader.threadLooper = ThreadLooper(self.__loader)
 
         self.bindThings()
+        self.__shouldClick = True
 
         self.__loader.dataReader = DataReader()
         self.__loader.config = Config(self.__loader.dataReader)
@@ -128,6 +130,7 @@ class LoadingScreen():
 
         from Executor import Executor
         self.__loader.executor = Executor(self.__loader)
+        self.__shouldClick = False
 
         self.__Loading_Window.destroy()
 
@@ -150,6 +153,7 @@ class LoadingScreen():
         keyboard.on_press_key("6", self.pressed)
 
     def pressed(self, event):
+        if self.__shouldClick == False: return
 
         self.__clicked +=1
         try:

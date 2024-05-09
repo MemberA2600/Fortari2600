@@ -1342,8 +1342,8 @@ ExtraWSYNC
 ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
 	.byte	#<ScreenBottomBank2-1
-	.byte	#>ScreenBottomBank3-1
-	.byte	#<ScreenBottomBank3-1
+	.byte	#>Zero-1
+	.byte	#<Zero-1
 	.byte	#>ScreenBottomBank4-1
 	.byte	#<ScreenBottomBank4-1
 	.byte	#>ScreenBottomBank5-1
@@ -1455,45 +1455,25 @@ start_bank1
 
 EnterScreenBank2
 
-dspHeight = $d2
-setters = $d3
-spriteIndex = $d4
-stopBits = $d5
-*
-*	Setters:
-*	0-3: frameIndex
-*	4-5: speed	
-*
+picIndex = $d2
+picDisplayHeight = $d3
+picHeight = 83
 
 	LDA	#%10000000	; Disables game kernel, so won't run
 	STA	NoGameMode 	; main kernel and vblank code.
 
+	LDA	#83
+	STA	picDisplayHeight
+
 	LDA	#0
-	STA	spriteIndex
+	STA	picIndex
 
-	LDA	bank2_Pic48Test_LineNum_Number_Of_Lines
-	CMP	#70
-	BCC	THANKGOD_SMALLER
-	LDA	#70
-THANKGOD_SMALLER
-	CMP 	#bank2_Pic48Test_LineNum_Number_Of_Lines
-	BCS	THANKGOD_SMALLER2
-	LDA	#bank2_Pic48Test_LineNum_Number_Of_Lines
-THANKGOD_SMALLER2
-	STA	dspHeight	
+	LDA	#90
+	CMP	picDisplayHeight
+	BCS	64pxPicture_NoINITDec
+	STA	picDisplayHeight
 
-	LDA	#3
-	ASL
-	ASL
-	ASL
-	ASL
-	AND 	#%01110000
-	STA	setters
-
-	LDA	#$00
-	STA	frameColor
-
-
+64pxPicture_NoINITDec
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1530,8 +1510,8 @@ JumpToNewScreenBank_NoLAX2
 LeaveJumpTableBank2
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -1574,134 +1554,31 @@ OverScanBank2
 *
 
 
-*
-*	Should be able to do:
-*	-Left / Right scrolls the picture
-*	-Up / Down changes the display height
-*	-Select changes speed of animation
-*	-Fire adds 1 to animation frame manually 
-*
-
-	LDA	#$10
-	BIT	SWCHA
-	BNE	NoUpPressed
-	
-	LDA	dspHeight
-	CMP	#1
-	BEQ	NoDownPressed
-
-	DEC	dspHeight
-
-	JMP	NoDownPressed
-NoUpPressed
-	LDA	#$20
-	BIT	SWCHA
-	BNE	NoDownPressed
-	INC	dspHeight	
-
-NoDownPressed
-
-	BIT	SWCHA
-	BVS	NoLeftPressed
-
-	LDA	spriteIndex
-	CMP	#0
-	BEQ	NoRightPressed
-	DEC	spriteIndex	
-	JMP	NoRightPressed
-NoLeftPressed
-	BMI	NoRightPressed
-	
-	INC	spriteIndex
-
-NoRightPressed
-
-	BIT	INPT4
-	BMI	NoFirePressed	
-
-	BIT	stopBits
-	BMI	NoClearBit7
-
-	LDA	setters
-	AND	#$F0
+	bit	INPT5	
+	BPL	Hamster_Eating_Pickles_JumpToTheSound
+	bit	INPT4	
+	BMI	Hamster_Eating_Pickles_Return
+Hamster_Eating_Pickles_JumpToTheSound
+	LDA	#2
+	asl
+	asl			; Rol left two bits to save bankNumber
 	STA	temp01
-	LDA	setters
-	AND	#$0F
-	CLC
-	ADC	#1
-	AND	#$0F
-	STA	temp02
 
-	LDA	#bank2_Pic48Test_Frames_Max_Index
-	CMP	temp02
-	BCS 	DoNotZeroIndex
-	LDA	#0
-	STA	temp02
-DoNotZeroIndex
-	LDA	temp02
-	ORA	temp01
-	STA	setters
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
 
-	LDA	stopBits
-	ORA	#%10000000
-	STA	stopBits
+	lda	#>(Hamster_Eating_Pickles_Initialize-1)
+   	pha
+   	lda	#<(Hamster_Eating_Pickles_Initialize-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#3
+   	jmp	bankSwitchJump
 
-	JMP	NoClearBit7
-NoFirePressed
-	LDA	stopBits
-	AND	#%01111111
-	STA	stopBits
-
-NoClearBit7
-	LDA	#$02
-	BIT	SWCHB
-	BNE	NoSelectPressed
-
-	BIT	stopBits
-	BVS	NoClearBit6
-
-	LDA	setters
-	AND	#$0F
-	STA	temp01
-	LDA	setters
-	LSR
-	LSR
-	LSR
-	LSR
-	AND	#%00000111
-
-	CLC
-	ADC	#1
-	AND	#%00000111
-	STA	temp02
-
-	LDA	#7
-	CMP	temp02
-	BCS 	DoNotZeroIndex2
-	LDA	#0
-	STA	temp02
-DoNotZeroIndex2
-	LDA	temp02
-	ASL
-	ASL
-	ASL
-	ASL
-	ORA	temp01
-	STA	setters
-
-	LDA	stopBits
-	ORA	#%01000000
-	STA	stopBits
-
-	JMP	NoClearBit6
-
-NoSelectPressed
-	LDA	stopBits
-	AND	#%10111111
-	STA	stopBits
-
-NoClearBit6
-
+Hamster_Eating_Pickles_Return
 
 
 *VSYNC
@@ -1800,478 +1677,283 @@ VBlankEndBank2
 	tsx
 	stx	item
 
-*
-*	This is the standalone version of the 48pxPicture kernel, so there are no
-*	pointers used and also not much to replace on the fly.
-*
-
-* I always forget these!!
-*
-* X < Y
-* LDA	X	
-* CMP	Y
-* BCS   else 	 
-*
-* X <= Y
-*
-* LDA	Y
-* CMP	X
-* BCC	else
-*
-* X > Y 
-*
-* LDA	Y
-* CMP	X
-* BCS	else
-*
-* X >= Y
-*
-* LDA	X
-* CMP	Y
-* BCC 	else
-*
-bank2_Pic48Test_48PxPicture
-
-	LDA	setters			; 3 
-	LSR					
-	LSR
-	LSR
-	LSR	
-	AND	#%00000111			; 8 
-	TAX					; 2 
-	LDA	$00			; 3
-	STA	WSYNC				; 3
-
+pic64px_KernelStart
+	LDA	frameColor
+	STA	WSYNC		; (76)
 	STA	HMCLR		; 3
 	STA	COLUBK		; 3 (6)
 	STA	COLUP0		; 3 (9)
 	STA	COLUP1		; 3 (12)
 	STA	COLUPF		; 3 (15)
+
 	LDA	#0		; 2 (17)
-	STA	ENABL		; 3 (20)
-	STA	ENAM0		; 3 (23)
-	STA	ENAM1		; 3 (26)
+	STA	PF0		; 3 (20)
+	STA	PF1		; 3 (23)
+	STA	PF2		; 3 (26)
+	STA	GRP0		; 3 (29)
+	STA	GRP1		; 3 (32)
+	STA	VDELP0		; 3 (35)
+	STA	VDELP1		; 3 (38)
 
-bank2_Pic48Test_48PxPicture_Checks
-	CPX	#0					; 2 (28)
-	BNE	bank2_Pic48Test_48PxPicture_Checks_Continue	; 2 (30)
-	JMP	bank2_Pic48Test_48PxPicture_FrameNum_SYNC   	; 3
-bank2_Pic48Test_48PxPicture_Checks_Continue
-	LDA	counter				; 3 (33)
-	AND	bank2_Pic48Test_48PxPicture_BitMask,x	; 4 (37)
-	CMP	bank2_Pic48Test_48PxPicture_BitMask,x	; 4 (41)
-	BNE	bank2_Pic48Test_48PxPicture_JumpOver_SYNC ; 2 (43)
+	LDA	#$02		; 2 (40)
+	STA	NUSIZ0		; 3 (43)
+	STA	NUSIZ1		; 3 (46) 
 
-	LDA	setters			; 3 (46)
-	AND	#$F0
-	STA	temp01
-			
-	LDA	setters
-	AND	#$0F
-	CLC					
-	ADC	#1				
-	AND	#$0F				
-	STA	temp02
+	LDA	#%00000001	; mirrored pf with regular colors 2 (48)
+ 	STA	CTRLPF		; 3 (51)
 
-	LDA	#bank2_Pic48Test_Frames_Max_Index
-	CMP	temp02
-	BCS	bank2_Pic48Test_48PxPicture_FrameNum_OK	
-	LDA	#0	
-	STA	temp02	 
-bank2_Pic48Test_48PxPicture_FrameNum_OK	
-	LDA	temp02
-	ORA	temp01				 
-	STA	setters			 	
-	JMP	bank2_Pic48Test_48PxPicture_FrameNum_Jump_Over
-*
-*	One frame wasted!!
-*
-bank2_Pic48Test_48PxPicture_FrameNum_SYNC
+	LDA	#picHeight	; height of the picture 3 (53)
+	SEC			; 2 (55)
+	SBC	picIndex	; index of scrolling 3 (58)
+	STA	temp01		; starting point 3 (61)
+	TAY			; 2 (63)
+	SEC			; 2 (65)
+	SBC 	picDisplayHeight ; 3 (68)
+	STA 	temp02		; displayed height (stops if Y gets here) 3 (71)
+	STA	WSYNC		; (76)	- One line wasted
+
+	_sleep	26
+	sleep 3
+
+	STA	RESP0		; 3 (32)
+	sleep	3		;   (35)	
+	STA	RESP1		; 3 (38) Set the X pozition of sprites.
+
+	DEY			; 2 (40)
+
+	LDA	counter		; 3 (43)
+	AND	#%00000001	; 2 (45)
+	CMP	#%00000001	; 2 (47)
+	BNE	pic64px_OddFrameJMP  ; 2 (49)
+	JMP	pic64px_EvenFrame ; 3 (52)	
+pic64px_OddFrameJMP
+	JMP	pic64px_OddFrame  ; 3 (52)
+
+******	align	256
+	_align	80
+
+pic64px_OddFrame
 	STA	WSYNC
-bank2_Pic48Test_48PxPicture_FrameNum_Jump_Over
-	LDA	#0	
-	STA	PF0				; 3 
-	STA	PF1				; 3 
- 	STA	CTRLPF				; 3 
-	LDA	#$03				; 2 
-	STA	NUSIZ1				; 3 
-	LDA	bank2_Pic48Test_Repeating_NUSIZ		; 2 
-	STA	NUSIZ0				; 3 
-
-	JMP	bank2_Pic48Test_48PxPicture_JumpOver	; 3 	
-
-	_align	8
-bank2_Pic48Test_48PxPicture_BitMask
-	BYTE	#0
-	BYTE	#%00111111
-	BYTE	#%00011111
-	BYTE	#%00001111
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000001
-	BYTE	#%00000000
-bank2_Pic48Test_48PxPicture_JumpOver_SYNC
 	STA	WSYNC
-bank2_Pic48Test_48PxPicture_JumpOver
-	LDA	counter
-	AND	#1
-	TAY
 
-	STA	WSYNC				; 3 (76)
-*
-*	Should wait 9 cycles before the loop?
-*
+	LDA	#0				; 2
+	STA	GRP0				; 3 (5)
+	STA	GRP1				; 3 (8)
 
-	LDA	bank2_Pic48Test_48PxPicture_Base_X,y
-	SEC
-	sleep	2				
-bank2_Pic48Test_48PxPicture_Set_X_P1_Loop
-	sbc	#15
-   	bcs	bank2_Pic48Test_48PxPicture_Set_X_P1_Loop
-	SBC	#239
-	sta	temp01
-   	sta	RESP1	
+	LAX	pic64px_06,y			; 4 (12)
+		
+	LDA	#$00				; 2 (14)
+	STA 	HMP0				; 3 (17) 
+	LDA	#$20				; 2 (19)
+	STA 	HMP1				; 3 (22)
+	LDA	pic64px_00,y			; 4 (26)
+	STA	GRP0				; 3 (29)
+	LDA	pic64px_02,y			; 4 (33)
+	STA	GRP1				; 3 (36)
 
-	LDA	#bank2_Pic48Test_Repeating_Add_To_X
-	CLC
 	STA	WSYNC
-	ADC	bank2_Pic48Test_48PxPicture_Base_X,y
-	SEC
+pic64px_OddFrame_LineDummy
+	STA	HMOVE				; 3 
+
+	sleep	7
+						; 3 (10)	
+	LDA	pic64px_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	frameColor
 	sleep	2
-bank2_Pic48Test_48PxPicture_Set_X_P0_Loop
-	sbc	#15
-   	bcs	bank2_Pic48Test_48PxPicture_Set_X_P0_Loop
-	SBC	#239
-	sleep 	3
-   	sta	RESP0	
-	tax
-
-	LDA	bank2_Pic48Test_48PxPicture_FineAdjustTable,x
-	STA	HMP0
-	LDX	temp01
-	LDA	bank2_Pic48Test_48PxPicture_FineAdjustTable,x
-	STA	HMP1
-
-	STA	WSYNC
-	STA	HMOVE				; 3
-	LDA	setters			; 3 (6) 
-	AND	#$0F				; 2 (8)
-	TAX					; 2 (10)
-	TAY					; 2 (12)
-	LDA	#0				; 2 (14)
-	DEX					; 2 (16)
-	BMI	bank2_Pic48Test_48PxPicture_SetIndexEnd  ; 2 (18)
-	CLC					; 2 (20)
-
-bank2_Pic48Test_48PxPicture_SetIndex
-	ADC	#bank2_Pic48Test_LineNum_Number_Of_Lines			; 2 
-	ADC	#1
-	DEX					; 2 
-	BPL	bank2_Pic48Test_48PxPicture_SetIndex	; 2  
-bank2_Pic48Test_48PxPicture_SetIndexEnd
-	CPY	#6				; 2
-	BCS	bank2_Pic48Test_48PxPicture_NoExtraSync  ; 2
-	STA	WSYNC				; 3 (7)
-bank2_Pic48Test_48PxPicture_NoExtraSync
-	STA	WSYNC
-	STA	temp19				; 3 
-
-*
-*	temp19 holds the first index of the current frame!
-*	
-	LDA	dspHeight			; 3 (6)
-	CMP	#70				; 2 (8)
-	BCC	bank2_Pic48Test_48PxPicture_THANKGOD_SMALLER ; 2 (10)
-	LDA	#70				; 2 (12)
-bank2_Pic48Test_48PxPicture_THANKGOD_SMALLER
-	CMP 	#bank2_Pic48Test_LineNum_Number_Of_Lines	; 2 (14)
-	BCC	bank2_Pic48Test_48PxPicture_THANKGOD_SMALLER2 ; 2 (17)
-	LDA	#bank2_Pic48Test_LineNum_Number_Of_Lines	; 2 (20)
-bank2_Pic48Test_48PxPicture_THANKGOD_SMALLER2
-	STA	dspHeight			; 3 (23)
-*
-* 	Check Index
-*
-
-	LDA	#bank2_Pic48Test_LineNum_Number_Of_Lines
-	SEC	
-	SBC	dspHeight
-	TAX
-	STA	temp01
-
-	LDA	spriteIndex
-	CMP	temp01
-	BCC	bank2_Pic48Test_No_Change_Index
-
-	LDA	temp01
-	STA	spriteIndex
-bank2_Pic48Test_No_Change_Index
-
-*
-*	temp01 is the number of line to skip on start and end
-*	
-	LDA	temp19				; 3 (42)
-	CLC
-	ADC	temp01
-	SEC
-	SBC	spriteIndex
-	STA	temp02				; 3 (47)
-*
-*	temp02 is the index of the last line to not display.
-*
-	LDA	#bank2_Pic48Test_LineNum_Max_Index	; 2 (47)
-	CLC					; 2 (54)
-	ADC	temp19				; 3 (57)
-	SEC
-	SBC	spriteIndex
-	STA	temp03				; 3 (60)
-*
-*	temp03 is the number of additional indexes.
-*
-	DEX	
-	BMI	bank2_Pic48Test_48PxPicture_ExtraLines_1_End ; 2
-bank2_Pic48Test_48PxPicture_ExtraLines_1
-	STA	WSYNC				; 3	
-	DEX
-	BPL	bank2_Pic48Test_48PxPicture_ExtraLines_1
-bank2_Pic48Test_48PxPicture_ExtraLines_1_End		
-	LDY	temp03
+	STA	COLUPF				; 3 (24)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
 	
-	STA	WSYNC
-	LDA	counter		; 3
-	AND	#1		; 2 (5)
-	CMP	#1		; 2 (7)
-	BEQ	bank2_Pic48Test_48PxPicture_Even_Start ; 2 (9)
-	JMP	bank2_Pic48Test_48PxPicture_Odd_Start  ; 3 (12)
+	LDA	pic64px_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	pic64px_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
 
-	_align	130
-bank2_Pic48Test_48PxPicture_Even_Start	
-	LDA	#$00		; 2 (11)
-	STA	HMP0		; 3 (14)
-	STA	HMP1		; 3 (17)
-	INY			; 2 (19)
+	LDA	pic64px_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
 
-	LDA	bank2_Pic48Test_Simple_Color,y  ; 4
-	STA	COLUP1			; 3 
+	STX	GRP1				; 3 (58)
 
-	LDA	bank2_Pic48Test_Repeating_Color,y ; 4
-	STA	COLUP0			 ; 3
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
+	JMP	pic64px_OddFrame_Line2
 
-	LDX 	bank2_Pic48Test_Simple_6,y	 ; 4
+pic64px_OddFrame_Line1
+	STA	HMOVE				; 3 
 
-bank2_Pic48Test_48PxPicture_Even_FirstLine
-	STA	WSYNC			    ; 3 
-	STA	HMOVE			    ; 3 
-
-	LDA	bank2_Pic48Test_Playfield_Color,y ; 4
-	STA	COLUPF			 ; 3 (10)
-
-	LDA	bank2_Pic48Test_Repeating_2,y 	 ; 4
-	STA	GRP0			 ; 3 (17)
+	LDA	pic64px_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	pic64px_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	LDA	pic64px_PFColor,y		; 4 (21)
+	STA	COLUPF				; 3 (24)
+		
+	LDA	pic64px_Color,y			; 4 (28)
+	STA	COLUP0				; 3 (31)
+	STA	COLUP1				; 3 (34)
 	
-	LDA	bank2_Pic48Test_Simple_2,y 	 ; 4
-	STA	GRP1			 ; 3 (24)	
+	LDA	pic64px_00,y			; 4 (38)
+	STA	GRP0				; 3 (41)
+	LDA	pic64px_02,y			; 4 (45)
+	STA	GRP1				; 3 (48)
 
-	LDA	bank2_Pic48Test_PF2_Data_2,y 	 ; 4
-	STA	PF2			 ; 3 (31)	
+	LDA	pic64px_04,y			; 4 (52)
+	STA	GRP0				; 3 (55)
 
-	sleep	5			 ; 5 (36)
+	STX	GRP1				; 3 (58)
 
-	LDA	bank2_Pic48Test_Simple_4,y 	 ; 4
-	STA	GRP1			 ; 3 (43)
+	LDA	#$80				; 2 (67)
+	STA 	HMP0				; 3 (70)
+	STA 	HMP1				; 3 (73)
 
-	LDA	#$00
-	STX	GRP1			 ; 3 
-	STA	HMP0
-	STA	HMP1			    
-	STA	PF2			 ; 14 (60)
+pic64px_OddFrame_Line2
+	STA 	WSYNC
+	STA	HMOVE				; 3 
 
-	LDA	bank2_Pic48Test_Simple_1,y 	 ; 4 (64) 
-	STA	GRP1			 ; 3 (67)
-	
-	DEY				 ; 2 (69)
-	LDX	bank2_Pic48Test_Simple_6,y	 ; 4 (73)
+	LDA	pic64px_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	pic64px_03,y			; 4 
+	STA	GRP1				; 3 
 
-bank2_Pic48Test_48PxPicture_Even_SecondLine
-	STA	HMOVE			 ; 3 (1)
+	DEY
+	LAX	pic64px_06,y			; 4
 
-	TXS				 ; 2 (3)
-	INY				 ; 2 (5)
-
-	LDA	bank2_Pic48Test_Repeating_1,y 	 ; 4 (9)
-	STA	GRP0			 ; 3 (12)
-
-	LDA	bank2_Pic48Test_PF2_Data_1,y 	 ; 4 (16)
-	STA	PF2			 ; 3 (19)
-
-	LDA	#$80			    ; 2 (21)
-	STA	HMP0			    ; 3 (24) 
-	STA	HMP1			    ; 3 (27)
-
-	sleep	5			    ; 32	
-
-	LDX 	bank2_Pic48Test_Simple_5,y	 ; 4 (36)
-	LDA	bank2_Pic48Test_Simple_3,y  	 ; 4 (40)
-
-	STA	GRP1			 ; 3 (43)	
-	DEY 				 ; 2 (45)
-
-	STX	GRP1			 ; 3 (48)
-	LDA	#0			 ; 2 (50)
-	STA	PF2			 ; 3 (53)
-
-	LDA	bank2_Pic48Test_Simple_Color,y       ; 4 (57)
-	STA	COLUP1			    ; 3 (60)
-	
-	LDA	bank2_Pic48Test_Repeating_Color,y    ; 4 (64) 
-	STA	COLUP0			    ; 3 (67)
-
-	TSX 				    ; 2 (69)
-
-	CPY	temp02			; 3 (71)
-	BNE	bank2_Pic48Test_48PxPicture_Even_FirstLine (73)
-	JMP	bank2_Pic48Test_48PxPicture_Kernel_End
-
-	_align	145
-bank2_Pic48Test_48PxPicture_Odd_Start
-	LDA	#$00			; 2 
-	STA	HMP0			; 3
-	STA	HMP1			; 3
 	INY
 
-	sleep	37
+	sleep	12
 
-	LDA	bank2_Pic48Test_Simple_Color,y  ; 4
-	STA	COLUP1			; 3 
+	LDA	pic64px_05,y			; 4 
+	STA	GRP0				; 3 
 
-	LDX 	bank2_Pic48Test_Simple_5,y	 ; 4
+	LDA	pic64px_07,y			; 4 
+	STA	GRP1				; 3 
 
-bank2_Pic48Test_48PxPicture_Odd_FirstLine
-	STA	HMOVE	(1)
-
-	LDA	bank2_Pic48Test_Repeating_Color,y    ; 4  
-	STA	COLUP0			    ; 3 (9)
-
-	LDA	bank2_Pic48Test_Repeating_1,y 	 ; 4 (9)
-	STA	GRP0			 ; 3 (12)
-
-	LDA	bank2_Pic48Test_PF2_Data_1,y 	 ; 4 (16)
-	STA	PF2			 ; 3 (19)
-
-	LDA	bank2_Pic48Test_Simple_1,y 	 ; 4 (25)
-	STA	GRP1			 ; 3 (28)
-
-	LDA	bank2_Pic48Test_Playfield_Color,y ; 4 (32)
-	STA	COLUPF			 ; 3 (35)
-
-	LDA	bank2_Pic48Test_Simple_3,y 	 ; 4 (47)
-	STA	GRP1			 ; 3 (50)
-
-	LDA	#$80			 ; 2 (37)
-
-	STX	GRP1			 ; 3 (53)
-	STA	HMP0			 ; 3 (40) 
-	STA	HMP1			 ; 3 (43)
-
-	LDA	#0			 ; 2 (55)
-	STA	PF2			 ; 3 (58)
-
-	LDA	bank2_Pic48Test_Simple_2,y 	 ; 4 (62) 
-	STA	GRP1			 ; 3 (65)
-
-	DEY				 ; 2 (67)
-	LDX	bank2_Pic48Test_Simple_5,y	 ; 4 (71)
-	TXS				 ; 2 (73)
-
-bank2_Pic48Test_48PxPicture_Odd_SecondLine
-	STA	WSYNC	(76)
-	STA	HMOVE   		 ; 3
-
-	LDX	bank2_Pic48Test_Simple_Color,y    ; 4 (7)
-	INY 				 ; 2 (9)
+						; (56, but 52?!)
+	LDA	#$00				; 2 (58)
+	STA 	HMP0				; 3 (61)
+	STA 	HMP1				; 3 (64)
+	DEY					; 2 (66)
+	CPY	temp02				; 3 (69)
+	BEQ	pic64px_Reset			; 2 (71)	
+	JMP	pic64px_OddFrame_Line1		; 3 (74)
 	
-	LDA	bank2_Pic48Test_Repeating_2,y 	 ; 4 (13)
-	STA	GRP0			 ; 3 (16)
 
-	LDA	bank2_Pic48Test_PF2_Data_2,y 	 ; 4 (20)
-	STA	PF2			 ; 3 (23) 
-
-	LDA	#$00			  ; 
-	STA	HMP0			  ;  
-	STA	HMP1			  ; 8 (31)
-
+pic64px_EvenFrame
+	_sleep	30
 	sleep	3
-
-	LDA	bank2_Pic48Test_Simple_4,y 	 ; 4 (35)
-	STA	GRP1			 ; 3 (38)
-
-	LDA	bank2_Pic48Test_Simple_6,y 	 ; 4 (42)	
-*****	STA	GRP1		 
-	BYTE	#$8D
-	BYTE	#GRP1	
-	BYTE	#0
-
-	LDA	#0
-*****	STA	PF2	
-	BYTE	#$8D
-	BYTE	#PF2	
-	BYTE	#0
-
-	DEY	
-		
-	STX	COLUP1			    ; 3 (60)
-	TSX 				    ; 2 (69)
-
-	CPY	temp02				 ; 3 (71)
-	BNE	bank2_Pic48Test_48PxPicture_Odd_FirstLine ; 2 (74)
-	JMP	bank2_Pic48Test_48PxPicture_Kernel_End
-
-	_align 2
-bank2_Pic48Test_48PxPicture_Base_X
-	BYTE	#58		; Odd
-	BYTE	#58		; Even
-
-	_align	16
-bank2_Pic48Test_48PxPicture_FineAdjustTable
-	byte	#$80
-	byte	#$70
-	byte	#$60
-	byte	#$50
-	byte	#$40
-	byte	#$30
-	byte	#$20
-	byte	#$10
-	byte	#$00
-	byte	#$f0
-	byte	#$e0
-	byte	#$d0
-	byte	#$c0
-	byte	#$b0
-	byte	#$a0
-	byte	#$90
-
-bank2_Pic48Test_48PxPicture_Kernel_End
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUPF
-	STA	COLUP0
-	STA	COLUP1
 
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
-	STA	PF2
-	STA	PF0
 
-	LDX	temp01
-	DEX	
-	BMI	bank2_Pic48Test_48PxPicture_ExtraLines_2_End
-bank2_Pic48Test_48PxPicture_ExtraLines_2
-	STA	WSYNC					
-	DEX
-	BPL	bank2_Pic48Test_48PxPicture_ExtraLines_2
-bank2_Pic48Test_48PxPicture_ExtraLines_2_End	
+	LAX	pic64px_07,y
+	TXS
+	LAX	pic64px_05,y
 
+	LDA	#$00				
+	STA 	HMP0				
+	LDA	#$20				
+	STA 	HMP1
+
+pic64px_EvenFrame_LineDummy	
+	STA 	WSYNC
+	STA	HMOVE
+	_sleep	50
+	sleep	3
+
+	LDA	pic64px_PFColor,y		
+	STA	COLUPF	
+
+	LDA	#$00				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+	JMP	pic64px_EvenFrame_Line2
+
+pic64px_EvenFrame_Line1			
+	STA 	WSYNC				; 76
+	STA	HMOVE				; 3
+
+	LDA	pic64px_BGColor,y		; 4 (7)
+	STA	COLUBK				; 3 (10)	
+	LDA	pic64px_PF,y			; 4 (14)
+	STA	PF2				; 3 (17)
+	sleep	5
+		
+	LDA	pic64px_Color,y			; 4 
+	STA	COLUP0				; 3 
+	STA	COLUP1				; 3 (34 - 31)
+
+	LDA	pic64px_01,y			; 4 
+	STA	GRP0				; 3 
+	LDA	pic64px_03,y			; 4 
+
+	STA	GRP1				; 3 
+	STX	GRP0				; 3 
+	TSX					; 2
+	STX	GRP1				; 3
+
+	sleep	8
+
+						; (66)
+	LDA	#$00				; 2 (68)
+	STA 	HMP0				; 3 (71)
+	STA 	HMP1				; 3 (74)
+pic64px_EvenFrame_Line2
+	STA	HMOVE				; 3 
+
+	LDA	pic64px_00,y			; 4 
+	STA	GRP0				; 3 
+	LDA	pic64px_02,y			; 4 
+	STA	GRP1				; 3 
+	
+	DEY
+	LAX	pic64px_07,y	
+	TXS
+	LAX	pic64px_05,y
+	INY
+
+	LDA	#$80				; 2 
+	STA 	HMP0				; 3 
+	STA 	HMP1				; 3 
+
+	sleep	6
+	
+	LDA	pic64px_04,y			; 4 
+	STA	GRP0				; 3 
+	LDA	pic64px_06,y			; 4 
+	STA	GRP1				; 3 
+
+	DEY
+	LDA	pic64px_PFColor,y		
+	STA	COLUPF
+
+	CPY	temp02				; 3 (71)
+	BNE	pic64px_EvenFrame_Line1		; 2 (73)
+
+pic64px_Reset
+
+	LDA	frameColor
+	LDX	#0
+	STA	WSYNC
+	STA	COLUP0
+	STA	COLUP1
+	STA	COLUPF
+	STA	COLUBK
+
+	STX	GRP0
+	STX	GRP1
+	STX	PF0
+	STX	PF1
+	STX	PF2
+
+	LDA	counter
+	AND	#1
+	CMP	#1
+	BNE	pic64px_NoFiller
+	STA	WSYNC
+pic64px_NoFiller
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2353,572 +2035,158 @@ ScreenBottomBank2
 
 	align	256
 
-bank2_Pic48Test_Frames_Max_Index  = 2
-bank2_Pic48Test_LineNum_Number_Of_Lines = 29
-bank2_Pic48Test_LineNum_Max_Index = 28
-
-		_align	91
-
-bank2_Pic48Test_PF2_Data_1
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%11001100
-	BYTE	#%01000100
+pic64px_data
+	align	256
+pic64px_00
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00000100
-	BYTE	#%00001000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%11001100
-	BYTE	#%01001100
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00000000
-	BYTE	#%00001100
-	BYTE	#%00000100
-	BYTE	#%00001000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%01001100
-	BYTE	#%11001100
-	BYTE	#%01000100
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001100
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00001000
-	BYTE	#%00001100
-	BYTE	#%00000100
-	BYTE	#%00001000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-
-		_align	91
-
-bank2_Pic48Test_PF2_Data_2
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00000011
-	BYTE	#%00000010
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110010
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00000011
-	BYTE	#%00000010
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00010010
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00000011
-	BYTE	#%00000010
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110010
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00010000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00110000
-	BYTE	#%00010000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-bank2_Pic48Test_Repeating_NUSIZ = #$00
-bank2_Pic48Test_Repeating_Add_To_X = 16
-
-		_align	91
-
-bank2_Pic48Test_Repeating_1
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%11000000
-	BYTE	#%11000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10001100
-	BYTE	#%00000011
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%00000010
-	BYTE	#%00000101
-	BYTE	#%00001111
-	BYTE	#%00000110
-	BYTE	#%00000000
-	BYTE	#%00001100
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11110101
-	BYTE	#%11010011
-	BYTE	#%01101111
-	BYTE	#%00011100
-	BYTE	#%01000011
-	BYTE	#%00100011
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%11000000
-	BYTE	#%11000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10001100
-	BYTE	#%00000011
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000011
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000000
-	BYTE	#%00001100
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11110101
-	BYTE	#%11010011
-	BYTE	#%01101111
-	BYTE	#%00011100
-	BYTE	#%00100011
-	BYTE	#%00010011
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%11000000
-	BYTE	#%11000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10001100
-	BYTE	#%00000011
-	BYTE	#%00000000
-	BYTE	#%00010010
 	BYTE	#%00001001
-	BYTE	#%00011101
-	BYTE	#%00011111
-	BYTE	#%00001100
-	BYTE	#%00000000
-	BYTE	#%00001100
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11110001
-	BYTE	#%11010011
-	BYTE	#%01101111
+	BYTE	#%00001001
+	BYTE	#%00001001
+	BYTE	#%00001001
 	BYTE	#%00011100
-	BYTE	#%00100011
-	BYTE	#%01000011
 	BYTE	#%00000000
 	BYTE	#%00000000
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001111
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001000
+	BYTE	#%00001111
+	BYTE	#%00000111
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00001111
+	BYTE	#%00011111
+	BYTE	#%00001111
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 83
 
-		_align	91
-
-bank2_Pic48Test_Repeating_2
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
+pic64px_01
 	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00110000
-	BYTE	#%11000000
 	BYTE	#%00000000
-	BYTE	#%01000000
-	BYTE	#%01000000
-	BYTE	#%10110000
-	BYTE	#%11111000
-	BYTE	#%01110000
 	BYTE	#%00000000
-	BYTE	#%00110000
+	BYTE	#%10001000
+	BYTE	#%01001000
+	BYTE	#%01001100
+	BYTE	#%01001010
+	BYTE	#%01001010
+	BYTE	#%10001100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00001001
+	BYTE	#%00001001
 	BYTE	#%00001010
-	BYTE	#%11000000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%10111000
+	BYTE	#%00001110
+	BYTE	#%00001001
+	BYTE	#%11001000
+	BYTE	#%01001111
+	BYTE	#%01000000
+	BYTE	#%10000000
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%10011111
-	BYTE	#%10010111
-	BYTE	#%11101110
-	BYTE	#%11110000
-	BYTE	#%00000010
-	BYTE	#%00000100
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00110000
-	BYTE	#%11000000
-	BYTE	#%00000000
-	BYTE	#%10010000
-	BYTE	#%11100000
-	BYTE	#%01011000
-	BYTE	#%11111000
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%00110000
-	BYTE	#%00001000
-	BYTE	#%11000000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%10111000
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%10011111
-	BYTE	#%10010111
-	BYTE	#%11101110
-	BYTE	#%11110000
-	BYTE	#%00000010
-	BYTE	#%00000001
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
 	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00110000
-	BYTE	#%11000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%11000000
-	BYTE	#%11100000
-	BYTE	#%11000000
-	BYTE	#%00000000
-	BYTE	#%00110000
-	BYTE	#%00000000
-	BYTE	#%11000000
-	BYTE	#%00100000
-	BYTE	#%00110000
-	BYTE	#%10111000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%10011011
-	BYTE	#%10010111
-	BYTE	#%11101110
-	BYTE	#%11110000
-	BYTE	#%00000100
-	BYTE	#%00001000
-	BYTE	#%00000000
-	BYTE	#%00000000
-
-		_align	91
-
-bank2_Pic48Test_Simple_1
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00011111
+	BYTE	#%00000001
+	BYTE	#%00000011
+	BYTE	#%00000011
 	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000111
-	BYTE	#%00011111
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00011111
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000111
-	BYTE	#%00011111
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00011111
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000111
-	BYTE	#%00011111
-	BYTE	#%00111000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-
-		_align	91
-
-bank2_Pic48Test_Simple_2
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%01111000
+	BYTE	#%00001111
+	BYTE	#%00001111
+	BYTE	#%00011110
+	BYTE	#%00011110
+	BYTE	#%00011100
 	BYTE	#%00111100
-	BYTE	#%11100001
-	BYTE	#%11110000
-	BYTE	#%00000111
-	BYTE	#%00001111
-	BYTE	#%00011111
-	BYTE	#%00001111
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00111110
-	BYTE	#%11111000
-	BYTE	#%11100000
-	BYTE	#%00000000
-	BYTE	#%00000110
-	BYTE	#%00000011
-	BYTE	#%00000011
-	BYTE	#%00000011
-	BYTE	#%00000001
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
+	BYTE	#%00111000
+	BYTE	#%00111000
+	BYTE	#%00111000
 	BYTE	#%01111000
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%00111000
+	BYTE	#%00111000
+	BYTE	#%00111000
+	BYTE	#%00111000
 	BYTE	#%00111100
-	BYTE	#%11100001
-	BYTE	#%11110000
-	BYTE	#%00000111
-	BYTE	#%00001111
-	BYTE	#%00011111
-	BYTE	#%00001111
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00111110
-	BYTE	#%11111000
-	BYTE	#%11100000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000001
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%01111000
-	BYTE	#%00111100
-	BYTE	#%11100001
-	BYTE	#%11110000
-	BYTE	#%00000111
-	BYTE	#%00001111
-	BYTE	#%00011111
-	BYTE	#%00001111
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00111110
-	BYTE	#%11111000
-	BYTE	#%11100000
-	BYTE	#%00000010
-	BYTE	#%00101001
-	BYTE	#%00010101
+	BYTE	#%00011100
+	BYTE	#%00011110
+	BYTE	#%00011110
 	BYTE	#%00001111
 	BYTE	#%00000111
-	BYTE	#%00000011
+	BYTE	#%00000111
 	BYTE	#%00000011
 	BYTE	#%00000001
 	BYTE	#%00000000
@@ -2928,221 +2196,425 @@ bank2_Pic48Test_Simple_2
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 166
 
-		_align	91
-
-bank2_Pic48Test_Simple_3
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01111111
-	BYTE	#%01111111
+pic64px_02
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
+	BYTE	#%11101010
+	BYTE	#%10001010
+	BYTE	#%10001110
+	BYTE	#%10001010
+	BYTE	#%10001010
+	BYTE	#%10000100
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%01110000
-	BYTE	#%01100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
+	BYTE	#%00111100
+	BYTE	#%00100000
+	BYTE	#%00100000
+	BYTE	#%00111000
 	BYTE	#%10100000
-	BYTE	#%11000000
-	BYTE	#%10000000
-	BYTE	#%00011000
-	BYTE	#%00001000
-	BYTE	#%11000000
-	BYTE	#%11010100
-	BYTE	#%00000010
+	BYTE	#%10100000
+	BYTE	#%00111100
 	BYTE	#%00000000
-	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000011
+	BYTE	#%00001111
+	BYTE	#%00011111
+	BYTE	#%01111110
+	BYTE	#%11111000
+	BYTE	#%11110000
 	BYTE	#%11100000
-	BYTE	#%10111100
-	BYTE	#%11010000
-	BYTE	#%01100000
-	BYTE	#%01000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01111111
-	BYTE	#%01111111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01110000
-	BYTE	#%01100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01100000
 	BYTE	#%11000000
 	BYTE	#%10000000
-	BYTE	#%00011000
-	BYTE	#%00001000
-	BYTE	#%11000000
-	BYTE	#%11001010
-	BYTE	#%00001010
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000011
+	BYTE	#%00000111
+	BYTE	#%00000111
+	BYTE	#%00000111
+	BYTE	#%00001111
+	BYTE	#%00001111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%00001111
+	BYTE	#%00001111
+	BYTE	#%00000111
+	BYTE	#%00000111
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%10000000
+	BYTE	#%11000000
 	BYTE	#%11100000
-	BYTE	#%01011100
-	BYTE	#%01100000
-	BYTE	#%00110000
+	BYTE	#%11110000
+	BYTE	#%01111100
+	BYTE	#%00111111
+	BYTE	#%00011111
+	BYTE	#%00000111
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 249
+
+
+	align	256
+pic64px_03
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000010
+	BYTE	#%01000010
+	BYTE	#%01000010
+	BYTE	#%10100010
+	BYTE	#%10100010
+	BYTE	#%10100111
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01100001
+	BYTE	#%10010010
 	BYTE	#%00010000
-	BYTE	#%00000000	; Frame: 2/2
+	BYTE	#%01100001
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%01110001
 	BYTE	#%00000000
 	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%10000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00011111
 	BYTE	#%01111111
-	BYTE	#%01111111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01100000
-	BYTE	#%01100000
-	BYTE	#%01110000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%01100000
-	BYTE	#%11000000
+	BYTE	#%11111111
+	BYTE	#%11110011
+	BYTE	#%11000011
+	BYTE	#%10000001
 	BYTE	#%10000000
-	BYTE	#%00011000
-	BYTE	#%00001000
-	BYTE	#%11000000
-	BYTE	#%11010110
-	BYTE	#%00001010
+	BYTE	#%00000000
+	BYTE	#%00000001
+	BYTE	#%00000111
+	BYTE	#%11000110
+	BYTE	#%11101110
+	BYTE	#%11000110
+	BYTE	#%00000011
+	BYTE	#%00000001
 	BYTE	#%00000000
 	BYTE	#%10000000
-	BYTE	#%11100000
-	BYTE	#%01011100
-	BYTE	#%10110000
-	BYTE	#%11100000
-	BYTE	#%11000000
-
-		_align	91
-
-bank2_Pic48Test_Simple_4
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11111110
-	BYTE	#%11111110
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000101
-	BYTE	#%00000011
-	BYTE	#%00000001
-	BYTE	#%11000000
-	BYTE	#%01000000
-	BYTE	#%00001001
-	BYTE	#%10010011
-	BYTE	#%00100000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00001111
-	BYTE	#%11111101
-	BYTE	#%00111011
-	BYTE	#%00011110
-	BYTE	#%00000110
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11111110
-	BYTE	#%11111110
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000010
-	BYTE	#%00000011
-	BYTE	#%00000001
-	BYTE	#%11000000
-	BYTE	#%01000000
-	BYTE	#%00001001
-	BYTE	#%01001011
-	BYTE	#%01100000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00001111
-	BYTE	#%11111101
-	BYTE	#%00011110
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11111110
-	BYTE	#%11111110
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000111
-	BYTE	#%00000011
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00001100
-	BYTE	#%00000011
-	BYTE	#%00000001
-	BYTE	#%11000000
-	BYTE	#%01000000
-	BYTE	#%00000001
-	BYTE	#%01101011
-	BYTE	#%00100000
-	BYTE	#%00000000
-	BYTE	#%00000001
-	BYTE	#%00001111
+	BYTE	#%11000001
+	BYTE	#%11100011
 	BYTE	#%11111011
-	BYTE	#%00010110
-	BYTE	#%00111100
+	BYTE	#%11111111
+	BYTE	#%00111111
+	BYTE	#%00001111
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%11000011
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%01111111
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000011
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 83
+
+pic64px_04
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01010111
+	BYTE	#%01010100
+	BYTE	#%01010100
+	BYTE	#%01110110
+	BYTE	#%01010100
+	BYTE	#%01010111
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%01000000
+	BYTE	#%01000000
+	BYTE	#%11000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11111000
+	BYTE	#%11111110
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11000011
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11111000
+	BYTE	#%11111110
+	BYTE	#%11111111
+	BYTE	#%11011111
+	BYTE	#%11000111
+	BYTE	#%10000011
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%11100000
+	BYTE	#%01100011
+	BYTE	#%01110111
+	BYTE	#%01100011
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%00000001
+	BYTE	#%00000001
+	BYTE	#%10000011
+	BYTE	#%11000111
+	BYTE	#%11011111
+	BYTE	#%11111110
+	BYTE	#%11111100
+	BYTE	#%11110000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111100
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 166
+
+pic64px_05
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00110001
+	BYTE	#%00001010
+	BYTE	#%00010010
+	BYTE	#%00100010
+	BYTE	#%00100010
+	BYTE	#%00011001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%11110010
+	BYTE	#%10000010
+	BYTE	#%10000010
+	BYTE	#%10000000
+	BYTE	#%11111000
 	BYTE	#%01111000
-
-		_align	91
-
-bank2_Pic48Test_Simple_5
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%11111000
+	BYTE	#%11111100
+	BYTE	#%00111110
+	BYTE	#%00001111
+	BYTE	#%00000111
+	BYTE	#%00000011
+	BYTE	#%00000001
+	BYTE	#%00000001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%11000000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%11110000
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11110000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%11000000
+	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%00000001
 	BYTE	#%00000011
-	BYTE	#%11111000
-	BYTE	#%11110000
-	BYTE	#%00011110
-	BYTE	#%01111111
-	BYTE	#%01111111
-	BYTE	#%00111111
-	BYTE	#%00111111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11011111
 	BYTE	#%00000111
+	BYTE	#%00001111
+	BYTE	#%00011111
+	BYTE	#%00111110
+	BYTE	#%11111100
+	BYTE	#%11111000
+	BYTE	#%11100000
+	BYTE	#%10000000
 	BYTE	#%00000000
-	BYTE	#%00100000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 249
+
+
+	align	256
+pic64px_06
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00010010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%10101011
+	BYTE	#%00101010
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%01000101
+	BYTE	#%01001001
+	BYTE	#%01010001
+	BYTE	#%01110001
+	BYTE	#%01001101
+	BYTE	#%01000101
+	BYTE	#%01111001
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%10000000
+	BYTE	#%11000000
+	BYTE	#%11100000
+	BYTE	#%11100000
+	BYTE	#%11110000
 	BYTE	#%01110000
+	BYTE	#%01111000
+	BYTE	#%01111000
+	BYTE	#%00111000
+	BYTE	#%00111100
+	BYTE	#%00111100
+	BYTE	#%00111100
+	BYTE	#%00111100
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%11111111
+	BYTE	#%00011100
+	BYTE	#%00011100
+	BYTE	#%00111100
+	BYTE	#%00111000
+	BYTE	#%00111000
+	BYTE	#%01111000
+	BYTE	#%01111000
+	BYTE	#%11110000
+	BYTE	#%11110000
 	BYTE	#%11100000
-	BYTE	#%11000000
-	BYTE	#%11000000
 	BYTE	#%11000000
 	BYTE	#%11000000
 	BYTE	#%10000000
@@ -3153,58 +2625,71 @@ bank2_Pic48Test_Simple_5
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%00000001
-	BYTE	#%00000011
-	BYTE	#%11111000
-	BYTE	#%11110000
-	BYTE	#%00011110
-	BYTE	#%01111111
-	BYTE	#%01111111
-	BYTE	#%00111111
-	BYTE	#%00111111
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%11011111
-	BYTE	#%00000111
 	BYTE	#%00000000
-	BYTE	#%10100000
-	BYTE	#%11101100
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 83
+
+pic64px_07
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%01011000
-	BYTE	#%11110000
+	BYTE	#%01010100
+	BYTE	#%11010100
+	BYTE	#%11010100
+	BYTE	#%01010100
+	BYTE	#%01011000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%11100000
+	BYTE	#%00000000
+	BYTE	#%00000000
 	BYTE	#%11000000
-	BYTE	#%11000000
-	BYTE	#%10000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11100000
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%00000001
-	BYTE	#%00000011
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%11110000
 	BYTE	#%11111000
 	BYTE	#%11110000
-	BYTE	#%00011110
-	BYTE	#%01111111
-	BYTE	#%01111111
-	BYTE	#%00111111
-	BYTE	#%00111111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%11011111
-	BYTE	#%00000111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%11000000
-	BYTE	#%10000000
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
@@ -3213,385 +2698,370 @@ bank2_Pic48Test_Simple_5
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 166
 
-		_align	91
-
-bank2_Pic48Test_Simple_6
-	BYTE	#0
-	BYTE	#%00000000	; Frame: 0/2
-	BYTE	#%11110000
-	BYTE	#%11000000
-	BYTE	#%11111111
-	BYTE	#%11111100
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%11110000
-	BYTE	#%11111000
-	BYTE	#%00111110
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 1/2
-	BYTE	#%11110000
-	BYTE	#%11000000
-	BYTE	#%11111111
-	BYTE	#%11111100
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%11110000
-	BYTE	#%11111000
-	BYTE	#%00111110
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000	; Frame: 2/2
-	BYTE	#%11110000
-	BYTE	#%11000000
-	BYTE	#%11111111
-	BYTE	#%11111100
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%10000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%10000000
-	BYTE	#%11110000
-	BYTE	#%11111000
-	BYTE	#%00111110
-	BYTE	#%00001111
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-	BYTE	#%00000000
-
-		_align	91
-
-bank2_Pic48Test_Playfield_Color
-	BYTE	#0
-	BYTE	#$82
-	BYTE	#$82
-	BYTE	#$84
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$86
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$8A
-	BYTE	#$88
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$3A
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3A
-	BYTE	#$3A
-	BYTE	#$AA
-	BYTE	#$AC
-	BYTE	#$AE
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$82
-	BYTE	#$82
-	BYTE	#$84
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$86
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$8A
-	BYTE	#$88
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$3A
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3A
-	BYTE	#$3A
-	BYTE	#$AA
-	BYTE	#$AC
-	BYTE	#$AE
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$82
-	BYTE	#$82
-	BYTE	#$84
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$86
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$8A
-	BYTE	#$88
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$3A
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3E
-	BYTE	#$3A
-	BYTE	#$3A
-	BYTE	#$AA
-	BYTE	#$AC
-	BYTE	#$AE
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-
-		_align	91
-
-bank2_Pic48Test_Simple_Color
-	BYTE	#0
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3A
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$3E
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$8A
-	BYTE	#$8C
-	BYTE	#$8A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$88
-	BYTE	#$86
-	BYTE	#$84
-	BYTE	#$82
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3A
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$3E
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$8A
-	BYTE	#$8C
-	BYTE	#$8A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$88
-	BYTE	#$86
-	BYTE	#$84
-	BYTE	#$82
-	BYTE	#$3C
-	BYTE	#$3C
-	BYTE	#$3A
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$3E
-	BYTE	#$0C
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0C
-	BYTE	#$8A
-	BYTE	#$8C
-	BYTE	#$8A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$9E
-	BYTE	#$86
-	BYTE	#$88
-	BYTE	#$88
-	BYTE	#$86
-	BYTE	#$84
-	BYTE	#$82
-		_align	91
-
-bank2_Pic48Test_Repeating_Color
-	BYTE	#0
+pic64px_Color
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
+	BYTE	#$14
+	BYTE	#$18
+	BYTE	#$1e
+	BYTE	#$1e
+	BYTE	#$18
+	BYTE	#$14
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$42
-	BYTE	#$42
-	BYTE	#$44
-	BYTE	#$44
 	BYTE	#$46
-	BYTE	#$44
-	BYTE	#$44
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$80
-	BYTE	#$82
-	BYTE	#$44
-	BYTE	#$44
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$42
-	BYTE	#$42
-	BYTE	#$44
-	BYTE	#$44
+	BYTE	#$4a
+	BYTE	#$4e
+	BYTE	#$4c
+	BYTE	#$4c
+	BYTE	#$4e
+	BYTE	#$4a
 	BYTE	#$46
-	BYTE	#$44
-	BYTE	#$44
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$80
-	BYTE	#$82
-	BYTE	#$44
-	BYTE	#$44
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
 	BYTE	#$42
-	BYTE	#$42
-	BYTE	#$44
-	BYTE	#$44
-	BYTE	#$46
-	BYTE	#$44
-	BYTE	#$44
+	BYTE	#$00
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$0a
+	BYTE	#$0c
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0c
+	BYTE	#$0a
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$0a
+	BYTE	#$0c
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0e
+	BYTE	#$0c
+	BYTE	#$0a
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$02
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 249
+
+
+	align	256
+pic64px_PF
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000
+	BYTE	#%00000000	; 83
+
+pic64px_PFColor
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$0E
-	BYTE	#$9C
-	BYTE	#$9A
-	BYTE	#$9C
-	BYTE	#$9E
-	BYTE	#$80
-	BYTE	#$82
-	BYTE	#$44
-	BYTE	#$44
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 166
+
+pic64px_BGColor
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 249
 
 
 ###End-Bank2
@@ -3642,283 +3112,1870 @@ start_bank2
 ***************************
 	Bank 3
 	fill	256
-###Start-Bank3
-	
-*Enter Bank
-*-----------------------------
-*
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
-*
+Hamster_Eating_Pickles_Initialize
 
-EnterScreenBank3
+	LDA	#2
+	STA	VBLANK ; Turn off graphics display
 
-
-		
-	JMP	WaitUntilOverScanTimerEndsBank3
-
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
-
-LeaveScreenBank3
-
-
-
-JumpToNewScreenBank3
-	LAX	temp02		; Contains the bank to jump
-JumpToNewScreenBank_NoLAX3	
-	SEC
-	SBC	#2
-	STA	temp01		
-	CLC
-	ADC	temp01		; ([bankNum - 2] * 2 )
-	TAY			; Get the location of address from the table	
-		
-	lda	LeaveJumpTableBank3,y
-   	pha
-   	lda	LeaveJumpTableBank3+1,y
-   	pha
-   	pha
-   	pha
-   	jmp	bankSwitchJump
-
-LeaveJumpTableBank3
-	byte	#>EnterScreenBank2-1
-	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
-	byte	#>EnterScreenBank4-1
-	byte	#<EnterScreenBank4-1
-	byte	#>EnterScreenBank5-1
-	byte	#<EnterScreenBank5-1
-	byte	#>EnterScreenBank6-1
-	byte	#<EnterScreenBank6-1
-	byte	#>EnterScreenBank7-1
-	byte	#<EnterScreenBank7-1
-	byte	#>EnterScreenBank8-1
-	byte	#<EnterScreenBank8-1
-
-
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
-
-OverScanBank3
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank3
-
-	STA	WSYNC
-	LDA	#%11000010
-	STA	VBLANK
-	STA	WSYNC
-
-    	LDA	#NTSC_Overscan
-    	STA	TIM64T
-	INC	counter
-
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
-
-
-
-
-*VSYNC
-*----------------------------
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank3
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank3
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#NTSC_Vblank
-	STA	TIM64T
-
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank3
-
-
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-	BIT	NoGameMode 		; NoGameMode
-	BMI	VBlankEndBank3		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
-
-*Costful Calculations in VBLANK
-*--------------------------------------------------------
-* There are some really costful calculations those would
-* require a lot of WSYNCS during the draw section, to avoid
-* that, we do them in VBLANK.
-*
-
-	LDA	#3
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(CalculateDuringVBLANK-1)
-   	pha
-   	lda	#<(CalculateDuringVBLANK-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#8
-   	jmp	bankSwitchJump
-
-VBlankEndBank3
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank3
-
-    	LDA	#NTSC_Display
-    	STA	TIM64T
-
-
-*ScreenTop
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-	tsx
-	stx	item
-
-
-
-	LDA	frameColor
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-
-	ldx	item
-	txs
-
-
-*SkipIfNoGameSet
-*---------------------------------
-*
-
-	BIT	NoGameMode 		; NoGameMode
-	BPL	JumpToMainKernelBank3	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
-	LDX	#0	
-	JMP	ScreenBottomBank3
-
-
-*JumpToMainKernel
-*---------------------------------
-* For this, the program go to main
-* kernel in bank1.
-
-JumpToMainKernelBank3
-
-	LDA	#3
-	asl
-	asl			; Rol left two bits to save bankNumber
-	STA	temp01
-
-	LDA 	bankToJump
-	AND	#%11100011	; Clear previous bankNumber
-	ORA	temp01		; Save the bankNumber
-	STA	bankToJump
-
-	lda	#>(EnterKernel-1)
-   	pha
-   	lda	#<(EnterKernel-1)
-   	pha
-   	pha
-   	pha
-   	ldx	#1
-   	jmp	bankSwitchJump
-
-*ScreenBottom
-*--------------------------------  
-* This is the section for the
-* bottom part of the screen.
-*
-
-ScreenBottomBank3
-
-	tsx
-	stx	item
-
-
+	; Turn off graphics and make sure we are finish overscan
+	; Save the number of tics the timer had!
 
 	LDA	#0
-	STA	WSYNC		; (76)
-	STA	COLUBK	
+	STA	AUDC0
+	STA	AUDF0
+	STA	AUDV0
+	STA	AUDV1
+	STA	temp13
+
+	LDA	#1
+	STA	temp12
+
+	; Usage of temps:
+	;
+	; temp10, temp11: Sound Pointer
+	; temp12        : Saved Data
+	; temp13	: Counter
+	;	
+
+
+Hamster_Eating_Pickles_Constant      = 20
+Hamster_Eating_Pickles_NTSC_Vblank   = 37
+Hamster_Eating_Pickles_NTSC_Overscan = 30
+Hamster_Eating_Pickles_PAL_Vblank    = 67
+Hamster_Eating_Pickles_PAL_Overscan  = 50
+
+
+Hamster_Eating_Pickles_EOF_byte = %00000000
+
+
+	LDA	#<Hamster_Eating_Pickles_Table
+	STA	temp10
+	LDA	#>Hamster_Eating_Pickles_Table
+	STA	temp11
+
+	; Because in this case, there is nothing done
+	; by the player and this is a temporal state,
+	; we don't have to waste any of the precious
+	; memory!
+
+
+Hamster_Eating_Pickles_EndOScan
+	LDA	INTIM
+	BPL	Hamster_Eating_Pickles_EndOScan
+
+	; End OverScan, so we can calculate better!
+
+Hamster_Eating_Pickles_LoadSample
+	LDA	temp13			; 3
+	CMP	#0			; 2
+	BEQ	Hamster_Eating_Pickles_LoadNew	; 2
+
+	_sleep	42
+	sleep	5
+
+	DEC	temp13			; 5
+	LDA	temp12			; 3
+	JMP	Hamster_Eating_Pickles_CounterDone ; 3
+
+Hamster_Eating_Pickles_LoadNew
+	LDX	#temp10			; 2
+	LDA	($00,x)			; 6 
+	CMP	#Hamster_Eating_Pickles_EOF_byte	; 2 
+	BEQ	Hamster_Eating_Pickles_FinishHim	; 2 
+	INC	0,x			; 6
+	BNE	*+4			; 2 
+	INC	1,x 			; 6 
+
+	CMP	#16			; 2
+	BCS	Hamster_Eating_Pickles_NoCounter	; 2
+
+	STA	temp13			; 3
+
+	INC	0,x			; 6
+	BNE	*+4			; 2 
+	INC	1,x 			; 6 
+
+	LDA	temp12			; 3
+	JMP	Hamster_Eating_Pickles_CounterDone ; 3
+
+Hamster_Eating_Pickles_NoCounter
+	STA	temp12			; 3
+	_sleep	22
+
+	LDA	temp12			; 3
+Hamster_Eating_Pickles_CounterDone
+	TAY				; 2
+
+	_sleep 50
+	sleep 4
+
+	TYA				; 2
+	STA	AUDV0			; 3 (5)
+	LSR				; 2 (7)
+	LSR				; 2 (9)
+	LSR				; 2 (11)
+	LSR				; 2 (13)
+
+	TAY				; 2 (15)
+	_sleep 122
+	sleep 2
+
+
+	TYA				; 2
+	STA	AUDV0			; 3 (5)
+	JMP	Hamster_Eating_Pickles_LoadSample	; 3 (8)
+	
+Hamster_Eating_Pickles_FinishHim
+	LDX	#Hamster_Eating_Pickles_Constant	; 2 (14)
+
+	LDA	#0
 	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	STA	COLUP1
+	STA	COLUPF
+	STA	COLUBK
+	JMP	Hamster_Eating_Pickles_JumpHereToFake
 
-	ldx	item
-	txs
+Hamster_Eating_Pickles_DebugScreen
+	LDA	#2
+	STA	VBLANK
+	STA	VSYNC
 
-	JMP	OverScanBank3
+	STA	WSYNC
+	STA	WSYNC
+	STA	WSYNC
 
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
+	LDA	#0
+	STA	VSYNC
+	
+	LDY	#Hamster_Eating_Pickles_NTSC_Vblank
+Hamster_Eating_Pickles_DebugLoop1
+	STA	WSYNC
+	DEY
+	BNE	Hamster_Eating_Pickles_DebugLoop1
 
-	align	256
+	LDA	#0
+	STA	VBLANK
+		
+	LDY	#192
+Hamster_Eating_Pickles_JumpHereToFake
+	DEX	
+	CPX	#0
+	BEQ	Hamster_Eating_Pickles_NoMoreLoops
+Hamster_Eating_Pickles_DebugLoop2
+	STA	WSYNC
+	DEY
+	BNE	Hamster_Eating_Pickles_DebugLoop2
+
+	LDA	#2
+	STA	VBLANK
+	LDY	#Hamster_Eating_Pickles_NTSC_Overscan
+Hamster_Eating_Pickles_DebugLoop3
+	STA	WSYNC
+	DEY
+	BNE	Hamster_Eating_Pickles_DebugLoop3
+
+	JMP	Hamster_Eating_Pickles_DebugScreen
 
 
+Hamster_Eating_Pickles_NoMoreLoops
+	lda	bankToJump
+	lsr
+	lsr
+	AND	#%00000111	; Get the bank number to return
+	tax		
+		
+	lda	#>(Hamster_Eating_Pickles_Return-1)
+   	pha
+   	lda	#<(Hamster_Eating_Pickles_Return-1)
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
 
-###End-Bank3
+
+Hamster_Eating_Pickles_Table
+	BYTE	#%01101100
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01100110
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01010101
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01100111
+	BYTE	#%01010110
+	BYTE	#%01100111
+	BYTE	#%01100110
+	BYTE	#%01100101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01100110
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01100101
+	BYTE	#%01110101
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01110111
+	BYTE	#%01100111
+	BYTE	#%01100101
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010110
+	BYTE	#%01100110
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01100110
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01100110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01100101
+	BYTE	#%01100110
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01100101
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01100110
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%00000011
+	BYTE	#%01010110
+	BYTE	#%01110111
+	BYTE	#%01110110
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01100101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%01110111
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01010110
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01100101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01100111
+	BYTE	#%01110101
+	BYTE	#%01100111
+	BYTE	#%01100101
+	BYTE	#%01100101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01010110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01100110
+	BYTE	#%01100110
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110110
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01100110
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01100111
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01100110
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01100110
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01100111
+	BYTE	#%01110111
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01010110
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01100101
+	BYTE	#%01100111
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01100111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01100101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01100111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01010101
+	BYTE	#%01100111
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01100101
+	BYTE	#%01100111
+	BYTE	#%01010111
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01100101
+	BYTE	#%01110111
+	BYTE	#%01100111
+	BYTE	#%01110101
+	BYTE	#%01010101
+	BYTE	#%01010111
+	BYTE	#%01010111
+	BYTE	#%01110110
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%01010111
+	BYTE	#%01100110
+	BYTE	#%01110111
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01110101
+	BYTE	#%01110101
+	BYTE	#%01110110
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%00000100
+	BYTE	#%01011000
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%10001011
+	BYTE	#%10001000
+	BYTE	#%00000100
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011000
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%00000100
+	BYTE	#%00101000
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%10001101
+	BYTE	#%10001000
+	BYTE	#%00000101
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10001010
+	BYTE	#%10101001
+	BYTE	#%10001001
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01110110
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000101
+	BYTE	#%10101001
+	BYTE	#%10001001
+	BYTE	#%01110001
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01111011
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%11010111
+	BYTE	#%10101000
+	BYTE	#%10101011
+	BYTE	#%01100111
+	BYTE	#%01100101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%01100111
+	BYTE	#%11000111
+	BYTE	#%10111001
+	BYTE	#%10001010
+	BYTE	#%01100110
+	BYTE	#%01110110
+	BYTE	#%10011001
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10111010
+	BYTE	#%10011001
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10001100
+	BYTE	#%10011000
+	BYTE	#%10101010
+	BYTE	#%01011000
+	BYTE	#%01100110
+	BYTE	#%10100111
+	BYTE	#%10011010
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%11110111
+	BYTE	#%10101001
+	BYTE	#%10001010
+	BYTE	#%01010110
+	BYTE	#%01110110
+	BYTE	#%10101001
+	BYTE	#%10001001
+	BYTE	#%10101010
+	BYTE	#%10011011
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10000000
+	BYTE	#%10011000
+	BYTE	#%10101010
+	BYTE	#%10001000
+	BYTE	#%01100110
+	BYTE	#%10100111
+	BYTE	#%10011010
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%00100111
+	BYTE	#%11001010
+	BYTE	#%01001001
+	BYTE	#%00110011
+	BYTE	#%11011000
+	BYTE	#%01111011
+	BYTE	#%11110101
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01010100
+	BYTE	#%10001100
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101011
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%11011001
+	BYTE	#%00110011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110100
+	BYTE	#%01110111
+	BYTE	#%10101000
+	BYTE	#%10111010
+	BYTE	#%10001010
+	BYTE	#%11001101
+	BYTE	#%01000101
+	BYTE	#%01100100
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11000110
+	BYTE	#%10111100
+	BYTE	#%00111000
+	BYTE	#%10100100
+	BYTE	#%10101100
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10101000
+	BYTE	#%10101100
+	BYTE	#%11001000
+	BYTE	#%11111100
+	BYTE	#%01000101
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11000100
+	BYTE	#%10001101
+	BYTE	#%00110011
+	BYTE	#%10101100
+	BYTE	#%10101011
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%11001001
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001001
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%11111000
+	BYTE	#%00010011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110110
+	BYTE	#%01110111
+	BYTE	#%10101000
+	BYTE	#%10101100
+	BYTE	#%10001001
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%00010101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01001000
+	BYTE	#%01000110
+	BYTE	#%11000110
+	BYTE	#%10101101
+	BYTE	#%00111001
+	BYTE	#%10100100
+	BYTE	#%10101100
+	BYTE	#%11101000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10111010
+	BYTE	#%10101100
+	BYTE	#%11011000
+	BYTE	#%00011100
+	BYTE	#%01000101
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%10001101
+	BYTE	#%01000011
+	BYTE	#%10111010
+	BYTE	#%10011011
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10011000
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%11001101
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11010110
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%00000100
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%00000111
+	BYTE	#%10101000
+	BYTE	#%10001100
+	BYTE	#%11011101
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%00000101
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%00110100
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110100
+	BYTE	#%01010111
+	BYTE	#%10101000
+	BYTE	#%10001100
+	BYTE	#%11001100
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000101
+	BYTE	#%00110101
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%01000100
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110000
+	BYTE	#%01110111
+	BYTE	#%10101000
+	BYTE	#%10001100
+	BYTE	#%11001011
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01010001
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%00101000
+	BYTE	#%01000011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10101000
+	BYTE	#%10101000
+	BYTE	#%11001100
+	BYTE	#%01000110
+	BYTE	#%10000110
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01000101
+	BYTE	#%11000110
+	BYTE	#%10001101
+	BYTE	#%00110010
+	BYTE	#%10101111
+	BYTE	#%10101100
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10001010
+	BYTE	#%11001010
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%11110011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10101000
+	BYTE	#%11011000
+	BYTE	#%11001100
+	BYTE	#%01000110
+	BYTE	#%10000110
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11001101
+	BYTE	#%10001101
+	BYTE	#%01000011
+	BYTE	#%10100000
+	BYTE	#%10101100
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000000
+	BYTE	#%10001010
+	BYTE	#%11001101
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11100110
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%10100100
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%00010111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%01100100
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11000110
+	BYTE	#%10101100
+	BYTE	#%00111010
+	BYTE	#%10100100
+	BYTE	#%10101100
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%11100111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%11010101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01000110
+	BYTE	#%11000110
+	BYTE	#%10011101
+	BYTE	#%00111101
+	BYTE	#%10100100
+	BYTE	#%10101100
+	BYTE	#%00111000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10011000
+	BYTE	#%11001100
+	BYTE	#%01000110
+	BYTE	#%10100110
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01010100
+	BYTE	#%11000110
+	BYTE	#%10001101
+	BYTE	#%00110011
+	BYTE	#%10100010
+	BYTE	#%10101100
+	BYTE	#%01101000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01000110
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11001101
+	BYTE	#%10001101
+	BYTE	#%01000011
+	BYTE	#%10101010
+	BYTE	#%10101100
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000000
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01010100
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11001100
+	BYTE	#%10111010
+	BYTE	#%01000011
+	BYTE	#%11001010
+	BYTE	#%10101010
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01010100
+	BYTE	#%10001100
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01100110
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%11011001
+	BYTE	#%00110011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110100
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001001
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%01100101
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%00010011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%00100111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01100110
+	BYTE	#%01100100
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11010110
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%10100100
+	BYTE	#%11001100
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%11110111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%01100101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10001000
+	BYTE	#%01000110
+	BYTE	#%11000110
+	BYTE	#%10101100
+	BYTE	#%00111011
+	BYTE	#%10100100
+	BYTE	#%10101100
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%10110101
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01000101
+	BYTE	#%11000110
+	BYTE	#%10001101
+	BYTE	#%00111110
+	BYTE	#%10100011
+	BYTE	#%10101100
+	BYTE	#%01001000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%11011000
+	BYTE	#%11001100
+	BYTE	#%01000110
+	BYTE	#%10010110
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%01101000
+	BYTE	#%01010100
+	BYTE	#%11001110
+	BYTE	#%10001101
+	BYTE	#%01000011
+	BYTE	#%10100001
+	BYTE	#%10101100
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10000010
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01000110
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101000
+	BYTE	#%01100100
+	BYTE	#%11001100
+	BYTE	#%10001010
+	BYTE	#%01000011
+	BYTE	#%11001010
+	BYTE	#%10101100
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10001111
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01010100
+	BYTE	#%10000110
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01101001
+	BYTE	#%01100100
+	BYTE	#%11001100
+	BYTE	#%11001001
+	BYTE	#%01000011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01111000
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%11011001
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001011
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%01100100
+	BYTE	#%11011100
+	BYTE	#%11101000
+	BYTE	#%00100011
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110101
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01101100
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%01000110
+	BYTE	#%11100110
+	BYTE	#%11011100
+	BYTE	#%00111000
+	BYTE	#%00000100
+	BYTE	#%11001010
+	BYTE	#%10001010
+	BYTE	#%01110111
+	BYTE	#%00010111
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01000110
+	BYTE	#%01100100
+	BYTE	#%10001000
+	BYTE	#%10011001
+	BYTE	#%10101010
+	BYTE	#%00110101
+	BYTE	#%11010111
+	BYTE	#%10011011
+	BYTE	#%01101000
+	BYTE	#%01110111
+	BYTE	#%01010110
+	BYTE	#%11101001
+	BYTE	#%01001011
+	BYTE	#%11000011
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01010110
+	BYTE	#%01110110
+	BYTE	#%01110111
+	BYTE	#%11011010
+	BYTE	#%10111010
+	BYTE	#%00110100
+	BYTE	#%11001000
+	BYTE	#%10011010
+	BYTE	#%10101000
+	BYTE	#%01010111
+	BYTE	#%10100101
+	BYTE	#%11101101
+	BYTE	#%01001010
+	BYTE	#%10000100
+	BYTE	#%10001001
+	BYTE	#%11011000
+	BYTE	#%01101100
+	BYTE	#%01100101
+	BYTE	#%01110111
+	BYTE	#%10100111
+	BYTE	#%10101101
+	BYTE	#%01000100
+	BYTE	#%10000011
+	BYTE	#%10101100
+	BYTE	#%10001001
+	BYTE	#%01111010
+	BYTE	#%01010101
+	BYTE	#%11011010
+	BYTE	#%11101011
+	BYTE	#%01000100
+	BYTE	#%10011000
+	BYTE	#%10001000
+	BYTE	#%11001101
+	BYTE	#%01010110
+	BYTE	#%01110110
+	BYTE	#%01100111
+	BYTE	#%11011010
+	BYTE	#%01001010
+	BYTE	#%00110011
+	BYTE	#%11001000
+	BYTE	#%10011010
+	BYTE	#%10111001
+	BYTE	#%00110111
+	BYTE	#%10110110
+	BYTE	#%10101100
+	BYTE	#%01001110
+	BYTE	#%01011001
+	BYTE	#%10000011
+	BYTE	#%11001011
+	BYTE	#%01111011
+	BYTE	#%10000111
+	BYTE	#%01001101
+	BYTE	#%11000101
+	BYTE	#%10001101
+	BYTE	#%01100110
+	BYTE	#%01110110
+	BYTE	#%10000110
+	BYTE	#%10111110
+	BYTE	#%01010101
+	BYTE	#%10000101
+	BYTE	#%10000111
+	BYTE	#%11001010
+	BYTE	#%01111101
+	BYTE	#%01010010
+	BYTE	#%10001001
+	BYTE	#%11001010
+	BYTE	#%01111011
+	BYTE	#%10000111
+	BYTE	#%01001010
+	BYTE	#%11000101
+	BYTE	#%10001101
+	BYTE	#%01100010
+	BYTE	#%01110110
+	BYTE	#%10000110
+	BYTE	#%10111110
+	BYTE	#%01010010
+	BYTE	#%10000101
+	BYTE	#%10000111
+	BYTE	#%11001001
+	BYTE	#%01111100
+	BYTE	#%01010010
+	BYTE	#%10001010
+	BYTE	#%11001001
+	BYTE	#%01111011
+	BYTE	#%10000111
+	BYTE	#%01001000
+	BYTE	#%11000101
+	BYTE	#%10001101
+	BYTE	#%01101110
+	BYTE	#%01110110
+	BYTE	#%10000110
+	BYTE	#%10111101
+	BYTE	#%01011111
+	BYTE	#%10000101
+	BYTE	#%01110110
+	BYTE	#%11010110
+	BYTE	#%01111100
+	BYTE	#%01100101
+	BYTE	#%00010110
+	BYTE	#%11001000
+	BYTE	#%01111011
+	BYTE	#%01001001
+	BYTE	#%00100011
+	BYTE	#%11000110
+	BYTE	#%10001010
+	BYTE	#%10111000
+	BYTE	#%00110111
+	BYTE	#%10100110
+	BYTE	#%10101010
+	BYTE	#%10111010
+	BYTE	#%00111001
+	BYTE	#%10010100
+	BYTE	#%10001001
+	BYTE	#%11011000
+	BYTE	#%11101010
+	BYTE	#%01010011
+	BYTE	#%10000111
+	BYTE	#%10111100
+	BYTE	#%11110100
+	BYTE	#%01111101
+	BYTE	#%01100010
+	BYTE	#%10101100
+	BYTE	#%10001010
+	BYTE	#%01111011
+	BYTE	#%01000011
+	BYTE	#%10100001
+	BYTE	#%10101010
+	BYTE	#%10011011
+	BYTE	#%00110010
+	BYTE	#%10010100
+	BYTE	#%10001000
+	BYTE	#%10101101
+	BYTE	#%00111010
+	BYTE	#%01110101
+	BYTE	#%10111000
+	BYTE	#%11101011
+	BYTE	#%10010110
+	BYTE	#%00100111
+	BYTE	#%11010110
+	BYTE	#%10101100
+	BYTE	#%10111000
+	BYTE	#%01010111
+	BYTE	#%01100011
+	BYTE	#%10101010
+	BYTE	#%10101010
+	BYTE	#%11011001
+	BYTE	#%01000011
+	BYTE	#%10001001
+	BYTE	#%11011001
+	BYTE	#%10011110
+	BYTE	#%01110100
+	BYTE	#%11110110
+	BYTE	#%11001000
+	BYTE	#%10011010
+	BYTE	#%01101010
+	BYTE	#%01000010
+	BYTE	#%10000111
+	BYTE	#%11010111
+	BYTE	#%11011101
+	BYTE	#%01110110
+	BYTE	#%00110111
+	BYTE	#%11110110
+	BYTE	#%10101011
+	BYTE	#%10111010
+	BYTE	#%00110111
+	BYTE	#%01100101
+	BYTE	#%01100111
+	BYTE	#%11011011
+	BYTE	#%10111001
+	BYTE	#%10010110
+	BYTE	#%10000100
+	BYTE	#%10101011
+	BYTE	#%10011001
+	BYTE	#%01101010
+	BYTE	#%01110010
+	BYTE	#%00111000
+	BYTE	#%11010111
+	BYTE	#%01101101
+	BYTE	#%01110111
+	BYTE	#%00110110
+	BYTE	#%11000110
+	BYTE	#%10101010
+	BYTE	#%11111010
+	BYTE	#%00110111
+	BYTE	#%01110110
+	BYTE	#%01100110
+	BYTE	#%11011011
+	BYTE	#%01101001
+	BYTE	#%11011101
+	BYTE	#%10000001
+	BYTE	#%10101100
+	BYTE	#%10011001
+	BYTE	#%01000010
+	BYTE	#%01110010
+	BYTE	#%01111000
+	BYTE	#%11011101
+	BYTE	#%01101101
+	BYTE	#%01110111
+	BYTE	#%01000011
+	BYTE	#%10110010
+	BYTE	#%10101010
+	BYTE	#%01111011
+	BYTE	#%00110011
+	BYTE	#%01100110
+	BYTE	#%10110110
+	BYTE	#%10111100
+	BYTE	#%10101001
+	BYTE	#%00111000
+	BYTE	#%10101000
+	BYTE	#%10101011
+	BYTE	#%10111010
+	BYTE	#%01000101
+	BYTE	#%01110110
+	BYTE	#%01110101
+	BYTE	#%10101101
+	BYTE	#%10011001
+	BYTE	#%01011011
+	BYTE	#%10000011
+	BYTE	#%01100101
+	BYTE	#%11000001
+	BYTE	#%10011010
+	BYTE	#%01011011
+	BYTE	#%00110011
+	BYTE	#%01101000
+	BYTE	#%11011000
+	BYTE	#%10011011
+	BYTE	#%10011000
+	BYTE	#%10000101
+	BYTE	#%10101100
+	BYTE	#%10101010
+	BYTE	#%01011011
+	BYTE	#%01110100
+	BYTE	#%01010110
+	BYTE	#%11010111
+	BYTE	#%10011010
+	BYTE	#%00001010
+	BYTE	#%00100100
+	BYTE	#%01011000
+	BYTE	#%11100111
+	BYTE	#%10101010
+	BYTE	#%10111001
+	BYTE	#%00110101
+	BYTE	#%10011111
+	BYTE	#%10000110
+	BYTE	#%10111101
+	BYTE	#%10001000
+	BYTE	#%01011101
+	BYTE	#%11001000
+	BYTE	#%10101010
+	BYTE	#%10111010
+	BYTE	#%01000101
+	BYTE	#%01010111
+	BYTE	#%01000101
+	BYTE	#%10101101
+	BYTE	#%10111001
+	BYTE	#%00110101
+	BYTE	#%10001101
+	BYTE	#%01110100
+	BYTE	#%10011101
+	BYTE	#%10101001
+	BYTE	#%01001100
+	BYTE	#%01100111
+	BYTE	#%11110100
+	BYTE	#%10101001
+	BYTE	#%11101000
+	BYTE	#%01001001
+	BYTE	#%01110110
+	BYTE	#%10101011
+	BYTE	#%10101011
+	BYTE	#%01101100
+	BYTE	#%01010110
+	BYTE	#%10010100
+	BYTE	#%10011001
+	BYTE	#%11011010
+	BYTE	#%10001010
+	BYTE	#%01001000
+	BYTE	#%01000100
+	BYTE	#%01111000
+	BYTE	#%11001010
+	BYTE	#%10011011
+	BYTE	#%10011010
+	BYTE	#%01100100
+	BYTE	#%01100110
+	BYTE	#%10110001
+	BYTE	#%10011011
+	BYTE	#%10001100
+	BYTE	#%01111000
+	BYTE	#%10101011
+	BYTE	#%10101011
+	BYTE	#%01101111
+	BYTE	#%01010110
+	BYTE	#%10010100
+	BYTE	#%10011001
+	BYTE	#%11011011
+	BYTE	#%10001010
+	BYTE	#%01001000
+	BYTE	#%01000100
+	BYTE	#%01111000
+	BYTE	#%10111010
+	BYTE	#%10011010
+	BYTE	#%10011001
+	BYTE	#%01100100
+	BYTE	#%01100110
+	BYTE	#%10110110
+	BYTE	#%10011011
+	BYTE	#%10101100
+	BYTE	#%01111010
+	BYTE	#%10101011
+	BYTE	#%10101011
+	BYTE	#%01100010
+	BYTE	#%01000101
+	BYTE	#%10000100
+	BYTE	#%10101000
+	BYTE	#%11001011
+	BYTE	#%10111001
+	BYTE	#%01010111
+	BYTE	#%01010101
+	BYTE	#%01100011
+	BYTE	#%10001001
+	BYTE	#%10111100
+	BYTE	#%10011011
+	BYTE	#%01001011
+	BYTE	#%01100110
+	BYTE	#%00110110
+	BYTE	#%10011010
+	BYTE	#%10111000
+	BYTE	#%01000001
+	BYTE	#%10101011
+	BYTE	#%10011100
+	BYTE	#%11000110
+	BYTE	#%01001000
+	BYTE	#%01110101
+	BYTE	#%00110110
+	BYTE	#%10101100
+	BYTE	#%11001010
+	BYTE	#%01110111
+	BYTE	#%01000110
+	BYTE	#%10000001
+	BYTE	#%10000110
+	BYTE	#%10011110
+	BYTE	#%10111001
+	BYTE	#%01001100
+	BYTE	#%11001000
+	BYTE	#%00110011
+	BYTE	#%01101010
+	BYTE	#%11011011
+	BYTE	#%11101010
+	BYTE	#%10110111
+	BYTE	#%11001010
+	BYTE	#%10011001
+	BYTE	#%10000111
+	BYTE	#%01010100
+	BYTE	#%01100111
+	BYTE	#%10110011
+	BYTE	#%10101010
+	BYTE	#%01111100
+	BYTE	#%01100111
+	BYTE	#%00100110
+	BYTE	#%01101000
+	BYTE	#%10001000
+	BYTE	#%10011110
+	BYTE	#%11001011
+	BYTE	#%11000010
+	BYTE	#%00111100
+	BYTE	#%10100011
+	BYTE	#%10110101
+	BYTE	#%10011011
+	BYTE	#%01111001
+	BYTE	#%10011010
+	BYTE	#%10111100
+	BYTE	#%10101001
+	BYTE	#%01011000
+	BYTE	#%00001000
+	BYTE	#%00110101
+	BYTE	#%01101010
+	BYTE	#%10011101
+	BYTE	#%10101010
+	BYTE	#%01101100
+	BYTE	#%01101010
+	BYTE	#%01000100
+	BYTE	#%01010110
+	BYTE	#%10011000
+	BYTE	#%10101001
+	BYTE	#%10011001
+	BYTE	#%10001010
+	BYTE	#%01100111
+	BYTE	#%01000100
+	BYTE	#%01011000
+	BYTE	#%01111000
+	BYTE	#%10011101
+	BYTE	#%11001001
+	BYTE	#%10101001
+	BYTE	#%01001000
+	BYTE	#%10001011
+	BYTE	#%01110011
+	BYTE	#%01101010
+	BYTE	#%11001101
+	BYTE	#%10101001
+	BYTE	#%01101100
+	BYTE	#%00001100
+	BYTE	#%01000101
+	BYTE	#%01010111
+	BYTE	#%10011000
+	BYTE	#%10011001
+	BYTE	#%10011011
+	BYTE	#%10001010
+	BYTE	#%01101110
+	BYTE	#%01000110
+	BYTE	#%01011000
+	BYTE	#%00101000
+	BYTE	#%10010000
+	BYTE	#%11001001
+	BYTE	#%10101001
+	BYTE	#%10001000
+	BYTE	#%10000101
+	BYTE	#%01110011
+	BYTE	#%11010000
+	BYTE	#%11010101
+	BYTE	#%10101001
+	BYTE	#%01001100
+	BYTE	#%10101110
+	BYTE	#%01000110
+	BYTE	#%01010111
+	BYTE	#%10000011
+	BYTE	#%10011001
+	BYTE	#%10011011
+	BYTE	#%10011001
+	BYTE	#%01111010
+	BYTE	#%01000110
+	BYTE	#%01001000
+	BYTE	#%10001011
+	BYTE	#%10100111
+	BYTE	#%11001001
+	BYTE	#%10011011
+	BYTE	#%10001010
+	BYTE	#%10000101
+	BYTE	#%01010000
+	BYTE	#%10100011
+	BYTE	#%11010110
+	BYTE	#%10101001
+	BYTE	#%11001011
+	BYTE	#%10100110
+	BYTE	#%01000110
+	BYTE	#%01100101
+	BYTE	#%10000101
+	BYTE	#%10011001
+	BYTE	#%10011010
+	BYTE	#%10101001
+	BYTE	#%01111000
+	BYTE	#%01000110
+	BYTE	#%10000100
+	BYTE	#%10000101
+	BYTE	#%11010111
+	BYTE	#%10011001
+	BYTE	#%10011011
+	BYTE	#%10001010
+	BYTE	#%10100101
+	BYTE	#%00111110
+	BYTE	#%10100111
+	BYTE	#%11010110
+	BYTE	#%10011100
+	BYTE	#%11001010
+	BYTE	#%10110110
+	BYTE	#%01010001
+	BYTE	#%01110100
+	BYTE	#%10000101
+	BYTE	#%10011001
+	BYTE	#%10111001
+	BYTE	#%10101001
+	BYTE	#%01111000
+	BYTE	#%01100110
+	BYTE	#%10000100
+	BYTE	#%10000101
+	BYTE	#%11110011
+	BYTE	#%10011001
+	BYTE	#%10111010
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10000110
+	BYTE	#%01100110
+	BYTE	#%10010001
+	BYTE	#%10000101
+	BYTE	#%10001001
+	BYTE	#%10011010
+	BYTE	#%10001000
+	BYTE	#%01111011
+	BYTE	#%10001000
+	BYTE	#%01011000
+	BYTE	#%01100111
+	BYTE	#%11010111
+	BYTE	#%10001000
+	BYTE	#%10101001
+	BYTE	#%10101010
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%01100111
+	BYTE	#%01110111
+	BYTE	#%10010110
+	BYTE	#%10101001
+	BYTE	#%10011011
+	BYTE	#%10001001
+	BYTE	#%01101001
+	BYTE	#%01101000
+	BYTE	#%10010110
+	BYTE	#%01011000
+	BYTE	#%10011000
+	BYTE	#%10011000
+	BYTE	#%10011010
+	BYTE	#%10111000
+	BYTE	#%10000111
+	BYTE	#%11101000
+	BYTE	#%01110101
+	BYTE	#%01110110
+	BYTE	#%10001001
+	BYTE	#%10011000
+	BYTE	#%10101010
+	BYTE	#%10011010
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%01110110
+	BYTE	#%11100111
+	BYTE	#%10011001
+	BYTE	#%10111010
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10000110
+	BYTE	#%01100100
+	BYTE	#%10100000
+	BYTE	#%10000111
+	BYTE	#%01111001
+	BYTE	#%10011001
+	BYTE	#%10011001
+	BYTE	#%10101000
+	BYTE	#%10001001
+	BYTE	#%10011000
+	BYTE	#%10000111
+	BYTE	#%00111000
+	BYTE	#%01110111
+	BYTE	#%10000111
+	BYTE	#%10010111
+	BYTE	#%10011001
+	BYTE	#%10100111
+	BYTE	#%10011000
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10001010
+	BYTE	#%10011000
+	BYTE	#%01111010
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%00001100
+	BYTE	#%10000011
+	BYTE	#%10001001
+	BYTE	#%10011001
+	BYTE	#%10001001
+	BYTE	#%10011000
+	BYTE	#%01111001
+	BYTE	#%10101001
+	BYTE	#%01110111
+	BYTE	#%01111000
+	BYTE	#%11010111
+	BYTE	#%10101000
+	BYTE	#%10000111
+	BYTE	#%10001001
+	BYTE	#%10101001
+	BYTE	#%10011001
+	BYTE	#%10001010
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10101000
+	BYTE	#%10001000
+	BYTE	#%11011001
+	BYTE	#%10000111
+	BYTE	#%10001000
+	BYTE	#%01110111
+	BYTE	#%01110111
+	BYTE	#%10010111
+	BYTE	#%00010001
+	BYTE	#%10011000
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10001001
+	BYTE	#%01111001
+	BYTE	#%10001000
+	BYTE	#%01111001
+	BYTE	#%10001000
+	BYTE	#%11111000
+	BYTE	#%10010011
+	BYTE	#%01110111
+	BYTE	#%10001000
+	BYTE	#%10001000
+	BYTE	#%10010111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10011000
+	BYTE	#%10000111
+	BYTE	#%10101000
+	BYTE	#%10000111
+	BYTE	#%10001000
+	BYTE	#%11000110
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%10011000
+	BYTE	#%10001000
+	BYTE	#%10001001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%01111000
+	BYTE	#%10001001
+	BYTE	#%01001000
+	BYTE	#%10011110
+	BYTE	#%10000111
+	BYTE	#%01111000
+	BYTE	#%10000100
+	BYTE	#%10000111
+	BYTE	#%10001000
+	BYTE	#%00000011
+	BYTE	#%10001001
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%10001001
+	BYTE	#%10001000
+	BYTE	#%01101110
+	BYTE	#%10000101
+	BYTE	#%10001000
+	BYTE	#%10000011
+	BYTE	#%10001100
+	BYTE	#%10000010
+	BYTE	#%11010101
+	BYTE	#%01000101
+	BYTE	#%10000001
+	BYTE	#%10000010
+	BYTE	#%10000101
+	BYTE	#%10000101
+	BYTE	#%11100101
+	BYTE	#%10001011
+	BYTE	#%11010010
+	BYTE	#%01001011
+	BYTE	#%01011000
+	BYTE	#%00111100
+	BYTE	#%11011000
+	BYTE	#%00111000
+	BYTE	#%01010101
+	BYTE	#%00111000
+	BYTE	#%00001000
+	BYTE	#%01011000
+	BYTE	#%01011000
+	BYTE	#%10101111
+	BYTE	#%01011000
+	BYTE	#%10001111
+	BYTE	#%00011000
+	BYTE	#%10111110
+	BYTE	#%00011000
+	BYTE	#%10110101
+	BYTE	#%10001000
+	BYTE	#%10001110
+	BYTE	#%10001000
+	BYTE	#%10000101
+	BYTE	#%00000011
+	BYTE	#%10001001
+	BYTE	#%11001111
+	BYTE	#%10011001
+	BYTE	#%10000000
+	BYTE	#%10010101
+	BYTE	#%11110000
+	BYTE	#%10001000
+	BYTE	#%01101011
+	BYTE	#%00000000
+
 *Routine Section
 *---------------------------------
 * This is were the routines are
@@ -4016,8 +5073,8 @@ JumpToNewScreenBank_NoLAX4
 LeaveJumpTableBank4
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -4340,8 +5397,8 @@ JumpToNewScreenBank_NoLAX5
 LeaveJumpTableBank5
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -4663,8 +5720,8 @@ JumpToNewScreenBank_NoLAX6
 LeaveJumpTableBank6
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -4987,8 +6044,8 @@ JumpToNewScreenBank_NoLAX7
 LeaveJumpTableBank7
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -5311,8 +6368,8 @@ JumpToNewScreenBank_NoLAX8
 LeaveJumpTableBank8
 	byte	#>EnterScreenBank2-1
 	byte	#<EnterScreenBank2-1
-	byte	#>EnterScreenBank3-1
-	byte	#<EnterScreenBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>EnterScreenBank4-1
 	byte	#<EnterScreenBank4-1
 	byte	#>EnterScreenBank5-1
@@ -5835,8 +6892,8 @@ JumpBackToBankScreenTop
 VBlankJumpTable
 	byte	#>VBlankEndBank2-1
 	byte	#<VBlankEndBank2-1
-	byte	#>VBlankEndBank3-1
-	byte	#<VBlankEndBank3-1
+	byte	#>Zero-1
+	byte	#<Zero-1
 	byte	#>VBlankEndBank4-1
 	byte	#<VBlankEndBank4-1
 	byte	#>VBlankEndBank5-1

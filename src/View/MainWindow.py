@@ -279,10 +279,12 @@ class MainWindow:
         self.__48pxPictureButton = self.__buttonMaker.createButton("48pxPicture", currentPoz,
                                           self.__open48pxEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
-        self.__soundPlayerButton = self.__buttonMaker.createButton("soundPlayer", currentPoz,
+        self.__soundPlayerButton = self.__buttonMaker.createButton("noiseMaker", currentPoz,
+                                          self.__openNoiseMaker, "projectPath",
+                                            False, None, self.__places, __vals[2])
+        self.__noiseMaker = self.__buttonMaker.createButton("soundPlayer", currentPoz,
                                           self.__openSoundPlayer, "projectPath",
                                             False, None, self.__places, __vals[2])
-
         self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", currentPoz,
                                           self.__openBigSpriteEditor, "projectPath",
                                             False, None, self.__places, __vals[2])
@@ -606,6 +608,13 @@ class MainWindow:
         from Pic48Editor import Pic48Editor
 
         Pic48Editor(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
+
+    def __openNoiseMaker(self):
+        from NoiseMaker import NoiseMaker
+
+        NoiseMaker(self.__loader)
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()
 

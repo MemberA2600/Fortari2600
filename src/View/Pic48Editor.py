@@ -790,8 +790,6 @@ class Pic48Editor:
 
     def __open(self):
         if False not in self.__finished:
-            self.__doingStuff = True
-
             if self.changed == True:
                 answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
                 if answer == "Yes":
@@ -806,6 +804,8 @@ class Pic48Editor:
 
             if fpath == "":
                return
+
+            self.__doingStuff = True
 
             #if True:
             try:
@@ -835,6 +835,8 @@ class Pic48Editor:
                     if self.__fileDialogs.askYesNoCancel("differentKernel", "differentKernelMessage") == "No":
                         self.__topLevelWindow.deiconify()
                         self.__topLevelWindow.focus()
+                        self.__doingStuff = False
+
                         return
 
                 #wasFrameNum      = frameNum
@@ -894,11 +896,11 @@ class Pic48Editor:
                 #self.__firstClick = True
                 self.changed = False
                 #self.__spriteLoader.disableSave()
-                self.__doingStuff = False
 
             except Exception as e:
                 self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
 
+            self.__doingStuff = False
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
 
@@ -960,8 +962,6 @@ class Pic48Editor:
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
 
-            self.__topLevelWindow.deiconify()
-            self.__topLevelWindow.focus()
             self.__doingStuff = False
 
 

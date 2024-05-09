@@ -702,7 +702,7 @@ class CanvasEditor48px:
                self.__forYIndexButton.config(state=DISABLED)
 
         except Exception as e:
-               print(str(e))
+               #print(str(e))
                pass
 
     def changeSinglePixel(self, y, x, color, layer):

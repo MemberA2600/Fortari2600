@@ -695,7 +695,7 @@ class Assembler():
                 pass
 
             if variables[var].startswith("$") == True or isItInt == True or variables[var].startswith("%") == True:
-                simple_ones[var] = variables[var]
+               simple_ones[var] = variables[var]
 
         for var in variables:
             try:
@@ -710,7 +710,11 @@ class Assembler():
                isItInt == False                                    and\
                variables[var].startswith("%")                      and\
                variables[var].startswith("#") == False:
-               variables[var] = simple_ones[variables[var]]
+               try:
+                  variables[var] = simple_ones[variables[var]]
+               except:
+                  pass
+
 
         #for key in variables.keys():
         #    print(key, ": ", variables[key])

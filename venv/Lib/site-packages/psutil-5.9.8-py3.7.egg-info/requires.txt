@@ -1,0 +1,13 @@
+
+[test]
+
+[test:python_version < "3.0"]
+ipaddress
+mock
+
+[test:python_version <= "3.4"]
+enum34
+
+[test:sys_platform == "win32"]
+pywin32
+wmi

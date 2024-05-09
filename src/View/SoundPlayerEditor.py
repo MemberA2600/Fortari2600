@@ -260,7 +260,7 @@ class SoundPlayerEditor:
 
         self.__createRainbow()
 
-        self.__loader.threadLopper(self, self.checker, [])
+        self.__loader.threadLooper.addToThreading(self, self.checker, [], 1)
 
     def __checkLock(self, event):
         teszt = 0
@@ -282,7 +282,6 @@ class SoundPlayerEditor:
                     self.__lockNum.set(str(banks[0]))
                 except:
                     self.__lockNum.set("3")
-
 
     def __checkFileName(self, event):
         OK = self.__loader.io.checkIfValidFileName(self.__title.get())

@@ -122,7 +122,7 @@ class KernelTester:
         self.__testButton.pack_propagate(False)
         self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
 
-        self.__loader.threadLooper(self, self.checkIfAllValid, [], 0)
+        self.__loader.threadLooper.addToThreading(self, self.checkIfAllValid, [], 0)
 
     def checkIfAllValid(self):
             try:

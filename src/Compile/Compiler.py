@@ -79,6 +79,18 @@ class Compiler:
                 self.__48pxData()
             elif self.__mode == "48pxTest":
                 self.__48pxTest()
+            elif self.__mode == "soundFxData":
+                self.__soundFxData()
+
+    def __soundFxData(self):
+        data         = self.__data[0]
+        length       = self.__data[1]
+        tv           = self.__data[2]
+        name         = self.__data[3]
+        bank         = self.__data[4]
+
+                
+
 
     def __48pxTest(self):
         repeatOnTop  = self.__data[6]

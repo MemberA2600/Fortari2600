@@ -4,19 +4,28 @@ class SoundPlayer:
 
     def __init__(self, config):
         self.__config = config
+        #self.__counter = 0
 
     def playSound(self, name):
-        self.path = "others/snd/"+name+".wav"
-        if self.__config.getValueByKey("soundOn")=="True":
-            sound = Thread(target=self.playThread)
+        if self.__config.getValueByKey("soundOn") == "True":
+            sound = Thread(target=self.playThread, args = [self.__fullPath(name)])
             sound.start()
 
+    def __fullPath(self, name):
+        return "others/snd/" + name + ".wav"
+
     def play(self, path):
-        self.path = path
-        sound = Thread(target=self.playThread)
+        sound = Thread(target=self.playThread, args = [path])
         sound.start()
 
-    def playThread(self):
+    def playThread(self, path):
         from playsound import playsound
-        playsound(self.path)
+        playsound(path)
 
+        #self.__counter += 1
+        #print(self.__counter)
+
+    def playOnlyOneAtTime(self, name):
+        import winsound
+        if self.__config.getValueByKey("soundOn") == "True":
+           winsound.PlaySound(self.__fullPath(name), winsound.SND_ASYNC)

@@ -46,6 +46,7 @@ class AtariLogo:
             self.__loader.logger.errorLog(e)
 
     def nextFrame(self):
+
         if self.__counter<18:
            self.__counter+=1
         else:

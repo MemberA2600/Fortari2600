@@ -1,6 +1,7 @@
 from threading import Thread
 from time import sleep
 import traceback
+import psutil
 
 class ThreadLooper:
 
@@ -71,15 +72,60 @@ class ThreadLooper:
                      self.__loader.topLevels[num].deiconify()
                      self.__loader.topLevels[num].focus()
 
+    """    
+    def track_memory_usage(self):
+        import psutil
+
+        # Get the process ID of the current Python process
+        pid = psutil.Process().pid
+        last_memory = 0
+
+        memory_usage = {}
+
+        while True:
+            # Get memory usage of the Python process
+            memory_info = psutil.Process(pid).memory_info()
+            memory_usage = memory_info.rss
+
+            # Calculate memory increment
+            memory_increment = memory_usage - last_memory
+            if memory_increment > 0:
+                print(f"Python process increased memory by {memory_increment / (1024 * 1024):.2f} MB")
+
+            last_memory = memory_usage
+            sleep(0.00005)
+
+    """
+
+    def printInto(self):
+        memory_info = psutil.Process().memory_info()
+        memory_usage_mb = memory_info.rss / (1024 * 1024)
+        print(f"Current memory usage: {memory_usage_mb:.2f} MB")
+        # print(len(self.__listOfThreads))
+        python_processes = [p for p in psutil.process_iter() if 'python' in p.name()]
+        total_threads = sum(p.num_threads() for p in python_processes)
+        print("Number of threads:", total_threads)
+
     def __loop(self):
         number = 0
         t = None
+
+        #from datetime import datetime
+        #now = datetime.now()
+        #runningTimes = {}
+        #debugTime    = False
+
+        #trackMemory = Thread(target=self.track_memory_usage)
+        #trackMemory.daemon = True
+        #trackMemory.start()
 
         while True:
             try:
                 while self.__loader.mainWindow.dead == False:
                     self.__mainInited = True
                     self.enableDisable()
+
+
 
                     if self.__running == False:
                        number += 1
@@ -100,7 +146,6 @@ class ThreadLooper:
                                  dead = False
                           except:
                               pass
-
 
                           try:
                               if self.__listOfThreads[number][0].dead == True:
@@ -140,7 +185,6 @@ class ThreadLooper:
 
                           #print("does:", self.__listOfThreads[number][0], self.__listOfThreads[number][1])
                           #print(self.__maxLevel)
-
                           if stop or dead:
                              #print(self.__listOfThreads[number][0])
                              currLevel = self.__listOfThreads[number][3]
@@ -178,7 +222,18 @@ class ThreadLooper:
                                  self.__running = True
                              else:
                                  #print(self.__listOfThreads[number][1])
+                                 #if debugTime:
+                                 #   if str(self.__listOfThreads[number][1]) not in runningTimes:
+                                 #      runningTimes[str(self.__listOfThreads[number][1])] = 0
+                                 #      now = datetime.now()
+
                                  self.__listOfThreads[number][1](*self.__listOfThreads[number][2])
+
+                                 #if debugTime:
+                                 #   t = (datetime.now() - now).total_seconds()
+                                 #   if t > runningTimes[str(self.__listOfThreads[number][1])]:
+                                 #       runningTimes[str(self.__listOfThreads[number][1])] = t
+                                 #   print(str(self.__listOfThreads[number][1]), str(runningTimes[str(self.__listOfThreads[number][1])]))
                        else:
                            self.__wait = self.__base
                     else:
