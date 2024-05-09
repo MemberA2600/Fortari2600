@@ -89,8 +89,38 @@ class Compiler:
         name         = self.__data[3]
         bank         = self.__data[4]
 
-                
+        text    = "* Len=" + str(length)               + "\n" +\
+                  "\t_align\t" + str((length * 2) + 1) + "\n" +\
+                  name + "_SoundFX\n"
 
+        for x in range(0, length):
+            volume    = int(data["volume"]   ["entryVals"][x].get())
+            channel   = int(data["channel"]  ["entryVals"][x].get())
+            frequency = int(data["frequency"]["entryVals"][x].get())
+            duration  = int(data["duration"] ["entryVals"][x].get())
+
+            bitNums   = {
+                "volume": 4, "channel": 4, "frequency": 5, "duration": 3
+            }
+
+            volume    = self.convertToBin(volume   , bitNums["volume"]   )
+            channel   = self.convertToBin(channel  , bitNums["channel"]  )
+            frequency = self.convertToBin(frequency, bitNums["frequency"])
+            duration  = self.convertToBin(duration , bitNums["duration"] )
+
+            text     += "\tBYTE\t#%" + channel  + volume    + "\n" +\
+                        "\tBYTE\t#%" + duration + frequency + "\n"
+
+        text    += "\tBYTE\t#$F0\t ; End Byte\n"
+
+        if self.__mode == "soundFxData":
+            self.converted = text
+        else:
+            return text
+
+    def convertToBin(self, data, bits):
+        data = bin(data).replace("0b", "")
+        return ("0" * (bits - len(data))) + data
 
     def __48pxTest(self):
         repeatOnTop  = self.__data[6]
