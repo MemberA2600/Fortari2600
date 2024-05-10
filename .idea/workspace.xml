@@ -8,14 +8,109 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-05-09_172029.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/soundFx/PixelFarts.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/soundFx/PixelFarts.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/soundFx/PixelFarts.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/soundFx/PixelFarts.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-05-09_221508.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/NoiseMaker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/NoiseMaker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/Input.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0001.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0002.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0003.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0004.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0005.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0006.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0007.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0008.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0009.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0010.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0011.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0012.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0013.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0014.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0015.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0016.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0017.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0018.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0019.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0020.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0021.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0022.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0023.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0024.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0025.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0026.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0027.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0028.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0029.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0030.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0031.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0032.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0033.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0034.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0035.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0036.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0037.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0038.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0039.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0040.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/asm_log/temp_NTSC_0041.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" beforeDir="false" afterPath="$PROJECT_DIR$/temp/bin/temp_NTSC_0001.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0002.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0003.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0004.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0005.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0006.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0007.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0008.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0009.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0010.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0011.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0012.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0013.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0014.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0015.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0016.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0017.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0018.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0019.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0020.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0021.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0022.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0023.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0024.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0025.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0026.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0027.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0028.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0029.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0030.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0031.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0032.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0033.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0034.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0035.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0036.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0037.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0038.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0039.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0040.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/bin/temp_NTSC_0041.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/free.txt" beforeDir="false" afterPath="$PROJECT_DIR$/temp/free.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/playback.wav" beforeDir="false" afterPath="$PROJECT_DIR$/temp/playback.wav" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/temp/source.asm" beforeDir="false" afterPath="$PROJECT_DIR$/temp/source.asm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-20-24.236287.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-21-47.767065.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-31-10.735265.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-43.607599.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-45.735721.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-47.247808.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-48.631887.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-50.087970.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-51.192033.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-51.936076.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-53.464163.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-54.840242.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-58.023424.wav" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/temp/temp2024-05-09-12-39-59.527510.wav" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -36,7 +131,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1715285707809" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1715315880645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1715186960564" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -216,19 +311,19 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="587" />
+          <entry key="project.closed" value="588" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="5" />
           <entry key="project.open.time.3" value="93" />
-          <entry key="project.open.time.4" value="499" />
+          <entry key="project.open.time.4" value="500" />
           <entry key="project.open.time.5" value="122" />
           <entry key="project.open.time.6" value="34" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="4" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="3" />
-          <entry key="project.opened" value="768" />
+          <entry key="project.opened" value="769" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -248,13 +343,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="562960" />
+          <entry key="py" value="563659" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="562960" />
+          <entry key="Python" value="563659" />
         </counts>
       </usages-collector>
     </session>
@@ -267,8 +362,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="12400">
-              <caret line="784" selection-start-line="784" selection-end-line="788" selection-end-column="48" />
+            <state relative-caret-position="489">
+              <caret line="309" selection-start-line="309" selection-end-line="312" selection-end-column="59" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
                 <marker date="1715266365617" expanded="true" signature="28742:29168" ph="..." />
@@ -281,15 +376,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/NoiseMaker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="356">
-              <caret line="348" column="70" selection-start-line="348" selection-start-column="70" selection-end-line="348" selection-end-column="70" />
+            <state relative-caret-position="553">
+              <caret line="589" selection-start-line="589" selection-end-line="589" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1715285481204" expanded="true" signature="416:417" ph="..." />
-                <marker date="1715285481204" expanded="true" signature="416:422" ph="..." />
-                <marker date="1715285481204" expanded="true" signature="11166:11355" ph="..." />
-                <marker date="1715285481204" expanded="true" signature="20679:21715" ph="..." />
-                <marker date="1715285481204" expanded="true" signature="20706:20987" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="416:417" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="416:422" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="11166:11399" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="22772:24533" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="22922:23503" ph="..." />
+                <marker date="1715315880641" expanded="true" signature="23524:23805" ph="..." />
               </folding>
             </state>
           </provider>
@@ -298,7 +394,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="329">
+            <state relative-caret-position="1408">
               <caret line="91" column="21" selection-start-line="91" selection-start-column="21" selection-end-line="91" selection-end-column="21" />
               <folding>
                 <marker date="1715285159696" expanded="true" signature="2745:4188" ph="..." />
@@ -319,17 +415,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>__linesSetter</find>
-      <find>print</find>
-      <find>spriteLo</find>
-      <find>VisualLoaderFrame</find>
-      <find>checkIfValidFileName</find>
-      <find>loop</find>
-      <find>disa</find>
-      <find>clicked</find>
-      <find>changeLenght</find>
-      <find>generatePattern</find>
-      <find>gen</find>
       <find>self.__save</find>
       <find>def __sa</find>
       <find>__dont</find>
@@ -337,7 +422,6 @@
       <find>__spriteLoader</find>
       <find>disabled</find>
       <find>__save</find>
-      <find>setButtonOnKeyAndX</find>
       <find>freq</find>
       <find>heig</find>
       <find>mini</find>
@@ -349,6 +433,18 @@
       <find>__loadTest</find>
       <find>testWa</find>
       <find>changePointerToZero</find>
+      <find>exception</find>
+      <find>andx</find>
+      <find>setButtonOnKeyAndX</find>
+      <find>forBut</find>
+      <find>interface</find>
+      <find>__backButton</find>
+      <find>arrowfra</find>
+      <find>__forImage</find>
+      <find>enter</find>
+      <find>e</find>
+      <find>__edited</find>
+      <find>inc</find>
     </findStrings>
     <replaceStrings>
       <replace>commandBack</replace>
@@ -684,21 +780,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5579976" visible="true" weight="0.209375" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5579976" visible="true" weight="0.209375" />
       <window_info id="Structure" order="1" sideWeight="0.44200245" side_tool="true" weight="0.205625" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49875" weight="0.3289597" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16921607" weight="0.15105163" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.61" visible="true" weight="0.23242737" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.609375" visible="true" weight="0.23242737" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.49625" weight="0.39925024" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.39" side_tool="true" visible="true" weight="0.23242737" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.390625" side_tool="true" visible="true" weight="0.23242737" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49743262" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -1087,21 +1182,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12400">
-          <caret line="784" selection-start-line="784" selection-end-line="788" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1715266365617" expanded="true" signature="28742:29168" ph="..." />
-            <marker date="1715266365617" expanded="true" signature="44547:45510" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="329">
+        <state relative-caret-position="1408">
           <caret line="91" column="21" selection-start-line="91" selection-start-column="21" selection-end-line="91" selection-end-column="21" />
           <folding>
             <marker date="1715285159696" expanded="true" signature="2745:4188" ph="..." />
@@ -1110,17 +1193,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/NoiseMaker.py">
+    <entry file="file://$PROJECT_DIR$/src/View/Pic48Editor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="348" column="70" selection-start-line="348" selection-start-column="70" selection-end-line="348" selection-end-column="70" />
+        <state relative-caret-position="489">
+          <caret line="309" selection-start-line="309" selection-end-line="312" selection-end-column="59" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1715285481204" expanded="true" signature="416:417" ph="..." />
-            <marker date="1715285481204" expanded="true" signature="416:422" ph="..." />
-            <marker date="1715285481204" expanded="true" signature="11166:11355" ph="..." />
-            <marker date="1715285481204" expanded="true" signature="20679:21715" ph="..." />
-            <marker date="1715285481204" expanded="true" signature="20706:20987" ph="..." />
+            <marker date="1715266365617" expanded="true" signature="28742:29168" ph="..." />
+            <marker date="1715266365617" expanded="true" signature="44547:45510" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/NoiseMaker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="553">
+          <caret line="589" selection-start-line="589" selection-end-line="589" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1715315880641" expanded="true" signature="416:417" ph="..." />
+            <marker date="1715315880641" expanded="true" signature="416:422" ph="..." />
+            <marker date="1715315880641" expanded="true" signature="11166:11399" ph="..." />
+            <marker date="1715315880641" expanded="true" signature="22772:24533" ph="..." />
+            <marker date="1715315880641" expanded="true" signature="22922:23503" ph="..." />
+            <marker date="1715315880641" expanded="true" signature="23524:23805" ph="..." />
           </folding>
         </state>
       </provider>

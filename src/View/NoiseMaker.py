@@ -335,7 +335,11 @@ class NoiseMaker:
     def __edited(self, event):
         if False in self.__finished or self.__dont: return
 
-        entry = event.widget
+        if type(event) == Entry:
+            entry = event
+        else:
+            entry = event.widget
+
         name   = str(entry).split(".")[-1]
 
         key = name.split("_")[0]
@@ -492,6 +496,44 @@ class NoiseMaker:
             self.__iFaceButtons[word] = b
             self.__iFaceFrames.append(f)
 
+        self.__backImage = self.__loader.io.getImg("backwards", None)
+        self.__forImage = self.__loader.io.getImg("forwards", None)
+
+        self.__arrowsFrame = Frame(self.__interfaceFrame,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__sizes[0], height=fSiez
+                  )
+        self.__arrowsFrame.pack_propagate(False)
+        self.__arrowsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrowsFrame1 = Frame(self.__arrowsFrame,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__interfaceFrame.winfo_width()//2, height=fSiez
+                  )
+        self.__arrowsFrame1.pack_propagate(False)
+        self.__arrowsFrame1.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__arrowsFrame2 = Frame(self.__arrowsFrame,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__interfaceFrame.winfo_width()//2, height=fSiez
+                  )
+        self.__arrowsFrame2.pack_propagate(False)
+        self.__arrowsFrame2.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__backButton = Button(self.__arrowsFrame1, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__backImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__decIndex)
+
+
+        self.__forButton = Button(self.__arrowsFrame2, bg=self.__loader.colorPalettes.getColor("window"),
+                                   image=self.__forImage,
+                                   width=self.__sizes[0], state=DISABLED, command=self.__incIndex)
+
+        self.__forButton.pack_propagate(False)
+        self.__forButton.pack(side=LEFT, anchor=W, fill=Y)
+        self.__backButton.pack_propagate(False)
+        self.__backButton.pack(side=LEFT, anchor=W, fill=Y)
+
         self.__loaderFrame = Frame(self.__interfaceFrame,
                   bg=self.__loader.colorPalettes.getColor("window"),
                   width=self.__sizes[0], height=fSiez * 2
@@ -520,7 +562,31 @@ class NoiseMaker:
                                                     self.__testerFrame.winfo_height()     , self.__normalFont,
                                                     self.__testerFrame.winfo_width()  // 2, self.__loadTest, BOTTOM, S)
 
+
         self.__finished[2] = True
+
+    def __decIndex(self):
+        self.__changeIndex(-1)
+
+    def __incIndex(self):
+        self.__changeIndex(1)
+
+    def __changeIndex(self, num):
+        copied = {}
+        for key in self.__dataLines.keys():
+            copied[key] = []
+
+            for x in range(num, self.__wWw + num):
+                if x >=   self.__wWw:
+                   x  = x%self.__wWw
+
+                copied[key].append(self.__dataLines[key]["entryVals"][x].get())
+
+            for x in range(0, self.__wWw):
+                self.__dataLines[key]["entryVals"][x].set(copied[key][x])
+                self.__edited(self.__dataLines[key]["entries"][x])
+                if key != "duration":
+                   self.setButtonOnKeyAndX(key, x)
 
     def __loadTest(self):
         t = Thread(target=self.__testThread)
@@ -903,6 +969,12 @@ class NoiseMaker:
             else:
                self.__spriteLoader.enableSave()
 
+            if self.__wWw == 1:
+               self.__forButton.config(state = DISABLED)
+               self.__backButton.config(state = DISABLED)
+            else:
+               self.__forButton.config(state=NORMAL)
+               self.__backButton.config(state=NORMAL)
 
         except Exception as e:
              print(str(e))
