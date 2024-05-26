@@ -732,7 +732,9 @@ class TopBottomEditor:
                 "SpecialEffect"     : name + " " + "SpecialEffect $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $ $",
                 "Reseter"           : name + " " + "Reseter 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
                 "Wall"              : name + " " + "Wall # # # # # # $20 *None* 8 #",
-                "MiniMap"           : name + " " + "MiniMap # # # # # # # #"
+                "MiniMap"           : name + " " + "MiniMap # # # # # # # #",
+                "Picture48px"       : name + " " + "Picture48px # -1 -1 -1 -1 -1 -1",
+
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -781,6 +783,7 @@ class TopBottomEditor:
            from Reseter             import Reseter
            from Wall                import Wall
            from MiniMap             import MiniMap
+           from Picture48px         import Picture48px
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -794,7 +797,8 @@ class TopBottomEditor:
                "SpecialEffect"      : Indicator,
                "Reseter"            : Reseter,
                "Wall"               : Wall,
-               "MiniMap"            : MiniMap
+               "MiniMap"            : MiniMap,
+               "Picture48px"        : Picture48px
            }
 
            self.__listOfNames = []
@@ -1094,8 +1098,8 @@ class TopBottomEditor:
         self.__bottomButton.pack_propagate(False)
         self.__bottomButton.pack(side=LEFT, anchor=E, fill=BOTH)
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topButton   , "<<Button-1>", self.__changeScreenPart, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__bottomButton, "<<Button-1>", self.__changeScreenPart, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topButton   , "<Button-1>", self.__changeScreenPart, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__bottomButton, "<Button-1>", self.__changeScreenPart, 1)
 
         #self.__topButton.bind("<Button-1>", self.__changeScreenPart)
         #self.__bottomButton.bind("<Button-1>", self.__changeScreenPart)

@@ -5,10 +5,17 @@ class BindingMaster:
         self.__looper    = looper
         self.__lastLevel = 0
 
+        self.__maxLevel  = 3
+
 #   Currently there are 3 levels of windows, and one level that is out of hierarchy (-1).
-        self.__bindings = {
-            -1: [[], False], 0: [[], False], 1: [[], False], 2: [[], False]
-        }
+        self.__bindings = {}
+
+        for lvl in range(-1, self.__maxLevel + 1):
+            self.__bindings[lvl] = [[], False]
+
+        #self.__bindings = {
+        #    -1: [[], False], 0: [[], False], 1: [[], False], 2: [[], False], 3: [[], False]
+        #}
 
 #   Called from ThreadLooper
     def loop(self):
@@ -21,7 +28,7 @@ class BindingMaster:
                     binding[4] = False
             self.__bindings[level][1] = True
 
-        for lvl in range(-1, 3):
+        for lvl in range(-1, self.__maxLevel + 1):
             #print(lvl, len(self.__bindings[lvl][0]))
             if self.__bindings[lvl][1] == True:
                self.__bindings[lvl][1] = False
@@ -33,11 +40,12 @@ class BindingMaster:
                          binding[4] = True
                          try:
                             binding[1].bind(binding[2], binding[3])
-                         except:
-                            print(binding)
+                         except Exception as e:
+                            print(binding, str(e))
+
                       else:
                          binding[1].unbind_all(binding[2])
-                         #print("test")
+                         #print(binding[0], binding[1])
 
         if self.__lastLevel > level:
             self.__bindings[self.__lastLevel] = [[], False]
@@ -46,32 +54,40 @@ class BindingMaster:
         self.__lastLevel = level
 
     def __isItOk(self, object, screenItem):
+        printMe = False
         try:
             if object.dead == True:
+               if printMe: print("1")
                return False
         except:
             pass
 
         try:
             if object.dead[0] == True:
+               if printMe: print("2")
                return False
         except:
             pass
 
         try:
             if object.caller.dead == True:
+               if printMe: print("3")
                return False
         except:
             pass
 
+        """
         try:
             if object.stopMe == True:
+               if printMe: print("4")
                return False
         except:
             pass
+        """
 
         try:
             if object.stopThread == True:
+               if printMe: print("5")
                return False
         except:
             pass

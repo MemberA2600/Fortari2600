@@ -522,3 +522,6 @@ genTriDown=Generate Sinking Triangle
 genSinewave=Generate Sinewave
 randomNoise=Generate Random Noise
 openSoundFx=Open Sound Effect
+no48px=Not a single 48 pixels wide picture found!
+speed+FIndex=Speed'n'Frame Index
+includedFrames=Included Frames

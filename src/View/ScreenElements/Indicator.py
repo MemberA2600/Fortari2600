@@ -189,6 +189,7 @@ class Indicator:
             try:
                 self.__subFrame.killAll()
             except:
+                print(type(self.__subFrame))
                 for item in self.__blackFrame.pack_slaves():
                     item.destroy()
                 for item in self.__blackFrame.place_slaves():

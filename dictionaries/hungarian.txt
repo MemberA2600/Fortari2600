@@ -521,3 +521,6 @@ genTriDown=Süllyedõ Háromszög Generálása
 genSinewave=Színuszgörbe Generálása
 randomNoise=Véletlenszerû Zaj Generálása
 openSoundFx=Hangeffekt betöltése
+no64px=Nem található 48 pixeles kép!
+speed+FIndex=Sebesség és Kép Index
+includedFrames=Kijelölt Képkockák

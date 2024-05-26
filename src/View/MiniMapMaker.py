@@ -269,9 +269,9 @@ class MiniMapMaker:
         self.__offsetVal1.set(str(self.__indexX))
         self.__offsetVal2.set(str(self.__indexY))
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<<KeyPress-Control_L>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>" , self.shiftON, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<<KeyPress-Control_R>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>" , self.shiftON, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "Button-2>"             , self.drawMode, 1)
 

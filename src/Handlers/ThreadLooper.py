@@ -168,6 +168,7 @@ class ThreadLooper:
                           except:
                               pass
 
+                          """  
                           try:
                               if self.__listOfThreads[number][0].stopMe == True:
                                  stop = True
@@ -175,6 +176,7 @@ class ThreadLooper:
 
                           except:
                               pass
+                          """
 
                           try:
                               if self.__listOfThreads[number][0].stopThread == True:

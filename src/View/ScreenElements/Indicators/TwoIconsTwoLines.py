@@ -1026,19 +1026,19 @@ class TwoIconsTwoLines:
            self.__picVarListBox2.yview(selector)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<ButtonRelease-1>", self.__changedColorVar1, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<<KeyRelease-Up>" , self.__changedColorVar1, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Up>" , self.__changedColorVar1, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>", self.__changedColorVar1, 1)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<ButtonRelease-1>", self.__changedColorVar2, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<<KeyRelease-Up>" , self.__changedColorVar2, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<KeyRelease-Up>" , self.__changedColorVar2, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox2, "<KeyRelease-Down>", self.__changedColorVar2, 1)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<ButtonRelease-1>", self.__changedPicVar1  , 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<<KeyRelease-Up>" , self.__changedPicVar1  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<KeyRelease-Up>" , self.__changedPicVar1  , 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox1  , "<KeyRelease-Down>", self.__changedPicVar1  , 1)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<ButtonRelease-1>", self.__changedPicVar2  , 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<<KeyRelease-Up>" , self.__changedPicVar2  , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<KeyRelease-Up>" , self.__changedPicVar2  , 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__picVarListBox2  , "<KeyRelease-Down>", self.__changedPicVar2  , 1)
 
         """

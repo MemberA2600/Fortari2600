@@ -394,7 +394,7 @@ class DigitClock:
 
         self.__colorVarListBoxSelected = self.__nibbleVars[0].split("::")[1]
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<<ButtonRelease-1>", self.__changeColorVar, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<ButtonRelease-1>", self.__changeColorVar, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Up>"   , self.__changeColorVar, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox1, "<KeyRelease-Down>" , self.__changeColorVar, 1)
 

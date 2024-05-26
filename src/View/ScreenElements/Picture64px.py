@@ -115,7 +115,7 @@ class Picture64px:
 
             self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<ButtonRelease-1>", self.clickedListBox,
                                                                 1)
-            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<<KeyRelease-Up>", self.clickedListBox,
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Up>", self.clickedListBox,
                                                                 1)
             self.__loader.threadLooper.bindingMaster.addBinding(self, self.__varListBox, "<KeyRelease-Down>", self.clickedListBox,
                                                                 1)

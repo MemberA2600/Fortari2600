@@ -342,8 +342,8 @@ class FullBar:
         self.__gradientFrame = GradientFrame(self.__loader, self.__frame4,
                                              self.__changeData, self.__h, self.__data, self.dead, 8, "normal", 6)
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry, "<KeyRelease>"         , self.checkYEntry      , 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry, "<FocusOut>"           , self.checkYEntry      , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry, "<KeyRelease>"         , self.__changeMaxEntry      , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maxVarEntry, "<FocusOut>"           , self.__changeMaxEntry      , 1)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox, "<ButtonRelease-1>", self.__changedColorVar, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__colorVarListBox, "<KeyRelease-Up>"  , self.__changedColorVar, 1)
