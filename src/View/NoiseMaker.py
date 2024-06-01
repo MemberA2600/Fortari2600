@@ -573,7 +573,7 @@ class NoiseMaker:
 
     def __changeIndex(self, num):
         copied = {}
-        for key in self.__dataLines.keys():
+        for key in self.__affecteds.getSelected():
             copied[key] = []
 
             for x in range(num, self.__wWw + num):

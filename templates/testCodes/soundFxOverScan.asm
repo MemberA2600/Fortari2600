@@ -4,8 +4,8 @@ Channel0Index = $D5
 *
 *	The soundplayer will use 4 bytes (if none is disabled).
 *	2 bytes are for AUD0 and AUD1.
-*	0-3: Duration countdown
-*	4-6: Index for the effect (only used for selection, interrupts current sound)
+*	0-2: Duration countdown
+*	3-6: Index for the effect (only used for selection, interrupts current sound)
 *	7  : Playing
 *
 *	2 bytes for the pointer index, so the whole data can be 256 bytes long.

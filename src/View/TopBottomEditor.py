@@ -737,7 +737,7 @@ class TopBottomEditor:
                 "Wall"              : name + " " + "Wall # # # # # # $20 *None* 8 #",
                 "MiniMap"           : name + " " + "MiniMap # # # # # # # #",
                 "Picture48px"       : name + " " + "Picture48px # -1 -1 -1 -1 $00 -1 -1",
-
+                "SoundBank"         : name + " " + "SoundBank # 2 # # # #"
             }
 
             self.__codeData[self.__activePart][bank][2].append(deepcopy(defaultDatas[self.answer]))
@@ -787,6 +787,7 @@ class TopBottomEditor:
            from Wall                import Wall
            from MiniMap             import MiniMap
            from Picture48px         import Picture48px
+           from SoundBank           import SoundBank
 
            typs = {
                "ChangeFrameColor"   : ChangeFrameColor,
@@ -801,7 +802,8 @@ class TopBottomEditor:
                "Reseter"            : Reseter,
                "Wall"               : Wall,
                "MiniMap"            : MiniMap,
-               "Picture48px"        : Picture48px
+               "Picture48px"        : Picture48px,
+               "SoundBank"          : SoundBank
            }
 
            self.__listOfNames = []

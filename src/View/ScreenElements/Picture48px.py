@@ -47,17 +47,6 @@ class Picture48px:
         self.__lastEdited = None
 
         if len(self.__varList) != 0:
-
-            """
-            self.__tempSaved  = [None, None]
-            self.__values     = [None, None]
-
-            for num in range(0,2):
-                try:
-                    self.__values[num]    = self.convertToNum(self.__data[4+num])
-                except:
-                    self.__tempSaved[num] = self.__data[4+num]
-            """
             wasHash = False
             if self.__data[2] == "#":
                wasHash = True
