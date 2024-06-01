@@ -76,7 +76,7 @@ class Compiler:
             elif self.__mode == "miniMapTest":
                 self.__testMiniMap()
             elif self.__mode == "48pxData":
-                self.__48pxData()
+                self.__48pxData(None)
             elif self.__mode == "48pxTest":
                 self.__48pxTest()
             elif self.__mode == "soundFxData":
@@ -163,7 +163,7 @@ class Compiler:
         name         = self.__data[10]
         bank         = self.__data[11]
 
-        data = self.__48pxData()
+        data = self.__48pxData(None)
         self.__mainCode     = self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__enterCode    =  self.__io.loadTestElementPlain("48pxEnter")
         self.__overScan     =  self.__io.loadTestElementPlain("48pxOverScan")
@@ -207,14 +207,25 @@ class Compiler:
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
 
-    def __48pxData(self):
-        pixelData    = self.__data[0]
-        colorData    = self.__data[1]
-        numOfFrames  = self.__data[2]
-        numOfLines   = self.__data[3]
-        repeatPatten = self.__data[4]
-        borderData   = self.__data[5]
-        repeatOnTop  = self.__data[6]
+    def __48pxData(self, data):
+        if data == None:
+           pixelData    = self.__data[0]
+           colorData    = self.__data[1]
+           numOfFrames  = self.__data[2]
+           numOfLines   = self.__data[3]
+           repeatPatten = self.__data[4]
+           borderData   = self.__data[5]
+           repeatOnTop  = self.__data[6]
+           fromNum      = 0
+        else:
+           pixelData    = data[0]
+           colorData    = data[1]
+           numOfFrames  = data[2]
+           numOfLines   = data[3]
+           repeatPatten = data[4]
+           borderData   = data[5]
+           repeatOnTop  = data[6]
+           fromNum      = data[7]
 
         if repeatOnTop:
            repeat = "P0"
@@ -230,18 +241,20 @@ class Compiler:
                         "#NAME#_LineNum_Max_Index = " + str(numOfLines-1) + "\n"
 
         # "layerPlayfield" "background" "layerUnique" "layerRepeating"
+        # print(numOfFrames, len(colorData))
 
         organizedData = {}
-        for key in colorData[0][0].keys():
+
+        for key in colorData[fromNum][0].keys():
             organizedData[key] = []
-            for frameNum in range(0, numOfFrames):
+            for frameNum in range(fromNum, fromNum + numOfFrames):
                 organizedData[key].append([])
                 for y in range(0, numOfLines):
-                    organizedData[key][frameNum].append([])
-                    organizedData[key][frameNum][y] = {"color": colorData[frameNum][y][key]}
+                    organizedData[key][-1].append([])
+                    organizedData[key][-1][y] = {"color": colorData[frameNum][y][key]}
 
                     if key != "background":
-                       organizedData[key][frameNum][y]["pixels"] = ""
+                       organizedData[key][-1][y]["pixels"] = ""
 
                        if key != "layerPlayfield":
                           maximum = 48
@@ -250,11 +263,11 @@ class Compiler:
 
                        for x in range(0, maximum):
                            #print(frameNum, y, key, x)
-                           organizedData[key][frameNum][y]["pixels"] += str(pixelData[frameNum][y][key][x])
+                           organizedData[key][-1][y]["pixels"] += str(pixelData[frameNum][y][key][x])
 
-                organizedData[key][frameNum].append([])
-                organizedData[key][frameNum][-1] = {"color": organizedData[key][frameNum][-2]["color"]}
-                organizedData[key][frameNum][-1]["pixels"] = "0" * maximum
+                organizedData[key][-1].append([])
+                organizedData[key][-1][-1] = {"color": organizedData[key][-1][-2]["color"]}
+                organizedData[key][-1][-1]["pixels"] = "0" * maximum
 
         numOfLines  += 1
 
@@ -935,7 +948,168 @@ class Compiler:
             self.__userData[name + "_Data"] = those[2]
             dictKey = "MiniMap"
 
+        elif typ == "Picture48px":
+            those = self.generate_48PxPicture(fullName, data, self.__bank)
+            self.__bankData.append(those[0])
+            self.__userData[name + "_Data"] = those[1]
+
+            dictKey = "Picture48px"
+
         self.__lastRoutine = dictKey
+
+    def convertToNum(self, s):
+        if   s.startswith("%"):
+             return int(s.replace("%", "0b"), 2)
+        elif s.startswith("$"):
+             return int(s.replace("$", "0x"), 16)
+        else:
+             return int(s)
+
+    def convToProperName(self, varName):
+        try:
+            varNameSecondPart = varName.split("::")[1]
+
+            if self.__loader.virtualMemory.getVariableByName2(varNameSecondPart) != False:
+               return varNameSecondPart
+            else:
+               return varName
+        except:
+            return varName
+
+    def generate_48PxPicture(self, name, data, bank):
+        nameOfPicture = data[0]
+        numOfFrames   = self.convertToNum(data[1])
+        dspHeight     = self.convToProperName(data[2])
+        heightIndex   = self.convToProperName(data[3])
+        speedFIndex   = self.convToProperName(data[4])
+        background    = self.convToProperName(data[5])
+        frameFrom     = self.convertToNum(data[6])
+        frameTo       = self.convertToNum(data[7])
+
+        path     = self.__loader.mainWindow.projectPath + "48px/" + nameOfPicture + ".a26"
+        f        = open(path, "r")
+        origData = f.read().replace("\r", "").split("\n")
+        f.close()
+
+        header     = origData[0].split(" ")
+
+        kernel     = header[0]
+        numOfLines = int(header[1])
+        frameNum   = int(header[2])
+        repeating  = bool(header[3])
+        pattern    = header[4]
+        smallsStr  = header[5]
+
+        smalls = []
+        for char in smallsStr:
+            smalls.append(int(char))
+
+        __data = []
+        __colorData = []
+        __keys = ["layerUnique", "layerRepeating", "layerPlayfield"]
+        __temp = {__keys[0]: [], __keys[1]: [], __keys[2]: []}
+        __xSize  = [48, 48, 12]
+        __colorTemp      = {__keys[0]: "$1E",
+                            __keys[1]: "$44",
+                            __keys[2]: "$0E"}
+
+        for num in range(0, 48):
+            for index in range(0, 3):
+                if len(__temp[__keys[index]]) < __xSize[index]: __temp[__keys[index]].append(0)
+
+        for frame in range(0, frameNum):
+            __data.append([])
+            __colorData.append([])
+
+            if frame < frameFrom or frame > frameTo: continue
+
+            for lnum in range(0, numOfLines):
+                __data     [-1].append(deepcopy(__temp))
+                __colorData[-1].append(deepcopy(__colorTemp))
+
+                for keyNum in range(0, 3):
+                    key = __keys[keyNum]
+                    offset = 1 + (numOfLines * frame * 3) + (lnum * 3) + keyNum
+
+                    sourceLine = origData[offset].split(" ")
+
+                    #                            if key != "background":
+                    for pixelNum in range(0, len(sourceLine[0])):
+                         __data[-1][lnum][key][pixelNum] = int(sourceLine[0][pixelNum])
+                    __colorData[-1][lnum][key] = sourceLine[1]
+
+        numOfFrames = frameTo - frameFrom + 1
+        if numOfFrames == 1: speedFIndex = "0"
+
+        generateData = [
+            __data, __colorData, numOfFrames, numOfLines, pattern, smallsStr, repeating, frameFrom
+        ]
+
+        __48PxPictureData = self.__48pxData(generateData)
+        __48PxKernel      = self.__loader.io.loadSubModule("48pxPicture_Kernel")
+
+        import re
+        listOfUsedTemps = re.findall(r'temp\d{2}', __48PxKernel)
+
+        temps = []
+        for num in range(1, 20):
+            num = str(num)
+            if len(num) == 1: num = "0" + num
+
+            temp = "temp" + num
+            if temp not in listOfUsedTemps:
+               temps.append(temp)
+
+        __beforeUserData = ""
+        __changers       = {
+                           "#NAME#"      : name,
+                           "#DSPHEIGHT#" : dspHeight,
+                           "#INDEX#"     : heightIndex,
+                           "#SETTERS#"   : speedFIndex,
+                           "#BACKGROUND#": background,
+                           "ßS"          : str(int(repeating)),
+                           "ßR"          : str(1 - repeating)
+                           }
+
+        dspHeightVar   = self.__loader.virtualMemory.getVariableByName2(dspHeight)
+        heightIndexVar = self.__loader.virtualMemory.getVariableByName2(heightIndex)
+        speedFIndexVar = self.__loader.virtualMemory.getVariableByName2(speedFIndex)
+        backgroundVar  = self.__loader.virtualMemory.getVariableByName2(background)
+
+        if dspHeightVar   == False or dspHeightVar.type     != "byze":
+          __beforeUserData = self.addToBefore(temps, __beforeUserData, dspHeight, dspHeightVar, __changers, "#DSPHEIGHT#"   , False)
+
+        if heightIndexVar == False or heightIndexVar.type != "byze":
+          __beforeUserData = self.addToBefore(temps, __beforeUserData, heightIndex, heightIndexVar, __changers, "#INDEX#"   , False)
+
+        if speedFIndexVar == False or speedFIndexVar.type != "byze":
+          __beforeUserData = self.addToBefore(temps, __beforeUserData, speedFIndex, speedFIndexVar, __changers, "#SETTER#"  , False)
+
+        if backgroundVar  == False or backgroundVar.type != "byze":
+          __beforeUserData = self.addToBefore(temps, __beforeUserData, background, backgroundVar, __changers, "#BACKGROUND#", True)
+
+        for key in __changers:
+            __48PxPictureData = __48PxPictureData.replace(key, __changers[key])
+            __48PxKernel      = __48PxKernel.replace(key, __changers[key])
+
+        both = __beforeUserData + __48PxKernel
+        return [both, __48PxPictureData]
+
+    def addToBefore(self, temps, beforeUserData, varStr, var, changers, changerKey, rightAlign):
+        currentTemp = temps[0]
+        temps.pop(0)
+
+        if  var == False:
+            beforeUserData += "\tLDA\t#" + varStr + "\n"
+        else:
+            if rightAlign:
+                beforeUserData += "\tLDA\t"  + varStr + "\n" + self.moveVarToTheRight(var.usedBits, True)
+            else:
+                beforeUserData += "\tLDA\t"  + varStr + "\n" + self.convertAnyTo8Bits(var.usedBits)
+
+        beforeUserData += "\tSTA\t" + currentTemp + "\n"
+        changers[changerKey] = currentTemp
+        return beforeUserData
 
     def generate_BlinkingText(self, name, data, bank):
         container1 = data[0]

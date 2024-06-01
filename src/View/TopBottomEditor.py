@@ -2,6 +2,7 @@ from tkinter import *
 from SubMenu import SubMenu
 from threading import Thread
 from copy import deepcopy
+from time import sleep
 
 class TopBottomEditor:
 
@@ -68,7 +69,7 @@ class TopBottomEditor:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
         self.__poz = 0
-
+        self.__oneAllowed = ["JukeBox", "SoundBank"]
 
         self.__sizes = [self.__screenSize[0] // 1.15, self.__screenSize[1] // 1.25 - 55]
         self.__window = SubMenu(self.__loader, "screenTopBottom", self.__sizes[0], self.__sizes[1], None, self.__addElements,
@@ -514,6 +515,8 @@ class TopBottomEditor:
         self.__deleteButton.pack_propagate(False)
         self.__deleteButton.pack(fill=BOTH, side = TOP, anchor = N)
 
+        while (frame1.winfo_height() < 2): sleep(0.000001)
+
         self.__moveUpButton = Button(frame2_1, bg=self.__loader.colorPalettes.getColor("window"),
                                    image=self.__upImage,
                                    width= frame1.winfo_width(), height = frame1.winfo_height(),
@@ -733,7 +736,7 @@ class TopBottomEditor:
                 "Reseter"           : name + " " + "Reseter 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1",
                 "Wall"              : name + " " + "Wall # # # # # # $20 *None* 8 #",
                 "MiniMap"           : name + " " + "MiniMap # # # # # # # #",
-                "Picture48px"       : name + " " + "Picture48px # -1 -1 -1 -1 -1 -1",
+                "Picture48px"       : name + " " + "Picture48px # -1 -1 -1 -1 $00 -1 -1",
 
             }
 
@@ -976,15 +979,20 @@ class TopBottomEditor:
         self.initCode = ""
         self.overScanCode = ""
         self.answer   = ""
-        self.__subMenu = ScreenTopTester(self.__loader, self, self.__codeData)
+        self.__subMenu = ScreenTopTester(self.__loader, self, self.__codeData, self.__topLevelWindow)
         if self.answer == "NOPE":
             return
 
+        self.__testAllThread()
+        """
         if self.__checkIncomplete() == False:
-
             t = Thread(target=self.__testAllThread)
             t.daemon = True
             t.start()
+        """
+        #self.__topLevelWindow.deiconify()
+        #self.__topLevelWindow.focus()
+
 
     def __checkIncomplete(self):
         locks = self.__loader.virtualMemory.returnBankLocks()
@@ -1008,7 +1016,7 @@ class TopBottomEditor:
                            self.__topLevelWindow.focus()
                            return True
 
-                    if (item[1]) == "JukeBox":
+                    if (item[1]) in self.__oneAllowed:
                         files = item[2].split("|")
                         for file in files:
                             locksNeeded = 1

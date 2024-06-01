@@ -4,7 +4,7 @@ from time import sleep
 
 class ScreenTopTester:
 
-    def __init__(self, loader, caller, codeData):
+    def __init__(self, loader, caller, codeData, boss):
 
         self.__loader = loader
         self.__mainWindow = self.__loader.mainWindow
@@ -13,6 +13,8 @@ class ScreenTopTester:
         self.__codeData = codeData
         self.__counter = 0
         self.__lastEvent = None
+
+        self.__bossWindow = boss
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -35,14 +37,21 @@ class ScreenTopTester:
 
         self.__sizes = [self.__screenSize[0] // 4, self.__screenSize[1] // 3.75]
 
-        self.__loader.threadLooping(self, self.decrementCounter, [], 2)
+        self.__loader.threadLooper.addToThreading(self, self.decrementCounter, [], 2)
         #c = Thread(target = self.decrementCounter)
         #c.daemon = True
         #c.start()
 
+        self.__didOnce = False
         self.__window = SubMenu(self.__loader, "screenTester", self.__sizes[0], self.__sizes[1], None, self.__addElements,
                                 2)
         self.dead = True
+
+    def bossFocus(self):
+        if self.__didOnce == False:
+           self.__didOnce  = True
+           self.__bossWindow.deiconify()
+           self.__bossWindow.focus()
 
     def decrementCounter(self):
         #while self.dead == False and self.__mainWindow.dead == False:
@@ -54,6 +63,8 @@ class ScreenTopTester:
     def __closeWindow(self):
         self.dead = True
         self.__topLevelWindow.destroy()
+        self.bossFocus()
+
         self.__loader.topLevels.remove(self.__topLevelWindow)
         self.__caller.answer = "NOPE"
 
@@ -356,6 +367,8 @@ class ScreenTopTester:
         testCounter = 0
 
         from Compiler import Compiler
+
+        self.bossFocus()
 
         for variable in self.__variableList.keys():
             if "::" in variable:

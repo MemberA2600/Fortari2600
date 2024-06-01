@@ -580,6 +580,8 @@ class Picture64px:
 
             return(False)
 
+        #print(offset)
+
         self.__vars[offset]["entry"].config(
             bg=self.__colors.getColor("boxBackNormal"),
             fg=self.__colors.getColor("boxFontNormal"))
@@ -587,6 +589,18 @@ class Picture64px:
 
         if   num < self.__vars[offset]["min"]     : num = self.__vars[offset]["min"]
         elif num > self.__vars[offset]["min"]+255 : num = self.__vars[offset]["min"]+255
+
+        #FOS
+        if offset == 0:
+           if num > self.__maxH:
+              num = self.__maxH
+        else:
+            try:
+                num2 = int(self.__heightIndexEntry.get())
+                if num > self.__maxH - num2:
+                   num = self.__maxH - num2
+            except:
+                pass
 
         if str(event).split(" ")[0][1:] != "FocusOut": return False
 

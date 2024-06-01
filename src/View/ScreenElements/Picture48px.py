@@ -36,12 +36,15 @@ class Picture48px:
         self.__name.set(self.__data[0])
         self.dead = [False]
         self.__lastData = None
+        self.__event   = None
+        self.__counter = 0
 
         self.__loadPictures()
         self.__lastSelectedPic = None
 
         self.__height = -1
         self.__numOfFrames = -1
+        self.__lastEdited = None
 
         if len(self.__varList) != 0:
 
@@ -138,8 +141,9 @@ class Picture48px:
                   self.__varListBox.select_clear(0, END)
                   self.__varListBox.select_set(itemNum)
 
-           self.__allVars  = []
-           self.__byteVars = []
+           self.__allVars   = []
+           self.__byteVars  = []
+           self.__colorVars = []
            for address in self.__loader.virtualMemory.memory.keys():
                for variable in self.__loader.virtualMemory.memory[address].variables.keys():
                    var = self.__loader.virtualMemory.memory[address].variables[variable]
@@ -154,6 +158,8 @@ class Picture48px:
                        self.__allVars.append(address + "::" + variable)
                        if var.type == "byte":
                           self.__byteVars.append(address + "::" + variable)
+                       if var.type in ["byte", "nibble"]:
+                          self.__colorVars.append(address + "::" + variable)
 
            self.__byteVars.sort()
 
@@ -165,12 +171,12 @@ class Picture48px:
            self.__allOthersFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
            self.__keys = [
-               "frameNum", "displayedHeight", "heightIndex", "speed+FIndex"
+               "frameNum", "displayedHeight", "heightIndex", "speed+FIndex", "background"
            ]
 
-           staticOnly                    = [True, False, False, False]
-           self.__varTypeLists           = [None, self.__allVars, self.__allVars, self.__byteVars]
-           specials                      = ["includedFrames", None, None, None]
+           staticOnly                    = [True, False, False, False, False]
+           self.__varTypeLists           = [None, self.__allVars, self.__allVars, self.__byteVars, self.__colorVars]
+           specials                      = ["includedFrames", None, None, None, None]
            self.__specialLabelsandFrames = []
 
            self.getHeightFrameNum()
@@ -243,9 +249,9 @@ class Picture48px:
                self.__dataElements[key]["entry"].pack(side=TOP, anchor=N, fill=BOTH)
 
                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataElements[key]["entry"], "<FocusOut>",
-                                                                   self.__changeConst, 1)
+                                                                   self.__changeConst       , 1)
                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__dataElements[key]["entry"], "<KeyRelease>",
-                                                                   self.__changeConst, 1)
+                                                                   self.__changeConstCounter, 1)
 
 
                if staticOnly[keyNum] == False:
@@ -325,11 +331,14 @@ class Picture48px:
                   if num == -1:
                      self.__data[dataNum] = str(defaults[keyNum])
 
-
                   self.__dataElements[key]["entryVar"].set(self.__data[dataNum])
                   if staticOnly[keyNum] == False:
                      self.__dataElements[key]["optionVar"].set(1)
                      self.pressedOptionButton()
+
+                  if key == "background":
+                      self.setColorOfEntry(self.__dataElements[key]["entry"], self.__dataElements[key]["entryVar"])
+
                else:
                    self.__dataElements[key]["optionVar"].set(2)
                    thisIsIt = 0
@@ -450,19 +459,88 @@ class Picture48px:
                       self.__loader.threadLooper.bindingMaster.addBinding(self, e2, "<KeyRelease>",
                                                                           self.__changedFromTo, 1)
 
-                      if self.__data[7] == "-1" or self.__data[8] == "-1":
-                         self.__data[7] = "0"
-                         self.__data[8] = str(self.__numOfFrames - 1)
+                      self.__firstNonListNum = 8
 
-                      e1V.set(self.__data[7])
-                      e2V.set(self.__data[8])
+                      if self.__data[self.__firstNonListNum]     == "-1" \
+                      or self.__data[self.__firstNonListNum + 1] == "-1":
+                         self.__data[self.__firstNonListNum]     = "0"
+                         self.__data[self.__firstNonListNum + 1] = str(self.__numOfFrames - 1)
+
+                      e1V.set(self.__data[self.__firstNonListNum])
+                      e2V.set(self.__data[self.__firstNonListNum + 1])
 
                       self.__rangeEntries.append(e1)
                       self.__rangeEntries.append(e2)
 
            self.selectOtherPicture(None)
 
+        self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
         self.__changeData(self.__data)
+
+    def loop(self):
+        if self.__counter > 0:
+           if self.__counter == 1:
+              self.__changeConst(self.__event)
+           self.__counter -= 1
+
+        try:
+            numOfFrames = self.convertToNum(self.__dataElements["frameNum"]["entryVar"].get())
+            currentFrom = self.convertToNum(self.__rangeEntryVars[0].get())
+            currentTo   = self.convertToNum(self.__rangeEntryVars[1].get())
+
+            if numOfFrames != currentTo - currentFrom + 1:
+               if self.__lastEdited == "fromTo":
+                  self.__dataElements["frameNum"]["entryVar"].set(str(currentTo - currentFrom + 1))
+               else:
+                  if   currentFrom + numOfFrames - 1 <= self.__numOfFrames:
+                       self.__rangeEntryVars[1].set(str(currentFrom + numOfFrames - 1))
+                  elif currentTo - numOfFrames + 1 > -1:
+                       self.__rangeEntryVars[0].set(str( currentTo - numOfFrames + 1 ))
+                  else:
+                       self.__rangeEntryVars[0].set("0")
+                       self.__rangeEntryVars[1].set(str(numOfFrames - 1))
+
+               self.__changeData(self.__data)
+        except:
+            pass
+
+        try:
+            currentFrom = self.convertToNum(self.__rangeEntryVars[0].get())
+            currentTo   = self.convertToNum(self.__rangeEntryVars[1].get())
+
+            #print(currentTo - currentFrom == 0, self.__data[self.__keys.index("speed+FIndex") + 3] not in ( "0", "$00", "%00000000"))
+            if currentTo - currentFrom == 0 and self.__data[self.__keys.index("speed+FIndex") + 3] not in ( "0", "$00", "%00000000"):
+               self.__dataElements["speed+FIndex"]["optionVar"].set(1)
+               self.__dataElements["speed+FIndex"]["entryVar"].set("0")
+               self.__data[self.__keys.index("speed+FIndex") + 3] = "0"
+
+               self.pressedOptionButton()
+               self.__changeData(self.__data)
+
+        except:
+            pass
+
+
+    def setColorOfEntry(self, e, eVar):
+        try:
+            t = int("0x"+eVar.get()[-1], 16)
+            if t % 2 == 1:
+                t = t-1
+                eVar.set(eVar.get()[:-1]+hex(t).replace("0x",""))
+
+            color1 = self.__colorDict.getHEXValueFromTIA(eVar.get())
+
+            num = int("0x"+eVar.get()[2], 16)
+            if num>8:
+                num = eVar.get()[:2]+hex(num-6).replace("0x","")
+            else:
+                num = eVar.get()[:2]+hex(num+6).replace("0x","")
+
+            color2 = self.__colorDict.getHEXValueFromTIA(num)
+            e.config(bg=color1, fg=color2)
+        except Exception as ex:
+            #print(ex, eVar.get())
+            pass
 
     def clickedListBox1(self, event):
         listBox     = event.widget
@@ -474,6 +552,7 @@ class Picture48px:
 
         if lastSelected != self.__dataElements[key]["listBox"].curselection()[0]:
            lastSelected         = self.__dataElements[key]["listBox"].curselection()[0]
+           self.__dataElements[key]["lastSelected"] = lastSelected
            self.__data[dataKey] = self.__varTypeLists[keyNum][lastSelected]
            self.__changeData(self.__data)
 
@@ -484,6 +563,7 @@ class Picture48px:
         index    = self.__rangeEntries.index(entry)
 
         entryVal = self.__rangeEntryVars[index]
+        self.__lastEdited = "fromTo"
 
         try:
             num = self.convertToNum(entryVal.get())
@@ -508,6 +588,7 @@ class Picture48px:
             except:
                 currentFrom = 0
 
+        self.__lastEdited = "fromTo"
         self.checkTheEntries(currentFrom, currentTo)
 
     def pressedOptionButton(self):
@@ -533,6 +614,10 @@ class Picture48px:
                        self.__dataElements[key]["listBox"].select_set(self.__dataElements[key]["lastSelected"])
                        self.__data[dataNum] = self.__varTypeLists[keyNum][self.__dataElements[key]["lastSelected"]]
 
+                    if key == "background":
+                       self.setColorOfEntry(self.__dataElements[key]["entry"],
+                                            self.__dataElements[key]["entryVar"])
+
                     if was != self.__data[dataNum]:
                        self.__changeData(self.__data)
 
@@ -548,9 +633,11 @@ class Picture48px:
            if was != self.__data[2]:
               self.getHeightFrameNum()
 
-              defaults = [self.__numOfFrames, self.__height, 0, 0]
+              defaults = [self.__numOfFrames, self.__height, 0, 0, None]
 
               for keyNum in range(0, len(self.__keys)):
+                  if defaults[keyNum] == None: continue
+
                   key = self.__keys[keyNum]
 
                   self.__dataElements[key]["entryVar"].set(str(defaults[keyNum]))
@@ -562,45 +649,6 @@ class Picture48px:
                   if change:
                      self.__data[keyNum + 3] = str(defaults[keyNum])
 
-              #print(self.__height, self.__numOfFrames)
-
-              defaults = []
-
-
-              """
-              for key in ["frameNum", "displayedHeight", "heightIndex", "speed+FIndex"]:
-                  wasField = self.__dataElements[key]["entryVar"].get()
-                  num      = self.checkKey(key)
-
-                  #print(key, num)
-
-                  if   "%" in wasField:
-                        txt = bin(num).replace("0b", "")
-                        txt = "%" + (8 - len(txt)) * "0" + txt
-                  elif "$" in wasField:
-                        txt = bin(num).replace("0x", "")
-                        txt = "$" + (2 - len(txt)) * "0" + txt
-                  else:
-                        txt = str(num)
-
-                  if wasField != txt:
-                     self.__dataElements[key]["entryVar"].set(txt)
-                     self.__data[self.__keys.index(key) + 3] = txt
-
-              
-              if self.__height != -1 and self.__numOfFrames != -1:
-                  try:
-                      currentFrom = self.convertToNum(self.__rangeEntryVars[0].get())
-                  except:
-                      currentFrom = 0
-
-                  try:
-                      currentTo = self.convertToNum(self.__rangeEntryVars[1].get())
-                  except:
-                      currentTo = self.__numOfFrames - 1
-
-                  self.checkTheEntries(currentFrom, currentTo)
-              """
               if self.__height != -1 and self.__numOfFrames != -1:
                  currentFrom = 0
                  currentTo   = self.__numOfFrames - 1
@@ -612,14 +660,13 @@ class Picture48px:
         if   key == "frameNum":
              return self.checkConst("frameNum"       , 1, self.__numOfFrames    , self.__numOfFrames    , [0, 1, 2, 3, 4, 5, 6, 7])
         elif key == "displayedHeight":
-             return self.checkConst("displayedHeight", 1, self.__height   , self.__height         , [0, 1, 2, 3, 4, 5, 6, 7])
+             return self.checkConst("displayedHeight", 1, self.__height         , self.__height         , [0, 1, 2, 3, 4, 5, 6, 7])
         elif key == "heightIndex":
              return self.checkConst("heightIndex"    , 0, self.__height - 1     , self.__height - 1     , [0, 1, 2, 3, 4, 5, 6, 7])
         elif key == "speed+FIndex":
              return self.checkConst("speed+FIndex"   , 0, self.__numOfFrames - 1, self.__numOfFrames - 1, [0, 1, 2, 3])
-
-        #print(key)
-
+        elif key == "background":
+             return self.checkConst("background"     , 0, 255                   , 0,                      [0, 1, 2, 3, 4, 5, 6, 7])
 
     def checkConst(self, key, min_, max_, default, bits):
         startIndex = min(bits)
@@ -638,6 +685,7 @@ class Picture48px:
             slice = as8bits
 
         __8bitVal = int("0b" + slice, 2)
+
         if __8bitVal > max_:
             __8bitVal = max_
 
@@ -654,86 +702,11 @@ class Picture48px:
                 thatBits = (len(bits) - len(thatBits)) * "0" + thatBits
 
             as8bits = as8bits[:7 - endIndex] + thatBits + as8bits[8 - startIndex:]
+
             return int("0b" + as8bits, 2)
 
         #print(key)
 
-    """
-    def checkUpdateConst(self, key, min_, max_, default, bits):
-        wasOK  = False
-        ifNot8 = None
-        startIndex = -1
-        endIndex   = -1
-
-        original   = self.__dataElements[key]["entryVar"].get()
-
-        #print(">>", key, default)
-
-        try:
-            if len(bits) == 8:
-               num = self.convertToNum(self.__dataElements[key]["entryVar"].get())
-            else:
-               ifNot8 = bin(self.convertToNum(self.__dataElements[key]["entryVar"].get())).replace("0b", "")
-               ifNot8 = (8 - len(ifNot8)) * "0" + ifNot8
-
-               startIndex = 7 - max(bits)
-               endIndex   = 7 - min(bits)
-
-               slice = ifNot8[startIndex:endIndex + 1]
-
-               num = int("0b" + slice, 2)
-
-            if num > max_ or num < min_:
-                num = default
-            else:
-                wasOK = True
-        except:
-            if len(bits) == 8:
-               num = default
-            else:
-               ifNot8 = bin(default).replace("0b", "")
-               ifNot8 = (8 - len(ifNot8)) * "0" + ifNot8
-
-               startIndex = 7 - max(bits)
-               endIndex   = 7 - min(bits)
-
-               slice = ifNot8[startIndex:endIndex + 1]
-
-               num = int("0b" + slice, 2)
-
-        print(key, num)
-
-        if key == "frameNum":
-            try:
-                currentFrom = self.convertToNum(self.__rangeEntryVars[0].get())
-            except:
-                currentFrom = 0
-
-            try:
-                currentTo = self.convertToNum(self.__rangeEntryVars[1].get())
-            except:
-                currentTo = self.__numOfFrames - 1
-
-            self.checkTheEntries(currentFrom, currentTo)
-
-        elif key == "heightIndex":
-            try:
-                dHeigth = self.convertToNum(self.__dataElements["displayedHeight"]["entryVar"].get())
-                if num > self.__height - dHeigth - 1: num = self.__height - dHeigth - 1
-                wasOK = False
-            except:
-                pass
-
-        if len(bits) != 8:
-           start   = ifNot8[0:startIndex]
-           end     = ifNot8[endIndex : 8]
-           between = bin(num).replace("0b", "")
-           between = (8 - len(between)) * "0" + between
-
-           num = int("0b" + start + between + end, 2)
-
-        return num
-        """
     def getHeightFrameNum(self):
         path = self.__loader.mainWindow.projectPath + "48px/" + self.__data[2] + ".asm"
         f = open(path, "r")
@@ -776,10 +749,10 @@ class Picture48px:
 
         self.__dataElements["frameNum"]["entryVar"].set(str(currentTo - currentFrom + 1))
 
-        if self.__data[7]         != str(currentFrom) \
-        or self.__data[8]         != str(currentTo)   :
-           self.__data[7]          = str(currentFrom)
-           self.__data[8]          = str(currentTo)
+        if self.__data[self.__firstNonListNum]     != str(currentFrom) \
+        or self.__data[self.__firstNonListNum + 1] != str(currentTo)   :
+           self.__data[self.__firstNonListNum]      = str(currentFrom)
+           self.__data[self.__firstNonListNum + 1]  = str(currentTo)
            self.__changeData(self.__data)
 
     def convertToNum(self, s):
@@ -789,6 +762,10 @@ class Picture48px:
              return int(s.replace("$", "0x"), 16)
         else:
              return int(s)
+
+    def __changeConstCounter(self, event):
+        self.__event   = event
+        self.__counter = 15
 
     def __changeConst(self, event):
         entry    = event.widget
@@ -803,8 +780,9 @@ class Picture48px:
                          fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
             return
 
-        entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                     fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        if key != "background":
+           entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                        fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
         if num < 0:
            num = 0
@@ -812,8 +790,12 @@ class Picture48px:
         if num > 255:
            num = 255
 
+        original = entryVal.get()
+
         num   = self.checkKey(key)
         force = False
+
+        #print(key, num)
 
         if key == "frameNum":
             try:
@@ -824,31 +806,38 @@ class Picture48px:
             try:
                 currentTo = self.convertToNum(self.__rangeEntryVars[1].get())
             except:
-                currentTo = self.__numOfFrames - 1
+                currentTo = currentFrom + num
+
+            if currentTo > self.__numOfFrames - 1: currentTo = self.__numOfFrames - 1
 
             self.checkTheEntries(currentFrom, currentTo)
+            self.__lastEdited = "frameNum"
 
         elif key == "heightIndex":
             try:
                 dHeigth = self.convertToNum(self.__dataElements["displayedHeight"]["entryVar"].get())
-                if num > self.__height - dHeigth - 1: num = self.__height - dHeigth - 1
-                force = True
+                if num > self.__height - dHeigth: num = self.__height - dHeigth
+
+                #force = True
             except:
                 pass
 
         elif key == "speed+FIndex":
             try:
-                fullNum  = bin(self.convertToNum(self.__dataElements["speed+FIndex"]["entryVar"].get())).replace("0b", "")
+                fullNum  = bin(num).replace("0b", "")
                 fullNum  = (8 - len(fullNum)) * "0" + fullNum
+                fullNum  = "0000" + fullNum[4:]
 
                 frameNum = int("0b" + fullNum[4:], 2)
+                num      = int("0b" + fullNum    , 2)
+
                 force    = True
-                #self.__numOfFrames = 1
                 self.__dataElements["frameNum"]["entryVar"].set("1")
 
                 self.checkTheEntries(frameNum, frameNum)
 
-            except:
+            except Exception as e:
+                #print(e)
                 pass
 
         focusOut = False
@@ -863,10 +852,10 @@ class Picture48px:
                      numStr = "0" + numStr
 
              numStr = "%" + numStr
-        elif entryVal.get().startswith("$"):
+        elif entryVal.get().startswith("$") or key == "background":
              numStr = hex(num).replace("0x", "")
 
-             if focusOut:
+             if focusOut or key == "background":
                  while len(numStr) < 2:
                      numStr = "0" + numStr
 
@@ -876,6 +865,9 @@ class Picture48px:
 
         entryVal.set(numStr)
         entry.icursor(len(entryVal.get()))
+
+        if key == "background":
+           self.setColorOfEntry(entry, entryVal)
 
         #print(entryVal.get(), was)
         dataNum = self.__keys.index(key) + 3
