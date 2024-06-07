@@ -69,34 +69,6 @@ class SubMenu:
         t.daemon = True
         t.start()
 
-    """
-    def changeWindowState(self, state, last):
-        self.__loader.mainWindow.editor.attributes('-disabled', state)
-
-        failed = False
-        if last > 0:
-            for num in range(last):
-                try:
-                    self.__loader.topLevels[num].attributes('-disabled', state)
-                except:
-                     failed = num
-                     break
-
-        if failed != False:
-            while len(self.__loader.topLevels) > failed + 1:
-                self.__loader.topLevels.pop(-1)
-
-        if state == False:
-            if last == 0:
-                self.__loader.mainWindow.editor.deiconify()
-                self.__loader.mainWindow.editor.focus()
-            else:
-                self.__loader.topLevels[last-1].deiconify()
-                self.__loader.topLevels[last-1].focus()
-
-        if last > 1:
-           self.__loader.mainWindow.editor.attributes('-disabled', True)
-    """
 
     def __killIfKilled(self):
         if self.__topLevel.winfo_exists() == False and self.__name in self.__loader.subMenuDict:

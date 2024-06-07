@@ -3,6 +3,7 @@ from SubMenu import SubMenu
 from threading import Thread
 from copy import deepcopy
 from time import sleep
+from CheckMemoryTopBottom import CheckMemoryTopBottom
 
 class TopBottomEditor:
 
@@ -130,7 +131,6 @@ class TopBottomEditor:
                 self.__saveAllChanges()
                 if self.__saved == True:
                    self.__closeMode = False
-
 
             elif answer == "Cancel":
                 self.__topLevelWindow.deiconify()
@@ -668,6 +668,10 @@ class TopBottomEditor:
         self.__saved = False
         if self.__checkIncomplete() == True: return
 
+        self.__subMenu = CheckMemoryTopBottom(self.__loader, self, self.__codeData, self.__topLevelWindow, "all")
+        if self.answer == "NOPE":
+            return
+
         screenPartsInMemory = ["screen_top", "screen_bottom"]
         screenPartsInEditor = ["Top", "Bottom"]
 
@@ -820,6 +824,8 @@ class TopBottomEditor:
                                             self.__activeBank.lower(), self.blankAnimation, self.__topLevelWindow, self.__listOfNames
                                             )
 
+
+
     def returnCodeData(self):
         return self.__codeData
 
@@ -830,6 +836,7 @@ class TopBottomEditor:
         section[1] = True
 
         itemNum = 0
+
         for itemNum in range(0, len(section[2])):
             item = section[2][itemNum].split(" ")
 
@@ -976,6 +983,10 @@ class TopBottomEditor:
         self.setTheSetter(name, typ)
 
     def __testAll(self):
+        self.__subMenu = CheckMemoryTopBottom(self.__loader, self, self.__codeData, self.__topLevelWindow, self.__activeBank)
+        if self.answer == "NOPE":
+            return
+
         from ScreenTopTester import ScreenTopTester
 
         self.initCode = ""

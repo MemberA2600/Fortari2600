@@ -93,6 +93,19 @@ class SoundBank:
         self.__uniqueFrame.pack_propagate(False)
         self.__uniqueFrame.pack(side=TOP, anchor=N, fill=X)
 
+        self.__errorText = StringVar()
+
+        self.__errorLine = Label(self.__uniqueFrame, width=self.__w,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font"),
+                                   height=1,
+                                   font = self.__smallFont,
+                                   textvariable = self.__errorText
+                                 )
+
+        self.__errorLine.pack_propagate(False)
+        self.__errorLine.pack(side=TOP, anchor=N, fill=X)
+
         self.__variables = []
         for address in self.__loader.virtualMemory.memory.keys():
             for variable in self.__loader.virtualMemory.memory[address].variables.keys():
@@ -107,9 +120,10 @@ class SoundBank:
 
         if self.__data[2]   == "#":
            self.__usedSounds = []
+           self.__data[2]    = "||"
         else:
            self.__usedSounds = []
-           usedSounds = self.__data[2].split("|")
+           usedSounds = self.__data[2][1:-1].split("|")
 
            for s in usedSounds:
                if s in self.__soundList:
@@ -413,9 +427,11 @@ class SoundBank:
 
             if self.__numberOfCheckBoxes in (theNum, 2):
                self.__varSetters[key]["enabledVar"].set(1)
+               self.__varSetters[key]["enabledVarWas"] = 1
             else:
                self.__varSetters[key]["listBox_Sound"]  .config(state = DISABLED)
                self.__varSetters[key]["listBox_Pointer"].config(state = DISABLED)
+               self.__varSetters[key]["enabledVarWas"] = 0
 
             self.__varSetters[key]["listBox_Sound"]  .select_clear(0, END)
             self.__varSetters[key]["listBox_Pointer"].select_clear(0, END)
@@ -426,19 +442,89 @@ class SoundBank:
             self.addListBoxBindings(lBox1, self.lBoxChanged)
             self.addListBoxBindings(lBox2, self.lBoxChanged)
 
-            self.__loader.threadLooper.bindingMaster.addBinding(self, cButton, "<Button-1>",
+            self.__loader.threadLooper.bindingMaster.addBinding(self, cButton, "<ButtonRelease-1>",
                                                                 self.optionChanged, 1)
 
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
+        self.setErrorLabel()
+
+    def setErrorLabel(self):
+        if self.__usedSounds == []:
+            self.__errorLine.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                    fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
+            self.__errorText.set(self.__dictionaries.getWordFromCurrentLanguage("soundBankError"))
+        else:
+            counting = []
+            activeOnes = int(self.__data[3])
+
+            duplicate  = False
+            for itemNum in range(4, 8):
+                sectorNum = (itemNum - 4) // 2
+                if sectorNum != activeOnes and activeOnes != 2:
+                   continue
+
+                if self.__data[itemNum] not in counting:
+                   counting.append(self.__data[itemNum])
+                else:
+                   duplicate = True
+                   break
+
+            if duplicate:
+                self.__errorLine.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                        fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
+                self.__errorText.set(self.__dictionaries.getWordFromCurrentLanguage("soundBankError2"))
+            else:
+                self.__errorLine.config(bg=self.__loader.colorPalettes.getColor("window"),
+                                        fg=self.__loader.colorPalettes.getColor("font"))
+                self.__errorText.set("")
+
 
     def optionChanged(self, event):
-        entry  = event.widget
-        key    = str(entry).split(".")[-1].split("_")[-1]
+        button  = event.widget
+        key    = str(button).split(".")[-1].split("_")[-1]
+
+        if button["state"] == DISABLED: return
+
+        self.__varSetters[key]["enabledVarWas"] = 1 - self.__varSetters[key]["enabledVarWas"]
+
+        if self.__varSetters[key]["enabledVarWas"] == 0:
+           self.__data[3] = str(1 - self.__secondKeyList.index(key))
+        else:
+           self.__data[3] = "2"
+
+        valKeys  = ["lastSelected_Sound", "lastSelected_Pointer"]
+        boxNames = ["listBox_Sound"     , "listBox_Pointer"]
+
+        if self.__varSetters[key]["enabledVarWas"] == 1:
+           for subKeyNum in range(0, 2):
+               self.__varSetters[key][boxNames[subKeyNum]].select_clear(0, END)
+               self.__varSetters[key][boxNames[subKeyNum]].select_set(self.__varSetters[key][valKeys[subKeyNum]])
+
+               dataNum = 4 + (self.__secondKeyList.index(key) * 2) + subKeyNum
+               self.__data[dataNum] = self.__variables[self.__varSetters[key][valKeys[subKeyNum]]]
+
+        self.__changeData(self.__data)
 
     def lBoxChanged(self, event):
-        entry  = event.widget
-        key    = str(entry).split(".")[-1].split("_")[-1]
-        typ    = str(entry).split(".")[-1].split("_")[-2]
+        lbox   = event.widget
+        key    = str(lbox).split(".")[-1].split("_")[-1]
+        typ    = str(lbox).split(".")[-1].split("_")[-2]
+
+        if lbox["state"] == DISABLED: return
+
+        valKeys  = ["lastSelected_Sound", "lastSelected_Pointer"]
+        boxNames = ["listBox_Sound"     , "listBox_Pointer"]
+
+        typs     = ["Sound", "Pointer"]
+
+        typNum   = typs.index(typ)
+        dataNum  = 4 + (self.__secondKeyList.index(key) * 2) + typNum
+
+        self.__varSetters[key][valKeys[typNum]] = self.__varSetters[key][boxNames[typNum]].curselection()[0]
+
+        self.__data[dataNum] = self.__variables[self.__varSetters[key][valKeys[typNum]]]
+        self.__changeData(self.__data)
+        self.setErrorLabel()
 
     def addListBoxBindings(self, lBox, func):
         for txt in ["<ButtonRelease-1>", "<KeyRelease-Up>", "<KeyRelease-Down>"]:
@@ -469,21 +555,24 @@ class SoundBank:
             except:
                 pass
 
-            for key in self.__secondKeyList:
-                if self.__varSetters[key]["enabledVar"].get() == 0:
-                   self.__varSetters[self.__secondOther[key]]["enabledVar"].set(1)
-                   state      = DISABLED
-                   otherState = NORMAL
-                else:
-                   state      = NORMAL
-                   otherState = None
+            try:
+                for key in self.__secondKeyList:
+                    if self.__varSetters[key]["enabledVar"].get() == 0:
+                       self.__varSetters[self.__secondOther[key]]["enabledVar"].set(1)
+                       state      = DISABLED
+                       otherState = NORMAL
+                    else:
+                       state      = NORMAL
+                       otherState = None
 
-                self.__varSetters[self.__secondOther[key]]["enabled"]        .config(state=state)
-                self.__varSetters[key]["listBox_Sound"]                      .config(state=state)
-                self.__varSetters[key]["listBox_Pointer"]                    .config(state=state)
-                if otherState != None:
-                   self.__varSetters[self.__secondOther[key]]["listBox_Sound"]  .config(state=otherState)
-                   self.__varSetters[self.__secondOther[key]]["listBox_Pointer"].config(state=otherState)
+                    self.__varSetters[self.__secondOther[key]]["enabled"]        .config(state=state)
+                    self.__varSetters[key]["listBox_Sound"]                      .config(state=state)
+                    self.__varSetters[key]["listBox_Pointer"]                    .config(state=state)
+                    if otherState != None:
+                       self.__varSetters[self.__secondOther[key]]["listBox_Sound"]  .config(state=otherState)
+                       self.__varSetters[self.__secondOther[key]]["listBox_Pointer"].config(state=otherState)
+            except:
+                pass
 
     def __listBoxChange(self, event):
         entry  = event.widget
@@ -532,10 +621,11 @@ class SoundBank:
         self.__soundListBoxes[otherKey]["listBox"].see(index)
         self.__soundListBoxes[otherKey]["listBox"].yview(index)
 
-        theseAre = "|".join(self.__usedSounds)
+        theseAre = "|" + "|".join(self.__usedSounds) + "|"
         if self.__data[2] != theseAre:
            self.__data[2]  = theseAre
            self.__changeData(self.__data)
+           self.setErrorLabel()
 
 
 
