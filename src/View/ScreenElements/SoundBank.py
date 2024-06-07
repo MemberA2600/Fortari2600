@@ -539,7 +539,7 @@ class SoundBank:
                state = NORMAL
 
             if key == "availableSound":
-               if len(self.__soundListBoxes["usedSound"]["varList"]) > 31: state = DISABLED
+               if len(self.__soundListBoxes["usedSound"]["varList"]) > 30: state = DISABLED
 
                try:
                    selectNum = self.__soundListBoxes[key]["listBox"].curselection()[0]
@@ -589,7 +589,7 @@ class SoundBank:
 
         theOne = self.__soundListBoxes[key]["varList"][selectNum]
         if key == "availableSound":
-           if len(self.__soundListBoxes["usedSound"]["varList"]) > 31: return
+           if len(self.__soundListBoxes["usedSound"]["varList"]) > 30: return
            if self.wouldItFit(theOne) == False: return
 
         self.__soundListBoxes[key]["varList"].remove(theOne)

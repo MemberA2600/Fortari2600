@@ -71,6 +71,7 @@ class TopBottomEditor:
         self.__bigFont2 = self.__fontManager.getFont(int(self.__fontSize*1.5), False, False, False)
         self.__poz = 0
         self.__oneAllowed = ["JukeBox", "SoundBank"]
+        self.__lockNeeded = ["JukeBox"]
 
         self.__sizes = [self.__screenSize[0] // 1.15, self.__screenSize[1] // 1.25 - 55]
         self.__window = SubMenu(self.__loader, "screenTopBottom", self.__sizes[0], self.__sizes[1], None, self.__addElements,
@@ -983,6 +984,9 @@ class TopBottomEditor:
         self.setTheSetter(name, typ)
 
     def __testAll(self):
+
+        if self.__checkIncomplete() == True: return
+
         self.__subMenu = CheckMemoryTopBottom(self.__loader, self, self.__codeData, self.__topLevelWindow, self.__activeBank)
         if self.answer == "NOPE":
             return
@@ -997,14 +1001,6 @@ class TopBottomEditor:
             return
 
         self.__testAllThread()
-        """
-        if self.__checkIncomplete() == False:
-            t = Thread(target=self.__testAllThread)
-            t.daemon = True
-            t.start()
-        """
-        #self.__topLevelWindow.deiconify()
-        #self.__topLevelWindow.focus()
 
 
     def __checkIncomplete(self):
@@ -1016,7 +1012,7 @@ class TopBottomEditor:
                     item = item.split(" ")
 
                     for setter in item:
-                        if setter == "#":
+                        if setter in ["#", "||"]:
                            self.__loader.fileDialogs.displayError("incompleteItem",
                                                                   "incompleteItemError",
                                                                   {
@@ -1029,7 +1025,7 @@ class TopBottomEditor:
                            self.__topLevelWindow.focus()
                            return True
 
-                    if (item[1]) in self.__oneAllowed:
+                    if (item[1]) in self.__lockNeeded:
                         files = item[2].split("|")
                         for file in files:
                             locksNeeded = 1

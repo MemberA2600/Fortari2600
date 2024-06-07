@@ -172,35 +172,70 @@ PAL_Display  =  244
 
 *Global
 *---------
-!!!GLOBAL_VARIABLES!!!
+pf0PointerLO = $98
+pf1PointerLO = $9a
+pf2PointerLO = $9c
+pfColorPointerLO = $9e
+bkColorPointerLO = $a0
+pfLines = $a4
+P0SpritePointerLO = $a6
+P0ColorPointerLO = $a8
+P1SpritePointerLO = $aa
+P1ColorPointerLO = $ac
+TileSetPointerHI = $c0
+TileColorPointerHI = $cf
+MusicPointer0_LO = $d1
+MusicPointer0_HI = $d2
+MusicPointer1_LO = $d3
+MusicPointer1_HI = $d4
+MusicDuration0 = $d5
+MusicDuration1 = $d6
+MusicPointerBackUp0_LO = $d8
+MusicPointerBackUp0_HI = $d9
+MusicPointerBackUp1_LO = $da
+MusicPointerBackUp1_HI = $db
+zerg = $dc
+terran = $dc
+protoss = $dd
+test1 = $de
+test2 = $df
+test3 = $e0
+test4 = $e1
+test5 = $e2
+bcdTest1 = $e3
+bcdTest2 = $e4
+
 
 *Bank2
 *---------
-!!!BANK2_VARIABLES!!!
+
 
 *Bank3
 *---------
-!!!BANK3_VARIABLES!!!
+
 
 *Bank4
 *---------
-!!!BANK4_VARIABLES!!!
+Reggeli = $e5
+vacsora = $e6
+Csiga = $e7
+
 
 *Bank5
 *---------
-!!!BANK5_VARIABLES!!!
+
 
 *Bank6
 *---------
-!!!BANK6_VARIABLES!!!
+
 
 *Bank7
 *---------
-!!!BANK7_VARIABLES!!!
+
 
 *Bank8
 *---------
-!!!BANK8_VARIABLES!!!
+
 
 ***************************
 ********* Start of 1st bank
@@ -1026,7 +1061,7 @@ LoadedShit
 JumpOddFrame
 	JMP	OddFrame
 
-!!!213bytesOfUserData!!!
+
 
 	align	256
 
@@ -1255,7 +1290,7 @@ DoExtraWSYNC
 NoMoreLiiiiines
 	JMP	DoItAgainPlease
 
-!!!191bytesOfUserData!!!
+
 
 	align	256
 FineAdjustTable256
@@ -1390,7 +1425,7 @@ UnderTheTable
 * used by the developer.
 *
 
-!!!ROUTINES_BANK1!!!
+
 
 *Data Section
 *-------------------------------
@@ -1402,7 +1437,7 @@ UnderTheTable
 	align 256
 
 Data_Section
-!!!KERNEL_DATA!!!
+
 
 	saveFreeBytes
 	rewind 1fd4
@@ -1455,7 +1490,21 @@ start_bank1
 
 EnterScreenBank2
 
-!!!ENTER_BANK2!!!
+
+	LDA	#%10000000	; Disables game kernel, so won't run
+	STA	NoGameMode 	; main kernel and vblank code.
+
+	LDA	#0		; set frame color to black
+	STA	frameColor
+	LDA	#0
+	STA	test1
+	LDA	#0
+	STA	test2
+	LDA	#0
+	STA	test3
+	LDA	#0
+	STA	test4
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1469,7 +1518,7 @@ EnterScreenBank2
 
 LeaveScreenBank2
 
-!!!LEAVE_BANK2!!!
+
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
@@ -1524,7 +1573,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1535,9 +1584,174 @@ OverScanBank2
 * begins.
 *
 
-!!!JUKEBOX_BANK2!!!
-!!!OVERSCAN_BANK2!!!
-!!!SOUNDBANK_BANK2!!!
+
+
+*
+*	The soundplayer will use 4 bytes (if none is disabled).
+*	2 bytes are for AUD0 and AUD1.
+*	0-2: Duration countdown
+*	3-6: Index for the effect (only used for selection, interrupts current sound)
+*	7  : Playing
+*
+*	2 bytes for the pointer index, so the whole data can be 256 bytes long.
+*
+
+	LDA	test1
+	BPL	Bank2_SoundBank_SoundBank_Channel0__CheckForNew
+	
+	AND	#%00000111
+	SEC
+	SBC	#1
+	ORA	#%10000000
+	STA	test1
+
+	CMP	#%10000000
+	BEQ	Bank2_SoundBank_SoundBank_Channel0__CCCCCCC
+	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
+
+Bank2_SoundBank_SoundBank_Channel0__CCCCCCC
+	LDX	test2
+	JMP	Bank2_SoundBank_SoundBank_Channel0__NewData	
+
+Bank2_SoundBank_SoundBank_Channel0__CheckForNew
+        AND	#%01111000
+	LSR
+	LSR
+	LSR
+	CMP	#0
+	BNE	Bank2_SoundBank_SoundBank_Channel0__GetNewPointer
+	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
+Bank2_SoundBank_SoundBank_Channel0__GetNewPointer
+	CMP	#3
+	BCC 	Bank2_SoundBank_SoundBank_Channel0__NotLargerThanMax
+	LDA	#1
+Bank2_SoundBank_SoundBank_Channel0__NotLargerThanMax
+	TAX	
+	DEX
+	LDA 	Bank2_SoundBank_SoundBank_PointerTable,x
+	TAX		
+Bank2_SoundBank_SoundBank_Channel0__NewData
+	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
+	INX
+	CMP	#$F0
+	BNE	Bank2_SoundBank_SoundBank_Channel0__Continue
+	LDA	#0
+	STA	AUDV0
+	STA	test1	
+	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
+Bank2_SoundBank_SoundBank_Channel0__Continue
+	TAY
+	AND	#%00001111
+	CMP	#0
+	BNE	Bank2_SoundBank_SoundBank_Channel0__NormalData
+	STA	AUDV0
+	TYA
+	JMP	Bank2_SoundBank_SoundBank_Channel0__SaveDuration	
+Bank2_SoundBank_SoundBank_Channel0__NormalData
+	TYA
+	STA	AUDV0
+	LSR
+	LSR
+	LSR
+	LSR	
+	STA	AUDC0
+	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
+	INX	
+	STA	AUDF0
+	AND	#%11100000
+Bank2_SoundBank_SoundBank_Channel0__SaveDuration
+	ROL
+	ROL
+	ROL
+	ROL
+	ORA	#%10000000
+	STA	test1	
+Bank2_SoundBank_SoundBank_Channel0__SaveIndex
+	STX	test2
+Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
+*
+*	The soundplayer will use 4 bytes (if none is disabled).
+*	2 bytes are for AUD0 and AUD1.
+*	0-2: Duration countdown
+*	3-6: Index for the effect (only used for selection, interrupts current sound)
+*	7  : Playing
+*
+*	2 bytes for the pointer index, so the whole data can be 256 bytes long.
+*
+
+	LDA	test3
+	BPL	Bank2_SoundBank_SoundBank_Channel1__CheckForNew
+	
+	AND	#%00000111
+	SEC
+	SBC	#1
+	ORA	#%10000000
+	STA	test3
+
+	CMP	#%10000000
+	BEQ	Bank2_SoundBank_SoundBank_Channel1__CCCCCCC
+	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
+
+Bank2_SoundBank_SoundBank_Channel1__CCCCCCC
+	LDX	test4
+	JMP	Bank2_SoundBank_SoundBank_Channel1__NewData	
+
+Bank2_SoundBank_SoundBank_Channel1__CheckForNew
+        AND	#%01111000
+	LSR
+	LSR
+	LSR
+	CMP	#0
+	BNE	Bank2_SoundBank_SoundBank_Channel1__GetNewPointer
+	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
+Bank2_SoundBank_SoundBank_Channel1__GetNewPointer
+	CMP	#3
+	BCC 	Bank2_SoundBank_SoundBank_Channel1__NotLargerThanMax
+	LDA	#1
+Bank2_SoundBank_SoundBank_Channel1__NotLargerThanMax
+	TAX	
+	DEX
+	LDA 	Bank2_SoundBank_SoundBank_PointerTable,x
+	TAX		
+Bank2_SoundBank_SoundBank_Channel1__NewData
+	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
+	INX
+	CMP	#$F0
+	BNE	Bank2_SoundBank_SoundBank_Channel1__Continue
+	LDA	#0
+	STA	AUDV1
+	STA	test3	
+	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
+Bank2_SoundBank_SoundBank_Channel1__Continue
+	TAY
+	AND	#%00001111
+	CMP	#0
+	BNE	Bank2_SoundBank_SoundBank_Channel1__NormalData
+	STA	AUDV1
+	TYA
+	JMP	Bank2_SoundBank_SoundBank_Channel1__SaveDuration	
+Bank2_SoundBank_SoundBank_Channel1__NormalData
+	TYA
+	STA	AUDV1
+	LSR
+	LSR
+	LSR
+	LSR	
+	STA	AUDC1
+	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
+	INX	
+	STA	AUDF1
+	AND	#%11100000
+Bank2_SoundBank_SoundBank_Channel1__SaveDuration
+	ROL
+	ROL
+	ROL
+	ROL
+	ORA	#%10000000
+	STA	test3	
+Bank2_SoundBank_SoundBank_Channel1__SaveIndex
+	STX	test4
+Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
 
 *VSYNC
 *----------------------------
@@ -1568,7 +1782,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -1580,7 +1794,7 @@ WaitUntilOverScanTimerEndsBank2
 *
 VBLANKBank2
 
-!!!VBLANK_BANK2!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1621,7 +1835,7 @@ VBlankEndBank2
 	LDA 	INTIM
 	BMI 	VBlankEndBank2
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -1635,7 +1849,42 @@ VBlankEndBank2
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK2!!!
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
+*
+*	Testline
+*
+	LDA	#0
+	STA	GRP0
+	STA	GRP1
+	STA	PF0
+	STA	PF1
+	STA	PF2
+
+	LDA	counter
+	STA	WSYNC
+	STA	COLUBK
+	STA	WSYNC
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -1694,7 +1943,7 @@ ScreenBottomBank2
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK2!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -1717,7 +1966,210 @@ ScreenBottomBank2
 
 	align	256
 
-!!!USER_DATA_BANK2!!!
+
+		_align	194
+
+Bank2_SoundBank_SoundBank_SoundFX
+	BYTE	#%01001010	; Bank2_SoundBank_SoundBank_TestSound1
+	BYTE	#%00111110
+	BYTE	#%01001010
+	BYTE	#%00111100
+	BYTE	#%01001010
+	BYTE	#%00111010
+	BYTE	#%01001010
+	BYTE	#%00111000
+	BYTE	#%01001010
+	BYTE	#%00110110
+	BYTE	#%01001010
+	BYTE	#%00110100
+	BYTE	#%01001010
+	BYTE	#%00110010
+	BYTE	#%01001010
+	BYTE	#%00110000
+	BYTE	#%01001010
+	BYTE	#%00101110
+	BYTE	#%01001010
+	BYTE	#%00101100
+	BYTE	#%01001010
+	BYTE	#%00101010
+	BYTE	#%01001010
+	BYTE	#%00101000
+	BYTE	#%01001010
+	BYTE	#%00100110
+	BYTE	#%01001010
+	BYTE	#%00100100
+	BYTE	#%01001010
+	BYTE	#%00100010
+	BYTE	#%01001010
+	BYTE	#%00100000
+	BYTE	#%01001010
+	BYTE	#%00100001
+	BYTE	#%01001010
+	BYTE	#%00100011
+	BYTE	#%01001010
+	BYTE	#%00100101
+	BYTE	#%01001010
+	BYTE	#%00100111
+	BYTE	#%01001010
+	BYTE	#%00101001
+	BYTE	#%01001010
+	BYTE	#%00101011
+	BYTE	#%01001010
+	BYTE	#%00101101
+	BYTE	#%01001010
+	BYTE	#%00101111
+	BYTE	#%01001010
+	BYTE	#%00110001
+	BYTE	#%01001010
+	BYTE	#%00110011
+	BYTE	#%01001010
+	BYTE	#%00110101
+	BYTE	#%01001010
+	BYTE	#%00110111
+	BYTE	#%01001010
+	BYTE	#%00111001
+	BYTE	#%01001010
+	BYTE	#%00111011
+	BYTE	#%01001010
+	BYTE	#%00111101
+	BYTE	#%01001010
+	BYTE	#%00111111
+	BYTE	#$F0	 ; End Byte
+	BYTE	#%01000111	; Bank2_SoundBank_SoundBank_TestSound2
+	BYTE	#%00111110
+	BYTE	#%00100111
+	BYTE	#%00111100
+	BYTE	#%10000111
+	BYTE	#%00111010
+	BYTE	#%01000111
+	BYTE	#%00111000
+	BYTE	#%11000111
+	BYTE	#%00110110
+	BYTE	#%01000111
+	BYTE	#%00110100
+	BYTE	#%11000111
+	BYTE	#%00110010
+	BYTE	#%01000111
+	BYTE	#%00110000
+	BYTE	#%11000111
+	BYTE	#%00101110
+	BYTE	#%10000111
+	BYTE	#%00101100
+	BYTE	#%01000111
+	BYTE	#%00101010
+	BYTE	#%01000111
+	BYTE	#%00101000
+	BYTE	#%11110111
+	BYTE	#%00100110
+	BYTE	#%11000111
+	BYTE	#%00100100
+	BYTE	#%11000111
+	BYTE	#%00100010
+	BYTE	#%11100111
+	BYTE	#%00100000
+	BYTE	#%00100111
+	BYTE	#%00100001
+	BYTE	#%00010111
+	BYTE	#%00100011
+	BYTE	#%00110111
+	BYTE	#%00100101
+	BYTE	#%11000111
+	BYTE	#%00100111
+	BYTE	#%00010111
+	BYTE	#%00101001
+	BYTE	#%00110111
+	BYTE	#%00101011
+	BYTE	#%00010111
+	BYTE	#%00101101
+	BYTE	#%01000111
+	BYTE	#%00101111
+	BYTE	#%10000111
+	BYTE	#%00110001
+	BYTE	#%00100111
+	BYTE	#%00110011
+	BYTE	#%01110111
+	BYTE	#%00110101
+	BYTE	#%11000111
+	BYTE	#%00110111
+	BYTE	#%11110111
+	BYTE	#%00111001
+	BYTE	#%01110111
+	BYTE	#%00111011
+	BYTE	#%10000111
+	BYTE	#%00111101
+	BYTE	#%11000111
+	BYTE	#%00111111
+	BYTE	#$F0	 ; End Byte
+	BYTE	#%01101111	; Bank2_SoundBank_SoundBank_TestSound3
+	BYTE	#%00101111
+	BYTE	#%01101111
+	BYTE	#%00110010
+	BYTE	#%01101111
+	BYTE	#%00110101
+	BYTE	#%01101110
+	BYTE	#%00110111
+	BYTE	#%01101110
+	BYTE	#%00111010
+	BYTE	#%01101101
+	BYTE	#%00111011
+	BYTE	#%01101101
+	BYTE	#%00111101
+	BYTE	#%01101100
+	BYTE	#%00111110
+	BYTE	#%01101100
+	BYTE	#%00111110
+	BYTE	#%01101011
+	BYTE	#%00111110
+	BYTE	#%01101011
+	BYTE	#%00111101
+	BYTE	#%01101010
+	BYTE	#%00111100
+	BYTE	#%01101010
+	BYTE	#%00111010
+	BYTE	#%01101001
+	BYTE	#%00110111
+	BYTE	#%01101001
+	BYTE	#%00110101
+	BYTE	#%01101000
+	BYTE	#%00110010
+	BYTE	#%01101000
+	BYTE	#%00101111
+	BYTE	#%01100111
+	BYTE	#%00101100
+	BYTE	#%01100111
+	BYTE	#%00101001
+	BYTE	#%01100110
+	BYTE	#%00100111
+	BYTE	#%01100110
+	BYTE	#%00100100
+	BYTE	#%01100101
+	BYTE	#%00100011
+	BYTE	#%01100101
+	BYTE	#%00100001
+	BYTE	#%01100100
+	BYTE	#%00100000
+	BYTE	#%01100100
+	BYTE	#%00100000
+	BYTE	#%01100011
+	BYTE	#%00100000
+	BYTE	#%01100011
+	BYTE	#%00100001
+	BYTE	#%01100010
+	BYTE	#%00100010
+	BYTE	#%01100010
+	BYTE	#%00100100
+	BYTE	#%01100001
+	BYTE	#%00100111
+	BYTE	#%01100001
+	BYTE	#%00101001
+	BYTE	#%00100000
+	BYTE	#$F0	 ; End Byte
+		_align	3
+
+Bank2_SoundBank_SoundBank_PointerTable
+	BYTE	#0
+	BYTE	#65
+	BYTE	#130
 
 
 ###End-Bank2
@@ -1727,7 +2179,7 @@ ScreenBottomBank2
 * used by the developer.
 *
 
-!!!ROUTINES_BANK2!!!
+
 	
 
 	saveFreeBytes
@@ -1781,7 +2233,7 @@ start_bank2
 
 EnterScreenBank3
 
-!!!ENTER_BANK3!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank3
 
@@ -1795,7 +2247,7 @@ EnterScreenBank3
 
 LeaveScreenBank3
 
-!!!LEAVE_BANK3!!!
+
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
@@ -1849,7 +2301,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1860,9 +2312,9 @@ OverScanBank3
 * begins.
 *
 
-!!!JUKEBOX_BANK3!!!
-!!!OVERSCAN_BANK3!!!
-!!!SOUNDBANK_BANK3!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -1894,7 +2346,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -1906,7 +2358,7 @@ WaitUntilOverScanTimerEndsBank3
 *
 VBLANKBank3
 
-!!!VBLANK_BANK3!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1947,7 +2399,7 @@ VBlankEndBank3
 	LDA 	INTIM
 	BMI 	VBlankEndBank3
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -1960,7 +2412,7 @@ VBlankEndBank3
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK3!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2020,7 +2472,7 @@ ScreenBottomBank3
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK3!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -2043,7 +2495,7 @@ ScreenBottomBank3
 
 	align	256
 
-!!!USER_DATA_BANK3!!!
+
 
 ###End-Bank3
 *Routine Section
@@ -2052,7 +2504,7 @@ ScreenBottomBank3
 * used by the developer.
 *
 
-!!!ROUTINES_BANK3!!!
+
 
 
 	saveFreeBytes
@@ -2106,7 +2558,7 @@ start_bank3
 
 EnterScreenBank4
 
-!!!ENTER_BANK4!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank4
 
@@ -2120,7 +2572,7 @@ EnterScreenBank4
 
 LeaveScreenBank4
 
-!!!LEAVE_BANK4!!!
+
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
@@ -2174,7 +2626,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2185,9 +2637,9 @@ OverScanBank4
 * begins.
 *
 
-!!!JUKEBOX_BANK4!!!
-!!!OVERSCAN_BANK4!!!
-!!!SOUNDBANK_BANK4!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -2219,7 +2671,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2230,7 +2682,7 @@ WaitUntilOverScanTimerEndsBank4
 *
 VBLANKBank4
 
-!!!VBLANK_BANK4!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2271,7 +2723,7 @@ VBlankEndBank4
 	LDA 	INTIM
 	BMI 	VBlankEndBank4
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -2284,7 +2736,7 @@ VBlankEndBank4
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK4!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2344,7 +2796,7 @@ ScreenBottomBank4
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK4!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -2367,7 +2819,7 @@ ScreenBottomBank4
 
 	align	256
 
-!!!USER_DATA_BANK4!!!
+
 
 ###End-Bank4
 *Routine Section
@@ -2376,7 +2828,7 @@ ScreenBottomBank4
 * used by the developer.
 *
 
-!!!ROUTINES_BANK4!!!
+
 	
 
 	saveFreeBytes
@@ -2431,7 +2883,7 @@ start_bank4
 
 EnterScreenBank5
 
-!!!ENTER_BANK5!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank5
 
@@ -2445,7 +2897,7 @@ EnterScreenBank5
 
 LeaveScreenBank5
 
-!!!LEAVE_BANK5!!!
+
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
@@ -2499,7 +2951,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2510,9 +2962,9 @@ OverScanBank5
 * begins.
 *
 
-!!!JUKEBOX_BANK5!!!
-!!!OVERSCAN_BANK5!!!
-!!!SOUNDBANK_BANK5!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -2544,7 +2996,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2555,7 +3007,7 @@ WaitUntilOverScanTimerEndsBank5
 *
 VBLANKBank5
 
-!!!VBLANK_BANK5!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2596,7 +3048,7 @@ VBlankEndBank5
 	LDA 	INTIM
 	BMI 	VBlankEndBank5
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -2609,7 +3061,7 @@ VBlankEndBank5
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK5!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2669,7 +3121,7 @@ ScreenBottomBank5
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK5!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -2692,7 +3144,7 @@ ScreenBottomBank5
 
 	align	256
 
-!!!USER_DATA_BANK5!!!
+
 
 ###End-Bank5
 *Routine Section
@@ -2701,7 +3153,7 @@ ScreenBottomBank5
 * used by the developer.
 *
 
-!!!ROUTINES_BANK5!!!
+
 	
 
 	saveFreeBytes
@@ -2755,7 +3207,7 @@ start_bank5
 
 EnterScreenBank6
 
-!!!ENTER_BANK6!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank6
 
@@ -2769,7 +3221,7 @@ EnterScreenBank6
 
 LeaveScreenBank6
 
-!!!LEAVE_BANK6!!!
+
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
@@ -2823,7 +3275,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2834,9 +3286,9 @@ OverScanBank6
 * begins.
 *
 
-!!!JUKEBOX_BANK6!!!
-!!!OVERSCAN_BANK6!!!
-!!!SOUNDBANK_BANK6!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -2868,7 +3320,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2879,7 +3331,7 @@ WaitUntilOverScanTimerEndsBank6
 *
 VBLANKBank6
 
-!!!VBLANK_BANK6!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2920,7 +3372,7 @@ VBlankEndBank6
 	LDA 	INTIM
 	BMI 	VBlankEndBank6
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -2933,7 +3385,7 @@ VBlankEndBank6
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK6!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2993,7 +3445,7 @@ ScreenBottomBank6
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK6!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3017,7 +3469,7 @@ ScreenBottomBank6
 
 	align	256
 
-!!!USER_DATA_BANK6!!!
+
 
 ###End-Bank6
 *Routine Section
@@ -3026,7 +3478,7 @@ ScreenBottomBank6
 * used by the developer.
 *
 
-!!!ROUTINES_BANK6!!!
+
 	
 
 	saveFreeBytes
@@ -3080,7 +3532,7 @@ start_bank6
 
 EnterScreenBank7
 
-!!!ENTER_BANK7!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank7
 
@@ -3094,7 +3546,7 @@ EnterScreenBank7
 
 LeaveScreenBank7
 
-!!!LEAVE_BANK7!!!
+
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
@@ -3147,7 +3599,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3158,9 +3610,9 @@ OverScanBank7
 * begins.
 *
 
-!!!JUKEBOX_BANK7!!!
-!!!OVERSCAN_BANK7!!!
-!!!SOUNDBANK_BANK7!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -3192,7 +3644,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 
@@ -3204,7 +3656,7 @@ WaitUntilOverScanTimerEndsBank7
 *
 VBLANKBank7
 
-!!!VBLANK_BANK7!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3245,7 +3697,7 @@ VBlankEndBank7
 	LDA 	INTIM
 	BMI 	VBlankEndBank7
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -3258,7 +3710,7 @@ VBlankEndBank7
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK7!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -3318,7 +3770,7 @@ ScreenBottomBank7
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK7!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3341,7 +3793,7 @@ ScreenBottomBank7
 
 	align	256
 
-!!!USER_DATA_BANK7!!!
+
 
 
 ###End-Bank7
@@ -3351,7 +3803,7 @@ ScreenBottomBank7
 * used by the developer.
 *
 
-!!!ROUTINES_BANK7!!!
+
 	
 
 	saveFreeBytes
@@ -3405,7 +3857,7 @@ start_bank7
 
 EnterScreenBank8
 
-!!!ENTER_BANK8!!!
+
 		
 	JMP	WaitUntilOverScanTimerEndsBank8
 
@@ -3419,7 +3871,7 @@ EnterScreenBank8
 
 LeaveScreenBank8
 
-!!!LEAVE_BANK8!!!
+
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
@@ -3472,7 +3924,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#!!!TV!!!_Overscan
+    	LDA	#NTSC_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3483,9 +3935,9 @@ OverScanBank8
 * begins.
 *
 
-!!!JUKEBOX_BANK8!!!
-!!!OVERSCAN_BANK8!!!
-!!!SOUNDBANK_BANK8!!!
+
+
+
 
 *VSYNC
 *----------------------------
@@ -3517,7 +3969,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#!!!TV!!!_Vblank
+ 	LDA	#NTSC_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3528,7 +3980,7 @@ WaitUntilOverScanTimerEndsBank8
 *
 VBLANKBank8
 
-!!!VBLANK_BANK8!!!
+
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3557,7 +4009,7 @@ VBlankEndBank8
 	LDA 	INTIM
 	BMI 	VBlankEndBank8
 
-    	LDA	#!!!TV!!!_Display
+    	LDA	#NTSC_Display
     	STA	TIM64T
 
 
@@ -3570,7 +4022,7 @@ VBlankEndBank8
 	tsx
 	stx	item
 
-!!!SCREENTOP_BANK8!!!
+
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -3630,7 +4082,7 @@ ScreenBottomBank8
 	tsx
 	stx	item
 
-!!!SCREENBOTTOM_BANK8!!!
+
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3653,7 +4105,7 @@ ScreenBottomBank8
 
 	align	256
 
-!!!USER_DATA_BANK8!!!
+
 
 
 ###End-Bank8
@@ -3663,7 +4115,7 @@ ScreenBottomBank8
 * used by the developer.
 *
 
-!!!ROUTINES_BANK8!!!
+
 
 
 	align 256

@@ -243,6 +243,8 @@ class ScreenTopTester:
             self.__variableList[key] = vvv[key]
 
         self.__fillStuff()
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
 
     def startCounter(self, event):
         self.__lastEvent = event

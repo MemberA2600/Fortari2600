@@ -80,12 +80,70 @@ class Compiler:
             elif self.__mode == "48pxTest":
                 self.__48pxTest()
             elif self.__mode == "soundFxData":
-                self.__soundFxData()
+                self.__soundFxData(None)
             elif self.__mode == "soundFxTest":
                 self.__soundFxTest()
 
+    def generate_SoundBank(self, fullName, data, bank, soundBanks, userD):
+        filesNames   = data[0][1:-1].split("|")
+        activeNum    = int(data[1])
+        vars         = [data[2].split("::")[1], data[3].split("::")[1], data[4].split("::")[1], data[5].split("::")[1]]
+
+        tableName    = fullName + "_PointerTable"
+        theTable     = tableName + "\n"
+        counter      = 0
+        startByte    = 0
+
+        first        = True
+        userD[fullName] = ""
+
+        for fileName in filesNames:
+            #if fileName == "": continue
+            f = open(self.__loader.mainWindow.projectPath + "soundFx/" + fileName + ".a26", "r")
+            lines = f.read().replace("\r", "").split("\n")
+            f.close()
+
+            lenght = int(lines[0].split(" ")[1])
+
+            datas = {
+                "volume": [], "channel": [] , "frequency": [], "duration": []
+            }
+
+            index     = 0
+            for key in datas.keys():
+                index += 1
+                datas[key] = lines[index].split(" ")
+
+            userD[fullName] += self.__soundFxData([fullName, lenght, datas, first, fullName + "_" + fileName])
+            theTable  += "\tBYTE\t#" + str(startByte) + "\n"
+            startByte += self.__numOfSoundDataBytes
+            counter   +=1
+
+            first = False
+            if counter == 30: break
+
+        userD[fullName]  = "\t_align\t" + str(startByte) + "\n" + userD[fullName]
+        userD[tableName] = "\t_align\t" + str(counter)   + "\n" + theTable
+
+        kernelBase = self.__loader.io.loadSubModule("soundFxKernel").replace("#NAME#", fullName)
+
+        kernels = [kernelBase, kernelBase]
+        if activeNum != 2:
+           kernels[1 - activeNum] = ""
+
+        for kernelNum in range(0, 2):
+            if kernels[kernelNum] == "": continue
+
+            var1 = vars[(kernelNum * 2)    ]
+            var2 = vars[(kernelNum * 2) + 1]
+
+            kernels[kernelNum] = kernels[kernelNum].replace("ß", str(kernelNum))\
+                                                   .replace("#VAR01#", var1)\
+                                                   .replace("#VAR02#", var2)
+        soundBanks[bank] = "\n".join(kernels).replace("#NUM#", str(counter))
+
     def __soundFxTest(self):
-        data = self.__soundFxData()
+        data = self.__soundFxData(None)
 
         self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
         self.__pictureData = self.__loader.io.loadWholeText("templates/testCodes/pressFire.asm")
@@ -106,25 +164,44 @@ class Compiler:
         self.doSave("temp/")
         assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
 
-    def __soundFxData(self):
-        data         = self.__data[0]
-        length       = self.__data[1]
-        tv           = self.__data[2]
-        name         = self.__data[3]
-        bank         = self.__data[4]
+    def __soundFxData(self, d):
+        if d == None:
+           data         = self.__data[0]
+           length       = self.__data[1]
+           tv           = self.__data[2]
+           name         = self.__data[3]
+           bank         = self.__data[4]
 
-        text    = "* Len=" + str(length)               + "\n" + \
-                  "* Bytes=#BYTES#\n" + \
-                  "\t_align\t#BYTES#\n" +\
-                  name + "_SoundFX\n"
+           text = "* Len=" + str(length) + "\n" + \
+                  "* Bytes=#BYTES#\n"           + \
+                  "\t_align\t#BYTES#\n"         + \
+                   name + "_SoundFX\n"
+           comment      = ""
+        else:
+           name         = d[0]
+           length       = d[1]
+           data         = d[2]
+           first        = d[3]
+           fName        = d[4]
+           text         = ""
+
+           if first:
+              text += name  + "_SoundFX\n"
+
+           comment = "\t; " + fName
 
         bytes = (length * 2) + 1
-
         for x in range(0, length):
-            volume    = int(data["volume"]   ["entryVals"][x].get())
-            channel   = int(data["channel"]  ["entryVals"][x].get())
-            frequency = int(data["frequency"]["entryVals"][x].get())
-            duration  = int(data["duration"] ["entryVals"][x].get())
+            if d == None:
+               volume    = int(data["volume"]   ["entryVals"][x].get())
+               channel   = int(data["channel"]  ["entryVals"][x].get())
+               frequency = int(data["frequency"]["entryVals"][x].get())
+               duration  = int(data["duration"] ["entryVals"][x].get())
+            else:
+               volume    = int(data["volume"]   [x])
+               channel   = int(data["channel"]  [x])
+               frequency = int(data["frequency"][x])
+               duration  = int(data["duration"] [x])
 
             bitNums   = {
                 "volume": 4, "channel": 4, "frequency": 5, "duration": 3
@@ -137,14 +214,18 @@ class Compiler:
             duration  = self.convertToBin(duration , bitNums["duration"] )
 
             if origVol > 0:
-                text     += "\tBYTE\t#%" + channel  + volume    + "\n" +\
-                            "\tBYTE\t#%" + duration + frequency + "\n"
+                text     += "\tBYTE\t#%" + channel  + volume    + comment + "\n" +\
+                            "\tBYTE\t#%" + duration + frequency           + "\n"
             else:
-                text     += "\tBYTE\t#%" + duration + "00000\n"
+                text     += "\tBYTE\t#%" + duration + "00000"   + comment + "\n"
                 bytes    -= 1
+
+            if comment != "": comment = ""
 
         text    += "\tBYTE\t#$F0\t ; End Byte\n"
         text     = text.replace("#BYTES#", str(bytes))
+
+        self.__numOfSoundDataBytes = bytes
 
         if self.__mode == "soundFxData":
             self.converted = text
@@ -637,6 +718,7 @@ class Compiler:
         self.__inits    = []
         self.__bankEaters = {}
         self.__jukeBoxes = {}
+        self.__soundBanks = {}
 
         testLine = self.__io.loadTestElementPlain("testLine")
         self.__typ = None
@@ -660,6 +742,9 @@ class Compiler:
 
         for key in self.__jukeBoxes.keys():
             self.__mainCode = self.__mainCode.replace("!!!JUKEBOX_BANK"+key[-1]+"!!!", self.__jukeBoxes[key])
+
+        for key in self.__soundBanks.keys():
+            self.__mainCode = self.__mainCode.replace("!!!SOUNDBANK_BANK"+key[-1]+"!!!", self.__soundBanks[key])
 
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", self.__tv)
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode + "\n".join(self.__inits))
@@ -954,6 +1039,9 @@ class Compiler:
             self.__userData[name + "_Data"] = those[1]
 
             dictKey = "Picture48px"
+
+        elif typ == "SoundBank":
+            self.generate_SoundBank(fullName, data, self.__bank, self.__soundBanks, self.__userData)
 
         self.__lastRoutine = dictKey
 
@@ -3407,7 +3495,7 @@ class Compiler:
         XXX = self.__convertLandScapeToFun()
 
         self.__convertedSpite = XXX[0]
-        #pontertable = self.generateJumpTable(XXX[1])
+        #PointerTable = self.generateJumpTable(XXX[1])
 
         changer = self.__contructChanger(variables, constants)
 
@@ -3424,7 +3512,7 @@ class Compiler:
                               self.__io.loadSubModule("kernelJump").replace(
                                   "##KERNEL_NAME##", "##BANK##_ScrollingText_Kernel_Begin"
                               ))
-        #                      )).replace("###JUMPTABLE###", pontertable)
+        #                      )).replace("###JUMPTABLE###", PointerTable)
         self.__routineCode  = self.__io.loadSubModule("scrollingTextKernel") + self.__io.loadSubModule("inverted").replace("##BANK##", "BANK2")
 
         for item in changer:
