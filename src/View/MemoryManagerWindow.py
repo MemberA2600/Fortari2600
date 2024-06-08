@@ -1322,8 +1322,12 @@ class MemoryManagerWindow:
         for delimiter in self.__loader.config.getValueByKey("validLineDelimiters").replace("\r", "").split(" "):
             if delimiter in name: return "delimiterInName"
 
-
-        if name.lower().startswith("bank"): return "startWithBank"
+        if name.lower().startswith("bank"):
+           try:
+               num = int(name[4])
+               return "startWithBank"
+           except:
+               pass
 
         return(None)
 

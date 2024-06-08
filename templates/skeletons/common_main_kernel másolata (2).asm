@@ -172,70 +172,35 @@ PAL_Display  =  244
 
 *Global
 *---------
-pf0PointerLO = $98
-pf1PointerLO = $9a
-pf2PointerLO = $9c
-pfColorPointerLO = $9e
-bkColorPointerLO = $a0
-pfLines = $a4
-P0SpritePointerLO = $a6
-P0ColorPointerLO = $a8
-P1SpritePointerLO = $aa
-P1ColorPointerLO = $ac
-TileSetPointerHI = $c0
-TileColorPointerHI = $cf
-MusicPointer0_LO = $d1
-MusicPointer0_HI = $d2
-MusicPointer1_LO = $d3
-MusicPointer1_HI = $d4
-MusicDuration0 = $d5
-MusicDuration1 = $d6
-MusicPointerBackUp0_LO = $d8
-MusicPointerBackUp0_HI = $d9
-MusicPointerBackUp1_LO = $da
-MusicPointerBackUp1_HI = $db
-zerg = $dc
-terran = $dc
-protoss = $dd
-test1 = $de
-test2 = $df
-test3 = $e0
-test4 = $e1
-test5 = $e2
-bcdTest1 = $e3
-bcdTest2 = $e4
-
+!!!GLOBAL_VARIABLES!!!
 
 *Bank2
 *---------
-
+!!!BANK2_VARIABLES!!!
 
 *Bank3
 *---------
-
+!!!BANK3_VARIABLES!!!
 
 *Bank4
 *---------
-Reggeli = $e5
-vacsora = $e6
-Csiga = $e7
-
+!!!BANK4_VARIABLES!!!
 
 *Bank5
 *---------
-
+!!!BANK5_VARIABLES!!!
 
 *Bank6
 *---------
-
+!!!BANK6_VARIABLES!!!
 
 *Bank7
 *---------
-
+!!!BANK7_VARIABLES!!!
 
 *Bank8
 *---------
-
+!!!BANK8_VARIABLES!!!
 
 ***************************
 ********* Start of 1st bank
@@ -250,7 +215,7 @@ Csiga = $e7
 
 	fill 256	; We have to prevent writing on addresses taken by the SuperChip RAM.
 
-EnterKernel
+bank1_EnterKernel
 	LDA	#0		
 	STA	PF0		 
 	STA	PF1		
@@ -265,50 +230,50 @@ EnterKernel
 	STA	CXCLR
 
 	BIT	SubMenu
-	BVC	StayHere	; Go to the SubMenu Kernel
-	JMP 	DoSubMenuKernel	; instead.
+	BVC	bank1_StayHere	; Go to the SubMenu Kernel
+	JMP 	bank1_DoSubMenuKernel	; instead.
 
-StayHere
+bank1_StayHere
 
 	LDA	frameColor	
 	sta	WSYNC
 	STA	COLUBK
   	ldx	#4 		; From bl -> p0
 
-HorPosLoop		
+bank1_HorPosLoop		
    	lda	P0X,X	
-DivideLoop
+bank1_DivideLoop
 	sbc	#15
-   	bcs	DivideLoop
+   	bcs	bank1_DivideLoop
    	sta	temp01,X
    	sta	RESP0,X	
    	sta	WSYNC
    	dex
-   	bpl	HorPosLoop	
+   	bpl	bank1_HorPosLoop	
 
 	ldx	#4		; bl
    	ldy	temp05
-   	lda	FineAdjustTable256,Y
+   	lda	bank1_FineAdjustTable256,Y
    	sta	HMP0,X		
 
 	dex			; m1
    	ldy	temp04
-   	lda	FineAdjustTable256,Y
+   	lda	bank1_FineAdjustTable256,Y
    	sta	HMP0,X	
    
 	dex			; m0
    	ldy	temp03
-   	lda	FineAdjustTable256,Y
+   	lda	bank1_FineAdjustTable256,Y
    	sta	HMP0,X	
    
 	dex			; p1
    	ldy	temp02
-   	lda	FineAdjustTable256,Y
+   	lda	bank1_FineAdjustTable256,Y
    	sta	HMP0,X	
 
 	dex			; p0
    	ldy	temp01
-   	lda	FineAdjustTable256,Y
+   	lda	bank1_FineAdjustTable256,Y
    	sta	HMP0,X	
 
    	sta	WSYNC
@@ -326,7 +291,7 @@ DivideLoop
 	AND	#%11111101	; 2 (53) Always get the original colors.
 	STA	CTRLPF		; 3 (56)
 
-SettingUpP0SpriteAndMissile0
+bank1_SettingUpP0SpriteAndMissile0
 
 	LDA	P0Settings	;3 (59)
 	STA	REFP0		;3 (62)
@@ -339,7 +304,7 @@ SettingUpP0SpriteAndMissile0
 	LDA	P0Y ; 3 (75)
 	STA	temp09 	; temp09 stores P0 Y position. 3 (2) One line wasted.
 	
-SettingUpP1SpriteAndMissile1
+bank1_SettingUpP1SpriteAndMissile1
 
 	LDA	P1Settings 	; 3 (5)
 	STA	REFP1		; 3 (8)
@@ -355,7 +320,7 @@ SettingUpP1SpriteAndMissile1
 	STA	temp12 	; 3 (29) temp12 stores P1 Y position.
 
 
-FinishPreparation
+bank1_FinishPreparation
 	TSX			; 2 (31)
 	STX	item		; Save the stack pointer 3 (34)
 
@@ -382,44 +347,44 @@ FinishPreparation
 
 	LDY	#225		; 2 (9)
 	LDA	P0TurnOff	; 3 (12)
-	BVC	NoP0TurnOff	; 2 (14)
+	BVC	bank1_NoP0TurnOff	; 2 (14)
 
-	LDA	#<Zero		  ; 2
+	LDA	#<bank1_Zero	  ; 2
 	STA	P0SpritePointer   ; 3
-	LDA	#>Zero		  ; 2
+	LDA	#>bank1_Zero	  ; 2
 	STA	P0SpritePointer+1 ; 3
 	LDA	#1		; 2
 	STA	P0Height	; 3
 
 	STY	P0Y		; 3 (17)
-NoP0TurnOff
-	BPL	NoM0TurnOff	; 2 (19)
+bank1_NoP0TurnOff
+	BPL	bank1_NoM0TurnOff ; 2 (19)
 	STY	M0Y		; 3 (22)
-NoM0TurnOff
+bank1_NoM0TurnOff
 	
 	LDA	P1TurnOff	; 3 (25)
-	BVC	NoP1TurnOff	; 2 (27)
+	BVC	bank1_NoP1TurnOff ; 2 (27)
 
-	LDA	#<Zero		  ; 2
+	LDA	#<bank1_Zero	  ; 2
 	STA	P1SpritePointer   ; 3
-	LDA	#>Zero		  ; 2
+	LDA	#>bank1_Zero	  ; 2
 	STA	P1SpritePointer+1 ; 3
 	LDA	#1		; 2
 	STA	P1Height	; 3	
 
 	STY	P1Y		; 3 (30)
-NoP1TurnOff
-	BPL	NoM1TurnOff	; 2 (32)
+bank1_NoP1TurnOff
+	BPL	bank1_NoM1TurnOff ; 2 (32)
 	STY	M1Y		; 3 (35)
-NoM1TurnOff
+bank1_NoM1TurnOff
 
 	LDA	BallTurnOff	; 3 (38)
 	AND	#%00001000	; 2 (40)
 	CMP	#%00001000	; 2 (42)
-	BNE	NoBallTurnOff	; 2 (44)
+	BNE	bank1_NoBallTurnOff ; 2 (44)
 	STY	BLY		; 3 (47)
 
-NoBallTurnOff
+bank1_NoBallTurnOff
 * _sleep numbers:	14, 18, 22, 26,
 *  		 	30, 34, 38, 42, etc. 
 *			(n-2) % 4 = 0
@@ -447,42 +412,37 @@ NoBallTurnOff
 	
 	LDA	temp02			; 3(73)	
 	LDY	#0
-	JMP	FirstLine	; 3(76)
+	JMP	bank1_FirstLine	; 3(76)
 
-NoP0DrawNow
+bank1_NoP0DrawNow
 	CPX	M0Y		; 3
-	BNE	NoColorOverWriteM0
+	BNE	bank1_NoColorOverWriteM0 ; 2
 
 	LDA	M0Color		; 3
 	STA	COLUP0		; 3
 	LDA	#0	  	; 2
 
-	JMP	saveP0Sprite	; 3 
+	JMP	bank1_saveP0Sprite ; 3 
 
-
-NoColorOverWriteM0
+bank1_NoColorOverWriteM0
 	sleep 	5
 	LDA	#0
-	JMP	saveP0Sprite	; 3 
+	JMP	bank1_saveP0Sprite ; 3 
 
-
-NoP1DrawNow
+bank1_NoP1DrawNow
 	CPX	M1Y		; 3
-	BNE	NoColorOverWriteM1
+	BNE	bank1_NoColorOverWriteM1
 
 	LDA	M1Color		; 3
 	STA	COLUP1		; 3
 	LDA	#0	  	; 2
 
-	JMP	saveP1Sprite	; 3 
+	JMP	bank1_saveP1Sprite	; 3 
 
-
-NoColorOverWriteM1
+bank1_NoColorOverWriteM1
 	sleep 	5
 	LDA	#0
-	JMP	saveP1Sprite	; 3 
-
-
+	JMP	bank1_saveP1Sprite	; 3 
 
 DrawingTheScreen
 	; temp01 = pfIndex
@@ -498,9 +458,9 @@ DrawingTheScreen
 	; temp13 = lineNum
 	; temp14 = P0 Sprite Data
 
-FirstLine
+bank1_FirstLine
 	STA	WSYNC		; 3 (76)
-StartWithoutWSYNC
+bank1_StartWithoutWSYNC
 	STA	COLUPF		; 3 (3)
 	LDA	temp04		; 3 (6)
 	STA	COLUBK		; 3 (9)
@@ -538,7 +498,7 @@ StartWithoutWSYNC
 	cpx	M0Y		; 3
 	php			; 18 (6)
 
-MiddleLine
+bank1_MiddleLine
 
 	LDA	(pf0Pointer),y	; 5 (11)
 	STA	PF0		; 3 (14)
@@ -560,28 +520,27 @@ MiddleLine
 
 	LDA 	P0Height 	; 3 
 	DCP	temp09 		;  temp09 contains P0Y!  ; 5 
-	BCC	NoP0DrawNow	; 2 
+	BCC	bank1_NoP0DrawNow	; 2 
 	LDY	temp09		; 3 
 	LDA	(P0ColorPointer),y 	; 5 
 	STA	COLUP0		; 3 
 	LDA	(temp07),y 	; 5 
-saveP0Sprite
+bank1_saveP0Sprite
 	STA	temp14		; 3 
 	; 29 (3)
 
-LastLine
-
+bank1_LastLine
 	LDA	temp05		; 3 (9)
 	STA	PF0		; 3 (12)
 
 	LDA 	P1Height 	; 3 
 	DCP	temp12 		;  temp12 contains P0Y!  ; 5 
-	BCC	NoP1DrawNow	; 2 
+	BCC	bank1_NoP1DrawNow	; 2 
 	LDY	temp12		; 3 
 	LDA	(P1ColorPointer),y 	; 5
 	STA	COLUP1	; 3 
 	LDA	(temp10),y 	; 5
-saveP1Sprite
+bank1_saveP1Sprite
 	STA	temp03		; 3 
 	; 29 (41)
 
@@ -590,17 +549,16 @@ saveP1Sprite
 
 	LDY	temp14		; 3 (50)
 
-
 	CPX	#1		; 2 (58)
-	BEQ	ResetAll  	; 2 (60)
+	BEQ	bank1_ResetAll 	; 2 (60)
 
 	DEX			; 2 (62)
 	LDA	temp02		; 3 (65)
 
 	DEC	temp01		; 5 (70)
-	JMP	FirstLine	; 3 (73)
+	JMP	bank1_FirstLine	; 3 (73)
 
-ResetAll
+bank1_ResetAll
 	LDX	#0		; 2 (62)
 	STX	HMCLR		; 3 (65)
 	LDA	frameColor	; 3 (68)
@@ -629,8 +587,7 @@ ResetAll
 	LDX	item		; Retrieve the stack pointer
 	TXS
 
-
-JumpBackToBankScreenBottom
+bank1_JumpBackToBankScreenBottom
 
 	lda	bankToJump
 	lsr
@@ -646,15 +603,15 @@ JumpBackToBankScreenBottom
 	TAY			; Get the location of address from the table
 		
 		
-	lda	ScreenJumpTable,y
+	lda	bank1_ScreenJumpTable,y
    	pha
-   	lda	ScreenJumpTable+1,y
+   	lda	bank1_ScreenJumpTable+1,y
    	pha
    	pha
    	pha
    	jmp	bankSwitchJump
 
-LoadNextData
+bank1_LoadNextData
 	LDA	Tile1_1,x	; 4	
 	AND	#%00001111	; 2 Get low nibble
 	ASL			; 2 and multiply
@@ -713,9 +670,9 @@ LoadNextData
 	INX			; 2
 
 	STX	temp02		; 3
-	JMP	LoadedShit	; 3
+	JMP	bank1_LoadedShit	; 3
 
-DoSubMenuKernel
+bank1_DoSubMenuKernel
 	TSX			; 2 
 	STX	item		; 3
 
@@ -740,51 +697,50 @@ DoSubMenuKernel
 	LDA	OverlapScreen
 	AND	#%00100000
 	CMP	#%00100000
-	BEQ	DoThisCrap
-	JMP	NoOverLap
+	BEQ	bank1_DoThisCrap
+	JMP	bank1_NoOverLap
 
-DoThisCrap
+bank1_DoThisCrap
 	LDX	#3
-AddLines
+bank1_AddLines
 	STA	WSYNC
 	DEX	
 	CPX	#255
-	BNE	AddLines
+	BNE	bank1_AddLines
 	
-DoItAgainPlease
+bank1_DoItAgainPlease
 	STA	WSYNC
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAX
 
 	LDA	OverLapIndicator
-	BMI	ItsTheBottom
-	LDA	ScreenOverlapTop,x
-	JMP	SaveToppp
-ItsTheBottom
-	LDA	ScreenOverlapBottom,x
-SaveToppp
+	BMI	bank1_ItsTheBottom
+	LDA	bank1_ScreenOverlapTop,x
+	JMP	bank1_SaveToppp
+bank1_ItsTheBottom
+	LDA	bank1_ScreenOverlapBottom,x
+bank1_SaveToppp
 	STA	temp11
 	
-
 	LDA	#15		
 	CLC			
 	ADC	pfIndex		 
 	STA	temp01		; Save pfIndex 
 	STA	WSYNC
 	LDA	OverLapIndicator
-	BPL	NoTemp01Dec
+	BPL	bank1_NoTemp01Dec
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAX
 
 	LDA	temp01
 	SEC
-	SBC	DecrementTemp1,x
+	SBC	bank1_DecrementTemp1,x
 	STA	temp01
-NoTemp01Dec
+bank1_NoTemp01Dec
 	LDX	temp11
-	
+
 	LDY	temp01			
 
 	STA	WSYNC
@@ -803,20 +759,20 @@ NoTemp01Dec
 	LDA	GrayScale
 	AND	#%01000000
 	CMP	#%01000000
-	BNE	NotGray
+	BNE	bank1_NotGray
 	LDA	temp02
 	AND	#%00001111
 	STA	temp02
 	LDA	temp04
 	AND	#%00001111
 	STA	temp04
-NotGray
+bank1_NotGray
 	STA	WSYNC
 
 	LDA	OverLapIndicator
-	BPL	NoINY
+	BPL	bank1_NoINY
 	INY
-NoINY
+bank1_NoINY
 	LDA	(pf2Pointer),y		
 	STA	PF2	
 	
@@ -827,13 +783,13 @@ NoINY
 	STA	PF0	
 	STA	temp03
 	LDA	OverLapIndicator
-	BPL	NoDEY
+	BPL	bank1_NoDEY
 	DEY
-NoDEY
+bank1_NoDEY
 
-NewLineWithTemp04
+bank1_NewLineWithTemp04
 	LDA	temp04
-NewLine
+bank1_NewLine
 	STA	WSYNC
 	STA	COLUBK		; 3
 	LDA	temp02		; 3 (6)
@@ -866,10 +822,7 @@ NewLine
 	LDA	(pf2Pointer),y	; 5 (23)	
 	STA	PF2		; 3 (28)
 	
-
-	JSR	GetSecondPF0	
-
-	
+	JSR	bank1_GetSecondPF0	
 
 	LDA	(pfColorPointer),y	; 5 (55)
 	CLC			; 2 (57)	
@@ -880,31 +833,30 @@ NewLine
 	LDA	temp03		; 3
 	STA	PF0		; 3 (6)
 	sleep	2
-	JSR	GetSecondPF0	; 6 (12) + 20
+	JSR	bank1_GetSecondPF0 ; 6 (12) + 20
 
 	LDA	GrayScale	; 3 
 	AND	#%01000000	; 2 
 	CMP	#%01000000	; 2 
-	BNE	NotGray2	; 2 
+	BNE	bank1_NotGray2	; 2 
 	LDA	temp02		; 3 
 	AND	#%00001111	; 2 
 	STA	temp02		; 3 
 	LDA	temp04		; 3 
 	AND	#%00001111	; 2 
 	STA	temp04		; 3 
-NotGray2
+bank1_NotGray2
 
 	DEX
 	CPX	#1	
-	BEQ	ResetToOther
+	BEQ	bank1_ResetToOther
 
 
 	LDA	temp04
-	JMP	NewLine
-ResetToOther
-
+	JMP	bank1_NewLine
+bank1_ResetToOther
 	
-NoOverLap
+bank1_NoOverLap
 *	temp01: Rows left
 *	temp02: LineNum
 *	temp03 - temp14: GRP0 pointers
@@ -913,9 +865,7 @@ NoOverLap
 *	temp18: TileY
 *	temp19: SelectorData
 
-
-
-NoResetNow
+bank1_NoResetNow
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK		; 3
@@ -926,10 +876,10 @@ NoResetNow
 
 
 	LDA	OverLapIndicator
-	BPL	FFFF	
+	BPL	bank1_FFFF	
 
-	JMP	ResetAll
-FFFF
+	JMP	bank1_ResetAll
+bank1_FFFF
 
 
 	LDA	#%11111110	; 2 (15)			
@@ -954,9 +904,9 @@ FFFF
 	ASL
 
 	CLC			; 2 
-	ADC	#<Selector-1	; 3 
+	ADC	#<bank1_Selector-1 ; 3 
 	STA	temp15		; 3 
-	LDA	#>Selector-1	; 3 
+	LDA	#>bank1_Selector-1 ; 3 
 	STA	temp16		; 3 
 
 	LDY	#0
@@ -964,33 +914,33 @@ FFFF
 	LDA	TileSelected
 	AND	#%00011111
 
-SmallerThan6
+bank1_SmallerThan6
 	CMP	#6
-	BCC	GetP0Poz
+	BCC	bank1_GetP0Poz
 	SEC
 	SBC	#6
 	INY
-	JMP	SmallerThan6
-GetP0Poz
+	JMP	bank1_SmallerThan6
+bank1_GetP0Poz
 	STY	temp18	; Get the Tile row number reversed
 	LDY	#0
 	STY	temp03
 
 	STA	WSYNC
 	TAX
-	LDA	CursorXPosition,x
+	LDA	bank1_CursorXPosition,x
 	LDX	temp03
-CursorPozLoop
+bank1_CursorPozLoop
 	sbc	#15
-   	bcs	CursorPozLoop
+   	bcs	bank1_CursorPozLoop
    	sleep	2
 	tay
    	sta	RESP0	
-   	LDA	FineAdjustTable256,Y
+   	LDA	bank1_FineAdjustTable256,Y
 	STA	HMP0
 	INC	temp18
 
-SetP0TilePositions
+bank1_SetP0TilePositions
 	STA	WSYNC
 	STA	HMOVE
 	LDA	TileSetPointer+1  ; 5
@@ -1010,12 +960,12 @@ SetP0TilePositions
 	LDA	counter		; 3 
 	AND	#%00000001	; 2 
 	CMP	#%00000001	; 2 	
-	BEQ	OddStart
+	BEQ	bank1_OddStart
 	LDA	#$C0
-	JMP	EvenStart
-OddStart
+	JMP	bank1_EvenStart
+bank1_OddStart
 	LDA	#$C0
-EvenStart	
+bank1_EvenStart	
 	STA	HMP1
 	
 	LDA	#0		
@@ -1026,9 +976,8 @@ EvenStart
 	
 	LDA	#%00000010	; 2
 	STA	PF2		; 3
-
 		
-CalculatorLine
+bank1_CalculatorLine
 	LDX	temp02		; 3
 	LDA	#0		; 2
 	STA	GRP0		; 3
@@ -1036,8 +985,8 @@ CalculatorLine
 
 	DEC 	temp18
 
-	JMP	LoadNextData	; 3
-LoadedShit
+	JMP	bank1_LoadNextData	; 3
+bank1_LoadedShit
 	LDY	#7
 	LDA	(TileColorPointer),y	; 5 
 	CLC			; 3 
@@ -1055,40 +1004,38 @@ LoadedShit
 	LDA	counter		; 3 (5)
 	AND	#%00000001	; 2 (7)
 	CMP	#%00000001	; 2 (9)
-	BEQ	JumpOddFrame	; 2 (11)
+	BEQ	bank1_JumpOddFrame	; 2 (11)
 
-	JMP	EvenFrame	; 3 (14)
-JumpOddFrame
-	JMP	OddFrame
+	JMP	bank1_EvenFrame	; 3 (14)
+bank1_JumpOddFrame
+	JMP	bank1_OddFrame
 
-
+!!!213bytesOfUserData!!!
 
 	align	256
 
-OddFrame
+bank1_OddFrame
 	LDA	#$00
 	STA	HMP0
 
-	
 	sta	WSYNC
 
-Loop_Odd_Line1
+bank1_Loop_Odd_Line1
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
 	STA	HMP1		; 3 (8)
 	
 	LDA	temp18		; 3
 	CMP	#0		; 2
-	BEQ	SelectorDraw	; 2
+	BEQ	bank1_SelectorDraw	; 2
 	LDA	#0		; 2
 	sleep	2
-	JMP	NoSelectorDraw	; 3
-SelectorDraw
+	JMP	bank1_NoSelectorDraw	; 3
+bank1_SelectorDraw
 	sleep	3
 	LDA	temp19		; 3
-NoSelectorDraw
+bank1_NoSelectorDraw
 	STA	GRP0		; 3
-
 	
 	LDA	(temp03),y 	; 5 (30)
 	STA	GRP1		; 3 (33)
@@ -1101,16 +1048,14 @@ NoSelectorDraw
 	sleep	2
 	STX	GRP1		; 3 (53)
 	
-
 	sleep	8	
 	LDA	(temp15),y	
 	STA	temp19
 
-
 	LDA	#$00
 	STA	HMP0
 
-Loop_Odd_Line2
+bank1_Loop_Odd_Line2
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
 	STA 	HMP1		; 3 (8)
@@ -1131,18 +1076,15 @@ Loop_Odd_Line2
 	STA	GRP1		; 3 (48)
 	sleep 	2
 	STX	GRP1		; 3 (53)
-
 	
 	sleep	10
 		
-
-
 	LDA	temp17		; 3
 	STA	COLUPF		; 3
 	STA	COLUP1		; 3 
 
 	DEY			; 2 (74)
-	BPL	Loop_Odd_Line1	; 2 (76)
+	BPL	bank1_Loop_Odd_Line1	; 2 (76)
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -1150,10 +1092,10 @@ Loop_Odd_Line2
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
 	CMP	#0		; 2
-	BEQ	EndOfAll	; 2
-	JMP	CalculatorLine	; 3 	
+	BEQ	bank1_EndOfAll	; 2
+	JMP	bank1_CalculatorLine	; 3 	
 
-EvenFrame
+bank1_EvenFrame
 
 	_sleep	50		; (74)
 	sleep	7
@@ -1161,22 +1103,21 @@ EvenFrame
 	LDA	#$00
 	STA	HMP0
 
-
-Loop_Even_Line1
+bank1_Loop_Even_Line1
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
 	STA	HMP1		; 3 (8)
 	
 	LDA	temp18		; 3
 	CMP	#0		; 2
-	BEQ	SelectorDraw2	; 2
+	BEQ	bank1_SelectorDraw2	; 2
 	LDA	#0		; 2
 	sleep	2
-	JMP	NoSelectorDraw2	; 3
-SelectorDraw2
+	JMP	bank1_NoSelectorDraw2	; 3
+bank1_SelectorDraw2
 	sleep	3
 	LDA	temp19		; 3
-NoSelectorDraw2
+bank1_NoSelectorDraw2
 	STA	GRP0		; 3
 	
 
@@ -1199,7 +1140,7 @@ NoSelectorDraw2
 	LDA	#$00
 	STA	HMP0
 
-Loop_Even_Line2
+bank1_Loop_Even_Line2
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
 	STA 	HMP1		; 3 (8)
@@ -1230,7 +1171,7 @@ Loop_Even_Line2
 	STA	COLUP1		; 3 
 
 	DEY			; 2 (72)
-	BPL	Loop_Even_Line1	; 2 (74)
+	BPL	bank1_Loop_Even_Line1	; 2 (74)
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -1238,10 +1179,10 @@ Loop_Even_Line2
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
 	CMP	#0		; 2
-	BEQ	EndOfAll	; 2
-	JMP	CalculatorLine	; 3 	
+	BEQ	bank1_EndOfAll	; 2
+	JMP	bank1_CalculatorLine	; 3 	
 
-EndOfAll
+bank1_EndOfAll
 	
 	STA	WSYNC
 	LDA	#0
@@ -1256,16 +1197,15 @@ EndOfAll
 	STA	WSYNC
 	STA	WSYNC
 
-
-IsThereOverLap
+bank1_IsThereOverLap
 	LDA	OverlapScreen
 	AND	#%00100000
 	CMP	#%00100000
-	BEQ	ThereItIs
+	BEQ	bank1_ThereItIs
 	STA	WSYNC
-	JMP	ResetAll
+	JMP	bank1_ResetAll
 
-ThereItIs
+bank1_ThereItIs
 	LDA	OverLapIndicator
 	ORA	#%10000000
 	STA	OverLapIndicator
@@ -1279,26 +1219,26 @@ ThereItIs
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAY
-	LAX	ExtraWSYNC,y
-DoExtraWSYNC
+	LAX	bank1_ExtraWSYNC,y
+bank1_DoExtraWSYNC
 	CPX	#0
-	BEQ	NoMoreLiiiiines
+	BEQ	bank1_NoMoreLiiiiines
 	STA	WSYNC
 	DEX
-	JMP	DoExtraWSYNC
+	JMP	bank1_DoExtraWSYNC
 
-NoMoreLiiiiines
-	JMP	DoItAgainPlease
+bank1_NoMoreLiiiiines
+	JMP	bank1_DoItAgainPlease
 
-
+!!!191bytesOfUserData!!!
 
 	align	256
-FineAdjustTable256
+bank1_FineAdjustTable256
 	fill 	156
 
-Zero
-Null
-None
+bank1_Zero
+bank1_Null
+bank1_None
 	.BYTE	#0	; This is an empty byte for constant code usage.
 	.BYTE	#0
 	.BYTE	#0
@@ -1307,7 +1247,7 @@ None
 	.BYTE	#0
 	.BYTE	#0
 
-Selector
+bank1_Selector
 	byte	#%01100110	; (0)
 	byte	#%00000000
 	byte	#%10000001
@@ -1341,7 +1281,7 @@ Selector
 	byte	#%10000000
 	byte	#%00110011
 
-GetSecondPF0
+bank1_GetSecondPF0
 	LDA	temp03		
 	ASL			
 	ASL			
@@ -1350,31 +1290,31 @@ GetSecondPF0
 	STA	PF0	
 	RTS
 
-ScreenOverlapTop
+bank1_ScreenOverlapTop
 	byte	#16
 	byte	#12
 	byte	#7
 	byte	#4
 
-ScreenOverlapBottom
+bank1_ScreenOverlapBottom
 	byte	#16
 	byte	#13
 	byte	#11
 	byte	#8
 
-DecrementTemp1
+bank1_DecrementTemp1
 	byte	#27
 	byte	#30
 	byte	#32
 	byte	#35
 
-ExtraWSYNC
+bank1_ExtraWSYNC
 	byte	#0
 	byte	#1
 	byte	#2
 	byte	#0
 
-ScreenJumpTable
+bank1_ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
 	.byte	#<ScreenBottomBank2-1
 	.byte	#>ScreenBottomBank3-1
@@ -1390,7 +1330,7 @@ ScreenJumpTable
 	.byte	#>ScreenBottomBank8-1
 	.byte	#<ScreenBottomBank8-1
 
-CursorXPosition
+bank1_CursorXPosition
 	byte	#60	
 	byte	#79	
 	byte	#83	
@@ -1398,8 +1338,7 @@ CursorXPosition
 	byte	#106	
 	byte	#110	
 
-
-FineAdjustTable
+bank1_FineAdjustTable
 	byte	#$80
 	byte	#$70
 	byte	#$60
@@ -1417,7 +1356,7 @@ FineAdjustTable
 	byte	#$a0
 	byte	#$90
 
-UnderTheTable
+bank1_UnderTheTable
 
 *Routine Section
 *---------------------------------
@@ -1425,7 +1364,7 @@ UnderTheTable
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK1!!!
 
 *Data Section
 *-------------------------------
@@ -1437,7 +1376,7 @@ UnderTheTable
 	align 256
 
 Data_Section
-
+!!!KERNEL_DATA!!!
 
 	saveFreeBytes
 	rewind 1fd4
@@ -1490,21 +1429,7 @@ start_bank1
 
 EnterScreenBank2
 
-
-	LDA	#%10000000	; Disables game kernel, so won't run
-	STA	NoGameMode 	; main kernel and vblank code.
-
-	LDA	#0		; set frame color to black
-	STA	frameColor
-	LDA	#0
-	STA	test1
-	LDA	#0
-	STA	test2
-	LDA	#0
-	STA	test3
-	LDA	#0
-	STA	test4
-
+!!!ENTER_BANK2!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
@@ -1518,7 +1443,7 @@ EnterScreenBank2
 
 LeaveScreenBank2
 
-
+!!!LEAVE_BANK2!!!
 
 JumpToNewScreenBank2
 	LAX	temp02		; Contains the bank to jump
@@ -1573,7 +1498,7 @@ OverScanBank2
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -1584,174 +1509,9 @@ OverScanBank2
 * begins.
 *
 
-
-
-*
-*	The soundplayer will use 4 bytes (if none is disabled).
-*	2 bytes are for AUD0 and AUD1.
-*	0-2: Duration countdown
-*	3-6: Index for the effect (only used for selection, interrupts current sound)
-*	7  : Playing
-*
-*	2 bytes for the pointer index, so the whole data can be 256 bytes long.
-*
-
-	LDA	test1
-	BPL	Bank2_SoundBank_SoundBank_Channel0__CheckForNew
-	
-	AND	#%00000111
-	SEC
-	SBC	#1
-	ORA	#%10000000
-	STA	test1
-
-	CMP	#%10000000
-	BEQ	Bank2_SoundBank_SoundBank_Channel0__CCCCCCC
-	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
-
-Bank2_SoundBank_SoundBank_Channel0__CCCCCCC
-	LDX	test2
-	JMP	Bank2_SoundBank_SoundBank_Channel0__NewData	
-
-Bank2_SoundBank_SoundBank_Channel0__CheckForNew
-        AND	#%01111000
-	LSR
-	LSR
-	LSR
-	CMP	#0
-	BNE	Bank2_SoundBank_SoundBank_Channel0__GetNewPointer
-	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
-Bank2_SoundBank_SoundBank_Channel0__GetNewPointer
-	CMP	#3
-	BCC 	Bank2_SoundBank_SoundBank_Channel0__NotLargerThanMax
-	LDA	#1
-Bank2_SoundBank_SoundBank_Channel0__NotLargerThanMax
-	TAX	
-	DEX
-	LDA 	Bank2_SoundBank_SoundBank_PointerTable,x
-	TAX		
-Bank2_SoundBank_SoundBank_Channel0__NewData
-	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
-	INX
-	CMP	#$F0
-	BNE	Bank2_SoundBank_SoundBank_Channel0__Continue
-	LDA	#0
-	STA	AUDV0
-	STA	test1	
-	JMP	Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
-Bank2_SoundBank_SoundBank_Channel0__Continue
-	TAY
-	AND	#%00001111
-	CMP	#0
-	BNE	Bank2_SoundBank_SoundBank_Channel0__NormalData
-	STA	AUDV0
-	TYA
-	JMP	Bank2_SoundBank_SoundBank_Channel0__SaveDuration	
-Bank2_SoundBank_SoundBank_Channel0__NormalData
-	TYA
-	STA	AUDV0
-	LSR
-	LSR
-	LSR
-	LSR	
-	STA	AUDC0
-	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
-	INX	
-	STA	AUDF0
-	AND	#%11100000
-Bank2_SoundBank_SoundBank_Channel0__SaveDuration
-	ROL
-	ROL
-	ROL
-	ROL
-	ORA	#%10000000
-	STA	test1	
-Bank2_SoundBank_SoundBank_Channel0__SaveIndex
-	STX	test2
-Bank2_SoundBank_SoundBank_Channel0__NoSoundPLay
-*
-*	The soundplayer will use 4 bytes (if none is disabled).
-*	2 bytes are for AUD0 and AUD1.
-*	0-2: Duration countdown
-*	3-6: Index for the effect (only used for selection, interrupts current sound)
-*	7  : Playing
-*
-*	2 bytes for the pointer index, so the whole data can be 256 bytes long.
-*
-
-	LDA	test3
-	BPL	Bank2_SoundBank_SoundBank_Channel1__CheckForNew
-	
-	AND	#%00000111
-	SEC
-	SBC	#1
-	ORA	#%10000000
-	STA	test3
-
-	CMP	#%10000000
-	BEQ	Bank2_SoundBank_SoundBank_Channel1__CCCCCCC
-	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
-
-Bank2_SoundBank_SoundBank_Channel1__CCCCCCC
-	LDX	test4
-	JMP	Bank2_SoundBank_SoundBank_Channel1__NewData	
-
-Bank2_SoundBank_SoundBank_Channel1__CheckForNew
-        AND	#%01111000
-	LSR
-	LSR
-	LSR
-	CMP	#0
-	BNE	Bank2_SoundBank_SoundBank_Channel1__GetNewPointer
-	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
-Bank2_SoundBank_SoundBank_Channel1__GetNewPointer
-	CMP	#3
-	BCC 	Bank2_SoundBank_SoundBank_Channel1__NotLargerThanMax
-	LDA	#1
-Bank2_SoundBank_SoundBank_Channel1__NotLargerThanMax
-	TAX	
-	DEX
-	LDA 	Bank2_SoundBank_SoundBank_PointerTable,x
-	TAX		
-Bank2_SoundBank_SoundBank_Channel1__NewData
-	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
-	INX
-	CMP	#$F0
-	BNE	Bank2_SoundBank_SoundBank_Channel1__Continue
-	LDA	#0
-	STA	AUDV1
-	STA	test3	
-	JMP	Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
-Bank2_SoundBank_SoundBank_Channel1__Continue
-	TAY
-	AND	#%00001111
-	CMP	#0
-	BNE	Bank2_SoundBank_SoundBank_Channel1__NormalData
-	STA	AUDV1
-	TYA
-	JMP	Bank2_SoundBank_SoundBank_Channel1__SaveDuration	
-Bank2_SoundBank_SoundBank_Channel1__NormalData
-	TYA
-	STA	AUDV1
-	LSR
-	LSR
-	LSR
-	LSR	
-	STA	AUDC1
-	LDA	Bank2_SoundBank_SoundBank_SoundFX,x
-	INX	
-	STA	AUDF1
-	AND	#%11100000
-Bank2_SoundBank_SoundBank_Channel1__SaveDuration
-	ROL
-	ROL
-	ROL
-	ROL
-	ORA	#%10000000
-	STA	test3	
-Bank2_SoundBank_SoundBank_Channel1__SaveIndex
-	STX	test4
-Bank2_SoundBank_SoundBank_Channel1__NoSoundPLay
+!!!JUKEBOX_BANK2!!!
+!!!OVERSCAN_BANK2!!!
+!!!SOUNDBANK_BANK2!!!
 
 *VSYNC
 *----------------------------
@@ -1782,7 +1542,7 @@ WaitUntilOverScanTimerEndsBank2
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 
@@ -1794,7 +1554,7 @@ WaitUntilOverScanTimerEndsBank2
 *
 VBLANKBank2
 
-
+!!!VBLANK_BANK2!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -1835,7 +1595,7 @@ VBlankEndBank2
 	LDA 	INTIM
 	BMI 	VBlankEndBank2
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -1849,42 +1609,7 @@ VBlankEndBank2
 	tsx
 	stx	item
 
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
-	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
-*
-*	Testline
-*
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
-	STA	PF0
-	STA	PF1
-	STA	PF2
-
-	LDA	counter
-	STA	WSYNC
-	STA	COLUBK
-	STA	WSYNC
-	LDA	frameColor
-	STA	WSYNC
-	STA	COLUBK
-
+!!!SCREENTOP_BANK2!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -1923,9 +1648,9 @@ JumpToMainKernelBank2
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -1943,7 +1668,7 @@ ScreenBottomBank2
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK2!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -1966,210 +1691,7 @@ ScreenBottomBank2
 
 	align	256
 
-
-		_align	194
-
-Bank2_SoundBank_SoundBank_SoundFX
-	BYTE	#%01001010	; Bank2_SoundBank_SoundBank_TestSound1
-	BYTE	#%00111110
-	BYTE	#%01001010
-	BYTE	#%00111100
-	BYTE	#%01001010
-	BYTE	#%00111010
-	BYTE	#%01001010
-	BYTE	#%00111000
-	BYTE	#%01001010
-	BYTE	#%00110110
-	BYTE	#%01001010
-	BYTE	#%00110100
-	BYTE	#%01001010
-	BYTE	#%00110010
-	BYTE	#%01001010
-	BYTE	#%00110000
-	BYTE	#%01001010
-	BYTE	#%00101110
-	BYTE	#%01001010
-	BYTE	#%00101100
-	BYTE	#%01001010
-	BYTE	#%00101010
-	BYTE	#%01001010
-	BYTE	#%00101000
-	BYTE	#%01001010
-	BYTE	#%00100110
-	BYTE	#%01001010
-	BYTE	#%00100100
-	BYTE	#%01001010
-	BYTE	#%00100010
-	BYTE	#%01001010
-	BYTE	#%00100000
-	BYTE	#%01001010
-	BYTE	#%00100001
-	BYTE	#%01001010
-	BYTE	#%00100011
-	BYTE	#%01001010
-	BYTE	#%00100101
-	BYTE	#%01001010
-	BYTE	#%00100111
-	BYTE	#%01001010
-	BYTE	#%00101001
-	BYTE	#%01001010
-	BYTE	#%00101011
-	BYTE	#%01001010
-	BYTE	#%00101101
-	BYTE	#%01001010
-	BYTE	#%00101111
-	BYTE	#%01001010
-	BYTE	#%00110001
-	BYTE	#%01001010
-	BYTE	#%00110011
-	BYTE	#%01001010
-	BYTE	#%00110101
-	BYTE	#%01001010
-	BYTE	#%00110111
-	BYTE	#%01001010
-	BYTE	#%00111001
-	BYTE	#%01001010
-	BYTE	#%00111011
-	BYTE	#%01001010
-	BYTE	#%00111101
-	BYTE	#%01001010
-	BYTE	#%00111111
-	BYTE	#$F0	 ; End Byte
-	BYTE	#%01000111	; Bank2_SoundBank_SoundBank_TestSound2
-	BYTE	#%00111110
-	BYTE	#%00100111
-	BYTE	#%00111100
-	BYTE	#%10000111
-	BYTE	#%00111010
-	BYTE	#%01000111
-	BYTE	#%00111000
-	BYTE	#%11000111
-	BYTE	#%00110110
-	BYTE	#%01000111
-	BYTE	#%00110100
-	BYTE	#%11000111
-	BYTE	#%00110010
-	BYTE	#%01000111
-	BYTE	#%00110000
-	BYTE	#%11000111
-	BYTE	#%00101110
-	BYTE	#%10000111
-	BYTE	#%00101100
-	BYTE	#%01000111
-	BYTE	#%00101010
-	BYTE	#%01000111
-	BYTE	#%00101000
-	BYTE	#%11110111
-	BYTE	#%00100110
-	BYTE	#%11000111
-	BYTE	#%00100100
-	BYTE	#%11000111
-	BYTE	#%00100010
-	BYTE	#%11100111
-	BYTE	#%00100000
-	BYTE	#%00100111
-	BYTE	#%00100001
-	BYTE	#%00010111
-	BYTE	#%00100011
-	BYTE	#%00110111
-	BYTE	#%00100101
-	BYTE	#%11000111
-	BYTE	#%00100111
-	BYTE	#%00010111
-	BYTE	#%00101001
-	BYTE	#%00110111
-	BYTE	#%00101011
-	BYTE	#%00010111
-	BYTE	#%00101101
-	BYTE	#%01000111
-	BYTE	#%00101111
-	BYTE	#%10000111
-	BYTE	#%00110001
-	BYTE	#%00100111
-	BYTE	#%00110011
-	BYTE	#%01110111
-	BYTE	#%00110101
-	BYTE	#%11000111
-	BYTE	#%00110111
-	BYTE	#%11110111
-	BYTE	#%00111001
-	BYTE	#%01110111
-	BYTE	#%00111011
-	BYTE	#%10000111
-	BYTE	#%00111101
-	BYTE	#%11000111
-	BYTE	#%00111111
-	BYTE	#$F0	 ; End Byte
-	BYTE	#%01101111	; Bank2_SoundBank_SoundBank_TestSound3
-	BYTE	#%00101111
-	BYTE	#%01101111
-	BYTE	#%00110010
-	BYTE	#%01101111
-	BYTE	#%00110101
-	BYTE	#%01101110
-	BYTE	#%00110111
-	BYTE	#%01101110
-	BYTE	#%00111010
-	BYTE	#%01101101
-	BYTE	#%00111011
-	BYTE	#%01101101
-	BYTE	#%00111101
-	BYTE	#%01101100
-	BYTE	#%00111110
-	BYTE	#%01101100
-	BYTE	#%00111110
-	BYTE	#%01101011
-	BYTE	#%00111110
-	BYTE	#%01101011
-	BYTE	#%00111101
-	BYTE	#%01101010
-	BYTE	#%00111100
-	BYTE	#%01101010
-	BYTE	#%00111010
-	BYTE	#%01101001
-	BYTE	#%00110111
-	BYTE	#%01101001
-	BYTE	#%00110101
-	BYTE	#%01101000
-	BYTE	#%00110010
-	BYTE	#%01101000
-	BYTE	#%00101111
-	BYTE	#%01100111
-	BYTE	#%00101100
-	BYTE	#%01100111
-	BYTE	#%00101001
-	BYTE	#%01100110
-	BYTE	#%00100111
-	BYTE	#%01100110
-	BYTE	#%00100100
-	BYTE	#%01100101
-	BYTE	#%00100011
-	BYTE	#%01100101
-	BYTE	#%00100001
-	BYTE	#%01100100
-	BYTE	#%00100000
-	BYTE	#%01100100
-	BYTE	#%00100000
-	BYTE	#%01100011
-	BYTE	#%00100000
-	BYTE	#%01100011
-	BYTE	#%00100001
-	BYTE	#%01100010
-	BYTE	#%00100010
-	BYTE	#%01100010
-	BYTE	#%00100100
-	BYTE	#%01100001
-	BYTE	#%00100111
-	BYTE	#%01100001
-	BYTE	#%00101001
-	BYTE	#%00100000
-	BYTE	#$F0	 ; End Byte
-		_align	3
-
-Bank2_SoundBank_SoundBank_PointerTable
-	BYTE	#0
-	BYTE	#65
-	BYTE	#130
+!!!USER_DATA_BANK2!!!
 
 
 ###End-Bank2
@@ -2179,7 +1701,7 @@ Bank2_SoundBank_SoundBank_PointerTable
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK2!!!
 	
 
 	saveFreeBytes
@@ -2233,7 +1755,7 @@ start_bank2
 
 EnterScreenBank3
 
-
+!!!ENTER_BANK3!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank3
 
@@ -2247,7 +1769,7 @@ EnterScreenBank3
 
 LeaveScreenBank3
 
-
+!!!LEAVE_BANK3!!!
 
 JumpToNewScreenBank3
 	LAX	temp02		; Contains the bank to jump
@@ -2301,7 +1823,7 @@ OverScanBank3
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2312,9 +1834,9 @@ OverScanBank3
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK3!!!
+!!!OVERSCAN_BANK3!!!
+!!!SOUNDBANK_BANK3!!!
 
 *VSYNC
 *----------------------------
@@ -2346,7 +1868,7 @@ WaitUntilOverScanTimerEndsBank3
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 
@@ -2358,7 +1880,7 @@ WaitUntilOverScanTimerEndsBank3
 *
 VBLANKBank3
 
-
+!!!VBLANK_BANK3!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2399,7 +1921,7 @@ VBlankEndBank3
 	LDA 	INTIM
 	BMI 	VBlankEndBank3
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -2412,7 +1934,7 @@ VBlankEndBank3
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK3!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2452,9 +1974,9 @@ JumpToMainKernelBank3
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -2472,7 +1994,7 @@ ScreenBottomBank3
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK3!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -2495,7 +2017,7 @@ ScreenBottomBank3
 
 	align	256
 
-
+!!!USER_DATA_BANK3!!!
 
 ###End-Bank3
 *Routine Section
@@ -2504,7 +2026,7 @@ ScreenBottomBank3
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK3!!!
 
 
 	saveFreeBytes
@@ -2558,7 +2080,7 @@ start_bank3
 
 EnterScreenBank4
 
-
+!!!ENTER_BANK4!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank4
 
@@ -2572,7 +2094,7 @@ EnterScreenBank4
 
 LeaveScreenBank4
 
-
+!!!LEAVE_BANK4!!!
 
 JumpToNewScreenBank4
 	LAX	temp02		; Contains the bank to jump
@@ -2626,7 +2148,7 @@ OverScanBank4
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2637,9 +2159,9 @@ OverScanBank4
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK4!!!
+!!!OVERSCAN_BANK4!!!
+!!!SOUNDBANK_BANK4!!!
 
 *VSYNC
 *----------------------------
@@ -2671,7 +2193,7 @@ WaitUntilOverScanTimerEndsBank4
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -2682,7 +2204,7 @@ WaitUntilOverScanTimerEndsBank4
 *
 VBLANKBank4
 
-
+!!!VBLANK_BANK4!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -2723,7 +2245,7 @@ VBlankEndBank4
 	LDA 	INTIM
 	BMI 	VBlankEndBank4
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -2736,7 +2258,7 @@ VBlankEndBank4
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK4!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -2776,9 +2298,9 @@ JumpToMainKernelBank4
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -2796,7 +2318,7 @@ ScreenBottomBank4
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK4!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -2819,7 +2341,7 @@ ScreenBottomBank4
 
 	align	256
 
-
+!!!USER_DATA_BANK4!!!
 
 ###End-Bank4
 *Routine Section
@@ -2828,7 +2350,7 @@ ScreenBottomBank4
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK4!!!
 	
 
 	saveFreeBytes
@@ -2883,7 +2405,7 @@ start_bank4
 
 EnterScreenBank5
 
-
+!!!ENTER_BANK5!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank5
 
@@ -2897,7 +2419,7 @@ EnterScreenBank5
 
 LeaveScreenBank5
 
-
+!!!LEAVE_BANK5!!!
 
 JumpToNewScreenBank5
 	LAX	temp02		; Contains the bank to jump
@@ -2951,7 +2473,7 @@ OverScanBank5
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -2962,9 +2484,9 @@ OverScanBank5
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK5!!!
+!!!OVERSCAN_BANK5!!!
+!!!SOUNDBANK_BANK5!!!
 
 *VSYNC
 *----------------------------
@@ -2996,7 +2518,7 @@ WaitUntilOverScanTimerEndsBank5
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3007,7 +2529,7 @@ WaitUntilOverScanTimerEndsBank5
 *
 VBLANKBank5
 
-
+!!!VBLANK_BANK5!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3048,7 +2570,7 @@ VBlankEndBank5
 	LDA 	INTIM
 	BMI 	VBlankEndBank5
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -3061,7 +2583,7 @@ VBlankEndBank5
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK5!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -3101,9 +2623,9 @@ JumpToMainKernelBank5
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3121,7 +2643,7 @@ ScreenBottomBank5
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK5!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3144,7 +2666,7 @@ ScreenBottomBank5
 
 	align	256
 
-
+!!!USER_DATA_BANK5!!!
 
 ###End-Bank5
 *Routine Section
@@ -3153,7 +2675,7 @@ ScreenBottomBank5
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK5!!!
 	
 
 	saveFreeBytes
@@ -3207,7 +2729,7 @@ start_bank5
 
 EnterScreenBank6
 
-
+!!!ENTER_BANK6!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank6
 
@@ -3221,7 +2743,7 @@ EnterScreenBank6
 
 LeaveScreenBank6
 
-
+!!!LEAVE_BANK6!!!
 
 JumpToNewScreenBank6
 	LAX	temp02		; Contains the bank to jump
@@ -3275,7 +2797,7 @@ OverScanBank6
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3286,9 +2808,9 @@ OverScanBank6
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK6!!!
+!!!OVERSCAN_BANK6!!!
+!!!SOUNDBANK_BANK6!!!
 
 *VSYNC
 *----------------------------
@@ -3320,7 +2842,7 @@ WaitUntilOverScanTimerEndsBank6
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3331,7 +2853,7 @@ WaitUntilOverScanTimerEndsBank6
 *
 VBLANKBank6
 
-
+!!!VBLANK_BANK6!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3372,7 +2894,7 @@ VBlankEndBank6
 	LDA 	INTIM
 	BMI 	VBlankEndBank6
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -3385,7 +2907,7 @@ VBlankEndBank6
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK6!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -3425,9 +2947,9 @@ JumpToMainKernelBank6
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3445,7 +2967,7 @@ ScreenBottomBank6
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK6!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3469,7 +2991,7 @@ ScreenBottomBank6
 
 	align	256
 
-
+!!!USER_DATA_BANK6!!!
 
 ###End-Bank6
 *Routine Section
@@ -3478,7 +3000,7 @@ ScreenBottomBank6
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK6!!!
 	
 
 	saveFreeBytes
@@ -3532,7 +3054,7 @@ start_bank6
 
 EnterScreenBank7
 
-
+!!!ENTER_BANK7!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank7
 
@@ -3546,7 +3068,7 @@ EnterScreenBank7
 
 LeaveScreenBank7
 
-
+!!!LEAVE_BANK7!!!
 
 JumpToNewScreenBank7
 	LAX	temp02		; Contains the bank to jump
@@ -3599,7 +3121,7 @@ OverScanBank7
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3610,9 +3132,9 @@ OverScanBank7
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK7!!!
+!!!OVERSCAN_BANK7!!!
+!!!SOUNDBANK_BANK7!!!
 
 *VSYNC
 *----------------------------
@@ -3644,7 +3166,7 @@ WaitUntilOverScanTimerEndsBank7
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 
@@ -3656,7 +3178,7 @@ WaitUntilOverScanTimerEndsBank7
 *
 VBLANKBank7
 
-
+!!!VBLANK_BANK7!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -3697,7 +3219,7 @@ VBlankEndBank7
 	LDA 	INTIM
 	BMI 	VBlankEndBank7
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -3710,7 +3232,7 @@ VBlankEndBank7
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK7!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -3750,9 +3272,9 @@ JumpToMainKernelBank7
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3770,7 +3292,7 @@ ScreenBottomBank7
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK7!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -3793,7 +3315,7 @@ ScreenBottomBank7
 
 	align	256
 
-
+!!!USER_DATA_BANK7!!!
 
 
 ###End-Bank7
@@ -3803,7 +3325,7 @@ ScreenBottomBank7
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK7!!!
 	
 
 	saveFreeBytes
@@ -3857,7 +3379,7 @@ start_bank7
 
 EnterScreenBank8
 
-
+!!!ENTER_BANK8!!!
 		
 	JMP	WaitUntilOverScanTimerEndsBank8
 
@@ -3871,7 +3393,7 @@ EnterScreenBank8
 
 LeaveScreenBank8
 
-
+!!!LEAVE_BANK8!!!
 
 JumpToNewScreenBank8
 	LAX	temp02		; Contains the bank to jump
@@ -3924,7 +3446,7 @@ OverScanBank8
 	STA	VBLANK
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
+    	LDA	#!!!TV!!!_Overscan
     	STA	TIM64T
 	INC	counter
 
@@ -3935,9 +3457,9 @@ OverScanBank8
 * begins.
 *
 
-
-
-
+!!!JUKEBOX_BANK8!!!
+!!!OVERSCAN_BANK8!!!
+!!!SOUNDBANK_BANK8!!!
 
 *VSYNC
 *----------------------------
@@ -3969,7 +3491,7 @@ WaitUntilOverScanTimerEndsBank8
 	STA 	WSYNC
 
 	CLC
- 	LDA	#NTSC_Vblank
+ 	LDA	#!!!TV!!!_Vblank
 	STA	TIM64T
 
 *VBLANK
@@ -3980,7 +3502,7 @@ WaitUntilOverScanTimerEndsBank8
 *
 VBLANKBank8
 
-
+!!!VBLANK_BANK8!!!
 
 
 *SkipIfNoGameSet - VBLANK
@@ -4009,7 +3531,7 @@ VBlankEndBank8
 	LDA 	INTIM
 	BMI 	VBlankEndBank8
 
-    	LDA	#NTSC_Display
+    	LDA	#!!!TV!!!_Display
     	STA	TIM64T
 
 
@@ -4022,7 +3544,7 @@ VBlankEndBank8
 	tsx
 	stx	item
 
-
+!!!SCREENTOP_BANK8!!!
 
 	LDA	frameColor
 	STA	WSYNC		; (76)
@@ -4062,9 +3584,9 @@ JumpToMainKernelBank8
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(EnterKernel-1)
+	lda	#>(bank1_EnterKernel-1)
    	pha
-   	lda	#<(EnterKernel-1)
+   	lda	#<(bank1_EnterKernel-1)
    	pha
    	pha
    	pha
@@ -4082,7 +3604,7 @@ ScreenBottomBank8
 	tsx
 	stx	item
 
-
+!!!SCREENBOTTOM_BANK8!!!
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -4105,7 +3627,7 @@ ScreenBottomBank8
 
 	align	256
 
-
+!!!USER_DATA_BANK8!!!
 
 
 ###End-Bank8
@@ -4115,7 +3637,7 @@ ScreenBottomBank8
 * used by the developer.
 *
 
-
+!!!ROUTINES_BANK8!!!
 
 
 	align 256

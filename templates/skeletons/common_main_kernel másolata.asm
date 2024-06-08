@@ -215,7 +215,7 @@ PAL_Display  =  244
 
 	fill 256	; We have to prevent writing on addresses taken by the SuperChip RAM.
 
-bank1_EnterKernel
+EnterKernel
 	LDA	#0		
 	STA	PF0		 
 	STA	PF1		
@@ -230,50 +230,50 @@ bank1_EnterKernel
 	STA	CXCLR
 
 	BIT	SubMenu
-	BVC	bank1_StayHere	; Go to the SubMenu Kernel
-	JMP 	bank1_DoSubMenuKernel	; instead.
+	BVC	StayHere	; Go to the SubMenu Kernel
+	JMP 	DoSubMenuKernel	; instead.
 
-bank1_StayHere
+StayHere
 
 	LDA	frameColor	
 	sta	WSYNC
 	STA	COLUBK
   	ldx	#4 		; From bl -> p0
 
-bank1_HorPosLoop		
+HorPosLoop		
    	lda	P0X,X	
-bank1_DivideLoop
+DivideLoop
 	sbc	#15
-   	bcs	bank1_DivideLoop
+   	bcs	DivideLoop
    	sta	temp01,X
    	sta	RESP0,X	
    	sta	WSYNC
    	dex
-   	bpl	bank1_HorPosLoop	
+   	bpl	HorPosLoop	
 
 	ldx	#4		; bl
    	ldy	temp05
-   	lda	bank1_FineAdjustTable256,Y
+   	lda	FineAdjustTable256,Y
    	sta	HMP0,X		
 
 	dex			; m1
    	ldy	temp04
-   	lda	bank1_FineAdjustTable256,Y
+   	lda	FineAdjustTable256,Y
    	sta	HMP0,X	
    
 	dex			; m0
    	ldy	temp03
-   	lda	bank1_FineAdjustTable256,Y
+   	lda	FineAdjustTable256,Y
    	sta	HMP0,X	
    
 	dex			; p1
    	ldy	temp02
-   	lda	bank1_FineAdjustTable256,Y
+   	lda	FineAdjustTable256,Y
    	sta	HMP0,X	
 
 	dex			; p0
    	ldy	temp01
-   	lda	bank1_FineAdjustTable256,Y
+   	lda	FineAdjustTable256,Y
    	sta	HMP0,X	
 
    	sta	WSYNC
@@ -291,7 +291,7 @@ bank1_DivideLoop
 	AND	#%11111101	; 2 (53) Always get the original colors.
 	STA	CTRLPF		; 3 (56)
 
-bank1_SettingUpP0SpriteAndMissile0
+SettingUpP0SpriteAndMissile0
 
 	LDA	P0Settings	;3 (59)
 	STA	REFP0		;3 (62)
@@ -304,7 +304,7 @@ bank1_SettingUpP0SpriteAndMissile0
 	LDA	P0Y ; 3 (75)
 	STA	temp09 	; temp09 stores P0 Y position. 3 (2) One line wasted.
 	
-bank1_SettingUpP1SpriteAndMissile1
+SettingUpP1SpriteAndMissile1
 
 	LDA	P1Settings 	; 3 (5)
 	STA	REFP1		; 3 (8)
@@ -320,7 +320,7 @@ bank1_SettingUpP1SpriteAndMissile1
 	STA	temp12 	; 3 (29) temp12 stores P1 Y position.
 
 
-bank1_FinishPreparation
+FinishPreparation
 	TSX			; 2 (31)
 	STX	item		; Save the stack pointer 3 (34)
 
@@ -347,44 +347,44 @@ bank1_FinishPreparation
 
 	LDY	#225		; 2 (9)
 	LDA	P0TurnOff	; 3 (12)
-	BVC	bank1_NoP0TurnOff	; 2 (14)
+	BVC	NoP0TurnOff	; 2 (14)
 
-	LDA	#<bank1_Zero	  ; 2
+	LDA	#<Zero		  ; 2
 	STA	P0SpritePointer   ; 3
-	LDA	#>bank1_Zero	  ; 2
+	LDA	#>Zero		  ; 2
 	STA	P0SpritePointer+1 ; 3
 	LDA	#1		; 2
 	STA	P0Height	; 3
 
 	STY	P0Y		; 3 (17)
-bank1_NoP0TurnOff
-	BPL	bank1_NoM0TurnOff ; 2 (19)
+NoP0TurnOff
+	BPL	NoM0TurnOff	; 2 (19)
 	STY	M0Y		; 3 (22)
-bank1_NoM0TurnOff
+NoM0TurnOff
 	
 	LDA	P1TurnOff	; 3 (25)
-	BVC	bank1_NoP1TurnOff ; 2 (27)
+	BVC	NoP1TurnOff	; 2 (27)
 
-	LDA	#<bank1_Zero	  ; 2
+	LDA	#<Zero		  ; 2
 	STA	P1SpritePointer   ; 3
-	LDA	#>bank1_Zero	  ; 2
+	LDA	#>Zero		  ; 2
 	STA	P1SpritePointer+1 ; 3
 	LDA	#1		; 2
 	STA	P1Height	; 3	
 
 	STY	P1Y		; 3 (30)
-bank1_NoP1TurnOff
-	BPL	bank1_NoM1TurnOff ; 2 (32)
+NoP1TurnOff
+	BPL	NoM1TurnOff	; 2 (32)
 	STY	M1Y		; 3 (35)
-bank1_NoM1TurnOff
+NoM1TurnOff
 
 	LDA	BallTurnOff	; 3 (38)
 	AND	#%00001000	; 2 (40)
 	CMP	#%00001000	; 2 (42)
-	BNE	bank1_NoBallTurnOff ; 2 (44)
+	BNE	NoBallTurnOff	; 2 (44)
 	STY	BLY		; 3 (47)
 
-bank1_NoBallTurnOff
+NoBallTurnOff
 * _sleep numbers:	14, 18, 22, 26,
 *  		 	30, 34, 38, 42, etc. 
 *			(n-2) % 4 = 0
@@ -412,37 +412,42 @@ bank1_NoBallTurnOff
 	
 	LDA	temp02			; 3(73)	
 	LDY	#0
-	JMP	bank1_FirstLine	; 3(76)
+	JMP	FirstLine	; 3(76)
 
-bank1_NoP0DrawNow
+NoP0DrawNow
 	CPX	M0Y		; 3
-	BNE	bank1_NoColorOverWriteM0 ; 2
+	BNE	NoColorOverWriteM0
 
 	LDA	M0Color		; 3
 	STA	COLUP0		; 3
 	LDA	#0	  	; 2
 
-	JMP	bank1_saveP0Sprite ; 3 
+	JMP	saveP0Sprite	; 3 
 
-bank1_NoColorOverWriteM0
+
+NoColorOverWriteM0
 	sleep 	5
 	LDA	#0
-	JMP	bank1_saveP0Sprite ; 3 
+	JMP	saveP0Sprite	; 3 
 
-bank1_NoP1DrawNow
+
+NoP1DrawNow
 	CPX	M1Y		; 3
-	BNE	bank1_NoColorOverWriteM1
+	BNE	NoColorOverWriteM1
 
 	LDA	M1Color		; 3
 	STA	COLUP1		; 3
 	LDA	#0	  	; 2
 
-	JMP	bank1_saveP1Sprite	; 3 
+	JMP	saveP1Sprite	; 3 
 
-bank1_NoColorOverWriteM1
+
+NoColorOverWriteM1
 	sleep 	5
 	LDA	#0
-	JMP	bank1_saveP1Sprite	; 3 
+	JMP	saveP1Sprite	; 3 
+
+
 
 DrawingTheScreen
 	; temp01 = pfIndex
@@ -458,9 +463,9 @@ DrawingTheScreen
 	; temp13 = lineNum
 	; temp14 = P0 Sprite Data
 
-bank1_FirstLine
+FirstLine
 	STA	WSYNC		; 3 (76)
-bank1_StartWithoutWSYNC
+StartWithoutWSYNC
 	STA	COLUPF		; 3 (3)
 	LDA	temp04		; 3 (6)
 	STA	COLUBK		; 3 (9)
@@ -498,7 +503,7 @@ bank1_StartWithoutWSYNC
 	cpx	M0Y		; 3
 	php			; 18 (6)
 
-bank1_MiddleLine
+MiddleLine
 
 	LDA	(pf0Pointer),y	; 5 (11)
 	STA	PF0		; 3 (14)
@@ -520,27 +525,28 @@ bank1_MiddleLine
 
 	LDA 	P0Height 	; 3 
 	DCP	temp09 		;  temp09 contains P0Y!  ; 5 
-	BCC	bank1_NoP0DrawNow	; 2 
+	BCC	NoP0DrawNow	; 2 
 	LDY	temp09		; 3 
 	LDA	(P0ColorPointer),y 	; 5 
 	STA	COLUP0		; 3 
 	LDA	(temp07),y 	; 5 
-bank1_saveP0Sprite
+saveP0Sprite
 	STA	temp14		; 3 
 	; 29 (3)
 
-bank1_LastLine
+LastLine
+
 	LDA	temp05		; 3 (9)
 	STA	PF0		; 3 (12)
 
 	LDA 	P1Height 	; 3 
 	DCP	temp12 		;  temp12 contains P0Y!  ; 5 
-	BCC	bank1_NoP1DrawNow	; 2 
+	BCC	NoP1DrawNow	; 2 
 	LDY	temp12		; 3 
 	LDA	(P1ColorPointer),y 	; 5
 	STA	COLUP1	; 3 
 	LDA	(temp10),y 	; 5
-bank1_saveP1Sprite
+saveP1Sprite
 	STA	temp03		; 3 
 	; 29 (41)
 
@@ -549,16 +555,17 @@ bank1_saveP1Sprite
 
 	LDY	temp14		; 3 (50)
 
+
 	CPX	#1		; 2 (58)
-	BEQ	bank1_ResetAll 	; 2 (60)
+	BEQ	ResetAll  	; 2 (60)
 
 	DEX			; 2 (62)
 	LDA	temp02		; 3 (65)
 
 	DEC	temp01		; 5 (70)
-	JMP	bank1_FirstLine	; 3 (73)
+	JMP	FirstLine	; 3 (73)
 
-bank1_ResetAll
+ResetAll
 	LDX	#0		; 2 (62)
 	STX	HMCLR		; 3 (65)
 	LDA	frameColor	; 3 (68)
@@ -587,7 +594,8 @@ bank1_ResetAll
 	LDX	item		; Retrieve the stack pointer
 	TXS
 
-bank1_JumpBackToBankScreenBottom
+
+JumpBackToBankScreenBottom
 
 	lda	bankToJump
 	lsr
@@ -603,15 +611,15 @@ bank1_JumpBackToBankScreenBottom
 	TAY			; Get the location of address from the table
 		
 		
-	lda	bank1_ScreenJumpTable,y
+	lda	ScreenJumpTable,y
    	pha
-   	lda	bank1_ScreenJumpTable+1,y
+   	lda	ScreenJumpTable+1,y
    	pha
    	pha
    	pha
    	jmp	bankSwitchJump
 
-bank1_LoadNextData
+LoadNextData
 	LDA	Tile1_1,x	; 4	
 	AND	#%00001111	; 2 Get low nibble
 	ASL			; 2 and multiply
@@ -670,9 +678,9 @@ bank1_LoadNextData
 	INX			; 2
 
 	STX	temp02		; 3
-	JMP	bank1_LoadedShit	; 3
+	JMP	LoadedShit	; 3
 
-bank1_DoSubMenuKernel
+DoSubMenuKernel
 	TSX			; 2 
 	STX	item		; 3
 
@@ -697,50 +705,51 @@ bank1_DoSubMenuKernel
 	LDA	OverlapScreen
 	AND	#%00100000
 	CMP	#%00100000
-	BEQ	bank1_DoThisCrap
-	JMP	bank1_NoOverLap
+	BEQ	DoThisCrap
+	JMP	NoOverLap
 
-bank1_DoThisCrap
+DoThisCrap
 	LDX	#3
-bank1_AddLines
+AddLines
 	STA	WSYNC
 	DEX	
 	CPX	#255
-	BNE	bank1_AddLines
+	BNE	AddLines
 	
-bank1_DoItAgainPlease
+DoItAgainPlease
 	STA	WSYNC
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAX
 
 	LDA	OverLapIndicator
-	BMI	bank1_ItsTheBottom
-	LDA	bank1_ScreenOverlapTop,x
-	JMP	bank1_SaveToppp
-bank1_ItsTheBottom
-	LDA	bank1_ScreenOverlapBottom,x
-bank1_SaveToppp
+	BMI	ItsTheBottom
+	LDA	ScreenOverlapTop,x
+	JMP	SaveToppp
+ItsTheBottom
+	LDA	ScreenOverlapBottom,x
+SaveToppp
 	STA	temp11
 	
+
 	LDA	#15		
 	CLC			
 	ADC	pfIndex		 
 	STA	temp01		; Save pfIndex 
 	STA	WSYNC
 	LDA	OverLapIndicator
-	BPL	bank1_NoTemp01Dec
+	BPL	NoTemp01Dec
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAX
 
 	LDA	temp01
 	SEC
-	SBC	bank1_DecrementTemp1,x
+	SBC	DecrementTemp1,x
 	STA	temp01
-bank1_NoTemp01Dec
+NoTemp01Dec
 	LDX	temp11
-
+	
 	LDY	temp01			
 
 	STA	WSYNC
@@ -759,20 +768,20 @@ bank1_NoTemp01Dec
 	LDA	GrayScale
 	AND	#%01000000
 	CMP	#%01000000
-	BNE	bank1_NotGray
+	BNE	NotGray
 	LDA	temp02
 	AND	#%00001111
 	STA	temp02
 	LDA	temp04
 	AND	#%00001111
 	STA	temp04
-bank1_NotGray
+NotGray
 	STA	WSYNC
 
 	LDA	OverLapIndicator
-	BPL	bank1_NoINY
+	BPL	NoINY
 	INY
-bank1_NoINY
+NoINY
 	LDA	(pf2Pointer),y		
 	STA	PF2	
 	
@@ -783,13 +792,13 @@ bank1_NoINY
 	STA	PF0	
 	STA	temp03
 	LDA	OverLapIndicator
-	BPL	bank1_NoDEY
+	BPL	NoDEY
 	DEY
-bank1_NoDEY
+NoDEY
 
-bank1_NewLineWithTemp04
+NewLineWithTemp04
 	LDA	temp04
-bank1_NewLine
+NewLine
 	STA	WSYNC
 	STA	COLUBK		; 3
 	LDA	temp02		; 3 (6)
@@ -822,7 +831,10 @@ bank1_NewLine
 	LDA	(pf2Pointer),y	; 5 (23)	
 	STA	PF2		; 3 (28)
 	
-	JSR	bank1_GetSecondPF0	
+
+	JSR	GetSecondPF0	
+
+	
 
 	LDA	(pfColorPointer),y	; 5 (55)
 	CLC			; 2 (57)	
@@ -833,30 +845,31 @@ bank1_NewLine
 	LDA	temp03		; 3
 	STA	PF0		; 3 (6)
 	sleep	2
-	JSR	bank1_GetSecondPF0 ; 6 (12) + 20
+	JSR	GetSecondPF0	; 6 (12) + 20
 
 	LDA	GrayScale	; 3 
 	AND	#%01000000	; 2 
 	CMP	#%01000000	; 2 
-	BNE	bank1_NotGray2	; 2 
+	BNE	NotGray2	; 2 
 	LDA	temp02		; 3 
 	AND	#%00001111	; 2 
 	STA	temp02		; 3 
 	LDA	temp04		; 3 
 	AND	#%00001111	; 2 
 	STA	temp04		; 3 
-bank1_NotGray2
+NotGray2
 
 	DEX
 	CPX	#1	
-	BEQ	bank1_ResetToOther
+	BEQ	ResetToOther
 
 
 	LDA	temp04
-	JMP	bank1_NewLine
-bank1_ResetToOther
+	JMP	NewLine
+ResetToOther
+
 	
-bank1_NoOverLap
+NoOverLap
 *	temp01: Rows left
 *	temp02: LineNum
 *	temp03 - temp14: GRP0 pointers
@@ -865,7 +878,9 @@ bank1_NoOverLap
 *	temp18: TileY
 *	temp19: SelectorData
 
-bank1_NoResetNow
+
+
+NoResetNow
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK		; 3
@@ -876,10 +891,10 @@ bank1_NoResetNow
 
 
 	LDA	OverLapIndicator
-	BPL	bank1_FFFF	
+	BPL	FFFF	
 
-	JMP	bank1_ResetAll
-bank1_FFFF
+	JMP	ResetAll
+FFFF
 
 
 	LDA	#%11111110	; 2 (15)			
@@ -904,9 +919,9 @@ bank1_FFFF
 	ASL
 
 	CLC			; 2 
-	ADC	#<bank1_Selector-1 ; 3 
+	ADC	#<Selector-1	; 3 
 	STA	temp15		; 3 
-	LDA	#>bank1_Selector-1 ; 3 
+	LDA	#>Selector-1	; 3 
 	STA	temp16		; 3 
 
 	LDY	#0
@@ -914,33 +929,33 @@ bank1_FFFF
 	LDA	TileSelected
 	AND	#%00011111
 
-bank1_SmallerThan6
+SmallerThan6
 	CMP	#6
-	BCC	bank1_GetP0Poz
+	BCC	GetP0Poz
 	SEC
 	SBC	#6
 	INY
-	JMP	bank1_SmallerThan6
-bank1_GetP0Poz
+	JMP	SmallerThan6
+GetP0Poz
 	STY	temp18	; Get the Tile row number reversed
 	LDY	#0
 	STY	temp03
 
 	STA	WSYNC
 	TAX
-	LDA	bank1_CursorXPosition,x
+	LDA	CursorXPosition,x
 	LDX	temp03
-bank1_CursorPozLoop
+CursorPozLoop
 	sbc	#15
-   	bcs	bank1_CursorPozLoop
+   	bcs	CursorPozLoop
    	sleep	2
 	tay
    	sta	RESP0	
-   	LDA	bank1_FineAdjustTable256,Y
+   	LDA	FineAdjustTable256,Y
 	STA	HMP0
 	INC	temp18
 
-bank1_SetP0TilePositions
+SetP0TilePositions
 	STA	WSYNC
 	STA	HMOVE
 	LDA	TileSetPointer+1  ; 5
@@ -960,12 +975,12 @@ bank1_SetP0TilePositions
 	LDA	counter		; 3 
 	AND	#%00000001	; 2 
 	CMP	#%00000001	; 2 	
-	BEQ	bank1_OddStart
+	BEQ	OddStart
 	LDA	#$C0
-	JMP	bank1_EvenStart
-bank1_OddStart
+	JMP	EvenStart
+OddStart
 	LDA	#$C0
-bank1_EvenStart	
+EvenStart	
 	STA	HMP1
 	
 	LDA	#0		
@@ -976,8 +991,9 @@ bank1_EvenStart
 	
 	LDA	#%00000010	; 2
 	STA	PF2		; 3
+
 		
-bank1_CalculatorLine
+CalculatorLine
 	LDX	temp02		; 3
 	LDA	#0		; 2
 	STA	GRP0		; 3
@@ -985,8 +1001,8 @@ bank1_CalculatorLine
 
 	DEC 	temp18
 
-	JMP	bank1_LoadNextData	; 3
-bank1_LoadedShit
+	JMP	LoadNextData	; 3
+LoadedShit
 	LDY	#7
 	LDA	(TileColorPointer),y	; 5 
 	CLC			; 3 
@@ -1004,38 +1020,40 @@ bank1_LoadedShit
 	LDA	counter		; 3 (5)
 	AND	#%00000001	; 2 (7)
 	CMP	#%00000001	; 2 (9)
-	BEQ	bank1_JumpOddFrame	; 2 (11)
+	BEQ	JumpOddFrame	; 2 (11)
 
-	JMP	bank1_EvenFrame	; 3 (14)
-bank1_JumpOddFrame
-	JMP	bank1_OddFrame
+	JMP	EvenFrame	; 3 (14)
+JumpOddFrame
+	JMP	OddFrame
 
 !!!213bytesOfUserData!!!
 
 	align	256
 
-bank1_OddFrame
+OddFrame
 	LDA	#$00
 	STA	HMP0
 
+	
 	sta	WSYNC
 
-bank1_Loop_Odd_Line1
+Loop_Odd_Line1
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
 	STA	HMP1		; 3 (8)
 	
 	LDA	temp18		; 3
 	CMP	#0		; 2
-	BEQ	bank1_SelectorDraw	; 2
+	BEQ	SelectorDraw	; 2
 	LDA	#0		; 2
 	sleep	2
-	JMP	bank1_NoSelectorDraw	; 3
-bank1_SelectorDraw
+	JMP	NoSelectorDraw	; 3
+SelectorDraw
 	sleep	3
 	LDA	temp19		; 3
-bank1_NoSelectorDraw
+NoSelectorDraw
 	STA	GRP0		; 3
+
 	
 	LDA	(temp03),y 	; 5 (30)
 	STA	GRP1		; 3 (33)
@@ -1048,14 +1066,16 @@ bank1_NoSelectorDraw
 	sleep	2
 	STX	GRP1		; 3 (53)
 	
+
 	sleep	8	
 	LDA	(temp15),y	
 	STA	temp19
 
+
 	LDA	#$00
 	STA	HMP0
 
-bank1_Loop_Odd_Line2
+Loop_Odd_Line2
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
 	STA 	HMP1		; 3 (8)
@@ -1076,15 +1096,18 @@ bank1_Loop_Odd_Line2
 	STA	GRP1		; 3 (48)
 	sleep 	2
 	STX	GRP1		; 3 (53)
+
 	
 	sleep	10
 		
+
+
 	LDA	temp17		; 3
 	STA	COLUPF		; 3
 	STA	COLUP1		; 3 
 
 	DEY			; 2 (74)
-	BPL	bank1_Loop_Odd_Line1	; 2 (76)
+	BPL	Loop_Odd_Line1	; 2 (76)
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -1092,10 +1115,10 @@ bank1_Loop_Odd_Line2
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
 	CMP	#0		; 2
-	BEQ	bank1_EndOfAll	; 2
-	JMP	bank1_CalculatorLine	; 3 	
+	BEQ	EndOfAll	; 2
+	JMP	CalculatorLine	; 3 	
 
-bank1_EvenFrame
+EvenFrame
 
 	_sleep	50		; (74)
 	sleep	7
@@ -1103,21 +1126,22 @@ bank1_EvenFrame
 	LDA	#$00
 	STA	HMP0
 
-bank1_Loop_Even_Line1
+
+Loop_Even_Line1
 	STA	HMOVE		; 3
 	LDA	#$80		; 2 (5)
 	STA	HMP1		; 3 (8)
 	
 	LDA	temp18		; 3
 	CMP	#0		; 2
-	BEQ	bank1_SelectorDraw2	; 2
+	BEQ	SelectorDraw2	; 2
 	LDA	#0		; 2
 	sleep	2
-	JMP	bank1_NoSelectorDraw2	; 3
-bank1_SelectorDraw2
+	JMP	NoSelectorDraw2	; 3
+SelectorDraw2
 	sleep	3
 	LDA	temp19		; 3
-bank1_NoSelectorDraw2
+NoSelectorDraw2
 	STA	GRP0		; 3
 	
 
@@ -1140,7 +1164,7 @@ bank1_NoSelectorDraw2
 	LDA	#$00
 	STA	HMP0
 
-bank1_Loop_Even_Line2
+Loop_Even_Line2
 	STA	HMOVE		; 3
 	LDA	#$00		; 2 (5)
 	STA 	HMP1		; 3 (8)
@@ -1171,7 +1195,7 @@ bank1_Loop_Even_Line2
 	STA	COLUP1		; 3 
 
 	DEY			; 2 (72)
-	BPL	bank1_Loop_Even_Line1	; 2 (74)
+	BPL	Loop_Even_Line1	; 2 (74)
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -1179,10 +1203,10 @@ bank1_Loop_Even_Line2
 	DEC	temp01		; 5	
 	LDA	temp01		; 3
 	CMP	#0		; 2
-	BEQ	bank1_EndOfAll	; 2
-	JMP	bank1_CalculatorLine	; 3 	
+	BEQ	EndOfAll	; 2
+	JMP	CalculatorLine	; 3 	
 
-bank1_EndOfAll
+EndOfAll
 	
 	STA	WSYNC
 	LDA	#0
@@ -1197,15 +1221,16 @@ bank1_EndOfAll
 	STA	WSYNC
 	STA	WSYNC
 
-bank1_IsThereOverLap
+
+IsThereOverLap
 	LDA	OverlapScreen
 	AND	#%00100000
 	CMP	#%00100000
-	BEQ	bank1_ThereItIs
+	BEQ	ThereItIs
 	STA	WSYNC
-	JMP	bank1_ResetAll
+	JMP	ResetAll
 
-bank1_ThereItIs
+ThereItIs
 	LDA	OverLapIndicator
 	ORA	#%10000000
 	STA	OverLapIndicator
@@ -1219,26 +1244,26 @@ bank1_ThereItIs
 	LDA	SubMenuLines
 	AND	#%00000011
 	TAY
-	LAX	bank1_ExtraWSYNC,y
-bank1_DoExtraWSYNC
+	LAX	ExtraWSYNC,y
+DoExtraWSYNC
 	CPX	#0
-	BEQ	bank1_NoMoreLiiiiines
+	BEQ	NoMoreLiiiiines
 	STA	WSYNC
 	DEX
-	JMP	bank1_DoExtraWSYNC
+	JMP	DoExtraWSYNC
 
-bank1_NoMoreLiiiiines
-	JMP	bank1_DoItAgainPlease
+NoMoreLiiiiines
+	JMP	DoItAgainPlease
 
 !!!191bytesOfUserData!!!
 
 	align	256
-bank1_FineAdjustTable256
+FineAdjustTable256
 	fill 	156
 
-bank1_Zero
-bank1_Null
-bank1_None
+Zero
+Null
+None
 	.BYTE	#0	; This is an empty byte for constant code usage.
 	.BYTE	#0
 	.BYTE	#0
@@ -1247,7 +1272,7 @@ bank1_None
 	.BYTE	#0
 	.BYTE	#0
 
-bank1_Selector
+Selector
 	byte	#%01100110	; (0)
 	byte	#%00000000
 	byte	#%10000001
@@ -1281,7 +1306,7 @@ bank1_Selector
 	byte	#%10000000
 	byte	#%00110011
 
-bank1_GetSecondPF0
+GetSecondPF0
 	LDA	temp03		
 	ASL			
 	ASL			
@@ -1290,31 +1315,31 @@ bank1_GetSecondPF0
 	STA	PF0	
 	RTS
 
-bank1_ScreenOverlapTop
+ScreenOverlapTop
 	byte	#16
 	byte	#12
 	byte	#7
 	byte	#4
 
-bank1_ScreenOverlapBottom
+ScreenOverlapBottom
 	byte	#16
 	byte	#13
 	byte	#11
 	byte	#8
 
-bank1_DecrementTemp1
+DecrementTemp1
 	byte	#27
 	byte	#30
 	byte	#32
 	byte	#35
 
-bank1_ExtraWSYNC
+ExtraWSYNC
 	byte	#0
 	byte	#1
 	byte	#2
 	byte	#0
 
-bank1_ScreenJumpTable
+ScreenJumpTable
 	.byte	#>ScreenBottomBank2-1
 	.byte	#<ScreenBottomBank2-1
 	.byte	#>ScreenBottomBank3-1
@@ -1330,7 +1355,7 @@ bank1_ScreenJumpTable
 	.byte	#>ScreenBottomBank8-1
 	.byte	#<ScreenBottomBank8-1
 
-bank1_CursorXPosition
+CursorXPosition
 	byte	#60	
 	byte	#79	
 	byte	#83	
@@ -1338,7 +1363,8 @@ bank1_CursorXPosition
 	byte	#106	
 	byte	#110	
 
-bank1_FineAdjustTable
+
+FineAdjustTable
 	byte	#$80
 	byte	#$70
 	byte	#$60
@@ -1356,7 +1382,7 @@ bank1_FineAdjustTable
 	byte	#$a0
 	byte	#$90
 
-bank1_UnderTheTable
+UnderTheTable
 
 *Routine Section
 *---------------------------------
@@ -1384,9 +1410,9 @@ Data_Section
 start_bank1 
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -1648,9 +1674,9 @@ JumpToMainKernelBank2
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -1710,9 +1736,9 @@ ScreenBottomBank2
 start_bank2
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -1974,9 +2000,9 @@ JumpToMainKernelBank3
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -2035,9 +2061,9 @@ ScreenBottomBank3
 start_bank3
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -2298,9 +2324,9 @@ JumpToMainKernelBank4
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -2359,9 +2385,9 @@ ScreenBottomBank4
 start_bank4
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -2623,9 +2649,9 @@ JumpToMainKernelBank5
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -2684,9 +2710,9 @@ ScreenBottomBank5
 start_bank5
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -2947,9 +2973,9 @@ JumpToMainKernelBank6
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3009,9 +3035,9 @@ ScreenBottomBank6
 start_bank6
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -3272,9 +3298,9 @@ JumpToMainKernelBank7
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3334,9 +3360,9 @@ ScreenBottomBank7
 start_bank7
 	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
    	pha
    	txa
@@ -3584,9 +3610,9 @@ JumpToMainKernelBank8
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(bank1_EnterKernel-1)
+	lda	#>(EnterKernel-1)
    	pha
-   	lda	#<(bank1_EnterKernel-1)
+   	lda	#<(EnterKernel-1)
    	pha
    	pha
    	pha
@@ -3674,8 +3700,8 @@ CalculateDuringVBLANK
 * BCC 	else
 *
 	BIT	SubMenu
-	BVC	bank8_CheckIfOutOfBorders	; Go to the SubMenu Kernel
-	JMP	bank8_SubMenuVBLANK	
+	BVC	CheckIfOutOfBorders	; Go to the SubMenu Kernel
+	JMP	SubMenuVBLANK	
 
 
 *CheckIfOutOfBorders
@@ -3684,20 +3710,20 @@ CalculateDuringVBLANK
 * to the objects as they are touching the borders
 * of the screen.
 
-bank8_CheckIfOutOfBorders
+CheckIfOutOfBorders
 	
 	LDA	pfEdges
 	AND	#%11000000
 	STA	temp07
 	CMP	#%00000000
-	BEQ	bank8_CalculateIndexes	
+	BEQ	CalculateIndexes	
 
 	TSX
 	STX	temp03	
 	LDX	#4	; p0, p1, m0, m1, bl
 
 
-bank8_NextItemThings
+NextItemThings
 *	
 * temp01 - Largest X allowed
 * temp02 - Largest Y allowed	
@@ -3709,18 +3735,18 @@ bank8_NextItemThings
 *
 	TXA	
 	TXS	
- 	LDA	bank8_XTable,x
+ 	LDA	XTable,x
 
 	TAX
 	STA	temp04
 	LDA	P0Settings,x
 	AND	#%00000111
 	TAX	
-	LDA	bank8_XHorBorderAddSprite,x
+	LDA	XHorBorderAddSprite,x
 	TSX
 	CPX	#2
-	BCC	bank8_NotAMissile
-bank8_ItsAMissile	
+	BCC	NotAMissile
+ItsAMissile	
 	SEC
 	SBC	#7
 	sta	temp05
@@ -3733,131 +3759,131 @@ bank8_ItsAMissile
 	lsr
 	lsr
 	TAX
-	LDA	bank8_XHorBorderAddMissile,x
+	LDA	XHorBorderAddMissile,x
 	CLC
 	ADC	temp05
 
-bank8_NotAMissile
+NotAMissile
 	STA	temp05
 	LDA	#160	
 	SEC	
 	SBC	temp05
 	STA	temp01
 
-bank8_VerticalFun
+VerticalFun
 	LDX	temp04
 	LDA	P0Height,x
 	TSX
 	CPX	#2
-	BCS	bank8_ItsAMissile2
+	BCS	ItsAMissile2
 	LDA	temp04
-	JMP 	bank8_NotAMissile2
-bank8_ItsAMissile2
+	JMP 	NotAMissile2
+ItsAMissile2
 	LDA	#0
-bank8_NotAMissile2
+NotAMissile2
 	STA	temp05
 	LDA	#40
 	SEC
 	SBC	temp05
 	STA	temp02
 
-bank8_VerticalFun2
+VerticalFun2
 	LDX	temp04
 	LDA	P0Height,x
 	TSX
 	CPX	#2
-	BCS	bank8_ItsAMissile3
+	BCS	ItsAMissile3
 	CLC	
 	ADC	#2
 	ADC	temp04
 
-	JMP	bank8_NotAMissile3
-bank8_ItsAMissile3
+	JMP	NotAMissile3
+ItsAMissile3
 	LDA	#2
-bank8_NotAMissile3
+NotAMissile3
 	STA	temp06
 
 	TSX
 	LDA	temp07
 	CMP	#%11000000
-	BEQ	bank8_AppearOpposite
+	BEQ	AppearOpposite
 
 	LDA	temp07
-	BMI	bank8_NoBLAHBLAH
+	BMI	NoBLAHBLAH
 	CPX	#2
-	BCS	bank8_AppearOpposite
+	BCS	AppearOpposite
 
-bank8_NoBLAHBLAH
+NoBLAHBLAH
 	LDA	P0X,x
 	CMP	#16
-	BCS	bank8_NotSmallerThan
+	BCS	NotSmallerThan
 	LDA	#16
 	STA	P0X,x	
-	JMP	bank8_doYForNow
-bank8_NotSmallerThan
+	JMP	doYForNow
+NotSmallerThan
 	LDA	temp01
 	CMP 	P0X,x
-	BCS	bank8_doYForNow
+	BCS	doYForNow
 	STA	P0X,x
-bank8_doYForNow
+doYForNow
 	LDA	P0Y,x
 	CMP	temp06
-	BCS	bank8_NotLowerThan
+	BCS	NotLowerThan
 	LDA	temp06
 	STA	P0Y,x
-bank8_NotLowerThan
+NotLowerThan
 	LDA	temp02
 	CMP	P0Y,x
-	BCS	bank8_PrepareForNext
+	BCS	PrepareForNext
 	LDA	temp02
 	STA	P0Y,x
-bank8_PrepareForNext
+PrepareForNext
 	DEX	
 	CPX	#255
-	BNE	bank8_NextItemThings
-	JMP	bank8_StackBackUp
+	BNE	NextItemThings
+	JMP	StackBackUp
 
-bank8_AppearOpposite
+AppearOpposite
 	LDA	P0X,x
 	CMP	#16
-	BCS	bank8_NotSmallerThan2
+	BCS	NotSmallerThan2
 	LDA	temp01
 	SEC
 	SBC	#1
 	STA	P0X,x	
-	JMP	bank8_doYForNow2
-bank8_NotSmallerThan2
+	JMP	doYForNow2
+NotSmallerThan2
 	LDA	temp01
 	CMP 	P0X,x
-	BCS	bank8_doYForNow2
+	BCS	doYForNow2
 	LDA	#17
 	STA	P0X,x
-bank8_doYForNow2
+doYForNow2
 	LDA	P0Y,x
 	CMP	temp06
-	BCS	bank8_NotLowerThan2
+	BCS	NotLowerThan2
 	LDA	temp02
 	SEC
 	SBC	#1
 	STA	P0Y,x
-bank8_NotLowerThan2
+NotLowerThan2
 	LDA	temp02
 	CMP	P0Y,x
-	BCS	bank8_PrepareForNext2
+	BCS	PrepareForNext2
 	LDA	temp06
 	CLC
 	ADC	#1
 	STA	P0Y,x
-bank8_PrepareForNext2
+PrepareForNext2
 	DEX	
 	CPX	#255
-	BNE	bank8_NextItemThings
+	BNE	NextItemThings
 
-bank8_StackBackUp
+StackBackUp
 	LDX	temp03
 	TXS
 
-bank8_CalculateIndexes
+CalculateIndexes
 	LDA 	P0Height
 	CLC
 	ADC	#1
@@ -3868,19 +3894,19 @@ bank8_CalculateIndexes
 	TAY			; Move it to Y for calculations
 	LDA	P0SpritePointer
 	
-bank8_CalculateP0PointerIndex
+CalculateP0PointerIndex
 	; You can only have the maximum number of sprites 256/height that is always smaller than 16
 	; (over 16 px height, you cannot use all 16 indexes because of the paging overflow that would break timing.
 
 	CPY	#0
-	BEQ	bank8_CalculateP0PointerIndexDone
+	BEQ	CalculateP0PointerIndexDone
 	CLC	
 	ADC	temp01
 	DEY
-	JMP	bank8_CalculateP0PointerIndex
+	JMP	CalculateP0PointerIndex
 
 
-bank8_CalculateP0PointerIndexDone
+CalculateP0PointerIndexDone
 	STA	temp07		; temp10 will store the sprite pointers low byte
  
 	LDA 	P1Height
@@ -3897,22 +3923,22 @@ bank8_CalculateP0PointerIndexDone
 	TAY			; Move it to Y for calculations
 	LDA	P1SpritePointer
 	
-bank8_CalculateP1PointerIndex
+CalculateP1PointerIndex
 	; You can only have the maximum number of sprites 256/height that is always smaller than 16
 	; (over 16 px height, you cannot use all 16 indexes because of the paging overflow that would break timing.
 
 	CPY	#0
-	BEQ	bank8_CalculateP1PointerIndexDone
+	BEQ	CalculateP1PointerIndexDone
 	CLC	
 	ADC	temp01
 	DEY
-	JMP	bank8_CalculateP1PointerIndex
+	JMP	CalculateP1PointerIndex
 
 
-bank8_CalculateP1PointerIndexDone
+CalculateP1PointerIndexDone
 	STA	temp10		; temp10 will store the sprite pointers low byte
 
-bank8_JumpBackToBankScreenTop
+JumpBackToBankScreenTop
 
 	lda	bankToJump
 	lsr
@@ -3928,15 +3954,17 @@ bank8_JumpBackToBankScreenTop
 	TAY			; Get the location of address from the table
 		
 		
-	lda	bank8_VBlankJumpTable,y
+	lda	VBlankJumpTable,y
    	pha
-   	lda	bank8_VBlankJumpTable+1,y
+   	lda	VBlankJumpTable+1,y
    	pha
    	pha
    	pha
    	jmp	bankSwitchJump
 
-bank8_VBlankJumpTable
+
+
+VBlankJumpTable
 	byte	#>VBlankEndBank2-1
 	byte	#<VBlankEndBank2-1
 	byte	#>VBlankEndBank3-1
@@ -3952,14 +3980,14 @@ bank8_VBlankJumpTable
 	byte	#>VBlankEndBank8-1
 	byte	#<VBlankEndBank8-1
 
-bank8_XTable
+XTable
 	byte	#0
 	byte	#1
 	byte	#0
 	byte	#1
 	byte	#2
 
-bank8_XHorBorderAddSprite
+XHorBorderAddSprite
 	byte	#8
 	byte	#24
 	byte	#40
@@ -3970,13 +3998,14 @@ bank8_XHorBorderAddSprite
 	byte	#32
 	
 
-bank8_XHorBorderAddMissile
+XHorBorderAddMissile
 	byte	#1
 	byte	#2
 	byte	#4
 	byte	#8
 
-bank8_SubMenuVBLANK	
+
+SubMenuVBLANK	
 	LDA	SubMenuLines
 	AND	#%00000011
 	CLC
@@ -3984,31 +4013,31 @@ bank8_SubMenuVBLANK
 	TAY
 	LDA	#0
 	STA	temp02
-bank8_Add6ToThat
+Add6ToThat
 	CPY	#0
-	BEQ	bank8_NoMore6
+	BEQ	NoMore6
 	CLC
 	ADC	#6
 	DEY
-	JMP 	bank8_Add6ToThat
-bank8_NoMore6
+	JMP 	Add6ToThat
+NoMore6
 	STA	temp02
 	
 	LDA	TileSelected
 	AND	#%00011111
 	CMP	temp02
-	BCC	bank8_NoLargerThan24
+	BCC	NoLargerThan24
 	LDA	TileSelected
 	AND	#%11100000
 	STA	TileSelected
-bank8_NoLargerThan24
+NoLargerThan24
 
-bank8_SubMenuVBLANKEnd
-	JMP	bank8_JumpBackToBankScreenTop
+SubMenuVBLANKEnd
+	JMP	JumpBackToBankScreenTop
 	
 	align 256
 	
-bank8_Start
+Start
    	sei
    	cld
    	ldy	#0
@@ -4017,15 +4046,15 @@ bank8_Start
    	lda	$D1
    	cmp	#$A9		;check RAM location #2   	bne	MachineIs2600
    	dey
-bank8_MachineIs2600
+MachineIs2600
 	ldx	#0
   	txa
-bank8_clearmem
+clearmem
    	inx
    	txs
    	pha
 	cpx	#$00
-   	bne	bank8_clearmem	; Clear the RAM.
+   	bne	clearmem	; Clear the RAM.
 
 	LDA	$F080		; Sets two values for the SC RAM 
 	STA	$80		; to Random and Counter variables
@@ -4035,12 +4064,12 @@ bank8_clearmem
 	LDY	#0		
 	TYA
 	STA	$F029
-bank8_ClearSCRAM
+ClearSCRAM
 	STA 	$F000,Y
 	INY
-	BPL 	bank8_ClearSCRAM
+	BPL 	ClearSCRAM
 
-bank8_DisableMusicWaveOnStartUp
+DisableMusicWaveOnStartUp
 	LDA	#%00111111
 	STA	JukeBox_Controller
 
@@ -4059,9 +4088,9 @@ bank8_DisableMusicWaveOnStartUp
 bankSwitchCode
  	ldx	#$ff
    	txs
-   	lda	#>(bank8_Start-1)
+   	lda	#>(Start-1)
    	pha
-   	lda	#<(bank8_Start-1)
+   	lda	#<(Start-1)
    	pha
 bankSwitchReturn
 	pha
@@ -4083,7 +4112,7 @@ bankSwitchJump
    	pla
    	rts
 	rewind 8ffc	   
-   	.byte 	#<bank8_Start
-  	.byte 	#>bank8_Start
-   	.byte 	#<bank8_Start
-  	.byte 	#>bank8_Start
+   	.byte 	#<Start
+  	.byte 	#>Start
+   	.byte 	#<Start
+  	.byte 	#>Start
