@@ -689,7 +689,10 @@ class ObjectMaster:
         return theObject
 
     def createFakeCommandOnObjectProcess(self, command):
-        object = self.returnAllAboutTheObject(command)
+        if type(command) == str:
+           object = self.returnAllAboutTheObject(command)
+        else:
+           object = command
 
         if object["exist"]:
             name = command.split(object["delimiter"])[-1]
@@ -707,7 +710,8 @@ class ObjectMaster:
             data.append(object["ioMethod"])
             data.append("None")
             data.append("False")
-            data.append("False")
+            data.append("0")
+            data.append("True")
 
             #print(Command(self.__loader, name, ",".join(data)).params)
             return Command(self.__loader, name, ",".join(data))

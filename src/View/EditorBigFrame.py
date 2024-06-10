@@ -954,7 +954,7 @@ class EditorBigFrame:
 
            #self.__loader.alreadyCollectedLabels = []
 
-           c = FirstCompiler(self.__loader, self, self.__codeBox.get(selection[0],
+           c = FirstCompiler(self.__loader, 1, self, self.__codeBox.get(selection[0],
                                                                      selection[1]),
                              True, "forEditor", self.__currentBank, self.__currentSection, int(selection[0].split(".")[0]), self.__codeBox.get(0.0, END), False, {})
 
