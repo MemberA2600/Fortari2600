@@ -1,5 +1,6 @@
 from datetime import datetime
 from copy import deepcopy
+from threading import Thread
 import re
 
 class FirstCompiler:
@@ -173,15 +174,16 @@ class FirstCompiler:
     def createFetchedLines(self, text, detect):
         linesFeteched = []
 
+        #alltheTime = datetime.now()
+
         for lineNum in range(0, len(text)):
             line = text[lineNum]
 
             if detect: line = self.deleteNotUsedUpParams(line)
 
+            #theTime = datetime.now()
             lineStruct = self.__editorBigFrame.getLineStructure(lineNum, text, True)
-
-            #if lineStruct["command"][0] in self.__noneList:
-            #   continue
+            #print("1", lineStruct["command"][0], (datetime.now() - theTime).total_seconds())
 
             lineStruct["fullLine"]       = line
             lineStruct["labelsBefore"]   = []
@@ -202,25 +204,26 @@ class FirstCompiler:
                lineStruct["param#2"][0]  = None
                lineStruct["param#3"][0]  = None
 
+        #print("1", (datetime.now() - alltheTime).total_seconds())
         return linesFeteched
 
     def compileBuild(self, linesFeteched, mode):
         #import time
 
+        #alltheTime = datetime.now()
+
         for line in linesFeteched:
             self.__error = False
             if line["command"][0] not in self.__noneList and line["unreachable"] == False:
-               #if "%" in line["command"][0]: print("SSSS")
-               #start = time.time()
-               self.processLine(line, linesFeteched)
-               #end   = time.time()
-               #print(">>", line["fullLine"], end-start)
+                #theTime = datetime.now()
+                self.processLine(line, linesFeteched)
+                #print("2", line["command"][0], (datetime.now() - theTime).total_seconds())
 
-               #if "add" in line["command"][0]: print("xxx", line["compiled"], "xxx")
-               line["compiled"].replace("##", "#")
-               self.colorAnnotationAfter(line)
+                line["compiled"].replace("##", "#")
+                self.colorAnnotationAfter(line)
+
+        #print("1", (datetime.now() - alltheTime).total_seconds())
         textToReturn = ""
-        currentLineNum = 0
 
         for line in linesFeteched:
             for word in ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
@@ -250,8 +253,8 @@ class FirstCompiler:
 
                   textToReturn += line["comment"][0] + "\n"
 
+        #print("2", (datetime.now() - alltheTime).total_seconds())
         self.result = self.detectUnreachableCode(self.checkForNotNeededExtraLDA(textToReturn))
-        #print("\n>>>>>>>>>>>>>>>>>\n", self.result, "\n<<<<<<<<<<<<<<<<<<<<<<<<\n")
 
     def colorAnnotationAfter(self, line):
         if "&COLOR" in line["compiled"]: return
@@ -1201,7 +1204,6 @@ class FirstCompiler:
 
         elif self.isCommandInLineThat(line, "multi"):
             #params = self.getParamsWithTypesAndCheckSyntax(line)
-
             if params["param#1"][0] == params["param#2"][0] and params["param#1"][1] == "variable":
                template = self.__loader.io.loadCommandASM("multiS")
                var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
@@ -1227,9 +1229,18 @@ class FirstCompiler:
                changers["#VAR01#"]   = params["param#1"][0]
                changers["#VARTEMP#"] = params["param#1"][0]
                changers["#VAR03#"]   = params["param#3"][0]
+
+               allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
+
+               """
                if   var1.bcd == True and var2.bcd == True and var1.type == "byte" and var2.type == "byte":
                     changers["!!!BCDon!!!"]  = "\tSED\t"
                     changers["!!!BCDoff!!!"] = "\tCLD\t"
+               """
+
+               if hasBCD and allTheSame == True:
+                   changers["!!!BCDon!!!"] = "\tSED"
+                   changers["!!!BCDoff!!!"] = "\tCLD"
 
                else:
                     self.__temps = self.collectUsedTemps()
@@ -1271,61 +1282,104 @@ class FirstCompiler:
 
                   theNum = int(self.__editorBigFrame.convertStringNumToNumber(params[numParam][0]))
                   var = self.__loader.virtualMemory.getVariableByName2(params[varParam][0])
-                  if "param#3" not in params:
-                      if self.isIt(params[numParam][0], 1):
-                          return
 
+                  powerOfTwo, remainder = self.sliceToNumberOfTwoAndRemainder(theNum)
+                  if (powerOfTwo > 0 and remainder > 0):
                       if var != False:
-                          if self.isPowerOfTwo(theNum):
-                             times   = self.howManyTimesThePowerOfTwo(theNum)
-                             subLine = self.__editorBigFrame.getLineStructure(0, ["\tasl(" + str(times) + ", " + params[varParam][0] + " )"], False)
-                             self.processLine(subLine, linesFeteched)
-                             if "compiled" in subLine:
-                                 line["compiled"] = subLine["compiled"]
-                                 if line["compiled"] != "": return
+                         self.__temps = self.collectUsedTemps()
+                         try:
+                             tempVar = self.__temps[0]
+                             self.__temps.pop(0)
+                         except:
+                             self.addToErrorList(line["lineNum"],
+                                                 self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                                   "", "",
+                                                                   str(line["lineNum"] + self.__startLine)))
+                         #INNEN
+                         if self.__error == False:
+                            changer = {}
+                            template = self.__loader.io.loadCommandASM("multi2")
 
-                  if var != False:
-                     if self.isPowerOfTwo(theNum):
-                         times = self.howManyTimesThePowerOfTwo(theNum)
-                         if times > 1:
-                            template                  = self.__loader.io.loadCommandASM("pow2")
-                            changer                   = {}
-                            changer["#VAR01#"]        = params[varParam][0]
-                            changer["#VAR02#"]        = params["param#3"][0]
-                            changer["!!!to8bit!!!"]   = self.convertAny2Any(params[varParam][0] , "TO"  , params, None)
-                            changer["!!!from8bit!!!"] = self.convertAny2Any(params["param#3"][0], "FROM", params, None)
-                            changer["!!!ASL!!!"]      = "\tASL\n" * times
+                            changer["#VAR01#"] = params[varParam][0]
+                            changer["#VAR02#"] = "#" + str(remainder)
+                            if "param#3" not in params:
+                                params ["param#3"] = params[varParam]
+                                changer["#VAR03#"] = params[varParam][0]
+                            else:
+                                changer["#VAR03#"] = params["param#3"][0]
+
+                            changer["#VARTEMP#"]      = tempVar
+                            changer["!!!to8bit!!!"]   = self.convertAny2Any(params[varParam] [0], "TO"  , params, self.__temps)
+                            changer["!!!from8bit!!!"] = self.convertAny2Any(params["param#3"][0], "FROM", params, self.__temps)
+                            changer["!!!ASLs!!!"]     = "\tASL\n" * powerOfTwo
 
                             self.__magicNumber       += 1
                             changer["#MAGIC#"]        = str(self.__magicNumber)
 
-                            for key in changer:
-                                template = template.replace(key, changer[key])
+                            for cKey in changer:
+                                template = template.replace(cKey, changer[cKey])
+
                             self.checkASMCode(template, line, linesFeteched)
                             if self.__error == False:
                                line["compiled"] = template.replace("#BANK#", self.__currentBank)
                                return
-                         elif times == 1:
-                            txt = "\tLDA\t"   + params[varParam][0] + "\n" + self.convertAny2Any(params[varParam][0] , "TO"  , params, None) +\
-                                  "\n\tASL\n" + self.convertAny2Any(params["param#3"][0], "FROM", params, None) + "\tSTA\t" + params["param#3"][0] + "\n"
-                            self.checkASMCode(txt, line, linesFeteched)
-                            if self.__error == False:
-                               line["compiled"] = txt.replace("#BANK#", self.__currentBank)
-                               return
-                         else:
-                             if   params[numParam][0] == "0":
-                                  params["param#0"] = ["0", "number"]
-                                  txt = self.saveAValue(params, "param#0", "param#3", line)
-                                  self.checkASMCode(txt, line, linesFeteched)
-                                  if self.__error == False:
-                                     line["compiled"] = txt
-                                     return
-                             elif params[numParam][0] == "1":
-                                  txt = self.saveAValue(params, "param#1", "param#3", line)
-                                  self.checkASMCode(txt, line, linesFeteched)
-                                  if self.__error == False:
-                                     line["compiled"] = txt
-                                     return
+
+                  else:
+                      if "param#3" not in params:
+                          if self.isIt(params[numParam][0], 1):
+                              return
+
+                          if var != False:
+                              if self.isPowerOfTwo(theNum):
+                                 times   = self.howManyTimesThePowerOfTwo(theNum)
+                                 subLine = self.__editorBigFrame.getLineStructure(0, ["\tasl(" + str(times) + ", " + params[varParam][0] + " )"], False)
+                                 self.processLine(subLine, linesFeteched)
+                                 if "compiled" in subLine:
+                                     line["compiled"] = subLine["compiled"]
+                                     if line["compiled"] != "": return
+
+                      if var != False:
+                         if self.isPowerOfTwo(theNum):
+                             times = self.howManyTimesThePowerOfTwo(theNum)
+                             if times > 1:
+                                template                  = self.__loader.io.loadCommandASM("pow2")
+                                changer                   = {}
+                                changer["#VAR01#"]        = params[varParam][0]
+                                changer["#VAR02#"]        = params["param#3"][0]
+                                changer["!!!to8bit!!!"]   = self.convertAny2Any(params[varParam][0] , "TO"  , params, None)
+                                changer["!!!from8bit!!!"] = self.convertAny2Any(params["param#3"][0], "FROM", params, None)
+                                changer["!!!ASL!!!"]      = "\tASL\n" * times
+
+                                self.__magicNumber       += 1
+                                changer["#MAGIC#"]        = str(self.__magicNumber)
+
+                                for key in changer:
+                                    template = template.replace(key, changer[key])
+                                self.checkASMCode(template, line, linesFeteched)
+                                if self.__error == False:
+                                   line["compiled"] = template.replace("#BANK#", self.__currentBank)
+                                   return
+                             elif times == 1:
+                                txt = "\tLDA\t"   + params[varParam][0] + "\n" + self.convertAny2Any(params[varParam][0] , "TO"  , params, None) +\
+                                      "\n\tASL\n" + self.convertAny2Any(params["param#3"][0], "FROM", params, None) + "\tSTA\t" + params["param#3"][0] + "\n"
+                                self.checkASMCode(txt, line, linesFeteched)
+                                if self.__error == False:
+                                   line["compiled"] = txt.replace("#BANK#", self.__currentBank)
+                                   return
+                             else:
+                                 if   params[numParam][0] == "0":
+                                      params["param#0"] = ["0", "number"]
+                                      txt = self.saveAValue(params, "param#0", "param#3", line)
+                                      self.checkASMCode(txt, line, linesFeteched)
+                                      if self.__error == False:
+                                         line["compiled"] = txt
+                                         return
+                                 elif params[numParam][0] == "1":
+                                      txt = self.saveAValue(params, "param#1", "param#3", line)
+                                      self.checkASMCode(txt, line, linesFeteched)
+                                      if self.__error == False:
+                                         line["compiled"] = txt
+                                         return
 
 
             if "param#3" not in params.keys():
@@ -3160,6 +3214,16 @@ class FirstCompiler:
                     print(line, line["compiled"])
 
             line["compiled"] = ""
+
+    def sliceToNumberOfTwoAndRemainder(self, num):
+        remainder  = num
+        powerOfTwo = 0
+
+        while (remainder % 2 == 0):
+            powerOfTwo += 1
+            remainder /= 2
+
+        return powerOfTwo, int(remainder)
 
     def reformatResult(self, result):
         #print("\nZZZZZZZZZZZZZZ\n", result, "\nZZZZZZZZZZZZZZ\n")
@@ -5111,7 +5175,7 @@ class FirstCompiler:
                       hexa = "$" + hexa.upper()
 
                       if hexa not in self.__registers.keys() and hexa not in self.__validMemoryAddresses:
-                          if printError: print(line, errorVal)
+                          if printError: print(lineVal)
                           self.addToErrorList(lineStructure["lineNum"],
                                              self.prepareErrorASM("compilerErrorASMRegisterAddr",
                                                                    command, value,
@@ -5177,7 +5241,7 @@ class FirstCompiler:
                          eText = special
 
                       eText += opcodeDoes[0].upper() + opcodeDoes[1:]
-                      if printError: print(line, errorVal)
+                      if printError: print(lineVal)
                       self.addToErrorList(lineStructure["lineNum"],
                                           self.prepareErrorASM("compilerErrorASM"+eText,
                                                                command, value,
@@ -5186,7 +5250,7 @@ class FirstCompiler:
                    break
 
             if foundCommand == False:
-               if printError: print(line, errorVal) #, lineStructure)
+               if printError: print(lineVal) #, lineStructure)
                if self.__testFirst:
                   self.__testFirst = False
                   #print(labels, line in labels, type(line))
@@ -5511,7 +5575,7 @@ class FirstCompiler:
 
             secondPart = self.__dictionaries.getWordFromCurrentLanguage(item[1])
             for key in errorNames[item[1]]:
-                secondPart = secondPart.replace(key, errorNames[item[1]][key])
+                secondPart = secondPart.replace(keyNames[item[1]][key])
 
             self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorCommand", "",
                                                                    line["command"][0], "",
@@ -5748,48 +5812,6 @@ class FirstCompiler:
         else:
             returnBack = " set(" + saveHere + ", " + finals[0] + ")\n"
 
-            """
-            isItNum = False
-            try:
-                teszt   = int(finals[0].replace("#", ""))
-                isItNum = True
-            except:
-                pass
-
-            #extra  = ""
-            before = ""
-            after  = ""
-
-            if isItNum or finals[0][0] in ["%", "$"]:
-               if finals[0][0] != "#":
-                  finals[0]     = "#" + finals[0]
-            else:
-                var = self.__loader.virtualMemory.getVariableByName(finals[0], self.__currentBank)
-                if var == False:
-                   var = self.__loader.virtualMemory.getVariableByName(finals[0], "bank1")
-                if var == False:
-                   self.addToErrorList(line["lineNum"], self.prepareError("compilerErrorVarNotFound", finals[0],
-                                                                           "", "",
-                                                                           str(line["lineNum"] + self.__startLine)))
-                else:
-                    allTheSame, hasBCD = self.paramsHaveBCDandBinaryAtTheSameTime(params)
-
-                    if hasBCD and allTheSame == True:
-                       before = "asm(\"\tSED\n\")"
-                       after  = "asm(\"\tCLD\n\")"
-
-                    #if var.type != "byte" and (var.bcd and allTheSame == False):
-                    #   extraLines = self.convertAny2Any(var, "TO", params, None)
-                    #   for line in extraLines:
-                    #       if line != "":
-                    #          extra += "asm(\"" + line + "\")\n"
-
-            if self.__error == False:
-                returnBack += before                                +\
-                              "asm(\"\tLDA\t" + finals[0] + "\")\n" +\
-                              "asm(\"\tSTA\t" + saveHere  + "\")\n" +\
-                              after
-            """
         return returnBack
 
 
