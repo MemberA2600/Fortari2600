@@ -543,3 +543,6 @@ duplicateError=#ERROR##NUM#: A #VAR# változó a #LIST# képernyõelemeken van haszn
 readOnlyWarning=#WARNING##NUM#: A #VAR# változó a #LIST# képernyõelemeken egy csak olvasható rendszerváltozó. Mivel ezen rutinok kernelje csak olvassa a változó értékét, a beállítások elfogadhatóak, de a setter metódusok nem lesznek elérhetõek.
 totalNumberOfErrors=Összes Hiba #NUM#
 totalNumberOfWarnings=Összes Figyelmeztetés: #NUM#
+commandDesc=Parancs Leírása
+descNotFound=Nem található leírás az aktuális <c>parancshoz</e>!
+descNoCommand=Nincs <c>command</c> az aktuális soron!

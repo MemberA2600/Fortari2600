@@ -1,5 +1,7 @@
 from tkinter import *
 from threading import Thread
+from time import sleep
+import re
 
 class EditorBigFrame:
 
@@ -26,6 +28,7 @@ class EditorBigFrame:
         self.diesWithMainOnly = True
         self.diesWithMainOnly = True
 
+        self.__finished       = False
 
         self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
                         "param#1", "param#2", "param#3", "comment", "updateRow"]
@@ -383,6 +386,8 @@ class EditorBigFrame:
         if self.__counter2 == 1: self.__counterEnded2()
 
         if self.activeMode == "job":
+            while self.__finished == False: sleep(0.0000001)
+
             for bankNum in range(1, 9):
                 key = "bank" + str(bankNum)
                 if self.__virtualMemory.locks[key] == None:
@@ -503,6 +508,7 @@ class EditorBigFrame:
         from tkinter import scrolledtext
 
         per = 25
+        self.__finished = False
 
         self.__codeFrameEditor = Frame(self.__mainFrame, width= self.__mainFrame.winfo_width(),
                                  height=self.__editor.getWindowSize()[1] // per,
@@ -527,7 +533,7 @@ class EditorBigFrame:
         self.__codeBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                         fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<Key>", self.__keyPressed, 0)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<Key>"       , self.__keyPressed, 0)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<KeyRelease>", self.__keyReleased, 0)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<MouseWheel>", self.__mouseWheel, 0)
 
@@ -536,20 +542,6 @@ class EditorBigFrame:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<ButtonRelease-1>", self.__focusInCodeEditor, 0)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__codeBox, "<FocusIn>", self.__focusInCodeEditor, 0)
 
-
-        #self.__codeBox.bind("<Key>", self.__keyPressed)
-        #self.__codeBox.bind("<KeyRelease>", self.__keyReleased)
-        #self.__codeBox.bind("<MouseWheel>", self.__mouseWheel)
-        #self.__codeBox.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
-        #self.__codeBox.bind("<FocusOut>", self.focusOut)
-        #self.__codeBox.bind("<ButtonRelease-1>", self.clicked)
-
-        #self.__editor.editor.bind("<Insert>", self.__insertPressed)
-        #self.__codeBox.bind("<FocusOut>", self.__focusOutCodeEditor)
-        #self.__codeBox.bind("<ButtonRelease-1>", self.__focusInCodeEditor)
-        #self.__codeBox.bind("<FocusIn>", self.__focusInCodeEditor)
-
-
         self.__currentBank    = "bank2"
         self.__currentSection = "overscan"
 
@@ -557,7 +549,6 @@ class EditorBigFrame:
             "enter", "leave", "overscan", "vblank", "subroutines"
         ]
 
-        self.__getFont()
         sizes = (0.20, 0.60, 0.20)
 
         self.__labelFrames       = []
@@ -851,6 +842,104 @@ class EditorBigFrame:
         self.getLineStructure(None, None, True)
         self.loadCurrentFromMemory()
 
+        self.__descFrame = Frame(self.__leftFrame, width= self.__mainFrame.winfo_width(),
+                                 height=self.__editor.getWindowSize()[1],
+                                 bg=self.__colors.getColor("window"))
+
+        self.__descFrame.pack_propagate(False)
+        self.__descFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__descLabel = Label(self.__descFrame, width= self.__mainFrame.winfo_width(),
+                                 height=1, font = self.__smallFont,
+                                 fg=self.__colors.getColor("font"),
+                                 bg=self.__colors.getColor("window"),
+                                 text = self.__dictionaries.getWordFromCurrentLanguage("commandDesc")
+                                 )
+        self.__descLabel.pack_propagate(False)
+        self.__descLabel.pack(side=TOP, anchor=N, fill=X)
+
+        self.__descTextFrame = Frame(self.__descFrame, width= self.__mainFrame.winfo_width(),
+                                 height=self.__editor.getWindowSize()[1],
+                                 bg=self.__colors.getColor("window"))
+
+        self.__descTextFrame.pack_propagate(False)
+        self.__descTextFrame.pack(side=BOTTOM, anchor=S, fill=BOTH)
+
+        self.__descBox    = scrolledtext.ScrolledText(self.__descTextFrame, width=999999, height=99999, wrap=WORD)
+        self.__descBox.pack(fill=BOTH, side=BOTTOM, anchor=S)
+
+        self.__descBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                              font = self.__miniFont
+                              )
+
+        self.__descBox.bind("<Key>", lambda e: "break")
+        self.__getFont()
+
+        self.__finished = True
+
+    def __setDesc(self, command):
+        self.__descBox.delete("0.0", END)
+        self.__descBox.config(wrap = NONE)
+
+        for tag in self.__descBox.tag_names():
+            if tag == "sel": continue
+            self.__descBox.tag_remove(tag, "0.0", END)
+
+        if command in ["None", None, ""]:
+           key = "descNoCommand"
+        else:
+           key = "commandDesc" + command[0].upper() + command[1:]
+           if key not in self.__dictionaries.getKeys():
+              key = "commandDescNotFound"
+
+        text = self.__dictionaries.getWordFromCurrentLanguage(key).replace("\\n", "\n")
+        #self.__descBox.insert(END, text)
+        text = text.split("\n")
+
+        tagTypes = {
+            "c": "command", "e": "error"   , "v": "variable", "n": "number"     ,
+            "a": "array"  , "o": "object"  , "s": "string"  , "0": "stringConst",
+            "d": "data"   , "1": "comprass", "r": "register", "p": "portState"
+        }
+
+        for lineNum in range(0, len(text)):
+            line = text[lineNum]
+            tags = []
+            foundTag  = True
+            charIndex = 0
+
+            while (foundTag):
+                foundTag = False
+                while charIndex < (len(line) - 2):
+                    if line[charIndex] == "<" and line[charIndex + 2] == ">":
+                        letter = line[charIndex + 1]
+                        startOfTag = charIndex
+
+                        for charIndex2 in range(charIndex+3, len(line) - 3):
+                            #print(line[charIndex2:charIndex2 + 2] == "</" , line[charIndex2 + 3] == ">" , line[charIndex2 + 2] == letter)
+
+                            if line[charIndex2:charIndex2 + 2] == "</" and line[charIndex2 + 3] == ">" and line[charIndex2 + 2] == letter:
+                                endOfTag = charIndex2
+                                foundTag = True
+                                break
+
+                        if foundTag:
+                           line = line[:startOfTag] + line[startOfTag + 3 : endOfTag] + line[endOfTag+4:]
+                           tags.append([startOfTag, endOfTag-3, tagTypes[letter]])
+                           charIndex = startOfTag - 1
+                           break
+                    charIndex += 1
+
+
+            if lineNum != len(text) - 1: line += line + "\n"
+            self.__descBox.insert(END, line)
+            for t in tags:
+                self.addTagDesc(lineNum + 1, t[0], t[1], t[2])
+
+        self.__descBox.config(wrap = WORD)
+
+
     def __convertAliasToCommand(self):
         selection = [1.0, self.__codeBox.index(END)]
         try:
@@ -1060,18 +1149,6 @@ class EditorBigFrame:
                 self.__loader.threadLooper.bindingMaster.addBinding(self, entry, "<Return>",
                                                                     self.__EnterPressed, 0)
 
-
-                #entry.bind("<KeyRelease>", self.__focusInLineEditorEntry)
-                #entry.bind("<FocusOut>", self.__focusOutLineEditorEntry)
-                #entry.bind("<FocusIn>", self.__focusInLineEditorEntry)
-                #entry.bind("<ButtonRelease-1>", self.__focusInLineEditorEntry)
-                #entry.bind("<Return>", self.__EnterPressed)
-
-
-                #entry.bind("<FocusOut>", self.__focusOut)
-                #entry.bind("<FocusIn>", self.__focusIn)
-                #entry.bind("<FocusIn>", self.__loader.mainWindow.focusIn)
-
                 codeEditorItems[self.__words[num]] = [entryVar, entry]
 
             elif bannerItems[num][2] == Button:
@@ -1277,7 +1354,6 @@ class EditorBigFrame:
                    self.__rentryVal.get()
                    )
         else:
-            import re
             return re.sub(self.__sentryVar.get(),
                           self.__rentryVal.get(),
                           text, re.IGNORECASE)
@@ -1427,16 +1503,6 @@ class EditorBigFrame:
                 focus = False
 
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
-
-        """
-        if focus == True:
-           if self.__focused2 != None:
-              focused = self.__focused2
-           else:
-              focused = self.__codeBox
-
-        self.__focused2 = self.__codeBox
-        """
 
         if self.__lastButton == "Return":
             mode = "whole"
@@ -2039,6 +2105,8 @@ class EditorBigFrame:
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
+           self.__setDesc(currentLineStructure["command"][0])
+
            if focus:
               self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
 
@@ -3148,8 +3216,6 @@ class EditorBigFrame:
                 if varOnly: continue
                 if printMe: print(pType)
 
-                import re
-
                 numberRegexes = {"dec": r'^\d{1,3}$',
                                  "bin": r'^[b|%][0-1]{1,8}$',
                                  "hex": r'^[$|z|h][0-9a-fA-F]{1,2}$'
@@ -3540,8 +3606,6 @@ class EditorBigFrame:
 
         for var in all:
             if var.startswith(word): return("variable")
-
-        import re
 
         numberRegexes = {"dec": r'^\d{1,3}$',
                          "bin": r'^[b|%][0-1]{1,8}$',
@@ -4382,11 +4446,10 @@ class EditorBigFrame:
 
         return largest
 
-    def addTag(self, Y, X1, X2, tag, errCallNum):
-        #if tag == "error":
-        #   print(errCallNum)
-        #   if errCallNum == 5: raise ValueError
+    def addTagDesc(self, Y, X1, X2, tag):
+        self.__descBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
+    def addTag(self, Y, X1, X2, tag, errCallNum):
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":
@@ -4585,38 +4648,40 @@ class EditorBigFrame:
             }
         }
 
-        for key in self.__tagSettings:
-            if "background" not in self.__tagSettings[key]:
-                self.__codeBox.tag_config(key,
-                                          foreground = self.__tagSettings[key]["foreground"],
-                                          font = self.__tagSettings[key]["font"])
-            elif "foreground" not in self.__tagSettings[key]:
-                self.__codeBox.tag_config(key,
-                                          background = self.__tagSettings[key]["background"],
-                                          font = self.__tagSettings[key]["font"])
-            else:
-                self.__codeBox.tag_config(key,
-                                              foreground=self.__tagSettings[key]["foreground"],
-                                              background=self.__tagSettings[key]["background"],
-                                              font=self.__tagSettings[key]["font"])
+        for box in [self.__codeBox, self.__descBox]:
+            for key in self.__tagSettings:
+                if box == self.__codeBox:
+                    fff = self.__tagSettings[key]["font"]
+                else:
+                    fff = self.__miniFont
 
+                if "background" not in self.__tagSettings[key]:
+                    box.tag_config(key, foreground = self.__tagSettings[key]["foreground"],
+                                        font = fff)
+                elif "foreground" not in self.__tagSettings[key]:
+                    box.tag_config(key, background = self.__tagSettings[key]["background"],
+                                        font = fff)
+                else:
+                    box.tag_config(key, foreground=self.__tagSettings[key]["foreground"],
+                                        background=self.__tagSettings[key]["background"],
+                                        font=fff)
 
-        self.__codeBox.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
+            box.tag_config("highLight", background=self.__loader.colorPalettes.getColor("highLight"))
 
-        self.__codeBox.tag_config("unreachable", background=self.__loader.colorPalettes.getColor("unreachable"))
+            box.tag_config("unreachable", background=self.__loader.colorPalettes.getColor("unreachable"))
 
-        self.__codeBox.tag_config("commandBack", background=self.__loader.colorPalettes.getColor("commandBack"),
-                                                 foreground=self.__loader.colorPalettes.getColor("command"),
-                                                 font = self.__boldFont)
+            box.tag_config("commandBack", background=self.__loader.colorPalettes.getColor("commandBack"),
+                                                     foreground=self.__loader.colorPalettes.getColor("command"),
+                                                     font = self.__boldFont)
 
-        self.__codeBox.tag_config("bracketSelected",
-                                  foreground=self.__loader.colorPalettes.getColor("bracket"),
-                                  background=self.__loader.colorPalettes.getColor("bracketSelected"),
-                                  font=self.__boldFont)
-
+            box.tag_config("bracketSelected",
+                            foreground=self.__loader.colorPalettes.getColor("bracket"),
+                            background=self.__loader.colorPalettes.getColor("bracketSelected"),
+                            font=self.__boldFont)
 
         self.__codeBox.config(font=self.__normalFont)
         self.__codeBox.tag_raise("sel")
+        self.__descBox.tag_raise("sel")
 
     def isPowerOfTwo(self, num):
         return num & (num - 1) == 0

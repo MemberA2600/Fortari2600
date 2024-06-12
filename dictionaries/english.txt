@@ -544,3 +544,6 @@ duplicateError=#ERROR##NUM#: Variable #VAR# is used in #LIST# screen items for s
 readOnlyWarning=#WARNING##NUM#: Variable #VAR# used by #LIST# screen elements is a read only system variable. Since these are only read by the screen routines, this can pass, but the setter methods will be not generated.
 totalNumberOfErrors=Total Number of Errors: #NUM#
 totalNumberOfWarnings=Total Number of Warnings: #NUM#
+commandDesc=Command Description
+descNotFound=No description found for the current <c>command</c>!
+descNoCommand=No <c>command</c> found in current line!

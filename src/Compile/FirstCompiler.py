@@ -224,7 +224,7 @@ class FirstCompiler:
         self.__processing = 0
         alltheTime = datetime.now()
 
-        if len(linesFetched) > 12:
+        if len(linesFetched) > 24:
            multi = True
         else:
            multi = False

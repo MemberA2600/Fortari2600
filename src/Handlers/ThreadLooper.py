@@ -223,19 +223,8 @@ class ThreadLooper:
                                  t.start()
                                  self.__running = True
                              else:
-                                 #print(self.__listOfThreads[number][1])
-                                 #if debugTime:
-                                 #   if str(self.__listOfThreads[number][1]) not in runningTimes:
-                                 #      runningTimes[str(self.__listOfThreads[number][1])] = 0
-                                 #      now = datetime.now()
-
                                  self.__listOfThreads[number][1](*self.__listOfThreads[number][2])
 
-                                 #if debugTime:
-                                 #   t = (datetime.now() - now).total_seconds()
-                                 #   if t > runningTimes[str(self.__listOfThreads[number][1])]:
-                                 #       runningTimes[str(self.__listOfThreads[number][1])] = t
-                                 #   print(str(self.__listOfThreads[number][1]), str(runningTimes[str(self.__listOfThreads[number][1])]))
                        else:
                            self.__wait = self.__base
                     else:
