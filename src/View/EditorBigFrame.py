@@ -953,7 +953,7 @@ class EditorBigFrame:
                     if delimitedCommand != alias:
                         aliasList.append("<c>" + alias + "</c>")
 
-                replacers["#ALIAS#"] = "; ".join(aliasList)
+                replacers["#ALIAS#"] = "|".join(aliasList)
 
             text.append(self.__dictionaries.getWordFromCurrentLanguage("descPlaced"))
 
@@ -972,9 +972,9 @@ class EditorBigFrame:
                        if section not in commandObj.sectionsAllowed:
                           notAllowed.append(section)
 
-                   allowedText = "<h>" + allBut + " " + "; ".join(notAllowed) + "</h>"
+                   allowedText = "<h>" + allBut + " " + "|".join(notAllowed) + "</h>"
                else:
-                   allowedText = "<h>" + "; ".join(commandObj.sectionsAllowed) + "</h>"
+                   allowedText = "<h>" + "|".join(commandObj.sectionsAllowed) + "</h>"
 
             replacers["#LEVEL#"]    = lvlText
             replacers["#SECTIONS#"] = allowedText
@@ -1000,7 +1000,11 @@ class EditorBigFrame:
 
                for paramNum in range(0, len(commandObj.params)):
                    param     = commandObj.params[paramNum]
-                   textToAdd = "-- PARAM#" + str(paramNum + 1) + ": "
+                   if  param.startswith("{"):
+                       param = param[1:-1]
+                       textToAdd = ">> PARAM#" + str(paramNum + 1) + "(" + self.__dictionaries.getWordFromCurrentLanguage("descOptional") + "): "
+                   else:
+                       textToAdd = ">> PARAM#" + str(paramNum + 1) + ": "
 
                    paramsAsList = param.split("|")
                    for pNum in range(0, len(paramsAsList)):
@@ -1012,7 +1016,7 @@ class EditorBigFrame:
 
                        if tagKey != "": paramsAsList[pNum] = "<" + tagKey + ">" + paramsAsList[pNum] + "</" + tagKey + ">"
 
-                   textToAdd += "; ".join(paramsAsList)
+                   textToAdd += "|".join(paramsAsList)
 
                    if   commandObj.fixSave == "A" or fixNum == paramNum + 1:
                         textToAdd += " (" + self.__dictionaries.getWordFromCurrentLanguage("descFixSaveParam") + ")"

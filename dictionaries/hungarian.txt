@@ -555,4 +555,5 @@ all=összes
 allBut=összes, kivéve
 descFixSaveParam=<h>mindig<h> ide menti az eredményt
 descFlexSaveParam1=ide menti az eredményt, <h>ha az utolsó paraméter hiányik</h>
-descFlexSaveParamL=ide menti az eredményt, ha <h>az elsõ csak forrás</h> (<h>opcionális</h>)
+descFlexSaveParamL=ide menti az eredményt, ha <h>az elsõ csak forrás</h>
+descOptional=<h>Opcionális</h>

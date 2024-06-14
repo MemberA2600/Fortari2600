@@ -556,4 +556,5 @@ all=all
 allBut=all, but
 descFixSaveParam=<h>always<h> saves the result here
 descFlexSaveParam1=saves the result here if the <h>last one is missing</h>
-descFlexSaveParamL=saves the result here if the first one is <h>only a source</h> (<h>optional</h>)
+descFlexSaveParamL=saves the result here if the first one is <h>only a source</h>
+descOptional=<h>Optional</h>
