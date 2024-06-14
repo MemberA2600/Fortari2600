@@ -870,7 +870,7 @@ class EditorBigFrame:
 
         self.__descBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
                               fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
-                              font = self.__miniFont
+                              font = self.__halfFont
                               )
 
         self.__descBox.bind("<Key>", lambda e: "break")
@@ -878,7 +878,15 @@ class EditorBigFrame:
 
         self.__finished = True
 
-    def __setDesc(self, command):
+    def __setDesc(self, command, theCommand, theObject):
+        nones = [[], None, False, "None", "[]", ""]
+        tagTypes = {
+            "c": "command"  , "e": "error"   , "v": "variable", "n": "number"     ,
+            "a": "array"    , "o": "object"  , "s": "string"  , "0": "stringConst",
+            "d": "data"     , "1": "comprass", "r": "register", "p": "portState"  ,
+            "h": "highLight"
+        }
+
         self.__descBox.delete("0.0", END)
         self.__descBox.config(wrap = NONE)
 
@@ -889,22 +897,138 @@ class EditorBigFrame:
         if command in ["None", None, ""]:
            key = "descNoCommand"
         else:
-           key = "commandDesc" + command[0].upper() + command[1:]
+           key = "descCommand" + command[0].upper() + command[1:]
            if key not in self.__dictionaries.getKeys():
-              key = "commandDescNotFound"
+              key = "descNotFound"
 
         text = self.__dictionaries.getWordFromCurrentLanguage(key).replace("\\n", "\n")
         #self.__descBox.insert(END, text)
         text = text.split("\n")
 
-        tagTypes = {
-            "c": "command", "e": "error"   , "v": "variable", "n": "number"     ,
-            "a": "array"  , "o": "object"  , "s": "string"  , "0": "stringConst",
-            "d": "data"   , "1": "comprass", "r": "register", "p": "portState"
-        }
+        commandObj       = None
+        if command not in nones:
+            if   theObject  != None:
+                commandObj   = self.__objectMaster.createFakeCommandOnObjectProcess(theObject)
+            elif theCommand != None:
+                commandObj   = theCommand
+            else:
+                if command   in self.__syntaxList.keys():
+                   commandObj = self.__syntaxList[command]
+                else:
+                   found = False
+                   for comKey        in self.__syntaxList.keys():
+                       if commandObj in self.__syntaxList[comKey].alias:
+                          found      = True
+                          commandObj = self.__syntaxList[comKey]
+                          break
+
+                   if found == False:
+                      try:
+                          commandObj = self.__objectMaster.createFakeCommandOnObjectProcess(command)
+                      except:
+                          pass
+
+        replacers = {}
+
+        if command not in nones:
+            delimitedCommand = command
+            for delimiter in self.__config.getValueByKey('validObjDelimiters').split(" "):
+                if delimiter in command:
+                    delimitedCommand = command.split(delimiter)[-1]
+                    break
+
+            replacers = {
+                "#COMMAND#": "<c>" + delimitedCommand + "</c>"
+            }
+
+        if commandObj not in nones:
+            if commandObj.alias not in nones:
+                text.append(self.__dictionaries.getWordFromCurrentLanguage("descAlias"))
+
+                aliasList = []
+                if delimitedCommand != commandObj.name:
+                    aliasList.append("<c>" + commandObj.name + "</c>")
+
+                for alias in commandObj.alias:
+                    if delimitedCommand != alias:
+                        aliasList.append("<c>" + alias + "</c>")
+
+                replacers["#ALIAS#"] = "; ".join(aliasList)
+
+            text.append(self.__dictionaries.getWordFromCurrentLanguage("descPlaced"))
+
+            if commandObj.levelAllowed == None:
+               lvlText = "<h>" + self.__dictionaries.getWordFromCurrentLanguage("all") + "</h>"
+            else:
+               lvlText = "<h>" + str(commandObj.levelAllowed) + "</h>"
+
+            if commandObj.sectionsAllowed == self.__loader.sections:
+               allowedText = "<h>" + self.__dictionaries.getWordFromCurrentLanguage("all") + "</h>"
+            else:
+               if (len(commandObj.sectionsAllowed) > len(self.__loader.sections) // 2):
+                   allBut     = self.__dictionaries.getWordFromCurrentLanguage("allBut")
+                   notAllowed = []
+                   for section in self.__loader.sections:
+                       if section not in commandObj.sectionsAllowed:
+                          notAllowed.append(section)
+
+                   allowedText = "<h>" + allBut + " " + "; ".join(notAllowed) + "</h>"
+               else:
+                   allowedText = "<h>" + "; ".join(commandObj.sectionsAllowed) + "</h>"
+
+            replacers["#LEVEL#"]    = lvlText
+            replacers["#SECTIONS#"] = allowedText
+
+            if commandObj.flexSave:
+               text.append(self.__dictionaries.getWordFromCurrentLanguage("descShortForm"))
+
+            fixNum = None
+            if commandObj.fixSave != "0":
+               text.append(self.__dictionaries.getWordFromCurrentLanguage("descFixSave"))
+
+               try:
+                   fixNum = int(commandObj.fixSave)
+                   replacers["#SECTIONS#"] = "<h>PARAM#" + commandObj.fixSave + "</h>"
+               except:
+                   if commandObj.fixSave.upper() == "A":
+                      replacers["#SECTIONS#"] = "<h>" + self.__dictionaries.getWordFromCurrentLanguage("all") + "</h>"
+
+            if commandObj.params not in nones:
+               text.append("")
+               text.append(self.__dictionaries.getWordFromCurrentLanguage("descParams"))
+               text.append(round(len(text[-1]) * 1.5 + 10) * "-")
+
+               for paramNum in range(0, len(commandObj.params)):
+                   param     = commandObj.params[paramNum]
+                   textToAdd = "-- PARAM#" + str(paramNum + 1) + ": "
+
+                   paramsAsList = param.split("|")
+                   for pNum in range(0, len(paramsAsList)):
+                       tagKey  = ""
+                       for key in tagTypes.keys():
+                           if tagTypes[key] == paramsAsList[pNum]:
+                              tagKey = key
+                              break
+
+                       if tagKey != "": paramsAsList[pNum] = "<" + tagKey + ">" + paramsAsList[pNum] + "</" + tagKey + ">"
+
+                   textToAdd += "; ".join(paramsAsList)
+
+                   if   commandObj.fixSave == "A" or fixNum == paramNum + 1:
+                        textToAdd += " (" + self.__dictionaries.getWordFromCurrentLanguage("descFixSaveParam") + ")"
+                   if   commandObj.flexSave:
+                        if   paramNum == 0:
+                             textToAdd += " (" + self.__dictionaries.getWordFromCurrentLanguage("descFlexSaveParam1") + ")"
+                        elif paramNum == len(commandObj.params) - 1:
+                             textToAdd += " (" + self.__dictionaries.getWordFromCurrentLanguage("descFlexSaveParamL") + ")"
+
+                   text.append(textToAdd)
 
         for lineNum in range(0, len(text)):
             line = text[lineNum]
+            for rep in replacers:
+                line = line.replace(rep, replacers[rep])
+
             tags = []
             foundTag  = True
             charIndex = 0
@@ -931,8 +1055,8 @@ class EditorBigFrame:
                            break
                     charIndex += 1
 
-
-            if lineNum != len(text) - 1: line += line + "\n"
+            if len(line) > 0: line = line[0].upper() + line[1:]
+            if lineNum != len(text) - 1: line = line + "\n"
             self.__descBox.insert(END, line)
             for t in tags:
                 self.addTagDesc(lineNum + 1, t[0], t[1], t[2])
@@ -1595,7 +1719,8 @@ class EditorBigFrame:
         yOnTextBox = lineNum + 1
 
         line = line.replace("\t", " ")
-        self.__statement = None
+        #self.__statement = None
+        theObject, theCommand = None, None
 
         if caller == "lineTinting":
            self.removeTag(yOnTextBox, 0, len(line), None)
@@ -1648,7 +1773,8 @@ class EditorBigFrame:
               lineEditorTempDict["command#1"] = "command"
 
            hasValidCommand = True
-           commandParams   = self.__syntaxList[currentLineStructure["command"][0]].params
+           theCommand      = self.__syntaxList[currentLineStructure["command"][0]]
+           commandParams   = theCommand.params
 
            if self.__syntaxList[currentLineStructure["command"][0]].endNeeded == True:
                 endFound = self.findEnd(currentLineStructure, lineNum, text)
@@ -1846,16 +1972,6 @@ class EditorBigFrame:
                      else:
                          errorPositions.append(["command", "iteralError", currentLineStructure["lineNum"]])
 
-           #This one should be used only if subroutine would have the second parameter as the result
-           """ 
-           elif currentLineStructure["command"][0] == "subroutine" or\
-                currentLineStructure["command"][0] in self.__syntaxList["subroutine"].alias:
-                if currentLineStructure["param#2"] not in ["", None, "None"]:
-                   pass
-
-           #print(errorPositions, addError, currentLineStructure["command"][0])
-           """
-
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True): # or
                #(currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
@@ -1868,10 +1984,6 @@ class EditorBigFrame:
                              errorPositions.append(["bracket", "missingOpeningBracket", currentLineStructure["lineNum"]])
                           if currentLineStructure[")"] == -1:
                              errorPositions.append(["bracket", "missingClosingBracket", currentLineStructure["lineNum"]])
-                       #else:
-                       #    errorPositions.append(["bracket", "commandDoesNotNeedBrackets", currentLineStructure["lineNum"]])
-
-           #print(errorPositions, addError, currentLineStructure["command"][0])
 
            if self.__currentSection not in self.__syntaxList[currentLineStructure["command"][0]].sectionsAllowed\
            or (currentLineStructure["level"] != self.__syntaxList[currentLineStructure["command"][0]].levelAllowed
@@ -1932,7 +2044,8 @@ class EditorBigFrame:
 
               if foundObjects[key][1] == "process":
                  hasValidCommand = True
-                 commandParams = self.__objectMaster.returnAllAboutTheObject(currentLineStructure["command"][0])["params"]
+                 theObject     = self.__objectMaster.returnAllAboutTheObject(currentLineStructure["command"][0])
+                 commandParams = theObject["params"]
                  self.__foundError = setBack
 
         if   currentLineStructure["("] != -1 and currentLineStructure[")"] == -1:
@@ -1998,12 +2111,12 @@ class EditorBigFrame:
                    elif caller == "lineEditor":
                       paramNum += 1
 
-                      isThatStatement, paramN = self.isThatADamnStatement(currentLineStructure, item[1])
+                      isThatStatement, paramN, theStatement = self.isThatADamnStatement(currentLineStructure, item[1])
                       if isThatStatement == True:
                          paramNum = paramN
                          item[0] = "bracket"
 
-                         for itemS in self.__statement:
+                         for itemS in theStatement:
                              if itemS["type"] == "error":
                                 item[0] = "error"
                                 break
@@ -2105,7 +2218,7 @@ class EditorBigFrame:
         if (yOnTextBox == self.__cursorPoz[0]) and caller == "lineTinting":
            currentWord = self.getCurrentWord(text[lineNum])
            self.updateLineDisplay(currentLineStructure)
-           self.__setDesc(currentLineStructure["command"][0])
+           self.__setDesc(currentLineStructure["command"][0], theCommand, theObject)
 
            if focus:
               self.__updateListBoxFromCodeEditor(currentWord, currentLineStructure, commandParams, line, text)
@@ -2229,20 +2342,19 @@ class EditorBigFrame:
                        stringAllowed = True
 
                    paramNum      = int(item.split("#")[1]) - 1
-                   if len(command.params) == 0 or paramNum > len(command.params): return False, ""
+                   if len(command.params) == 0 or paramNum > len(command.params): return False, "", []
 
                    try:
                       selectedParam = command.params[paramNum]
                    except:
-                      return False, ""
+                      return False, "", []
 
                    if "statement" in selectedParam:
                       statement = currentLineStructure[item][0]
-                      self.__statement = self.getStatementStructure(statement, needComprassion, stringAllowed, 0, currentLineStructure)
+                      return True, int(item.split("#")[1]), \
+                             self.getStatementStructure(statement, needComprassion, stringAllowed, 0, currentLineStructure)
 
-                      return True, int(item.split("#")[1])
-
-        return False, ""
+        return False, "", []
 
     def updateListBoxFromLineEditor(self, currentLineStructure, commandParams, lineEditorTempDict, text):
         wordList = []
@@ -3070,28 +3182,6 @@ class EditorBigFrame:
 
         return False
 
-    """
-    def checkIfCommandInLebel(self, command, text):
-        text = text.split("\n")
-        wordList = [command.lower(), command.upper()]
-
-        c = command.split("-")
-        for comNum in range(0, len(c)):
-            c[comNum] = c[comNum][0].upper() + c[comNum][1:].lower()
-
-        w = "-".join(c)
-        wordList.append(w)
-
-
-        for word in wordList:
-            for line in text:
-                if word in line: return True
-
-        #print(command, text)
-
-        return False
-    """
-
     def returnParamsOfObjects(self, command):
 
         listOfValidDelimiters = self.__loader.config.getValueByKey("validObjDelimiters").split(" ")
@@ -3807,8 +3897,7 @@ class EditorBigFrame:
                elif temp[0][0] in ["stringConst", "number"]:
                     #print(currentLineStructure["param#1"][0])
                     if self.__virtualMemory.returnCodeOfPortState(currentLineStructure["param#1"][0]) == False:
-                        #print("fuck")
-                        isThatStatement, filler = self.isThatADamnStatement(currentLineStructure, currentLineStructure["param#1"][1])
+                        isThatStatement, paramN, theStatement = self.isThatADamnStatement(currentLineStructure, currentLineStructure["param#1"][1])
                         if isThatStatement == False:
                            for item in returnBack:
                                item[0] = "error"
@@ -4653,7 +4742,7 @@ class EditorBigFrame:
                 if box == self.__codeBox:
                     fff = self.__tagSettings[key]["font"]
                 else:
-                    fff = self.__miniFont
+                    fff = self.__halfFont
 
                 if "background" not in self.__tagSettings[key]:
                     box.tag_config(key, foreground = self.__tagSettings[key]["foreground"],

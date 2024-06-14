@@ -7,7 +7,7 @@ class Dictionary:
         self.__createDictionaries()
 
     def getKeys(self):
-        l = self.__languages[self.__config.getValueByKey("language")].keys()
+        return self.__languages[self.__config.getValueByKey("language")].keys()
 
     def __createDictionaries(self):
         import os
