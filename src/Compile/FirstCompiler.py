@@ -585,7 +585,7 @@ class FirstCompiler:
                   addToRoutines = False
 
             if "param#3" in params.keys():
-                var3 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
+                var3 = self.__loader.virtualMemory.getVariableByName2(params["param#3"][0])
                 itIsComplex = False
 
                 isIt0 = False
@@ -1732,30 +1732,29 @@ class FirstCompiler:
                   command = "LSR"
 
              if "param#2" not in params:
-                 params["param#2"] = deepcopy(params["param#1"])
-                 params["param#1"] = ["1", "number"]
+                 params["param#2"] = ["1", "number"]
              else:
-                 if params["param#1"][0] == "0": return
+                 if params["param#2"][0] == "0": return
 
-             var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
-             var2 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+             var1 = self.__loader.virtualMemory.getVariableByName2(params["param#2"][0])
+             var2 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
              if var2.type == "bit":
                  if  command in ("ROL", "ROR"): return
                  else:
                      params["param#0"] = ["0", "number"]
-                     txt = self.saveAValue(params, "param#0", "param#2", line)
+                     txt = self.saveAValue(params, "param#0", "param#1", line)
 
              if var2 == False:
                  self.addToErrorList(line["lineNum"],
-                                     self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                     self.prepareError("compilerErrorVarNotFound", params["param#1"][0],
                                                        "", "",
                                                        str(line["lineNum"] + self.__startLine), line))
 
-             varName = params["param#2"][0]
+             varName = params["param#1"][0]
              txt     = "\tLDA\t" + varName + "\n"
              if var1 == False and var2.type == "byte":
-                shiftNum = self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0])%8
+                shiftNum = self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0])%8
                 if shiftNum == 0: return
 
                 _to   = ""
@@ -1763,7 +1762,7 @@ class FirstCompiler:
                    txt  += self.convertAny2Any(varName, "TO"  , params, None, line) + "\n"
                    _to   = self.convertAny2Any(varName, "FROM", params, None, line) + "\n"
 
-                if shiftNum < 2 and var2.bcd == False and self.__loader.virtualMemory.isSara(params["param#1"][0]) == False:
+                if shiftNum < 2 and var2.bcd == False and self.__loader.virtualMemory.isSara(params["param#2"][0]) == False:
                     txt = shiftNum * ("\t" + command + "\t" + varName + "\n")
                 else:
                     txt += shiftNum * ("\t" + command + "\n") + _to + "\tSTA\t" + varName + "\n"
@@ -1776,8 +1775,8 @@ class FirstCompiler:
              elif var1 != False and var2.type == "byte":
                 self.__temps = self.collectUsedTemps()
 
-                txt = self.__loader.io.loadCommandASM("shift").replace("#VAR01#", params["param#1"][0]) \
-                                                              .replace("#VAR02#", params["param#2"][0]) \
+                txt = self.__loader.io.loadCommandASM("shift").replace("#VAR01#", params["param#2"][0]) \
+                                                              .replace("#VAR02#", params["param#1"][0]) \
                                                               .replace("!!!to8bit1!!!",  self.convertAny2Any(var1, "TO", params, self.__temps, line)) \
                                                               .replace("!!!to8bit2!!!",  self.convertAny2Any(var2, "TO", params, self.__temps, line)) \
                                                               .replace("!!!from8bit!!!", self.convertAny2Any(var2, "FROM", params, self.__temps, line)) \
@@ -1789,22 +1788,22 @@ class FirstCompiler:
                 return
              else:
                  if var1 == False:
-                    shiftNum = self.__editorBigFrame.convertStringNumToNumber(params["param#1"][0]) % 8
+                    shiftNum = self.__editorBigFrame.convertStringNumToNumber(params["param#2"][0]) % 8
                     if shiftNum == 0: return
                     shifting = "\tLDX\t#" + str(shiftNum) + "\n"
                  else:
                     if var1.type != "byte" or var1.bcd:
-                       shifting = "\tLDA\t" + params["param#1"][0] + "\n" +\
-                                  self.convertAny2Any(params["param#1"][0], "TO", params, None, line) +\
+                       shifting = "\tLDA\t" + params["param#2"][0] + "\n" +\
+                                  self.convertAny2Any(params["param#2"][0], "TO", params, None, line) +\
                                   "\tTAX\n"
                     else:
-                       shifting = "\tLDX\t" + params["param#1"][0] + "\n"
+                       shifting = "\tLDX\t" + params["param#2"][0] + "\n"
 
                  changers = {}
                  changers["!!!NumOfShifting!!!"] = shifting
-                 changers["!!!to8bit!!!"]    = self.convertAny2Any(params["param#2"][0], "TO"  , params, None, line)
-                 changers["!!!from8bit!!!"]  = self.convertAny2Any(params["param#2"][0], "FROM", params, None, line)
-                 changers["#VAR02#"]         = params["param#2"][0]
+                 changers["!!!to8bit!!!"]    = self.convertAny2Any(params["param#1"][0], "TO"  , params, None, line)
+                 changers["!!!from8bit!!!"]  = self.convertAny2Any(params["param#1"][0], "FROM", params, None, line)
+                 changers["#VAR02#"]         = params["param#1"][0]
 
                  if command in ("ASL", "ROL"):
                     changers["#COMMAND#"] = "ASL"
@@ -1828,7 +1827,7 @@ class FirstCompiler:
                          self.__temps.pop(0)
                      except:
                          self.addToErrorList(line["lineNum"],
-                                             self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                             self.prepareError("compilerErrorStatementTemps", params["param#2"][0],
                                                                "", "",
                                                                str(line["lineNum"] + self.__startLine), line))
                      if line["error"] == False:
@@ -2295,7 +2294,7 @@ class FirstCompiler:
 
                 self.__temps = self.collectUsedTemps()
                 params = self.getParamsWithTypesAndCheckSyntax(line)
-                if params["param#1"][1] == "variable":
+                if params["param#1"][1] in ["variable", "register"]:
 
                    if line["param#1"][0] in self.__temps:
                       self.__temps.remove(line["param#1"][0])

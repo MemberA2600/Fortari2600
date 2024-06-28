@@ -881,10 +881,10 @@ class EditorBigFrame:
     def __setDesc(self, command, theCommand, theObject):
         nones = [[], None, False, "None", "[]", ""]
         tagTypes = {
-            "c": "command"  , "e": "error"   , "v": "variable", "n": "number"     ,
-            "a": "array"    , "o": "object"  , "s": "string"  , "0": "stringConst",
-            "d": "data"     , "1": "comprass", "r": "register", "p": "portState"  ,
-            "h": "highLight"
+            "c": "command"  , "e": "error"     , "v": "variable", "n": "number"     ,
+            "a": "array"    , "o": "object"    , "s": "string"  , "0": "stringConst",
+            "d": "data"     , "1": "comprass"  , "r": "register", "p": "portState"  ,
+            "h": "highLight", "2": "subroutine"
         }
 
         self.__descBox.delete("0.0", END)
