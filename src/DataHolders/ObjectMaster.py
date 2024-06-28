@@ -1,6 +1,7 @@
 import os
 from Command  import Command
 from Compiler import Compiler
+from copy import deepcopy
 
 class ObjectMaster:
 
@@ -316,6 +317,7 @@ class ObjectMaster:
 
         theObject = {}
 
+        theObject["name"]      = command
         theObject["delimiter"] = delimiter
         level = 1
         try:
@@ -354,7 +356,7 @@ class ObjectMaster:
 
            path += "\\".join(listOfObjects) + ".asm"
 
-           #print(path)
+           #print("!!!!!", path)
 
            if os.path.exists(path):
               theObject["extension"] = "asm"
@@ -473,10 +475,12 @@ class ObjectMaster:
                                                   #print(commandC, commandComp)
 
                                                   #print(mainPath)
+                                                  #if commandC == commandComp: print(parent, parentComp)
                                                   if commandC == commandComp and parent == parentComp:
-                                                     #print(file, name, commandC)
-                                                     if "#VARNAME#" not in file and name != commandC: continue
+                                                     #print(commandC, parent, name)
 
+                                                     #print(file, name, commandC)
+                                                     if "#VARNAME#" in file and name not in commandC: continue
                                                      #print(parent, file, commandC, params[0], line, txtName, mainPath, xxxPath)
                                                      found                  = True
                                                      path                   = root + "/" + file
@@ -695,7 +699,11 @@ class ObjectMaster:
            object = command
 
         if object["exist"]:
-            name = command.split(object["delimiter"])[-1]
+            try:
+                name = command.split(object["delimiter"])[-1]
+            except:
+                name = object["name"]
+
             data = []
             data.append("[]")
             data.append("[common]")
@@ -706,7 +714,13 @@ class ObjectMaster:
             else:
                data.append("None")
             data.append("[]")
-            data.append("[" + " ".join(object["params"]) + "]")
+
+            #print(object["optionalParamNums"])
+            params = deepcopy(object["params"])
+            for pNum in object["optionalParamNums"]:
+                params[pNum] = "{" + params[pNum] + "}"
+
+            data.append("[" + " ".join(params) + "]")
             data.append(object["ioMethod"])
             data.append("None")
             data.append("False")
