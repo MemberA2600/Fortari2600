@@ -1,6 +1,7 @@
 import os
 from PIL import Image, ImageTk
 import shutil
+import re
 
 class IO:
 
@@ -165,7 +166,25 @@ class IO:
         return(open("templates/skeletons/"+name+".asm", "r").read())
 
     def loadKernelElement(self, name, element):
-        return(open("templates/skeletons/"+name+"_"+element+".asm", "r").read())
+        txt = open("templates/skeletons/"+name+"_"+element+".asm", "r").read()
+
+        if self.__loader.virtualMemory.includeKernelData:
+           txt = txt.replace("!!!MAINVARS!!!", open("templates/skeletons/"+name+"_"+element+"_sysVars.asm", "r").read())
+           startAddress = 0xd1
+        else:
+           remove1 = re.findall(r'###Start-Main-Kernel.+###End-Main-Kernel'        , txt, re.DOTALL)[0]
+           remove2 = re.findall(r'###Start-Main-Kernel-Sub.+###End-Main-Kernel-Sub', txt, re.DOTALL)[0]
+
+           txt = txt.replace(remove1, "").replace(remove2, "")
+           startAddress = 0x96
+
+        if self.__loader.virtualMemory.includeJukeBox:
+           txt = txt.replace("!!!MUSICVARS!!!", open("templates/skeletons/"+name+"_"+element+"_musicVars.asm", "r").read())
+
+        if self.__loader.virtualMemory.includeCollisions:
+           txt = txt.replace("!!!COLLISIONVARS!!!", open("templates/skeletons/"+name+"_"+element+"_collVars.asm", "r").read())
+
+        return txt
 
     def loadTestElement(self, mode, name, element):
         return(open("templates/testCodes/"+mode+"_"+name+"_"+element+".asm", "r").read())

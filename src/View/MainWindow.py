@@ -523,6 +523,7 @@ class MainWindow:
             old     = self.__loader.virtualMemory.kernel
             oldJuke = self.__loader.virtualMemory.includeJukeBox
             oldIncl = self.__loader.virtualMemory.includeKernelData
+            oldColl = self.__loader.virtualMemory.includeCollisions
 
             for line in item.code.split(os.linesep):
                 if line.startswith("bank1"):
@@ -532,10 +533,12 @@ class MainWindow:
                     #   self.__loader.virtualMemory.changeKernelMemory(old, new)
                     self.__loader.virtualMemory.includeKernelData(bool(line[1]))
                     self.__loader.virtualMemory.includeJukeBox(bool(line[2]))
+                    self.__loader.virtualMemory.includeCollisions(bool(line[3]))
 
                     if old     != self.__loader.virtualMemory.kernel            \
                     or oldIncl != self.__loader.virtualMemory.includeKernelData \
-                    or oldJuke != self.__loader.virtualMemory.includeJukeBox:
+                    or oldJuke != self.__loader.virtualMemory.includeJukeBox    \
+                    or oldColl != self.__loader.virtualMemory.includeCollisions:
                        self.__loader.virtualMemory.resetMemory()
                        #self.__loader.virtualMemory.addSystemMemory()
 

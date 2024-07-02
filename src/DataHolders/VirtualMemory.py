@@ -20,6 +20,8 @@ class VirtualMemory:
         self.excludeForBank1Routines = ["temp18", "temp19"]
         self.includeJukeBox    = True
         self.includeKernelData = True
+        self.includeCollisions = True
+
         self.__kernelOnlyVars = {}
 
         self.registers = {}
@@ -164,10 +166,47 @@ class VirtualMemory:
                    text += name + " = " + address + "\n"
         return(text)
 
+    def getMemoryPartOfKernelOnly(self, kernel, element):
+        txt   = ""
+        first = 0x96
+
+        for item in [[self.includeKernelData, "sysVars"], [self.includeJukeBox, "musicVars"], [self.includeCollisions, "collVars"]]:
+           if item[0]:
+              subTXT = open("templates/skeletons/"+kernel+"_"+element+"_" + item[1] + ".asm", "r").read()
+              first, subTXT  = self.replaceMemoryAddressesAndSetFirst(first, subTXT)
+              txt += subTXT
+
+        return txt
+
+    def replaceMemoryAddressesAndSetFirst(self, first, txt):
+        txt     = txt.split("\n")
+        lastOne = ""
+
+        for lineNum in range(0, len(txt)):
+            line = txt[lineNum]
+
+            if   "#L#" in line:
+                  line    = line.replace("#L#", lastOne)
+            elif "#1#" in line or "#2#" in line:
+                  lastOne = hex(first).replace("0x", "")
+
+                  if "#2#" in line:
+                      first += 2
+                      line    = line.replace("#2#", lastOne)
+                  else:
+                      first += 1
+                      line    = line.replace("#1#", lastOne)
+
+            txt[lineNum] = line
+
+        #print("\n".join(txt))
+
+        return first, "\n".join(txt)
+
     def getKernelsPreSetVars(self):
         import re
 
-        txt = self.__loader.io.loadKernelElement(self.kernel, "main_kernel")
+        txt = self.getMemoryPartOfKernelOnly(self.kernel, "main_kernel")
         vars = re.findall(r'.+\s\=\s\$[0-9a-fA-F]{2}', txt)
 
         forReturn = []
@@ -312,6 +351,9 @@ class VirtualMemory:
         if self.includeJukeBox:
            datas.append(self.__loader.dataReader.readDataFile("templates" + os.sep + "jukeBox_system_variables.a26"))
 
+        if self.includeCollisions:
+           datas.append(self.__loader.dataReader.readDataFile("templates" + os.sep + "collisions_system_variables.a26"))
+
         for d in datas:
             for key in d:
                 #print(key, d[key])
@@ -327,7 +369,7 @@ class VirtualMemory:
                     self.getVariableByName(key, "bank1").colorVar = True
 
         self.__kernelOnlyVars = {}
-        kernelCode = self.__loader.io.loadKernelElement(self.kernel, "main_kernel").split('\n')
+        kernelCode = self.getMemoryPartOfKernelOnly(self.kernel, "main_kernel").split('\n')
         for line in kernelCode:
             line = line.split(";")[0].strip().split(" = ")
             if len(line) > 1:
@@ -564,7 +606,7 @@ class VirtualMemory:
     def createTheBankConfigFromMemory(self):
         text = []
         text.append("*** This is where you set the details of banks such as name, role, and so on.")
-        text.append(str("bank1=" + self.kernel + "," + str(self.includeKernelData), + "," + str(self.includeJukeBox)))
+        text.append(str("bank1=" + self.kernel + "," + str(self.includeKernelData), + "," + str(self.includeJukeBox) + "," + str(self.includeCollisions)))
         for bank in self.locks.keys():
             if self.locks[bank]!=None:
                 text.append(bank+f"={self.locks[bank].name},{self.locks[bank].type},{str(self.locks[bank].number)}")

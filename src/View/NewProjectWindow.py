@@ -125,9 +125,9 @@ class NewProjectWindow:
                 #self.virtualMemory.kernel = self.__setKernelLabel.optionValue.get()
                 #self.virtualMemory.changeKernelMemory(temp)
 
-
                 self.__loader.virtualMemory.includeJukeBox    = True
                 self.__loader.virtualMemory.includeKernelData = True
+                self.__loader.virtualMemory.includeCollisions = True
 
                 self.__loader.io.copyDirWithFiles("templates/new_project/", self.__getPath())
                 for num in range(2,9):
@@ -146,7 +146,8 @@ class NewProjectWindow:
                         k = line.split("=")[1].split(",")[0]
                         lines[num] = line.replace(k, self.__setKernelLabel.optionValue.get()) \
                                    + "," + str(self.__loader.virtualMemory.includeKernelData) \
-                                   + "," + str(self.__loader.virtualMemory.includeJukeBox)
+                                   + "," + str(self.__loader.virtualMemory.includeJukeBox) \
+                                   + "," + str(self.__loader.virtualMemory.includeCollisions)
                         break
                 bank1_config = open(self.__getPath()+"/bank1/bank_configurations.a26", "w")
                 bank1_config.writelines(lines)
@@ -159,7 +160,6 @@ class NewProjectWindow:
                 if self.kernelOld != self.__loader.virtualMemory.kernel:
                    self.__loader.virtualMemory.objectMaster.loadKernelObjects()
 
-                self.__loader.virtualMemory.objectMaster.includeKernelData = True
                 self.__closeWindow()
 
             except Exception as e:

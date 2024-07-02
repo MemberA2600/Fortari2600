@@ -42,9 +42,15 @@ class Compiler:
             self.__io = self.__loader.io
 
             if self.__mode == "pfTest":
+                self.fakeItToBeNormal()
                 self.pfTest()
+                self.setBackToOriginal()
+
             elif self.__mode == "spriteTest" or self.__mode == "tileSetTest":
+                self.fakeItToBeNormal()
                 self.spriteTest()
+                self.setBackToOriginal()
+
             elif self.__mode == "kernelTest":
                 self.kernelTest()
             elif self.__mode == 'music':
@@ -56,9 +62,15 @@ class Compiler:
             elif self.__mode == 'testWav':
                 self.testWav()
             elif self.__mode == "getPFASM":
+                #self.fakeItToBeNormal()
                 self.getPFASM()
+                #self.setBackToOriginal()
+
             elif self.__mode == "getSpriteASM":
+                #self.fakeItToBeNormal()
                 self.getSpriteASM()
+                #self.setBackToOriginal()
+
             elif self.__mode == "getBigSpriteASM":
                 self.getBigSpriteASM()
             elif self.__mode == "testBigSprite":
@@ -83,6 +95,17 @@ class Compiler:
                 self.__soundFxData(None)
             elif self.__mode == "soundFxTest":
                 self.__soundFxTest()
+
+    def fakeItToBeNormal(self):
+        self.__hadMainKernel = self.__loader.virtualMemory.includeKernelData
+        self.__hadJukeBox    = self.__loader.virtualMemory.includeJukeBox
+
+        self.__loader.virtualMemory.includeKernelData = True
+        self.__loader.virtualMemory.includeJukeBox    = True
+
+    def setBackToOriginal(self):
+        self.__loader.virtualMemory.includeKernelData = self.__hadMainKernel
+        self.__loader.virtualMemory.includeJukeBox    = self.__hadJukeBox
 
     def generate_SoundBank(self, fullName, data, bank, soundBanks, userD):
         filesNames   = data[0][1:-1].split("|")
