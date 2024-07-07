@@ -28,138 +28,17 @@ temp16 = $91
 temp17 = $92
 temp18 = $93
 temp19 = $94
-
 item = $95
-frameColor = $96
-			
-*** Playfield Elements
-pf0Pointer = $97		; 16 bits
-pf1Pointer = $99		; 16 bits
-pf2Pointer = $9b		; 16 bits	
-pfColorPointer = $9d		; 16 bits 
-bkColorPointer = $9f		; 16 bits
-bkBaseColor = $a1
-pfBaseColor = $a2
-pfIndex = $a3
+
+!!!MAINVARS!!!
+!!!MUSICVARS!!!
+!!!COLLISIONVARS!!!
 
 ************************
-SubMenu = $a4		; 0-1 : SubMenuLines
-NoGameMode = $a4	; 2-4 : BankToJump
-bankToJump = $a4	; 5 : ScrollDirection
-SubMenuLines = $a4	; 6 : Go to SubMenu
-ScrollDirection = $a4	; 7 : No Game Mode
-************************  
+*
+* Constants
+*-----------------------
 
-*** Player Settings
-P0SpritePointer = $a5		; 16bit
-P0ColorPointer = $a7		; 16bit
-P1SpritePointer = $a9		; 16bit
-P1ColorPointer = $ab		; 16bit
-
-************
-* Settings *
-****************************************	
-P0Settings = $ad			; Bits 0-2 are sprite settings, 
-P0Mirrored = $ad			; 3 is reflection, bits 4-5 are missile settings. 
-P0TurnOff  = $ad			; 6: Turn Off Sprite
-P1Settings = $ae			; 7: Turn off Missile
-P1Mirrored = $ae			; Must be in order!
-P1TurnOff  = $ae
-****************************************
-pfSettings = $af	; Since CTRLPF 0-1 bits are fixed in the screen loop
-pfEdges	= $af		; 0-1: free
-BallTurnOff = $af	; 2: Players move behind the pf
-#Has to be here because	; 3: Turn off Ball
-#of the edge check	; 4-5: Ball Settings
-#routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 		;
-************************
-
-P0Height = $b0
-P1Height = $b1
-
-****************************************
-P0SpriteIndex = $b2			; low nibble is P0 sprite index
-P1SpriteIndex = $b2			; high nibble is P1 sprite index
-****************************************
-
-*** Positions (Must be aligned!!)
-P0Y = $b3	
-P1Y = $b4	
-M0Y = $b5
-M1Y = $b6
-BLY = $b7
-
-P0X = $b8
-P1X = $b9
-M0X = $ba
-M1X = $bb
-BLX = $bc
-
-*** Fake Missile Colors
-M0Color = $bd
-M1Color = $be
-
-*** TileScreen
-TileSetPointer = $bf	; 16 bit
-TileScreenMainColor = $c1
-
-*** Matrix 6x4
-Tile1_1 = $c2
-Tile1_2 = $c2
-Tile1_3 = $c3
-Tile1_4 = $c3
-Tile1_5 = $c4
-Tile1_6 = $c4
-
-Tile2_1 = $c5
-Tile2_2 = $c5
-Tile2_3 = $c6
-Tile2_4 = $c6
-Tile2_5 = $c7
-Tile2_6 = $c7
-
-Tile3_1 = $c8
-Tile3_2 = $c8
-Tile3_3 = $c9
-Tile3_4 = $c9
-Tile3_5 = $ca
-Tile3_6 = $ca
-
-Tile4_1 = $cb
-Tile4_2 = $cb
-Tile4_3 = $cc
-Tile4_4 = $cc
-Tile4_5 = $cd
-Tile4_6 = $cd
-
-TileColorPointer = $ce 	; 16 bits
-
-*******************
-TileSelected = $d0  ; 0-4th bit: Selected Tile (5 bits)
-OverlapScreen = $d0 ; 5th bit: Have some part of the other screen
-GrayScale     = $d0 ; 6th bit: GrayScale overlap
-OverLapIndicator = $d0
-*******************
-
-*** Music Stuff (same for all jukeboxes)
-Music_Pointer0 = $d1	; 16 bits
-Music_Pointer1 = $d3	; 16 bits
-Music_Duration0 = $d5
-Music_Duration1 = $d6 
-***
-JukeBox_Controller = $d7 
-JukeBox_Music_Index = $d7 ; 0-2
-JukeBox_Wave_Index = $d7  ; 3-5
-JukeBox_Music_Duration0bit = $d7  ; 6
-JukeBox_Music_Duration1bit = $d7  ; 7
-***
-Music_PointerBackUp0 = $d8	; 16 bits
-Music_PointerBackUp1 = $da	; 16 bits
-
-************************
-
-	; Constants
- 
 NTSC_Vblank   =	169
 NTSC_Overscan =	163
 NTSC_Display  = 229
@@ -168,7 +47,9 @@ PAL_Vblank   =	169
 PAL_Overscan =	206
 PAL_Display  =  244
 
-	; User defined variables
+*
+* User defined variables
+*------------------------
 
 *Global
 *---------
@@ -228,7 +109,7 @@ bank1_EnterKernel
 	STA	ENAM1		 
 	STA	ENABL
 	STA	CXCLR
-
+###Start-Main-Kernel
 	BIT	SubMenu
 	BVC	bank1_StayHere	; Go to the SubMenu Kernel
 	JMP 	bank1_DoSubMenuKernel	; instead.
@@ -558,6 +439,8 @@ bank1_saveP1Sprite
 	DEC	temp01		; 5 (70)
 	JMP	bank1_FirstLine	; 3 (73)
 
+###End-Main-Kernel
+
 bank1_ResetAll
 	LDX	#0		; 2 (62)
 	STX	HMCLR		; 3 (65)
@@ -587,6 +470,8 @@ bank1_ResetAll
 	LDX	item		; Retrieve the stack pointer
 	TXS
 
+!!!COLLISIONS_CODE!!!
+
 bank1_JumpBackToBankScreenBottom
 
 	lda	bankToJump
@@ -610,6 +495,8 @@ bank1_JumpBackToBankScreenBottom
    	pha
    	pha
    	jmp	bankSwitchJump
+
+###Start-Main-Kernel-Sub
 
 bank1_LoadNextData
 	LDA	Tile1_1,x	; 4	
@@ -963,6 +850,7 @@ bank1_SetP0TilePositions
 	BEQ	bank1_OddStart
 	LDA	#$C0
 	JMP	bank1_EvenStart
+
 bank1_OddStart
 	LDA	#$C0
 bank1_EvenStart	
@@ -1010,9 +898,7 @@ bank1_LoadedShit
 bank1_JumpOddFrame
 	JMP	bank1_OddFrame
 
-!!!213bytesOfUserData!!!
-
-	align	256
+	_align 125
 
 bank1_OddFrame
 	LDA	#$00
@@ -1095,6 +981,8 @@ bank1_Loop_Odd_Line2
 	BEQ	bank1_EndOfAll	; 2
 	JMP	bank1_CalculatorLine	; 3 	
 
+	_align	130
+
 bank1_EvenFrame
 
 	_sleep	50		; (74)
@@ -1105,15 +993,15 @@ bank1_EvenFrame
 
 bank1_Loop_Even_Line1
 	STA	HMOVE		; 3
-	LDA	#$80		; 2 (5)
+	LDA	#$00		; 2 (5)
 	STA	HMP1		; 3 (8)
 	
-	LDA	temp18		; 3
-	CMP	#0		; 2
-	BEQ	bank1_SelectorDraw2	; 2
-	LDA	#0		; 2
-	sleep	2
-	JMP	bank1_NoSelectorDraw2	; 3
+	LDA	temp18		; 3 (11)
+	CMP	#0		; 2 (13)
+	BEQ	bank1_SelectorDraw2	; 2 (15)
+	LDA	#0		; 2 (17)
+	sleep	2 
+	JMP	bank1_NoSelectorDraw2	; 3 (21)
 bank1_SelectorDraw2
 	sleep	3
 	LDA	temp19		; 3
@@ -1133,7 +1021,7 @@ bank1_NoSelectorDraw2
 	STX	GRP1		; 3 (53)
 
 
-	sleep	10
+	sleep	9
 	LDA	(temp15),y	; 5
 	STA	temp19
 
@@ -1142,25 +1030,25 @@ bank1_NoSelectorDraw2
 
 bank1_Loop_Even_Line2
 	STA	HMOVE		; 3
-	LDA	#$00		; 2 (5)
+	LDA	#$80		; 2 (5)
 	STA 	HMP1		; 3 (8)
 
-	LDA	(TileColorPointer),y	; 5 
-	CLC			; 3 
-	ADC	TileScreenMainColor	; 3 
-	STA	temp17		; 3 
+	LDA	(TileColorPointer),y	; 5 (13)
+	CLC				; 3 (16) 
+	ADC	TileScreenMainColor	; 3 (19)
+	STA	temp17		        ; 3 (21)
 	sleep	3
 
 	LDA	(temp03),y 	; 5 (30)
 	STA	GRP1		; 3 (33)
 
-	sleep	2
+	sleep	3
 	LDA	(temp11),y 	; 5 (38)
 	TAX			; 2 (40)
 
 	LDA	(temp07),y 	; 5 (45)
 	STA	GRP1		; 3 (48)
-	sleep 	3
+	sleep 	2
 	STX	GRP1		; 3 (53)
 
 	LDA	#$00
@@ -1231,6 +1119,8 @@ bank1_NoMoreLiiiiines
 	JMP	bank1_DoItAgainPlease
 
 !!!191bytesOfUserData!!!
+
+###End-Main-Kernel-Sub
 
 	align	256
 bank1_FineAdjustTable256
@@ -1581,9 +1471,9 @@ VBLANKBank2
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -1907,9 +1797,9 @@ VBLANKBank3
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -2231,9 +2121,9 @@ VBLANKBank4
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -2556,9 +2446,9 @@ VBLANKBank5
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -2880,9 +2770,9 @@ VBLANKBank6
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -3205,9 +3095,9 @@ VBLANKBank7
 	ORA	temp01		; Save the bankNumber
 	STA	bankToJump
 
-	lda	#>(CalculateDuringVBLANK-1)
+	lda	#>(bank8_CalculateDuringVBLANK-1)
    	pha
-   	lda	#<(CalculateDuringVBLANK-1)
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
    	pha
    	pha
    	pha
@@ -3524,7 +3414,7 @@ VBLANKBank8
 	ORA	#%00011100	; Save the bankNumber
 	STA	bankToJump
 
-   	jmp	CalculateDuringVBLANK
+   	jmp	bank8_CalculateDuringVBLANK
 
 VBlankEndBank8
 	CLC
@@ -3646,7 +3536,9 @@ ScreenBottomBank8
 *----------------------------
 *
 
-CalculateDuringVBLANK
+###START-MAIN-VBLANK
+
+bank8_CalculateDuringVBLANK
 
 * I always forget these!!
 *
@@ -3912,6 +3804,8 @@ bank8_CalculateP1PointerIndex
 bank8_CalculateP1PointerIndexDone
 	STA	temp10		; temp10 will store the sprite pointers low byte
 
+###END-MAIN-VBLANK
+
 bank8_JumpBackToBankScreenTop
 
 	lda	bankToJump
@@ -4005,7 +3899,7 @@ bank8_NoLargerThan24
 
 bank8_SubMenuVBLANKEnd
 	JMP	bank8_JumpBackToBankScreenTop
-	
+
 	align 256
 	
 bank8_Start

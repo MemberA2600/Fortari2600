@@ -485,9 +485,10 @@ class SpriteEditor:
         listbox.delete(0, END)
         for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath + folder):
             for file in files:
-                listitems.append(
-                    ".".join(file.split(".")[:-1]).split("/")[-1]
-                )
+                if file.endswith("asm"):
+                    listitems.append(
+                        ".".join(file.split(".")[:-1]).split("/")[-1]
+                    )
         for item in listitems:
             listbox.insert(END, item)
         listbox.selection_set(0)

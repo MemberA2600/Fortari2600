@@ -600,6 +600,8 @@ class Assembler():
 
 
     def lowHighNibble(self, raw):
+        #print(raw)
+
         if ("<" not in raw) and (">" not in raw):
             return(raw)
 

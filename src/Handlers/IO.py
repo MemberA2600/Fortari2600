@@ -167,23 +167,33 @@ class IO:
 
     def loadKernelElement(self, name, element):
         txt = open("templates/skeletons/"+name+"_"+element+".asm", "r").read()
+        first = 0x96
 
         if self.__loader.virtualMemory.includeKernelData:
-           txt = txt.replace("!!!MAINVARS!!!", open("templates/skeletons/"+name+"_"+element+"_sysVars.asm", "r").read())
-           startAddress = 0xd1
+           first, subTXT = self.__loader.virtualMemory.replaceMemoryAddressesAndSetFirst(first,
+                           open("templates/skeletons/"+name+"_"+element+"_sysVars.asm", "r").read())
+
+           txt = txt.replace("!!!MAINVARS!!!", subTXT)
         else:
            remove1 = re.findall(r'###Start-Main-Kernel.+###End-Main-Kernel'        , txt, re.DOTALL)[0]
            remove2 = re.findall(r'###Start-Main-Kernel-Sub.+###End-Main-Kernel-Sub', txt, re.DOTALL)[0]
 
            txt = txt.replace(remove1, "").replace(remove2, "")
-           startAddress = 0x96
 
         if self.__loader.virtualMemory.includeJukeBox:
-           txt = txt.replace("!!!MUSICVARS!!!", open("templates/skeletons/"+name+"_"+element+"_musicVars.asm", "r").read())
+           first, subTXT = self.__loader.virtualMemory.replaceMemoryAddressesAndSetFirst(first,
+                           open("templates/skeletons/"+name+"_"+element+"_musicVars.asm", "r").read())
+
+           txt = txt.replace("!!!MUSICVARS!!!", subTXT)
+
 
         if self.__loader.virtualMemory.includeCollisions:
-           txt = txt.replace("!!!COLLISIONVARS!!!", open("templates/skeletons/"+name+"_"+element+"_collVars.asm", "r").read())
+           first, subTXT = self.__loader.virtualMemory.replaceMemoryAddressesAndSetFirst(first,
+                           open("templates/skeletons/"+name+"_"+element+"_collVars.asm", "r").read())
 
+           txt = txt.replace("!!!COLLISIONVARS!!!", subTXT)\
+                    .replace("!!!COLLISIONS_CODE!!!", open("templates/skeletons/" + name + "_" + element + "_collisions.asm", "r").read())
+        
         return txt
 
     def loadTestElement(self, mode, name, element):

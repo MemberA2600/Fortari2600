@@ -35,9 +35,10 @@ item = $95
 !!!COLLISIONVARS!!!
 
 ************************
+*
+* Constants
+*-----------------------
 
-	; Constants
- 
 NTSC_Vblank   =	169
 NTSC_Overscan =	163
 NTSC_Display  = 229
@@ -46,7 +47,9 @@ PAL_Vblank   =	169
 PAL_Overscan =	206
 PAL_Display  =  244
 
-	; User defined variables
+*
+* User defined variables
+*------------------------
 
 *Global
 *---------
@@ -106,7 +109,9 @@ bank1_EnterKernel
 	STA	ENAM1		 
 	STA	ENABL
 	STA	CXCLR
-
+	
+	TSX
+	STX	item
 ###Start-Main-Kernel
 	BIT	SubMenu
 	BVC	bank1_StayHere	; Go to the SubMenu Kernel
@@ -200,8 +205,8 @@ bank1_SettingUpP1SpriteAndMissile1
 
 
 bank1_FinishPreparation
-	TSX			; 2 (31)
-	STX	item		; Save the stack pointer 3 (34)
+**	TSX			; 2 (31)
+**	STX	item		; Save the stack pointer 3 (34)
 
 	LDX	#42
 	LDA	#15		; 2 (36)
@@ -468,6 +473,8 @@ bank1_ResetAll
 	LDX	item		; Retrieve the stack pointer
 	TXS
 
+!!!COLLISIONS_CODE!!!
+
 bank1_JumpBackToBankScreenBottom
 
 	lda	bankToJump
@@ -556,8 +563,8 @@ bank1_LoadNextData
 	JMP	bank1_LoadedShit	; 3
 
 bank1_DoSubMenuKernel
-	TSX			; 2 
-	STX	item		; 3
+**	TSX			; 2 
+**	STX	item		; 3
 
 	LDA	frameColor
 	STA	WSYNC
@@ -746,7 +753,6 @@ bank1_NoOverLap
 *	temp15 - temp16: Selector Sprite Pointer
 *	temp17: ColorData
 *	temp18: TileY
-*	temp19: SelectorData
 
 bank1_NoResetNow
 	LDA	frameColor
@@ -787,9 +793,9 @@ bank1_FFFF
 	ASL
 
 	CLC			; 2 
-	ADC	#<bank1_Selector-1 ; 3 
+	ADC	#<bank1_Selector ; 3 
 	STA	temp15		; 3 
-	LDA	#>bank1_Selector-1 ; 3 
+	LDA	#>bank1_Selector ; 3 
 	STA	temp16		; 3 
 
 	LDY	#0
@@ -846,6 +852,7 @@ bank1_SetP0TilePositions
 	BEQ	bank1_OddStart
 	LDA	#$C0
 	JMP	bank1_EvenStart
+
 bank1_OddStart
 	LDA	#$C0
 bank1_EvenStart	
@@ -877,10 +884,8 @@ bank1_LoadedShit
 	STA	COLUPF		; 3 
 	STA	COLUP1		; 3 
 
-	INY
 	LDA	(temp15),y	; 5
 	STA	temp19
-	DEY
 
 	STA	WSYNC
 	; 2
@@ -889,11 +894,9 @@ bank1_LoadedShit
 	CMP	#%00000001	; 2 (9)
 	BEQ	bank1_JumpOddFrame	; 2 (11)
 
-	JMP	bank1_EvenFrame	; 3 (14)
+	JMP	bank1_EvenFrame ; 3 (14)
 bank1_JumpOddFrame
-	JMP	bank1_OddFrame
-
-!!!213bytesOfUserData!!!
+	JMP	bank1_OddFrame  ; 3 
 
 	align	256
 
@@ -901,160 +904,157 @@ bank1_OddFrame
 	LDA	#$00
 	STA	HMP0
 
-	sta	WSYNC
-
 bank1_Loop_Odd_Line1
+	STA	WSYNC		; 3 (76)
 	STA	HMOVE		; 3
-	LDA	#$00		; 2 (5)
-	STA	HMP1		; 3 (8)
-	
-	LDA	temp18		; 3
-	CMP	#0		; 2
-	BEQ	bank1_SelectorDraw	; 2
-	LDA	#0		; 2
-	sleep	2
-	JMP	bank1_NoSelectorDraw	; 3
-bank1_SelectorDraw
-	sleep	3
-	LDA	temp19		; 3
-bank1_NoSelectorDraw
-	STA	GRP0		; 3
-	
-	LDA	(temp03),y 	; 5 (30)
-	STA	GRP1		; 3 (33)
 
-	LDA	(temp11),y 	; 5 (38)
-	TAX			; 2 (40)
+	LDA	#0		; 2 (5)
+	STA	HMP1		; 3 (8)
+
+***	sleep	67
+
+	CMP	temp18		; 3 (11)
+	BEQ	bank1_Loop_Odd_IsSelector	; 2 (13)
+	NOP			; 2 (15)		
+	JMP	bank1_Loop_Odd_NoSelector 	; 3 (18)		
+
+bank1_Loop_Odd_IsSelector
+	LDA	(temp15),y	; 5 (18)
+bank1_Loop_Odd_NoSelector
+	STA	GRP0		; 3 (21)
+
+	LDA	(temp03),y 	; 5 (26)
+	STA	GRP1		; 3 (29)
+	
+***	sleep	45
+	sleep	6
+
+	LAX	(temp11),y 	; 5 (40)
 
 	LDA	(temp07),y 	; 5 (45)
 	STA	GRP1		; 3 (48)
+
 	sleep	2
 	STX	GRP1		; 3 (53)
-	
-	sleep	8	
-	LDA	(temp15),y	
-	STA	temp19
 
-	LDA	#$00
-	STA	HMP0
+	LAX	(temp13),y 	; 5 (58)
+	TXS			; 2 (60)
+	LAX	(temp09),y 	; 5 (65)
+	
+	LDA	(temp05),y 	; 5 (70)
+***	STA	GRP1	
+	BYTE	#$8D
+	BYTE	#GRP1
+	BYTE	$00		; 4 (74)
 
 bank1_Loop_Odd_Line2
-	STA	HMOVE		; 3
-	LDA	#$80		; 2 (5)
-	STA 	HMP1		; 3 (8)
+	STA	HMOVE		; 2
 
-	LDA	(TileColorPointer),y	; 5 
-	CLC			; 3 
-	ADC	TileScreenMainColor	; 3 
-	STA	temp17		; 3 
-	sleep	3
+	LDA	#$80		; 2 (4)
+	STA	HMP1		; 3 (7)
 
-	LDA	(temp05),y 	; 5 (30)
-	STA	GRP1		; 3 (33)
+	DEY			; 2 (9)
 
-	LDA	(temp13),y 	; 5 (38)
-	TAX			; 2 (40)
+	LDA	(TileColorPointer),y ; 5 (14)
+	CLC			     ; 2 (16)
+	ADC	TileScreenMainColor  ; 3 (19)
+	STA	temp17		     ; 3 (22)
 
-	LDA	(temp09),y 	; 5 (45)
-	STA	GRP1		; 3 (48)
-	sleep 	2
-	STX	GRP1		; 3 (53)
+	sleep	20
+
+	STX	GRP1
+	TSX
+	STX	GRP1
 	
-	sleep	10
-		
-	LDA	temp17		; 3
-	STA	COLUPF		; 3
-	STA	COLUP1		; 3 
+	sleep	5
+	LDA	temp17
+	STA	COLUP1
+	STA	COLUPF
 
-	DEY			; 2 (74)
-	BPL	bank1_Loop_Odd_Line1	; 2 (76)
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
+	CPY	#255
+	BEQ	bank1_Loop_Odd_LineEnd	; 2 (72)
+	JMP	bank1_Loop_Odd_Line1
+bank1_Loop_Odd_LineEnd
+	JMP	bank1_Loop_LineEnd
 
-	DEC	temp01		; 5	
-	LDA	temp01		; 3
-	CMP	#0		; 2
-	BEQ	bank1_EndOfAll	; 2
-	JMP	bank1_CalculatorLine	; 3 	
+	align	256
 
 bank1_EvenFrame
-
-	_sleep	50		; (74)
-	sleep	7
+	_sleep	46		; (74)
+	sleep	4
 	
 	LDA	#$00
 	STA	HMP0
 
 bank1_Loop_Even_Line1
-	STA	HMOVE		; 3
-	LDA	#$80		; 2 (5)
-	STA	HMP1		; 3 (8)
-	
-	LDA	temp18		; 3
-	CMP	#0		; 2
-	BEQ	bank1_SelectorDraw2	; 2
-	LDA	#0		; 2
-	sleep	2
-	JMP	bank1_NoSelectorDraw2	; 3
-bank1_SelectorDraw2
-	sleep	3
-	LDA	temp19		; 3
-bank1_NoSelectorDraw2
-	STA	GRP0		; 3
-	
+	STA	HMOVE		; 74
 
-	LDA	(temp05),y 	; 5 (30)
-	STA	GRP1		; 3 (33)
+	LDA	#$80		; 2
+	STA	HMP1		; 3
 
-	LDA	(temp13),y 	; 5 (38)
-	TAX			; 2 (40)
+	LDA	#0		; 2 (5)
+	CMP	temp18		; 3 (8)
+	BEQ	bank1_Loop_Even_IsSelector	; 2 (10)
+	NOP			; 2 (12)		
+	JMP	bank1_Loop_Even_NoSelector 	; 3 (15)		
 
-	LDA	(temp09),y 	; 5 (45)
-	STA	GRP1		; 3 (48)
-	sleep	2
-	STX	GRP1		; 3 (53)
+bank1_Loop_Even_IsSelector
+	LDA	(temp15),y	; 5 (15)
+bank1_Loop_Even_NoSelector
+	STA	GRP0		; 3 (18)
 
+	LDA	(temp05),y 	; 5 (23)
+	STA	GRP1		; 3 (26)
 
-	sleep	10
-	LDA	(temp15),y	; 5
-	STA	temp19
+	sleep	4
 
-	LDA	#$00
-	STA	HMP0
+	LAX	(temp13),y 	; 5 (35)
+
+	LDA	(temp09),y 	; 5 (40)
+	STA	GRP1		; 3 (43)
+	sleep	2	
+	STX	GRP1		; 3 (48)
+
+	LAX	(temp11),y 	; 5 (54)
+	TXS			; 2 (56)
+
+	LAX	(temp07),y 	; 5 (61)
+	LDA	(temp03),y 	; 5 (66)
+	STA	GRP1		; 3 (69)
+	DEY			; 2 (71)
 
 bank1_Loop_Even_Line2
+	STA	WSYNC		; 76
 	STA	HMOVE		; 3
-	LDA	#$00		; 2 (5)
-	STA 	HMP1		; 3 (8)
 
-	LDA	(TileColorPointer),y	; 5 
-	CLC			; 3 
-	ADC	TileScreenMainColor	; 3 
-	STA	temp17		; 3 
-	sleep	3
+	LDA	#0		; 2 (5)
+	STA	HMP1		; 3 (8)
 
-	LDA	(temp03),y 	; 5 (30)
-	STA	GRP1		; 3 (33)
+***	sleep	58
 
-	sleep	2
-	LDA	(temp11),y 	; 5 (38)
-	TAX			; 2 (40)
+	LDA	(TileColorPointer),y ; 5 (13)
+	CLC			     ; 2 (15)
+	ADC	TileScreenMainColor  ; 3 (18)
+	STA	temp17		     ; 3 (21)
+	
+***	sleep	45
 
-	LDA	(temp07),y 	; 5 (45)
-	STA	GRP1		; 3 (48)
-	sleep 	3
-	STX	GRP1		; 3 (53)
+	sleep	24		    ; 45
 
-	LDA	#$00
-	STA	HMP0
+	STX	GRP1		    ; 3 (48)
+	TSX			    ; 2 (50)
+	STX	GRP1		    ; 3 (53)
+	
+	LDA	temp17		    ; 3 (56)
+	STA	COLUP1		    ; 3 (59)
+	STA	COLUPF		    ; 3 (62)
 
-	LDA	temp17		; 3
-	STA	COLUPF		; 3
-	STA	COLUP1		; 3 
+	sleep	4
 
-	DEY			; 2 (72)
-	BPL	bank1_Loop_Even_Line1	; 2 (74)
+	CPY	#255			; 2 (66)
+	BEQ	bank1_Loop_LineEnd	; 2 (68)
+	JMP	bank1_Loop_Even_Line1   ; 3 (71)
+bank1_Loop_LineEnd
 	LDA	#0
 	STA	GRP0
 	STA	GRP1
@@ -1063,14 +1063,16 @@ bank1_Loop_Even_Line2
 	LDA	temp01		; 3
 	CMP	#0		; 2
 	BEQ	bank1_EndOfAll	; 2
-	JMP	bank1_CalculatorLine	; 3 	
+	JMP	bank1_CalculatorLine	; 3 
 
 bank1_EndOfAll
 	
 	STA	WSYNC
-	LDA	#0
-	STA	GRP0
-	STA	GRP1
+***	LDA	#0
+***	STA	GRP0
+***	STA	GRP1
+	LDX	item
+	TXS
 
 	STA	WSYNC
 	LDA	#%11111110

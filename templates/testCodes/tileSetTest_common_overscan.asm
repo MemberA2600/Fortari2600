@@ -175,8 +175,8 @@ GetRowNum
 	bit 	SWCHA
 	BNE	NoUpSub
 
-	LDA	TileSelected
-	AND	#%11100000
+**	LDA	TileSelected
+**	AND	#%11100000
 	LDA	TileSelected
 	ORA	#%11100000
 	CLC
@@ -194,8 +194,8 @@ NoUpSub
 	bit 	SWCHA
 	BNE	NoVerMoveSub
 
-	LDA	TileSelected
-	AND	#%11100000
+**	LDA	TileSelected
+**	AND	#%11100000
 	LDA	TileSelected
 	AND	#%00011111
 	SEC

@@ -42,9 +42,9 @@
 	LDA	#>TestSprite_SpriteColor
 	STA	P1ColorPointer+1
 
-	LDA	#<Zero
+	LDA	#<bank1_Zero
 	STA	P0SpritePointer
-	LDA	#>Zero
+	LDA	#>bank1_Zero
 	STA	P0SpritePointer+1
 
 	LDA	#1
