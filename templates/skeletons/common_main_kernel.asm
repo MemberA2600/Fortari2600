@@ -898,6 +898,8 @@ bank1_LoadedShit
 bank1_JumpOddFrame
 	JMP	bank1_OddFrame  ; 3 
 
+!!!USER-DATA-2:131!!!
+
 	align	256
 
 bank1_OddFrame
@@ -976,6 +978,8 @@ bank1_Loop_Odd_Line2
 	JMP	bank1_Loop_Odd_Line1
 bank1_Loop_Odd_LineEnd
 	JMP	bank1_Loop_LineEnd
+
+!!!USER-DATA-3:160!!!
 
 	align	256
 
@@ -1115,7 +1119,7 @@ bank1_DoExtraWSYNC
 bank1_NoMoreLiiiiines
 	JMP	bank1_DoItAgainPlease
 
-!!!191bytesOfUserData!!!
+!!!USER-DATA-1:191!!!
 
 ###End-Main-Kernel-Sub
 

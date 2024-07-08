@@ -3,14 +3,21 @@ bank1_Save_Collisions
 *	Check if the ON/OFF bit is set. Also, if it is submenu mode.
 *
 
-	BIT 	SubMenu
-	BVS	bank1_Save_Collisions_IsThe5thBitSet
-
 	LDA	collisionVar1
 	AND	#%00000001
 	CMP	#%00000001
-	BEQ	bank1_Save_Collisions_Start
+	BEQ	bank1_Save_Collisions_NoEnd
+
+	LDA	#0
+	STA	collisionVar1
+	STA	collisionVar2	
+
 	JMP	bank1_Save_Collisions_End_NoSave
+
+bank1_Save_Collisions_NoEnd
+	BIT 	SubMenu
+	BVS	bank1_Save_Collisions_IsThe5thBitSet
+	JMP	bank1_Save_Collisions_Start
 
 bank1_Save_Collisions_IsThe5thBitSet
 *
@@ -27,9 +34,6 @@ bank1_Save_Collisions_Start
 *	Init the variables.
 *
 
-	LDA	#$86
-	STA	COLUBK
-
 	LDA	#%01000000
 	STA	collisionVar1
 	LDA	#0
@@ -37,32 +41,41 @@ bank1_Save_Collisions_Start
 *
 *	Do the loop :)
 *	
-	LDX	#3
-	LDA	collisionVar1
-bank1_Save_Collisions_TheLoop	
-	ORA	CXM0P,x
-	STA	collisionVar1
-
+	LDX	#8
 	LDA	collisionVar2
-	ORA	CXM1P,x
+bank1_Save_Collisions_TheLoop	
+	STA	temp01
+	LDA	CXM0P,x
+	AND	#%11000000
+	ORA	temp01
+	STA	collisionVar2
+
+	DEX
+
+	LDA	collisionVar1
+	STA	temp01
+	LDA	CXM0P,x
+	AND	#%11000000
+	ORA	temp01	
 
 	DEX
 	BMI	bank1_Save_Collisions_End
 
 	LSR
 	LSR
-	STA	collisionVar2	
+	STA	collisionVar1	
 
-	LDA	collisionVar1
+	LDA	collisionVar2
 	LSR
 	LSR
 	JMP	bank1_Save_Collisions_TheLoop
 
 bank1_Save_Collisions_End_SomeWSYNC
-	LDA	#$18
-	STA	COLUBK	
+	LDA	#0
+	STA	collisionVar1
+	STA	collisionVar2	
 
-	LDX	#3
+	LDX	#1
 bank1_Save_Collisions_WSYNC_Wasting
 	STA	WSYNC
 	DEX
@@ -74,6 +87,3 @@ bank1_Save_Collisions_End
 	STA	collisionVar2	
 
 bank1_Save_Collisions_End_NoSave
-
-	LDA	#$00
-	STA	COLUBK
