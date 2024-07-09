@@ -12,7 +12,7 @@ bank1_Save_Collisions
 	STA	collisionVar1
 	STA	collisionVar2	
 
-	JMP	bank1_Save_Collisions_End_NoSave
+	JMP	bank1_Save_Collisions_End_SomeWSYNC
 
 bank1_Save_Collisions_NoEnd
 	BIT 	SubMenu
@@ -33,7 +33,6 @@ bank1_Save_Collisions_Start
 *
 *	Init the variables.
 *
-
 	LDA	#%01000000
 	STA	collisionVar1
 	LDA	#0
@@ -41,22 +40,17 @@ bank1_Save_Collisions_Start
 *
 *	Do the loop :)
 *	
-	LDX	#8
-	LDA	collisionVar2
+	LDX	#7
 bank1_Save_Collisions_TheLoop	
-	STA	temp01
 	LDA	CXM0P,x
 	AND	#%11000000
-	ORA	temp01
+	ORA	collisionVar2
 	STA	collisionVar2
 
 	DEX
-
-	LDA	collisionVar1
-	STA	temp01
 	LDA	CXM0P,x
 	AND	#%11000000
-	ORA	temp01	
+	ORA	collisionVar1
 
 	DEX
 	BMI	bank1_Save_Collisions_End
@@ -68,6 +62,7 @@ bank1_Save_Collisions_TheLoop
 	LDA	collisionVar2
 	LSR
 	LSR
+	STA	collisionVar2
 	JMP	bank1_Save_Collisions_TheLoop
 
 bank1_Save_Collisions_End_SomeWSYNC
@@ -75,7 +70,9 @@ bank1_Save_Collisions_End_SomeWSYNC
 	STA	collisionVar1
 	STA	collisionVar2	
 
-	LDX	#1
+	JMP	bank1_Save_Collisions_End_NoSave
+
+	LDX	#2
 bank1_Save_Collisions_WSYNC_Wasting
 	STA	WSYNC
 	DEX
@@ -84,6 +81,16 @@ bank1_Save_Collisions_WSYNC_Wasting
 	JMP	bank1_Save_Collisions_End_NoSave
 
 bank1_Save_Collisions_End
-	STA	collisionVar2	
+	STA	collisionVar1	
 
 bank1_Save_Collisions_End_NoSave
+*
+*	Testing Only
+*
+**	STA	WSYNC
+**	LDA	counter
+**	STA	COLUBK
+**	STA	WSYNC
+**	STA	WSYNC
+**	LDA	frameColor
+**	STA	COLUBK

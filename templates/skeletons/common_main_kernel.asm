@@ -451,7 +451,7 @@ bank1_ResetAll
 	STX	PF2		; 3 (71)
 
 	STX	WSYNC		
-
+bank1_ResetAll_NoSync
 	STA 	COLUBK		 
 	STA 	COLUPF		
 
@@ -469,6 +469,16 @@ bank1_ResetAll
 	STX	VDELBL
 	STX	REFP0
 	STX	REFP1
+*
+*	Testing Only
+*
+*	STA	WSYNC
+*	LDA	counter
+*	STA	COLUBK
+*	STA	WSYNC
+*	STA	WSYNC
+*	LDA	frameColor
+*	STA	COLUBK
 
 	LDX	item		; Retrieve the stack pointer
 	TXS
@@ -745,7 +755,7 @@ bank1_NotGray2
 	LDA	temp04
 	JMP	bank1_NewLine
 bank1_ResetToOther
-	
+
 bank1_NoOverLap
 *	temp01: Rows left
 *	temp02: LineNum
@@ -758,16 +768,19 @@ bank1_NoResetNow
 	LDA	frameColor
 	STA	WSYNC
 	STA	COLUBK		; 3
+
 	LDA	#0		
 	STA	PF0		
 	STA	PF1	
 	STA	PF2
 
-
 	LDA	OverLapIndicator
 	BPL	bank1_FFFF	
 
-	JMP	bank1_ResetAll
+	LDA	frameColor
+	LDX	#0
+
+	JMP	bank1_ResetAll_NoSync
 bank1_FFFF
 
 
@@ -898,9 +911,7 @@ bank1_LoadedShit
 bank1_JumpOddFrame
 	JMP	bank1_OddFrame  ; 3 
 
-!!!USER-DATA-2:131!!!
-
-	align	256
+	_align	100
 
 bank1_OddFrame
 	LDA	#$00
@@ -979,9 +990,7 @@ bank1_Loop_Odd_Line2
 bank1_Loop_Odd_LineEnd
 	JMP	bank1_Loop_LineEnd
 
-!!!USER-DATA-3:160!!!
-
-	align	256
+	_align	120
 
 bank1_EvenFrame
 	_sleep	46		; (74)
@@ -1118,8 +1127,6 @@ bank1_DoExtraWSYNC
 
 bank1_NoMoreLiiiiines
 	JMP	bank1_DoItAgainPlease
-
-!!!USER-DATA-1:191!!!
 
 ###End-Main-Kernel-Sub
 
