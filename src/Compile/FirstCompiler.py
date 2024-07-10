@@ -3287,6 +3287,8 @@ class FirstCompiler:
             if line[charNum].isspace() == False:
                return(" " + line[charNum:])
 
+        return("")
+
     def convertASMlinesToASMCommands(self, template):
         newTemplate = []
         for lineNum in range(0, len(template)):
@@ -3660,24 +3662,24 @@ class FirstCompiler:
                     template = re.sub(regex, "", template)
                     template = template.replace(param["replacer"], "")
 
-            for tempNum in range(0, 20):
-                if tempNum == 0:
-                   tempText = "#TEMPVAR#"
-                else:
-                   tempText = "#TEMPVAR"+str(tempNum)+"#"
+        for tempNum in range(0, 20):
+            if tempNum == 0:
+               tempText = "#TEMPVAR#"
+            else:
+               tempText = "#TEMPVAR"+str(tempNum)+"#"
 
-                if tempText in template:
-                    try:
-                        tempVarOther = self.__temps[0]
-                        self.__temps.pop(0)
-                        template = template.replace(tempText, tempVarOther)
-                    except:
-                        self.addToErrorList(line["lineNum"],
-                                            self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
-                                                              "", "",
-                                                              str(line["lineNum"] + self.__startLine), line))
-                else:
-                    if tempNum > 0: break
+            if tempText in template:
+               try:
+                   tempVarOther = self.__temps[0]
+                   self.__temps.pop(0)
+                   template = template.replace(tempText, tempVarOther)
+               except:
+                   self.addToErrorList(line["lineNum"],
+                                    self.prepareError("compilerErrorStatementTemps", params["param#1"][0],
+                                                      "", "",
+                                                      str(line["lineNum"] + self.__startLine), line))
+            else:
+               if tempNum > 0: break
 
         #print("\n###1\n", template, "\n###2\n")
         return template, optionalText, objectThings

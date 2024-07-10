@@ -1,0 +1,14 @@
+* params=variable|stringConst|number|register
+* param1=#VAR01#
+* addManuallyToSysVars=TileSelected
+*
+	select("True")
+	case(joy0_up)
+		gameScreen%moveSubMenuCursorUp(#VAR01#)	
+	case(joy0_down)
+		gameScreen%moveSubMenuCursorDown(#VAR01#)	
+	case(joy0_left)
+		gameScreen%moveSubMenuCursorLeft(#VAR01#)	
+	case(joy0_right)
+		gameScreen%moveSubMenuCursorRight(#VAR01#)	
+	end-select
