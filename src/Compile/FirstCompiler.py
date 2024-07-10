@@ -3486,6 +3486,8 @@ class FirstCompiler:
                                 if "TO" in pSettings["converter"].upper(): direction = "TO"
                                 if "FROM" in pSettings["converter"].upper(): direction = "FROM"
 
+                            #print(paramName, direction, pSettings["converter"])
+
                             convert = self.convertAny2Any(params[paramName][0], direction, params, self.__temps, line)
 
                 if errPrint: print(errType)
@@ -4875,7 +4877,9 @@ class FirstCompiler:
 
                     if line.replace("\t", " ")[0] != " " and "!!!" not in line:
                         if len(line) > 0:
-                            if line[0] not in ("*", "#", "!") and "#BANK#" not in line:
+                            #if source == self.toRoutines:
+                            #   print(line[0] not in ("*", "#", "!"), "#BANK#" not in line, line)
+                            if line[0] not in ("*", "#", "!") or "#BANK#" in line:
                                labels.append(line)
                                labels.append(line.replace("#BANK#", b).replace("#SECTION#", key))
 

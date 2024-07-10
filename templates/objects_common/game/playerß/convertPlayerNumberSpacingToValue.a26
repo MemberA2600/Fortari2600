@@ -1,0 +1,35 @@
+* params=variable||register
+* param1=#VAR01#
+*
+	asm("LDA", "PßSettings")
+	asm("AND", "%00000111")
+	asm("STA", "#TEMPVAR1#")
+*
+* NUSIZ settings:
+*----------------
+* 00: 10000
+* 01: 11000
+* 02: 10100
+* 03: 11100	
+* 04: 10001
+* 05: -
+* 06: 10101
+* 07: -
+*
+
+	select(#TEMPVAR1#)
+	case(0)
+		set(#VAR01#, "PlayerNumberSpacing_100")
+	case(1)
+		set(#VAR01#, "PlayerNumberSpacing_110")
+	case(2)
+		set(#VAR01#, "PlayerNumberSpacing_101")
+	case(3)
+		set(#VAR01#, "PlayerNumberSpacing_111")
+	case(4)
+		set(#VAR01#, "PlayerNumberSpacing_10001")
+	case(6)
+		set(#VAR01#, "PlayerNumberSpacing_10101")
+	default
+		set(#VAR01#, #0)
+	end-select
