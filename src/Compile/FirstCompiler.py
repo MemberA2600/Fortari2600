@@ -1902,6 +1902,7 @@ class FirstCompiler:
                        if key not in subLineStructure.keys():
                            subLineStructure[key] = line[key]
 
+                   #print(subLine, subLineStructure)
                    self.processLine(subLineStructure, linesFetched, None, None)
 
                    if line["error"] == False:
@@ -4592,6 +4593,8 @@ class FirstCompiler:
         if line["error"] == False: line["compiled"] = template
 
     def prepareMulti(self, params, line):
+        #print(params, line)
+
         changeText = {}
 
         var1 = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
@@ -4608,7 +4611,6 @@ class FirstCompiler:
         self.__magicNumber += 1
 
         self.__temps = self.collectUsedTemps()
-
 
         try:
             first = self.__temps[0]
@@ -4645,7 +4647,7 @@ class FirstCompiler:
                     changeText["#VARTEMP#"] = params["param#1"][0]
 
             else:
-                if var1.bcd == True: self.paramToDec(params, 1)
+                if hasBCD == True: self.paramToDec(params, 1)
                 changeText["#VARTEMP#"] = params["param#1"][0]
 
             if var2 != False:
@@ -5623,7 +5625,6 @@ class FirstCompiler:
            return str(self.__constants[key]["value"])
 
         for that in self.__constants.keys():
-
             if key in self.__constants[that]["alias"]:
                return str(self.__constants[that]["value"])
 
@@ -5677,7 +5678,19 @@ class FirstCompiler:
         temps            = []
         commands         = ""
 
+        for constKey in self.__loader.stringConstants.keys():
+            if constKey in statement:
+               v = self.valOfNumber(self.getConstValue(constKey))
+               statement = statement.replace(constKey, str(v))
+
+            for aliasKey in self.__loader.stringConstants[constKey]["alias"]:
+                if aliasKey in statement:
+                   v = self.valOfNumber(self.getConstValue(aliasKey))
+                   statement = statement.replace(aliasKey, str(v))
+
         self.__temps = self.collectUsedTemps()
+
+        #print(">>> " + statement)
 
         needComprassion = True
         stringAllowed   = False
@@ -5715,18 +5728,19 @@ class FirstCompiler:
                       statement[num666] = str(expand(simplify(statement[num666])))
                   statement = currentComprass.join(statement)
 
-               statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0,
-                                                                           line)
+               statementData = self.__editorBigFrame.getStatementStructure(statement, needComprassion, stringAllowed, 0, line)
+               """
                for item in statementData:
                    if item["word"] in ["(", ")"]:
                       self.addToErrorList(line["lineNum"],
                                           self.prepareError("compilerErrorStatementComplex", statement,
                                                              "", "", str(line["lineNum"] + self.__startLine), line))
                       break
+               """
 
                if line["error"] == False:
                   if command == "calc":
-                     commands = self.convertToCommands(statement, line, None)
+                     commands = self.convertToCommands2(statement, line, None)
                   else:
                      # currentComprass = self.findCompass(statement)
 
@@ -5755,8 +5769,8 @@ class FirstCompiler:
                            txt = ""
                            statement = statement.split(currentComprass)
 
-                           txt += self.convertToCommands(statement[0], line, temp1)
-                           txt += self.convertToCommands(statement[1], line, temp2)
+                           txt += self.convertToCommands2(statement[0], line, temp1)
+                           txt += self.convertToCommands2(statement[1], line, temp2)
 
                            commands = txt
                            temps = [temp1, temp2]
@@ -5787,9 +5801,102 @@ class FirstCompiler:
 
         return False
 
+    def convertToCommands2(self, statement, line, saveHere):
+        if saveHere == None:
+           saveHere   = line["param#1"][0]
 
+        newT = []
+        for temp in self.__temps:
+            if temp not in statement and temp != saveHere:
+               newT.append(temp)
 
-    def convertToCommands(self, statement, line, saveHere):
+        self.__temps = newT
+
+        statement = statement.replace("\t", "").replace(" ", "")
+        arrList = (self.__loader.config.getValueByKey("validArithmetics") + " ( )").split(" ")
+        while "" in arrList: arrList.remove("")
+        # sorted(arrList, key=len)
+
+        arrThings = []
+        start     = 0
+        for charNum in range(0, len(statement)):
+            if statement[charNum] in arrList:
+               if charNum != start:
+                  arrThings.append([statement[start:charNum], False, -1, -1])
+               arrThings.append([statement[charNum], True, -1, -1])
+               start = charNum + 1
+
+        if start != len(statement):
+           arrThings.append([statement[start:], False, -1, -1])
+
+        level    = 0
+        maxLevel = 0
+        maxPrior = -1
+
+        priorities = {
+            "+": 0, "-": 0, "*": 1,  "/": 1,  "%": 1
+        }
+
+        newArrThings = []
+        for item in arrThings:
+            if   item[0] == "(":
+                 level += 1
+                 if level > maxLevel: maxLevel = level
+
+            elif item[0] == ")":
+                level -= 1
+            else:
+                item[2] = level
+                if item[0] in priorities.keys():
+                   item[3] = priorities[item[0]]
+                   if priorities[item[0]] > maxPrior: maxPrior = priorities[item[0]]
+                newArrThings.append(item)
+
+        #print(statement)
+        #print(arrThings)
+
+        arrThings = newArrThings
+        #print(arrThings)
+
+        if len(arrThings) == 1:
+           return (" set(" + saveHere + "," + arrThings[0][0] + ")\n")
+
+        returnText = ""
+
+        #print("--" + statement)
+        for level in range(maxLevel, -1, -1):
+            for prior in range(maxPrior, -1, -1):
+                itemNum = 0
+                while itemNum < len(arrThings):
+                    item = arrThings[itemNum]
+                    #if itemNum == 0: print(level, prior, arrThings)
+                    if item[2] == level and item[3] == prior and item[1]:
+                       #print("++", itemNum, item)
+                       itemPrev = arrThings[itemNum - 1]
+                       itemNext = arrThings[itemNum + 1]
+
+                       try:
+                           temp = self.__temps[0]
+                           self.__temps.pop(0)
+                       except:
+                           self.addToErrorList(line["lineNum"],
+                                               self.prepareError("compilerErrorStatementTemps", statement,
+                                                                 "", "", str(line["lineNum"] + self.__startLine), line))
+                           return ("")
+
+                       returnText += " " + item[0] + "(" + itemPrev[0] + "," + itemNext[0] + "," + temp + ")\n"
+                       arrThings[itemNum] = [temp, False, level - 1, -1]
+                       arrThings.pop(itemNum + 1)
+                       arrThings.pop(itemNum - 1)
+                       itemNum = 0
+                    else:
+                       itemNum +=1
+
+        #print(">>", statement , "\n" + returnText)
+        return returnText
+
+    """
+    def convertToCommands(self, statement, line,saveHere ):
         newT = []
 
         params = self.getParamsWithTypesAndCheckSyntax(line)
@@ -5883,7 +5990,7 @@ class FirstCompiler:
                 returnBack += "\t" + command + "(" + temp + ", " + operand + ")\n"
 
         return returnBack
-
+    """
     def returnMaxParamNum(self, command):
         return len(self.__loader.syntaxList[command].params)
 

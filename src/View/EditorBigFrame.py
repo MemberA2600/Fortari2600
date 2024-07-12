@@ -3508,12 +3508,13 @@ class EditorBigFrame:
     def getStatementStructure(self, param, needComprassion, stringAllowed, addIndex, lineStructure):
         statementData = []
 
-        startIndex = 0
-        inside     = False
-        currentDel = None
+        startIndex       = 0
+        inside           = False
+        currentDel       = None
+        stringStartIndex = 0
 
         delimiters  = self.__config.getValueByKey("validStringDelimiters").split(" ")
-        arithmetics = self.__config.getValueByKey("validArithmetics").split(" ")
+        arithmetics = self.__config.getValueByKey("validArithmetics") .split(" ")
         concatSigns = self.__config.getValueByKey("validConcatSigns").split(" ")
 
         for charNum in range(0, len(param)):
@@ -3527,6 +3528,7 @@ class EditorBigFrame:
                    if charNum == len(param) - 1:
                       endIndex +=1
 
+                   #print(param[startIndex:endIndex], startIndex, endIndex - 1)
                    if endIndex != startIndex                         and\
                        param[startIndex:endIndex] not in ["(", ")"]  and\
                        param[startIndex:endIndex] not in arithmetics and \
@@ -3569,10 +3571,12 @@ class EditorBigFrame:
                        )
 
                 elif param[charNum] in delimiters:
-                     inside = True
-                     currentDel = param[charNum]
+                     inside           = True
+                     currentDel       = param[charNum]
+                     stringStartIndex = charNum
             else:
-                if  charNum == len(param) - 1:
+                if  charNum == len(param) - 1 and param[charNum] != currentDel:
+                    print(param[startIndex:endIndex], startIndex, endIndex)
                     endIndex = charNum
                     if charNum == len(param) - 1:
                         endIndex += 1
@@ -3594,6 +3598,19 @@ class EditorBigFrame:
                      inside = False
                      currentDel = None
 
+                     w = param[stringStartIndex:charNum+1]
+                     t = self.getType(w)
+
+                     if t == "stringConst" or t == "string":
+                        statementData.append(
+                             {
+                                 "word": w,
+                                 "type": t,
+                                 "position": [stringStartIndex + addIndex, charNum + addIndex],
+                                 "relative": [stringStartIndex, charNum]
+                             }
+
+                        )
         numberOfCompares = 0
         lastOne          = None
         inValidPairs     = [
@@ -3616,7 +3633,7 @@ class EditorBigFrame:
                 item["type"] = "error"
                 eNum = 2
 
-            if "string" in item["type"] and stringAllowed == False:
+            if "string" == item["type"] and stringAllowed == False:
                 item["type"] = "error"
                 eNum = 3
 
@@ -3716,7 +3733,9 @@ class EditorBigFrame:
 
         if word[0] in delimiters:
            for key in self.__loader.stringConstants.keys():
-               if key.startswith(word): return("stringConst")
+               if key.startswith(word):                           return("stringConst")
+               if word in self.__loader.stringConstants[key]["alias"]: return("stringConst")
+
            return "string"
 
         comprassDict = self.getComprassionDict()["all"]
