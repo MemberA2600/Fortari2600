@@ -29,6 +29,7 @@ temp17 = $92
 temp18 = $93
 temp19 = $94
 item = $95
+stack = $96
 
 !!!MAINVARS!!!
 !!!MUSICVARS!!!
@@ -111,7 +112,7 @@ bank1_EnterKernel
 	STA	CXCLR
 	
 	TSX
-	STX	item
+	STX	stack
 ###Start-Main-Kernel
 	BIT	SubMenu
 	BVC	bank1_StayHere	; Go to the SubMenu Kernel
@@ -206,7 +207,7 @@ bank1_SettingUpP1SpriteAndMissile1
 
 bank1_FinishPreparation
 **	TSX			; 2 (31)
-**	STX	item		; Save the stack pointer 3 (34)
+**	STX	stack		; Save the stack pointer 3 (34)
 
 	LDX	#42
 	LDA	#15		; 2 (36)
@@ -480,7 +481,7 @@ bank1_ResetAll_NoSync
 *	LDA	frameColor
 *	STA	COLUBK
 
-	LDX	item		; Retrieve the stack pointer
+	LDX	stack		; Retrieve the stack pointer
 	TXS
 
 !!!COLLISIONS_CODE!!!
@@ -574,7 +575,7 @@ bank1_LoadNextData
 
 bank1_DoSubMenuKernel
 **	TSX			; 2 
-**	STX	item		; 3
+**	STX	stack		; 3
 
 	LDA	frameColor
 	STA	WSYNC
@@ -1084,7 +1085,7 @@ bank1_EndOfAll
 ***	LDA	#0
 ***	STA	GRP0
 ***	STA	GRP1
-	LDX	item
+	LDX	stack
 	TXS
 
 	STA	WSYNC
@@ -1505,7 +1506,7 @@ VBlankEndBank2
 
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK2!!!
 
@@ -1516,7 +1517,7 @@ VBlankEndBank2
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 *SkipIfNoGameSet
@@ -1564,7 +1565,7 @@ JumpToMainKernelBank2
 ScreenBottomBank2
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK2!!!
 
@@ -1575,7 +1576,7 @@ ScreenBottomBank2
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank2
@@ -1830,7 +1831,7 @@ VBlankEndBank3
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK3!!!
 
@@ -1841,7 +1842,7 @@ VBlankEndBank3
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -1890,7 +1891,7 @@ JumpToMainKernelBank3
 ScreenBottomBank3
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK3!!!
 
@@ -1901,7 +1902,7 @@ ScreenBottomBank3
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank3
@@ -2154,7 +2155,7 @@ VBlankEndBank4
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK4!!!
 
@@ -2165,7 +2166,7 @@ VBlankEndBank4
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -2214,7 +2215,7 @@ JumpToMainKernelBank4
 ScreenBottomBank4
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK4!!!
 
@@ -2225,7 +2226,7 @@ ScreenBottomBank4
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank4
@@ -2479,7 +2480,7 @@ VBlankEndBank5
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK5!!!
 
@@ -2490,7 +2491,7 @@ VBlankEndBank5
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -2539,7 +2540,7 @@ JumpToMainKernelBank5
 ScreenBottomBank5
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK5!!!
 
@@ -2550,7 +2551,7 @@ ScreenBottomBank5
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank5
@@ -2803,7 +2804,7 @@ VBlankEndBank6
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK6!!!
 
@@ -2814,7 +2815,7 @@ VBlankEndBank6
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -2863,7 +2864,7 @@ JumpToMainKernelBank6
 ScreenBottomBank6
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK6!!!
 
@@ -2874,7 +2875,7 @@ ScreenBottomBank6
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank6
@@ -3128,7 +3129,7 @@ VBlankEndBank7
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK7!!!
 
@@ -3139,7 +3140,7 @@ VBlankEndBank7
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -3188,7 +3189,7 @@ JumpToMainKernelBank7
 ScreenBottomBank7
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK7!!!
 
@@ -3199,7 +3200,7 @@ ScreenBottomBank7
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank7
@@ -3440,7 +3441,7 @@ VBlankEndBank8
 *
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENTOP_BANK8!!!
 
@@ -3451,7 +3452,7 @@ VBlankEndBank8
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 
@@ -3500,7 +3501,7 @@ JumpToMainKernelBank8
 ScreenBottomBank8
 
 	tsx
-	stx	item
+	stx	stack
 
 !!!SCREENBOTTOM_BANK8!!!
 
@@ -3511,7 +3512,7 @@ ScreenBottomBank8
 	STA	COLUP1	
 	STA	COLUPF	
 
-	ldx	item
+	ldx	stack
 	txs
 
 	JMP	OverScanBank8

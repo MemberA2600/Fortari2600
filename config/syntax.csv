@@ -14,7 +14,7 @@ cycle;[continue next];[common];command;None;None;[];None;None;None;False;0;False
 decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;False;1;True
 default;[other else];[common];command;None;None;[];None;None;None;False;0;True
 div;[divide /];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0;True
-do-items;[for-items perform-items foreach];[common];command;end;brackets;[!screenroutines];[array];item;None;False;0;True
+do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[array];item;None;False;0;True
 do-times;[for-times perform-times];[common];command;end;brackets;[];[number|stringConst|variable|register];read;None;False;0;True
 do-until;[for-until perform-until];[common];command;end;brackets;[];[statement|portState];read;None;False;0;True
 do-while;[for-while perform-while];[common];command;end;brackets;[];[statement|portState];read;None;False;0;True

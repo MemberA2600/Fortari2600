@@ -168,7 +168,7 @@ class VirtualMemory:
 
     def getMemoryPartOfKernelOnly(self, kernel, element):
         txt   = ""
-        first = 0x96
+        first = 0x97
 
         for item in [[self.includeKernelData, "sysVars"], [self.includeJukeBox, "musicVars"], [self.includeCollisions, "collVars"]]:
            if item[0]:
