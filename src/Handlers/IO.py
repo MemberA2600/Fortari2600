@@ -242,7 +242,7 @@ class IO:
 
     def loadKernelElement(self, name, element):
         txt = open("templates/skeletons/"+name+"_"+element+".asm", "r").read()
-        first = 0x97
+        first = self.__loader.virtualMemory.firstAddress
 
         if self.__loader.virtualMemory.includeKernelData:
            first, subTXT = self.__loader.virtualMemory.replaceMemoryAddressesAndSetFirst(first,

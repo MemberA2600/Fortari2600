@@ -21,6 +21,7 @@ class VirtualMemory:
         self.includeJukeBox    = True
         self.includeKernelData = True
         self.includeCollisions = True
+        self.firstAddress = 0x96
 
         self.__kernelOnlyVars = {}
 
@@ -168,8 +169,7 @@ class VirtualMemory:
 
     def getMemoryPartOfKernelOnly(self, kernel, element):
         txt   = ""
-        first = 0x97
-
+        first = self.firstAddress
         for item in [[self.includeKernelData, "sysVars"], [self.includeJukeBox, "musicVars"], [self.includeCollisions, "collVars"]]:
            if item[0]:
               subTXT = open("templates/skeletons/"+kernel+"_"+element+"_" + item[1] + ".asm", "r").read()
@@ -688,15 +688,12 @@ class VirtualMemory:
                 if self.memory[address].variables[variable].color == True: color = "Color"
                 if self.memory[address].variables[variable].bcd   == True: bcd   = "BCD"
 
-                string += variable + "=" + self.memory[address].variables[variable].type\
-                                         + color + "," \
-                                         + bcd   + "," \
-                                         + os.linesep
+                string += variable + "=" + self.memory[address].variables[variable].type + "," + color + "," + bcd   + os.linesep
 
         for array in self.arrays.keys():
             if self.getArrayValidity(array) == validate:
                 string+=array + "=array(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
-        #print(string)
+        print(string)
         self.codes[bank][section].code = string
         self.changedCodes[bank][section] = True
 

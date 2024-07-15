@@ -1968,6 +1968,47 @@ class EditorBigFrame:
               if lastPoz  != False:                           lastPoz  = lastPoz[0]
 
               listOfDoItems = self.listAllCommandFromTo("do-items", text, None, firstPoz, lastPoz + 1)
+              #ITEMS-STUFF
+
+              arrayFound = False
+              array = currentLineStructure["param#2"][0]
+              if array not in self.__loader.virtualMemory.arrays.keys():
+                 if caller != 'firstCompiler':
+                    self.addToPosizions(errorPositions,
+                                        self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+                 else:
+                    errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
+              else:
+                  arrayFound = True
+                  if self.__loader.virtualMemory.getArrayValidity(array) not in (self.__currentBank, "global"):
+                     if caller != 'firstCompiler':
+                        self.addToPosizions(errorPositions,
+                                            self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+                     else:
+                        errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
+
+              theSame = False
+              if arrayFound:
+                  for varName in self.__loader.virtualMemory.arrays[array]:
+                      if varName == currentLineStructure["param#1"][0]:
+                          theSame = True
+                          if caller != 'firstCompiler':
+                              self.addToPosizions(errorPositions,
+                                                  self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+                          else:
+                              errorPositions.append(["param#1", "array", currentLineStructure["lineNum"]])
+
+              if theSame == False:
+                  if len(listOfDoItems) > 1:
+                     for item in listOfDoItems:
+                         if item["param#1"][0] == currentLineStructure["param#1"][0]:
+                            if caller != 'firstCompiler':
+                               self.addToPosizions(errorPositions,
+                                                     self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
+                            else:
+                               errorPositions.append(["param#1", "array", currentLineStructure["lineNum"]])
+
+              """
               if len(listOfDoItems) > 1:
                  for item in listOfDoItems:
                      if caller != 'firstCompiler':
@@ -1975,7 +2016,7 @@ class EditorBigFrame:
                                              self.convertToX1X2Y(self.getXYfromCommand(item)))
                      else:
                          errorPositions.append(["command", "iteralError", currentLineStructure["lineNum"]])
-
+              """
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True): # or
                #(currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
@@ -2792,8 +2833,8 @@ class EditorBigFrame:
             for command in allCommands:
                 params = [command["param#1"][0], command["param#2"][0],command["param#3"][0]]
 
-                if "item" in params:
-                    paramNum = "param#" + str(params.index("item"))
+                if lineStructure["param#1"][0] in params:
+                    paramNum = "param#" + str(params.index(lineStructure["param#1"][0]))
                     if self.doesItWriteInParam(command, paramNum, "editor") == True:
                        willItWrite = True
                        break
@@ -3296,13 +3337,15 @@ class EditorBigFrame:
                     foundIt = True
 
                     if ioMethod == "write" and (param in readOnly):
+                       """
                        if param == "item":
                           returnBack.append(
                               [self.isItemAcceptedForWrite(lineStructure, text), dimension])
                           #print(returnBack[-1])
 
                        else:
-                          returnBack.append(["error", dimension])
+                       """
+                       returnBack.append(["error", dimension])
                     else:
                        returnBack.append(["variable", dimension])
                     break
@@ -3999,7 +4042,7 @@ class EditorBigFrame:
                         except:
                             returnBack[objCounter][0] = "error"
 
-
+        """
         if "item" in [param1[0], param2[0], param3[0]]:
             returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
             if self.__currentSection not in self.__syntaxList["do-items"].sectionsAllowed:
@@ -4007,6 +4050,7 @@ class EditorBigFrame:
                    if "param#" + str(itemNum) in params:
                       if params["param#" + str(itemNum)][0] == "item":
                          returnBack[itemNum - 1][0] = "error"
+        """
         #print(returnBack)
         return returnBack
 
@@ -4040,7 +4084,7 @@ class EditorBigFrame:
 
                     isOneWriting = False
                     for thisLineStructure in listOfCommands:
-                        if "item" in [
+                        if  currentLineStructure["param#1"][0] in [
                             thisLineStructure["param#1"][0],
                             thisLineStructure["param#2"][0],
                             thisLineStructure["param#3"][0]]:
@@ -4051,8 +4095,8 @@ class EditorBigFrame:
                                     if self.doesItWriteInParam(thisLineStructure, "param#" + \
                                                                                   str([thisLineStructure["param#1"][0],
                                                                                        thisLineStructure["param#2"][0],
-                                                                                       thisLineStructure["param#3"][
-                                                                                           0]].index("item")+1), "editor" ):
+                                                                                       thisLineStructure["param#3"][0]]
+                                                                                       .index(currentLineStructure["param#1"][0])+1),"editor" ):
                                         isOneWriting = True
                                         break
                         if isOneWriting == True:

@@ -28,8 +28,7 @@ temp16 = $91
 temp17 = $92
 temp18 = $93
 temp19 = $94
-item = $95
-stack = $96
+stack = $95
 
 !!!MAINVARS!!!
 !!!MUSICVARS!!!

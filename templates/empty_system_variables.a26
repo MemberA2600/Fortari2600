@@ -19,5 +19,4 @@ temp16=byte,iterable,linkable,binary,non-Color
 temp17=byte,iterable,linkable,binary,non-Color
 temp18=byte,iterable,linkable,binary,non-Color
 temp19=byte,iterable,linkable,binary,non-Color
-item=byte,non-iter,linkable,binary,non-Color
 stack=byte,non-iter,linkable,binary,non-Color

@@ -676,7 +676,8 @@ class FirstCompiler:
                         addr = self.getAddress(params["param#1"][0])
                         var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                        if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
+                        #if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
+                        if len(addr) == 3 and var.type == "byte" and var.iterable == True:
                             txt = "\tINC\t" + params["param#1"][0] + "\n"
                             txt = self.checkForNotNeededExtraLDA(txt)
 
@@ -759,7 +760,8 @@ class FirstCompiler:
                     addr = self.getAddress(params["param#1"][0])
                     var = self.__loader.virtualMemory.getVariableByName2(params["param#1"][0])
 
-                    if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
+                    #if len(addr) == 3 and var.type == "byte" and (var.iterable == True or params["param#1"][0] == "item"):
+                    if len(addr) == 3 and var.type == "byte" and var.iterable == True:
                         txt = "\tDEC\t" + params["param#1"][0] + "\n"
                         txt = self.checkForNotNeededExtraLDA(txt)
 
@@ -2152,8 +2154,182 @@ class FirstCompiler:
                    txt += name + "Loop" + "\n"
 
                elif self.isCommandInLineThat(line, "do-items"):
+                   array = line["param#2"][0]
+                   if array not in self.__loader.virtualMemory.arrays.keys() or \
+                           (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1",
+                                                                                 "global"]):
+                       self.addToErrorList(line["lineNum"],
+                                           self.prepareError("compilerErrorArrayNotFound", array,
+                                                             "", "",
+                                                             str(line["lineNum"] + self.__startLine), line))
+
+                   if line["error"] == False:
+                      line["magicNumber"] = str(self.__magicNumber)
+                      self.__magicNumber += 1
+                      subName = commandName.split("-")
+                      for partNum in range(0, len(subName)):
+                          subName[partNum] = subName[partNum][0].upper() + subName[partNum][1:]
+                      subName = "-".join(subName)
+
+                      name = self.__currentBank + "_" + line["magicNumber"] + "_" + subName + "_"
+
+                      var = self.__loader.virtualMemory.getVariableByName2(line["param#1"][0])
+                      if var == False:
+                          self.addToErrorList(line["lineNum"],
+                                              self.prepareError("compilerErrorVarNotFound", params["param#2"][0],
+                                                                "", "",
+                                                                str(line["lineNum"] + self.__startLine), line))
+                      else:
+                          self.__temps = self.collectUsedTemps()
+                          if line["param#1"][0] in self.__temps: self.__temps.remove(line["param#1"][0])
+
+                          allLinesInside = self.__editorBigFrame.listAllCommandFromTo(None, self.__text, line["level"] + 1,
+                                                                                       line["lineNum"], end[0] + 1)
+
+                          for blahLine in allLinesInside:
+                              for pNum in range(1, 4):
+                                  pNum = "param#" + str(pNum)
+                                  if blahLine[pNum][0] in self.__temps:
+                                     self.__temps.remove(blahLine[pNum][0])
+
+                          try:
+                              iterator = self.__temps[0]
+                              self.__temps.pop(0)
+
+                              #print(self.__temps)
+
+                              for num in range(0, len(self.__temps)):
+                                  lowNibble  = self.__temps[num]
+                                  highNibble = self.__temps[num + 1]
+
+                                  numberLow  = int(lowNibble [4:])
+                                  numberHigh = int(highNibble[4:])
+
+                                  if numberHigh - numberLow != 1: continue
+
+                                  self.__temps.pop(num)
+                                  self.__temps.pop(num)
+                                  break
+
+                          except Exception as e:
+                              #print(str(e))
+                              self.addToErrorList(self.__thisLine["lineNum"],
+                                                  self.prepareError("compilerErrorStatementTemps", params["param#2"][0],
+                                                                    "", "",
+                                                                    str(self.__thisLine["lineNum"] + self.__startLine),
+                                                                    line))
+
+                          if line["error"] == False:
+                             txt = "\tLDA\t#255\n\tSTA\t" + iterator + "\n" +  name + "Loop" + "\n\tINC\t" + iterator + "\n\tASL\n\tTAX\n"
+
+                             #arrLabels = []
+
+                             txt += "\tLDA\t" + name + "_Variable_JumpTable,x\n"      + "\tSTA\t" + lowNibble  + "\n"
+                             txt += "\tLDA\t" + name + "_Variable_JumpTablePlus1,x\n" + "\tSTA\t" + highNibble + "\n"
+                             #txt += "\tJMP\t("  + lowNibble + ")\n"
+                             txt += "\tBYTE\t#$6C\n\tBYTE\t#" + lowNibble + "\n\tBYTE\t#0\n"
+
+                             arrrr = self.__loader.virtualMemory.arrays[array]
+
+                             txt += name + "_Variable_JumpTable\n"      + "\tBYTE\t#<" + name + "_Variable_0_" + list(arrrr.keys())[0] + "\n"
+                             txt += name + "_Variable_JumpTablePlus1\n" + "\tBYTE\t#>" + name + "_Variable_0_" + list(arrrr.keys())[0] + "\n"
+
+                             if (len(arrrr)) > 1:
+                                for varNum in range(1, len(self.__loader.virtualMemory.arrays[array])):
+                                    arrVarName = list(arrrr.keys())[varNum]
+                                    arrTxt     = name + "_Variable_" + str(varNum) + "_" + arrVarName + "\n"
+                                    arrTxt += "\tBYTE\t#<" + name + "_Variable_" + str(varNum) + "_" + arrVarName + "\n"
+                                    arrTxt += "\tBYTE\t#>" + name + "_Variable_" + str(varNum) + "_" + arrVarName + "\n"
+
+                                    txt    += arrTxt
+
+                             for varNum in range(0, len(arrrr)):
+
+                                 arrVarName = list(arrrr.keys())[varNum]
+                                 arrVar     = self.__loader.virtualMemory.getVariableByName2(arrVarName)
+
+                                 tempsCopy = deepcopy(self.__temps)
+
+                                 #print(">>" + arrVarName)
+                                 arrTxt     = name + "_Variable_" + str(varNum) + "_" + arrVarName + "\n"
+                                 #arrLabels.append(arrTxt)
+                                 arrTxt    += "\tLDA\t" + arrVarName + "\n"                                            + \
+                                              self.convertAny2Any(arrVarName        , "TO"  , params, tempsCopy, line)
+                                              #self.convertAny2Any(line["param#1"][0], "FROM", params, tempsCopy, line) + \
+                                              #"\tSTA\t" + line["param#1"][0] + "\n"
+
+                                 if varNum < len(arrrr) - 1:
+                                    arrTxt += "\tJMP\t" + name + "_Variable_Select_End\n"
+                                 else:
+                                    arrTxt += name + "_Variable_Select_End\n" + \
+                                              self.convertAny2Any(line["param#1"][0], "FROM", params, tempsCopy, line) + \
+                                              "\tSTA\t" + line["param#1"][0] + "\n"
+                                 txt += arrTxt
+
+                          isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"],
+                                                                    self.__text, line)
+
+                          if isWriting:
+                             endTxt = "\tLDA\t" + iterator + "\n\tASL\n\tTAX\n"
+                             if var.type == "byte" and var.bcd == False:
+                                endTxt += "\tLDY\t" + line["param#1"][0] + "\n"
+                             else:
+                                tempsCopy = deepcopy(self.__temps)
+                                endTxt += "\tLDA\t" + line["param#1"][0] + "\n" + self.convertAny2Any(line["param#1"][0], "TO", params, tempsCopy, line) + "\tTAY\n"
+
+                             endTxt += "\tLDA\t" + name + "_Variable_JumpTable_End,x\n" + "\tSTA\t" + lowNibble + "\n"
+                             endTxt += "\tLDA\t" + name + "_Variable_JumpTablePlus1_End,x\n" + "\tSTA\t" + highNibble + "\n"
+                             endTxt += "\tBYTE\t#$6C\n\tBYTE\t#" + lowNibble + "\n\tBYTE\t#0\n"
+
+                             endTxt += name + "_Variable_JumpTable_End\n" + "\tBYTE\t#<" + name + "_Variable_End_0_" + \
+                                    list(arrrr.keys())[0] + "\n"
+                             endTxt += name + "_Variable_JumpTablePlus1_End\n" + "\tBYTE\t#>" + name + "_Variable_End_0_" + \
+                                    list(arrrr.keys())[0] + "\n"
+
+                             if (len(arrrr)) > 1:
+                                 for varNum in range(1, len(self.__loader.virtualMemory.arrays[array])):
+                                     arrVarName = list(arrrr.keys())[varNum]
+                                     arrTxt = name + "_Variable_End_" + str(varNum) + "_" + arrVarName + "\n"
+                                     arrTxt += "\tBYTE\t#<" + name + "_Variable_End_" + str(
+                                         varNum) + "_" + arrVarName + "\n"
+                                     arrTxt += "\tBYTE\t#>" + name + "_Variable_End_" + str(
+                                         varNum) + "_" + arrVarName + "\n"
+
+                                     endTxt += arrTxt
+
+                             for varNum in range(0, len(arrrr)):
+
+                                 arrVarName = list(arrrr.keys())[varNum]
+                                 arrVar = self.__loader.virtualMemory.getVariableByName2(arrVarName)
+
+                                 tempsCopy = deepcopy(self.__temps)
+
+                                 # print(">>" + arrVarName)
+                                 arrTxt = name + "_Variable_End_" + str(varNum) + "_" + arrVarName + "\n"
+                                 # arrLabels.append(arrTxt)
+                                 #arrTxt += "\tLDA\t" + line["param#1"][0] + "\n" + \
+                                 #          self.convertAny2Any(line["param#1"][0], "TO", params, tempsCopy, line) + \
+                                 #          self.convertAny2Any(arrVarName, "FROM", params, tempsCopy, line) + \
+                                 #          "\tSTA\t" + arrVarName + "\n"
+
+                                 if arrVar.type == "byte" and arrVar.bcd == False:
+                                    arrTxt += "\tSTY\t" + arrVarName + "\n"
+                                 else:
+                                    arrTxt += "\tTYA\n" + \
+                                              self.convertAny2Any(arrVarName, "FROM", params, tempsCopy, line) + \
+                                              "\tSTA\t" + arrVarName + "\n"
+
+                                 if varNum < len(arrrr) - 1:
+                                     arrTxt += "\tJMP\t" + name + "_Variable_End_Select_End\n"
+                                 else:
+                                     arrTxt += name + "_Variable_End_Select_End\n"
+                                 endTxt += arrTxt
+
+                             endLine["compiledBefore"] = endTxt + endLine["compiledBefore"]
+
+                   """
                    array = line["param#1"][0]
-                   self.changeIfYouCanSaveToItem(True)
+                   #self.changeIfYouCanSaveToItem(True)
 
                    if array not in self.__loader.virtualMemory.arrays.keys() or\
                       (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1", "global"]):
@@ -2164,7 +2340,7 @@ class FirstCompiler:
                                                              str(line["lineNum"] + self.__startLine), line))
 
                    if line["error"] == False:
-                      isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"], self.__text)
+                      isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"], self.__text, line)
                       for varName in self.__virtualMemory.arrays[array]:
                           var = self.__loader.virtualMemory.getVariableByName2(varName)
                           if var == False:
@@ -2180,13 +2356,13 @@ class FirstCompiler:
 
                               if isWriting:
                                  txt += "\tLDA\titem\n"
-                                 txt += self.convertAny2Any(var, "FROM", params, self.__temps, line)
+                                 txt += self.convertAny2Any(varName, "FROM", params, self.__temps, line)
                                  txt += "\tSTA\t" + varName + "\n"
 
                       txt += "\tJMP\t" + name + "End\n" + name + "Loop" + "\n" + "\tRTS\n" + name + "JompOver\n"
 
-                   self.changeIfYouCanSaveToItem(False)
-
+                   #self.changeIfYouCanSaveToItem(False)
+                   """
                elif self.isCommandInLineThat(line, "do-until") or self.isCommandInLineThat(line, "do-while"):
                    opcode = ""
                    txt += name + "Loop" + "\n"
@@ -2234,7 +2410,7 @@ class FirstCompiler:
 
                        txt = txt.replace("#LABEL#", label).replace("#OKLABEL#", labelOk)
 
-                   line["compiled"] = txt
+               line["compiled"] = txt
 
         elif self.isCommandInLineThat(line, "select"):
              line["magicNumber"] = str(self.__magicNumber)
@@ -4018,11 +4194,11 @@ class FirstCompiler:
         self.processLine(subLine, linesFetched, None, None)
         return subLine
 
-    def checkIfItIsWritingInItem(self, start, end, level, text):
+    def checkIfItIsWritingInItem(self, start, end, level, text, line):
         listOfCommands = self.__editorBigFrame.listAllCommandFromTo(None, text, None, start, end + 1)
 
         for thisLineStructure in listOfCommands:
-            if "item" in [
+            if line["param#1"][0] in [
                 thisLineStructure["param#1"][0],
                 thisLineStructure["param#2"][0],
                 thisLineStructure["param#3"][0]]:
@@ -4033,7 +4209,7 @@ class FirstCompiler:
                         if self.__editorBigFrame.doesItWriteInParam(thisLineStructure, "param#" + \
                                                                     str([thisLineStructure["param#1"][0],
                                                                         thisLineStructure["param#2"][0],
-                                                                        thisLineStructure["param#3"][0]].index("item")+1), "compiler"
+                                                                        thisLineStructure["param#3"][0]].index(line["param#1"][0])+1), "compiler"
 
                                                    ):
                             return True
@@ -4222,6 +4398,7 @@ class FirstCompiler:
                 endNum = linesFetched[lNum]["lineNum"]
                 break
 
+
         #print(temps)
         return temps
 
@@ -4232,6 +4409,7 @@ class FirstCompiler:
         else:
             var = varName
             for name in params:
+                #print(params[name][0])
                 if self.__loader.virtualMemory.getVariableByName2(params[name][0]) == var:
                    varName = params[name][0]
                    break
@@ -5256,10 +5434,13 @@ class FirstCompiler:
                             mode = self.changeSARAtoAddress(lineStructure, opcodeDoes, beforeComma)
                         else:
                             if beforeComma in self.__variablesOfBank["readOnly"]:
+                               """
                                if beforeComma != "item":
                                   mode = "read"
                                else:
                                   mode = "both"
+                               """
+                               mode = "read"
                             else:
                                mode = "both"
 
@@ -6004,6 +6185,7 @@ class FirstCompiler:
             count += 1
         return count
 
+    """
     def changeIfYouCanSaveToItem(self, state):
         var = self.__loader.virtualMemory.getVariableByName2("item")
         var.iterable = state
@@ -6015,5 +6197,7 @@ class FirstCompiler:
         else:
             self.__variablesOfBank["readOnly"].append("item")
             self.__variablesOfBank["writable"].remove("item")
+
+        """
 
         #print(self.__variablesOfBank["writable"])
