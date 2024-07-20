@@ -12,8 +12,8 @@ class MemoryItem:
 
         self.variables = {}
 
-    def addVariable(self, name, type, bits, validity, color, bcd):
-        self.variables[name] = Variable(type, bits, validity, color, bcd)
+    def addVariable(self, name, type, bits, validity, color, bcd, allocType, allocAddress):
+        self.variables[name] = Variable(type, bits, validity, color, bcd, allocType, allocAddress)
 
     def addBitsToGlobalAddress(self, bits):
         self.freeBits["global"].extend(bits)

@@ -1666,6 +1666,7 @@ class EditorBigFrame:
                 self.addTag(item[2] + 1, item[0], item[1] + 1, "commandBack", None)
 
             for item in errorPositions:
+                #print(item)
                 self.removeTag(int(item[2]) + 1, item[0], item[1] + 1, None)
                 self.addTag(int(item[2]) + 1, item[0], item[1] + 1, "error", 0)
 
@@ -1940,6 +1941,7 @@ class EditorBigFrame:
                      if caller == 'firstCompiler':
                         errorPositions.append(["command", "infiniteLoop", currentLineStructure["lineNum"]])
                      else:
+                        print("0")
                         self.addToPosizions(errorPositions,
                                             self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
 
@@ -1968,24 +1970,27 @@ class EditorBigFrame:
               if lastPoz  != False:                           lastPoz  = lastPoz[0]
 
               listOfDoItems = self.listAllCommandFromTo("do-items", text, None, firstPoz, lastPoz + 1)
-              #ITEMS-STUFF
 
               arrayFound = False
               array = currentLineStructure["param#2"][0]
               if array not in self.__loader.virtualMemory.arrays.keys():
                  if caller != 'firstCompiler':
-                    self.addToPosizions(errorPositions,
+                     #print("1")
+                     self.addToPosizions(errorPositions,
                                         self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
                  else:
-                    errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
+                     #print("1")
+                     errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
               else:
                   arrayFound = True
                   if self.__loader.virtualMemory.getArrayValidity(array) not in (self.__currentBank, "global"):
                      if caller != 'firstCompiler':
-                        self.addToPosizions(errorPositions,
+                         #print("2")
+                         self.addToPosizions(errorPositions,
                                             self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
                      else:
-                        errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
+                         #print("2")
+                         errorPositions.append(["param#2", "arrayNotFound", currentLineStructure["lineNum"]])
 
               theSame = False
               if arrayFound:
@@ -1993,19 +1998,23 @@ class EditorBigFrame:
                       if varName == currentLineStructure["param#1"][0]:
                           theSame = True
                           if caller != 'firstCompiler':
+                              #print("3")
                               self.addToPosizions(errorPositions,
                                                   self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
                           else:
+                              #print("3")
                               errorPositions.append(["param#1", "array", currentLineStructure["lineNum"]])
 
               if theSame == False:
                   if len(listOfDoItems) > 1:
                      for item in listOfDoItems:
-                         if item["param#1"][0] == currentLineStructure["param#1"][0]:
+                         if item["param#1"][0] == currentLineStructure["param#1"][0] and item != currentLineStructure:
                             if caller != 'firstCompiler':
+                               #print("4")
                                self.addToPosizions(errorPositions,
                                                      self.convertToX1X2Y(self.getXYfromCommand(currentLineStructure)))
                             else:
+                               #print("4")
                                errorPositions.append(["param#1", "array", currentLineStructure["lineNum"]])
 
               """
@@ -4606,6 +4615,10 @@ class EditorBigFrame:
         self.__descBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
     def addTag(self, Y, X1, X2, tag, errCallNum):
+        #if tag == "error":
+        #   print(errCallNum)
+        #   raise ValueError
+
         self.__codeBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
 
         if tag == "error":

@@ -789,7 +789,7 @@ class MainWindow:
         self.__loader.tk.focus()
 
     def openMemoryManager(self):
-        from MemoryManagerWindow import MemoryManagerWindow
+        from MemoryManagerWindow2 import MemoryManagerWindow
 
         MemoryManagerWindow(self.__loader)
         self.__loader.tk.deiconify()

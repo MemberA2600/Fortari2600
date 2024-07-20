@@ -21,6 +21,10 @@ class Haunted:
 
         self.__color = "black"
 
+        from time import sleep
+
+        while self.__frame.winfo_width() < 2: sleep(0.000001)
+
         self.__canvas = Canvas(self.__frame, bg = "black", height=self.__maxY, width=self.__maxX)
         self.__canvas.pack_propagate(False)
         self.__canvas.grid_propagate(False)
@@ -216,7 +220,7 @@ class Haunted:
                     else:
                         self.__cooldown -= 1
             except Exception as e:
-                print(str(e))
+                print("1", str(e))
 
             try:
                 self.__eyePoz = self.__eyesPositioner[(
@@ -228,14 +232,14 @@ class Haunted:
                 self.__eyePoz = 0
 
             self.__direction = {
-                1: (-1, 0, - 1                   , 0),
-                2: (1,  0, self.__yourSize + 1   , 0),
-                3: (0, -1, self.__yourSize*0.5   , -self.__yourSize-1),
-                4: (0,  1, self.__yourSize*0.5   , 1),
-                5: (-1, -1, - 1, 1),
-                6: (-1, 1, -1, -self.__yourSize-1),
-                7: (1, -1, self.__yourSize + 1, 1),
-                8: (1, 1, self.__yourSize + 1, -self.__yourSize-1),
+                1: (-2, 0, - 1                   , 0),
+                2: (2,  0, self.__yourSize + 1   , 0),
+                3: (0, -2, self.__yourSize*0.5   , -self.__yourSize-1),
+                4: (0,  2, self.__yourSize*0.5   , 1),
+                5: (-2, -2, - 1, 1),
+                6: (-2, 2, -1, -self.__yourSize-1),
+                7: (2, -2, self.__yourSize + 1, 1),
+                8: (2, 2, self.__yourSize + 1, -self.__yourSize-1),
 
             }
 
@@ -261,7 +265,7 @@ class Haunted:
                             self.__yourY = self.__maxY
 
                 except Exception as e:
-                    print(str(e))
+                    print("2", str(e))
 
     def drawPixelOval(self):
         self.__canvas.create_rectangle(self.__yourX - self.__yourSize//2, self.__yourY - self.__yourSize,

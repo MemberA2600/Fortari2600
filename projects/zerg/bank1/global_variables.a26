@@ -1,14 +1,14 @@
 *** This is where you set the variables for the whole project, so the ones shouldn't*** be overwritten anywhere.
-zerg=nibble,None,None
-terran=nibble,None,None
-protoss=byte,None,None
-test1=byte,None,None
-test2=byte,None,None
-test3=byte,None,None
-test4=byte,None,None
-test5=byte,None,None
+zerg=nibble,None,None,False
+terran=nibble,None,None,dynamic,False,False
+protoss=byte,None,None,dynamic,False,False
+test1=byte,None,None,dynamic,False,False
+test2=byte,None,None,dynamic,False,False
+test3=byte,None,None,dynamic,False,False
+test4=byte,None,None,dynamic,False,False
+test5=byte,None,None,dynamic,False,False
 races=array(zerg,protoss)
 WarCraft=array(protoss,temp04)
-bcdTest1=byte,None,BCD
-bcdTest2=byte,None,BCD
+bcdTest1=byte,None,BCD,dynamic,False,False
+bcdTest2=byte,None,BCD,dynamic,False,False
 test=array(test1,test2,test3,test4,test5)

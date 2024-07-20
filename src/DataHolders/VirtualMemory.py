@@ -357,7 +357,7 @@ class VirtualMemory:
         for d in datas:
             for key in d:
                 #print(key, d[key])
-                self.addVariable(key, d[key].split(",")[0], "global", False, False)
+                self.addVariable(key, d[key].split(",")[0], "global", False, False, False, False, False)
                 self.getVariableByName(key, "bank1").system=True
                 if d[key].split(",")[1].replace(" ","").replace("\t", "") == "non-iter":
                     self.getVariableByName(key, "bank1").iterable = False
@@ -370,6 +370,7 @@ class VirtualMemory:
 
         self.__kernelOnlyVars = {}
         kernelCode = self.getMemoryPartOfKernelOnly(self.kernel, "main_kernel").split('\n')
+
         for line in kernelCode:
             line = line.split(";")[0].strip().split(" = ")
             if len(line) > 1:
@@ -466,25 +467,29 @@ class VirtualMemory:
         return(False)
 
 
-    def addVariable(self, name, type, validity, color, bcd):
+    def addVariable(self, name, type, validity, color, bcd, allocType, allocAddress, allocBits):
         neededBits = self.types[type]
         success = False
 
-        for memoryAddress in self.memory.keys():
-            if len(self.memory[memoryAddress].freeBits[validity])>=neededBits:
-                bits = self.getIfThereAreAvaiableBitNearAndInARow(self.memory[memoryAddress].freeBits[validity], neededBits)
-                if bits == False:
-                    continue
-                else:
-                    if validity == "global":
-                        self.memory[memoryAddress].removeBitsFromGlobalAddress(bits)
+        if allocType == False:
+           for memoryAddress in self.memory.keys():
+                if len(self.memory[memoryAddress].freeBits[validity])>=neededBits:
+                    bits = self.getIfThereAreAvaiableBitNearAndInARow(self.memory[memoryAddress].freeBits[validity], neededBits)
+                    if bits == False:
+                        continue
                     else:
-                        self.memory[memoryAddress].removeBitsFromBankAddress(bits, validity)
-                    self.memory[memoryAddress].addVariable(name, type, bits, validity, color, bcd)
-                    #print(name, memoryAddress, type)
+                        if validity == "global":
+                            self.memory[memoryAddress].removeBitsFromGlobalAddress(bits)
+                        else:
+                            self.memory[memoryAddress].removeBitsFromBankAddress(bits, validity)
+                        self.memory[memoryAddress].addVariable(name, type, bits, validity, color, bcd, False, False)
+                        #print(name, memoryAddress, type)
 
-                    success = True
-                    break
+                        success = True
+                        break
+        else:
+            self.memory[allocAddress].addVariable(name, type, allocBits, validity, color, bcd, True, allocAddress)
+            success = True
 
         return(success)
             #print(memoryAddress)
@@ -648,8 +653,20 @@ class VirtualMemory:
                     else:
                        bcd = False
 
+                    allocType    = subData[3]
+                    allocAddress = subData[4]
+                    allocBits    = subData[5]
+
+                    if allocType == "static":
+                       allocType = True
+                       allocBits = allocBits.split("|")
+                    else:
+                       allocType    = False
+                       allocAddress = False
+                       allocBits    = []
+
                     if (TYPE in self.types.keys()):
-                        self.addVariable(name, TYPE, validity, color, bcd)
+                        self.addVariable(name, TYPE, validity, color, bcd, allocType, allocAddress, allocBits)
                     else:
                         self.addArray(name)
                         data = TYPE[6:-1].split(",")
@@ -682,13 +699,17 @@ class VirtualMemory:
                 if self.memory[address].variables[variable].validity != validate:
                     continue
 
-                color = "non-Color"
-                bcd   = "binary"
+                color      = "non-Color"
+                bcd        = "binary"
+                fixedAlloc = ["dynamic", "False", "False"]
 
-                if self.memory[address].variables[variable].color == True: color = "Color"
-                if self.memory[address].variables[variable].bcd   == True: bcd   = "BCD"
+                if self.memory[address].variables[variable].color      == True: color = "Color"
+                if self.memory[address].variables[variable].bcd        == True: bcd   = "BCD"
+                if self.memory[address].variables[variable].fixedAlloc == True:
+                   fixedAlloc = ["static", address, "|".join(self.memory[address].variables[variable].usedBits)]
 
-                string += variable + "=" + self.memory[address].variables[variable].type + "," + color + "," + bcd   + os.linesep
+                string += variable + "=" + self.memory[address].variables[variable].type + "," +\
+                          color    + "," + bcd + "," + ",".join(fixedAlloc) + os.linesep
 
         for array in self.arrays.keys():
             if self.getArrayValidity(array) == validate:

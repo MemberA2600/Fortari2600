@@ -1,6 +1,6 @@
 *** Here you can find variables those are only aviable for this screen.
-Reggeli=byte,None,None
-vacsora=byte,None,None
-Csiga=bit,None,None
+Reggeli=byte,None,None,dynamic,False,False
+vacsora=byte,None,None,dynamic,False,Falsee
+Csiga=bit,None,None,dynamic,False,False
 Kajalas=array(Reggeli,Vacsora)
 Csillag=array(Reggeli,temp9)
