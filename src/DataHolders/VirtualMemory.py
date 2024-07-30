@@ -474,7 +474,8 @@ class VirtualMemory:
         if allocType == False:
            for memoryAddress in self.memory.keys():
                 if len(self.memory[memoryAddress].freeBits[validity])>=neededBits:
-                    bits = self.getIfThereAreAvaiableBitNearAndInARow(self.memory[memoryAddress].freeBits[validity], neededBits)
+                    #bits = self.getIfThereAreAvaiableBitNearAndInARow(self.memory[memoryAddress].freeBits[validity], neededBits)
+                    bits = self.getTheFirstFreeBitsOnAddessAndBank(validity, neededBits, memoryAddress)
                     if bits == False:
                         continue
                     else:
@@ -493,6 +494,30 @@ class VirtualMemory:
 
         return(success)
             #print(memoryAddress)
+
+    def getTheFirstFreeBitsOnAddessAndBank(self, validity, numOfBits, address):
+        if type(numOfBits) != int: numOfBits = self.types[numOfBits]
+
+        listOfBits = []
+        availableBits = deepcopy(self.memory[address].freeBits[validity])
+
+        if len(availableBits) < numOfBits: return False
+        availableBits.sort()
+
+        for bitNum in availableBits:
+            if len(listOfBits) == 0:
+                listOfBits.append(bitNum)
+            else:
+                if bitNum - listOfBits[-1] == 1:
+                    listOfBits.append(bitNum)
+                else:
+                    listOfBits = [bitNum]
+
+            if len(listOfBits) == numOfBits:
+                return (listOfBits)
+
+        return False
+
 
     def getIfThereAreAvaiableBitNearAndInARow(self, data, needed):
         startNum = 0

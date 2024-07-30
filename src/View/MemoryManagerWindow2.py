@@ -36,7 +36,11 @@ class MemoryManagerWindow:
             "common": [round(self.__screenSize[0] / 1.2), round(self.__screenSize[1]/1.25  - 25)]
         }
         self.unsaved = False
+        self.modifyButtonState = False
+
         self.__validName = False
+        self.__numBitsOK = False
+        self.__errorList = []
 
         self.__window = SubMenu(self.__loader, "memoryManager", self.__sizes["common"][0],
                                 self.__sizes["common"][1], None, self.__addElements, 1)
@@ -525,6 +529,74 @@ class MemoryManagerWindow:
         self.__fillerBeforeButtons.pack_propagate(False)
         self.__fillerBeforeButtons.pack(side=TOP, anchor=N, fill=X)
 
+        self.__otherThingsFrame = Frame(self.__bigFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=self.__bigFrame.winfo_width(),
+                                 height=self.__bigFrame.winfo_height() // 15)
+        self.__otherThingsFrame.pack_propagate(False)
+        self.__otherThingsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__bcdLabelFrame = Frame(self.__otherThingsFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=self.__bigFrame.winfo_width() // 4,
+                                 height=self.__bigFrame.winfo_height() // 15)
+        self.__bcdLabelFrame.pack_propagate(False)
+        self.__bcdLabelFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__bcdLabel = Label(self.__bcdLabelFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 fg=self.__loader.colorPalettes.getColor("font"),
+                                 text=self.__dictionaries.getWordFromCurrentLanguage("binaryEncoding")+":",
+                                 font=self.__normalFont, justify = LEFT, anchor = W,
+                                 width=99999999,
+                                 height=1)
+        self.__bcdLabel.pack_propagate(False)
+        self.__bcdLabel.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__bcdSelectorFrame = Frame(self.__otherThingsFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=self.__bigFrame.winfo_width() // 4,
+                                 height=self.__bigFrame.winfo_height() // 15)
+        self.__bcdSelectorFrame.pack_propagate(False)
+        self.__bcdSelectorFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__encodingTypes = {"bcd"  : self.__dictionaries.getWordFromCurrentLanguage("bcd")
+                              , "binary": self.__dictionaries.getWordFromCurrentLanguage("binary")}
+
+        self.__encodingTypeHolder = FortariMB(self.__loader, self.__bcdSelectorFrame, NORMAL, self.__normalFont, [list(self.__encodingTypes.values())[1]],
+                                list(self.__encodingTypes.values()), False, False, self.selectedEcondingChanged, [list(self.__encodingTypes.values())[1]])
+
+        self.__colorLabelFrame = Frame(self.__otherThingsFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=self.__bigFrame.winfo_width() // 4,
+                                 height=self.__bigFrame.winfo_height() // 15)
+        self.__colorLabelFrame.pack_propagate(False)
+        self.__colorLabelFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__colorLabel = Label(self.__colorLabelFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 fg=self.__loader.colorPalettes.getColor("font"),
+                                 text=(" " * 2 ) + self.__dictionaries.getWordFromCurrentLanguage("storedValue")+":",
+                                 font=self.__normalFont, justify = LEFT, anchor = W,
+                                 width=99999999,
+                                 height=1)
+        self.__colorLabel.pack_propagate(False)
+        self.__colorLabel.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__contentSelectorFrame = Frame(self.__otherThingsFrame,
+                                 bg=self.__loader.colorPalettes.getColor("window"),
+                                 width=self.__bigFrame.winfo_width() // 4,
+                                 height=self.__bigFrame.winfo_height() // 15)
+        self.__contentSelectorFrame.pack_propagate(False)
+        self.__contentSelectorFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+
+        self.__contentTypes = {"bcd"  : self.__dictionaries.getWordFromCurrentLanguage("common")
+                              , "binary": self.__dictionaries.getWordFromCurrentLanguage("colorVar")}
+
+        self.__contentHolder = FortariMB(self.__loader, self.__contentSelectorFrame, NORMAL, self.__normalFont, [list(self.__contentTypes.values())[0]],
+                                list(self.__contentTypes.values()), False, False, self.selectedContentChanged, [list(self.__contentTypes.values())[0]])
+
         self.__importantButtonsFrame = Frame(self.__bigFrame,
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        width=self.__bigFrame.winfo_width(),
@@ -569,13 +641,19 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("delete"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__insertNew
+                                     command = self.__deleteThat
                                      )
         self.__deleteButton.pack_propagate(False)
         self.__deleteButton.pack(fill=BOTH)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__variableListBox, "<Double-1>", self.__doubleClickedListBox, 1)
+
         self.changeForReal("global")
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
+
+    def __deleteThat(self):
+        var     = self.__selectedVar
+        varName = self.__varNameVar.get()
 
     def __setBit(self, num, state, sound):
         self.__bitsSetters[num]["state"] = state
@@ -584,7 +662,7 @@ class MemoryManagerWindow:
            self.__bitsSetters[num]["switchLabel"].config(image = self.__swOnImg)
            self.__bitsSetters[num]["numberLabel"].config(fg  = self.__loader.colorPalettes.getColor("font"))
         else:
-           self.__bitsSetters[num]["switchLabel"].config(image = self.__swOff)
+           self.__bitsSetters[num]["switchLabel"].config(image = self.__swOffImg)
            self.__bitsSetters[num]["numberLabel"].config(fg  = self.__loader.colorPalettes.getColor("fontDisabled"))
 
         if sound and self.__config.getValueByKey("soundOn") == "True":
@@ -594,7 +672,7 @@ class MemoryManagerWindow:
 
     def loop(self):
         try:
-            if self.__validName:
+            if self.__validName and self.__numBitsOK:
                self.__createModifyButton.config(state = NORMAL)
 
             else:
@@ -742,8 +820,16 @@ class MemoryManagerWindow:
     def __initStuff(self):
         self.__createModifyVar.set(self.__dictionaries.getWordFromCurrentLanguage(self.__mode))
         self.unsaved = False
+        self.__contentHolder.deSelect()
+        self.__varTypeHolder.deSelect()
+        self.__encodingTypeHolder.deSelect()
+        self.__numBitsOK = True
+        self.__errorLabelVal.set("")
+        self.__errorLabel.config(fg=self.__loader.colorPalettes.getColor("font"),
+                                 bg=self.__loader.colorPalettes.getColor("window"))
+        self.__validName = True
 
-        success = False
+        #success = False
 
         if self.__mode == "create" or len(self.__varList) == 0:
            self.__deleteButton.config(state = DISABLED)
@@ -751,13 +837,39 @@ class MemoryManagerWindow:
            self.__varAddressEntry.config(state = DISABLED)
            self.__allocTypeHolder.deSelect()
            self.__allocTypeHolder.select(self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"), True)
+           self.__varAddressVar.set("")
+
+           self.__contentHolder.select(
+               self.__dictionaries.getWordFromCurrentLanguage("common"), True
+           )
+           self.__encodingTypeHolder.select(
+               self.__dictionaries.getWordFromCurrentLanguage("binary"), True
+           )
 
            done = False
-           for varTyp in self.__virtualMemory.types:
+
+           order   = []
+           while len(order) < len(self.__virtualMemory.types):
+                largestNum = 0
+                largestName = ""
+
+                for vartype in self.__virtualMemory.types:
+                    if vartype in order: continue
+
+                    if largestNum < self.__virtualMemory.types[vartype]:
+                       largestName = vartype
+                       largestNum  = self.__virtualMemory.types[vartype]
+
+                order.append(largestName)
+
+           for varTyp in order:
                neededBits = self.__virtualMemory.types[varTyp]
                for address in self.__virtualMemory.memory.keys():
-                   bits = self.__virtualMemory.getIfThereAreAvaiableBitNearAndInARow(self.__virtualMemory.memory[address].freeBits[self.__selectedBank],
-                                                                                     neededBits)
+                   #bits = self.__virtualMemory.getIfThereAreAvaiableBitNearAndInARow(self.__virtualMemory.memory[address].freeBits[self.__selectedBank],
+                   #                                                                  neededBits)
+
+                   bits = self.__virtualMemory.getTheFirstFreeBitsOnAddessAndBank(self.__selectedBank, neededBits, address)
+
                    if bits == False:
                       continue
                    else:
@@ -767,30 +879,101 @@ class MemoryManagerWindow:
                           if num in bits:
                              self.__setBit(num, True, False)
                           else:
-                             self.__setBit(num, True, False)
-
+                             self.__setBit(num, False, False)
                       break
-               if done == True: break
 
+               if done == True:
+                  self.__varTypeHolder.select(varTyp, True)
+                  break
 
         else:
            self.__deleteButton.config(state = NORMAL)
            name = self.__varList[self.__variableListBox.curselection()[0]]
            self.__selectedVar = self.__loader.virtualMemory.getVariableByName(name, self.__selectedBank)
 
-    def displayError(self, word, d):
-        if word != "":
+           self.__allocTypeHolder.deSelect()
+           if self.__selectedVar.fixedAlloc:
+              self.__allocTypeHolder.select(self.__dictionaries.getWordFromCurrentLanguage("staticAdressing")  , True)
+           else:
+              self.__allocTypeHolder.select(self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"), True)
+
+           self.__varTypeHolder.select(self.__selectedVar.type, True)
+           for address in self.__virtualMemory.memory.keys():
+               if name in self.__virtualMemory.memory[address].variables.keys():
+                  self.__varAddressVar.set(address)
+                  break
+
+           for num in range(0, 8):
+               if num in self.__selectedVar.usedBits:
+                  self.__setBit(num, True, False)
+               else:
+                  self.__setBit(num, False, False)
+
+           if self.__selectedVar.bcd:
+              self.__encodingTypeHolder.select(
+                  self.__dictionaries.getWordFromCurrentLanguage("bcd"), True
+              )
+           else:
+              self.__encodingTypeHolder.select(
+                  self.__dictionaries.getWordFromCurrentLanguage("binary"), True
+              )
+
+           if self.__selectedVar.color:
+               self.__encodingTypeHolder.select(
+                   self.__dictionaries.getWordFromCurrentLanguage("colorVar"), True
+               )
+           else:
+               self.__encodingTypeHolder.select(
+                   self.__dictionaries.getWordFromCurrentLanguage("common"), True
+               )
+
+        self.checkBitsOnType(None)
+
+    def displayError(self, word, d, delete):
+        if delete == False:
            txt = self.__dictionaries.getWordFromCurrentLanguage(word)
            for key in d:
-               txt = txt.replace(key, key[d])
+               txt = txt.replace(key, d[key])
 
            self.__errorLabelVal.set(txt)
            self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
+
+           self.__errorList.append([word, txt])
+
         else:
            self.__errorLabelVal.set("")
-           self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
-                                    fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+           self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("window"),
+                                    fg=self.__loader.colorPalettes.getColor("font"))
+
+           stop = False
+           while(stop == False):
+               foundOne    = False
+               for itemNum in range(0, len(self.__errorList)):
+                   if len(self.__errorList) == 0:
+                       stop = True
+                       break
+
+                   for w in word:
+                       if len(self.__errorList) == 0:
+                          stop = True
+                          break
+
+                       if self.__errorList[itemNum][0] == w:
+                          self.__errorList.pop(itemNum)
+                          foundOne = True
+                          break
+
+                   if stop or foundOne: break
+
+               if foundOne == False:
+                  stop = True
+                  break
+
+           if len(self.__errorList) > 0:
+               self.__errorLabelVal.set(self.__errorList[-1][1])
+               self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                        fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
 
     def createModifyPressed(self):
         pass
@@ -810,16 +993,130 @@ class MemoryManagerWindow:
 
         self.__initStuff()
 
+    def __doubleClickedListBox(self, event):
+        self.__insertSelected()
+
     def __insertSelected(self):
         if self.__selectButton.cget("state") == DISABLED: return
         self.__mode = "modify"
 
         self.__initStuff()
 
-    def selectedTypeChanged(self, event):
+    def checkBitsOnType(self, data):
+        self.__numBitsOK = True
+
+        if data == None:
+           bitsNeeded   = self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()]
+           bitsSelected = []
+
+           for num in range(0, 8):
+               if self.__bitsSetters[num]["state"]:
+                  bitsSelected.append(num)
+        else:
+            bitsNeeded   = data[0]
+            bitsSelected = data[1]
+
+        if len(bitsSelected) < bitsNeeded:
+           self.displayError("notEnoughBitsSelected", {
+               "#TYPE#": self.__varTypeHolder.getSelected(),
+               "#NUM#" : str(self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()]),
+           }, False)
+
+           self.__numBitsOK = False
+           return
+
+        if bitsNeeded > 1:
+           for bitNum in range(0, len(bitsSelected) - 1):
+               num1 = bitsSelected[bitNum]
+               num2 = bitsSelected[bitNum + 1]
+
+               if abs(num2 - num1) != 1:
+                  strList = []
+                  for num in bitsSelected:
+                      strList.append(str(num))
+
+                  self.__numBitsOK = False
+                  self.displayError("bitsAreNotAligned", {"#BITS#": "-".join(strList)}, False)
+                  return
+
+        self.displayError(["notEnoughBitsSelected", "bitsAreNotAligned"], {}, True)
+
+
+    def selectedTypeChanged(self):
+        if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
+           self.selectedAllocTypeChanged()
+        else:
+            bitsNeeded   = self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()]
+            bitsSelected = []
+
+            for num in range(0, 8):
+                if self.__bitsSetters[num]["state"]:
+                   bitsSelected.append(num)
+
+            okList = []
+            if len(bitsSelected) > bitsNeeded:
+               for bitNum in bitsSelected:
+                   if len(okList) == 0:
+                      okList.append(bitNum)
+                   else:
+                      if abs(bitNum - okList[-1]) == 1:
+                         okList.append(bitNum)
+                      else:
+                         okList = [bitNum]
+
+                   if len(okList) == bitsNeeded: break
+
+               if okList != bitsSelected:
+                  for num in range(0, 8):
+                      for num in range(0, 8):
+                          if num in okList:
+                             self.__setBit(num, True, False)
+                          else:
+                             self.__setBit(num, False, False)
+
+               bitsSelected = okList
+
+            self.checkBitsOnType([bitsNeeded, bitsSelected])
+
+    def selectedAllocTypeChanged(self):
+        if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
+
+            done = False
+            neededBits = self.__virtualMemory.types[self.__varTypeHolder.getSelected()]
+            for address in self.__virtualMemory.memory.keys():
+                #bits = self.__virtualMemory.getIfThereAreAvaiableBitNearAndInARow(
+                #    self.__virtualMemory.memory[address].freeBits[self.__selectedBank],
+                #    neededBits)
+
+                bits = self.__virtualMemory.getTheFirstFreeBitsOnAddessAndBank(self.__selectedBank, neededBits, address)
+
+                if bits == False:
+                    continue
+                else:
+                    #print(neededBits, bits)
+
+                    self.__varAddressVar.set(address)
+                    done = True
+                    for num in range(0, 8):
+                        if num in bits:
+                            self.__setBit(num, True, False)
+                        else:
+                            self.__setBit(num, False, False)
+                    break
+
+            if done == False:
+                self.displayError("insufficientFreeMemory", {
+                    "#TYPE#": self.__varTypeHolder.getSelected(),
+                    "#NUM#": str(self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()])
+                }, False)
+            else:
+                self.displayError(["insufficientFreeMemory"], {}, True)
+
+
+    def selectedEcondingChanged(self):
         pass
 
-    def selectedAllocTypeChanged(self, event):
+    def selectedContentChanged(self):
         pass
 
     def addressChanged(self, event):
@@ -828,5 +1125,23 @@ class MemoryManagerWindow:
     def switchClicked(self, event):
         if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"): return
 
-        num = int(str(event.widget).split(".")[-1])
+        bitsSelected = []
+
+        for num in range(0, 8):
+            if self.__bitsSetters[num]["state"]:
+               bitsSelected.append(num)
+
+        num = int(str(event.widget).split(".")[-1][-1])
+
+        if  len(bitsSelected) >= self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()] \
+        and self.__bitsSetters[num]["state"] == False: return
+
         self.__setBit(num, 1 - self.__bitsSetters[num]["state"], True)
+
+        if num in bitsSelected:
+           bitsSelected.remove(num)
+        else:
+           bitsSelected.append(num)
+           bitsSelected.sort()
+
+        self.checkBitsOnType([self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()], bitsSelected])
