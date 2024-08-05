@@ -22,6 +22,8 @@ class VirtualMemory:
         self.includeKernelData = True
         self.includeCollisions = True
         self.firstAddress = 0x96
+        self.lastAddress  = self.firstAddress
+        self.stactStart   = 0xf8
 
         self.__kernelOnlyVars = {}
 
@@ -200,6 +202,7 @@ class VirtualMemory:
             txt[lineNum] = line
 
         #print("\n".join(txt))
+        self.lastAddress = first
 
         return first, "\n".join(txt)
 
@@ -473,7 +476,7 @@ class VirtualMemory:
 
         if allocType == False:
            for memoryAddress in self.memory.keys():
-                if len(self.memory[memoryAddress].freeBits[validity])>=neededBits:
+                if len(self.memory[memoryAddress].freeBits[validity]) >= neededBits:
                     #bits = self.getIfThereAreAvaiableBitNearAndInARow(self.memory[memoryAddress].freeBits[validity], neededBits)
                     bits = self.getTheFirstFreeBitsOnAddessAndBank(validity, neededBits, memoryAddress)
                     if bits == False:
@@ -484,7 +487,7 @@ class VirtualMemory:
                         else:
                             self.memory[memoryAddress].removeBitsFromBankAddress(bits, validity)
                         self.memory[memoryAddress].addVariable(name, type, bits, validity, color, bcd, False, False)
-                        #print(name, memoryAddress, type)
+                        #print(name, memoryAddress, type, validity)
 
                         success = True
                         break
@@ -499,10 +502,15 @@ class VirtualMemory:
         if type(numOfBits) != int: numOfBits = self.types[numOfBits]
 
         listOfBits = []
+
         availableBits = deepcopy(self.memory[address].freeBits[validity])
 
-        if len(availableBits) < numOfBits: return False
-        availableBits.sort()
+        if len(availableBits) < numOfBits:
+           #if address.upper() == "$DE":
+           #   for varName in self.memory[address].variables.keys():
+           #       print(address, varName, validity)
+
+           return False
 
         for bitNum in availableBits:
             if len(listOfBits) == 0:
@@ -514,7 +522,12 @@ class VirtualMemory:
                     listOfBits = [bitNum]
 
             if len(listOfBits) == numOfBits:
-                return (listOfBits)
+               #for varName in self.memory[address].variables.keys():
+               #    print(address, varName, validity)
+
+               #print(address, validity)
+
+               return (listOfBits)
 
         return False
 
@@ -542,7 +555,7 @@ class VirtualMemory:
         self.memory={}
         self.arrays={}
 
-        for i in range(128, 248):
+        for i in range(128, self.stactStart):
             self.memory["$"+self.getHex(i)] = MemoryItem()
         for i in range(0,128):
             I = self.getHex(i)

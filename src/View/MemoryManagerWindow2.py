@@ -37,6 +37,7 @@ class MemoryManagerWindow:
         }
         self.unsaved = False
         self.modifyButtonState = False
+        self.__nameToDelete    = None
 
         self.__validName = False
         self.__numBitsOK = False
@@ -618,7 +619,7 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      textvariable = self.__createModifyVar,
                                      font=self.__smallFont, width=999999999, state = NORMAL,
-                                     command = self.__insertNew
+                                     command = self.createModifyPressed
                                      )
         self.__createModifyButton.pack_propagate(False)
         self.__createModifyButton.pack(fill=BOTH)
@@ -641,19 +642,353 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("delete"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__deleteThat
+                                     command = self.deletePressed
                                      )
         self.__deleteButton.pack_propagate(False)
         self.__deleteButton.pack(fill=BOTH)
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__variableListBox, "<Double-1>", self.__doubleClickedListBox, 1)
+        self.__fillerFrame2 = Frame(self.__importantButtonsFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__bigFrame.winfo_width() // 100,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__fillerFrame2.pack_propagate(False)
+        self.__fillerFrame2.pack(side=LEFT, anchor=E, fill=Y)
 
-        self.changeForReal("global")
+        remaining = (self.__bigFrame.winfo_width() - (
+                    (self.__bigFrame.winfo_width() // 6 + self.__bigFrame.winfo_width() // 100) * 2 +
+                    self.__bigFrame.winfo_width() // 100
+                     ))
+
+        self.__basicRAMFrame = Frame(self.__importantButtonsFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 2,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__basicRAMFrame.pack_propagate(False)
+        self.__basicRAMFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__fillerFrame3 = Frame(self.__importantButtonsFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__bigFrame.winfo_width() // 100,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__fillerFrame3.pack_propagate(False)
+        self.__fillerFrame3.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__saraRAMFrame = Frame(self.__importantButtonsFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 2,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__saraRAMFrame.pack_propagate(False)
+        self.__saraRAMFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__basicRAMLabelFrame = Frame(self.__basicRAMFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__basicRAMLabelFrame.pack_propagate(False)
+        self.__basicRAMLabelFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__saraRAMLabelFrame = Frame(self.__saraRAMFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__saraRAMLabelFrame.pack_propagate(False)
+        self.__saraRAMLabelFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__basicRamLabel     = Label(self.__basicRAMLabelFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15,
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("freeBasicRam"),
+                                       font=self.__miniFont
+                                         )
+        self.__basicRamLabel.pack_propagate(False)
+        self.__basicRamLabel.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__saraRAMLabel    = Label(self.__saraRAMLabelFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15,
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("freeSaraRam"),
+                                       font=self.__miniFont
+                                         )
+        self.__saraRAMLabel.pack_propagate(False)
+        self.__saraRAMLabel.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__basicRAM = StringVar()
+        self.__saraRAM  = StringVar()
+
+        self.__basicRAMEntryFrame = Frame(self.__basicRAMFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__basicRAMEntryFrame.pack_propagate(False)
+        self.__basicRAMEntryFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__basicRAMEntry = Entry(self.__basicRAMEntryFrame,
+                                       bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       width=9999, state = DISABLED,
+                                       textvariable = self.__basicRAM,
+                                       font=self.__normalFont, justify = CENTER
+                                         )
+        self.__basicRAMEntry.pack_propagate(False)
+        self.__basicRAMEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__saraRAMEntryFrame = Frame(self.__saraRAMFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=remaining // 4,
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__saraRAMEntryFrame.pack_propagate(False)
+        self.__saraRAMEntryFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__saraRAMEntry = Entry(self.__saraRAMEntryFrame,
+                                       bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       width=9999, state = DISABLED,
+                                       textvariable = self.__saraRAM,
+                                       font=self.__normalFont, justify = CENTER
+                                         )
+        self.__saraRAMEntry.pack_propagate(False)
+        self.__saraRAMEntry.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__bottomFrame = Frame(self.__bigFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__bigFrame.winfo_width(),
+                                       height=self.__bigFrame.winfo_height() // 15)
+        self.__bottomFrame.pack_propagate(False)
+        self.__bottomFrame.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__middleFrame = Frame(self.__bigFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__bigFrame.winfo_width(),
+                                       height=self.__bigFrame.winfo_height())
+        self.__middleFrame.pack_propagate(False)
+        self.__middleFrame.pack(side=BOTTOM, anchor=S, fill=Y)
+
+        while self.__middleFrame.winfo_width() < 2: sleep(0.0000000001)
+
+        self.__overLapFrame = Frame(self.__middleFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__middleFrame.winfo_width() // 3,
+                                       height=self.__middleFrame.winfo_height())
+        self.__overLapFrame.pack_propagate(False)
+        self.__overLapFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__arrayFrame = Frame(self.__middleFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__middleFrame.winfo_width() // 3 ,
+                                       height=self.__middleFrame.winfo_height())
+        self.__arrayFrame.pack_propagate(False)
+        self.__arrayFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__arrayVarFrame = Frame(self.__middleFrame,
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       width=self.__middleFrame.winfo_width() // 3 ,
+                                       height=self.__middleFrame.winfo_height())
+        self.__arrayVarFrame.pack_propagate(False)
+        self.__arrayVarFrame.pack(side=LEFT, anchor=E, fill=BOTH)
+
+
+        self.__overLapLabelFrame = Frame(self.__overLapFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__overLapLabelFrame.pack_propagate(False)
+        self.__overLapLabelFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__overLapLabel      = Label(self.__overLapLabelFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         fg=self.__loader.colorPalettes.getColor("font"),
+                                         font = self.__smallFont,
+                                         text = self.__dictionaries.getWordFromCurrentLanguage("memoryOverlaps"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=1)
+        self.__overLapLabel.pack_propagate(False)
+        self.__overLapLabel.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__overLapBox = Frame(self.__overLapFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10 * 9)
+        self.__overLapBox.pack_propagate(False)
+        self.__overLapBox.pack(side=TOP, anchor=N, fill=BOTH)
+
+        from tkinter import scrolledtext
+
+        self.__overLapBox    = scrolledtext.ScrolledText(self.__overLapBox, width=999999, height=self.__middleFrame.winfo_height()// 10 * 9, wrap=WORD)
+        self.__overLapBox.pack(fill=BOTH, side=BOTTOM, anchor=S)
+
+        self.__overLapBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+
+        self.__getFont()
+        self.__overLapBox.bind("<Key>", lambda e: "break")
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__overLapBox, "<Double-1>", self.__doubleClickedListBox, 1)
+
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
-    def __deleteThat(self):
-        var     = self.__selectedVar
-        varName = self.__varNameVar.get()
+        self.__arrayLabelFrame = Frame(self.__arrayFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayLabelFrame.pack_propagate(False)
+        self.__arrayLabelFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrayLabel      = Label(self.__arrayLabelFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         fg=self.__loader.colorPalettes.getColor("font"),
+                                         font = self.__smallFont,
+                                         text = self.__dictionaries.getWordFromCurrentLanguage("arrays"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=1)
+        self.__arrayLabel.pack_propagate(False)
+        self.__arrayLabel.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__arrayListLabelFrame = Frame(self.__arrayVarFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayListLabelFrame.pack_propagate(False)
+        self.__arrayListLabelFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrayListLabel      = Label(self.__arrayListLabelFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         fg=self.__loader.colorPalettes.getColor("font"),
+                                         font = self.__smallFont,
+                                         text = self.__dictionaries.getWordFromCurrentLanguage("listOfVariables"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=1)
+        self.__arrayListLabel.pack_propagate(False)
+        self.__arrayListLabel.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__arrayButtonsFrame = Frame(self.__arrayFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10 * 3)
+        self.__arrayButtonsFrame.pack_propagate(False)
+        self.__arrayButtonsFrame.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__arrayVarListButtonsFrame = Frame(self.__arrayVarFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10 * 3)
+        self.__arrayVarListButtonsFrame.pack_propagate(False)
+        self.__arrayVarListButtonsFrame.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__arrayListBoxFrame = Frame(self.__arrayFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height())
+        self.__arrayListBoxFrame.pack_propagate(False)
+        self.__arrayListBoxFrame.pack(side=BOTTOM, anchor=S, fill=BOTH)
+
+        self.__arrayVarListBoxFrame = Frame(self.__arrayVarFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height())
+        self.__arrayVarListBoxFrame.pack_propagate(False)
+        self.__arrayVarListBoxFrame.pack(side=BOTTOM, anchor=S, fill=BOTH)
+
+
+        self.__arrayBoxScrollBaer = Scrollbar(self.__arrayListBoxFrame)
+        self.__arrayListBox = Listbox(self.__arrayListBoxFrame, width=100000,
+                                         height=1000, name = "arrayListBox",
+                                         yscrollcommand=self.__arrayBoxScrollBaer.set,
+                                         selectmode=BROWSE,
+                                         exportselection=False,
+                                         font=self.__smallFont
+                                         )
+        self.__arrayListBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__arrayListBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__arrayListBox.pack_propagate(False)
+
+        self.__arrayBoxScrollBaer.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__arrayListBox.pack(side=LEFT, anchor=W, fill=BOTH)
+        self.__arrayBoxScrollBaer.config(command=self.__arrayListBox.yview)
+
+        self.__arrayListBoxScrollBaer = Scrollbar(self.__arrayVarListBoxFrame)
+        self.__arrayListListBox = Listbox(self.__arrayVarListBoxFrame, width=100000,
+                                         height=1000, name = "arrayListBox",
+                                         yscrollcommand=self.__arrayListBoxScrollBaer.set,
+                                         selectmode=BROWSE,
+                                         exportselection=False,
+                                         font=self.__smallFont
+                                         )
+        self.__arrayListListBox.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"))
+        self.__arrayListListBox.config(fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+        self.__arrayListListBox.pack_propagate(False)
+
+        self.__arrayListBoxScrollBaer.pack(side=RIGHT, anchor=W, fill=Y)
+        self.__arrayListListBox.pack(side=LEFT, anchor=W, fill=BOTH)
+        self.__arrayListBoxScrollBaer.config(command=self.__arrayListListBox.yview)
+
+        self.changeForReal("global")
+        # readonly.bind("<Key>", lambda e: "break")
+
+    #def __deleteThat(self):
+    #    var     = self.__selectedVar
+    #    varName = self.__varNameVar.get()
+
+    def fillArrayBox(self):
+        pass
+
+    def addTag(self, Y, X1, X2, tag):
+        self.__overLapBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
+
+    def __getFont(self):
+        baseSize = int(self.__config.getValueByKey("codeBoxFont"))
+        w = self.__loader.mainWindow.getWindowSize()[0] / 1600
+        h = self.__loader.mainWindow.getWindowSize()[1] / 1200
+
+        self.__fontSize = round((baseSize * w * h) * 1.5)
+        self.__normalFont = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, False)
+        self.__boldFont = self.__loader.fontManager.getFont(round(self.__fontSize), True, False, False)
+        self.__italicFont = self.__loader.fontManager.getFont(round(self.__fontSize), False, True, False)
+        self.__undelinedFont = self.__loader.fontManager.getFont(round(self.__fontSize), False, False, True)
+        self.__boldItalicFont = self.__loader.fontManager.getFont(round(self.__fontSize), True, True, False)
+        self.__boldUnderlinedFont = self.__loader.fontManager.getFont(round(self.__fontSize), True, False, True)
+        self.__boldItalicUnderLinedFont = self.__loader.fontManager.getFont(round(self.__fontSize), True, True, True)
+
+        self.__tagSettings = {
+            "comment": {
+                "foreground": self.__loader.colorPalettes.getColor("comment"),
+                "font": self.__italicFont
+            },
+            "warning": {
+                "background": self.__loader.colorPalettes.getColor("highLight"),
+                "font": self.__normalFont
+            },
+            "variable": {
+                "foreground": self.__loader.colorPalettes.getColor("variable"),
+                "font": self.__boldUnderlinedFont
+            },
+            "error": {
+                "foreground": self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                "background": self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                "font": self.__boldFont
+           }
+        }
+
+        for key in self.__tagSettings:
+            if "background" not in self.__tagSettings[key]:
+                self.__overLapBox.tag_config(key,
+                                          foreground = self.__tagSettings[key]["foreground"],
+                                          font = self.__tagSettings[key]["font"])
+            elif "foreground" not in self.__tagSettings[key]:
+                self.__overLapBox.tag_config(key,
+                                          background = self.__tagSettings[key]["background"],
+                                          font = self.__tagSettings[key]["font"])
+            else:
+                self.__overLapBox.tag_config(key,
+                                              foreground=self.__tagSettings[key]["foreground"],
+                                              background=self.__tagSettings[key]["background"],
+                                              font=self.__tagSettings[key]["font"])
+
+        self.__overLapBox.config(font=self.__normalFont)
+        self.__overLapBox.tag_raise("sel")
 
     def __setBit(self, num, state, sound):
         self.__bitsSetters[num]["state"] = state
@@ -672,7 +1007,7 @@ class MemoryManagerWindow:
 
     def loop(self):
         try:
-            if self.__validName and self.__numBitsOK:
+            if self.__validName and self.__numBitsOK and len(self.__errorList) == 0:
                self.__createModifyButton.config(state = NORMAL)
 
             else:
@@ -761,6 +1096,50 @@ class MemoryManagerWindow:
 
         return None
 
+    def calculateFreeRAM(self):
+        basic = 0
+        sara = 0
+        basicLocal = 0
+        saraLocal = 0
+        slot = self.__selectedBank
+
+        for address in self.__memory.keys():
+            if len(address) == 3:
+                basic+=len(self.__memory[address].freeBits["global"])
+                if slot != "global":
+                    basicLocal += len(self.__memory[address].freeBits[slot])
+            else:
+                sara+=len(self.__memory[address].freeBits["global"])
+                if slot != "global":
+                    saraLocal += len(self.__memory[address].freeBits[slot])
+
+        if slot           != "global":
+           sara            = saraLocal
+           basic           = basicLocal
+
+        self.__saraRAM.set(self.bitNumToFreeRamText(sara))
+        self.__basicRAM.set(self.bitNumToFreeRamText(basic))
+
+        #return(basic, basicLocal, sara, saraLocal)
+
+    def bitNumToFreeRamText(self, num):
+        txt = ""
+
+        bytes = num // 8
+        bits  = num  % 8
+
+        if bytes != 0:
+           txt = str(bytes) + "B"
+
+        if bytes != 0 and bits != 0:
+           txt += " + "
+
+        if bits !=0:
+           txt += str(bits) + "b"
+
+        return txt
+
+
     def haunted(self):
         from Haunted import Haunted
 
@@ -792,8 +1171,14 @@ class MemoryManagerWindow:
                 )
 
         self.__variableListBox.select_clear(0, END)
+        self.doListBox(name, None)
+
+        self.__mode = "create"
+        self.__initStuff()
+
+    def doListBox(self, validity, selected):
         writable, readOnly, \
-        all     , nonSystem = self.__virtualMemory.returnVariablesForBank(name)
+        all, nonSystem = self.__virtualMemory.returnVariablesForBank(validity)
 
         self.__varList = []
         self.__variableListBox.delete(0, END)
@@ -803,19 +1188,21 @@ class MemoryManagerWindow:
         for v in nonSystem:
             var = self.__virtualMemory.getVariableByName2(v)
             if var != False:
-               if var.validity == name:
-                  self.__varList.append(v)
-                  self.__variableListBox.insert(END, v)
+                if var.validity == validity:
+                    self.__varList.append(v)
+                    self.__variableListBox.insert(END, v)
 
         if len(self.__varList) > 0:
-           self.__variableListBox.select_set(0)
-
-           self.__selectButton.config(state = NORMAL)
+            if selected == None:
+               self.__variableListBox.select_set(0)
+            else:
+               for index in range(0, len(self.__varList)):
+                   if self.__varList[index] == selected:
+                      self.__variableListBox.select_set(index)
+                      break
+            self.__selectButton.config(state=NORMAL)
         else:
-           self.__selectButton.config(state=DISABLED)
-
-        self.__mode = "create"
-        self.__initStuff()
+            self.__selectButton.config(state=DISABLED)
 
     def __initStuff(self):
         self.__createModifyVar.set(self.__dictionaries.getWordFromCurrentLanguage(self.__mode))
@@ -888,7 +1275,8 @@ class MemoryManagerWindow:
 
         else:
            self.__deleteButton.config(state = NORMAL)
-           name = self.__varList[self.__variableListBox.curselection()[0]]
+           name                = self.__varList[self.__variableListBox.curselection()[0]]
+           self.__nameToDelete = name
            self.__selectedVar = self.__loader.virtualMemory.getVariableByName(name, self.__selectedBank)
 
            self.__allocTypeHolder.deSelect()
@@ -928,6 +1316,9 @@ class MemoryManagerWindow:
                )
 
         self.checkBitsOnType(None)
+        self.calculateFreeRAM()
+
+        self.checkForOverlaps()
 
     def displayError(self, word, d, delete):
         if delete == False:
@@ -975,11 +1366,41 @@ class MemoryManagerWindow:
                self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
                                         fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"))
 
+        self.checkForOverlaps()
+
+
     def createModifyPressed(self):
-        pass
+        if self.__createModifyButton.cget("state") == DISABLED: return
+
+        if self.__mode == "modify": self.__virtualMemory.removeVariable(self.__nameToDelete, self.__selectedBank)
+
+        self.__virtualMemory.archieve()
+        success = self.__virtualMemory.addVariable(self.__varNameVar.get(), self.__varTypeHolder.getSelected(),
+                                  self.__selectedBank, self.__contentHolder.getSelected(),
+                                  self.__encodingTypeHolder.getSelected()
+                                  )
+        if success == True:
+           self.unsaved = True
+           self.__mode = "modify"
+
+           self.__variableListBox.select_clear(0, END)
+           self.doListBox(self.__selectedBank, self.__varNameVar.get())
+
+           self.__initStuff()
+
+        else:
+           self.__virtualMemory.getArcPrev()
+           self.__virtualMemory.archieved.pop(-1)
 
     def deletePressed(self):
-        pass
+        if self.__deleteButton.cget("state") == DISABLED: return
+
+        self.__virtualMemory.removeVariable(self.__nameToDelete, self.__selectedBank)
+        self.unsaved = True
+
+        self.__mode = "create"
+        self.__variableListBox.select_clear(0, END)
+        self.__initStuff()
 
     def saveAllBank(self):
         pass
@@ -1041,7 +1462,6 @@ class MemoryManagerWindow:
 
         self.displayError(["notEnoughBitsSelected", "bitsAreNotAligned"], {}, True)
 
-
     def selectedTypeChanged(self):
         if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
            self.selectedAllocTypeChanged()
@@ -1080,6 +1500,10 @@ class MemoryManagerWindow:
 
     def selectedAllocTypeChanged(self):
         if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
+            self.displayError(["notEnoughBitsSelected", "bitsAreNotAligned"], {}, True)
+
+            self.__varAddressEntry.config(bg = self.__colors.getColor("boxBackNormal"),
+                                          fg = self.__colors.getColor("boxFontNormal"))
 
             done = False
             neededBits = self.__virtualMemory.types[self.__varTypeHolder.getSelected()]
@@ -1112,6 +1536,11 @@ class MemoryManagerWindow:
             else:
                 self.displayError(["insufficientFreeMemory"], {}, True)
 
+            self.__varAddressEntry.config(state = DISABLED)
+        else:
+            self.__varAddressEntry.config(state = NORMAL)
+
+        self.checkForOverlaps()
 
     def selectedEcondingChanged(self):
         pass
@@ -1120,7 +1549,83 @@ class MemoryManagerWindow:
         pass
 
     def addressChanged(self, event):
-        if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"): return
+        if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
+            self.__varAddressEntry.config(bg=self.__colors.getColor("boxBackNormal"),
+                                          fg=self.__colors.getColor("boxFontNormal"))
+            return
+
+        val = self.__varAddressVar.get()
+        if (len(val) not in (3,5)):
+            self.__varAddressEntry.config(bg=self.__colors.getColor("boxBackUnSaved"),
+                                          fg=self.__colors.getColor("boxFontUnSaved"))
+
+            self.displayError("invalidMemoryAddress", {}, False)
+            return
+        else:
+            self.__varAddressEntry.config(bg=self.__colors.getColor("boxBackNormal"),
+                                          fg=self.__colors.getColor("boxFontNormal"))
+            self.displayError(["invalidMemoryAddress"], {}, True)
+
+        for charNum in range(1, len(val)):
+            try:
+                teszt = int("0x" + val[charNum], 16)
+            except:
+                self.__varAddressEntry.config(bg=self.__colors.getColor("boxBackUnSaved"),
+                                              fg=self.__colors.getColor("boxFontUnSaved"))
+
+                self.displayError("invalidMemoryAddress", {}, False)
+                return
+
+        if len(val) == 3:
+           firstValid = self.__virtualMemory.lastAddress
+           lastValid  = self.__virtualMemory.stactStart  - 1
+
+           valValue   = int(val.replace("$", "0x"), 16)
+
+           if (valValue < firstValid or valValue > lastValid):
+               A1 = format(firstValid, "02x").upper()
+               A2 = format(lastValid , "02x").upper()
+
+               self.__varAddressEntry.config(bg=self.__colors.getColor("boxBackUnSaved"),
+                                             fg=self.__colors.getColor("boxFontUnSaved"))
+
+               self.displayError("invalidBaseMemoryAddress", {"#A1#": A1, "#A2#": A2}, False)
+               return
+           else:
+               self.displayError(["invalidBaseMemoryAddress"], {}, True)
+
+        else:
+            firstByte   = val[1:3]
+            lastByte    = val[3:5]
+
+            lastByteVal = int("0x" + lastByte, 16)
+
+            if firstByte.upper() != "F0" or (lastByte > 127):
+               self.displayError("invalidSaraMemoryAddress", {}, False)
+               return
+
+            else:
+               self.displayError(["invalidSaraMemoryAddress"], {}, True)
+
+        foundSystem = False
+        varName     = ""
+
+        for varName in self.__loader.virtualMemory.memory[val.lower()].variables.keys():
+            if self.__loader.virtualMemory.memory[val.lower()].variables[varName].system:
+               foundSystem = True
+               break
+
+        if foundSystem:
+            self.__varAddressEntry.config(bg = self.__colors.getColor("boxBackUnSaved"),
+                                          fg = self.__colors.getColor("boxFontUnSaved"))
+
+            self.displayError("systemFound", {"#VAR#": varName, "#ADDRESS#": val}, False)
+            return
+        else:
+            self.__varAddressEntry.config(bg = self.__colors.getColor("boxBackNormal"),
+                                          fg = self.__colors.getColor("boxFontNormal"))
+            self.displayError(["systemFound"], {}, True)
+
 
     def switchClicked(self, event):
         if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"): return
@@ -1145,3 +1650,53 @@ class MemoryManagerWindow:
            bitsSelected.sort()
 
         self.checkBitsOnType([self.__loader.virtualMemory.types[self.__varTypeHolder.getSelected()], bitsSelected])
+
+
+    def checkForOverlaps(self):
+        address = self.__varAddressVar.get()
+
+        lineNum = 0
+
+        if address in self.__virtualMemory.memory.keys():
+           self.__overLapBox.delete("0.0", END)
+
+           for tag in self.__overLapBox.tag_names():
+               if tag == "sel": continue
+               self.__overLapBox.tag_remove(tag, "0.0", END)
+
+           bitsSelected = []
+
+           for num in range(0, 8):
+               if self.__bitsSetters[num]["state"]:
+                   bitsSelected.append(num)
+
+           for varName in self.__virtualMemory.memory[address].variables:
+               var = self.__virtualMemory.memory[address].variables[varName]
+               bitsbits = [
+                   "-","-","-","-","-","-","-","-"
+               ]
+
+               wasAny = False
+
+               for bit in var.usedBits:
+                   if bit in bitsSelected:
+                      bitsbits[7 - bit] = str(bit)
+                      wasAny = True
+
+               if wasAny:
+                   if   var.system == True:
+                        wholeTag = "error"
+                   elif self.__selectedBank == var.validity:
+                        wholeTag = "warning"
+                   else:
+                        wholeTag = ""
+
+                   text = var.validity + "\t" + "".join(bitsbits) + "\t" + varName + "\n"
+                   self.__overLapBox.insert(END, text)
+                   lineNum += 1
+                   startPoz = len(var.validity + "\t" + "".join(bitsbits) + "\t")
+
+                   self.addTag(lineNum, startPoz, len(text) + 1, "variable")
+
+                   if wholeTag != "":
+                      self.addTag(lineNum, 0, len(text) + 1, wholeTag)
