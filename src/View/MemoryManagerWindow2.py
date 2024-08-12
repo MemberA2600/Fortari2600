@@ -40,6 +40,7 @@ class MemoryManagerWindow:
         self.__nameToDelete    = None
 
         self.__validName = False
+
         self.__numBitsOK = False
         self.__errorList = []
 
@@ -925,6 +926,92 @@ class MemoryManagerWindow:
         self.__arrayListListBox.pack(side=LEFT, anchor=W, fill=BOTH)
         self.__arrayListBoxScrollBaer.config(command=self.__arrayListListBox.yview)
 
+        self.__arrayEntryFrame = Frame(self.__arrayButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayEntryFrame.pack_propagate(False)
+        self.__arrayEntryFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrayButtonFrame1 = Frame(self.__arrayButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayButtonFrame1.pack_propagate(False)
+        self.__arrayButtonFrame1.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrayButtonFrame2 = Frame(self.__arrayButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayButtonFrame2.pack_propagate(False)
+        self.__arrayButtonFrame2.pack(side=TOP, anchor=N, fill=X)
+
+        self.__arrayButtonFrame4 = Frame(self.__arrayVarListButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayButtonFrame4.pack_propagate(False)
+        self.__arrayButtonFrame4.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__arrayButtonFrame3 = Frame(self.__arrayVarListButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayButtonFrame3.pack_propagate(False)
+        self.__arrayButtonFrame3.pack(side=BOTTOM, anchor=S, fill=X)
+
+        self.__newArrayNameVar = StringVar()
+        self.__newArrayName =  Entry(self.__arrayEntryFrame, name="newArrayEntry",
+                               bg=self.__colors.getColor("boxBackNormal"),
+                               fg=self.__colors.getColor("boxFontNormal"),
+                               width=50,
+                               textvariable=self.__newArrayNameVar,
+                               font=self.__smallFont)
+
+        self.__newArrayName.pack_propagate(False)
+        self.__newArrayName.pack(side=LEFT, anchor=E, fill=BOTH)
+
+        self.__addNewArrayButton = Button(self.__arrayButtonFrame1, name="addNewArray",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("addVartoNew"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.__insertNew
+                                     )
+        self.__addNewArrayButton.pack_propagate(False)
+        self.__addNewArrayButton.pack(fill=BOTH)
+
+        self.__addToSelectedArrayButton = Button(self.__arrayButtonFrame2, name="addVarToSelectedArray",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("addVarToSelectedArray"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.__insertNew
+                                     )
+        self.__addToSelectedArrayButton.pack_propagate(False)
+        self.__addToSelectedArrayButton.pack(fill=BOTH)
+
+        self.__deleteVarFromArrayButton = Button(self.__arrayButtonFrame3, name="deleteVar",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("deleteVar"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.__insertNew
+                                     )
+        self.__deleteVarFromArrayButton.pack_propagate(False)
+        self.__deleteVarFromArrayButton.pack(fill=BOTH)
+
+        self.__deleteArrayButton = Button(self.__arrayButtonFrame4, name="deleteArray",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("deleteArray"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.__insertNew
+                                     )
+        self.__deleteArrayButton.pack_propagate(False)
+        self.__deleteArrayButton.pack(fill=BOTH)
+
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__newArrayName, "<FocusOut>"  , self.checkIfNameIsOK, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__newArrayName, "<KeyRelease>", self.checkIfNameIsOK, 1)
+
         self.changeForReal("global")
         # readonly.bind("<Key>", lambda e: "break")
 
@@ -1021,8 +1108,9 @@ class MemoryManagerWindow:
         name  = str(entry).split(".")[-1]
 
         theValue = {
-            "newVarEntry" : [self.__newVarName.get(), "var", [self.__addNewButton]],
-            "varNameEntry": [self.__varNameVar.get(), "var", []]
+            "newVarEntry" :  [self.__newVarName.get()     , "var", [self.__addNewButton]],
+            "varNameEntry":  [self.__varNameVar.get()     , "var", []],
+            "newArrayEntry": [self.__newArrayNameVar.get(), "arr", [self.__addNewArrayButton]]
         }
 
         error = self.checkName(theValue[name])
@@ -1049,7 +1137,6 @@ class MemoryManagerWindow:
 
            for item in theValue[name][2]:
                item.config(state = DISABLED)
-
 
         if name == "varNameEntry":
            if error == None and theValue[name][0] != "":
@@ -1173,8 +1260,17 @@ class MemoryManagerWindow:
         self.__variableListBox.select_clear(0, END)
         self.doListBox(name, None)
 
+        self.doTheArrayChange(name)
+
         self.__mode = "create"
         self.__initStuff()
+
+    def doTheArrayChange(self, name):
+        self.__arrayListBox    .select_clear(0, END)
+        self.__arrayListListBox.select_clear(0, END)
+
+        self.__arrayListBox    .delete(0, END)
+        self.__arrayListListBox.delete(0, END)
 
     def doListBox(self, validity, selected):
         writable, readOnly, \
