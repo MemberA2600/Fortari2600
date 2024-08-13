@@ -8,9 +8,7 @@
   <component name="ChangeListManager">
     <list default="true" id="b71b26fc-e5c9-4455-b4cd-61a04b836774" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-08-05_051107.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-08-12_054307.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/MemoryManagerWindow2.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/MemoryManagerWindow2.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,7 +30,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1723434186307" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1723525302519" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1722672915204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -222,19 +220,19 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="671" />
+          <entry key="project.closed" value="673" />
           <entry key="project.open.time.1" value="3" />
           <entry key="project.open.time.10" value="1" />
           <entry key="project.open.time.2" value="5" />
           <entry key="project.open.time.3" value="96" />
           <entry key="project.open.time.4" value="538" />
-          <entry key="project.open.time.5" value="163" />
-          <entry key="project.open.time.6" value="52" />
+          <entry key="project.open.time.5" value="164" />
+          <entry key="project.open.time.6" value="53" />
           <entry key="project.open.time.66" value="1" />
           <entry key="project.open.time.68" value="4" />
           <entry key="project.open.time.69" value="3" />
           <entry key="project.open.time.7" value="5" />
-          <entry key="project.opened" value="872" />
+          <entry key="project.opened" value="874" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -254,13 +252,13 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="asm" value="512" />
-          <entry key="py" value="648001" />
+          <entry key="py" value="648863" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="PLAIN_TEXT" value="512" />
-          <entry key="Python" value="648001" />
+          <entry key="Python" value="648863" />
         </counts>
       </usages-collector>
     </session>
@@ -273,13 +271,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/MemoryManagerWindow2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
+            <state relative-caret-position="372">
+              <caret line="1304" column="40" lean-forward="true" selection-start-line="1304" selection-start-column="40" selection-end-line="1304" selection-end-column="40" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1723434527230" expanded="true" signature="59876:59895" ph="..." />
-                <marker date="1723434527230" expanded="true" signature="69637:69844" ph="..." />
-                <marker date="1723434527230" expanded="true" signature="69884:69893" ph="..." />
+                <marker date="1723525299699" expanded="true" signature="59876:59895" ph="..." />
+                <marker date="1723525299699" expanded="true" signature="69637:71258" ph="..." />
+                <marker date="1723525299699" expanded="true" signature="71253:71258" ph="..." />
+                <marker date="1723525299699" expanded="true" signature="71298:71307" ph="..." />
               </folding>
             </state>
           </provider>
@@ -318,8 +317,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8960">
-              <caret line="564" column="28" selection-start-line="564" selection-start-column="26" selection-end-line="564" selection-end-column="28" />
+            <state relative-caret-position="420">
+              <caret line="758" column="24" selection-start-line="758" selection-start-column="8" selection-end-line="758" selection-end-column="24" />
               <folding>
                 <marker date="1722616475485" expanded="true" signature="19118:20090" ph="..." />
               </folding>
@@ -365,10 +364,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>lastad</find>
-      <find>stactStart</find>
-      <find>invalidMemoryAddress</find>
-      <find>F0</find>
       <find>allocTy</find>
       <find>lambda e:</find>
       <find>scrolledtext</find>
@@ -395,6 +390,10 @@
       <find>__addNewButton</find>
       <find>changeForReal</find>
       <find>__arrayListBox</find>
+      <find>getArray</find>
+      <find>__arrayVarListButtonsFrame</find>
+      <find>__deleteButton</find>
+      <find>__deleteArrayButton</find>
     </findStrings>
     <replaceStrings>
       <replace>listAllCommandFromTo</replace>
@@ -509,6 +508,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -560,7 +560,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -755,10 +754,9 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5124283" visible="true" weight="0.20603338" />
-      <window_info id="Structure" order="1" sideWeight="0.48757172" side_tool="true" visible="true" weight="0.20603338" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5105162" visible="true" weight="0.21116817" />
+      <window_info id="Structure" order="1" sideWeight="0.48948374" side_tool="true" visible="true" weight="0.21116817" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49875" weight="0.3288719" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16880617" weight="0.15105163" />
@@ -1110,26 +1108,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MemoryManagerWindow2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="1273" lean-forward="true" selection-start-line="1273" selection-end-line="1273" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-            <marker date="1723434527230" expanded="true" signature="59876:59895" ph="..." />
-            <marker date="1723434527230" expanded="true" signature="69637:69844" ph="..." />
-            <marker date="1723434527230" expanded="true" signature="69884:69893" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/CheckMemoryTopBottom.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
-          <caret line="33" column="78" selection-start-line="33" selection-start-column="76" selection-end-line="33" selection-end-column="78" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/MemoryManagerWindow.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23584">
@@ -1144,16 +1122,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="304">
           <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8960">
-          <caret line="564" column="28" selection-start-line="564" selection-start-column="26" selection-end-line="564" selection-end-column="28" />
-          <folding>
-            <marker date="1722616475485" expanded="true" signature="19118:20090" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1175,6 +1143,37 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4272">
           <caret line="270" column="57" selection-start-line="270" selection-start-column="40" selection-end-line="270" selection-end-column="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/CheckMemoryTopBottom.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="496">
+          <caret line="33" column="78" selection-start-line="33" selection-start-column="76" selection-end-line="33" selection-end-column="78" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataHolders/VirtualMemory.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="758" column="24" selection-start-line="758" selection-start-column="8" selection-end-line="758" selection-end-column="24" />
+          <folding>
+            <marker date="1722616475485" expanded="true" signature="19118:20090" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/MemoryManagerWindow2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="1304" column="40" lean-forward="true" selection-start-line="1304" selection-start-column="40" selection-end-line="1304" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1723525299699" expanded="true" signature="59876:59895" ph="..." />
+            <marker date="1723525299699" expanded="true" signature="69637:71258" ph="..." />
+            <marker date="1723525299699" expanded="true" signature="71253:71258" ph="..." />
+            <marker date="1723525299699" expanded="true" signature="71298:71307" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

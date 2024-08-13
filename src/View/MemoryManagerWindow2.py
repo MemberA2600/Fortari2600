@@ -1272,6 +1272,48 @@ class MemoryManagerWindow:
         self.__arrayListBox    .delete(0, END)
         self.__arrayListListBox.delete(0, END)
 
+        self.__arrayList = []
+
+        for arrayName in self.__virtualMemory.arrays:
+            validity = self.__virtualMemory.getArrayValidity(arrayName)
+
+            if validity == "global" or validity == name:
+               self.__arrayList.append(arrayName)
+
+        if len(self.__arrayList) > 0:
+           self.__arrayList.sort()
+
+           for arrayName in self.__arrayList:
+               self.__arrayListBox.insert(END, arrayName)
+
+           self.__arrayListBox.select_set(0)
+           self.__deleteArrayButton.config(state = NORMAL)
+           self.__fillArrayVarListBox(name, self.__arrayList[0], False)
+        else:
+           self.__deleteArrayButton.config(state=DISABLED)
+
+    def __fillArrayVarListBox(self, bank, arrayName, clear):
+        self.__arrayVarList = []
+
+        if clear:
+           self.__arrayListListBox.select_clear(0, END)
+           self.__arrayListListBox.delete(0, END)
+
+        for varName in self.__virtualMemory.arrays[arrayName]:
+            self.__arrayVarList.append(varName)
+
+        if len(self.__arrayVarList) > 0:
+           self.__arrayVarList.sort()
+           self.__deleteVarFromArrayButton.config(state = NORMAL)
+
+           for varName in self.__arrayVarList:
+               self.__arrayListListBox.insert(END, varName)
+
+           self.__arrayListListBox.select_set(0)
+        else:
+           self.__deleteVarFromArrayButton.config(state = DISABLED)
+
+
     def doListBox(self, validity, selected):
         writable, readOnly, \
         all, nonSystem = self.__virtualMemory.returnVariablesForBank(validity)
