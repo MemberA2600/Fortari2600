@@ -43,6 +43,8 @@ class MemoryManagerWindow:
 
         self.__numBitsOK = False
         self.__errorList = []
+        self.__originalVar = []
+        self.__archieveCounter = 0
 
         self.__window = SubMenu(self.__loader, "memoryManager", self.__sizes["common"][0],
                                 self.__sizes["common"][1], None, self.__addElements, 1)
@@ -53,11 +55,20 @@ class MemoryManagerWindow:
         if self.unsaved == True:
            answer = self.__fileDialogs.askYesOrNo("unsaved", "unsavedText")
            if answer == "Yes":
-              self.saveAllBank()
+              self.saveAllBankNoClose()
+           else:
+              self.deleteArchieves()
 
         self.dead = True
         self.__topLevelWindow.destroy()
         self.__loader.topLevels.remove(self.__topLevelWindow)
+
+    def deleteArchieves(self):
+        for r in range(0, self.__archieveCounter):
+            self.__virtualMemory.getArcPrev()
+            self.__virtualMemory.archieved.pop(-1)
+
+        self.__archieveCounter = 0
 
     def __addElements(self, top):
         self.__topLevel = top
@@ -827,7 +838,7 @@ class MemoryManagerWindow:
         self.__getFont()
         self.__overLapBox.bind("<Key>", lambda e: "break")
 
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__overLapBox, "<Double-1>", self.__doubleClickedListBox, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__variableListBox, "<Double-1>", self.__doubleClickedListBox, 1)
 
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
@@ -961,6 +972,13 @@ class MemoryManagerWindow:
         self.__arrayButtonFrame3.pack_propagate(False)
         self.__arrayButtonFrame3.pack(side=BOTTOM, anchor=S, fill=X)
 
+        self.__arrayButtonFrame5 = Frame(self.__arrayVarListButtonsFrame,
+                                         bg=self.__loader.colorPalettes.getColor("window"),
+                                         width=self.__middleFrame.winfo_width() // 3,
+                                         height=self.__middleFrame.winfo_height()// 10)
+        self.__arrayButtonFrame5.pack_propagate(False)
+        self.__arrayButtonFrame5.pack(side=TOP, anchor=N, fill=X)
+
         self.__newArrayNameVar = StringVar()
         self.__newArrayName =  Entry(self.__arrayEntryFrame, name="newArrayEntry",
                                bg=self.__colors.getColor("boxBackNormal"),
@@ -976,7 +994,7 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("addVartoNew"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__insertNew
+                                     command = self.__insertToNewArray
                                      )
         self.__addNewArrayButton.pack_propagate(False)
         self.__addNewArrayButton.pack(fill=BOTH)
@@ -985,7 +1003,7 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("addVarToSelectedArray"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__insertNew
+                                     command = self.__addToSelectedArray
                                      )
         self.__addToSelectedArrayButton.pack_propagate(False)
         self.__addToSelectedArrayButton.pack(fill=BOTH)
@@ -994,7 +1012,7 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("deleteVar"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__insertNew
+                                     command = self.__deleteFromArray
                                      )
         self.__deleteVarFromArrayButton.pack_propagate(False)
         self.__deleteVarFromArrayButton.pack(fill=BOTH)
@@ -1003,24 +1021,226 @@ class MemoryManagerWindow:
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("deleteArray"),
                                      font=self.__smallFont, width=999999999, state = DISABLED,
-                                     command = self.__insertNew
+                                     command = self.__deleteArray
                                      )
         self.__deleteArrayButton.pack_propagate(False)
         self.__deleteArrayButton.pack(fill=BOTH)
 
+        self.__selectArrayButton = Button(self.__arrayButtonFrame5, name="selectArray",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("selectArray"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.selectArray
+                                     )
+        self.__selectArrayButton.pack_propagate(False)
+        self.__selectArrayButton.pack(fill=BOTH)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__newArrayName, "<FocusOut>"  , self.checkIfNameIsOK, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__newArrayName, "<KeyRelease>", self.checkIfNameIsOK, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__arrayListBox, "<Double-1>", self.changeArrayVarList, 1)
+
+        while(self.__bottomFrame.winfo_width() < 2): sleep(0.00000001)
+
+        self.__okButtonFrame = Frame(self.__bottomFrame,
+                                     bg     = self.__loader.colorPalettes.getColor("window"),
+                                     width  = self.__bottomFrame.winfo_width() // 6,
+                                     height = self.__bottomFrame.winfo_height())
+        self.__okButtonFrame.pack_propagate(False)
+        self.__okButtonFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__fillerFrame4 = Frame(self.__bottomFrame,
+                                     bg     = self.__loader.colorPalettes.getColor("window"),
+                                     width  = self.__bottomFrame.winfo_width() // 100,
+                                     height = self.__bottomFrame.winfo_height())
+        self.__fillerFrame4.pack_propagate(False)
+        self.__fillerFrame4.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__saveButtonFrame =   Frame(self.__bottomFrame,
+                                     bg     = self.__loader.colorPalettes.getColor("window"),
+                                     width  = self.__bottomFrame.winfo_width() // 6,
+                                     height = self.__bottomFrame.winfo_height())
+        self.__saveButtonFrame.pack_propagate(False)
+        self.__saveButtonFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+
+        self.__fillerFrame5 = Frame(self.__bottomFrame,
+                                     bg     = self.__loader.colorPalettes.getColor("window"),
+                                     width  = self.__bottomFrame.winfo_width() // 100,
+                                     height = self.__bottomFrame.winfo_height())
+        self.__fillerFrame4.pack_propagate(False)
+        self.__fillerFrame4.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__cancelButtonFrame =   Frame(self.__bottomFrame,
+                                     bg     = self.__loader.colorPalettes.getColor("window"),
+                                     width  = self.__bottomFrame.winfo_width() // 6,
+                                     height = self.__bottomFrame.winfo_height())
+        self.__cancelButtonFrame.pack_propagate(False)
+        self.__cancelButtonFrame.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__okButton = Button(self.__okButtonFrame, name="ok",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.saveAllBank
+                                     )
+        self.__okButton.pack_propagate(False)
+        self.__okButton.pack(fill=BOTH)
+
+        self.__saveButton = Button(self.__saveButtonFrame, name="save",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("saveOnly"),
+                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     command = self.saveAllBankNoClose
+                                     )
+        self.__saveButton.pack_propagate(False)
+        self.__saveButton.pack(fill=BOTH)
+
+        self.__cancelButton = Button(self.__cancelButtonFrame, name="cancel",
+                                     bg=self.__loader.colorPalettes.getColor("window"),
+                                     text=self.__dictionaries.getWordFromCurrentLanguage("cancel"),
+                                     font=self.__smallFont, width=999999999,
+                                     command = self.__closeWindow
+                                     )
+        self.__cancelButton.pack_propagate(False)
+        self.__cancelButton.pack(fill=BOTH)
 
         self.changeForReal("global")
         # readonly.bind("<Key>", lambda e: "break")
 
+    def changeArrayVarList(self, event):
+        self.selectArray()
+
+    def selectArray(self):
+        if len(self.__arrayList) == 0 or self.__selectArrayButton.cget("state") == DISABLED: return
+
+        self.__fillArrayVarListBox(self.__selectedBank,
+                                   self.__arrayList[self.__arrayListBox.curselection()[0]],
+                                   True
+                                   )
+
+    def __insertToNewArray(self):
+        if self.__addNewArrayButton.cget("state") == DISABLED: return
+        self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
+
+        self.__virtualMemory.addArray(self.__newArrayNameVar.get())
+        self.__virtualMemory.addItemsToArray(
+            self.__newArrayNameVar.get(),
+            self.__originalVar[0], self.__originalVar[1]
+        )
+
+        self.doTheArrayChange(self.__selectedBank)
+        self.__arrayListBox.select_clear(0, END)
+
+        try:
+            self.__arrayListBox.select_set(self.__arrayList.index(self.__newArrayNameVar.get()))
+        except Exception as e:
+            #print(e)
+            self.__arrayListBox.select_set(0)
+
+        """
+        for num in range(0, len(self.__arrayList)):
+            if self.__newArrayNameVar.get() == self.__arrayList[num]:
+               self.__arrayListBox.select_set(num)
+               break
+        """
+
+        self.__newArrayNameVar.set("")
+        self.__fillArrayVarListBox(self.__selectedBank,
+                                   self.__arrayList[self.__arrayListBox.curselection()[0]],
+                                   True)
+
+
+    def __addToSelectedArray(self):
+        if self.__addToSelectedArrayButton.cget("state") == DISABLED or len(self.__arrayList) == 0: return
+        self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
+
+        self.__virtualMemory.addItemsToArray(
+            self.__arrayList[self.__arrayListBox.curselection()[0]],
+            self.__originalVar[0],
+            self.__originalVar[1]
+        )
+
+        self.__fillArrayVarListBox(self.__selectedBank,
+                                   self.__arrayList[self.__arrayListBox.curselection()[0]],
+                                   True)
+
+        self.__arrayListListBox.select_clear(0, END)
+        try:
+            self.__arrayListListBox.select_set(self.__arrayVarList.index(self.__originalVar[0]))
+        except:
+            self.__arrayListListBox.select_set(0)
+
+        self.__addToSelectedArrayButton.config(state = DISABLED)
+
+    def changeAddButtonOnExisting(self):
+        values = {
+            True: DISABLED, False: NORMAL
+        }
+
+        self.__addToSelectedArrayButton.config(
+            state = values[self.checkIfVarIsAlreadyInArray()]
+        )
+
+    def checkIfVarIsAlreadyInArray(self):
+        for name in self.__arrayVarList:
+            if len(self.__originalVar) == 0 : return  False
+            if self.__originalVar[0] == name: return True
+        return False
+
+    def __deleteArray(self):
+        if self.__deleteArrayButton.cget("state") == DISABLED or len(self.__arrayList) == 0: return
+        self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
+
+        name  = self.__arrayList[self.__arrayListBox.curselection()[0]]
+
+        self.__arrayListBox    .select_clear(0, END)
+        self.__arrayListListBox.select_clear(0, END)
+
+        #self.__arrayListBox    .delete(0, END)
+        self.__arrayListListBox.delete(0, END)
+
+        index = self.__arrayList.index(name)
+        self.__arrayList.remove(name)
+        self.__arrayListBox.delete(index)
+        self.__virtualMemory.removeArray(name)
+
+        self.doTheArrayChange(self.__selectedBank)
+
+        try:
+            self.__arrayListBox.select_set(index)
+        except:
+            self.__arrayListBox.select_set(0)
+
+
+    def __deleteFromArray(self):
+        if self.__deleteVarFromArrayButton.cget("state") == DISABLED or len(self.__arrayVarList) == 0: return
+        self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
+
+        name  = self.__arrayVarList[self.__arrayListListBox.curselection()[0]]
+
+        self.__arrayListListBox.select_clear(0, END)
+        #self.__arrayListListBox.delete(0, END)
+
+        index = self.__arrayVarList.index(name)
+
+        self.__arrayVarList.remove(name)
+        self.__arrayListListBox.delete(index)
+        self.__virtualMemory.removeItemFromArray(self.__arrayList[self.__arrayListBox.curselection()[0]], name)
+
+        self.__fillArrayVarListBox(name, self.__arrayList[self.__arrayListBox.curselection()], False)
+
+        try:
+            self.__arrayListListBox.select_set(index)
+        except:
+            self.__arrayListListBox.select_set(0)
+
     #def __deleteThat(self):
     #    var     = self.__selectedVar
     #    varName = self.__varNameVar.get()
-
-    def fillArrayBox(self):
-        pass
 
     def addTag(self, Y, X1, X2, tag):
         self.__overLapBox.tag_add(tag, str(Y) + "." + str(X1) , str(Y) + "." + str(X2))
@@ -1099,6 +1319,14 @@ class MemoryManagerWindow:
 
             else:
                self.__createModifyButton.config(state = DISABLED)
+
+            if self.unsaved == True:
+               self.__okButton.config(state=NORMAL)
+               self.__saveButton.config(state=NORMAL)
+
+            else:
+               self.__okButton.config(state=DISABLED)
+               self.__saveButton.config(state=DISABLED)
 
         except:
             pass
@@ -1262,10 +1490,18 @@ class MemoryManagerWindow:
 
         self.doTheArrayChange(name)
 
-        self.__mode = "create"
+        if len(self.__varList) == 0:
+           self.__mode = "create"
+        else:
+           self.__mode = "modify"
+           self.__varNameVar.set(
+               self.__varList[0]
+           )
+
         self.__initStuff()
 
     def doTheArrayChange(self, name):
+
         self.__arrayListBox    .select_clear(0, END)
         self.__arrayListListBox.select_clear(0, END)
 
@@ -1288,9 +1524,11 @@ class MemoryManagerWindow:
 
            self.__arrayListBox.select_set(0)
            self.__deleteArrayButton.config(state = NORMAL)
+           self.__selectArrayButton.config(state = NORMAL)
            self.__fillArrayVarListBox(name, self.__arrayList[0], False)
         else:
-           self.__deleteArrayButton.config(state=DISABLED)
+           self.__deleteArrayButton.config(state = DISABLED)
+           self.__selectArrayButton.config(state = DISABLED)
 
     def __fillArrayVarListBox(self, bank, arrayName, clear):
         self.__arrayVarList = []
@@ -1343,6 +1581,7 @@ class MemoryManagerWindow:
             self.__selectButton.config(state=DISABLED)
 
     def __initStuff(self):
+        #print(self.__mode)
         self.__createModifyVar.set(self.__dictionaries.getWordFromCurrentLanguage(self.__mode))
         self.unsaved = False
         self.__contentHolder.deSelect()
@@ -1411,6 +1650,10 @@ class MemoryManagerWindow:
                   self.__varTypeHolder.select(varTyp, True)
                   break
 
+           self.__originalVar = []
+           self.__addToSelectedArrayButton.config(state = DISABLED)
+           self.__newArrayName.config(state = DISABLED)
+
         else:
            self.__deleteButton.config(state = NORMAL)
            name                = self.__varList[self.__variableListBox.curselection()[0]]
@@ -1452,6 +1695,23 @@ class MemoryManagerWindow:
                self.__encodingTypeHolder.select(
                    self.__dictionaries.getWordFromCurrentLanguage("common"), True
                )
+
+           #self.__addNewArrayButton.config(state = NORMAL)
+
+           try:
+               sel = self.__variableListBox.curselection()[0]
+           except:
+               sel = 0
+
+           self.__originalVar = [
+                self.__varList[sel], self.__virtualMemory.getVariableByName2(self.__varList[sel])
+           ]
+
+           if len(self.__arrayList) == 0:
+              self.__addToSelectedArrayButton.config(state = DISABLED)
+           else:
+              #self.__addToSelectedArrayButton.config(state = NORMAL)
+              self.changeAddButtonOnExisting()
 
         self.checkBitsOnType(None)
         self.calculateFreeRAM()
@@ -1506,13 +1766,25 @@ class MemoryManagerWindow:
 
         self.checkForOverlaps()
 
-
     def createModifyPressed(self):
         if self.__createModifyButton.cget("state") == DISABLED: return
 
-        if self.__mode == "modify": self.__virtualMemory.removeVariable(self.__nameToDelete, self.__selectedBank)
+        changed = False
+        if self.__mode == "modify":
+           if self.__varNameVar.get() != self.__originalVar[0]:
+              changed       = True
+              nameWas       = self.__originalVar[0]
+              arraysWithVar = []
+
+              for arrName in self.__virtualMemory.arrays:
+                  if nameWas in self.__virtualMemory.arrays[arrName]:
+                     arraysWithVar.append(arrName)
+
+           self.__virtualMemory.removeVariable(self.__nameToDelete, self.__selectedBank)
 
         self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
+
         success = self.__virtualMemory.addVariable(self.__varNameVar.get(), self.__varTypeHolder.getSelected(),
                                   self.__selectedBank, self.__contentHolder.getSelected(),
                                   self.__encodingTypeHolder.getSelected()
@@ -1529,19 +1801,52 @@ class MemoryManagerWindow:
         else:
            self.__virtualMemory.getArcPrev()
            self.__virtualMemory.archieved.pop(-1)
+           self.__archieveCounter -= 1
+
+        self.__originalVar = [self.__varNameVar.get(), self.__virtualMemory.getVariableByName2(self.__varNameVar.get())]
+        self.changeAddButtonOnExisting()
+
+        if changed:
+           if len(arraysWithVar) > 0:
+              for arrName in arraysWithVar:
+                  index = self.__virtualMemory.arrays[arrName].index(nameWas)
+                  self.__virtualMemory.arrays[arrName][index] = self.__originalVar[0]
+
+           if nameWas in self.__arrayVarList:
+              index    = self.__arrayVarList.index(nameWas)
+              selected = self.__arrayListListBox.curselection()[0]
+              self.__arrayListListBox.select_clear(0, END)
+
+              self.__arrayListListBox.delete(index)
+              self.__arrayListListBox.insert(index, self.__originalVar[0])
+              self.__arrayListListBox.select_set(selected)
 
     def deletePressed(self):
         if self.__deleteButton.cget("state") == DISABLED: return
+
+        self.__virtualMemory.archieve()
+        self.__archieveCounter += 1
 
         self.__virtualMemory.removeVariable(self.__nameToDelete, self.__selectedBank)
         self.unsaved = True
 
         self.__mode = "create"
         self.__variableListBox.select_clear(0, END)
+        self.__varNameVar.set("")
+
         self.__initStuff()
 
     def saveAllBank(self):
-        pass
+        self.saveAllBankNoClose()
+        self.__closeWindow()
+
+    def saveAllBankNoClose(self):
+        for num in range(1,9):
+            self.__virtualMemory.moveVariablesToMemory("bank"+str(num))
+
+        self.__virtualMemory.archieve()
+        self.__archieveCounter = 0
+        self.unsaved           = False
 
     def __insertNew(self):
         if self.__addNewButton.cget("state") == DISABLED: return
@@ -1551,13 +1856,20 @@ class MemoryManagerWindow:
         self.__varNameVar.set(self.__newVarName.get())
 
         self.__initStuff()
+        self.__originalVar = []
+        self.__addToSelectedArrayButton.config(state = DISABLED)
 
     def __doubleClickedListBox(self, event):
         self.__insertSelected()
 
     def __insertSelected(self):
         if self.__selectButton.cget("state") == DISABLED: return
+
+        self.__varNameVar.set(
+            self.__varList[self.__variableListBox.curselection()[0]]
+        )
         self.__mode = "modify"
+        self.__originalVar = [self.__varNameVar.get(), self.__virtualMemory.getVariableByName2(self.__varNameVar.get())]
 
         self.__initStuff()
 

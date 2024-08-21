@@ -391,15 +391,19 @@ class VirtualMemory:
                        #print(var, val.upper())
 
     def addArray(self, name):
+        #self.archieve()
         self.arrays[name] = {}
 
     def removeArray(self, name):
+        #self.archieve()
         self.arrays.pop(name)
 
     def addItemsToArray(self, name, itemname, var):
+        #self.archieve()
         self.arrays[name][itemname] = var
 
     def removeItemFromArray(self, name, item):
+        #self.archieve()
         self.arrays[name].pop(item)
 
     def checkForDeadReferences(self, name):

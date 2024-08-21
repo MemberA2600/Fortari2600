@@ -10,6 +10,7 @@ open=Open Project
 save=Save Active Job
 saveAll=Save Whole Project
 closeProject=Close Project
+saveOnly=Save
 copy=Copy Text
 paste=Paste Text
 undo=Undo Move

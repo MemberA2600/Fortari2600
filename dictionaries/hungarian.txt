@@ -9,6 +9,7 @@ new=Új Projekt
 open=Projekt Megnyitása
 save=Aktuális Munkamenet Mentése
 saveAll=Teljes Projekt Mentése
+saveOnly=Mentés
 closeProject=Projekt Bezárása
 copy=Szöveg Másolása
 paste=Szöveg Beillesztése
