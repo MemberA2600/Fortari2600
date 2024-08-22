@@ -144,15 +144,7 @@ class FileDialogs:
             for item in data.keys():
                 message = message.replace(str("#"+item+"#"), data[item])
 
-        from random import randint
-
-        number = randint(0,1000)
-        if number > 995:
-            self.__loader.soundPlayer.playSound("Gas")
-        elif number < 5:
-            self.__loader.soundPlayer.playSound("Pylons")
-        else:
-            self.__loader.soundPlayer.playSound("Error")
+        self.__loader.soundPlayer.playFail()
         if systemText != None:
             message += str("\n"+self.__dicts.getWordFromCurrentLanguage("errorSystemText")+"\n"+systemText)
 

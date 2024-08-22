@@ -950,13 +950,9 @@ class MusicComposer:
 
         self.__setBankLabelText(numOfBanks.bytes)
         if playSound == True:
-            num = randint(0,1000)
-            if num <995:
-                self.__loader.soundPlayer.playSound("OK")
-            else:
-                self.__loader.soundPlayer.playSound("Probe")
-        self.__calculatingThread = None
+           self.__loader.soundPlayer.playSound("OK")
 
+        self.__calculatingThread = None
 
     def __setBankLabelText(self, data):
         numbers = []
@@ -1334,7 +1330,7 @@ class MusicComposer:
                                                   self.__loader.mainWindow.projectPath + "musics/")
 
         if fileName == "":
-            self.__soundPlayer.playSound("Error")
+            self.__soundPlayer.playFail()
             self.__topLevelWindow.deiconify()
             self.__topLevelWindow.focus()
             return

@@ -57,7 +57,7 @@ class ChangeDrumsAndOrder:
         self.__screenSize = self.__loader.screenSize
 
         self.__sizes = (self.__screenSize[0] / 3, self.__screenSize[1]/3  - 40)
-        self.__soundPlayer.playSound("Ask")
+        self.__soundPlayer.playAsk()
 
         from SubMenu import SubMenu
 

@@ -21,22 +21,14 @@ class SIDConverter:
 
         constant = 8.5
 
-        r = randint(0, 1000)
-        if r < 995:
-            self.__loader.soundPlayer.playSound("Ask")
-        else:
-            self.__loader.soundPlayer.playSound("Probe")
+        self.__loader.soundPlayer.playAsk()
 
         seconds = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSeconds")
         if seconds == None:
            seconds = 15
         sid.set_options(seconds=seconds)
 
-        r = randint(0, 1000)
-        if r < 995:
-            self.__loader.soundPlayer.playSound("Ask")
-        else:
-            self.__loader.soundPlayer.playSound("Probe")
+        self.__loader.soundPlayer.playAsk()
 
         subtune = self.__loader.fileDialogs.askForInteger("askForSomething", "askForSubTune")
         if subtune == None:

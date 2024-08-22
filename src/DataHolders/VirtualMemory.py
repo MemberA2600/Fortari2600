@@ -756,7 +756,7 @@ class VirtualMemory:
         for array in self.arrays.keys():
             if self.getArrayValidity(array) == validate:
                 string+=array + "=array(" + ",".join(list(self.arrays[array].keys()))+")"+os.linesep
-        print(string)
+        #print(string)
         self.codes[bank][section].code = string
         self.changedCodes[bank][section] = True
 

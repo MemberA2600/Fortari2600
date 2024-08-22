@@ -1,4 +1,5 @@
 from threading import Thread
+from random import randint
 
 class SoundPlayer:
 
@@ -29,3 +30,19 @@ class SoundPlayer:
         import winsound
         if self.__config.getValueByKey("soundOn") == "True":
            winsound.PlaySound(self.__fullPath(name), winsound.SND_ASYNC)
+
+    def playFail(self):
+        number = randint(0,1000)
+        if   number > 995:
+            self.playSound("Gas")
+        elif number > 990:
+            self.playSound("Pylons")
+        else:
+            self.playSound("Error")
+
+    def playAsk(self):
+        number = randint(0,1000)
+        if   number > 995:
+            self.playSound("Probe")
+        else:
+            self.playSound("Ask")

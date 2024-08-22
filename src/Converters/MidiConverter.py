@@ -65,12 +65,7 @@ class MidiConverter:
         self.__seperatedNotes = deepcopy(self.__channels)
         self.__channelList = deepcopy(self.__channels)
 
-        from random import randint
-        r = randint(0, 1000)
-        if r < 995:
-            self.__loader.soundPlayer.playSound("Ask")
-        else:
-            self.__loader.soundPlayer.playSound("Probe")
+        self.__loader.soundPlayer.playAsk()
 
         try:
             constant = self.__loader.fileDialogs.askForFloat("askForSomething", "setMidiTempo")

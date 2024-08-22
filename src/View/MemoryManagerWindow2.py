@@ -1080,7 +1080,7 @@ class MemoryManagerWindow:
         self.__okButton = Button(self.__okButtonFrame, name="ok",
                                      bg=self.__loader.colorPalettes.getColor("window"),
                                      text=self.__dictionaries.getWordFromCurrentLanguage("ok"),
-                                     font=self.__smallFont, width=999999999, state = DISABLED,
+                                     font=self.__smallFont, width=999999999,
                                      command = self.saveAllBank
                                      )
         self.__okButton.pack_propagate(False)
@@ -1321,11 +1321,11 @@ class MemoryManagerWindow:
                self.__createModifyButton.config(state = DISABLED)
 
             if self.unsaved == True:
-               self.__okButton.config(state=NORMAL)
+               #self.__okButton.config(state=NORMAL)
                self.__saveButton.config(state=NORMAL)
 
             else:
-               self.__okButton.config(state=DISABLED)
+               #self.__okButton.config(state=DISABLED)
                self.__saveButton.config(state=DISABLED)
 
         except:
@@ -1342,6 +1342,11 @@ class MemoryManagerWindow:
         }
 
         error = self.checkName(theValue[name])
+
+        if name == "varNameEntry" and self.__mode == "modify":
+           if error == "alreadyVar" and theValue[name][0] == self.__originalVar[0]:
+              error = None
+
         if error == None or theValue[name][0] == "":
            self.__errorLabelVal.set("")
            self.__errorLabel.config(bg=self.__loader.colorPalettes.getColor("window"),
@@ -1688,11 +1693,11 @@ class MemoryManagerWindow:
               )
 
            if self.__selectedVar.color:
-               self.__encodingTypeHolder.select(
+               self.__contentHolder.select(
                    self.__dictionaries.getWordFromCurrentLanguage("colorVar"), True
                )
            else:
-               self.__encodingTypeHolder.select(
+               self.__contentHolder.select(
                    self.__dictionaries.getWordFromCurrentLanguage("common"), True
                )
 
@@ -1785,10 +1790,31 @@ class MemoryManagerWindow:
         self.__virtualMemory.archieve()
         self.__archieveCounter += 1
 
+        if self.__contentHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("common"):
+           color = False
+        else:
+           color = True
+
+        if self.__encodingTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("bcd"):
+           bcd = True
+        else:
+           bcd = False
+
+        if self.__allocTypeHolder.getSelected() == self.__dictionaries.getWordFromCurrentLanguage("dynamicAllocation"):
+           allocType = False
+        else:
+           allocType = True
+
+        bitsSelected = []
+
+        for num in range(0, 8):
+            if self.__bitsSetters[num]["state"]:
+               bitsSelected.append(num)
+
         success = self.__virtualMemory.addVariable(self.__varNameVar.get(), self.__varTypeHolder.getSelected(),
-                                  self.__selectedBank, self.__contentHolder.getSelected(),
-                                  self.__encodingTypeHolder.getSelected()
+                                  self.__selectedBank, color, bcd, allocType, self.__varAddressVar.get(), bitsSelected
                                   )
+
         if success == True:
            self.unsaved = True
            self.__mode = "modify"
@@ -1806,6 +1832,7 @@ class MemoryManagerWindow:
         self.__originalVar = [self.__varNameVar.get(), self.__virtualMemory.getVariableByName2(self.__varNameVar.get())]
         self.changeAddButtonOnExisting()
 
+        self.unsaved = True
         if changed:
            if len(arraysWithVar) > 0:
               for arrName in arraysWithVar:
@@ -1837,7 +1864,7 @@ class MemoryManagerWindow:
         self.__initStuff()
 
     def saveAllBank(self):
-        self.saveAllBankNoClose()
+        if self.unsaved: self.saveAllBankNoClose()
         self.__closeWindow()
 
     def saveAllBankNoClose(self):
@@ -1858,6 +1885,7 @@ class MemoryManagerWindow:
         self.__initStuff()
         self.__originalVar = []
         self.__addToSelectedArrayButton.config(state = DISABLED)
+        self.__newVarName.set("")
 
     def __doubleClickedListBox(self, event):
         self.__insertSelected()
@@ -2121,6 +2149,9 @@ class MemoryManagerWindow:
                    bitsSelected.append(num)
 
            for varName in self.__virtualMemory.memory[address].variables:
+               if len(self.__originalVar) > 0:
+                  if varName == self.__originalVar[0]: continue
+
                var = self.__virtualMemory.memory[address].variables[varName]
                bitsbits = [
                    "-","-","-","-","-","-","-","-"

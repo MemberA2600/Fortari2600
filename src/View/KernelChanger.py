@@ -160,7 +160,7 @@ class KernelChanger:
 
 
     def doThings(self):
-        self.__loader.soundPlayer.playSound("Ask")
+        self.__loader.soundPlayer.playAsk()
         if (self.__fileDialogs.askYesOrNo("warning", "kernelChangeWarning") == "Yes"):
             self.__virtualMemory.changeKernelMemory(self.__static, self.__listBox.get(ACTIVE))
 
