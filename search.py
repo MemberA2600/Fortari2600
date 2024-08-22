@@ -1,6 +1,6 @@
 import os
 
-wordToFind = '"Ask"'
+wordToFind = '"code"'
 
 for root, dirs, files in os.walk(os.getcwd()+"/src", False):
     for file in files:

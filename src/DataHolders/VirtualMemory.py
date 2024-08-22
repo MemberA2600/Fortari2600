@@ -102,7 +102,9 @@ class VirtualMemory:
             self.__portStates[line[0]]          = {}
             self.__portStates[line[0]]["alias"] = line[1][1:-1].split(" ")
             self.__portStates[line[0]]["code"]  = line[2]
-            self.__portStates[line[0]]["code"]  = self.__portStates[line[0]]["code"].replace(r"\n", "\n").replace(r"\t", "\t")
+            self.__portStates[line[0]]["code2"] = line[3]
+            self.__portStates[line[0]]["code"]  = self.__portStates[line[0]]["code"] .replace(r"\n", "\n").replace(r"\t", "\t")
+            self.__portStates[line[0]]["code2"] = self.__portStates[line[0]]["code2"].replace(r"\n", "\n").replace(r"\t", "\t")
 
 
         #for key in self.__portStates:
@@ -138,7 +140,10 @@ class VirtualMemory:
         if name == "":
            return False
         else:
-           return self.__portStates[name]["code"]
+           if self.includeCollisions == False or self.__portStates[name]["code2"] == "same":
+              return self.__portStates[name]["code"]
+           else:
+              return self.__portStates[name]["code2"]
 
     def archieve(self):
         self.archieved = self.archieved[:self.cursor+1]
