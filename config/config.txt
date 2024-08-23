@@ -24,3 +24,4 @@ validArithmetics=+ - * / %
 validConcatSigns=+ |
 runThreads=False
 advanced=True
+validFolders=48px 64px bigSprites menus minimaps musics playfields raw soundFX sprites waveforms

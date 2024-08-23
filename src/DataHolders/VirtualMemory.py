@@ -108,7 +108,8 @@ class VirtualMemory:
 
 
         #for key in self.__portStates:
-            #print(">>"+key+"<<", "\n", self.__portStates[key]["code"])
+        #    if self.__portStates[key]["code2"] != "same":
+        #       print(">>"+key+"<<", "\n", self.__portStates[key]["code2"])
             #if "col " in key or "col " in self.__portStates[key]["alias"] or "collision " in key or "collision " in self.__portStates[key]["alias"]: print("fucked " + key)
 
         self.resetMemory()

@@ -27,6 +27,7 @@ incr;[increment ++];[common];command;None;brackets;[];[variable];write;None;Fals
 init;[initizalize];[common];command;None;brackets;[];[array];write;None;False;1;True
 largest;[biggest];[common];command;None;brackets;[];[variable|register array];write;None;False;1;True
 leave;[=>];[common];command;None;None;[overscan];None;None;None;False;0;False
+mLoad;[manualLoad mload];[common];command;None;brackets;[];[folder data];None;None;False;0;False
 min;[minimalize];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0;True
 max;[maximalize];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0;True
 multi;[multiply *];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0;True

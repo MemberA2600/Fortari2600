@@ -72,6 +72,11 @@ class FirstCompiler:
         self.__objectMaster   = self.__loader.virtualMemory.objectMaster
         self.toRoutines       = {}
         self.bank1Data        = bank1Data
+        self.currentBankData  = {}
+
+        if bank in ("bank1", "global"):
+           self.currentBankData = self.bank1Data
+
         self.__branchers      = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
         self.__jumpers        = ["JMP", "JSR"]
         self.__exceptions     = []
@@ -541,6 +546,21 @@ class FirstCompiler:
                 line["compiled"] = line["compiled"].replace(key, self.__changeThese[key])
 
             self.__checked = True
+
+        elif self.isCommandInLineThat(line, "mLoad"):
+            folder  = params["param#1"][0]
+            fName   = params["param#2"][0]
+            nameKey = self.__currentBank + "_" + fName + "_" + folder
+
+            if nameKey not in self.currentBankData.keys():
+               path = self.__loader.mainWindow.projectPath + folder + "/" + fName + ".asm"
+               f    = open(path, "r")
+               txt  = f.read().replace("\r", "").replace("#BANK#", self.__currentBank)
+               f.close()
+
+               self.currentBankData[nameKey] = txt
+
+            return
 
         elif self.isCommandInLineThat(line, "sin"):
             txt  = ""
@@ -5041,8 +5061,53 @@ class FirstCompiler:
 
         params["param#" + str(num)][0] = val
 
+    def collectAllAssemblyReleated(self):
+        if self.__config.getValueByKey("advanced") != "True": return []
+
+        keys = ["enter"         , "leave"      , "overscan",
+                "screenroutines", "subroutines", "vblank"   ]
+
+        collected = []
+
+        bank     = self.__currentBank
+        if bank == "global": bank = "bank1"
+
+        for section in keys:
+            if section in self.__virtualMemory.codes[bank].keys():
+               lines = self.__virtualMemory.codes[bank][section].code.split("\n")
+
+               for line in lines:
+                   linestructure = self.__editorBigFrame.getLineStructure(0, [line], False)
+                   if   self.isCommandInLineThat(linestructure, "asm"):
+                        theAsmLine = linestructure["param#1"][0][1:-1]
+                        if len(theAsmLine) > 0:
+                           if theAsmLine[0] not in ["\t", " ", "*"] and " = " not in theAsmLine and (
+                              theAsmLine[0] != "#" or theAsmLine.startswith("#BANK#")):
+                              collected.append(theAsmLine)
+
+                   elif self.isCommandInLineThat(linestructure, "mLoad"):
+                       folder = linestructure["param#1"][0]
+                       fName  = linestructure["param#2"][0]
+
+                       path = self.__loader.mainWindow.projectPath + folder + "/" + fName + ".asm"
+                       f    = open(path, "r")
+                       txt  = f.read()
+                       f.close()
+
+                       for line in txt.split("\n"):
+                           if len(line) > 0:
+                               if line[0] not in ["\t", " ", "*"] and " = " not in line and (
+                                  line[0] != "#" or line.startswith("#BANK#") or line.startswith("#NAME#")):
+                                  collected.append(line)
+
+        print(collected)
+        return collected
+
     def collectLabelsFromRoutines(self, labels):
-        sources = [self.toRoutines, self.bank1Data, {"dummy":  "\n".join(self.__text)}]
+        sources = [self.toRoutines, self.bank1Data, self.currentBankData, {"alreadyCompiled":  "\n".join(self.__text),
+                                                                           "allASM"         :  "\n".join(self.collectAllAssemblyReleated())
+
+                                                                           }]
         #sources = [self.toRoutines, self.bank1Data]
 
         for source in sources:

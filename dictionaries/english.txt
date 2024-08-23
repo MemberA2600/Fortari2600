@@ -617,6 +617,7 @@ descCommandSubroutine=Starts a <2>subroutine</2> in the <2>subroutines section</
 descCommandSum=Takes an <a>array</a> as the <h>second</h> param, <h>and adds the values</h> together.
 descCommandSwap=Swaps the value of <h>two writable variable</h>.
 descCommandXor=Does a <c>logic XOR</c> between the <h>first and second params</h>, saves the result to the <h>first or third</h> param.
+descCommandMLoad=Adds an <c>asm source<c> manually to the <h>bank's user data</h>. Used for direct <h>assembly based source loads</h>.
 arrayNotFound=The given array is not found or not valid on current bank!
 unSavedChanges=Unsaved Changes Pending
 unSavedChangesText=You have unsaved changes pending! Do you want to save before proceeding?

@@ -30,6 +30,7 @@ class EditorBigFrame:
         self.diesWithMainOnly = True
 
         self.__finished       = False
+        self.__validFolders   = self.__config.getValueByKey("validFolders").split(" ")
 
         self.__words = ["lineNum", "level", "command#1", "command#2", "command#3",
                         "param#1", "param#2", "param#3", "comment", "updateRow"]
@@ -884,7 +885,7 @@ class EditorBigFrame:
             "c": "command"  , "e": "error"     , "v": "variable", "n": "number"     ,
             "a": "array"    , "o": "object"    , "s": "string"  , "0": "stringConst",
             "d": "data"     , "1": "comprass"  , "r": "register", "p": "portState"  ,
-            "h": "highLight", "2": "subroutine"
+            "h": "highLight", "2": "subroutine", "f": "folder"
         }
 
         self.__descBox.delete("0.0", END)
@@ -2133,7 +2134,7 @@ class EditorBigFrame:
         #print(errorPositions, addError, currentLineStructure["command"][0])
 
         if self.__config.getValueByKey("advanced") != "True":
-           for commandName in ("asm", "peek", "poke"):
+           for commandName in ("asm", "peek", "poke", "mLoad"):
                #commandName = "asm"
                if currentLineStructure["command"][0] == commandName or currentLineStructure["command"][0] in self.__syntaxList[commandName].alias:
                   hasValidCommand = False
@@ -2872,8 +2873,13 @@ class EditorBigFrame:
                    wordsForList.append([sub, "subroutine"])
 
         elif listType == "data":
-            listOfData = self.getListOfData(lineStructure["command"][0])
+            listOfData = self.getListOfData(lineStructure["command"][0], lineStructure)
             for item in listOfData:
+                if item.startswith(currentWord) or currentWord == "":
+                   wordsForList.append([item, "data"])
+
+        elif listType == "folder":
+            for item in self.__validFolders:
                 if item.startswith(currentWord) or currentWord == "":
                    wordsForList.append([item, "data"])
 
@@ -3439,10 +3445,17 @@ class EditorBigFrame:
             elif pType == "data":
                  if printMe: print(pType)
 
-                 listOfData     = self.getListOfData(lineStructure["command"][0])
+                 listOfData     = self.getListOfData(lineStructure["command"][0], lineStructure)
                  if param in listOfData:
                     returnBack.append(["data", dimension])
                     foundIt = True
+
+            elif pType == "folder":
+                 if printMe: print(pType)
+                 if param in self.__validFolders:
+                    foundIt = True
+                    returnBack.append(["folder", dimension])
+
 
             elif pType == "register":
                  if printMe: print(pType)
@@ -3510,22 +3523,33 @@ class EditorBigFrame:
 
         return False
 
-    def getListOfData(self, object):
-        if type(object) == str: object = self.__objectMaster.returnAllAboutTheObject(object)
+    def getDataFromFolder(self, fNames, folderName):
+        path = self.__loader.mainWindow.projectPath + "/" + folderName + "/"
+        import os
+
+        for root, dirs, files in os.walk(path):
+            for file in files:
+                if file.endswith(".asm"):
+                    fNames.append(file[:-4])
+
+
+    def getListOfData(self, object, linestruct):
         fNames = []
+
+        if linestruct["command"][0] == "mLoad" or linestruct["command"][0] in self.__syntaxList["mLoad"].alias:
+            folderName = linestruct["param#1"][0]
+
+            self.getDataFromFolder(fNames, folderName)
+            return fNames
+
+        if type(object) == str: object = self.__objectMaster.returnAllAboutTheObject(object)
 
         for param in object["paramsWithSettings"]:
             if param["param"].startswith("{"): param["param"] = param["param"][1:-1]
             if param["param"] == "data":
                folderName = param["folder"]
 
-               path = self.__loader.mainWindow.projectPath + "/" + folderName + "/"
-               import os
-
-               for root, dirs, files in os.walk(path):
-                   for file in files:
-                       if file.endswith(".asm"):
-                          fNames.append(file[:-4])
+               self.getDataFromFolder( fNames, folderName)
 
         return fNames
 
@@ -4781,6 +4805,11 @@ class EditorBigFrame:
             "portState": {
                 "foreground": self.__loader.colorPalettes.getColor("portState"),
                 "font": self.__undelinedFont
+            },
+
+            "folder": {
+                "foreground": self.__loader.colorPalettes.getColor("data"),
+                "font": self.__boldUnderlinedFont
             }
         }
 

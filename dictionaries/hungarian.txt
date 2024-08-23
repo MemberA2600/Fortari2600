@@ -616,6 +616,7 @@ descCommandSubroutine=Definiáli egy <2>alrutint</2> a <2>Subroutines Szekcióban<
 descCommandSum=Egy <a>tömb</a> összes elemét veszi a <h>második</h> paraméterrõl, <h>és ezeknek az értékét összeadja</h>.
 descCommandSwap=Két írható adat értékét <h>felcseréli</h>.
 descCommandXor=Egy logikai "KIZÁRÓ VAGY" mûveletet hajt végre <h>az elsõ és második</h> paraméter között, az eredményt az <h>elsõ vagy harmadik/h> paraméterre menti.
+descCommandMLoad=Egy <c>asm forrást<c> ad a <h>bank felhasználói adataihoz</h>. Elsõsorban közvetlen <h>assembly alapú forrásbetöltésekhezs</h> használatos.
 arrayNotFound=A megadott tömb nem létezik vagy nem elérhetõ az adott bankban!
 unSavedChanges=Nem Mentett Változások
 unSavedChangesText=Nem mentett változások várakoznak! Szeretnél menteni folytatás elõtt?
