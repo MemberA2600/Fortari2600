@@ -25,6 +25,7 @@ class EditorBigFrame:
         self.__syntaxList = self.__loader.syntaxList
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
         self.__foundError     = False
+        self.__wholeError     = False
         self.diesWithMainOnly = True
         self.diesWithMainOnly = True
 
@@ -416,8 +417,7 @@ class EditorBigFrame:
                 if secs[self.__sectionButtons.index(button)] == "screenroutines" and self.__config.getValueByKey("advanced") == False:
                    button.config(state=DISABLED)
 
-            #print(self.__foundError)
-            if self.__foundError == False:
+            if self.__wholeError == False:
                 self.__compileASMButton.config(state=NORMAL)
             else:
                 self.__compileASMButton.config(state=DISABLED)
@@ -1633,7 +1633,7 @@ class EditorBigFrame:
         text = self.__codeBox.get(0.0, END).replace("\t", " ").split("\n")
 
         if self.__lastButton == "Return":
-            mode = "whole"
+           mode = "whole"
 
         #objectList, processList = self.__objectMaster.getObjectsAndProcessesValidForGlobalAndBank()
         objectList = self.__objectMaster.getStartingObjects()
@@ -1657,8 +1657,12 @@ class EditorBigFrame:
             except:
                 pass
 
+            wasError = False
             for num in range (1, len(text)+1):
                self.__lineTinting(text[num-1], objectList, num-1, selectPosizions, errorPositions, "lineTinting", True, None, focus)
+               if wasError or self.__foundError:
+                  wasError          = True
+                  self.__foundError = True
 
             for item in selectPosizions:
                 # print(item)
@@ -1670,16 +1674,13 @@ class EditorBigFrame:
                 self.removeTag(int(item[2]) + 1, item[0], item[1] + 1, None)
                 self.addTag(int(item[2]) + 1, item[0], item[1] + 1, "error", 0)
 
+            self.__wholeError = self.__foundError
             self.__saveCode()
-
         else:
             self.__constants = self.collectConstantsFromSections(self.__currentBank, self.__currentSection, False, mode-2)
             self.__lineTinting(text[mode-1], objectList, mode-1, selectPosizions, errorPositions, "lineTinting", None, None, focus)
 
-        """
-        if focus == True:
-           self.__focused2 = focused
-        """
+        #print(mode, self.__foundError)
         self.__runningAllThis = False
 
     def __saveCode(self):
@@ -2067,6 +2068,7 @@ class EditorBigFrame:
            foundObjects = self.findObjects(currentLineStructure["command"], objects)
 
            setBack = self.__foundError
+           #print(setBack, self.__foundError)
 
            if caller == "lineTinting":
               self.addTag(yOnTextBox, currentLineStructure["command"][1][0],
@@ -2937,46 +2939,7 @@ class EditorBigFrame:
 
                       constants[itemName] = {"value": val,
                                              "alias": [itemName.upper(), itemName.lower()]}
-        """ 
-        for bNum in range(1, 9):
-            bankNum = "bank" + str(bNum)
-            for sect in self.__syntaxList["const"].sectionsAllowed:
-                if sect not in self.__virtualMemory.codes[bankNum]:
-                   continue
 
-                if sect not in self.__loader.mainWindow.sectionNames:
-                   continue
-
-                code = self.__virtualMemory.codes[bankNum][sect].code.replace("\r", "").replace("\t", "").split("\n")
-
-                for lineNum in range(0, len(code)):
-                    if len(code[lineNum]) == 0: continue
-                    if code[lineNum][0] in ["*", "#"]: continue
-
-                    lineStructure = self.getLineStructure(lineNum, code, False)
-                    if lineStructure["command"][0] == "const" or lineStructure["command"][0] in self.__syntaxList["const"].alias:
-                       param1 = lineStructure["param#1"]
-                       param2 = lineStructure["param#2"]
-                       param3 = lineStructure["param#3"]
-
-                       if param3[0] not in ["None", None, ""]:
-                          validity = param3[0].lower()
-                       else:
-                          validity = "bank"
-
-                       if  validity == "global"                                          \
-                       or (validity == "bank"    and bank == bankNum)                    \
-                       or (validity == "section" and bank == bankNum and sect == section):
-                           if include == False and stopLineNum <= lineNum:
-                              if   validity == "section"                                        : break
-                              elif validity == "bank"    and section == sect                    : break
-                              elif validity == "global"  and section == sect and bank == bankNum: break
-
-                           constants[param1[0]] = {
-                              "alias": [param1[0].upper(), param1[0].lower()],
-                              "value": param2[0]
-                           }
-        """
         return constants
 
     def collectNamesByCommandFromSections(self, word, bank):
@@ -3534,7 +3497,16 @@ class EditorBigFrame:
            return key
 
         for k in self.__constants.keys():
-            if k in self.__constants[k]["alias"]: return k
+            #print(key, k, self.__constants[k]["alias"], k in self.__constants[k]["alias"])
+            if key in self.__constants[k]["alias"]: return k
+
+        delimiter = key[0]
+        if delimiter != '"':
+           for k in self.__constants.keys():
+               if key == delimiter + k[1:-1] + delimiter: return k
+
+               for k2 in self.__constants[k]["alias"]:
+                   if key == delimiter + k2[1:-1] + delimiter: return k
 
         return False
 
@@ -3947,7 +3919,8 @@ class EditorBigFrame:
             if returnBack[0][0] == "stringConst":
                #print(self.__constants.keys())
                if self.convertStringNumToNumber(self.__constants[self.getConstKeyNameFromAlias(param1[0])]["value"]) != 1:
-                   returnBack[0][0] = "error"
+                  #print(self.getConstKeyNameFromAlias(param1[0]))
+                  returnBack[0][0] = "error"
             elif returnBack[0][0] == "number":
                 if self.convertStringNumToNumber(param1[0]) not in [0, 1]:
                    returnBack[0][0] = "error"
@@ -4051,15 +4024,7 @@ class EditorBigFrame:
                         except:
                             returnBack[objCounter][0] = "error"
 
-        """
-        if "item" in [param1[0], param2[0], param3[0]]:
-            returnBack[0][0] = self.isItemAcceptedForWrite(currentLineStructure, text)
-            if self.__currentSection not in self.__syntaxList["do-items"].sectionsAllowed:
-               for itemNum in range(1, 4):
-                   if "param#" + str(itemNum) in params:
-                      if params["param#" + str(itemNum)][0] == "item":
-                         returnBack[itemNum - 1][0] = "error"
-        """
+
         #print(returnBack)
         return returnBack
 
@@ -4690,8 +4655,10 @@ class EditorBigFrame:
 
     def __counterEnded2(self):
         self.setCurzorPoz()
+        #print("1" ,self.__foundError)
         self.__foundError     = False
         self.__setTinting("whole")
+        #print("2" ,self.__foundError)
 
     def __keyPressed(self, event):
         if (event.keysym == "Control_L" or event.keysym == "Control_R"):
