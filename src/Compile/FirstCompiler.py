@@ -162,8 +162,8 @@ class FirstCompiler:
                    break
                 if foundOne: break
 
-
-        self.compileBuild(linesFetched, mode)
+        if mode != "dummy":
+           self.compileBuild(linesFetched, mode)
 
     def checkIfCodeUnreachable(self, linesFetched, level):
         if len(linesFetched) < 2: return False
@@ -5088,6 +5088,7 @@ class FirstCompiler:
                    elif self.isCommandInLineThat(linestructure, "mLoad"):
                        folder = linestructure["param#1"][0]
                        fName  = linestructure["param#2"][0]
+                       nameKey = self.__currentBank + "_" + fName + "_" + folder
 
                        path = self.__loader.mainWindow.projectPath + folder + "/" + fName + ".asm"
                        f    = open(path, "r")
@@ -5097,10 +5098,12 @@ class FirstCompiler:
                        for line in txt.split("\n"):
                            if len(line) > 0:
                                if line[0] not in ["\t", " ", "*"] and " = " not in line and (
-                                  line[0] != "#" or line.startswith("#BANK#") or line.startswith("#NAME#")):
+                                  line[0] != "#" or line.startswith("##NAME##") or line.startswith("#NAME#") or line.startswith("#BANK#")):
                                   collected.append(line)
 
-        print(collected)
+                                  for sub in ["##NAME##", "#NAME#"]:
+                                      if sub in line:
+                                         collected.append(line.replace("sub", nameKey))
         return collected
 
     def collectLabelsFromRoutines(self, labels):

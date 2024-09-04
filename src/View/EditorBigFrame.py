@@ -2,6 +2,7 @@ from tkinter import *
 from threading import Thread
 from time import sleep
 import re
+from FirstCompiler import FirstCompiler
 
 class EditorBigFrame:
 
@@ -26,7 +27,7 @@ class EditorBigFrame:
         self.__objectMaster = self.__loader.virtualMemory.objectMaster
         self.__foundError     = False
         self.__wholeError     = False
-        self.diesWithMainOnly = True
+
         self.diesWithMainOnly = True
 
         self.__finished       = False
@@ -73,38 +74,40 @@ class EditorBigFrame:
         self.__halfFont = self.__fontManager.getFont(int(self.__fontSize*0.57), False, False, False)
 
         self.__changed = False
-        self.__frame = Frame(frame, width=self.__editor.getWindowSize()[0],
-                                   height=self.__editor.getWindowSize()[1],
-                                   bg=self.__colors.getColor("window"))
-        self.__frame.pack_propagate(False)
-        self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
-        self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
 
-        sizes = (0.20, 0.60, 0.20)
+        if frame != None:
+            self.__frame = Frame(frame, width=self.__editor.getWindowSize()[0],
+                                       height=self.__editor.getWindowSize()[1],
+                                       bg=self.__colors.getColor("window"))
+            self.__frame.pack_propagate(False)
+            self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
+            self.__frame.pack(side=TOP, anchor = N, fill=BOTH)
 
-        self.__leftFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[0]),
-                                   height=self.__editor.getWindowSize()[1],
-                                   bg=self.__colors.getColor("window"))
-        self.__leftFrame.pack_propagate(False)
-        self.__leftFrame.pack(side=LEFT, anchor = E, fill=Y)
+            sizes = (0.20, 0.60, 0.20)
 
-        self.__mainFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[1]),
-                                   height=self.__editor.getWindowSize()[1],
-                                   bg=self.__colors.getColor("window"))
-        self.__mainFrame.pack_propagate(False)
-        self.__mainFrame.pack(side=LEFT, anchor = E, fill=Y)
+            self.__leftFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[0]),
+                                       height=self.__editor.getWindowSize()[1],
+                                       bg=self.__colors.getColor("window"))
+            self.__leftFrame.pack_propagate(False)
+            self.__leftFrame.pack(side=LEFT, anchor = E, fill=Y)
 
-        self.__rightFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[2]),
-                                   height=self.__editor.getWindowSize()[1],
-                                   bg=self.__colors.getColor("window"))
-        self.__rightFrame.pack_propagate(False)
-        self.__rightFrame.pack(side=LEFT, anchor = E, fill=Y)
+            self.__mainFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[1]),
+                                       height=self.__editor.getWindowSize()[1],
+                                       bg=self.__colors.getColor("window"))
+            self.__mainFrame.pack_propagate(False)
+            self.__mainFrame.pack(side=LEFT, anchor = E, fill=Y)
 
-        self.activeMode = None
-        # Valid modes: intro, editor, locked, empty
-        self.__selectedMode = "intro"
+            self.__rightFrame = Frame(self.__frame, width=round(self.__editor.getWindowSize()[0]*sizes[2]),
+                                       height=self.__editor.getWindowSize()[1],
+                                       bg=self.__colors.getColor("window"))
+            self.__rightFrame.pack_propagate(False)
+            self.__rightFrame.pack(side=LEFT, anchor = E, fill=Y)
 
-        self.addBindings()
+            self.activeMode = None
+            # Valid modes: intro, editor, locked, empty
+            self.__selectedMode = "intro"
+
+            self.addBindings()
 
         self.__highLightWord       = None
         self.__highLightIgnoreCase = True
@@ -114,7 +117,7 @@ class EditorBigFrame:
         self.__focusOutItems = []
         self.__theNumOfLine  = 0
 
-        self.__loader.threadLooper.addToThreading(self, self.loop, [], 0)
+        if frame != None: self.__loader.threadLooper.addToThreading(self, self.loop, [], 0)
 
         #t = Thread(target=self.loop)
         #t.daemon = True
@@ -1168,7 +1171,6 @@ class EditorBigFrame:
            self.__loader.fileDialogs.displayError("errorOnASMConvert", "errorOnASMConvertText", errorData, None)
            #print(eNum)
         else:
-           from FirstCompiler import FirstCompiler
 
            #self.__loader.alreadyCollectedLabels = []
 

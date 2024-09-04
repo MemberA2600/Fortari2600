@@ -223,93 +223,98 @@ class MainWindow:
 
         self.__newButton = self.__buttonMaker.createButton("new", currentPoz,
                                       self.__newButtonFunction, "projectPath" ,
-                                       True, None, self.__places, __vals[0])
+                                       True, None, self.__places, __vals[0], False)
         self.__openButton = self.__buttonMaker.createButton("open", currentPoz,
                                        self.__openButtonFunction, "projectPath",
-                                        True, None, self.__places,  __vals[0])
+                                        True, None, self.__places,  __vals[0], False)
         self.__saveButton = self.__buttonMaker.createButton("save", currentPoz,
                                        self.__saveButtonFunction, "projectPath",
-                                        False, None, self.__places,  __vals[0])
+                                        False, None, self.__places,  __vals[0], False)
         self.__saveAllButton = self.__buttonMaker.createButton("saveAll", currentPoz,
                                           self.__saveAllButtonFunction, "projectPath",
-                                            False, None, self.__places,  __vals[0])
+                                            False, None, self.__places,  __vals[0], False)
         self.__closeProjectButton = self.__buttonMaker.createButton("closeProject", currentPoz,
                                           self.__closeProjectButtonFunction, "projectPath",
-                                            False, None, self.__places,  __vals[0])
+                                            False, None, self.__places,  __vals[0], False)
         self.__archiveButton = self.__buttonMaker.createButton("archive", currentPoz,
                                           self.__achiveButtonFunction, "projectPath",
-                                            False, None, self.__places,  __vals[0])
+                                            False, None, self.__places,  __vals[0], False)
         self.__buildProjectButton    = self.__buttonMaker.createButton("build", currentPoz,
                                           self.__buildProject, "projectPath",
-                                            False, None, self.__places, __vals[0])
+                                            False, None, self.__places, __vals[0], False)
 
         currentPoz[0] += 0.5
         __vals.append(currentPoz[0])
 
         self.__copyButton = self.__buttonMaker.createButton("copy", currentPoz,
                                           self.__copyButtonFunction, None,
-                                            False, self.setCopyButton, self.__places,  __vals[1])
+                                            False, self.setCopyButton, self.__places,  __vals[1], False)
         self.__pasteButton = self.__buttonMaker.createButton("paste", currentPoz,
                                           self.__pasteButtonFunction, None,
-                                            False, self.setPasteButton, self.__places, __vals[1])
+                                            False, self.setPasteButton, self.__places, __vals[1], False)
         self.__undoButton = self.__buttonMaker.createButton("undo", currentPoz,
                                           self.__undoButtonFunction, None,
-                                            False, self.__undoButtonHandler, self.__places, __vals[1])
+                                            False, self.__undoButtonHandler, self.__places, __vals[1], False)
         self.__redoButton = self.__buttonMaker.createButton("redo", currentPoz,
                                           self.__redoButtonFunction, None,
-                                            False, self.__redoButtonHandler, self.__places, __vals[1])
+                                            False, self.__redoButtonHandler, self.__places, __vals[1], False)
         currentPoz[0] += 0.5
         __vals.append(currentPoz[0])
 
         self.__spriteButton = self.__buttonMaker.createButton("spriteEditor", currentPoz,
                                           self.__openSpriteEditor, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
 
         self.__pfButton = self.__buttonMaker.createButton("playfieldEditor", currentPoz,
                                           self.__openPFEditor, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
 
         self.__musicButton = self.__buttonMaker.createButton("music", currentPoz,
                                           self.__openMusicComposer, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
 
         self.__64pxPictureButton = self.__buttonMaker.createButton("64pxPicture", currentPoz,
                                           self.__openPictureConverter, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
         self.__48pxPictureButton = self.__buttonMaker.createButton("48pxPicture", currentPoz,
                                           self.__open48pxEditor, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
         self.__soundPlayerButton = self.__buttonMaker.createButton("noiseMaker", currentPoz,
                                           self.__openNoiseMaker, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
         self.__noiseMaker = self.__buttonMaker.createButton("soundPlayer", currentPoz,
                                           self.__openSoundPlayer, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
         self.__bigSpriteButton = self.__buttonMaker.createButton("bigSprite", currentPoz,
                                           self.__openBigSpriteEditor, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
 
         self.__menuMaker = self.__buttonMaker.createButton("menuMaker", currentPoz,
                                           self.__openMenuMaker, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
 
-        self.__miniMapMaker = self.__buttonMaker.createButton("minimap", currentPoz,
+        self.__miniMapMaker = self.__buttonMaker.createButton("minimapMaker", currentPoz,
                                           self.__openMiniMapMaker, "projectPath",
-                                            False, None, self.__places, __vals[2])
+                                            False, None, self.__places, __vals[2], False)
+
+        self.__rawDateEditor = self.__buttonMaker.createButton("rawData", currentPoz,
+                                          self.__openRawDataMaker, "projectPath",
+                                            False, None, self.__places, __vals[2], True)
+
         currentPoz[0] += 0.5
         __vals.append(currentPoz[0])
 
         self.__memoryManagerButton = self.__buttonMaker.createButton("memoryManager", currentPoz,
                                           self.openMemoryManager, "projectPath",
-                                            False, None, self.__places, __vals[3])
+                                            False, None, self.__places, __vals[3], False)
 
         self.__memoryManagerButton = self.__buttonMaker.createButton("constant", currentPoz,
                                           self.openConstantWindow, "projectPath",
-                                            False, None, self.__places, __vals[3])
+                                            False, None, self.__places, __vals[3], False)
 
         self.__screenTopBottomButton = self.__buttonMaker.createButton("screenTopBottom", currentPoz,
                                           self.__openScreenTopBottom, "projectPath",
-                                            False, None, self.__places, __vals[3])
+                                            False, None, self.__places, __vals[3], False)
 
 
         self.__menuLabel    = []
@@ -670,6 +675,13 @@ class MainWindow:
         self.__loader.tk.deiconify()
         self.__loader.tk.focus()
 
+    def __openRawDataMaker(self):
+        from RawDataCooker import RawDataCooker
+
+        RawDataCooker(self.__loader)
+        self.__loader.tk.deiconify()
+        self.__loader.tk.focus()
+        
     def __buildProject(self):
         pass
 

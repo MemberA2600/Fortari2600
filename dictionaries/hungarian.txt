@@ -642,3 +642,8 @@ addVartoNew=Változó hozzáadása új Tömbhöz
 addVarToSelectedArray=Változó hozzáadása a kiválasztott Tömbhöz
 deleteArray=Tömb törlése
 deleteVar=Változó törlése a Tömbbõl
+rawData=Nyers Adat Fõzde
+displayedAsBits=Érték bitenként kifejezve
+displayedAsVal=Számként
+e-ot megelõzõ Címke
+selectLabel=Címke kijelölése

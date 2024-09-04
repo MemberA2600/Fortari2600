@@ -45,7 +45,7 @@ class MiniMapMaker:
         self.__draw = 0
 
         self.__sizes = [self.__screenSize[0] / 1.25, self.__screenSize[1] / 1.20 - 40]
-        self.__window = SubMenu(self.__loader, "minimap", self.__sizes[0], self.__sizes[1], None, self.__addElements, 1)
+        self.__window = SubMenu(self.__loader, "minimapMaker", self.__sizes[0], self.__sizes[1], None, self.__addElements, 1)
 
         self.dead = True
 
@@ -53,7 +53,7 @@ class MiniMapMaker:
         if self.__changed == True:
             answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
             if answer == "Yes":
-                pass
+                self.__saveMM()
             elif answer == "Cancel":
                 self.__topLevelWindow.deiconify()
                 self.__topLevelWindow.focus()

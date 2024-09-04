@@ -4,7 +4,7 @@ class MenuButton:
 
     def __init__(self, loader, frame, image, XPoz,
                  function, functionEnter, functionLeave, bindedVar,
-                 invertedBinding, bindedOut):
+                 invertedBinding, bindedOut, advancedOnly):
         self.__loader = loader
         self.__loader.menuButtons[image] = self
 
@@ -14,6 +14,7 @@ class MenuButton:
         self.__invertedBinding = invertedBinding
         self.__bindedOut = bindedOut
         self.__image=image
+        self.__advancedOnly = advancedOnly
 
         self.stopThread = False
         #self.__loader.stopThreads.append(self)
@@ -64,6 +65,11 @@ class MenuButton:
     def checkBinded(self):
             if self.preventRun == False:
                 try:
+                    if self.__advancedOnly:
+                       if self.__loader.config.getValueByKey("advanced") != "True":
+                           self.__button.config(state=DISABLED)
+                           return
+
                     if self.__invertedBinding == True:
                         temp = not self.__checkIfFalse(self.__loader.bindedVariables[self.__bindedVar])
                     else:

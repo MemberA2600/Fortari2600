@@ -9,7 +9,7 @@ class ButtonMaker:
         self.__functionEnter = functionEnter
         self.__functionLeave = functionLeave
 
-    def createButton(self, image, curretNumContainer, function, bindedVar, invertedBinding, bindedOut, placer, num):
+    def createButton(self, image, curretNumContainer, function, bindedVar, invertedBinding, bindedOut, placer, num, advancedOnly):
 
         XPoz = curretNumContainer[0]
         curretNumContainer[0] += 1
@@ -18,5 +18,5 @@ class ButtonMaker:
         return(MenuButton(
             self.__loader, self.__frame, image, XPoz, function,
             self.__functionEnter, self.__functionLeave, bindedVar, invertedBinding,
-            bindedOut
+            bindedOut, advancedOnly
         ))
