@@ -647,3 +647,13 @@ displayedAsBits=Érték bitenként kifejezve
 displayedAsVal=Számként
 e-ot megelõzõ Címke
 selectLabel=Címke kijelölése
+duplicateLabel=#LABEL# többször szerepelne a lefordított kódban! #SECONDONE#
+kernelCode=A másik elõfordulás a fõ kernel kódban található.
+asmCommand=A másik elõfordulás a #BANK# #SECTION#-jában, egy asm parancsban található.
+mLoadCommand=A másik elõfordulás a #BANK# #SECTION#-jában, egy, mLoad által betöltött forrásban található.
+objectCommand=A másik elõfordulás a #BANK# #SECTION#-jában, egy, objektumparancs által betöltött forrásban található
+unknownCommand=A másik elõfordulás a #BANK# #SECTION#-jában, egy ismeretlen parancs által betöltött forrásban található
+labelTooShort=#LABEL# túl rövid, legalább 8 karakternek kell lennie.
+duplicateOnData=#LABEL# többször elõfordul ebben az adatfájlban!
+illegalCharacter=Nem megengedett karakter(ek) a #LABEL#-ben! A #ILLEGALS# nem elfogadott(ak)!
+illegalTag=Nem megengedett tag(ek) a #LABEL#-ben! #ILLEGALS# nem elfogadott(ak)!

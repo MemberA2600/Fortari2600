@@ -51,7 +51,12 @@ class RawDataCooker:
         self.__counterNumber = [0, None]
         self.__counterLabel  = [0, None]
         self.__labelErrors   = []
-        self.__labelsInText  = []
+        self.__labelsInText  = {}
+
+        self.__errorLineNum  = -1
+
+        for num in range(0, 20):
+            self.__labelErrors.append({})
 
         self.__sizes = [self.__screenSize[0] / 1.25, self.__screenSize[1] / 1.20 - 40]
         self.__window = SubMenu(self.__loader, "rawData", self.__sizes[0], self.__sizes[1], None, self.__addElements, 1)
@@ -78,6 +83,13 @@ class RawDataCooker:
 
         self.__dummyFirstCompiler = None
 
+        kernelText = self.__loader.io.loadKernelElement(
+            self.__loader.virtualMemory.kernel, "main_kernel"
+        )
+
+        for line in kernelText.split("\n"):
+            self.addLabelIfCan(line, "bank1", "kernel", None, None, "kernelCode")
+
         for bankNum in range(1, 9):
             bank = "bank" + str(bankNum)
 
@@ -86,10 +98,14 @@ class RawDataCooker:
                     lines = self.__loader.virtualMemory.codes[bank][section].code.split("\n")
 
                     for line in lines:
+                        if len(line) == 0: continue
+                        if line[0] in ("#", "*", ";"): continue
+
                         lineStructure = self.getLineStructure(line)
+                        objTextLines  = ""
 
                         if   self.isCommandInLineThat(lineStructure, "asm"):
-                             self.addLabelIfCan(lineStructure["param#1"][0], bank, section, None, None)
+                             self.addLabelIfCan(lineStructure["param#1"][0], bank, section, None, None, "asmCommand")
 
                         elif self.isCommandInLineThat(lineStructure, "mLoad"):
                              folder = lineStructure["param#1"][0]
@@ -101,7 +117,7 @@ class RawDataCooker:
                              f.close()
 
                              for dLine in data.split("\n"):
-                                 self.addLabelIfCan(dLine, bank, section, folder, fName)
+                                 self.addLabelIfCan(dLine, bank, section, folder, fName, "mLoadCode")
                         else:
                             command = None
                             obj     = False
@@ -112,8 +128,8 @@ class RawDataCooker:
                                    break
 
                             if command == None:
-                               objectThings = self.__loader.objectMaster.returnAllAboutTheObject(lineStructure["command"][0])
-                               command = self.__loader.objectMaster.createFakeCommandOnObjectProcess(objectThings)
+                               objectThings = self.__loader.virtualMemory.objectMaster.returnAllAboutTheObject(lineStructure["command"][0])
+                               command = self.__loader.virtualMemory.objectMaster.createFakeCommandOnObjectProcess(objectThings)
                                obj     = True
 
                             for paramNum in range(1, 4):
@@ -136,21 +152,59 @@ class RawDataCooker:
                                                                                       bank, section, 0, "", True, {}
                                                                                       )
 
-                                         #for dLine in objectThings["template"]:
-                                         #    self.addLabelIfCan(dLine, bank, section, folder, fName)
+                                            #template, optionalText, objectThings = self.__dummyFirstCompiler.getObjTemplate(
+                                            #                                                        lineStructure,
+                                            #                                                        None, objectThings)
+
+                                            lineStructure["fullLine"] = line
+                                            lineStructure["labelsBefore"] = []
+                                            lineStructure["labelsAfter"] = []
+                                            lineStructure["commentsBefore"] = ""
+                                            lineStructure["compiled"] = ""
+                                            lineStructure["compiledBefore"] = ""
+                                            lineStructure["magicNumber"] = -1
+                                            lineStructure["error"] = False
+
+                                            self.__dummyFirstCompiler.processLine(lineStructure, [lineStructure], command, objectThings)
+
+                                            for word in self.__dummyFirstCompiler.importantWords:
+                                                try:
+                                                    objTextLines = lineStructure[word].split("\n")
+                                                except:
+                                                    objTextLines = lineStructure[word]
+
+                                                for line in objTextLines:
+                                                    self.addLabelIfCan(line, bank, section, folder, fName, "objectCommand")
+                                            break
+
                                       else:
                                           # Currently, there is no command besides mLoad that would load data directly.
-                                          pass
 
-    def addLabelIfCan(self, possibleLabel, bank, section, folder, fName):
+                                          for root, dirs, files in self.__loader.mainWindow.projectPath:
+                                              for dir in dirs:
+                                                  for subRoot, subDirs, subFiles in self.__loader.mainWindow.projectPath + "/" + dir:
+                                                      for subFile in subFiles:
+                                                          if "asm" in subFile and ".".join(subFile.split(".")[:-1]) == pInCommand:
+                                                              subPath = self.__loader.mainWindow.projectPath + "/" + dir + "/" + subFile
+                                                              f = open(subFile, "r")
+                                                              subText = f.read()
+                                                              f.close()
+
+                                                              for grrrrrrrrr in subText.split("\n"):
+                                                                  self.addLabelIfCan(grrrrrrrrr, bank, section, dir, subFile, "unknownCommand")
+
+    def addLabelIfCan(self, possibleLabel, bank, section, folder, fName, where):
         if len(possibleLabel) > 0:
             replacedTags = self.replaceTags(possibleLabel, bank, section, folder, fName)
 
             if replacedTags[0] not in ["#", "*", " ", "\t"]:
-                if possibleLabel not in self.__labels:
-                    self.__labelsInText.append(possibleLabel)
+                if possibleLabel not in self.__labelsInText.keys():
+                    self.__labelsInText[possibleLabel] = self.__loader.dictionaries.getWordFromCurrentLanguage(where)
+
                     if possibleLabel != replacedTags:
-                        self.__labelsInText.append(replacedTags)
+                       self.__labelsInText[replacedTags] = self.replaceTags(self.__loader.dictionaries.getWordFromCurrentLanguage(where),
+                                                                            bank, section, folder, fName)
+
 
     def isCommandInLineThat(self, line, command):
         if line["command"][0] == command or line["command"][0] in self.__loader.syntaxList[command].alias:
@@ -161,7 +215,7 @@ class RawDataCooker:
         label = label.replace("##", "#")
 
         tags = {
-            "#BANK#": bank, "#SECTION#": section
+            "#BANK#": bank, "#SECTION#": section, "#FULL#": bank + "_" + section
         }
 
         if folder != None and fName != None:
@@ -215,24 +269,98 @@ class RawDataCooker:
         self.__controllerFrame.pack_propagate(False)
         self.__controllerFrame.pack(side=TOP, anchor=N, fill=BOTH)
 
+        while self.__controllerFrame.winfo_width() < 2: sleep(0.0000001)
+
+        self.__loaderFrame = Frame(self.__controllerFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__sizes[0] // 3, height = self.__controllerFrame.winfo_height())
+
+        self.__loaderFrame.pack_propagate(False)
+        self.__loaderFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__othersFrame = Frame(self.__controllerFrame,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__sizes[0] // 3 * 2, height=self.__controllerFrame.winfo_height())
+
+        self.__othersFrame.pack_propagate(False)
+        self.__othersFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+
         self.__running  = 0
 
         t = Thread(target = self.__createEditorLines)
         t.daemon = True
         t.start()
 
+        t = Thread(target = self.createLoaderFrame)
+        t.daemon = True
+        t.start()
+
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
 
+    def createLoaderFrame(self):
+        self.__running += 1
+        from VisualLoaderFrame import VisualLoaderFrame
+
+        while self.__loaderFrame.winfo_height() < 2: sleep(0.000001)
+
+        self.__visualLFrame = Frame(self.__loaderFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // 3)
+
+        self.__visualLFrame.pack_propagate(False)
+        self.__visualLFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__rawLoader = VisualLoaderFrame(self.__loader, self.__visualLFrame, self.__loaderFrame.winfo_height() // 6,
+                                                self.__normalFont, self.__smallFont, None, "Smelly_Raw_Meet",
+                                                "rawName", self.__checkIfValidFileName, self.__loaderFrame.winfo_width() // 2,
+                                                self.__open, self.__save)
+
+        self.__running -= 1
+
+    def __checkIfValidFileName(self, event):
+
+        name = str(event.widget).split(".")[-1]
+
+        value  = None
+        widget = None
+        if name == "rawName":
+            widget = self.__rawLoader.getEntry()
+            value = self.__rawLoader.getValue()
+
+
+        if self.__loader.io.checkIfValidFileName(value) and (" " not in value):
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                                      )
+
+        else:
+            widget.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                                      fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                                      )
+
+    def __open(self):
+        pass
+
+    def __save(self):
+        pass
+
     def __loop(self):
-        try:
-            if self.__counterNumber[0] > 0:
-               if self.__counterNumber[0] == 1:
-                  self.checkNumber(self.__counterNumber[1])
+        if self.__running == 0:
+            try:
+                if self.__counterNumber[0] > 0:
+                   if self.__counterNumber[0] == 1:
+                      self.checkNumber(self.__counterNumber[1])
 
-               self.__counterNumber[0] -= 1.
+                   self.__counterNumber[0] -= 1
 
-        except Exception as e:
-            print(str(e))
+                if self.__counterLabel[0] > 0:
+                   if self.__counterLabel[0] == 1:
+                      self.checkLabel(self.__counterLabel[1])
+
+                   self.__counterLabel[0] -= 1
+
+            except Exception as e:
+                print(str(e))
 
     def fillLineDataEnd(self):
 
@@ -276,6 +404,7 @@ class RawDataCooker:
                            state = NORMAL,
                            bg=self.__colors.getColor("boxFontNormal")
                        )
+
                    else:
                        self.__lineData[lineNumOnEditor]["bitButtons"][bitNum].config(
                            state=NORMAL,
@@ -293,9 +422,21 @@ class RawDataCooker:
                    else:
                       self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
 
+    def clicked(self, event):
+        button = event.widget
+        name  = str(button).split(".")[-1]
+
+        if button.cget("state") == DISABLED: return
+
+        lineNum     = int(name.split("_")[-2])
+        bitNum      = int(name.split("_")[-1])
+        mouseButton = int(str(event).split(" ")[3].split("=")[1])
+
     def checkNumber(self, event):
         entry = event.widget
         name  = str(entry).split(".")[-1]
+
+        if entry.cget("state") == DISABLED: return
 
         self.__counterNumber =  [0, None]
 
@@ -489,6 +630,10 @@ class RawDataCooker:
                     self.__lineData[-1]["bitVals"].append(0)
                     self.__lineData[-1]["bitButtons"].append(b)
 
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-1>",
+                                                                        self.clicked, 1)
+                    self.__loader.threadLooper.bindingMaster.addBinding(self, b, "<Button-3>",
+                                                                        self.clicked, 1)
 
                 self.__lineData[-1]["entryVal"] = StringVar()
                 self.__lineData[-1]["entry"]    = Entry(fValEntry,
@@ -533,6 +678,11 @@ class RawDataCooker:
                                                                     self.setCounterNumber, 1)
                 self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"], "<FocusOut>",
                                                                     self.checkNumber, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["labelEntry"], "<KeyRelease>",
+                                                                    self.setCounterNumber2, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["labelEntry"], "<FocusOut>",
+                                                                    self.checkLabel, 1)
+
 
         self.__allData = []
         self.fillLineDataEnd()
@@ -542,6 +692,8 @@ class RawDataCooker:
         entry = event.widget
         name  = str(entry).split(".")[-1]
 
+        if entry.cget("state") == DISABLED: return
+
         self.__counterLabel =  [0, None]
 
         lineNum = int(name.split("_")[-1])
@@ -549,38 +701,185 @@ class RawDataCooker:
         value = self.__lineData[lineNum]["labelVal"].get()
 
         if value == "":
-           entry.config(bg=self.__colors.getColor("boxBackNormal"),
-                         fg=self.__colors.getColor("boxFontNormal"))
-           return
+           self.removeError(lineNum, "all")
+        else:
+           if len(value) > 0:
+              if value in self.__labelsInText.keys():
+                 self.addError("duplicateLabel", {
+                     "#LABEL#": value, "#SECONDONE#": self.__loader.dictionaries.getWordFromCurrentLanguage(self.__labelsInText[value]),
+                 }, lineNum)
+              else:
+                 self.removeError(lineNum, "duplicateLabel")
 
+              if self.glen(value) < 8 or len(value) < 8:
+                 self.addError("labelTooShort", {"#LABEL#": value} , lineNum)
+              else:
+                 self.removeError(lineNum, "labelTooShort")
 
+              currentLineNum = lineNum + self.__Y
 
+              for lNum in range(0, len(self.__allData)):
+                  if lNum == currentLineNum: continue
 
+                  if self.__allData[lNum]["label"] == value:
+                     self.addError("duplicateOnData", {"#LABEL#": value} , lineNum)
+                     #self.addError("duplicateOnData", {"#LABEL#": value} , lNum)
+                  else:
+                     self.removeError(lineNum, "duplicateOnData")
 
-        """                       if self.__fullTextLabels.count(line[0]) > 1:
-                           if printError: print("OHNO Duplicate", line[0])
-                           self.addToErrorList(lineStructure["lineNum"],
-                                              self.prepareErrorASM("compilerErrorASMDuplicateLabel",
-                                                                    "", line[0],
-                                                                    lineStructure["lineNum"], lineStructure))
+              illegals = self.getIllegals(value)
 
-                       if self.__labelsOfMainKenrel.count(line[0]) > 0:
-                           if printError: print("OHNO KernelLabel", line[0])
-                           self.addToErrorList(lineStructure["lineNum"],
-                                              self.prepareErrorASM("compilerErrorASMDKernelLabel",
-                                                                    "", line[0],
-                                                                    lineStructure["lineNum"], lineStructure))
+              if len(illegals["chars"]) > 0:
+                 self.addError("illegalCharacter", {"#LABEL#"   : value,
+                                                    "#ILLEGALS#": ", ".join(illegals["chars"])}, lineNum)
+              else:
+                 self.removeError(lineNum, "illegalCharacter")
 
-                       if len(line[0]) < 8:
-                           if printError: print("OHNO Too Short", line[0])
-                           self.addToErrorList(lineStructure["lineNum"],
-                                               self.prepareErrorASM("compilerErrorASMKernelLabelShort",
-                                                                    "", line[0],
-                                                                    lineStructure["lineNum"], lineStructure))
-        """
+              if len(illegals["tags"]) > 0:
+                 self.addError("illegalTag", {"#LABEL#": value,
+                                                    "#ILLEGALS#": ", ".join(illegals["tags"])}, lineNum)
+              else:
+                 self.removeError(lineNum, "illegalTag")
 
+        self.colorLabels(lineNum)
 
+    def glen(self, label):
+        tags, label = self.getTagsReturnLabelWithoutThem(label)
+
+        #Have to set to get the name!
+
+        l = 0
+
+        tagValGuess = {"#BANK#": 5, "#NAME#": len(self.__rawLoader.getValue()), "#FOLDER#": 3}
+        tagValGuess["#FULL#"] = sum(tagValGuess.values())
+
+        for tag in tags:
+            if tag in tagValGuess:
+               l += tagValGuess[tag]
+
+        return l + len(label)
+
+    def getTagsReturnLabelWithoutThem(self, label):
+        tagStart = -1
+        tagEnd = -1
+        searchForEnd = False
+
+        tags = []
+
+        while True:
+            if searchForEnd == False:
+               tagStart += 1
+               if tagStart >= len(label): break
+
+               if label[tagStart] == "#":
+                  searchForEnd = True
+                  tagEnd       = tagStart
+
+            else:
+               tagEnd   += 1
+               if tagEnd >= len(label): break
+
+               if label[tagEnd] == "#":
+                  tags.append(label[tagStart:tagEnd + 1])
+                  label        = label[:tagStart] + label[tagEnd + 1:]
+                  tagStart     = -1
+                  tagEnd       = -1
+                  searchForEnd = False
+
+        return tags, label
+
+    def getIllegals(self, label):
+        illegals = {
+            "chars": [], "tags": []
+        }
+
+        allowedTags = ["#BANK#", "#NAME#", "#FOLDER#", "#FULL#"]
+
+        tags, label = self.getTagsReturnLabelWithoutThem(label)
+
+        for tag in tags:
+            if tag not in allowedTags:
+                illegals["tags"].append(tag)
+
+        ranges = {
+               "letters": [ord("a"), ord("z")],
+               "LETTERS": [ord("A"), ord("Z")],
+               "numbers": [ord("0"), ord("9")],
+               "_"      : [ord("_"), ord("_")],
+               "-"      : [ord("-"), ord("-")]
+           }
+
+        for c in label:
+            val   = ord(c)
+            found = False
+            for r in ranges.keys():
+                if val <= ranges[r][1] and val >= ranges[r][0]:
+                   found = True
+                   break
+
+            if found == False: illegals["chars"].append(c)
+
+        return illegals
+
+    def colorLabels(self, lineNum):
+        errorText = ""
+
+        for num in range(0, 20):
+            if self.__labelErrors[num] == {}:
+               self.__lineData[num]["labelEntry"].config(bg = self.__colors.getColor("boxBackNormal"),
+                                                         fg = self.__colors.getColor("boxFontNormal"))
+
+               self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
+               if self.__lineData[num]["labelVal"].get() == "":
+                  self.__lineData[num]["selectVal"].set(0)
+                  self.__lineData[num]["select"].config(state = DISABLED)
+               else:
+                  self.__lineData[num]["select"].config(state = NORMAL)
+
+            else:
+               self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),
+                                                         fg=self.__colors.getColor("boxFontUnSaved"))
+
+               if lineNum == num or errorText == "":
+                  key = ""
+                  for key in self.__labelErrors[num].keys():
+                      pass
+
+                  self.__errorLineNum = num
+                  errorText = self.__labelErrors[num][key]
+
+        if errorText == "":
+           self.__errorString.set("")
+           self.__errorLabel.config(bg = self.__colors.getColor("window"))
+        else:
+           self.__errorString.set(errorText)
+           self.__errorLabel.config(bg=self.__colors.getColor("boxBackUnSaved"),
+                                    fg=self.__colors.getColor("boxFontUnSaved"))
+
+    def addError(self, errorKey, replacers, lineNum):
+        #lineNum -= 1
+        txt = self.__loader.dictionaries.getWordFromCurrentLanguage(errorKey)
+
+        for key in replacers:
+            txt = txt.replace(key, replacers[key])
+
+        if errorKey in  self.__labelErrors[lineNum].keys():
+           self.removeError(lineNum, errorKey)
+
+        self.__labelErrors[lineNum][errorKey] = txt
+
+    def removeError(self, lineNum, errorKey):
+        #lineNum -= 1
+
+        if errorKey in ("all", "", None):
+           self.__labelErrors[lineNum] = {}
+        else:
+           if errorKey in self.__labelErrors[lineNum]: self.__labelErrors[lineNum].pop(errorKey)
 
     def setCounterNumber(self, event):
         self.__counterNumber[0] = 10
         self.__counterNumber[1] = event
+
+    def setCounterNumber2(self, event):
+        self.__counterLabel[0] = 10
+        self.__counterLabel[1] = event

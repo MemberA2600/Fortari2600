@@ -1,6 +1,6 @@
 import os
 
-wordToFind = '#NAME#'
+wordToFind = 'objectMaster'
 
 for root, dirs, files in os.walk(os.getcwd()+"/src", False):
     for file in files:

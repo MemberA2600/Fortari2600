@@ -26,6 +26,7 @@ class FirstCompiler:
         self.exiters    = self.__editorBigFrame.exiters
         self.stupidList = []
         self.__alreadyCollectedLabels = self.__loader.alreadyCollectedLabels
+        self.importantWords = ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]
 
         for num1 in range(1, 5):
             for num2 in range(1, 7):
@@ -266,7 +267,7 @@ class FirstCompiler:
         textToReturn = ""
 
         for line in linesFetched:
-            for word in ["compiledBefore", "commentsBefore", "labelsBefore", "compiled", "labelsAfter"]:
+            for word in self.importantWords:
                 if line[word] not in self.__noneList:
                     if type(line[word]) == list:
                         line[word] = "\n".join(line[word])
@@ -552,10 +553,21 @@ class FirstCompiler:
             fName   = params["param#2"][0]
             nameKey = self.__currentBank + "_" + fName + "_" + folder
 
+            tags = {
+                "#BANK#"    : self.__currentBank,
+                "#NAME#"    : fName             ,
+                "#FOLDER#"  : folder            ,
+                "#FULL#"    : nameKey
+            }
+
             if nameKey not in self.currentBankData.keys():
                path = self.__loader.mainWindow.projectPath + folder + "/" + fName + ".asm"
                f    = open(path, "r")
-               txt  = f.read().replace("\r", "").replace("#BANK#", self.__currentBank)
+               txt  = f.read().replace("\r", "")
+
+               for tag in tags:
+                   txt = txt.replace(tag, tags[tag])
+
                f.close()
 
                self.currentBankData[nameKey] = txt
