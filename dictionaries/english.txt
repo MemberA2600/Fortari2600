@@ -660,3 +660,4 @@ labelTooShort=#LABEL# is too short, it must be at least 8 characters long.
 duplicateOnData=#LABEL# appers multiple times on this data file.
 illegalCharacter=Illegal character(s) in #LABEL#! #ILLEGALS# are not accepted!
 illegalTag=Illegal tag(s) in #LABEL#! #ILLEGALS# are not accepted!
+addEndByte=Add EndByte

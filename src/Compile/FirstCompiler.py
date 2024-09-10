@@ -2316,10 +2316,13 @@ class FirstCompiler:
                                               "\tSTA\t" + line["param#1"][0] + "\n"
                                  txt += arrTxt
 
-                          isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"],
+                          if saveIt:
+                             isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"],
                                                                     self.__text, line)
+                          else:
+                             isWriting = False
 
-                          if isWriting and saveIt:
+                          if isWriting:
                              endTxt = "\tLDA\t" + iterator + "\n\tASL\n\tTAX\n"
                              if var.type == "byte" and var.bcd == False:
                                 endTxt += "\tLDY\t" + line["param#1"][0] + "\n"

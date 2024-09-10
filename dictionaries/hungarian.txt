@@ -658,3 +658,4 @@ labelTooShort=#LABEL# túl rövid, legalább 8 karakternek kell lennie.
 duplicateOnData=#LABEL# többször elõfordul ebben az adatfájlban!
 illegalCharacter=Nem megengedett karakter(ek) a #LABEL#-ben! A #ILLEGALS# nem elfogadott(ak)!
 illegalTag=Nem megengedett tag(ek) a #LABEL#-ben! #ILLEGALS# nem elfogadott(ak)!
+addEndByte=EndByte hozzáadása

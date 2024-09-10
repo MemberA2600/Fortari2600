@@ -178,9 +178,11 @@ class RawDataCooker:
                                       else:
                                           # Currently, there is no command besides mLoad that would load data directly.
 
-                                          for root, dirs, files in self.__loader.mainWindow.projectPath:
+                                          import os
+
+                                          for root, dirs, files in os.walk(self.__loader.mainWindow.projectPath):
                                               for dir in dirs:
-                                                  for subRoot, subDirs, subFiles in self.__loader.mainWindow.projectPath + "/" + dir:
+                                                  for subRoot, subDirs, subFiles in os.walk(self.__loader.mainWindow.projectPath + "/" + dir):
                                                       for subFile in subFiles:
                                                           if "asm" in subFile and ".".join(subFile.split(".")[:-1]) == pInCommand:
                                                               subPath = self.__loader.mainWindow.projectPath + "/" + dir + "/" + subFile
@@ -491,6 +493,8 @@ class RawDataCooker:
         entryVal = valuesOnName[name][1]
         value    = entryVal.get()
 
+
+
     def __checkIfValidFileName(self, event):
 
         name = str(event.widget).split(".")[-1]
@@ -561,7 +565,7 @@ class RawDataCooker:
     def fillLineDataEnd(self):
 
         schema = {
-            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": ""
+            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": False
         }
 
         if len(self.__allData) < self.__numberOfLines:
@@ -591,6 +595,7 @@ class RawDataCooker:
                self.__lineData[lineNumOnEditor]["labelEntry"].config(state = DISABLED)
 
                self.__lineData[lineNumOnEditor]["select"]    .config(state = DISABLED)
+               self.__lineData[lineNumOnEditor]["endVar"]    .config(state = DISABLED)
 
             else:
                for bitNum in range(0, 8):
@@ -615,8 +620,10 @@ class RawDataCooker:
 
                    if self.__allData[lineNum]["label"] == "":
                       self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
+                      self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
                    else:
                       self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
+                      self.__lineData[lineNumOnEditor]["emdVar"].config(state=NORMAL)
 
     def clicked(self, event):
         if self.__running > 0: return
@@ -788,7 +795,9 @@ class RawDataCooker:
             "entryVal"     : None,
             "labelEntry"   : None,
             "selectVal"    : None,
-            "select"       : None
+            "select"       : None,
+            "endVarVal"    : None,
+            "endVar"       : None,
         }
 
         while self.__editorFrame.winfo_width() < 2: sleep(0.000000001)
@@ -817,14 +826,21 @@ class RawDataCooker:
 
             fLabelEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10 * 6, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 10 * 5, height=self.__editorFrame.winfo_height() // 21
                   )
             fLabelEntry.pack_propagate(False)
             fLabelEntry.pack(side=LEFT, anchor=E, fill=Y)
 
+            fAddEndByte = Frame(f,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
+                  )
+            fAddEndByte.pack_propagate(False)
+            fAddEndByte.pack(side=LEFT, anchor=E, fill=Y)
+
             fSelectEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10 * 6, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
                   )
             fSelectEntry.pack_propagate(False)
             fSelectEntry.pack(side=LEFT, anchor=E, fill=BOTH)
@@ -863,14 +879,23 @@ class RawDataCooker:
                 l3.pack_propagate(False)
                 l3.pack(side=TOP, anchor=N, fill=BOTH)
 
-                l4 = Label(fSelectEntry,
-                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel"),
+                l4 = Label(fAddEndByte,
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("addEndByte"),
                            font=self.__smallFont, fg=self.__colors.getColor("font"),
                            bg=self.__colors.getColor("window")
                            )
 
                 l4.pack_propagate(False)
                 l4.pack(side=TOP, anchor=N, fill=BOTH)
+
+                l5 = Label(fSelectEntry,
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel"),
+                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           bg=self.__colors.getColor("window")
+                           )
+
+                l5.pack_propagate(False)
+                l5.pack(side=TOP, anchor=N, fill=BOTH)
 
                 self.__labels = [l1, l2, l3, l4]
 
@@ -933,6 +958,18 @@ class RawDataCooker:
 
                 self.__lineData[-1]["labelEntry"].pack_propagate(False)
                 self.__lineData[-1]["labelEntry"].pack(fill=X, side=TOP, anchor=N)
+
+                self.__lineData[-1]["endVarVar"] = IntVar()
+                self.__lineData[-1]["endVar"] = Checkbutton(fAddEndByte, width=fSelectEntry.winfo_width(),
+                                                bg=self.__colors.getColor("window"),
+                                                justify=CENTER,
+                                                variable=self.__lineData[-1]["endVar"],
+                                                activebackground=self.__colors.getColor("highLight"),
+                                                command=None
+                                                )
+
+                self.__lineData[-1]["endVar"].pack_propagate(False)
+                self.__lineData[-1]["endVar"].pack(fill=Y, side=LEFT, anchor=E)
 
                 self.__lineData[-1]["selectVal"] = IntVar()
                 self.__lineData[-1]["select"] = Checkbutton(fSelectEntry, width=fSelectEntry.winfo_width(),
@@ -1111,8 +1148,12 @@ class RawDataCooker:
                if self.__lineData[num]["labelVal"].get() == "":
                   self.__lineData[num]["selectVal"].set(0)
                   self.__lineData[num]["select"].config(state = DISABLED)
+                  self.__lineData[num]["endVarVar"].set(0)
+                  self.__lineData[num]["endVar"].config(state = DISABLED)
+
                else:
                   self.__lineData[num]["select"].config(state = NORMAL)
+                  self.__lineData[num]["endVar"].config(state = NORMAL)
 
             else:
                self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),
