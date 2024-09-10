@@ -34,9 +34,6 @@ class RawDataCooker:
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
 
-        self.__ctrl = False
-        self.__draw = 0
-
         #self.__delay   = 0
         #self.__counter = 0
         self.__changed = 0
@@ -44,6 +41,7 @@ class RawDataCooker:
         self.__ctrl = False
         self.__middle = False
         self.__draw = 0
+        self.__enabled    = False
 
         self.__numberOfLines = 20
         self.__Y             = 0
@@ -296,6 +294,11 @@ class RawDataCooker:
         t.start()
 
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>" , self.shiftON, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "Button-2>"             , self.drawMode, 1)
 
     def createLoaderFrame(self):
         self.__running += 1
@@ -303,19 +306,190 @@ class RawDataCooker:
 
         while self.__loaderFrame.winfo_height() < 2: sleep(0.000001)
 
+        self.__enableThem = []
+        self.__enabled    = False
+
         self.__visualLFrame = Frame(self.__loaderFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // 3)
+                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // 3.5)
 
         self.__visualLFrame.pack_propagate(False)
         self.__visualLFrame.pack(side=TOP, anchor=N, fill=X)
 
-        self.__rawLoader = VisualLoaderFrame(self.__loader, self.__visualLFrame, self.__loaderFrame.winfo_height() // 6,
+        self.__rawLoader = VisualLoaderFrame(self.__loader, self.__visualLFrame, self.__loaderFrame.winfo_height() // 8,
                                                 self.__normalFont, self.__smallFont, None, "Smelly_Raw_Meet",
                                                 "rawName", self.__checkIfValidFileName, self.__loaderFrame.winfo_width() // 2,
                                                 self.__open, self.__save)
 
+        per = 8
+
+        self.__numOfLinesFrame = Frame(self.__loaderFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // per)
+
+        self.__numOfLinesFrame.pack_propagate(False)
+        self.__numOfLinesFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__yIndexFrame = Frame(self.__loaderFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // per)
+
+        self.__yIndexFrame.pack_propagate(False)
+        self.__yIndexFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__indexButtonsFrame = Frame(self.__loaderFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__loaderFrame.winfo_height() // per)
+
+        self.__indexButtonsFrame.pack_propagate(False)
+        self.__indexButtonsFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__numOfLinesLabelFrame = Frame(self.__numOfLinesFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() // 2, height = self.__loaderFrame.winfo_height() // per)
+
+        self.__numOfLinesLabelFrame.pack_propagate(False)
+        self.__numOfLinesLabelFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__numOfLinesEntryFrame = Frame(self.__numOfLinesFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() // 2, height = self.__loaderFrame.winfo_height() // per)
+
+        self.__numOfLinesEntryFrame.pack_propagate(False)
+        self.__numOfLinesEntryFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__numOfLinesLabel = Label(self.__numOfLinesLabelFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"), justify = LEFT,
+                                   font = self.__smallFont, text = self.__loader.dictionaries.getWordFromCurrentLanguage("numOfLines") + ":",
+                                   height = 1)
+
+        self.__numOfLinesLabel.pack_propagate(False)
+        self.__numOfLinesLabel.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__numOfLinesEntryVal = StringVar()
+        self.__numOfLinesEntryVal.set(str(self.__numberOfLines))
+        self.__numOfLinesEntry    = Entry(self.__numOfLinesEntryFrame,
+                                             name="entry_numOfLines",
+                                             bg=self.__colors.getColor("boxBackNormal"),
+                                             fg=self.__colors.getColor("boxFontNormal"),
+                                             width=9999, justify=CENTER, state=DISABLED,
+                                             textvariable=self.__numOfLinesEntryVal,
+                                             font=self.__normalFont
+                                             )
+
+        self.__numOfLinesEntry.pack_propagate(False)
+        self.__numOfLinesEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__enableThem.append(self.__numOfLinesEntry)
+
+        self.__yIndexLabelFrame = Frame(self.__yIndexFrame,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width() // 2,
+                                        height=self.__loaderFrame.winfo_height() // per)
+
+        self.__yIndexLabelFrame.pack_propagate(False)
+        self.__yIndexLabelFrame.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__yIndexEntryFrame = Frame(self.__yIndexFrame,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width() // 2,
+                                        height=self.__loaderFrame.winfo_height() // per)
+
+        self.__yIndexEntryFrame.pack_propagate(False)
+        self.__yIndexEntryFrame.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__yIndexLabel = Label(self.__yIndexLabelFrame,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font"), justify=LEFT,
+                                   font=self.__smallFont,
+                                   text=self.__loader.dictionaries.getWordFromCurrentLanguage("yOffset") + ":",
+                                   height=1)
+
+        self.__yIndexLabel.pack_propagate(False)
+        self.__yIndexLabel.pack(side=LEFT, anchor=E, fill=Y)
+
+        self.__yIndexEntryVal = StringVar()
+        self.__yIndexEntryVal.set(str(self.__Y))
+        self.__yIndexEntry = Entry(self.__yIndexEntryFrame,
+                                   name="entry_yIndex",
+                                   bg=self.__colors.getColor("boxBackNormal"),
+                                   fg=self.__colors.getColor("boxFontNormal"),
+                                   width=9999, justify=CENTER, state=DISABLED,
+                                   textvariable=self.__yIndexEntryVal,
+                                   font=self.__normalFont
+                                   )
+
+        self.__yIndexEntry.pack_propagate(False)
+        self.__yIndexEntry.pack(fill=X, side=TOP, anchor=N)
+
+        #self.__enableThem.append(self.__yIndexEntry)
+
+        self.__indexButtonsFrame1 = Frame(self.__indexButtonsFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() // 2, height = self.__loaderFrame.winfo_height() // per)
+
+        self.__indexButtonsFrame1.pack_propagate(False)
+        self.__indexButtonsFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__indexButtonsFrame2 = Frame(self.__indexButtonsFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() // 2, height = self.__loaderFrame.winfo_height() // per)
+
+        self.__indexButtonsFrame2.pack_propagate(False)
+        self.__indexButtonsFrame2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__indexButton1 = Button(self.__indexButtonsFrame1, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__loaderFrame.winfo_width() // 2,
+                                       name="indexButtonUp",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = "<<", font = self.__normalFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__indexButton1.pack_propagate(False)
+        self.__indexButton1.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__indexButton2 = Button(self.__indexButtonsFrame2, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__loaderFrame.winfo_width() // 2,
+                                       name="indexButtonDown",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = ">>", font = self.__normalFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__indexButton2.pack_propagate(False)
+        self.__indexButton2.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<KeyRelease>",
+                                                            self.__checkEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<FocusOut>",
+                                                            self.__checkEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yIndexEntry, "<KeyRelease>",
+                                                            self.__checkEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yIndexEntry, "<FocusOut>",
+                                                            self.__checkEntry, 1)
+
         self.__running -= 1
+
+    def __checkEntry(self, event):
+        entry = event.widget
+        name = str(entry).split(".")[-1].split("_")[-1]
+
+        if entry.cget("state") == DISABLED: return
+
+        maxIndex    = self.__numberOfLines - len(self.__lineData)
+        if maxIndex < 0: maxIndex = 0
+
+        valuesOnName = {
+            "numOfLines": [[1, 256]     , self.__numOfLinesEntryVal],
+            "yIndex"    : [[0, maxIndex], self.__yIndexEntryVal    ]
+        }
+
+        entryVal = valuesOnName[name][1]
+        value    = entryVal.get()
 
     def __checkIfValidFileName(self, event):
 
@@ -347,6 +521,12 @@ class RawDataCooker:
     def __loop(self):
         if self.__running == 0:
             try:
+                if self.__enabled    == False:
+                   self.__enabled     = True
+                   for item in self.__enableThem:
+                       item.config(state = NORMAL)
+
+
                 if self.__counterNumber[0] > 0:
                    if self.__counterNumber[0] == 1:
                       self.checkNumber(self.__counterNumber[1])
@@ -358,6 +538,22 @@ class RawDataCooker:
                       self.checkLabel(self.__counterLabel[1])
 
                    self.__counterLabel[0] -= 1
+
+                if self.__numberOfLines <= len(self.__lineData):
+                   self.__indexButton1.config(state = DISABLED)
+                   self.__indexButton2.config(state = DISABLED)
+                   self.__yIndexEntry .config(state = DISABLED)
+                else:
+                   self.__yIndexEntry .config(state = NORMAL)
+                   if self.__Y > 0:
+                      self.__indexButton1.config(state = NORMAL)
+                   else:
+                      self.__indexButton1.config(state = DISABLED)
+
+                   if self.__Y < self.__numberOfLines - len(self.__lineData):
+                      self.__indexButton2.config(state = NORMAL)
+                   else:
+                      self.__indexButton2.config(state = DISABLED)
 
             except Exception as e:
                 print(str(e))
@@ -376,7 +572,7 @@ class RawDataCooker:
 
     def fillTheEditor(self):
 
-        for lineNum in range(self.__Y, self.__Y + 20):
+        for lineNum in range(self.__Y, self.__Y + len(self.__lineData)):
             lineNumOnEditor = lineNum - self.__Y
             #print(lineNumOnEditor, lineNum, len(self.__lineData), len(self.__allData))
 
@@ -423,6 +619,8 @@ class RawDataCooker:
                       self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
 
     def clicked(self, event):
+        if self.__running > 0: return
+
         button = event.widget
         name  = str(button).split(".")[-1]
 
@@ -430,7 +628,80 @@ class RawDataCooker:
 
         lineNum     = int(name.split("_")[-2])
         bitNum      = int(name.split("_")[-1])
-        mouseButton = int(str(event).split(" ")[3].split("=")[1])
+
+        try:
+            mouseButton = int(str(event).split(" ")[3].split("=")[1])
+        except:
+            if self.__ctrl:
+                mouseButton = 3
+            else:
+                mouseButton = 1
+
+        if self.__ctrl == False and mouseButton == 3:
+           return
+
+        value = self.__lineData[lineNum]["bitVals"][bitNum]
+
+        if self.__ctrl == False:
+            value = 1 - value
+        else:
+            if button == 1:
+               value = 1
+            else:
+               value = 0
+
+        self.__lineData[lineNum]["bitVals"][bitNum] = value
+
+        if value == 1:
+           self.__lineData[lineNum]["bitButtons"][bitNum].config(bg = self.__colors.getColor("boxFontNormal"))
+        else:
+           self.__lineData[lineNum]["bitButtons"][bitNum].config(bg = self.__colors.getColor("boxBackNormal"))
+
+        theNumber = self.__lineData[lineNum]["entryVal"].get()
+        if theNumber.startswith("#"): vtheNumber = theNumber[1:]
+
+        if   theNumber.startswith("%"):
+             mode = "bin"
+        elif theNumber.startswith("$"):
+             mode = "hex"
+        else:
+             mode = "dec"
+
+        binString = "0b"
+        for bitNum2 in range(7, -1, -1): binString += str(self.__lineData[lineNum]["bitVals"][bitNum2])
+
+        theNumber = int(binString, 2)
+
+        if   mode == "bin":
+             theNumber = bin(theNumber).replace("0b", "")
+             theNumber = "%" + ((8 - len(theNumber)) * "0") + theNumber
+        elif mode == "hex":
+             theNumber = hex(theNumber).replace("0x", "")
+             theNumber = "$" + ((2 - len(theNumber)) * "0") + theNumber
+        else:
+             theNumber = str(theNumber)
+
+        self.__lineData[lineNum]["entryVal"].set(theNumber)
+        self.__changed = True
+
+        self.__lineData[lineNum]["entry"].config(bg=self.__colors.getColor("boxBackNormal"),
+                                                 fg=self.__colors.getColor("boxFontNormal"))
+
+        self.__allData[lineNum + self.__Y]["entry"] = value
+        self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
+        self.__changed = True
+
+    def shiftON(self, event):
+        self.__ctrl = True
+
+    def shiftOff(self, event):
+        self.__ctrl = False
+
+    def drawMode(self, event):
+        if self.__draw == 1:
+           self.__draw = 0
+        else:
+           self.__draw = 1
 
     def checkNumber(self, event):
         entry = event.widget
@@ -501,6 +772,7 @@ class RawDataCooker:
 
         self.__changed = True
         entry.icursor = len(str(value))
+        self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
 
     def __createEditorLines(self):
         self.__running += 1
@@ -701,7 +973,9 @@ class RawDataCooker:
         value = self.__lineData[lineNum]["labelVal"].get()
 
         if value == "":
+           self.__changed = True
            self.removeError(lineNum, "all")
+           self.__allData[lineNum + self.__Y]["label"] = ""
         else:
            if len(value) > 0:
               if value in self.__labelsInText.keys():
@@ -718,7 +992,7 @@ class RawDataCooker:
 
               currentLineNum = lineNum + self.__Y
 
-              for lNum in range(0, len(self.__allData)):
+              for lNum in range(0, self.__numberOfLines):
                   if lNum == currentLineNum: continue
 
                   if self.__allData[lNum]["label"] == value:
@@ -740,6 +1014,10 @@ class RawDataCooker:
                                                     "#ILLEGALS#": ", ".join(illegals["tags"])}, lineNum)
               else:
                  self.removeError(lineNum, "illegalTag")
+
+        if wasError      == False:
+           self.__changed = True
+           self.__allData[lineNum + self.__Y]["label"] = value
 
         self.colorLabels(lineNum)
 
