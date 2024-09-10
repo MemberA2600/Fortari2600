@@ -62,7 +62,8 @@ class VirtualMemory:
         for root, dirs, files in os.walk("templates/skeletons/"):
             for file in files:
                 if "main_kernel" in file:
-                    self.kernel_types.append(file.replace("_main_kernel.asm", ""))
+                    name = file.split("_")[0]
+                    if name not in self.kernel_types: self.kernel_types.append(name)
 
         for num in range(1,9):
             bankNum = "bank"+str(num)

@@ -903,7 +903,14 @@ class EditorBigFrame:
         else:
            key = "descCommand" + command[0].upper() + command[1:]
            if key not in self.__dictionaries.getKeys():
-              key = "descNotFound"
+              found = False
+              for c in self.__syntaxList.keys():
+                  if command in self.__syntaxList[c].alias:
+                     key   = "descCommand" + c[0].upper() + c[1:]
+                     found = True
+                     break
+
+              if found == False: key = "descNotFound"
 
         text = self.__dictionaries.getWordFromCurrentLanguage(key).replace("\\n", "\n")
         #self.__descBox.insert(END, text)
@@ -2021,15 +2028,7 @@ class EditorBigFrame:
                                #print("4")
                                errorPositions.append(["param#1", "array", currentLineStructure["lineNum"]])
 
-              """
-              if len(listOfDoItems) > 1:
-                 for item in listOfDoItems:
-                     if caller != 'firstCompiler':
-                         self.addToPosizions(errorPositions,
-                                             self.convertToX1X2Y(self.getXYfromCommand(item)))
-                     else:
-                         errorPositions.append(["command", "iteralError", currentLineStructure["lineNum"]])
-              """
+
            if  ((currentLineStructure["("] == -1 or currentLineStructure[")"] == -1) and
                self.__syntaxList[currentLineStructure["command"][0]].bracketNeeded == True): # or
                #(currentLineStructure["("] != -1 or currentLineStructure[")"] != -1) and
@@ -2136,7 +2135,7 @@ class EditorBigFrame:
         #print(errorPositions, addError, currentLineStructure["command"][0])
 
         if self.__config.getValueByKey("advanced") != "True":
-           for commandName in ("asm", "peek", "poke", "mLoad"):
+           for commandName in ("asm", "peek", "poke", "mLoad", "rLoad"):
                #commandName = "asm"
                if currentLineStructure["command"][0] == commandName or currentLineStructure["command"][0] in self.__syntaxList[commandName].alias:
                   hasValidCommand = False
@@ -3544,6 +3543,11 @@ class EditorBigFrame:
             self.getDataFromFolder(fNames, folderName)
             return fNames
 
+        if linestruct["command"][0] == "rLoad" or linestruct["command"][0] in self.__syntaxList["rLoad"].alias:
+
+            self.getDataFromFolder(fNames, "raw")
+            return fNames
+
         if type(object) == str: object = self.__objectMaster.returnAllAboutTheObject(object)
 
         for param in object["paramsWithSettings"]:
@@ -3851,7 +3855,14 @@ class EditorBigFrame:
 
         # This is where you check hardcoded if a param is ok.
         #print(returnBack)
-        if   command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
+
+        if   command == "do-items" or command in self.__syntaxList["do-items"].alias:
+             if "param#3" in params:
+                 if self.convertStringNumToNumber(
+                    self.__constants[self.getConstKeyNameFromAlias(param3[0])]["value"]) not in [0, 1]:
+                    returnBack[2][0] = "error"
+
+        elif command == "subroutine" or command in self.__syntaxList["subroutine"].alias:
            if returnBack[0][0] == "string":
               if self.__subroutines == []: self.__subroutines = self.collectNamesByCommandFromSections("subroutine",
                                                                                                         None)
@@ -3948,7 +3959,7 @@ class EditorBigFrame:
                   #print(self.getConstKeyNameFromAlias(param1[0]))
                   returnBack[0][0] = "error"
             elif returnBack[0][0] == "number":
-                if self.convertStringNumToNumber(param1[0]) not in [0, 1]:
+                if self.convertStringNumToNumber(param1[0]) != 1:
                    returnBack[0][0] = "error"
 
         elif command == "case" or command in self.__syntaxList["case"].alias:

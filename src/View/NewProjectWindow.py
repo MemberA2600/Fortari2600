@@ -120,7 +120,6 @@ class NewProjectWindow:
     def __newProject(self, bool):
         if bool == True:
             try:
-                self.__soundPlayer.playSound("OK")
                 #temp = self.virtualMemory.kernel
                 #self.virtualMemory.kernel = self.__setKernelLabel.optionValue.get()
                 #self.virtualMemory.changeKernelMemory(temp)
@@ -144,7 +143,12 @@ class NewProjectWindow:
                     num+=1
                     if line.startswith("bank1="):
                         k = line.split("=")[1].split(",")[0]
-                        lines[num] = line.replace(k, self.__setKernelLabel.optionValue.get()) \
+                        try:
+                            kernel = self.__setKernelLabel.optionValue.get()
+                        except:
+                            kernel = self.__loader.virtualMemory.kernel
+
+                        lines[num] = line.replace(k, kernel) \
                                    + "," + str(self.__loader.virtualMemory.includeKernelData) \
                                    + "," + str(self.__loader.virtualMemory.includeJukeBox) \
                                    + "," + str(self.__loader.virtualMemory.includeCollisions)
@@ -160,6 +164,7 @@ class NewProjectWindow:
                 if self.kernelOld != self.__loader.virtualMemory.kernel:
                    self.__loader.virtualMemory.objectMaster.loadKernelObjects()
 
+                self.__soundPlayer.playSound("OK")
                 self.__closeWindow()
 
             except Exception as e:

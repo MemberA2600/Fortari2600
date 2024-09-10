@@ -548,6 +548,17 @@ class FirstCompiler:
 
             self.__checked = True
 
+        elif self.isCommandInLineThat(line, "rLoad"):
+            R2M = deepcopy(line)
+
+            R2M["param#2"]    = deepcopy(R2M["param#1"])
+            R2M["param#1"][0] = "raw"
+            R2M["command"][0] = "mLoad"
+
+            self.processLine(R2M, linesFetched, None, None)
+
+            return
+
         elif self.isCommandInLineThat(line, "mLoad"):
             folder  = params["param#1"][0]
             fName   = params["param#2"][0]
@@ -2186,6 +2197,13 @@ class FirstCompiler:
                    txt += name + "Loop" + "\n"
 
                elif self.isCommandInLineThat(line, "do-items"):
+                   saveIt = True
+
+                   if "param#3" in line.keys():
+                       constant = self.__editorBigFrame.convertStringNumToNumber(self.__constants[params["param#3"][0]])
+
+                       if constant == 0: saveIt = False
+
                    array = line["param#2"][0]
                    if array not in self.__loader.virtualMemory.arrays.keys() or \
                            (self.__virtualMemory.getArrayValidity(array) not in [self.__currentBank, "bank1",
@@ -2301,7 +2319,7 @@ class FirstCompiler:
                           isWriting = self.checkIfItIsWritingInItem(line["lineNum"], endLine["lineNum"], line["level"],
                                                                     self.__text, line)
 
-                          if isWriting:
+                          if isWriting and saveIt:
                              endTxt = "\tLDA\t" + iterator + "\n\tASL\n\tTAX\n"
                              if var.type == "byte" and var.bcd == False:
                                 endTxt += "\tLDY\t" + line["param#1"][0] + "\n"

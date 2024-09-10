@@ -14,7 +14,7 @@ cycle;[continue next];[common];command;None;None;[];None;None;None;False;0;False
 decr;[decrement --];[common];command;None;brackets;[];[variable];write;None;False;1;True
 default;[other else];[common];command;None;None;[];None;None;None;False;0;True
 div;[divide /];[common];command;None;brackets;[];[number|variable|register|stringConst number|variable|register|stringConst {variable|register}];write;None;True;0;True
-do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[variable array];item;None;False;1;True
+do-items;[for-items perform-items foreach];[common];command;end;brackets;[];[variable array {stringConst|number}];item;None;False;1;True
 do-times;[for-times perform-times];[common];command;end;brackets;[];[number|stringConst|variable|register];read;None;False;0;True
 do-until;[for-until perform-until];[common];command;end;brackets;[];[statement|portState];read;None;False;0;True
 do-while;[for-while perform-while];[common];command;end;brackets;[];[statement|portState];read;None;False;0;True
@@ -42,6 +42,7 @@ rem;[remainder %];[common];command;None;brackets;[];[number|variable|register|st
 resetGame;[resG];[common];command;None;None;[overscan];None;None;None;False;0;False
 resetScreen;[resS];[common];command;None;None;[overscan];None;None;None;False;0;False
 return;[<=];[common];command;None;brackets;[subroutines];[number|variable|register|stringConst];read;None;False;0;False
+rLoad;[rawManualLoad rload rawLoad];[common];command;None;brackets;[];[data];None;None;False;0;False
 rollL;[rol <-];[common];command;None;brackets;[];variable {number|variable|register|stringConst};write;None;True;1;False
 rollR;[ror ->];[common];command;None;brackets;[];variable {number|variable|register|stringConst};write;None;True;1;False
 screen;[scr];[common];command;end;brackets;[screenroutines];[string];None;0;False;0;False

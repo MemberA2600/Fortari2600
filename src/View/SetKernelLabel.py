@@ -24,6 +24,7 @@ class SetKernelLabel:
 
         self.optionValue = StringVar()
         self.optionValue.set("common")
-        self.__option = OptionMenu(self.__frame, self.optionValue, tuple(self.__loader.virtualMemory.kernel_types))
+
+        self.__option = OptionMenu(self.__frame, self.optionValue, *tuple(self.__loader.virtualMemory.kernel_types))
         self.__option.config(font=font)
         self.__option.pack(side=LEFT, anchor=E, fill=BOTH)
