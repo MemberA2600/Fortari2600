@@ -661,3 +661,5 @@ duplicateOnData=#LABEL# appers multiple times on this data file.
 illegalCharacter=Illegal character(s) in #LABEL#! #ILLEGALS# are not accepted!
 illegalTag=Illegal tag(s) in #LABEL#! #ILLEGALS# are not accepted!
 addEndByte=Add EndByte
+endsEnd=#LABEL# ends with '_ENDBYTE'! '_ENDBYTE' is reserved for... End Bytes! 
+startTag=#LABEL# does not start with #BANK# or #NAME#!

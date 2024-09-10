@@ -659,3 +659,5 @@ duplicateOnData=#LABEL# többször elõfordul ebben az adatfájlban!
 illegalCharacter=Nem megengedett karakter(ek) a #LABEL#-ben! A #ILLEGALS# nem elfogadott(ak)!
 illegalTag=Nem megengedett tag(ek) a #LABEL#-ben! #ILLEGALS# nem elfogadott(ak)!
 addEndByte=EndByte hozzáadása
+endsEnd=#LABEL# '_ENDBYTE'-re végzõdik!! Az '_ENDBYTE' a... záró bájtokat jelöli!
+startTag=A #LABEL# nem #BANK# vagy #NAME# taggel kezdõdik!

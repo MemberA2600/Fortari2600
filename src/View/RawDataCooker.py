@@ -214,12 +214,23 @@ class RawDataCooker:
     def replaceTags(self, label, bank, section, folder, fName):
         label = label.replace("##", "#")
 
-        tags = {
-            "#BANK#": bank, "#SECTION#": section, "#FULL#": bank + "_" + section
-        }
+        if folder == "raw":
+            tags = {
+                "#BANK#": bank
+            }
 
-        if folder != None and fName != None:
-           tags["#NAME#"] = bank + "_" + fName + "_" + folder
+            if fName  != None: tags["#NAME#"] = fName
+            tags["#FOLDER#"] = "raw"
+
+            if folder != None and fName != None:
+                tags["#FULL#"] = bank + "_" + fName + "_raw"
+        else:
+            tags = {
+                "#BANK#": bank, "#FULL#": bank + "_" + section
+            }
+
+            if folder != None and fName != None:
+               tags["#NAME#"] = bank + "_" + fName + "_" + folder
 
         for tag in tags:
             label = label.replace(tag, tags[tag])
@@ -1051,6 +1062,16 @@ class RawDataCooker:
                                                     "#ILLEGALS#": ", ".join(illegals["tags"])}, lineNum)
               else:
                  self.removeError(lineNum, "illegalTag")
+
+              if value.endswith("_ENDBYTE"):
+                 self.addError("endsEnd", {"#LABEL#": value}, lineNum)
+              else:
+                 self.removeError(lineNum, "endsEnd")
+
+              if value.startswith("#BANK#") == False and value.startswith("#NAME#") == False:
+                 self.addError("startTag", {"#LABEL#": value}, lineNum)
+              else:
+                 self.removeError(lineNum, "startTag")
 
         if wasError      == False:
            self.__changed = True
