@@ -46,8 +46,9 @@ class RawDataCooker:
         self.__numberOfLines = 20
         self.__Y             = 0
 
-        self.__counterNumber = [0, None]
-        self.__counterLabel  = [0, None]
+        self.__counterNumber  = [0, None]
+        self.__counterLabel   = [0, None]
+        self.__counterEntries = [0, None]
         self.__labelErrors   = []
         self.__labelsInText  = {}
 
@@ -454,7 +455,7 @@ class RawDataCooker:
 
         self.__indexButton1 = Button(self.__indexButtonsFrame1, height=self.__loaderFrame.winfo_height() // per,
                                        width=self.__loaderFrame.winfo_width() // 2,
-                                       name="indexButtonUp",
+                                       name="indexButton-",
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
                                        text = "<<", font = self.__normalFont,
@@ -466,7 +467,7 @@ class RawDataCooker:
 
         self.__indexButton2 = Button(self.__indexButtonsFrame2, height=self.__loaderFrame.winfo_height() // per,
                                        width=self.__loaderFrame.winfo_width() // 2,
-                                       name="indexButtonDown",
+                                       name="indexButton+",
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
                                        text = ">>", font = self.__normalFont,
@@ -477,15 +478,30 @@ class RawDataCooker:
         self.__indexButton2.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<KeyRelease>",
-                                                            self.__checkEntry, 1)
+                                                            self.entryCounter, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__numOfLinesEntry, "<FocusOut>",
                                                             self.__checkEntry, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yIndexEntry, "<KeyRelease>",
-                                                            self.__checkEntry, 1)
+                                                            self.entryCounter, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__yIndexEntry, "<FocusOut>",
                                                             self.__checkEntry, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexButton1, "<Button-1>",
+                                                            self.addSub, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexButton2, "<Button-1>",
+                                                            self.addSub, 1)
 
         self.__running -= 1
+
+    def addSub(self, event):
+        button = event.widget
+        name = str(button).split(".")[-1].split("_")[-1]
+
+        if button.cget("state") == DISABLED: return
+
+        self.__checkEntry(event)
+
+    def entryCounter(self, event):
+        self.__counterEntries = [5, event]
 
     def __checkEntry(self, event):
         entry = event.widget
@@ -493,8 +509,17 @@ class RawDataCooker:
 
         if entry.cget("state") == DISABLED: return
 
+        self.__counterEntries = [0, None]
+
         maxIndex    = self.__numberOfLines - len(self.__lineData)
         if maxIndex < 0: maxIndex = 0
+
+        wasButton = False
+        if "indexButton" in name:
+            changers = {"+": 1, "-": -1}
+            self.__yIndexEntryVal.set(str(self.__Y + changers[name[-1]]))
+            name = "yIndex"
+            wasButton = True
 
         valuesOnName = {
             "numOfLines": [[1, 256]     , self.__numOfLinesEntryVal],
@@ -504,7 +529,46 @@ class RawDataCooker:
         entryVal = valuesOnName[name][1]
         value    = entryVal.get()
 
+        try:
+            num     = int(value)
+        except:
+            entry.config(bg=self.__loader.colorPalettes.getColor("boxBackUnSaved"),
+                        fg=self.__loader.colorPalettes.getColor("boxFontUnSaved"),
+                        )
 
+        if wasButton == False:
+           entry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                        fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                        )
+        else:
+           self.__yIndexEntry.config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                         fg=self.__loader.colorPalettes.getColor("boxFontNormal"),
+                         )
+
+        if   num < valuesOnName[name][0][0]: num = valuesOnName[name][0][0]
+        elif num > valuesOnName[name][0][1]: num = valuesOnName[name][0][1]
+
+        entryVal.set(str(num))
+
+        if   name == "numOfLines":
+             origNum = self.__numberOfLines
+             self.__numberOfLines = num
+
+             maxIndex    = self.__numberOfLines - len(self.__lineData)
+             if self.__Y > maxIndex:
+                self.__Y = maxIndex
+                self.__yIndexEntryVal.set(str(maxIndex))
+
+        elif name == "yIndex":
+             origNum = self.__Y
+             self.__Y = num
+
+        if origNum != num:
+           self.fillLineDataEnd()
+           self.fillTheEditor()
+           self.colorLabels(None)
+
+           self.__changed = True
 
     def __checkIfValidFileName(self, event):
 
@@ -554,6 +618,12 @@ class RawDataCooker:
 
                    self.__counterLabel[0] -= 1
 
+                if self.__counterEntries[0] > 0:
+                   if self.__counterEntries[0] == 1:
+                      self.__checkEntry(self.__counterEntries[1])
+
+                   self.__counterEntries[0] -= 1
+
                 if self.__numberOfLines <= len(self.__lineData):
                    self.__indexButton1.config(state = DISABLED)
                    self.__indexButton2.config(state = DISABLED)
@@ -576,7 +646,7 @@ class RawDataCooker:
     def fillLineDataEnd(self):
 
         schema = {
-            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": False
+            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": 0, "wasSelected": 0
         }
 
         if len(self.__allData) < self.__numberOfLines:
@@ -623,18 +693,23 @@ class RawDataCooker:
                            bg=self.__colors.getColor("boxBackNormal")
                        )
 
-                   self.__lineData[lineNumOnEditor]["entryVal"].set(self.__allData[lineNum]["entry"])
-                   self.__lineData[lineNumOnEditor]["labelVal"].set(self.__allData[lineNum]["label"])
+               self.__lineData[lineNumOnEditor]["entryVal"].set(self.__allData[lineNum]["entry"])
+               self.__lineData[lineNumOnEditor]["labelVal"].set(self.__allData[lineNum]["label"])
 
-                   self.__lineData[lineNumOnEditor]["entry"]     .config(state = NORMAL)
-                   self.__lineData[lineNumOnEditor]["labelEntry"].config(state = NORMAL)
+               self.__lineData[lineNumOnEditor]["entry"]     .config(state = NORMAL)
+               self.__lineData[lineNumOnEditor]["labelEntry"].config(state = NORMAL)
 
-                   if self.__allData[lineNum]["label"] == "":
-                      self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
-                      self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
-                   else:
-                      self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
-                      self.__lineData[lineNumOnEditor]["emdVar"].config(state=NORMAL)
+               if self.__allData[lineNum]["label"] == "":
+                  self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["endVarVar"].set(0)
+                  self.__lineData[lineNumOnEditor]["selectVal"].set(0)
+               else:
+                  self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["endVar"].config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["endVarVar"].set(self.__allData[lineNum]["addEndByte"])
+                  self.__lineData[lineNumOnEditor]["selectVal"].set(self.__allData[lineNum]["wasSelected"])
+
 
     def clicked(self, event):
         if self.__running > 0: return
@@ -973,8 +1048,9 @@ class RawDataCooker:
                 self.__lineData[-1]["endVarVar"] = IntVar()
                 self.__lineData[-1]["endVar"] = Checkbutton(fAddEndByte, width=fSelectEntry.winfo_width(),
                                                 bg=self.__colors.getColor("window"),
+                                                name="endVar_" + str(lineNum),
                                                 justify=CENTER,
-                                                variable=self.__lineData[-1]["endVar"],
+                                                variable=self.__lineData[-1]["endVarVar"],
                                                 activebackground=self.__colors.getColor("highLight"),
                                                 command=None
                                                 )
@@ -985,6 +1061,7 @@ class RawDataCooker:
                 self.__lineData[-1]["selectVal"] = IntVar()
                 self.__lineData[-1]["select"] = Checkbutton(fSelectEntry, width=fSelectEntry.winfo_width(),
                                                 bg=self.__colors.getColor("window"),
+                                                name = "select_" + str(lineNum),
                                                 justify=CENTER,
                                                 variable=self.__lineData[-1]["selectVal"],
                                                 activebackground=self.__colors.getColor("highLight"),
@@ -1002,11 +1079,28 @@ class RawDataCooker:
                                                                     self.setCounterNumber2, 1)
                 self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["labelEntry"], "<FocusOut>",
                                                                     self.checkLabel, 1)
-
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["select"], "<Button-1>",
+                                                                    self.clickedButton, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["endVar"], "<Button-1>",
+                                                                    self.clickedButton, 1)
 
         self.__allData = []
         self.fillLineDataEnd()
         self.__running -= 1
+
+    def clickedButton(self, event):
+        button = event.widget
+        name  = str(button).split(".")[-1]
+
+        if button.cget("state") == DISABLED: return
+
+        typ    = name.split("_")[0]
+        lineNum = int(name.split("_")[1])
+
+        keys = {"select": "wasSelected", "endVar": "addEndByte"}
+
+        self.__allData[lineNum + self.__Y][keys[typ]] = 1 - self.__allData[lineNum + self.__Y][keys[typ]]
+        #print(self.__lineData[lineNum]["endVarVar"].get(), lineNum )
 
     def checkLabel(self, event):
         entry = event.widget
@@ -1019,6 +1113,7 @@ class RawDataCooker:
         lineNum = int(name.split("_")[-1])
 
         value = self.__lineData[lineNum]["labelVal"].get()
+        wasError = False
 
         if value == "":
            self.__changed = True
@@ -1030,46 +1125,76 @@ class RawDataCooker:
                  self.addError("duplicateLabel", {
                      "#LABEL#": value, "#SECONDONE#": self.__loader.dictionaries.getWordFromCurrentLanguage(self.__labelsInText[value]),
                  }, lineNum)
+                 wasError = True
               else:
                  self.removeError(lineNum, "duplicateLabel")
 
               if self.glen(value) < 8 or len(value) < 8:
                  self.addError("labelTooShort", {"#LABEL#": value} , lineNum)
+                 wasError = True
               else:
                  self.removeError(lineNum, "labelTooShort")
 
-              currentLineNum = lineNum + self.__Y
+              collectLabelNums = {}
 
               for lNum in range(0, self.__numberOfLines):
-                  if lNum == currentLineNum: continue
+                  #if lNum == lineNum: continue
 
-                  if self.__allData[lNum]["label"] == value:
+                  """  
+                  if self.__lineData[lNum]["labelVal"].get() == value:
                      self.addError("duplicateOnData", {"#LABEL#": value} , lineNum)
-                     #self.addError("duplicateOnData", {"#LABEL#": value} , lNum)
+                     if "duplicateOnData" not in self.__labelErrors[lNum].keys():
+                         self.addError("duplicateOnData", {"#LABEL#": value} , lNum)
+                     wasError = True
                   else:
                      self.removeError(lineNum, "duplicateOnData")
+                  """
+                  if self.__lineData[lNum]["labelVal"].get() == "":
+                     self.removeError(lNum, "duplicateOnData")
+                  else:
+                      if self.__lineData[lNum]["labelVal"].get() not in collectLabelNums:
+                         collectLabelNums[self.__lineData[lNum]["labelVal"].get()]  = [1, [lNum]]
+                      else:
+                         collectLabelNums[self.__lineData[lNum]["labelVal"].get()][0] += 1
+                         collectLabelNums[self.__lineData[lNum]["labelVal"].get()][1].append(lNum)
+
+              for key in collectLabelNums:
+                  if collectLabelNums[key][0] > 1:
+                     for lNum in collectLabelNums[key][1]:
+                         self.addError("duplicateOnData", {"#LABEL#": value}, lNum)
+                  else:
+                      self.removeError(collectLabelNums[key][1][0], "duplicateOnData")
+
 
               illegals = self.getIllegals(value)
 
               if len(illegals["chars"]) > 0:
                  self.addError("illegalCharacter", {"#LABEL#"   : value,
                                                     "#ILLEGALS#": ", ".join(illegals["chars"])}, lineNum)
+                 wasError = True
+
               else:
                  self.removeError(lineNum, "illegalCharacter")
 
               if len(illegals["tags"]) > 0:
                  self.addError("illegalTag", {"#LABEL#": value,
                                                     "#ILLEGALS#": ", ".join(illegals["tags"])}, lineNum)
+                 wasError = True
+
               else:
                  self.removeError(lineNum, "illegalTag")
 
               if value.endswith("_ENDBYTE"):
                  self.addError("endsEnd", {"#LABEL#": value}, lineNum)
+                 wasError = True
+
               else:
                  self.removeError(lineNum, "endsEnd")
 
               if value.startswith("#BANK#") == False and value.startswith("#NAME#") == False:
                  self.addError("startTag", {"#LABEL#": value}, lineNum)
+                 wasError = True
+
               else:
                  self.removeError(lineNum, "startTag")
 
@@ -1171,6 +1296,8 @@ class RawDataCooker:
                   self.__lineData[num]["select"].config(state = DISABLED)
                   self.__lineData[num]["endVarVar"].set(0)
                   self.__lineData[num]["endVar"].config(state = DISABLED)
+                  self.__allData[num + self.__Y]["addEndByte"] = 0
+                  self.__allData[num + self.__Y]["wasSelected"] = 0
 
                else:
                   self.__lineData[num]["select"].config(state = NORMAL)
@@ -1180,13 +1307,14 @@ class RawDataCooker:
                self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),
                                                          fg=self.__colors.getColor("boxFontUnSaved"))
 
-               if lineNum == num or errorText == "":
-                  key = ""
-                  for key in self.__labelErrors[num].keys():
-                      pass
+               if lineNum != None:
+                   if lineNum == num or errorText == "":
+                      key = ""
+                      for key in self.__labelErrors[num].keys():
+                          pass
 
-                  self.__errorLineNum = num
-                  errorText = self.__labelErrors[num][key]
+                      self.__errorLineNum = num
+                      errorText = self.__labelErrors[num][key]
 
         if errorText == "":
            self.__errorString.set("")
