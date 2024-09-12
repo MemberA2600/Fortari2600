@@ -661,3 +661,7 @@ illegalTag=Nem megengedett tag(ek) a #LABEL#-ben! #ILLEGALS# nem elfogadott(ak)!
 addEndByte=EndByte hozzáadása
 endsEnd=#LABEL# '_ENDBYTE'-re végzõdik!! Az '_ENDBYTE' a... záró bájtokat jelöli!
 startTag=A #LABEL# nem #BANK# vagy #NAME# taggel kezdõdik!
+endByteType=Záróbájt Típusa
+autoWhole=Automatikus az Összesre
+autoLayer=Automatikus Egyesével
+manualWhole=Kézileg az Összesre

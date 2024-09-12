@@ -663,3 +663,7 @@ illegalTag=Illegal tag(s) in #LABEL#! #ILLEGALS# are not accepted!
 addEndByte=Add EndByte
 endsEnd=#LABEL# ends with '_ENDBYTE'! '_ENDBYTE' is reserved for... End Bytes! 
 startTag=#LABEL# does not start with #BANK# or #NAME#!
+endByteType=End Byte Type
+autoWhole=Auto Generated for Whole
+autoLayer=Auto Generated for Each
+manualWhole=Manually Set for Whole

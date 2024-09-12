@@ -14,6 +14,7 @@ class RawDataCooker:
         self.__changed = False
         self.__loader.stopThreads.append(self)
         self.__done = False
+        self.__allDataReady = False
 
         self.__config = self.__loader.config
         self.__dictionaries = self.__loader.dictionaries
@@ -335,7 +336,7 @@ class RawDataCooker:
                                                 "rawName", self.__checkIfValidFileName, self.__loaderFrame.winfo_width() // 2,
                                                 self.__open, self.__save)
 
-        per = 8
+        per = 9
 
         self.__numOfLinesFrame = Frame(self.__loaderFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -490,7 +491,215 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__indexButton2, "<Button-1>",
                                                             self.addSub, 1)
 
+        self.__lastBigFrame = Frame(self.__loaderFrame,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width(),
+                                        height=self.__loaderFrame.winfo_height())
+
+        self.__lastBigFrame.pack_propagate(False)
+        self.__lastBigFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__lastBigFrame1 = Frame(self.__lastBigFrame,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width() // 3,
+                                        height=self.__loaderFrame.winfo_height())
+
+        self.__lastBigFrame1.pack_propagate(False)
+        self.__lastBigFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__lastBigFrame2 = Frame(self.__lastBigFrame,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width() // 3 * 2,
+                                        height=self.__loaderFrame.winfo_height())
+
+        self.__lastBigFrame2.pack_propagate(False)
+        self.__lastBigFrame2.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        while self.__lastBigFrame.winfo_width() < 2: sleep(0.00000001)
+
+        self.__endLabelFrame = Frame(self.__lastBigFrame1,
+                                        bg=self.__loader.colorPalettes.getColor("window"),
+                                        width=self.__loaderFrame.winfo_width() // 3,
+                                        height=self.__loaderFrame.winfo_height() // per // 2)
+
+        self.__endLabelFrame.pack_propagate(False)
+        self.__endLabelFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__endLabel = Label(self.__endLabelFrame,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   fg=self.__loader.colorPalettes.getColor("font"), justify=LEFT,
+                                   font=self.__miniFont,
+                                   text=self.__loader.dictionaries.getWordFromCurrentLanguage("endByteType") + " >>",
+                                   height=1)
+
+        self.__endLabel.pack_propagate(False)
+        self.__endLabel.pack(side=LEFT, anchor=W)
+
+        self.__radioButtonVar = IntVar()
+        self.__radioButtonThings = [{}, {}, {}]
+
+        self.__wordKeyList = ["autoWhole" , "autoLayer", "manualWhole"]
+        self.__radioButtonVar.set(1)
+
+        for num in range(0, 3):
+            self.__radioButtonThings[num]["frame"] = Frame(self.__lastBigFrame2,
+                                                            bg=self.__loader.colorPalettes.getColor("window"),
+                                                            width=self.__loaderFrame.winfo_width() // 3 * 2,
+                                                            height=self.__loaderFrame.winfo_height() // per)
+
+            self.__radioButtonThings[num]["frame"].pack_propagate(False)
+            self.__radioButtonThings[num]["frame"].pack(side=TOP, anchor=N, fill=X)
+
+            self.__radioButtonThings[num]["button"] = Radiobutton(self.__radioButtonThings[num]["frame"],
+                                                  text=self.__dictionaries.getWordFromCurrentLanguage(self.__wordKeyList[num]),
+                                                  name="radio_" + self.__wordKeyList[num],
+                                                  bg=self.__colors.getColor("window"),
+                                                  fg=self.__colors.getColor("font"),
+                                                  justify=LEFT, font=self.__miniFont,
+                                                  variable=self.__radioButtonVar,
+                                                  activebackground=self.__colors.getColor("highLight"),
+                                                  activeforeground=self.__loader.colorPalettes.getColor("font"),
+                                                  value = num + 1, command=None
+                                                  )
+
+            self.__radioButtonThings[num]["button"].pack_propagate(False)
+            self.__radioButtonThings[num]["button"].pack(side=LEFT, anchor=W)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__radioButtonThings[num]["button"],
+                                                                "<Button-1>",
+                                                                self.radioClicked, 1)
+
+            if self.__wordKeyList[num] == "manualWhole":
+               self.__radioButtonThings[num]["entryFrame"] = Frame(self.__radioButtonThings[num]["frame"],
+                                                               bg=self.__loader.colorPalettes.getColor("window"),
+                                                               width=self.__loaderFrame.winfo_width() // 3 * 2,
+                                                               height=self.__loaderFrame.winfo_height() // per)
+
+               self.__radioButtonThings[num]["entryFrame"].pack_propagate(False)
+               self.__radioButtonThings[num]["entryFrame"].pack(side=LEFT, anchor=W, fill=BOTH)
+
+               self.__radioButtonThings[num]["endVarVar"]   = StringVar()
+               self.__radioButtonThings[num]["endVarEntry"] = Entry(self.__radioButtonThings[num]["entryFrame"],
+                                                                    name="entry_ManualEndByte",
+                                                                    bg=self.__colors.getColor("boxBackNormal"),
+                                                                    fg=self.__colors.getColor("boxFontNormal"),
+                                                                    width=9999, justify=CENTER, state=DISABLED,
+                                                                    textvariable=self.__radioButtonThings[num]["endVarVar"],
+                                                                    font=self.__normalFont
+                                                                    )
+
+               self.__radioButtonThings[num]["endVarEntry"].pack_propagate(False)
+               self.__radioButtonThings[num]["endVarEntry"].pack(fill=X, side=TOP, anchor=N)
+
+               self.__loader.threadLooper.bindingMaster.addBinding(self, self.__radioButtonThings[num]["endVarEntry"], "<KeyRelease>",
+                                                                    self.setCounterNumber, 1)
+               self.__loader.threadLooper.bindingMaster.addBinding(self, self.__radioButtonThings[num]["endVarEntry"], "<FocusOut>",
+                                                                    self.checkNumber, 1)
+        self.__getTheEndByte(None)
         self.__running -= 1
+
+    def radioClicked(self, event):
+        button = event.widget
+        name = str(button).split(".")[-1].split("_")[-1]
+
+        if button.cget("state") == DISABLED: return
+
+        num = self.__wordKeyList.index(name)
+        self.__radioButtonVar.set(num+1)
+
+        if name == "manualWhole":
+           self.__radioButtonThings[2]["endVarEntry"].config(state = NORMAL)
+        else:
+           self.__radioButtonThings[2]["endVarEntry"].config(state = DISABLED)
+           self.__radioButtonThings[2]["endVarVar"]  .set("")
+
+        self.__getTheEndByte(None)
+
+    def __getTheEndByte(self, label):
+       num = self.__radioButtonVar.get()
+
+       if   num == 1:
+            return self.formatNum(self.__getPossibeValidEndBytes(None)[-1], "hex")
+       elif num == 2:
+            return self.formatNum(self.__getPossibeValidEndBytes(label)[-1], "hex")
+       else:
+            possibleOnes = self.__getPossibeValidEndBytes(None)[0]
+
+            try:
+               theNumber = self.__radioButtonThings[2]["endVarVar"].get()
+
+               if theNumber.startswith("#"): vtheNumber = theNumber[1:]
+               valOfEntry = self.getInt(theNumber)
+
+               if theNumber.startswith("%"):
+                   mode = "bin"
+               elif theNumber.startswith("$"):
+                   mode = "hex"
+               else:
+                   mode = "dec"
+
+               found = False
+               for num in possibleOnes:
+                   if num == valOfEntry:
+                      found = True
+                      break
+
+               if found == False:
+                  returnMe = self.formatNum(self.getClosest(valOfEntry, possibleOnes), mode)
+               else:
+                  returnMe = theNumber
+            except:
+               returnMe = "$FF"
+
+            self.__radioButtonThings[2]["endVarVar"].set(returnMe)
+            self.__radioButtonThings[2]["endVarEntry"].config(bg=self.__loader.colorPalettes.getColor("boxBackNormal"),
+                                                              fg=self.__loader.colorPalettes.getColor("boxFontNormal"))
+            return returnMe
+
+    def getClosest(self, val, array):
+        diff = 9999
+        num  = -1
+
+        for n in array:
+            d = abs(val - n)
+
+            if d < diff:
+               diff   = d
+               num    = n
+
+        return num
+
+    def getInt(self, theNumber):
+        if   theNumber.startswith("%"):
+             return int(theNumber.replace("%", "0b"), 2)
+
+        elif theNumber.startswith("$"):
+             return int(theNumber.replace("$", "0x"), 16)
+
+        else:
+             return int(theNumber)
+
+    def __getPossibeValidEndBytes(self, label):
+        numbers = list(range(0, 256))
+        foundLabel = False
+
+        while self.__allDataReady == False: sleep(0.000001)
+
+        for line in self.__allData:
+            if label not in [None, "", "None"]:
+               if line["label"] != "":
+                  if foundLabel == False:
+                     if label == line["label"]: foundLabel = True
+                  else:
+                     break
+
+               if foundLabel == False: continue
+
+            if line["entry"] == "": continue
+            v = self.getInt(line["entry"])
+            if v in numbers: numbers.remove(v)
+
+        return numbers
 
     def addSub(self, event):
         button = event.widget
@@ -565,10 +774,15 @@ class RawDataCooker:
 
         if origNum != num:
            self.fillLineDataEnd()
-           self.fillTheEditor()
-           self.colorLabels(None)
-
            self.__changed = True
+
+        self.deleteErrors()
+        self.fillTheEditor()
+        self.colorLabels(None)
+
+    def deleteErrors(self):
+        for num in range(0, len(self.__lineData)):
+            self.__labelErrors[num] = {}
 
     def __checkIfValidFileName(self, event):
 
@@ -653,6 +867,7 @@ class RawDataCooker:
            for num in range(0, self.__numberOfLines - len(self.__allData)):
                self.__allData.append(deepcopy(schema))
 
+        self.__allDataReady = True
         self.fillTheEditor()
 
     def fillTheEditor(self):
@@ -763,16 +978,7 @@ class RawDataCooker:
         binString = "0b"
         for bitNum2 in range(7, -1, -1): binString += str(self.__lineData[lineNum]["bitVals"][bitNum2])
 
-        theNumber = int(binString, 2)
-
-        if   mode == "bin":
-             theNumber = bin(theNumber).replace("0b", "")
-             theNumber = "%" + ((8 - len(theNumber)) * "0") + theNumber
-        elif mode == "hex":
-             theNumber = hex(theNumber).replace("0x", "")
-             theNumber = "$" + ((2 - len(theNumber)) * "0") + theNumber
-        else:
-             theNumber = str(theNumber)
+        theNumber = self.formatNum(int(binString, 2), mode)
 
         self.__lineData[lineNum]["entryVal"].set(theNumber)
         self.__changed = True
@@ -783,6 +989,16 @@ class RawDataCooker:
         self.__allData[lineNum + self.__Y]["entry"] = value
         self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
         self.__changed = True
+
+    def formatNum(self, theNumber, mode):
+        if   mode == "bin":
+             theNumber = bin(theNumber).replace("0b", "")
+             return "%" + ((8 - len(theNumber)) * "0") + theNumber
+        elif mode == "hex":
+             theNumber = hex(theNumber).replace("0x", "")
+             return "$" + ((2 - len(theNumber)) * "0") + theNumber
+        else:
+             return str(theNumber)
 
     def shiftON(self, event):
         self.__ctrl = True
@@ -804,12 +1020,18 @@ class RawDataCooker:
 
         self.__counterNumber =  [0, None]
 
-        lineNum = int(name.split("_")[-1])
+        if  name.split("_")[-1] == "ManualEndByte":
+            value = self.__radioButtonThings[2]["endVarVar"].get()
+        else:
+            lineNum = int(name.split("_")[-1])
+            value = self.__lineData[lineNum]["entryVal"].get()
 
-        value = self.__lineData[lineNum]["entryVal"].get()
         if value == "":
            entry.config(bg=self.__colors.getColor("boxBackNormal"),
                          fg=self.__colors.getColor("boxFontNormal"))
+
+           if name.split("_")[-1] == "ManualEndByte": self.__getTheEndByte(None)
+
            return
 
         if value.startswith("#"): value = value[1:]
@@ -827,6 +1049,9 @@ class RawDataCooker:
         except:
             entry.config(bg = self.__colors.getColor("boxBackUnSaved"),
                          fg = self.__colors.getColor("boxFontUnSaved"))
+
+            if name.split("_")[-1] == "ManualEndByte": self.__getTheEndByte(None)
+
             return
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"),
@@ -847,25 +1072,32 @@ class RawDataCooker:
              if len(value) == 1: value = "0" + value
              value = "$" + value
 
-        self.__lineData[lineNum]["entryVal"].set(str(value))
-        self.__allData [lineNum + self.__Y]["entry"] = str(value)
+        if  name.split("_")[-1] == "ManualEndByte":
+            self.__radioButtonThings[2]["endVarVar"].set(str(value))
+        else:
+            self.__lineData[lineNum]["entryVal"].set(str(value))
+            self.__allData [lineNum + self.__Y]["entry"] = str(value)
 
-        for bitNum in range(0, 8):
-            val = binVal[7-bitNum]
-
-            self.__lineData[lineNum]["bitVals"][bitNum] = int(val)
-
-            colors = {
-                "0": [self.__colors.getColor("boxBackNormal")],
-                "1": [self.__colors.getColor("boxFontNormal")],
-            }
-
-            self.__lineData[lineNum]["bitButtons"][bitNum].config(
-                   bg = colors[val])
-
-        self.__changed = True
         entry.icursor = len(str(value))
-        self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
+
+        if  name.split("_")[-1] != "ManualEndByte":
+            for bitNum in range(0, 8):
+                val = binVal[7-bitNum]
+
+                self.__lineData[lineNum]["bitVals"][bitNum] = int(val)
+
+                colors = {
+                    "0": [self.__colors.getColor("boxBackNormal")],
+                    "1": [self.__colors.getColor("boxFontNormal")],
+                }
+
+                self.__lineData[lineNum]["bitButtons"][bitNum].config(
+                       bg = colors[val])
+
+            self.__changed = True
+            self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
+        else:
+            self.__getTheEndByte(None)
 
     def __createEditorLines(self):
         self.__running += 1
@@ -1161,6 +1393,8 @@ class RawDataCooker:
               for key in collectLabelNums:
                   if collectLabelNums[key][0] > 1:
                      for lNum in collectLabelNums[key][1]:
+                         if lNum == lineNum: wasError = True
+
                          self.addError("duplicateOnData", {"#LABEL#": value}, lNum)
                   else:
                       self.removeError(collectLabelNums[key][1][0], "duplicateOnData")
