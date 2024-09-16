@@ -52,6 +52,8 @@ class RawDataCooker:
         self.__counterEntries = [0, None]
         self.__labelErrors   = []
         self.__labelsInText  = {}
+        self.__maskByte      = "$00"
+        self.__numberOfSelecteds = 0
 
         self.__errorLineNum  = -1
 
@@ -308,12 +310,197 @@ class RawDataCooker:
         t.daemon = True
         t.start()
 
+        t = Thread(target = self.createOthersFrame)
+        t.daemon = True
+        t.start()
+
         self.__loader.threadLooper.addToThreading(self, self.__loop, [], 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_L>" , self.shiftON, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_L>", self.shiftOff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyPress-Control_R>" , self.shiftON, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "<KeyRelease-Control_R>", self.shiftOff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__topLevelWindow, "Button-2>"             , self.drawMode, 1)
+
+    def createOthersFrame(self):
+        self.__running += 1
+
+        while self.__othersFrame.winfo_height() < 2: sleep(0.000001)
+
+        per = 9
+
+        self.__generatorTitleFrame = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__generatorTitleFrame.pack_propagate(False)
+        self.__generatorTitleFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__generatorTitleLabel = Label(self.__generatorTitleFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"), justify = LEFT,
+                                   font = self.__smallFont, text = self.__loader.dictionaries.getWordFromCurrentLanguage("alterSelectedData") + ":",
+                                   height = 1)
+
+        self.__generatorTitleLabel.pack_propagate(False)
+        self.__generatorTitleLabel.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__mirroringFrames = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__mirroringFrames.pack_propagate(False)
+        self.__mirroringFrames.pack(side=TOP, anchor=N, fill=X)
+
+        while self.__mirroringFrames.winfo_height() < 2: sleep(0.000001)
+
+        self.__mirroringFrame1 = Frame(self.__mirroringFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 2,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__mirroringFrame1.pack_propagate(False)
+        self.__mirroringFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__mirroringFrame2 = Frame(self.__mirroringFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 2,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__mirroringFrame2.pack_propagate(False)
+        self.__mirroringFrame2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__mirroringButton1 = Button(self.__mirroringFrame1, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 2,
+                                       name="mirrorHorizontally",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("mirrorHorizontally"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__mirroringButton1.pack_propagate(False)
+        self.__mirroringButton1.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__mirroringButton2 = Button(self.__mirroringFrame2, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 2,
+                                       name="mirrorVertically",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("mirrorVertically"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__mirroringButton2.pack_propagate(False)
+        self.__mirroringButton2.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__maskingFrames = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__maskingFrames.pack_propagate(False)
+        self.__maskingFrames.pack(side=TOP, anchor=N, fill=X)
+
+        self.__maskingFrames1 = Frame(self.__maskingFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 3,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__maskingFrames1.pack_propagate(False)
+        self.__maskingFrames1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__maskingFrames2 = Frame(self.__maskingFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 3,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__maskingFrames2.pack_propagate(False)
+        self.__maskingFrames2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__maskingFrames3 = Frame(self.__maskingFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 3,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__maskingFrames3.pack_propagate(False)
+        self.__maskingFrames3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__maskingButton = Button(self.__maskingFrames3, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 2,
+                                       name="maskData",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("maskData"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__maskingButton.pack_propagate(False)
+        self.__maskingButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__radioButtonVar2 = IntVar()
+        self.__radioButtonThings2 = [{}, {}, {}, {}]
+
+        self.__wordKeyList2 = ["NOT", "AND" , "OR", "XOR"]
+        self.__radioButtonVar2.set(1)
+
+        self.__changeIfSelected = [self.__mirroringButton1, self.__mirroringButton2, self.__maskingButton]
+
+        while self.__maskingFrames1.winfo_width() < 2: sleep(0.000000001)
+
+        for num in range(0, 4):
+            self.__radioButtonThings2[num]["frame"] = Frame(self.__maskingFrames1,
+                                                            bg=self.__loader.colorPalettes.getColor("window"),
+                                                            width=self.__maskingFrames1.winfo_width() // 4,
+                                                            height=self.__maskingFrames1.winfo_height() // per)
+
+            self.__radioButtonThings2[num]["frame"].pack_propagate(False)
+            self.__radioButtonThings2[num]["frame"].pack(side=LEFT, anchor=W, fill=Y)
+
+            self.__radioButtonThings2[num]["button"] = Radiobutton(self.__radioButtonThings2[num]["frame"],
+                                                  text=self.__wordKeyList2[num],
+                                                  name="radio2_" + self.__wordKeyList2[num],
+                                                  bg=self.__colors.getColor("window"),
+                                                  fg=self.__colors.getColor("font"),
+                                                  justify=LEFT, font=self.__miniFont,
+                                                  variable=self.__radioButtonVar2, state = DISABLED,
+                                                  activebackground=self.__colors.getColor("highLight"),
+                                                  activeforeground=self.__loader.colorPalettes.getColor("font"),
+                                                  value = num + 1, command=None
+                                                  )
+
+            self.__radioButtonThings2[num]["button"].pack_propagate(False)
+            self.__radioButtonThings2[num]["button"].pack(side=LEFT, anchor=W)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__radioButtonThings2[num]["button"],
+                                                                "<Button-1>",
+                                                                self.radioClicked, 1)
+
+            self.__changeIfSelected.append(self.__radioButtonThings2[num]["button"])
+
+        self.__maskNumberVar = StringVar()
+        self.__maskNumberVar.set(self.__maskByte)
+        self.__maskNumberEntry = Entry(self.__maskingFrames2,
+                                            name="entry_MaskByte",
+                                            bg=self.__colors.getColor("boxBackNormal"),
+                                            fg=self.__colors.getColor("boxFontNormal"),
+                                            width=9999, justify=CENTER, state=DISABLED,
+                                            textvariable=self.__maskNumberVar,
+                                            font=self.__normalFont
+                                            )
+
+        self.__maskNumberEntry.pack_propagate(False)
+        self.__maskNumberEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maskNumberEntry,
+                                                            "<KeyRelease>",
+                                                            self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maskNumberEntry,
+                                                            "<FocusOut>",
+                                                            self.checkNumber, 1)
+        self.__running -= 1
+
 
     def createLoaderFrame(self):
         self.__running += 1
@@ -552,7 +739,7 @@ class RawDataCooker:
 
             self.__radioButtonThings[num]["button"] = Radiobutton(self.__radioButtonThings[num]["frame"],
                                                   text=self.__dictionaries.getWordFromCurrentLanguage(self.__wordKeyList[num]),
-                                                  name="radio_" + self.__wordKeyList[num],
+                                                  name="radio1_" + self.__wordKeyList[num],
                                                   bg=self.__colors.getColor("window"),
                                                   fg=self.__colors.getColor("font"),
                                                   justify=LEFT, font=self.__miniFont,
@@ -600,20 +787,27 @@ class RawDataCooker:
 
     def radioClicked(self, event):
         button = event.widget
-        name = str(button).split(".")[-1].split("_")[-1]
+        name  = str(button).split(".")[-1].split("_")[-1]
+        group = int(str(button).split(".")[-1].split("_")[0][-1])
 
         if button.cget("state") == DISABLED: return
 
-        num = self.__wordKeyList.index(name)
-        self.__radioButtonVar.set(num+1)
+        if   group == 1:
+             num = self.__wordKeyList.index(name)
+             self.__radioButtonVar.set(num+1)
 
-        if name == "manualWhole":
-           self.__radioButtonThings[2]["endVarEntry"].config(state = NORMAL)
-        else:
-           self.__radioButtonThings[2]["endVarEntry"].config(state = DISABLED)
-           self.__radioButtonThings[2]["endVarVar"]  .set("")
+             if name == "manualWhole":
+                self.__radioButtonThings[2]["endVarEntry"].config(state = NORMAL)
+             else:
+                self.__radioButtonThings[2]["endVarEntry"].config(state = DISABLED)
+                self.__radioButtonThings[2]["endVarVar"]  .set("")
 
-        self.__getTheEndByte(None)
+             self.__getTheEndByte(None)
+        elif group == 2:
+             num = self.__wordKeyList2.index(name)
+             self.__radioButtonVar2.set(num+1)
+
+             self.enableDisableOthers()
 
     def __getTheEndByte(self, label):
        num = self.__radioButtonVar.get()
@@ -691,7 +885,7 @@ class RawDataCooker:
                   if foundLabel == False:
                      if label == line["label"]: foundLabel = True
                   else:
-                     break
+                     if line["entry"] != "": break
 
                if foundLabel == False: continue
 
@@ -871,7 +1065,6 @@ class RawDataCooker:
         self.fillTheEditor()
 
     def fillTheEditor(self):
-
         for lineNum in range(self.__Y, self.__Y + len(self.__lineData)):
             lineNumOnEditor = lineNum - self.__Y
             #print(lineNumOnEditor, lineNum, len(self.__lineData), len(self.__allData))
@@ -914,7 +1107,16 @@ class RawDataCooker:
                self.__lineData[lineNumOnEditor]["entry"]     .config(state = NORMAL)
                self.__lineData[lineNumOnEditor]["labelEntry"].config(state = NORMAL)
 
+               disable = False
                if self.__allData[lineNum]["label"] == "":
+                  disable = True
+               else:
+                  if lineNum < len(self.__allData) - 1:
+                      #print(self.__allData[lineNum + 1]["label"], self.__allData[lineNum]["entry"])
+                      if self.__allData[lineNum + 1]["label"] != "" and self.__allData[lineNum]["entry"] == "":
+                         disable = True
+
+               if disable:
                   self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVarVar"].set(0)
@@ -1020,11 +1222,13 @@ class RawDataCooker:
 
         self.__counterNumber =  [0, None]
 
-        if  name.split("_")[-1] == "ManualEndByte":
-            value = self.__radioButtonThings[2]["endVarVar"].get()
+        if   name.split("_")[-1] == "ManualEndByte":
+             value = self.__radioButtonThings[2]["endVarVar"].get()
+        elif name.split("_")[-1] == "MaskByte":
+             value = self.__maskNumberVar.get()
         else:
-            lineNum = int(name.split("_")[-1])
-            value = self.__lineData[lineNum]["entryVal"].get()
+             lineNum = int(name.split("_")[-1])
+             value = self.__lineData[lineNum]["entryVal"].get()
 
         if value == "":
            entry.config(bg=self.__colors.getColor("boxBackNormal"),
@@ -1072,11 +1276,13 @@ class RawDataCooker:
              if len(value) == 1: value = "0" + value
              value = "$" + value
 
-        if  name.split("_")[-1] == "ManualEndByte":
-            self.__radioButtonThings[2]["endVarVar"].set(str(value))
+        if   name.split("_")[-1] == "ManualEndByte":
+             self.__radioButtonThings[2]["endVarVar"].set(str(value))
+        elif name.split("_")[-1] == "MaskByte":
+             self.__maskByte.set(str(value))
         else:
-            self.__lineData[lineNum]["entryVal"].set(str(value))
-            self.__allData [lineNum + self.__Y]["entry"] = str(value)
+             self.__lineData[lineNum]["entryVal"].set(str(value))
+             self.__allData [lineNum + self.__Y]["entry"] = str(value)
 
         entry.icursor = len(str(value))
 
@@ -1326,13 +1532,38 @@ class RawDataCooker:
 
         if button.cget("state") == DISABLED: return
 
-        typ    = name.split("_")[0]
+        typ     = name.split("_")[0]
         lineNum = int(name.split("_")[1])
 
         keys = {"select": "wasSelected", "endVar": "addEndByte"}
 
         self.__allData[lineNum + self.__Y][keys[typ]] = 1 - self.__allData[lineNum + self.__Y][keys[typ]]
+
+        if typ == "select":
+           if self.__allData[lineNum + self.__Y][keys[typ]] == 1:
+              self.__numberOfSelecteds += 1
+           else:
+              self.__numberOfSelecteds -= 1
+
+           self.enableDisableOthers()
+
+
         #print(self.__lineData[lineNum]["endVarVar"].get(), lineNum )
+
+    def enableDisableOthers(self):
+        if self.__numberOfSelecteds == 0:
+           for item in self.__changeIfSelected:
+               item.config(state = DISABLED)
+
+           self.__maskNumberEntry.config(state = DISABLED)
+        else:
+           for item in self.__changeIfSelected:
+               item.config(state=NORMAL)
+
+           if self.__radioButtonVar2.get() > 1:
+               self.__maskNumberEntry.config(state = NORMAL)
+           else:
+               self.__maskNumberEntry.config(state = DISABLED)
 
     def checkLabel(self, event):
         entry = event.widget
@@ -1525,7 +1756,16 @@ class RawDataCooker:
                                                          fg = self.__colors.getColor("boxFontNormal"))
 
                self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
+
+               disable = False
                if self.__lineData[num]["labelVal"].get() == "":
+                  disable = True
+
+               if num < len(self.__allData) - 1:
+                   if self.__allData[num + 1]["label"] != "" and self.__allData[num]["entry"] == "":
+                      disable = True
+
+               if disable:
                   self.__lineData[num]["selectVal"].set(0)
                   self.__lineData[num]["select"].config(state = DISABLED)
                   self.__lineData[num]["endVarVar"].set(0)
@@ -1540,7 +1780,6 @@ class RawDataCooker:
             else:
                self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),
                                                          fg=self.__colors.getColor("boxFontUnSaved"))
-
                if lineNum != None:
                    if lineNum == num or errorText == "":
                       key = ""

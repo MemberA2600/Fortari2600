@@ -10,8 +10,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-09-11_070251.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-09-12_183242.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/RawDataCooker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/RawDataCooker.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,7 +33,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1726158761621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1726461001085" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1726120441642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -141,21 +140,21 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="6" />
+          <entry key="project.closed" value="8" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="4" />
-          <entry key="project.open.time.5" value="1" />
-          <entry key="project.opened" value="6" />
+          <entry key="project.open.time.4" value="5" />
+          <entry key="project.open.time.5" value="2" />
+          <entry key="project.opened" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="5923" />
+          <entry key="py" value="7678" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="5923" />
+          <entry key="Python" value="7678" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -178,17 +177,14 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="704" column="29" lean-forward="true" selection-start-line="704" selection-start-column="29" selection-end-line="704" selection-end-column="29" />
+            <state relative-caret-position="32">
+              <caret line="1528" column="21" selection-start-line="1528" selection-start-column="8" selection-end-line="1528" selection-end-column="21" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1726158761617" expanded="true" signature="34634:34830" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="34858:35110" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="35757:35777" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="35801:35981" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="36011:36060" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="38368:38466" ph="..." />
-                <marker date="1726158761617" expanded="true" signature="46609:46970" ph="..." />
+                <marker date="1726461058166" expanded="true" signature="15363:26180" ph="..." />
+                <marker date="1726461058166" expanded="true" signature="45945:46141" ph="..." />
+                <marker date="1726461058166" expanded="true" signature="46169:46421" ph="..." />
+                <marker date="1726461058166" expanded="true" signature="74535:75029" ph="..." />
               </folding>
             </state>
           </provider>
@@ -197,7 +193,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/DigitClock.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
+            <state relative-caret-position="5424">
               <caret line="339" selection-start-line="339" selection-end-line="351" selection-end-column="64" />
             </state>
           </provider>
@@ -206,7 +202,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/View/MiniMapMaker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="368">
+            <state relative-caret-position="16576">
               <caret line="1039" column="30" selection-start-line="1039" selection-start-column="28" selection-end-line="1039" selection-end-column="30" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
@@ -235,36 +231,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>endVarVar</find>
-      <find>addEndByte</find>
-      <find>theeditor</find>
-      <find>duplicate</find>
-      <find>__lineData</find>
-      <find>labelVar</find>
-      <find>labelVal</find>
-      <find>currentLineNum</find>
-      <find>__labelErrors</find>
-      <find>colorLabels</find>
-      <find>checkLabel</find>
-      <find>checkEntry</find>
-      <find>Radio</find>
-      <find>numofLines</find>
-      <find>per</find>
-      <find>endVar</find>
       <find>value =</find>
       <find>value /</find>
       <find>wordList</find>
       <find>&quot;hex&quot;</find>
       <find>radio</find>
       <find>endVarEntry</find>
-      <find>checkNumber</find>
       <find>__getTheEndByte</find>
       <find>&quot;0b&quot;, &quot;&quot;</find>
       <find>schem</find>
-      <find>__getPossibeValidEndBytes</find>
       <find>__allData</find>
       <find>fillLineDataEnd</find>
       <find>getInt</find>
+      <find>addSub</find>
+      <find>fillTheEditor</find>
+      <find>checkLabel</find>
+      <find>&quot;Select&quot;</find>
+      <find>collect</find>
+      <find>__getPossibeValidEndBytes</find>
+      <find>other</find>
+      <find>__othersFrame</find>
+      <find>others</find>
+      <find>__radioButtonThings</find>
+      <find>radioClicked</find>
+      <find>checkNumber</find>
+      <find>MaskByte</find>
+      <find>select</find>
+      <find>clickedButton</find>
+      <find>var2</find>
+      <find>__radioButtonVar2</find>
+      <find>enableDisableOthers</find>
     </findStrings>
     <replaceStrings>
       <replace>__fullTextLabels</replace>
@@ -611,20 +607,21 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.17715019" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.18100129" />
       <window_info id="Structure" order="1" sideWeight="0.516129" side_tool="true" weight="0.17715019" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49875" weight="0.3288719" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16880617" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.5821566" weight="0.28871894" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.5808729" weight="0.28871894" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.495" weight="0.39866155" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.4178434" side_tool="true" visible="true" weight="0.28871894" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.41912708" side_tool="true" visible="true" weight="0.28871894" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49679077" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -993,23 +990,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/archieveProject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="33" column="33" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/MiniMapMaker.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="368">
-          <caret line="1039" column="30" selection-start-line="1039" selection-start-column="28" selection-end-line="1039" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/search.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="64">
@@ -1017,27 +997,41 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="32">
+          <caret line="1528" column="21" selection-start-line="1528" selection-start-column="8" selection-end-line="1528" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+            <marker date="1726461058166" expanded="true" signature="15363:26180" ph="..." />
+            <marker date="1726461058166" expanded="true" signature="45945:46141" ph="..." />
+            <marker date="1726461058166" expanded="true" signature="46169:46421" ph="..." />
+            <marker date="1726461058166" expanded="true" signature="74535:75029" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/ScreenElements/Indicators/DigitClock.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
+        <state relative-caret-position="5424">
           <caret line="339" selection-start-line="339" selection-end-line="351" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
+    <entry file="file://$PROJECT_DIR$/src/View/MiniMapMaker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="704" column="29" lean-forward="true" selection-start-line="704" selection-start-column="29" selection-end-line="704" selection-end-column="29" />
+        <state relative-caret-position="16576">
+          <caret line="1039" column="30" selection-start-line="1039" selection-start-column="28" selection-end-line="1039" selection-end-column="30" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1726158761617" expanded="true" signature="34634:34830" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="34858:35110" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="35757:35777" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="35801:35981" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="36011:36060" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="38368:38466" ph="..." />
-            <marker date="1726158761617" expanded="true" signature="46609:46970" ph="..." />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/archieveProject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="528">
+          <caret line="33" column="33" selection-start-line="33" selection-start-column="25" selection-end-line="33" selection-end-column="33" />
         </state>
       </provider>
     </entry>
