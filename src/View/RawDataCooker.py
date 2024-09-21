@@ -344,6 +344,13 @@ class RawDataCooker:
         self.__generatorTitleLabel.pack_propagate(False)
         self.__generatorTitleLabel.pack(side=TOP, anchor=N, fill=BOTH)
 
+        self.__moveFrames = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__moveFrames.pack_propagate(False)
+        self.__moveFrames.pack(side=TOP, anchor=N, fill=X)
+
         self.__mirroringFrames = Frame(self.__othersFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
@@ -445,7 +452,7 @@ class RawDataCooker:
         self.__wordKeyList2 = ["NOT", "AND" , "OR", "XOR"]
         self.__radioButtonVar2.set(1)
 
-        self.__changeIfSelected = [self.__mirroringButton1, self.__mirroringButton2, self.__maskingButton]
+        self.__changeIfSelected = [self.__mirroringButton1, self.__mirroringButton2]
 
         while self.__maskingFrames1.winfo_width() < 2: sleep(0.000000001)
 
@@ -499,6 +506,51 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maskNumberEntry,
                                                             "<FocusOut>",
                                                             self.checkNumber, 1)
+
+        self.__moveFrames1 = Frame(self.__moveFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() , height = self.__othersFrame.winfo_height() // per)
+
+        self.__moveFrames1.pack_propagate(False)
+        self.__moveFrames1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__moveFrames2 = Frame(self.__moveFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width() , height = self.__othersFrame.winfo_height() // per)
+
+        self.__moveFrames2.pack_propagate(False)
+        self.__moveFrames2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__moveButton1 = Button(self.__moveFrames1, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() ,
+                                       name="mirrorHorizontally",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = "/\/\ " + self.__dictionaries.getWordFromCurrentLanguage("moveUp"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__moveButton1.pack_propagate(False)
+        self.__moveButton1.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__moveButton2 = Button(self.__moveFrames2, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() ,
+                                       name="mirrorVertically",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = "\/\/ " + self.__dictionaries.getWordFromCurrentLanguage("moveUp"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__moveButton2.pack_propagate(False)
+        self.__moveButton2.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__changeIfSelected.append(self.__maskingButton)
+        self.__changeIfSelected.append(self.__moveButton1)
+        self.__changeIfSelected.append(self.__moveButton2)
+
         self.__running -= 1
 
 
@@ -1107,16 +1159,20 @@ class RawDataCooker:
                self.__lineData[lineNumOnEditor]["entry"]     .config(state = NORMAL)
                self.__lineData[lineNumOnEditor]["labelEntry"].config(state = NORMAL)
 
+               """ 
                disable = False
+               #print("---------------------------")
                if self.__allData[lineNum]["label"] == "":
                   disable = True
                else:
+                  #print("fos")
                   if lineNum < len(self.__allData) - 1:
-                      #print(self.__allData[lineNum + 1]["label"], self.__allData[lineNum]["entry"])
-                      if self.__allData[lineNum + 1]["label"] != "" and self.__allData[lineNum]["entry"] == "":
-                         disable = True
+                     #print(self.__allData[lineNum + 1]["label"], self.__allData[lineNum]["entry"])
+                     if self.__allData[lineNum + 1]["label"] != "" and self.__allData[lineNum]["entry"] == "":
+                        disable = True
+               """
 
-               if disable:
+               if self.checkIfDisable(lineNumOnEditor):
                   self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVarVar"].set(0)
@@ -1304,6 +1360,13 @@ class RawDataCooker:
             self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
         else:
             self.__getTheEndByte(None)
+
+        try:
+            teszt = int(name.split("_")[-1])
+            self.colorLabels(None)
+        except:
+            pass
+
 
     def __createEditorLines(self):
         self.__running += 1
@@ -1546,7 +1609,7 @@ class RawDataCooker:
               self.__numberOfSelecteds -= 1
 
            self.enableDisableOthers()
-
+           self.colorLabels(None)
 
         #print(self.__lineData[lineNum]["endVarVar"].get(), lineNum )
 
@@ -1564,6 +1627,56 @@ class RawDataCooker:
                self.__maskNumberEntry.config(state = NORMAL)
            else:
                self.__maskNumberEntry.config(state = DISABLED)
+
+           selectors, numOfSelecteds, inARow = self.getLabelsAndSelecteds()
+
+           if len(selectors.keys()) < 2:
+              self.__moveButton1.config(state = DISABLED)
+              self.__moveButton2.config(state = DISABLED)
+           else:
+              firstKey = -1
+              for lastKey in selectors.keys():
+                  if firstKey == -1: firstKey = lastKey
+
+              if selectors[firstKey][1] == True:
+                 self.__moveButton1.config(state=DISABLED)
+              else:
+                 self.__moveButton1.config(state=NORMAL)
+
+              if selectors[lastKey][1] == True:
+                 self.__moveButton2.config(state=DISABLED)
+              else:
+                 self.__moveButton2.config(state=NORMAL)
+
+    def getLabelsAndSelecteds(self):
+        selectors = {}
+        lastItem  = None
+        numOfSelecred = 0
+
+        inARow        = False
+        firstSelected = True
+
+        for lineNum in range(0, len(self.__allData)):
+            label    = self.__allData[lineNum]["label"]
+            selected = self.__allData[lineNum]["wasSelected"]
+            entry    = self.__allData[lineNum]["entry"]
+
+            if label != "":
+               selectors[lineNum] = [label, selected, [entry]]
+               lastItem           = selectors[lineNum]
+               if selected == True: numOfSelecred += 1
+
+               if firstSelected == False and selected == False:
+                  inARow        =  False
+
+               if firstSelected == True and selected:
+                  firstSelected =  False
+                  inARow        =  True
+            else:
+               if lastItem != None: lastItem[2].append(entry)
+
+        return selectors, numOfSelecred, inARow
+
 
     def checkLabel(self, event):
         entry = event.widget
@@ -1747,6 +1860,19 @@ class RawDataCooker:
 
         return illegals
 
+    def checkIfDisable(self, num):
+        num += self.__Y
+
+        if self.__allData[num]["label"] == "":
+            return True
+
+        if num < len(self.__allData) - 1:
+            #print(self.__allData[num + 1]["label"], "|" , self.__allData[num]["entry"])
+            if self.__allData[num + 1]["label"] != "" and self.__allData[num]["entry"] == "":
+               return True
+
+        return False
+
     def colorLabels(self, lineNum):
         errorText = ""
 
@@ -1757,15 +1883,7 @@ class RawDataCooker:
 
                self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
 
-               disable = False
-               if self.__lineData[num]["labelVal"].get() == "":
-                  disable = True
-
-               if num < len(self.__allData) - 1:
-                   if self.__allData[num + 1]["label"] != "" and self.__allData[num]["entry"] == "":
-                      disable = True
-
-               if disable:
+               if self.checkIfDisable(num):
                   self.__lineData[num]["selectVal"].set(0)
                   self.__lineData[num]["select"].config(state = DISABLED)
                   self.__lineData[num]["endVarVar"].set(0)
@@ -1782,6 +1900,9 @@ class RawDataCooker:
                                                          fg=self.__colors.getColor("boxFontUnSaved"))
                if lineNum != None:
                    if lineNum == num or errorText == "":
+                      #
+                      #  Get the last key
+                      #
                       key = ""
                       for key in self.__labelErrors[num].keys():
                           pass

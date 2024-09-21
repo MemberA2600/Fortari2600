@@ -670,3 +670,5 @@ mirrorHorizontally=Horizontális Tükrözés
 mirrorVertically=Vertikális Tükrözés
 maskData=Adat Maszkolása
 generateRange=Intervallum Generálása
+moveUp=Kijelölt(ek) lefele mozgatása
+moveDown=Kijelölt(ek) felfele mozgatása

@@ -672,3 +672,5 @@ mirrorHorizontally=Mirror Horizontally
 mirrorVertically=Mirror Vertically
 maskData=Mask Data
 generateRange=Generate Range
+moveUp=Move Up Selected(s)
+moveDown=Move Down Selected(s)

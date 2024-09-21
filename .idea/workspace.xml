@@ -10,7 +10,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-09-12_183242.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-09-16_063001.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/RawDataCooker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/RawDataCooker.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -33,7 +33,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1726461001085" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1726902574758" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1726120441642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -140,21 +140,21 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="8" />
+          <entry key="project.closed" value="11" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.4" value="5" />
-          <entry key="project.open.time.5" value="2" />
-          <entry key="project.opened" value="8" />
+          <entry key="project.open.time.4" value="7" />
+          <entry key="project.open.time.5" value="4" />
+          <entry key="project.opened" value="12" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="7678" />
+          <entry key="py" value="9184" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="7678" />
+          <entry key="Python" value="9184" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -177,14 +177,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32">
-              <caret line="1528" column="21" selection-start-line="1528" selection-start-column="8" selection-end-line="1528" selection-end-column="21" />
+            <state relative-caret-position="464">
+              <caret line="1645" column="46" selection-start-line="1645" selection-start-column="46" selection-end-line="1645" selection-end-column="46" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1726461058166" expanded="true" signature="15363:26180" ph="..." />
-                <marker date="1726461058166" expanded="true" signature="45945:46141" ph="..." />
-                <marker date="1726461058166" expanded="true" signature="46169:46421" ph="..." />
-                <marker date="1726461058166" expanded="true" signature="74535:75029" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="15363:29354" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="49119:49315" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="49343:49595" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="78020:80243" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="79300:80243" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="80271:80280" ph="..." />
+                <marker date="1726902574753" expanded="true" signature="86634:86985" ph="..." />
               </folding>
             </state>
           </provider>
@@ -231,36 +234,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>value =</find>
-      <find>value /</find>
-      <find>wordList</find>
-      <find>&quot;hex&quot;</find>
-      <find>radio</find>
-      <find>endVarEntry</find>
-      <find>__getTheEndByte</find>
-      <find>&quot;0b&quot;, &quot;&quot;</find>
-      <find>schem</find>
-      <find>__allData</find>
-      <find>fillLineDataEnd</find>
-      <find>getInt</find>
-      <find>addSub</find>
-      <find>fillTheEditor</find>
-      <find>checkLabel</find>
-      <find>&quot;Select&quot;</find>
-      <find>collect</find>
-      <find>__getPossibeValidEndBytes</find>
       <find>other</find>
       <find>__othersFrame</find>
       <find>others</find>
       <find>__radioButtonThings</find>
       <find>radioClicked</find>
-      <find>checkNumber</find>
       <find>MaskByte</find>
       <find>select</find>
       <find>clickedButton</find>
       <find>var2</find>
       <find>__radioButtonVar2</find>
       <find>enableDisableOthers</find>
+      <find>__changeIfSelected</find>
+      <find>&quot;label</find>
+      <find>=! &quot;&quot;</find>
+      <find>&quot;&quot;</find>
+      <find>label</find>
+      <find>__lineData</find>
+      <find>&quot;select&quot;</find>
+      <find>checkIfD</find>
+      <find>checkIfDisable</find>
+      <find>self.colorLabels</find>
+      <find>button</find>
+      <find>radioClic</find>
+      <find>checkEntry</find>
+      <find>check</find>
+      <find>__createEditorLines</find>
+      <find>checkNumber</find>
+      <find>__labelErrors</find>
+      <find>colorLabels</find>
+      <find>ManualEndByte</find>
     </findStrings>
     <replaceStrings>
       <replace>__fullTextLabels</replace>
@@ -375,7 +378,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -413,6 +415,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -607,21 +610,20 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.18100129" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.07381258" />
       <window_info id="Structure" order="1" sideWeight="0.516129" side_tool="true" weight="0.17715019" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49875" weight="0.3288719" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16880617" weight="0.15105163" />
-      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.5808729" weight="0.28871894" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.57894737" weight="0.28871894" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.495" weight="0.39866155" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49935815" weight="0.3298279" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.41912708" side_tool="true" visible="true" weight="0.28871894" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.42105263" side_tool="true" visible="true" weight="0.28871894" />
       <window_info anchor="bottom" id="TODO" order="11" sideWeight="0.49807444" weight="0.3298279" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.49679077" weight="0.3298279" />
       <window_info anchor="bottom" id="Python Console" order="13" sideWeight="0.49679077" weight="0.3298279" />
@@ -999,14 +1001,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="32">
-          <caret line="1528" column="21" selection-start-line="1528" selection-start-column="8" selection-end-line="1528" selection-end-column="21" />
+        <state relative-caret-position="464">
+          <caret line="1645" column="46" selection-start-line="1645" selection-start-column="46" selection-end-line="1645" selection-end-column="46" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1726461058166" expanded="true" signature="15363:26180" ph="..." />
-            <marker date="1726461058166" expanded="true" signature="45945:46141" ph="..." />
-            <marker date="1726461058166" expanded="true" signature="46169:46421" ph="..." />
-            <marker date="1726461058166" expanded="true" signature="74535:75029" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="15363:29354" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="49119:49315" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="49343:49595" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="78020:80243" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="79300:80243" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="80271:80280" ph="..." />
+            <marker date="1726902574753" expanded="true" signature="86634:86985" ph="..." />
           </folding>
         </state>
       </provider>
