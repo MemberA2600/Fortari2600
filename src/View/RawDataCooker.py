@@ -547,9 +547,161 @@ class RawDataCooker:
         self.__moveButton2.pack_propagate(False)
         self.__moveButton2.pack(side=TOP, anchor=N, fill=BOTH)
 
+        self.__rangeFrames = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__rangeFrames.pack_propagate(False)
+        self.__rangeFrames.pack(side=TOP, anchor=N, fill=X)
+
+        self.__rangeFrame1 = Frame(self.__rangeFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 3 * 2,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__rangeFrame1.pack_propagate(False)
+        self.__rangeFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeFrame3 = Frame(self.__rangeFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 3,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__rangeFrame3.pack_propagate(False)
+        self.__rangeFrame3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeButton = Button(self.__rangeFrame3, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 3,
+                                       name="generateRange",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("generateRange"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__rangeButton.pack_propagate(False)
+        self.__rangeButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        while self.__rangeFrame1.winfo_width() < 2: sleep(0.00000001)
+
+        self.__rangeFrame1_1 = Frame(self.__rangeFrame1,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   height = self.__rangeFrame1.winfo_height() // per)
+
+        self.__rangeFrame1_1.pack_propagate(False)
+        self.__rangeFrame1_1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeFrame1_2 = Frame(self.__rangeFrame1,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__rangeFrame1.winfo_width() // 50,
+                                   height = self.__rangeFrame1.winfo_height() // per)
+
+        self.__rangeFrame1_2.pack_propagate(False)
+        self.__rangeFrame1_2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeFrame1_3 = Frame(self.__rangeFrame1,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   height = self.__rangeFrame1.winfo_height() // per)
+
+        self.__rangeFrame1_3.pack_propagate(False)
+        self.__rangeFrame1_3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeFrame1_4 = Frame(self.__rangeFrame1,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__rangeFrame1.winfo_width() // 6,
+                                   height = self.__rangeFrame1.winfo_height() // per)
+
+        self.__rangeFrame1_4.pack_propagate(False)
+        self.__rangeFrame1_4.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__rangeFrame1_5 = Frame(self.__rangeFrame1,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   height = self.__rangeFrame1.winfo_height() // per)
+
+        self.__rangeFrame1_5.pack_propagate(False)
+        self.__rangeFrame1_5.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__lineLabel = Label(self.__rangeFrame1_2, width = self.__rangeFrame1_2.winfo_width(),
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"), justify = CENTER,
+                                   font = self.__smallFont, text = "-",
+                                   height = 1)
+
+        self.__lineLabel.pack_propagate(False)
+        self.__lineLabel.pack(side=TOP, anchor=CENTER, fill=BOTH)
+
+        self.__lenTextLabel = Label(self.__rangeFrame1_4, width = len(self.__dictionaries.getWordFromCurrentLanguage("len") + ": "),
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   fg = self.__loader.colorPalettes.getColor("font"), justify = RIGHT,
+                                   font = self.__smallFont, text = self.__dictionaries.getWordFromCurrentLanguage("len") + ": ",
+                                   height = 1)
+
+        self.__lenTextLabel.pack_propagate(False)
+        self.__lenTextLabel.pack(side=RIGHT, anchor=E, fill=BOTH)
+
+
+        self.__rangeSmallerVar   = StringVar()
+        self.__rangeSmallerVar.set("$00")
+        self.__rangeSmallerEntry = Entry(self.__rangeFrame1_1,
+                                             name="entry_rangeSmaller",
+                                             bg=self.__colors.getColor("boxBackNormal"),
+                                             fg=self.__colors.getColor("boxFontNormal"),
+                                             width=9999, justify=CENTER, state=DISABLED,
+                                             textvariable=self.__rangeSmallerVar,
+                                             font=self.__normalFont
+                                             )
+
+        self.__rangeSmallerEntry.pack_propagate(False)
+        self.__rangeSmallerEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__rangeLargerVar   = StringVar()
+        self.__rangeLargerVar.set("$FF")
+        self.__rangeLargerEntry = Entry(self.__rangeFrame1_3,
+                                             name="entry_rangeLarger",
+                                             bg=self.__colors.getColor("boxBackNormal"),
+                                             fg=self.__colors.getColor("boxFontNormal"),
+                                             width=9999, justify=CENTER, state=DISABLED,
+                                             textvariable=self.__rangeLargerVar,
+                                             font=self.__normalFont
+                                             )
+
+        self.__rangeLargerEntry.pack_propagate(False)
+        self.__rangeLargerEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__rangeLenVar   = StringVar()
+        self.__rangeLenVar.set("16")
+        self.__rangeLenEntry = Entry(self.__rangeFrame1_5,
+                                             name="entry_rangeLen",
+                                             bg=self.__colors.getColor("boxBackNormal"),
+                                             fg=self.__colors.getColor("boxFontNormal"),
+                                             width=9999, justify=CENTER, state=DISABLED,
+                                             textvariable=self.__rangeLenVar,
+                                             font=self.__normalFont
+                                             )
+
+        self.__rangeLenEntry.pack_propagate(False)
+        self.__rangeLenEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__ranges = ["$00", "$FF"]
+
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<KeyRelease>", self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<FocusOut>"  , self.checkNumber,      1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<KeyRelease>", self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<FocusOut>"  , self.checkNumber,      1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry , "<KeyRelease>", self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry , "<FocusOut>"  , self.checkNumber,      1)
+
         self.__changeIfSelected.append(self.__maskingButton)
         self.__changeIfSelected.append(self.__moveButton1)
         self.__changeIfSelected.append(self.__moveButton2)
+        self.__changeIfSelected.append(self.__rangeButton)
+        self.__changeIfSelected.append(self.__rangeSmallerEntry)
+        self.__changeIfSelected.append(self.__rangeLargerEntry)
+        self.__changeIfSelected.append(self.__rangeLenEntry)
 
         self.__running -= 1
 
@@ -1278,19 +1430,32 @@ class RawDataCooker:
 
         self.__counterNumber =  [0, None]
 
-        if   name.split("_")[-1] == "ManualEndByte":
-             value = self.__radioButtonThings[2]["endVarVar"].get()
-        elif name.split("_")[-1] == "MaskByte":
-             value = self.__maskNumberVar.get()
+        subName = name.split("_")[-1]
+
+        hardcoded = {
+            "ManualEndByte": self.__radioButtonThings[2]["endVarVar"],
+            "MaskByte"     : self.__maskNumberVar,
+            "rangeSmaller" : self.__rangeSmallerVar,
+            "rangeLarger"  : self.__rangeLargerVar,
+            "rangeLen"     : self.__rangeLenVar
+        }
+
+        varHolder = None
+
+        if   subName in hardcoded:
+             varHolder = hardcoded[subName]
+             value     = hardcoded[subName].get()
         else:
-             lineNum = int(name.split("_")[-1])
-             value = self.__lineData[lineNum]["entryVal"].get()
+             lineNum   = int(subName)
+             varHolder = self.__lineData[lineNum]["entryVal"]
+
+        value = varHolder.get()
 
         if value == "":
            entry.config(bg=self.__colors.getColor("boxBackNormal"),
                          fg=self.__colors.getColor("boxFontNormal"))
 
-           if name.split("_")[-1] == "ManualEndByte": self.__getTheEndByte(None)
+           if subName == "ManualEndByte": self.__getTheEndByte(None)
 
            return
 
@@ -1310,15 +1475,18 @@ class RawDataCooker:
             entry.config(bg = self.__colors.getColor("boxBackUnSaved"),
                          fg = self.__colors.getColor("boxFontUnSaved"))
 
-            if name.split("_")[-1] == "ManualEndByte": self.__getTheEndByte(None)
+            if subName == "ManualEndByte": self.__getTheEndByte(None)
 
             return
 
         entry.config(bg=self.__colors.getColor("boxBackNormal"),
                      fg=self.__colors.getColor("boxFontNormal"))
 
-        if   value < 0:   value = 0
-        elif value > 255: value = 255
+        if subName == "rangeLen": base = 1
+        else                    : base = 0
+
+        if   value < base      : value = base
+        elif value > 255 + base: value = 255 + base
 
         binVal = bin(value).replace("0b", "")
         binVal = ((8-len(binVal)) * "0") + binVal
@@ -1332,17 +1500,17 @@ class RawDataCooker:
              if len(value) == 1: value = "0" + value
              value = "$" + value
 
-        if   name.split("_")[-1] == "ManualEndByte":
-             self.__radioButtonThings[2]["endVarVar"].set(str(value))
-        elif name.split("_")[-1] == "MaskByte":
-             self.__maskByte.set(str(value))
+        value = value.upper()
+
+        if   subName in ["rangeSmaller", "rangeLarger"]: pass
+        elif subName in hardcoded                      : varHolder.set(str(value))
         else:
-             self.__lineData[lineNum]["entryVal"].set(str(value))
+             varHolder.set(str(value).upper())
              self.__allData [lineNum + self.__Y]["entry"] = str(value)
 
         entry.icursor = len(str(value))
 
-        if  name.split("_")[-1] != "ManualEndByte":
+        if  subName not in hardcoded:
             for bitNum in range(0, 8):
                 val = binVal[7-bitNum]
 
@@ -1358,15 +1526,53 @@ class RawDataCooker:
 
             self.__changed = True
             self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
-        else:
+            self.colorLabels(None)
+
+        elif subName == "ManualEndByte":
             self.__getTheEndByte(None)
 
-        try:
-            teszt = int(name.split("_")[-1])
-            self.colorLabels(None)
-        except:
-            pass
+        elif subName in ["rangeSmaller", "rangeLarger"]:
+           modeNum = 0
 
+           if "Smaller" in subName:
+              self.__rangeSmallerVar.set(value.upper())
+              modeNum = 0
+           else:
+              self.__rangeLargerVar.set(value.upper())
+              modeNum = 1
+
+           self.__ranges[modeNum] = value.upper()
+           values  = [-1, -1]
+           mode    = ""
+           for n in range(0, 2):
+               if value.startswith("%"):
+                   if modeNum == n: mode = "bin"
+                   values[n] = int(self.__ranges[n].replace("%", "0b"), 2)
+               elif value.startswith("$"):
+                   if modeNum == n: mode = "hex"
+                   values[n] = int(self.__ranges[n].replace("$", "0x"), 16)
+               else:
+                   if modeNum == n: mode = "dec"
+                   values[n] = int(self.__ranges[n])
+
+           if values[0] > values[1]: values[0], values[1] = values[1], values[0]
+
+           for n in range(0, 2):
+               if   mode == "bin":
+                    self.__ranges[n] = bin(values[n]).replace("0b", "")
+                    self.__ranges[n] = "%" + ((8 - len(self.__ranges[n])) * "0") + self.__ranges[n]
+
+               elif mode == "hex":
+                    self.__ranges[n] = hex(values[n]).replace("0x", "")
+                    self.__ranges[n] = "$" + ((2 - len(self.__ranges[n])) * "0") + self.__ranges[n]
+
+               else:
+                   self.__ranges[n]  = str(values[n])
+
+               if n == 0:
+                  self.__rangeSmallerVar.set(self.__ranges[0].upper())
+               else:
+                  self.__rangeLargerVar.set(self.__ranges[1].upper())
 
     def __createEditorLines(self):
         self.__running += 1
@@ -1635,6 +1841,7 @@ class RawDataCooker:
               self.__moveButton2.config(state = DISABLED)
            else:
               firstKey = -1
+              lastKey  = -1
               for lastKey in selectors.keys():
                   if firstKey == -1: firstKey = lastKey
 
