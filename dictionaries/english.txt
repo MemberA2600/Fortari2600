@@ -675,3 +675,4 @@ generateRange=Generate Range
 moveUp=Move Up Selected(s)
 moveDown=Move Down Selected(s)
 len=Length
+removeGaps=Remove Gaps and Unreachable

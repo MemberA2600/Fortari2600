@@ -199,6 +199,9 @@ class RawDataCooker:
 
     def addLabelIfCan(self, possibleLabel, bank, section, folder, fName, where):
         if len(possibleLabel) > 0:
+            if " = " in possibleLabel:
+                possibleLabel = possibleLabel.split(" = ")[0]
+
             replacedTags = self.replaceTags(possibleLabel, bank, section, folder, fName)
 
             if replacedTags[0] not in ["#", "*", " ", "\t"]:
@@ -327,6 +330,26 @@ class RawDataCooker:
         while self.__othersFrame.winfo_height() < 2: sleep(0.000001)
 
         per = 9
+
+        self.__removerFrame = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__removerFrame.pack_propagate(False)
+        self.__removerFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__removeButton = Button(self.__removerFrame, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() ,
+                                       name="removeGaps",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("removeGaps"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       command=None
+                                       )
+        self.__removeButton.pack_propagate(False)
+        self.__removeButton.pack(side=TOP, anchor=N, fill=BOTH)
 
         self.__generatorTitleFrame = Frame(self.__othersFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
@@ -692,8 +715,8 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<FocusOut>"  , self.checkNumber,      1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<KeyRelease>", self.setCounterNumber, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<FocusOut>"  , self.checkNumber,      1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry , "<KeyRelease>", self.setCounterNumber, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry , "<FocusOut>"  , self.checkNumber,      1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry    , "<KeyRelease>", self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry    , "<FocusOut>"  , self.checkNumber,      1)
 
         self.__changeIfSelected.append(self.__maskingButton)
         self.__changeIfSelected.append(self.__moveButton1)
@@ -703,7 +726,57 @@ class RawDataCooker:
         self.__changeIfSelected.append(self.__rangeLargerEntry)
         self.__changeIfSelected.append(self.__rangeLenEntry)
 
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton1, "<Button-1>", self.simpleButtonsStuff, 1)
+
         self.__running -= 1
+
+    def simpleButtonsStuff(self, event):
+        button = event.widget
+        name  = str(button).split(".")[-1].split("_")[-1]
+
+        if button.cget("state") == DISABLED: return
+
+        selectors, numOfSelecteds, inARow = self.getLabelsAndSelecteds()
+
+        keyList = list(selectors.keys())
+        keyList.sort()
+
+        index = -1
+        for lineNum in keyList:
+            index += 1
+            item = selectors[lineNum]
+            if item[1]:
+               try:
+                   nextLineNum = keyList[index + 1]
+               except:
+                   nextLineNum = len(self.__allData)
+
+               if name == "mirrorHorizontally":
+                  for lNum in range(lineNum, nextLineNum):
+                      if self.__allData[lNum]["entry"].startswith("#"):
+                         self.__allData[lNum]["entry"] = self.__allData[lNum]["entry"][1:]
+
+                      if self.__allData[lNum]["entry"] != "":
+                         value, mode  = self.convertEntryToNum(self.__allData[lNum]["entry"])
+                         value, dummy = self.convertEntryToNum("%" + self.formatNum(value, "bin")[1:][::-1])
+                         self.__allData[lNum]["entry"] = self.formatNum(value, mode)
+
+        self.__changed = True
+        self.fillTheEditor()
+
+
+    def convertEntryToNum(self, num):
+        if num.startswith("%"):
+            mode = "bin"
+            value = int(num.replace("%", "0b"), 2)
+        elif num.startswith("$"):
+            mode = "hex"
+            value = int(num.replace("$", "0x"), 16)
+        else:
+            mode = "dec"
+            value = int(num)
+
+        return value, mode
 
 
     def createLoaderFrame(self):
@@ -1026,7 +1099,11 @@ class RawDataCooker:
             try:
                theNumber = self.__radioButtonThings[2]["endVarVar"].get()
 
-               if theNumber.startswith("#"): vtheNumber = theNumber[1:]
+               if theNumber.startswith("#"): theNumber = theNumber[1:]
+
+               valOfEntry, mode = self.convertEntryToNum(theNumber)
+
+               """
                valOfEntry = self.getInt(theNumber)
 
                if theNumber.startswith("%"):
@@ -1035,7 +1112,7 @@ class RawDataCooker:
                    mode = "hex"
                else:
                    mode = "dec"
-
+               """
                found = False
                for num in possibleOnes:
                    if num == valOfEntry:
@@ -1378,12 +1455,7 @@ class RawDataCooker:
         theNumber = self.__lineData[lineNum]["entryVal"].get()
         if theNumber.startswith("#"): vtheNumber = theNumber[1:]
 
-        if   theNumber.startswith("%"):
-             mode = "bin"
-        elif theNumber.startswith("$"):
-             mode = "hex"
-        else:
-             mode = "dec"
+        dummy, mode = self.convertEntryToNum(theNumber)
 
         binString = "0b"
         for bitNum2 in range(7, -1, -1): binString += str(self.__lineData[lineNum]["bitVals"][bitNum2])
@@ -1406,7 +1478,7 @@ class RawDataCooker:
              return "%" + ((8 - len(theNumber)) * "0") + theNumber
         elif mode == "hex":
              theNumber = hex(theNumber).replace("0x", "")
-             return "$" + ((2 - len(theNumber)) * "0") + theNumber
+             return ("$" + ((2 - len(theNumber)) * "0") + theNumber).upper()
         else:
              return str(theNumber)
 
@@ -1462,6 +1534,8 @@ class RawDataCooker:
         if value.startswith("#"): value = value[1:]
 
         try:
+            value, mode = self.convertEntryToNum(value)
+            """
             if   value.startswith("%"):
                  mode = "bin"
                  value  = int(value.replace("%", "0b"), 2)
@@ -1471,6 +1545,7 @@ class RawDataCooker:
             else:
                  mode = "dec"
                  value  = int(value)
+            """
         except:
             entry.config(bg = self.__colors.getColor("boxBackUnSaved"),
                          fg = self.__colors.getColor("boxFontUnSaved"))
@@ -1491,6 +1566,9 @@ class RawDataCooker:
         binVal = bin(value).replace("0b", "")
         binVal = ((8-len(binVal)) * "0") + binVal
 
+        value = self.formatNum(value, mode)
+
+        """
         if   mode == "dec":
              value = str(value)
         elif mode == "bin":
@@ -1500,12 +1578,12 @@ class RawDataCooker:
              if len(value) == 1: value = "0" + value
              value = "$" + value
 
-        value = value.upper()
+        """
 
         if   subName in ["rangeSmaller", "rangeLarger"]: pass
         elif subName in hardcoded                      : varHolder.set(str(value))
         else:
-             varHolder.set(str(value).upper())
+             varHolder.set(str(value))
              self.__allData [lineNum + self.__Y]["entry"] = str(value)
 
         entry.icursor = len(str(value))
@@ -1535,16 +1613,22 @@ class RawDataCooker:
            modeNum = 0
 
            if "Smaller" in subName:
-              self.__rangeSmallerVar.set(value.upper())
+              self.__rangeSmallerVar.set(value)
               modeNum = 0
            else:
-              self.__rangeLargerVar.set(value.upper())
+              self.__rangeLargerVar.set(value)
               modeNum = 1
 
-           self.__ranges[modeNum] = value.upper()
+           self.__ranges[modeNum] = value
            values  = [-1, -1]
            mode    = ""
            for n in range(0, 2):
+               if modeNum == n:
+                  values[n], mode  = self.convertEntryToNum(self.__ranges[n])
+               else:
+                  values[n], dummy = self.convertEntryToNum(self.__ranges[n])
+
+               """ 
                if value.startswith("%"):
                    if modeNum == n: mode = "bin"
                    values[n] = int(self.__ranges[n].replace("%", "0b"), 2)
@@ -1554,10 +1638,14 @@ class RawDataCooker:
                else:
                    if modeNum == n: mode = "dec"
                    values[n] = int(self.__ranges[n])
+               """
 
-           if values[0] > values[1]: values[0], values[1] = values[1], values[0]
+           #if values[0] > values[1]: values[0], values[1] = values[1], values[0]
 
            for n in range(0, 2):
+               self.__ranges[n] = self.formatNum(values[n], mode)
+
+               """
                if   mode == "bin":
                     self.__ranges[n] = bin(values[n]).replace("0b", "")
                     self.__ranges[n] = "%" + ((8 - len(self.__ranges[n])) * "0") + self.__ranges[n]
@@ -1568,11 +1656,12 @@ class RawDataCooker:
 
                else:
                    self.__ranges[n]  = str(values[n])
+               """
 
                if n == 0:
-                  self.__rangeSmallerVar.set(self.__ranges[0].upper())
+                  self.__rangeSmallerVar.set(self.__ranges[0])
                else:
-                  self.__rangeLargerVar.set(self.__ranges[1].upper())
+                  self.__rangeLargerVar.set(self.__ranges[1])
 
     def __createEditorLines(self):
         self.__running += 1
