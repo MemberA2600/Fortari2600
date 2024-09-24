@@ -727,6 +727,7 @@ class RawDataCooker:
         self.__changeIfSelected.append(self.__rangeLenEntry)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton1, "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton2, "<Button-1>", self.simpleButtonsStuff, 1)
 
         self.__running -= 1
 
@@ -742,6 +743,7 @@ class RawDataCooker:
         keyList.sort()
 
         index = -1
+
         for lineNum in keyList:
             index += 1
             item = selectors[lineNum]
@@ -751,15 +753,39 @@ class RawDataCooker:
                except:
                    nextLineNum = len(self.__allData)
 
-               if name == "mirrorHorizontally":
-                  for lNum in range(lineNum, nextLineNum):
-                      if self.__allData[lNum]["entry"].startswith("#"):
-                         self.__allData[lNum]["entry"] = self.__allData[lNum]["entry"][1:]
+               if   name == "mirrorHorizontally":
+                    for lNum in range(lineNum, nextLineNum):
+                        if self.__allData[lNum]["entry"].startswith("#"):
+                           self.__allData[lNum]["entry"] = self.__allData[lNum]["entry"][1:]
 
-                      if self.__allData[lNum]["entry"] != "":
-                         value, mode  = self.convertEntryToNum(self.__allData[lNum]["entry"])
-                         value, dummy = self.convertEntryToNum("%" + self.formatNum(value, "bin")[1:][::-1])
-                         self.__allData[lNum]["entry"] = self.formatNum(value, mode)
+                        if self.__allData[lNum]["entry"] != "":
+                           value, mode  = self.convertEntryToNum(self.__allData[lNum]["entry"])
+                           value, dummy = self.convertEntryToNum("%" + self.formatNum(value, "bin")[1:][::-1])
+                           self.__allData[lNum]["entry"] = self.formatNum(value, mode)
+                           self.doTheBitsFromVal(lNum, True)
+
+               elif name == "mirrorVertically":
+                    items = item[2][::-1]
+                    index = -1
+
+                    removed = 0
+
+                    while "" in items:
+                        items.remove("")
+                        removed += 1
+
+                    for n in range(0, removed):
+                        items.append("")
+
+                    for lNum in range(lineNum, nextLineNum):
+                        if index < len(items):
+                            index += 1
+                            val    = items[index]
+                        else:
+                            val   = ""
+
+                        self.__allData[lNum]["entry"] = val
+                        self.doTheBitsFromVal(lNum, True)
 
         self.__changed = True
         self.fillTheEditor()
@@ -1494,6 +1520,54 @@ class RawDataCooker:
         else:
            self.__draw = 1
 
+    def doTheBitsFromVal(self, lineNum, allData):
+        try:
+            teszt   = int(lineNum)
+        except:
+            try:
+                lineNum = int(lineNum.split("_")[-1])
+            except:
+                f = False
+
+                for n in range(0, len(self.__lineData)):
+                    if self.__lineData[n]["entry"] == lineNum:
+                       lineNum = int(lineNum.cget("name").split("_")[-1])
+                       f = True
+                       break
+                if f == False: return
+
+        if allData:
+           stringVal = self.__allData[lineNum]["entry"]
+           lineNum   = lineNum - self.__Y
+        else:
+           stringVal = self.__lineData[lineNum]["entryVal"].get()
+
+        if stringVal != "":
+           value, mode = self.convertEntryToNum(stringVal)
+           if mode == "bin":
+               binVal = stringVal[1:]
+           else:
+               binVal = self.formatNum(value, "bin")[1:]
+        else:
+           binVal = "0" * 8
+
+        for bitNum in range(0, 8):
+            val = binVal[7 - bitNum]
+
+            self.__lineData[lineNum]["bitVals"][bitNum] = int(val)
+
+            colors = {
+                "0": [self.__colors.getColor("boxBackNormal")],
+                "1": [self.__colors.getColor("boxFontNormal")],
+            }
+
+            self.__lineData[lineNum]["bitButtons"][bitNum].config(
+                bg=colors[val])
+
+        self.__changed = True
+        self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
+        self.colorLabels(None)
+
     def checkNumber(self, event):
         entry = event.widget
         name  = str(entry).split(".")[-1]
@@ -1528,6 +1602,16 @@ class RawDataCooker:
                          fg=self.__colors.getColor("boxFontNormal"))
 
            if subName == "ManualEndByte": self.__getTheEndByte(None)
+           if subName not in hardcoded:
+               for bitNum in range(0, 8):
+                   self.__lineData[lineNum]["bitButtons"][bitNum].config(bg=self.__colors.getColor("boxBackNormal"))
+
+               self.__changed = True
+               self.__lineData[lineNum]           ["entryVal"].set("")
+               self.__allData [lineNum + self.__Y]["entry"   ] = ""
+               self.__lineData[lineNum]           ["bitVals" ] = [0,0,0,0,0,0,0,0]
+               self.__allData [lineNum + self.__Y]["bits"    ] = [0,0,0,0,0,0,0,0]
+               self.colorLabels(None)
 
            return
 
