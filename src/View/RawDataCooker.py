@@ -472,7 +472,7 @@ class RawDataCooker:
         self.__radioButtonVar2 = IntVar()
         self.__radioButtonThings2 = [{}, {}, {}, {}]
 
-        self.__wordKeyList2 = ["NOT", "AND" , "OR", "XOR"]
+        self.__wordKeyList2 = ["NOT", "AND" , "OR", "EOR"]
         self.__radioButtonVar2.set(1)
 
         self.__changeIfSelected = [self.__mirroringButton1, self.__mirroringButton2]
@@ -546,7 +546,7 @@ class RawDataCooker:
 
         self.__moveButton1 = Button(self.__moveFrames1, height=self.__loaderFrame.winfo_height() // per,
                                        width=self.__othersFrame.winfo_width() ,
-                                       name="mirrorHorizontally",
+                                       name="moveUp",
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
                                        text = "/\/\ " + self.__dictionaries.getWordFromCurrentLanguage("moveUp"),
@@ -559,10 +559,10 @@ class RawDataCooker:
 
         self.__moveButton2 = Button(self.__moveFrames2, height=self.__loaderFrame.winfo_height() // per,
                                        width=self.__othersFrame.winfo_width() ,
-                                       name="mirrorVertically",
+                                       name="modeDown",
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
-                                       text = "\/\/ " + self.__dictionaries.getWordFromCurrentLanguage("moveUp"),
+                                       text = "\/\/ " + self.__dictionaries.getWordFromCurrentLanguage("moveDown"),
                                        font = self.__smallFont,
                                        activebackground=self.__loader.colorPalettes.getColor("highLight"),
                                        state=DISABLED, command=None
@@ -697,6 +697,7 @@ class RawDataCooker:
 
         self.__rangeLenVar   = StringVar()
         self.__rangeLenVar.set("16")
+        self.__rangeLen      =  16
         self.__rangeLenEntry = Entry(self.__rangeFrame1_5,
                                              name="entry_rangeLen",
                                              bg=self.__colors.getColor("boxBackNormal"),
@@ -728,6 +729,10 @@ class RawDataCooker:
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton1, "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton2, "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__maskingButton   , "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeButton     , "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__moveButton1     , "<Button-1>", self.moveUpDown        , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__moveButton2     , "<Button-1>", self.moveUpDown        , 1)
 
         self.__running -= 1
 
@@ -743,6 +748,7 @@ class RawDataCooker:
         keyList.sort()
 
         index = -1
+        first = True
 
         for lineNum in keyList:
             index += 1
@@ -750,8 +756,10 @@ class RawDataCooker:
             if item[1]:
                try:
                    nextLineNum = keyList[index + 1]
+                   lastOne     = False
                except:
                    nextLineNum = len(self.__allData)
+                   lastOne     = True
 
                if   name == "mirrorHorizontally":
                     for lNum in range(lineNum, nextLineNum):
@@ -787,9 +795,165 @@ class RawDataCooker:
                         self.__allData[lNum]["entry"] = val
                         self.doTheBitsFromVal(lNum, True)
 
+               elif name == "maskData":
+                    if first:
+                       method             = self.__wordKeyList2[self.__radioButtonVar2.get() - 1]
+                       if method         != "NOT":
+                          maskData, dummy = self.convertEntryToNum(self.__maskByte)
+                          maskBin         = self.formatNum(maskData, "bin")[1:]
+                       first = False
+
+                    for lNum in range(lineNum, nextLineNum):
+                        if self.__allData[lNum]["entry"].startswith("#"):
+                           self.__allData[lNum]["entry"] = self.__allData[lNum]["entry"][1:]
+
+                        if self.__allData[lNum]["entry"] != "":
+                           lineData, mode = self.convertEntryToNum(self.__allData[lNum]["entry"])
+                           lineDataBin    = self.formatNum(lineData, "bin")[1:]
+
+                           newBinary = ""
+                           for cNum in range(0, 8):
+                               c1        = lineDataBin[cNum]
+
+                               if method == "NOT":
+                                  newBinary += str(1 - int(c1))
+                               else:
+                                  c2 = maskBin[cNum]
+                                  if   method == "AND":
+                                       if "0" in [c1, c2]:
+                                          newBinary += "0"
+                                       else:
+                                          newBinary += "1"
+                                  elif method == "OR":
+                                      if "1" in [c1, c2]:
+                                          newBinary += "1"
+                                      else:
+                                          newBinary += "0"
+
+                                  elif method == "EOR":
+                                      if  c1 != c2:
+                                          newBinary += "1"
+                                      else:
+                                          newBinary += "0"
+
+                           newValue, dummy               = self.convertEntryToNum("%" + newBinary)
+                           self.__allData[lNum]["entry"] = self.formatNum(newValue, mode)
+                           self.doTheBitsFromVal(lNum, True)
+
+               elif name == "generateRange":
+                    if first:
+                       fromR = self.__ranges[0]
+                       toR   = self.__ranges[1]
+
+                       length  = self.__rangeLen
+                       l2      = nextLineNum - lineNum
+                       if l2   < length: length = l2
+
+                       if fromR.startswith("#"):
+                          fromR = fromR[1:]
+
+                       if toR.startswith("#"):
+                          toR   = toR  [1:]
+
+                       fromRData, mode  = self.convertEntryToNum(fromR)
+                       toRData  , dummy = self.convertEntryToNum(toR)
+
+                       step    = (toRData - fromRData) / length
+
+                       newList = []
+
+                       xxx = fromRData
+                       for num in range(0, length):
+                           diff = xxx - int(xxx)
+
+                           if diff > 0.49999999999999999:
+                              newList.append(round(xxx))
+                           else:
+                              newList.append(int  (xxx))
+
+                           xxx += step
+
+                       newList[-1] = toRData
+
+                       for num in range(0, length):
+                           self.__allData[num + lineNum]["entry"] = self.formatNum(newList[num], mode)
+                           self.doTheBitsFromVal(num + lineNum, True)
+
         self.__changed = True
         self.fillTheEditor()
 
+    def moveUpDown(self, event):
+        button = event.widget
+        name = str(button).split(".")[-1].split("_")[-1][4:]
+
+        if button.cget("state") == DISABLED: return
+
+        selectors, numOfSelecteds, inARow = self.getLabelsAndSelecteds()
+
+        selectedOnes = []
+        for lineNum in selectors:
+            if selectors[lineNum][1] == True:
+               selectedOnes.append(lineNum)
+
+        keyList = list(selectors.keys())
+        keyList.sort()
+
+        smallest = keyList[ 0]
+        largest  = keyList[-1]
+
+        if smallest == largest: return
+
+        index = -1
+        while True:
+            index +=1
+            if index  == len(keyList) or (index == len(keyList) - 1 and name == "Down"): break
+            if (index == 0 and name == "Up"): continue
+
+            lineNum = keyList[index]
+            if lineNum in selectedOnes:
+               selectedOnes.remove(lineNum)
+
+               self.doTheMove(index, keyList, lineNum, name)
+               index = -1
+
+        newList = []
+        for n in range(0, smallest):
+            newList.append(self.__schema)
+
+        for key in keyList:
+            for lineNum in range(key, len(self.__allData)):
+                if lineNum  > key and self.__allData[lineNum]["label"] != "":
+                   break
+                if key == largest and self.__allData[lineNum]["entry"] == "":
+                   break
+
+                newList.append(deepcopy(self.__allData[lineNum]))
+
+
+
+        for n in range(largest, len(self.__allData)):
+            newList.append(self.__schema)
+
+        self.__allData = newList
+        self.__changed = True
+        self.fillTheEditor()
+
+        self.enableDisableOthers()
+        self.colorLabels(None)
+
+    def doTheMove(self, index, keyList, theNum, dir):
+        if index == None:
+           index = keyList.index(theNum)
+
+           if dir == "Up"   and index == 0              : return
+           if dir == "Down" and index == len(keyList) -1: return
+
+        keyList.pop(index)
+
+        if dir == "Up":
+           keyList.insert(index - 1, theNum)
+        else:
+           keyList.insert(index + 1, theNum)
 
     def convertEntryToNum(self, num):
         if num.startswith("%"):
@@ -1360,13 +1524,13 @@ class RawDataCooker:
 
     def fillLineDataEnd(self):
 
-        schema = {
+        self.__schema = {
             "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": 0, "wasSelected": 0
         }
 
         if len(self.__allData) < self.__numberOfLines:
            for num in range(0, self.__numberOfLines - len(self.__allData)):
-               self.__allData.append(deepcopy(schema))
+               self.__allData.append(deepcopy(self.__schema))
 
         self.__allDataReady = True
         self.fillTheEditor()
@@ -1693,6 +1857,12 @@ class RawDataCooker:
         elif subName == "ManualEndByte":
             self.__getTheEndByte(None)
 
+        elif subName == "MaskByte":
+             self.__maskByte = str(value)
+
+        elif subName == "rangeLen":
+            self.__rangeLen, dummy = self.convertEntryToNum(str(value))
+
         elif subName in ["rangeSmaller", "rangeLarger"]:
            modeNum = 0
 
@@ -1712,35 +1882,8 @@ class RawDataCooker:
                else:
                   values[n], dummy = self.convertEntryToNum(self.__ranges[n])
 
-               """ 
-               if value.startswith("%"):
-                   if modeNum == n: mode = "bin"
-                   values[n] = int(self.__ranges[n].replace("%", "0b"), 2)
-               elif value.startswith("$"):
-                   if modeNum == n: mode = "hex"
-                   values[n] = int(self.__ranges[n].replace("$", "0x"), 16)
-               else:
-                   if modeNum == n: mode = "dec"
-                   values[n] = int(self.__ranges[n])
-               """
-
-           #if values[0] > values[1]: values[0], values[1] = values[1], values[0]
-
            for n in range(0, 2):
                self.__ranges[n] = self.formatNum(values[n], mode)
-
-               """
-               if   mode == "bin":
-                    self.__ranges[n] = bin(values[n]).replace("0b", "")
-                    self.__ranges[n] = "%" + ((8 - len(self.__ranges[n])) * "0") + self.__ranges[n]
-
-               elif mode == "hex":
-                    self.__ranges[n] = hex(values[n]).replace("0x", "")
-                    self.__ranges[n] = "$" + ((2 - len(self.__ranges[n])) * "0") + self.__ranges[n]
-
-               else:
-                   self.__ranges[n]  = str(values[n])
-               """
 
                if n == 0:
                   self.__rangeSmallerVar.set(self.__ranges[0])
