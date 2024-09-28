@@ -154,6 +154,7 @@
 	JMP	#BANK#_SnowFlakes_Loop_End
 
 #BANK#_SnowFlakes_SnowColorBase
+### &COLOR
 	BYTE	#$0E
 	BYTE	#$0E	
 	BYTE	#$0E

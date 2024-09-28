@@ -678,6 +678,7 @@ pic64px_07
 	BYTE	#%00000000	; 164
 
 pic64px_Color
+### &COLOR
 	BYTE	#$78
 	BYTE	#$7a
 	BYTE	#$7c
@@ -848,6 +849,92 @@ pic64px_PF
 	BYTE	#%00000000	; 82
 
 pic64px_PFColor
+### &COLOR
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00
+	BYTE	#$00	; 164
+
+pic64px_BGColor
+### &COLOR
 	BYTE	#$e0
 	BYTE	#$e2
 	BYTE	#$e6
@@ -929,89 +1016,5 @@ pic64px_PFColor
 	BYTE	#$42
 	BYTE	#$40
 	BYTE	#$e0
-	BYTE	#$e0	; 164
-
-pic64px_BGColor
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00
-	BYTE	#$00	; 246
+	BYTE	#$e0	; 246
 

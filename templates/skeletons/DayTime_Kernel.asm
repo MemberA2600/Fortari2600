@@ -453,6 +453,7 @@
 	byte	#%00111100
 
 #NAME#_Moon_DayTime_SpriteColor
+### &COLOR
 	byte	#$08
 	byte	#$0A
 	byte	#$0C
@@ -539,12 +540,14 @@
 	BYTE	#0
 
 #NAME#_Cloud_DayTime_SpriteColor
+### &COLOR
 	byte	#$00
 	byte	#$02
 	byte	#$04
 	byte	#$04	
 
 #NAME#_Sun_DayTime_SpriteColor
+### &COLOR
 	byte	#$0E
 	byte	#$1A
 	byte	#$1C
@@ -705,6 +708,7 @@
 	byte	#%00111000
 
 #NAME#_DayTime_CloudColors
+### &COLOR
 	BYTE	#$02
 	BYTE	#$02
 	BYTE	#$02
@@ -891,6 +895,7 @@
 	_align	24
 
 #NAME#_DayTime_StarColors
+### &COLOR
 	BYTE	#$0e
 	BYTE	#$0c
 	BYTE	#$0a

@@ -92,6 +92,7 @@
 	_align	#CON02#
 
 #NAME#_Wall_Gradient
+### &COLOR
 !!!GRADIENTS!!!	
 
 #NAME#_JumpBack

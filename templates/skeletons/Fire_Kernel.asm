@@ -175,6 +175,7 @@
 	BYTE	#0
 
 #NAME#_Fire_Color
+### &COLOR
 !!!FIRE_COLORS!!!
 
 #NAME#_Fire_Shapes

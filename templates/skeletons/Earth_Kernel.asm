@@ -102,6 +102,7 @@
 	_align	56
 
 #NAME#_Earth_BG_Color
+### &COLOR
 !!!Earth_BG_Color!!!
 
 #NAME#_Earth_Kernel

@@ -132,6 +132,7 @@
 	byte	#%10101000
 
 ##NAME##_FG
+### &COLOR
 	byte	#$1E
 	byte	#$1C
 	byte	#$18

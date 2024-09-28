@@ -674,3 +674,4 @@ moveUp=Kijelölt(ek) lefele mozgatása
 moveDown=Kijelölt(ek) felfele mozgatása
 len=len=Hossz
 removeGaps=Lyukak és Elérhetetlenek törlése
+colorData=Színadat

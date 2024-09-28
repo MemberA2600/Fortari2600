@@ -589,7 +589,7 @@ class Assembler():
             newNum = hex(baseNumber+int(num)).replace("0x", "$")
             raw = raw.replace(base, newNum).replace(num, "")
         else:
-            #print(raw)
+            print(raw)
             base = re.findall(r'\d+[+|-]]', raw)[0]
             baseNumber = int(base[:-1])
             newNum = str(baseNumber+int(num))

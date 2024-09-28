@@ -1525,7 +1525,7 @@ class RawDataCooker:
     def fillLineDataEnd(self):
 
         self.__schema = {
-            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": 0, "wasSelected": 0
+            "bits": [0,0,0,0,0,0,0,0], "entry": "", "label": "", "addEndByte": 0, "wasSelected": 0, "color": 0
         }
 
         if len(self.__allData) < self.__numberOfLines:
@@ -1594,13 +1594,20 @@ class RawDataCooker:
                if self.checkIfDisable(lineNumOnEditor):
                   self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["colorData"].config(state=DISABLED)
+
                   self.__lineData[lineNumOnEditor]["endVarVar"].set(0)
                   self.__lineData[lineNumOnEditor]["selectVal"].set(0)
+                  self.__lineData[lineNumOnEditor]["colorDataVar"].set(0)
+
                else:
                   self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
                   self.__lineData[lineNumOnEditor]["endVar"].config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["colorData"].config(state=NORMAL)
+
                   self.__lineData[lineNumOnEditor]["endVarVar"].set(self.__allData[lineNum]["addEndByte"])
                   self.__lineData[lineNumOnEditor]["selectVal"].set(self.__allData[lineNum]["wasSelected"])
+                  self.__lineData[lineNumOnEditor]["colorDataVar"].set(self.__allData[lineNum]["wasSelected"])
 
 
     def clicked(self, event):
@@ -1907,6 +1914,8 @@ class RawDataCooker:
             "select"       : None,
             "endVarVal"    : None,
             "endVar"       : None,
+            "colorData"    : None,
+            "colorDataVar" : None
         }
 
         while self.__editorFrame.winfo_width() < 2: sleep(0.000000001)
@@ -1935,7 +1944,7 @@ class RawDataCooker:
 
             fLabelEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10 * 5, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 10 * 4, height=self.__editorFrame.winfo_height() // 21
                   )
             fLabelEntry.pack_propagate(False)
             fLabelEntry.pack(side=LEFT, anchor=E, fill=Y)
@@ -1946,6 +1955,13 @@ class RawDataCooker:
                   )
             fAddEndByte.pack_propagate(False)
             fAddEndByte.pack(side=LEFT, anchor=E, fill=Y)
+
+            fColorData = Frame(f,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
+                  )
+            fColorData.pack_propagate(False)
+            fColorData.pack(side=LEFT, anchor=E, fill=Y)
 
             fSelectEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
@@ -1997,14 +2013,24 @@ class RawDataCooker:
                 l4.pack_propagate(False)
                 l4.pack(side=TOP, anchor=N, fill=BOTH)
 
-                l5 = Label(fSelectEntry,
-                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel"),
+                l5 = Label(fColorData,
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("colorData"),
                            font=self.__smallFont, fg=self.__colors.getColor("font"),
                            bg=self.__colors.getColor("window")
                            )
 
                 l5.pack_propagate(False)
                 l5.pack(side=TOP, anchor=N, fill=BOTH)
+
+
+                lLast = Label(fSelectEntry,
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel"),
+                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           bg=self.__colors.getColor("window")
+                           )
+
+                lLast.pack_propagate(False)
+                lLast.pack(side=TOP, anchor=N, fill=BOTH)
 
                 self.__labels = [l1, l2, l3, l4]
 
@@ -2081,6 +2107,19 @@ class RawDataCooker:
                 self.__lineData[-1]["endVar"].pack_propagate(False)
                 self.__lineData[-1]["endVar"].pack(fill=Y, side=LEFT, anchor=E)
 
+                self.__lineData[-1]["colorDataVar"] = IntVar()
+                self.__lineData[-1]["colorData"] = Checkbutton(fColorData, width=fSelectEntry.winfo_width(),
+                                                bg=self.__colors.getColor("window"),
+                                                name = "colorData_" + str(lineNum),
+                                                justify=CENTER, state = DISABLED,
+                                                variable=self.__lineData[-1]["colorData"],
+                                                activebackground=self.__colors.getColor("highLight"),
+                                                command=None
+                                                )
+
+                self.__lineData[-1]["colorData"].pack_propagate(False)
+                self.__lineData[-1]["colorData"].pack(fill=Y, side=LEFT, anchor=E)
+
                 self.__lineData[-1]["selectVal"] = IntVar()
                 self.__lineData[-1]["select"] = Checkbutton(fSelectEntry, width=fSelectEntry.winfo_width(),
                                                 bg=self.__colors.getColor("window"),
@@ -2094,17 +2133,19 @@ class RawDataCooker:
                 self.__lineData[-1]["select"].pack_propagate(False)
                 self.__lineData[-1]["select"].pack(fill=Y, side=LEFT, anchor=E)
 
-                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"], "<KeyRelease>",
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"]     , "<KeyRelease>",
                                                                     self.setCounterNumber, 1)
-                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"], "<FocusOut>",
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"]     , "<FocusOut>",
                                                                     self.checkNumber, 1)
                 self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["labelEntry"], "<KeyRelease>",
                                                                     self.setCounterNumber2, 1)
                 self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["labelEntry"], "<FocusOut>",
                                                                     self.checkLabel, 1)
-                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["select"], "<Button-1>",
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["select"]    , "<Button-1>",
                                                                     self.clickedButton, 1)
-                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["endVar"], "<Button-1>",
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["endVar"]    , "<Button-1>",
+                                                                    self.clickedButton, 1)
+                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["colorData"]  , "<Button-1>",
                                                                     self.clickedButton, 1)
 
         self.__allData = []
@@ -2120,7 +2161,7 @@ class RawDataCooker:
         typ     = name.split("_")[0]
         lineNum = int(name.split("_")[1])
 
-        keys = {"select": "wasSelected", "endVar": "addEndByte"}
+        keys = {"select": "wasSelected", "endVar": "addEndByte", "colorData": "colorDataVar"}
 
         self.__allData[lineNum + self.__Y][keys[typ]] = 1 - self.__allData[lineNum + self.__Y][keys[typ]]
 
@@ -2408,15 +2449,18 @@ class RawDataCooker:
 
                if self.checkIfDisable(num):
                   self.__lineData[num]["selectVal"].set(0)
-                  self.__lineData[num]["select"].config(state = DISABLED)
+                  self.__lineData[num]["select"].config(state    = DISABLED)
                   self.__lineData[num]["endVarVar"].set(0)
-                  self.__lineData[num]["endVar"].config(state = DISABLED)
-                  self.__allData[num + self.__Y]["addEndByte"] = 0
+                  self.__lineData[num]["endVar"].config(state    = DISABLED)
+                  self.__lineData[num]["colorData"].config(state = DISABLED)
+                  self.__allData[num + self.__Y]["addEndByte"]  = 0
                   self.__allData[num + self.__Y]["wasSelected"] = 0
+                  self.__allData[num + self.__Y]["color"]       = 0
 
                else:
                   self.__lineData[num]["select"].config(state = NORMAL)
                   self.__lineData[num]["endVar"].config(state = NORMAL)
+                  self.__lineData[num]["colorData"].config(state = NORMAL)
 
             else:
                self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),

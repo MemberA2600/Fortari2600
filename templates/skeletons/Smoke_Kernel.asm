@@ -111,9 +111,11 @@ Bank2_No_Smoke_Counter
 	BYTE	#8
 
 #NAME#_Smoke_Back_Gradient
+### &COLOR
 !!!GRADIENT2!!!
 
 #NAME#_Smoke_Gradient
+### &COLOR
 !!!GRADIENT1!!!
 
 #NAME#_Smoke_AND

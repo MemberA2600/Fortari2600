@@ -26,6 +26,7 @@
 
 	JMP	#BANK#_Water_Waves
 #NAME#_Water_Waves_Gradient
+### &COLOR
 !!!gradient!!!
 
 #NAME#_Water_Waves_Back

@@ -1,4 +1,4 @@
-	LDA	#VAR01#
+	LDA	#VAR01#		; &COLOR
 	STA	frameColor
 
 	

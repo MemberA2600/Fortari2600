@@ -1,15 +1,7 @@
 * Items=10
 * Largest=3
 
-	align	256
-##NAME##_segmentBorders
-	BYTE	#0
-	BYTE	#3
-	BYTE	#4
-	BYTE	#6
-	BYTE	#7
-	BYTE	#9
-
+		_align	80
 
 ##NAME##__spriteData_0
 	BYTE	#%00000000
@@ -93,6 +85,7 @@
 	BYTE	#%00000010
 	BYTE	#%00000001	; (9)
 
+		_align	80
 
 ##NAME##__spriteData_1
 	BYTE	#%00000001
@@ -176,6 +169,7 @@
 	BYTE	#%00101000
 	BYTE	#%11001000	; (9)
 
+		_align	80
 
 ##NAME##__spriteData_2
 	BYTE	#%00010111
@@ -259,8 +253,32 @@
 	BYTE	#%00110110
 	BYTE	#%00011100	; (9)
 
+		_align	8
 
-	align	256
+##NAME##_Color_UNSELECTED
+### &COLOR
+	BYTE	#$02
+	BYTE	#$04
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$08
+	BYTE	#$06
+	BYTE	#$04
+	BYTE	#$02
+
+		_align	8
+
+##NAME##_Color_SELECTED_FG
+### &COLOR
+	BYTE	#$16
+	BYTE	#$18
+	BYTE	#$1a
+	BYTE	#$1c
+	BYTE	#$1c
+	BYTE	#$1a
+	BYTE	#$18
+	BYTE	#$16
+		_align	80
 
 ##NAME##__spriteData_3
 	BYTE	#%11001010
@@ -344,6 +362,7 @@
 	BYTE	#%10101000
 	BYTE	#%11111000	; (9)
 
+		_align	80
 
 ##NAME##__spriteData_4
 	BYTE	#%00000000
@@ -427,6 +446,7 @@
 	BYTE	#%00001000
 	BYTE	#%00000111	; (9)
 
+		_align	80
 
 ##NAME##__spriteData_5
 	BYTE	#%00000000
@@ -510,28 +530,10 @@
 	BYTE	#%10000000
 	BYTE	#%00000000	; (9)
 
-
-##NAME##_Color_UNSELECTED
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$06
-	BYTE	#$08
-	BYTE	#$08
-	BYTE	#$06
-	BYTE	#$04
-	BYTE	#$02
-
-##NAME##_Color_SELECTED_FG
-	BYTE	#$16
-	BYTE	#$18
-	BYTE	#$1a
-	BYTE	#$1c
-	BYTE	#$1c
-	BYTE	#$1a
-	BYTE	#$18
-	BYTE	#$16
+		_align	8
 
 ##NAME##_Color_SELECTED_BG
+### &COLOR
 	BYTE	#$42
 	BYTE	#$44
 	BYTE	#$46
@@ -539,4 +541,15 @@
 	BYTE	#$48
 	BYTE	#$46
 	BYTE	#$44
-	BYTE	#$42
+	BYTE	#$42	_align	7
+
+##NAME##_segmentBorders
+	BYTE	#0
+	BYTE	#3
+	BYTE	#4
+	BYTE	#6
+	BYTE	#7
+	BYTE	#9
+	BYTE	#255
+
+	

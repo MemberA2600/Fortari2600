@@ -7,7 +7,7 @@
 ##NAME##_BigSprite_1
 	byte	#%00000000
 	byte	#%00000001
-	byte	#%01000011
+	byte	#%00000011
 	byte	#%00000110
 	byte	#%00000100
 	byte	#%00011100
@@ -56,6 +56,7 @@
 
 
 ##NAME##_BigSpriteColor_1
+### &COLOR
 	byte	#$96
 	byte	#$94
 	byte	#$92
@@ -122,6 +123,7 @@
 
 
 ##NAME##_BigSpriteColor_0
+### &COLOR
 	byte	#$1e
 	byte	#$1a
 	byte	#$1c
@@ -137,6 +139,7 @@
 
 
 ##NAME##_BigSpriteBG
+### &COLOR
 	byte	#$42
 	byte	#$44
 	byte	#$46

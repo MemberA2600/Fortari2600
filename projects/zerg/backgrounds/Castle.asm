@@ -1,5 +1,6 @@
 * Height=42
 ##NAME##_BG
+### &COLOR
 	byte	#$C4
 	byte	#$C2
 	byte	#$C4

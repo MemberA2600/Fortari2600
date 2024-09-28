@@ -123,6 +123,7 @@
 	BYTE	#3
 
 #BANK#_Space_Star_Color
+### &COLOR
 	BYTE	#$00	; 8	
 	BYTE	#$00	; 16
 	BYTE	#$02	; 24

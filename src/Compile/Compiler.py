@@ -31,6 +31,9 @@ class Compiler:
 
     def __init__(self, loader, kernel, mode, data):
 
+        self.colorAnnotationAfterLabel = "### &COLOR\n"
+        self.colorAnnotationAsComment  = "\t; &COLOR"
+
         if mode != "dummy":
 
             self.__loader = loader
@@ -374,25 +377,9 @@ class Compiler:
                 organizedData[key][-1][-1]["pixels"] = "0" * maximum
 
         numOfLines  += 1
-
-        # pf0Data       = borderData[0 :4 ][::-1]
-        # pf1Data       = borderData[4 :12]
-        #pf2Databits76   = borderData[12:14][::-1]
-
-        #for dataHolder in [pf0Data, pf1Data, pf2Databits76]:
-        #    for x in range(0, len(dataHolder)):
-        #        dataHolder[x] = str(dataHolder[x])
-        #pfText        = "#NAME#_PF0_Data = #%" + "".join(pf0Data) + "0000\n" + \
-        #                "#NAME#_PF1_Data = #%" + "".join(pf1Data) + "\n"
-
         pfText        = ""
 
         align         = "\n\t_align " +  str(numOfFrames * numOfLines) + "\n"
-
-        #pfTexts       = [align + "#NAME#_PF2_Data_Left_1\n",
-        #                 align + "#NAME#_PF2_Data_Left_2\n",
-        #                 align + "#NAME#_PF2_Data_Right_1\n",
-        #                 align + "#NAME#_PF2_Data_Right_2\n"]
 
         empty = "\tBYTE\t#0\n"
 
@@ -494,7 +481,7 @@ class Compiler:
             "layerRepeating": "Repeating_Color"
         }
         for key in keysAndNames:
-            colorText = align + "#NAME#_" + keysAndNames[key] + "\n" + empty
+            colorText = align + "#NAME#_" + keysAndNames[key] + "\n" + self.colorAnnotationAfterLabel + empty
             for frameNum in range(0, numOfFrames):
                 firstF = True
                 for y in range(numOfLines - 1, -1, -1):
@@ -3242,51 +3229,6 @@ class Compiler:
 
         return(text)
 
-    """
-    def preAlign(self, text):
-        text = text.split("\n")
-        tempText = "\n"
-        blocks = []
-        segments = {}
-        blocks.append(Block())
-
-        for line in text:
-            if line == "":
-                continue
-            elif line[0].isalnum() == True or line.startswith("##NAME##"):
-                if "byte" in tempText.lower():
-                    seg = Segment(tempText)
-                    tempText = "\n" + line + "\n"
-                    segments[seg] = seg.bytes
-                else:
-                    tempText += "\n" + line + "\n"
-
-            elif "byte" in line.lower():
-               tempText += line + "\n"
-
-        seg = Segment(tempText)
-        segments[seg] = seg.bytes
-
-        segmentKeys = sorted(segments, key = segments.get, reverse=True)
-        for segment in segmentKeys:
-            putIn = False
-            for block in blocks:
-                answer = block.addSegment(segment)
-                if answer == True:
-                   putIn = True
-                   break
-            if putIn == False:
-               blocks.append(Block())
-               blocks[-1].addSegment(segment)
-
-        text = ""
-        for block in blocks:
-            for segment in block.segments:
-                text += segment.text
-
-        return text
-        """
-
     def __reAlignDataSection(self, text):
         if text == "": return ""
 
@@ -3297,8 +3239,15 @@ class Compiler:
         lastIndex = 0
         for line in text:
             if ("ALIGN" not in line.upper()) and line.replace(" ", "").replace("\t", "") != "" and \
-                    line.startswith("*") == False and line.startswith("#") == False:
-                if line.startswith(" ") == False and \
+                    line.startswith("*") == False:
+
+                if line == self.colorAnnotationAfterLabel or line + "\n" == self.colorAnnotationAfterLabel:
+                   temp.append(line)
+
+                elif line.startswith("#") and line.startswith("#NAME#") == False and \
+                     line.startswith("##NAME##") == False and line.startswith("#BANK#") == False:
+                   continue
+                elif line.startswith(" ") == False and \
                         line.startswith("\t") == False and \
                         ("=" not in line):
                     if first == False:
@@ -3477,7 +3426,7 @@ class Compiler:
         colorNames = ["UNSELECTED", "SELECTED_FG", "SELECTED_BG"]
 
         for num in range(0,3):
-            colorDatas.append("\n" + self.__name +"_Color_"+colorNames[num]+"\n")
+            colorDatas.append("\n" + self.__name +"_Color_"+colorNames[num]+"\n" + self.colorAnnotationAfterLabel)
             for num2 in range(7, -1, -1) :
                 colorDatas[-1] += "\tBYTE\t#"+self.__colorData[num][num2] +"\n"
 
@@ -3594,7 +3543,7 @@ class Compiler:
 
 
     def test64PX(self):
-        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__kernelText = self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__pictureData = self.__data[0]
         self.__h = self.__data[1]
 
@@ -4367,8 +4316,8 @@ class Compiler:
 
     def __convertDataToReallyBigSprite(self, name):
         pixelData0      = "\n" + name + "_BigSprite_0"      + "\n"
-        colorData0      = "\n" + name + "_BigSpriteColor_0" + "\n"
-        backGroundData  = "\n" + name + "_BigSpriteBG"      + "\n"
+        colorData0      = "\n" + name + "_BigSpriteColor_0" + "\n" + self.colorAnnotationAfterLabel
+        backGroundData  = "\n" + name + "_BigSpriteBG"      + "\n" + self.colorAnnotationAfterLabel
 
         lineNum = 0
         isThereASinglePixelinP1 = False
@@ -4407,7 +4356,7 @@ class Compiler:
 
             pixelData1 = "\n" + name + "_BigSprite_1" + "\n"
             if self.__spriteMode == "overlay":
-                colorData1 = "\n" + name + "_BigSpriteColor_1" + "\n"
+                colorData1 = "\n" + name + "_BigSpriteColor_1" + "\n" + self.colorAnnotationAfterLabel
 
             for spriteNum in range(0, self.__frameNum):
                 line = self.__spriteData[spriteNum][stuff[self.__spriteMode][0]]
@@ -4625,9 +4574,14 @@ class Compiler:
         if len(spriteLines) + len(spriteColorLines)>256:
             spriteData+="\talign\t256"
 
-        spriteData += "\n"+name+"_SpriteColor"+'\n'+("\n".join(spriteColorLines))+"\n"
+        spriteData += "\n"+name+"_SpriteColor"   +'\n' + self.colorAnnotationAfterLabel  \
+                   +("\n".join(spriteColorLines))+"\n"
 
+        #print(spriteData)
         spriteData = self.__reAlignDataSection(spriteData)
+
+        #print("------------")
+        #print(spriteData)
 
         return spriteData
 
@@ -4708,7 +4662,10 @@ class Compiler:
 
             counter += 1
 
-        return(name + "_FG\n"+"".join(temp1)+"\n"+name + "_BG\n"+"".join(temp2)+"\n")
+        return(name + "_FG\n" + self.colorAnnotationAfterLabel
+                    +"".join(temp1)+"\n"
+             + name + "_BG\n" + self.colorAnnotationAfterLabel
+                    +"".join(temp2)+"\n")
 
 
 

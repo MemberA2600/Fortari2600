@@ -1,6 +1,8 @@
 * Height=12
 * Frames=4
-	align	256
+
+		_align	48
+
 ##NAME##_Sprite
 	byte	#%01100000	; (0)
 	byte	#%00010000
@@ -50,8 +52,10 @@
 	byte	#%00101010
 	byte	#%00111110
 	byte	#%00011100
+		_align	12
 
 ##NAME##_SpriteColor
+### &COLOR
 	byte	#$0A
 	byte	#$0C
 	byte	#$0E

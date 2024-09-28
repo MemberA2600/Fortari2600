@@ -51,6 +51,7 @@ class PictureToCode:
         else:
             self.answer = self.__fileDialogs.askForFileName("loadPicture",
                                                    False, [formats, "a26", "*"], self.__mainWindow.projectPath+"64px/")
+        self.wasA26     = False
         if self.answer !="":
             self.__func = None
             self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
@@ -62,7 +63,13 @@ class PictureToCode:
                 f = open(self.answer, "r")
                 data = f.read()
                 f.close()
+
+                self.__thisVar = StringVar()
+                self.__thisVar.set(".".join(self.answer.split("/")[-1].split(".")[:-1]))
+
                 self.generateASM(None, None, None, data, False, True)
+                self.doThings = False
+                self.wasA26   = True
             else:
                 image = IMG.open(self.answer, "r")
                 if image.mode != "RGB":
@@ -80,7 +87,7 @@ class PictureToCode:
 
             # Window is dead.
             if self.doThings == True:
-                self.generateImage(mode, image, None)
+               self.generateImage(mode, image, None)
 
 
     def generateImage(self, mode, image, testing):
@@ -1013,10 +1020,13 @@ class PictureToCode:
             "pic64px_06\n",
             "pic64px_07\n"
         ]
-        pic64px_Color = "pic64px_Color\n"
+
+        colorAnnotationAfterLabel = "### &COLOR\n"
+
+        pic64px_Color = "pic64px_Color\n"     + colorAnnotationAfterLabel
         pic64px_PF = "pic64px_PF\n"
-        pic64px_PFColor = "pic64px_PFColor\n"
-        pic64px_BGColor = "pic64px_BGColor\n"
+        pic64px_PFColor = "pic64px_PFColor\n" + colorAnnotationAfterLabel
+        pic64px_BGColor = "pic64px_BGColor\n" + colorAnnotationAfterLabel
 
         #correctBG
         bgColors = {}
@@ -1725,7 +1735,6 @@ class PictureToCode:
             self.__thisFrame.pack_propagate(False)
             self.__thisFrame.pack(side=LEFT, anchor=E, fill=BOTH)
 
-
             self.__thisVar = StringVar()
             self.__thisVar.set("Best_Picture_Ever")
             self.__thisEntry = Entry(self.__thisFrame,
@@ -1911,8 +1920,8 @@ class PictureToCode:
 
     def setAndKill(self):
         self.doThings = True
-        if self.__mode == "64pxPicture":
-            self.__name = self.__thisVar.get()
+        if self.__mode == "64pxPicture" and self.wasA26 == False:
+           self.__name =  self.__thisVar.get()
         self.__closeWindow()
 
     def checkFileName(self, event):

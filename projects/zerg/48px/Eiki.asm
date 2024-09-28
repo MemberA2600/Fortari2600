@@ -1,12 +1,13 @@
 * Height=67
 * Frames=1
-* Repeating=P1
+* Repeating=P0
 #NAME#_Frames_Max_Index  = 0
 #NAME#_LineNum_Number_Of_Lines = 67
 #NAME#_LineNum_Max_Index = 66
 
 	_align 68
 #NAME#_PF2_Data_1
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
@@ -78,6 +79,7 @@
 
 	_align 68
 #NAME#_PF2_Data_2
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
@@ -152,6 +154,7 @@
 
 	_align 68
 #NAME#_Repeating_1
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
@@ -223,6 +226,7 @@
 
 	_align 68
 #NAME#_Repeating_2
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%00000000
 	BYTE	#%00000000
@@ -294,6 +298,7 @@
 
 	_align 68
 #NAME#_Simple_1
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -365,6 +370,7 @@
 
 	_align 68
 #NAME#_Simple_2
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -436,6 +442,7 @@
 
 	_align 68
 #NAME#_Simple_3
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -507,6 +514,7 @@
 
 	_align 68
 #NAME#_Simple_4
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -578,6 +586,7 @@
 
 	_align 68
 #NAME#_Simple_5
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -649,6 +658,7 @@
 
 	_align 68
 #NAME#_Simple_6
+	BYTE	#0
 	BYTE	#%00000000
 	BYTE	#%11111111
 	BYTE	#%11111111
@@ -720,6 +730,8 @@
 
 	_align 68
 #NAME#_Playfield_Color
+### &COLOR
+	BYTE	#0
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
@@ -791,6 +803,8 @@
 
 	_align 68
 #NAME#_Simple_Color
+### &COLOR
+	BYTE	#0
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
@@ -862,6 +876,8 @@
 
 	_align 68
 #NAME#_Repeating_Color
+### &COLOR
+	BYTE	#0
 	BYTE	#$00
 	BYTE	#$00
 	BYTE	#$00
