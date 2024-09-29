@@ -10,29 +10,8 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/english.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/english.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dictionaries/hungarian.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dictionaries/hungarian.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logs/2024-09-27_093650.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Eiki.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Eiki.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/48px/Eiki.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/48px/Eiki.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/64px/Queen.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/64px/Queen.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/backgrounds/Castle.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/backgrounds/Castle.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bigSprites/Bird.a26" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bigSprites/Bird.a26" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/bigSprites/Bird.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/bigSprites/Bird.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/menus/Serve_The_Hive.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/menus/Serve_The_Hive.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/playfields/Castle.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/playfields/Castle.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/projects/zerg/sprites/Ghost.asm" beforeDir="false" afterPath="$PROJECT_DIR$/projects/zerg/sprites/Ghost.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Assembler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Assembler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Compile/Compiler.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Compile/Compiler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Scripts/PictureToCode.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scripts/PictureToCode.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/2024-09-28_074747.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/View/RawDataCooker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/View/RawDataCooker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/ChangeFrameColor.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/ChangeFrameColor.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/DayTime_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/DayTime_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Earth_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Earth_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Fire_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Fire_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Smoke_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Smoke_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Snowflakes_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Snowflakes_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Space_Kernel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Space_Kernel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Wall_TopLevel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Wall_TopLevel.asm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/skeletons/Water_Waves_TopLevel.asm" beforeDir="false" afterPath="$PROJECT_DIR$/templates/skeletons/Water_Waves_TopLevel.asm" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -45,7 +24,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$MainWindow.coverage" NAME="MainWindow Coverage Results" MODIFIED="1705397819809" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$convertToPiss.coverage" NAME="convertToPiss Coverage Results" MODIFIED="1640362789468" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$bitShiftTester.coverage" NAME="bitShiftTester Coverage Results" MODIFIED="1651602090369" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
-    <SUITE FILE_PATH="coverage/Fortari2600$RawDataCooker.coverage" NAME="RawDataCooker Coverage Results" MODIFIED="1727502401966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
+    <SUITE FILE_PATH="coverage/Fortari2600$RawDataCooker.coverage" NAME="RawDataCooker Coverage Results" MODIFIED="1727603370881" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$CanvasEditor48px.coverage" NAME="CanvasEditor48px Coverage Results" MODIFIED="1714733436838" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/View" />
     <SUITE FILE_PATH="coverage/Fortari2600$shiftSpecial.coverage" NAME="shiftSpecial Coverage Results" MODIFIED="1701454533410" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$deltaTime.coverage" NAME="deltaTime Coverage Results" MODIFIED="1694765914375" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
@@ -54,7 +33,7 @@
     <SUITE FILE_PATH="coverage/Fortari2600$downloadAdlib.coverage" NAME="downloadAdlib Coverage Results" MODIFIED="1656438347115" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$blyat.coverage" NAME="blyat Coverage Results" MODIFIED="1628612712208" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$FontManager.coverage" NAME="FontManager Coverage Results" MODIFIED="1618585178845" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Handlers" />
-    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1727502466314" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Fortari2600$main.coverage" NAME="main Coverage Results" MODIFIED="1727611905969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$search.coverage" NAME="search Coverage Results" MODIFIED="1726120441642" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Fortari2600$renamer.coverage" NAME="renamer Coverage Results" MODIFIED="1654144181662" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/venv" />
     <SUITE FILE_PATH="coverage/Fortari2600$WaveConverter.coverage" NAME="WaveConverter Coverage Results" MODIFIED="1642918214688" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/Converters" />
@@ -161,31 +140,32 @@
     <session id="-697383825">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="21" />
+          <entry key="project.closed" value="22" />
           <entry key="project.open.time.3" value="2" />
           <entry key="project.open.time.4" value="12" />
           <entry key="project.open.time.5" value="9" />
-          <entry key="project.opened" value="23" />
+          <entry key="project.open.time.6" value="1" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="18549" />
+          <entry key="py" value="21958" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="18549" />
+          <entry key="Python" value="21958" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="12" />
+          <entry key="py" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="12" />
+          <entry key="Python" value="15" />
         </counts>
       </usages-collector>
     </session>
@@ -199,19 +179,30 @@
         <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="400">
-              <caret line="2454" column="49" lean-forward="true" selection-start-line="2454" selection-start-column="49" selection-end-line="2454" selection-end-column="49" />
+              <caret line="870" lean-forward="true" selection-start-line="870" selection-end-line="870" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
-                <marker date="1727501985934" expanded="true" signature="15465:49035" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="48319:48680" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="48713:49035" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="68906:69102" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="69130:69382" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="82049:83568" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="103288:105539" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="104596:105539" ph="..." />
-                <marker date="1727501985934" expanded="true" signature="105567:105576" ph="..." />
+                <marker date="1727611952960" expanded="true" signature="58475:59012" ph="..." />
+                <marker date="1727611952960" expanded="true" signature="61227:61236" ph="..." />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Handlers/BindingMaster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="232">
+              <caret line="38" selection-start-line="38" selection-end-line="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Handlers/ThreadLooper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2366">
+              <caret line="237" selection-start-line="237" selection-end-line="237" />
             </state>
           </provider>
         </entry>
@@ -219,7 +210,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="448">
+            <state relative-caret-position="23264">
               <caret line="1457" column="21" selection-start-line="1457" selection-start-column="8" selection-end-line="1457" selection-end-column="21" />
             </state>
           </provider>
@@ -284,20 +275,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Main-kernel</find>
-      <find>48pxTest</find>
-      <find>64px</find>
-      <find>thisV</find>
-      <find>__name</find>
-      <find>asm&quot;</find>
-      <find>generateASM</find>
-      <find>doThings</find>
-      <find>background</find>
-      <find>getPFASM</find>
-      <find>addColors</find>
-      <find>__openPictureConverter</find>
-      <find>spriteTest</find>
-      <find>spriteASM</find>
       <find>getSpriteASM</find>
       <find>convertPixelsToSpriteFrameLine</find>
       <find>__reAlignDataSection</find>
@@ -311,9 +288,23 @@
       <find>generate_Earth</find>
       <find>COLORS!!!</find>
       <find>generate_wall</find>
-      <find>schema</find>
       <find>clickedButton</find>
       <find>endVar&quot;</find>
+      <find>moveUpDown</find>
+      <find>&quot;label&quot;</find>
+      <find>selector</find>
+      <find>schema</find>
+      <find>checkIfDisable</find>
+      <find>moveUpDow</find>
+      <find>selected</find>
+      <find>mask</find>
+      <find>maskDa</find>
+      <find>radio</find>
+      <find>Radiobutton</find>
+      <find>bindingMaster</find>
+      <find>radioButton</find>
+      <find>radioButtonVar</find>
+      <find>__insertBlankFrame1</find>
     </findStrings>
     <replaceStrings>
       <replace>10 * 9</replace>
@@ -653,12 +644,12 @@
     <frame x="-4" y="-4" width="1608" height="1164" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.1745828" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.48387095" visible="true" weight="0.17650834" />
       <window_info id="Structure" order="1" sideWeight="0.516129" weight="0.18870346" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49807444" weight="0.3288719" />
       <window_info anchor="bottom" id="Favorites" order="2" sideWeight="0.16880617" weight="0.15105163" />
-      <window_info active="true" anchor="bottom" id="Run" order="3" sideWeight="0.5738126" visible="true" weight="0.28871894" />
+      <window_info anchor="bottom" id="Run" order="3" sideWeight="0.5738126" weight="0.28871894" />
       <window_info anchor="bottom" id="Debug" order="4" sideWeight="0.495" weight="0.39866155" />
       <window_info anchor="bottom" id="Cvs" order="5" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="6" weight="0.4" />
@@ -715,20 +706,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/venv/www.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="13" lean-forward="true" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/View/SpriteEditorListBox.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="8" column="43" selection-start-line="8" selection-start-column="32" selection-end-line="8" selection-end-column="43" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/View/SpriteEditor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="724">
@@ -1020,6 +997,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="23264">
+          <caret line="1457" column="21" selection-start-line="1457" selection-start-column="8" selection-end-line="1457" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Compile/FirstCompiler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7760">
@@ -1058,28 +1042,28 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Compile/Compiler.py">
+    <entry file="file://$PROJECT_DIR$/src/Handlers/BindingMaster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="1457" column="21" selection-start-line="1457" selection-start-column="8" selection-end-line="1457" selection-end-column="21" />
+        <state relative-caret-position="232">
+          <caret line="38" selection-start-line="38" selection-end-line="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Handlers/ThreadLooper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2366">
+          <caret line="237" selection-start-line="237" selection-end-line="237" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/View/RawDataCooker.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
-          <caret line="2454" column="49" lean-forward="true" selection-start-line="2454" selection-start-column="49" selection-end-line="2454" selection-end-column="49" />
+          <caret line="870" lean-forward="true" selection-start-line="870" selection-end-line="870" />
           <folding>
             <element signature="e#0#21#0" expanded="true" />
-            <marker date="1727501985934" expanded="true" signature="15465:49035" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="48319:48680" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="48713:49035" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="68906:69102" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="69130:69382" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="82049:83568" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="103288:105539" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="104596:105539" ph="..." />
-            <marker date="1727501985934" expanded="true" signature="105567:105576" ph="..." />
+            <marker date="1727611952960" expanded="true" signature="58475:59012" ph="..." />
+            <marker date="1727611952960" expanded="true" signature="61227:61236" ph="..." />
           </folding>
         </state>
       </provider>

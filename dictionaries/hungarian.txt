@@ -675,3 +675,7 @@ moveDown=Kijelölt(ek) felfele mozgatása
 len=len=Hossz
 removeGaps=Lyukak és Elérhetetlenek törlése
 colorData=Színadat
+insertBlankLines=Üres Sorok Beillesztése
+convertToFormat=Formátumba Konvertálás
+before=Elé
+after=Mögé

@@ -425,6 +425,22 @@ class RawDataCooker:
         self.__mirroringButton2.pack_propagate(False)
         self.__mirroringButton2.pack(side=TOP, anchor=N, fill=BOTH)
 
+        self.__insertBlankFrames = Frame(self.__othersFrame,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width(),
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrames.pack_propagate(False)
+        self.__insertBlankFrames.pack(side=TOP, anchor=N, fill=X)
+
+        self.__formatConvertFrames = Frame(self.__othersFrame,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__loaderFrame.winfo_width(),
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatConvertFrames.pack_propagate(False)
+        self.__formatConvertFrames.pack(side=TOP, anchor=N, fill=X)
+
         self.__maskingFrames = Frame(self.__othersFrame,
                                    bg = self.__loader.colorPalettes.getColor("window"),
                                    width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
@@ -712,6 +728,148 @@ class RawDataCooker:
 
         self.__ranges = ["$00", "$FF"]
 
+        self.__insertBlankFrame1 = Frame(self.__insertBlankFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width() // 2,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrame1.pack_propagate(False)
+        self.__insertBlankFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__insertBlankFrame2 = Frame(self.__insertBlankFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width(),
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrame2.pack_propagate(False)
+        self.__insertBlankFrame2.pack(side=LEFT, anchor=W, fill=BOTH)
+
+
+        self.__formatConvertFrame1 = Frame(self.__formatConvertFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width() // 6,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatConvertFrame1.pack_propagate(False)
+        self.__formatConvertFrame1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__formatConvertFrame2 = Frame(self.__formatConvertFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width() // 6,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatConvertFrame2.pack_propagate(False)
+        self.__formatConvertFrame2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__formatConvertFrame3 = Frame(self.__formatConvertFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width() // 6,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatConvertFrame3.pack_propagate(False)
+        self.__formatConvertFrame3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__formatConvertFrame4 = Frame(self.__formatConvertFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width(),
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatConvertFrame4.pack_propagate(False)
+        self.__formatConvertFrame4.pack(side=LEFT, anchor=W, fill=BOTH)
+
+        self.__insertButton = Button(self.__insertBlankFrame2, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 4 * 3,
+                                       name="insertBlank",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("insertBlankLines"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__insertButton.pack_propagate(False)
+        self.__insertButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__convertButton = Button(self.__formatConvertFrame4, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() // 3,
+                                       name="convertFormat",
+                                       bg=self.__loader.colorPalettes.getColor("window"),
+                                       fg=self.__loader.colorPalettes.getColor("font"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("convertToFormat"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       state=DISABLED, command=None
+                                       )
+        self.__convertButton.pack_propagate(False)
+        self.__convertButton.pack(side=TOP, anchor=N, fill=BOTH)
+
+        while 1 in (self.__formatConvertFrame1.winfo_width(),
+                    self.__formatConvertFrame2.winfo_width(),
+                    self.__formatConvertFrame3.winfo_width(),
+                    self.__insertBlankFrame1.winfo_width()): sleep(0.00001)
+
+        self.__insertBlankFrame1_1 = Frame(self.__insertBlankFrame1,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__insertBlankFrame1.winfo_width() // 4,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrame1_1.pack_propagate(False)
+        self.__insertBlankFrame1_1.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__insertBlankFrame1_2 = Frame(self.__insertBlankFrame1,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__insertBlankFrame1.winfo_width() // 4,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrame1_2.pack_propagate(False)
+        self.__insertBlankFrame1_2.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__insertBlankFrame1_3 = Frame(self.__insertBlankFrame1,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__insertBlankFrame1.winfo_width() // 2,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__insertBlankFrame1_3.pack_propagate(False)
+        self.__insertBlankFrame1_3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__afterBeforeVar = IntVar()
+        self.__afterBeforeVar.set(1)
+
+        self.__wordKeyList = ["autoWhole", "autoLayer", "manualWhole"]
+        self.__radioButtonVar.set(1)
+
+        self.__beforeButton = Radiobutton(self.__insertBlankFrame1_1,
+                                          text=self.__dictionaries.getWordFromCurrentLanguage("before"),
+                                          name="radio3_Before",
+                                          bg=self.__colors.getColor("window"),
+                                          fg=self.__colors.getColor("font"),
+                                          justify=LEFT, font=self.__miniFont,
+                                          variable=self.__radioButtonVar,
+                                          activebackground=self.__colors.getColor("highLight"),
+                                          activeforeground=self.__loader.colorPalettes.getColor(
+                                          "font"),
+                                          value=1, command=None)
+        self.__beforeButton.pack_propagate(False)
+        self.__beforeButton.pack(side=LEFT, anchor=W)
+
+        self.__afterButton = Radiobutton(self.__insertBlankFrame1_2,
+                                          text=self.__dictionaries.getWordFromCurrentLanguage("after"),
+                                          name="radio3_Afer",
+                                          bg=self.__colors.getColor("window"),
+                                          fg=self.__colors.getColor("font"),
+                                          justify=LEFT, font=self.__miniFont,
+                                          variable=self.__radioButtonVar,
+                                          activebackground=self.__colors.getColor("highLight"),
+                                          activeforeground=self.__loader.colorPalettes.getColor(
+                                          "font"),
+                                          value=2, command=None)
+        self.__afterButton.pack_propagate(False)
+        self.__afterButton.pack(side=LEFT, anchor=W)
+
+        #self.__loader.threadLooper.bindingMaster.addBinding(self, self.__beforeButton, "<Button-1>", self.radioClicked, 1)
+        #self.__loader.threadLooper.bindingMaster.addBinding(self, self.__afterButton , "<Button-1>", self.radioClicked, 1)
+
+
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<KeyRelease>", self.setCounterNumber, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<FocusOut>"  , self.checkNumber,      1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<KeyRelease>", self.setCounterNumber, 1)
@@ -726,6 +884,8 @@ class RawDataCooker:
         self.__changeIfSelected.append(self.__rangeSmallerEntry)
         self.__changeIfSelected.append(self.__rangeLargerEntry)
         self.__changeIfSelected.append(self.__rangeLenEntry)
+        self.__changeIfSelected.append(self.__insertButton)
+        self.__changeIfSelected.append(self.__convertButton)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton1, "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton2, "<Button-1>", self.simpleButtonsStuff, 1)
@@ -733,6 +893,9 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeButton     , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__moveButton1     , "<Button-1>", self.moveUpDown        , 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__moveButton2     , "<Button-1>", self.moveUpDown        , 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__insertButton    , "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
+
 
         self.__running -= 1
 
@@ -888,12 +1051,96 @@ class RawDataCooker:
 
         if button.cget("state") == DISABLED: return
 
+        firstNum = 0
+        lastNum  = len(self.__allData) - 1
+
+        for lineNum in range(0, len(self.__allData)):
+            firstNum = lineNum
+            if self.__allData[lineNum]["label"] != "": break
+
+        for lineNum in range(len(self.__allData)-1, -1, -1):
+            if self.__allData[lineNum]["entry"] != "" or self.__allData[lineNum]["label"] != "": break
+            lastNum = lineNum
+
+        blocks      = []
+        blockSchema = {
+            "lines"        : [],
+            "selected"    : False,
+        }
+
+        currentBlock     = deepcopy(blockSchema)
+        gotFirstByte     = False
+
+        for lineNum in range(firstNum, lastNum):
+            if gotFirstByte and self.__allData[lineNum]["label"] != "":
+               blocks.append(deepcopy(currentBlock))
+               currentBlock = deepcopy(blockSchema)
+
+            currentBlock["lines"].append(deepcopy(self.__allData[lineNum]))
+            if self.__allData[lineNum]["wasSelected"] == True:
+               currentBlock["selected"] = True
+
+            if self.__allData[lineNum]["entry"] != "": gotFirstByte = True
+
+        if currentBlock["lines"] != []: blocks.append(deepcopy(currentBlock))
+
+        newBlocks = []
+        isItUp   =                False
+        if name == "Up": isItUp = True
+
+        for block in blocks:
+            if len(newBlocks) == 0: newBlocks.append(block)
+            else:
+                if isItUp == block["selected"]:
+                   newBlocks.insert(-1, block)
+                else:
+                   newBlocks.append(block)
+
+        currentLineNum = firstNum
+        for block in newBlocks:
+            for line in block["lines"]:
+                self.__allData[currentLineNum] = deepcopy(line)
+                currentLineNum += 1
+
+        self.__changed = True
+        self.fillTheEditor()
+
+        self.enableDisableOthers()
+        self.colorLabels(None)
+
+
+    """
+    def checkForPreEmptyLabels(self, selectors):
+        keyList = list(selectors.keys())
+        keyList.sort()
+
+        for lineNum in keyList:
+            if lineNum == 0: continue
+
+            minus = 0
+            for lNum in range(lineNum-1, -1, -1):
+                if self.__allData[lNum]["label"] == ""  and self.__allData[lNum]["entry"] == "": continue
+                if self.__allData[lNum]["entry"] != "": break
+                minus += 1
+
+            if minus > 0:
+               selectors[lineNum - minus] = selectors[lineNum]
+               selectors.pop(lineNum)
+
+    def moveUpDown(self, event):
+        button = event.widget
+        name = str(button).split(".")[-1].split("_")[-1][4:]
+
+        if button.cget("state") == DISABLED: return
+
         selectors, numOfSelecteds, inARow = self.getLabelsAndSelecteds()
 
         selectedOnes = []
         for lineNum in selectors:
             if selectors[lineNum][1] == True:
                selectedOnes.append(lineNum)
+
+        self.checkForPreEmptyLabels(selectors)
 
         keyList = list(selectors.keys())
         keyList.sort()
@@ -902,6 +1149,7 @@ class RawDataCooker:
         largest  = keyList[-1]
 
         if smallest == largest: return
+
 
         index = -1
         while True:
@@ -954,6 +1202,7 @@ class RawDataCooker:
            keyList.insert(index - 1, theNum)
         else:
            keyList.insert(index + 1, theNum)
+    """
 
     def convertEntryToNum(self, num):
         if num.startswith("%"):
@@ -1556,6 +1805,7 @@ class RawDataCooker:
 
                self.__lineData[lineNumOnEditor]["select"]    .config(state = DISABLED)
                self.__lineData[lineNumOnEditor]["endVar"]    .config(state = DISABLED)
+               self.__lineData[lineNumOnEditor]["colorData"] .config(state = DISABLED)
 
             else:
                for bitNum in range(0, 8):
@@ -1591,7 +1841,7 @@ class RawDataCooker:
                         disable = True
                """
 
-               if self.checkIfDisable(lineNumOnEditor):
+               if self.checkIfDisable(lineNumOnEditor, True):
                   self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
                   self.__lineData[lineNumOnEditor]["colorData"].config(state=DISABLED)
@@ -2424,18 +2674,21 @@ class RawDataCooker:
 
         return illegals
 
-    def checkIfDisable(self, num):
-        num += self.__Y
+    def checkIfDisable(self, num, addY):
+        if addY: num += self.__Y
 
         if self.__allData[num]["label"] == "":
             return True
 
-        if num < len(self.__allData) - 1:
-            #print(self.__allData[num + 1]["label"], "|" , self.__allData[num]["entry"])
-            if self.__allData[num + 1]["label"] != "" and self.__allData[num]["entry"] == "":
-               return True
+        if num == len(self.__allData) - 1                                           : return True
+        if self.__allData[num]["entry"] != "" and self.__allData[num]["label"] != "": return False
 
-        return False
+        for n in range(num + 1, len(self.__allData)):
+            if self.__allData[n]["label"] != "": return True
+            if self.__allData[n]["entry"] == "": continue
+            return False
+
+        return True
 
     def colorLabels(self, lineNum):
         errorText = ""
@@ -2447,7 +2700,7 @@ class RawDataCooker:
 
                self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
 
-               if self.checkIfDisable(num):
+               if self.checkIfDisable(num, True):
                   self.__lineData[num]["selectVal"].set(0)
                   self.__lineData[num]["select"].config(state    = DISABLED)
                   self.__lineData[num]["endVarVar"].set(0)

@@ -677,3 +677,7 @@ moveDown=Move Down Selected(s)
 len=Length
 removeGaps=Remove Gaps and Unreachable
 colorData=Color Data
+insertBlankLines=Insert Blank Lines
+convertToFormat=Convert To Format
+before=Before
+after=After
