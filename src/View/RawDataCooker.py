@@ -456,21 +456,21 @@ class RawDataCooker:
         self.__maskingFrames1.pack_propagate(False)
         self.__maskingFrames1.pack(side=LEFT, anchor=W, fill=Y)
 
-        self.__maskingFrames2 = Frame(self.__maskingFrames,
-                                   bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__othersFrame.winfo_width() // 3,
-                                   height = self.__othersFrame.winfo_height() // per)
-
-        self.__maskingFrames2.pack_propagate(False)
-        self.__maskingFrames2.pack(side=LEFT, anchor=W, fill=Y)
-
         self.__maskingFrames3 = Frame(self.__maskingFrames,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__othersFrame.winfo_width() // 3,
+                                   width = self.__othersFrame.winfo_width() // 2,
                                    height = self.__othersFrame.winfo_height() // per)
 
         self.__maskingFrames3.pack_propagate(False)
-        self.__maskingFrames3.pack(side=LEFT, anchor=W, fill=Y)
+        self.__maskingFrames3.pack(side=RIGHT, anchor=W, fill=Y)
+
+        self.__maskingFrames2 = Frame(self.__maskingFrames,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__othersFrame.winfo_width() // 6,
+                                   height = self.__othersFrame.winfo_height() // per)
+
+        self.__maskingFrames2.pack_propagate(False)
+        self.__maskingFrames2.pack(side=RIGHT, anchor=W, fill=Y)
 
         self.__maskingButton = Button(self.__maskingFrames3, height=self.__loaderFrame.winfo_height() // per,
                                        width=self.__othersFrame.winfo_width() // 2,
@@ -595,7 +595,7 @@ class RawDataCooker:
 
         self.__rangeFrame1 = Frame(self.__rangeFrames,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__othersFrame.winfo_width() // 3 * 2,
+                                   width = self.__othersFrame.winfo_width() // 2,
                                    height = self.__othersFrame.winfo_height() // per)
 
         self.__rangeFrame1.pack_propagate(False)
@@ -603,14 +603,14 @@ class RawDataCooker:
 
         self.__rangeFrame3 = Frame(self.__rangeFrames,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__othersFrame.winfo_width() // 3,
+                                   width = self.__othersFrame.winfo_width() // 2,
                                    height = self.__othersFrame.winfo_height() // per)
 
         self.__rangeFrame3.pack_propagate(False)
         self.__rangeFrame3.pack(side=LEFT, anchor=W, fill=Y)
 
         self.__rangeButton = Button(self.__rangeFrame3, height=self.__loaderFrame.winfo_height() // per,
-                                       width=self.__othersFrame.winfo_width() // 3,
+                                       width=self.__othersFrame.winfo_width(),
                                        name="generateRange",
                                        bg=self.__loader.colorPalettes.getColor("window"),
                                        fg=self.__loader.colorPalettes.getColor("font"),
@@ -626,7 +626,7 @@ class RawDataCooker:
 
         self.__rangeFrame1_1 = Frame(self.__rangeFrame1,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   width = self.__rangeFrame1.winfo_width() // 5,
                                    height = self.__rangeFrame1.winfo_height() // per)
 
         self.__rangeFrame1_1.pack_propagate(False)
@@ -642,7 +642,7 @@ class RawDataCooker:
 
         self.__rangeFrame1_3 = Frame(self.__rangeFrame1,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   width = self.__rangeFrame1.winfo_width() // 5,
                                    height = self.__rangeFrame1.winfo_height() // per)
 
         self.__rangeFrame1_3.pack_propagate(False)
@@ -650,7 +650,7 @@ class RawDataCooker:
 
         self.__rangeFrame1_4 = Frame(self.__rangeFrame1,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__rangeFrame1.winfo_width() // 6,
+                                   width = self.__rangeFrame1.winfo_width() // 4,
                                    height = self.__rangeFrame1.winfo_height() // per)
 
         self.__rangeFrame1_4.pack_propagate(False)
@@ -658,7 +658,7 @@ class RawDataCooker:
 
         self.__rangeFrame1_5 = Frame(self.__rangeFrame1,
                                    bg = self.__loader.colorPalettes.getColor("window"),
-                                   width = self.__rangeFrame1.winfo_width() // 3.5,
+                                   width = self.__rangeFrame1.winfo_width(),
                                    height = self.__rangeFrame1.winfo_height() // per)
 
         self.__rangeFrame1_5.pack_propagate(False)
@@ -747,7 +747,7 @@ class RawDataCooker:
 
         self.__formatConvertFrame1 = Frame(self.__formatConvertFrames,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__othersFrame.winfo_width() // 6,
+                                   width=self.__othersFrame.winfo_width() // 12,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__formatConvertFrame1.pack_propagate(False)
@@ -755,7 +755,7 @@ class RawDataCooker:
 
         self.__formatConvertFrame2 = Frame(self.__formatConvertFrames,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__othersFrame.winfo_width() // 6,
+                                   width=self.__othersFrame.winfo_width() // 12,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__formatConvertFrame2.pack_propagate(False)
@@ -763,11 +763,19 @@ class RawDataCooker:
 
         self.__formatConvertFrame3 = Frame(self.__formatConvertFrames,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__othersFrame.winfo_width() // 6,
+                                   width=self.__othersFrame.winfo_width() // 12,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__formatConvertFrame3.pack_propagate(False)
         self.__formatConvertFrame3.pack(side=LEFT, anchor=W, fill=Y)
+
+        self.__formatFiller = Frame(self.__formatConvertFrames,
+                                   bg=self.__loader.colorPalettes.getColor("window"),
+                                   width=self.__othersFrame.winfo_width() // 4,
+                                   height=self.__othersFrame.winfo_height() // per)
+
+        self.__formatFiller.pack_propagate(False)
+        self.__formatFiller.pack(side=LEFT, anchor=W, fill=Y)
 
         self.__formatConvertFrame4 = Frame(self.__formatConvertFrames,
                                    bg=self.__loader.colorPalettes.getColor("window"),
@@ -810,7 +818,7 @@ class RawDataCooker:
 
         self.__insertBlankFrame1_1 = Frame(self.__insertBlankFrame1,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__insertBlankFrame1.winfo_width() // 4,
+                                   width=self.__insertBlankFrame1.winfo_width() // 6,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__insertBlankFrame1_1.pack_propagate(False)
@@ -818,7 +826,7 @@ class RawDataCooker:
 
         self.__insertBlankFrame1_2 = Frame(self.__insertBlankFrame1,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__insertBlankFrame1.winfo_width() // 4,
+                                   width=self.__insertBlankFrame1.winfo_width() // 6,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__insertBlankFrame1_2.pack_propagate(False)
@@ -826,11 +834,11 @@ class RawDataCooker:
 
         self.__insertBlankFrame1_3 = Frame(self.__insertBlankFrame1,
                                    bg=self.__loader.colorPalettes.getColor("window"),
-                                   width=self.__insertBlankFrame1.winfo_width() // 2,
+                                   width=self.__insertBlankFrame1.winfo_width() // 3,
                                    height=self.__othersFrame.winfo_height() // per)
 
         self.__insertBlankFrame1_3.pack_propagate(False)
-        self.__insertBlankFrame1_3.pack(side=LEFT, anchor=W, fill=Y)
+        self.__insertBlankFrame1_3.pack(side=RIGHT, anchor=W, fill=Y)
 
         self.__afterBeforeVar = IntVar()
         self.__afterBeforeVar.set(1)
@@ -847,7 +855,7 @@ class RawDataCooker:
                                           variable=self.__radioButtonVar,
                                           activebackground=self.__colors.getColor("highLight"),
                                           activeforeground=self.__loader.colorPalettes.getColor(
-                                          "font"),
+                                          "font"), state = DISABLED,
                                           value=1, command=None)
         self.__beforeButton.pack_propagate(False)
         self.__beforeButton.pack(side=LEFT, anchor=W)
@@ -861,7 +869,7 @@ class RawDataCooker:
                                           variable=self.__radioButtonVar,
                                           activebackground=self.__colors.getColor("highLight"),
                                           activeforeground=self.__loader.colorPalettes.getColor(
-                                          "font"),
+                                          "font"), state = DISABLED,
                                           value=2, command=None)
         self.__afterButton.pack_propagate(False)
         self.__afterButton.pack(side=LEFT, anchor=W)
@@ -869,6 +877,50 @@ class RawDataCooker:
         #self.__loader.threadLooper.bindingMaster.addBinding(self, self.__beforeButton, "<Button-1>", self.radioClicked, 1)
         #self.__loader.threadLooper.bindingMaster.addBinding(self, self.__afterButton , "<Button-1>", self.radioClicked, 1)
 
+        self.__insertVar   = StringVar()
+        self.__insertVar.set("10")
+        self.__insertVal   =  10
+        self.__insertEntry = Entry(self.__insertBlankFrame1_3,
+                                             name="entry_insert",
+                                             bg=self.__colors.getColor("boxBackNormal"),
+                                             fg=self.__colors.getColor("boxFontNormal"),
+                                             width=9999, justify=CENTER, state=DISABLED,
+                                             textvariable=self.__insertVar,
+                                             font=self.__normalFont
+                                             )
+
+        self.__insertEntry.pack_propagate(False)
+        self.__insertEntry.pack(fill=X, side=TOP, anchor=N)
+
+        self.__convertVar = IntVar()
+        self.__convertVar.set(1)
+
+        convertFrames = [self.__formatConvertFrame1, self.__formatConvertFrame2, self.__formatConvertFrame3]
+        self.__convertButtons = [None, None, None]
+
+        self.__convertTypes = ["BIN", "DEC", "HEX"]
+
+        for num in range(0, 3):
+            self.__convertButtons[num] = Radiobutton(convertFrames[num],
+                                                     text=self.__convertTypes[num],
+                                                     name="radio4_" + self.__convertTypes[num],
+                                                     bg=self.__colors.getColor("window"),
+                                                     fg=self.__colors.getColor("font"),
+                                                     justify=LEFT, font=self.__miniFont,
+                                                     variable=self.__radioButtonVar2, state=DISABLED,
+                                                     activebackground=self.__colors.getColor("highLight"),
+                                                     activeforeground=self.__loader.colorPalettes.getColor(
+                                                     "font"),
+                                                     value=num + 1, command=None
+                                                     )
+
+            self.__convertButtons[num].pack_propagate(False)
+            self.__convertButtons[num].pack(side=LEFT, anchor=W)
+
+            self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButtons[num],
+                                                                "<Button-1>",  self.radioClicked, 1)
+
+            self.__changeIfSelected.append(self.__convertButtons[num])
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<KeyRelease>", self.setCounterNumber, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<FocusOut>"  , self.checkNumber,      1)
@@ -876,6 +928,8 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<FocusOut>"  , self.checkNumber,      1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry    , "<KeyRelease>", self.setCounterNumber, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLenEntry    , "<FocusOut>"  , self.checkNumber,      1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__insertEntry      , "<KeyRelease>", self.setCounterNumber, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__insertEntry      , "<FocusOut>"  , self.checkNumber,      1)
 
         self.__changeIfSelected.append(self.__maskingButton)
         self.__changeIfSelected.append(self.__moveButton1)
@@ -886,6 +940,9 @@ class RawDataCooker:
         self.__changeIfSelected.append(self.__rangeLenEntry)
         self.__changeIfSelected.append(self.__insertButton)
         self.__changeIfSelected.append(self.__convertButton)
+        self.__changeIfSelected.append(self.__afterButton)
+        self.__changeIfSelected.append(self.__beforeButton)
+        self.__changeIfSelected.append(self.__insertEntry)
 
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton1, "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroringButton2, "<Button-1>", self.simpleButtonsStuff, 1)
@@ -2004,7 +2061,8 @@ class RawDataCooker:
             "MaskByte"     : self.__maskNumberVar,
             "rangeSmaller" : self.__rangeSmallerVar,
             "rangeLarger"  : self.__rangeLargerVar,
-            "rangeLen"     : self.__rangeLenVar
+            "rangeLen"     : self.__rangeLenVar,
+            "insert"       : self.__insertVar
         }
 
         varHolder = None
@@ -2040,17 +2098,7 @@ class RawDataCooker:
 
         try:
             value, mode = self.convertEntryToNum(value)
-            """
-            if   value.startswith("%"):
-                 mode = "bin"
-                 value  = int(value.replace("%", "0b"), 2)
-            elif value.startswith("$"):
-                 mode = "hex"
-                 value  = int(value.replace("$", "0x"), 16)
-            else:
-                 mode = "dec"
-                 value  = int(value)
-            """
+
         except:
             entry.config(bg = self.__colors.getColor("boxBackUnSaved"),
                          fg = self.__colors.getColor("boxFontUnSaved"))
@@ -2062,8 +2110,8 @@ class RawDataCooker:
         entry.config(bg=self.__colors.getColor("boxBackNormal"),
                      fg=self.__colors.getColor("boxFontNormal"))
 
-        if subName == "rangeLen": base = 1
-        else                    : base = 0
+        if subName in ("rangeLen", "insert"): base = 1
+        else                                : base = 0
 
         if   value < base      : value = base
         elif value > 255 + base: value = 255 + base
@@ -2072,18 +2120,6 @@ class RawDataCooker:
         binVal = ((8-len(binVal)) * "0") + binVal
 
         value = self.formatNum(value, mode)
-
-        """
-        if   mode == "dec":
-             value = str(value)
-        elif mode == "bin":
-             value = "%" + binVal
-        else:
-             value = hex(value).replace("0x", "")
-             if len(value) == 1: value = "0" + value
-             value = "$" + value
-
-        """
 
         if   subName in ["rangeSmaller", "rangeLarger"]: pass
         elif subName in hardcoded                      : varHolder.set(str(value))
@@ -2119,6 +2155,9 @@ class RawDataCooker:
 
         elif subName == "rangeLen":
             self.__rangeLen, dummy = self.convertEntryToNum(str(value))
+
+        elif subName == "insert":
+            self.__insertVal, dummy = self.convertEntryToNum(str(value))
 
         elif subName in ["rangeSmaller", "rangeLarger"]:
            modeNum = 0
