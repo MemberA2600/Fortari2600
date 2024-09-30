@@ -952,13 +952,15 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__moveButton2     , "<Button-1>", self.moveUpDown        , 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__insertButton    , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
-
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__removeButton    , "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__removeButton    , "<Button-1>", self.__insertButton,     1)
 
         self.__running -= 1
 
     def simpleButtonsStuff(self, event):
         button = event.widget
         name  = str(button).split(".")[-1].split("_")[-1]
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -1099,12 +1101,48 @@ class RawDataCooker:
                            self.__allData[num + lineNum]["entry"] = self.formatNum(newList[num], mode)
                            self.doTheBitsFromVal(num + lineNum, True)
 
+               elif name == "insertBlank":
+                    for num in range(0, self.__insertVal):
+                        if self.__afterBeforeVar.get() == 1:
+                           self.__allData.insert(lineNum, deepcopy(self.__schema))
+                        else:
+                           lNum = lineNum + 1
+
+                           if lNum == len(self.__allData):
+                              self.__allData.append(deepcopy(self.__schema))
+                           else:
+                              self.__allData.insert(lNum, deepcopy(self.__schema))
+
+                    self.__numberOfLines = len(self.__allData)
+                    self.__numOfLinesEntryVal.set(str(self.__numberOfLines))
+
+        if name == "removeGaps":
+           newData    = []
+           firstLabel = False
+
+           for line in self.__allData:
+               if firstLabel == False:
+                  if line["label"] == "": continue
+                  firstLabel = True
+
+               if line["entry"] != "" or line["label"] != "":
+                  if line["label"] == "" and newData[-1]["label"]!= "" and newData[-1]["entry"] == "":
+                     newData[-1]["entry"] = line["entry"]
+                  else:
+                     newData.append(line)
+
+           self.__allData = newData
+           self.fillLineDataEnd()
+           for lineNum in range(0, len(self.__allData)):
+               self.doTheBitsFromVal(lineNum, True)
+
         self.__changed = True
         self.fillTheEditor()
 
     def moveUpDown(self, event):
         button = event.widget
         name = str(button).split(".")[-1].split("_")[-1][4:]
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -1164,102 +1202,6 @@ class RawDataCooker:
 
         self.enableDisableOthers()
         self.colorLabels(None)
-
-
-    """
-    def checkForPreEmptyLabels(self, selectors):
-        keyList = list(selectors.keys())
-        keyList.sort()
-
-        for lineNum in keyList:
-            if lineNum == 0: continue
-
-            minus = 0
-            for lNum in range(lineNum-1, -1, -1):
-                if self.__allData[lNum]["label"] == ""  and self.__allData[lNum]["entry"] == "": continue
-                if self.__allData[lNum]["entry"] != "": break
-                minus += 1
-
-            if minus > 0:
-               selectors[lineNum - minus] = selectors[lineNum]
-               selectors.pop(lineNum)
-
-    def moveUpDown(self, event):
-        button = event.widget
-        name = str(button).split(".")[-1].split("_")[-1][4:]
-
-        if button.cget("state") == DISABLED: return
-
-        selectors, numOfSelecteds, inARow = self.getLabelsAndSelecteds()
-
-        selectedOnes = []
-        for lineNum in selectors:
-            if selectors[lineNum][1] == True:
-               selectedOnes.append(lineNum)
-
-        self.checkForPreEmptyLabels(selectors)
-
-        keyList = list(selectors.keys())
-        keyList.sort()
-
-        smallest = keyList[ 0]
-        largest  = keyList[-1]
-
-        if smallest == largest: return
-
-
-        index = -1
-        while True:
-            index +=1
-            if index  == len(keyList) or (index == len(keyList) - 1 and name == "Down"): break
-            if (index == 0 and name == "Up"): continue
-
-            lineNum = keyList[index]
-            if lineNum in selectedOnes:
-               selectedOnes.remove(lineNum)
-
-               self.doTheMove(index, keyList, lineNum, name)
-               index = -1
-
-        newList = []
-        for n in range(0, smallest):
-            newList.append(self.__schema)
-
-        for key in keyList:
-            for lineNum in range(key, len(self.__allData)):
-                if lineNum  > key and self.__allData[lineNum]["label"] != "":
-                   break
-                if key == largest and self.__allData[lineNum]["entry"] == "":
-                   break
-
-                newList.append(deepcopy(self.__allData[lineNum]))
-
-
-
-        for n in range(largest, len(self.__allData)):
-            newList.append(self.__schema)
-
-        self.__allData = newList
-        self.__changed = True
-        self.fillTheEditor()
-
-        self.enableDisableOthers()
-        self.colorLabels(None)
-
-    def doTheMove(self, index, keyList, theNum, dir):
-        if index == None:
-           index = keyList.index(theNum)
-
-           if dir == "Up"   and index == 0              : return
-           if dir == "Down" and index == len(keyList) -1: return
-
-        keyList.pop(index)
-
-        if dir == "Up":
-           keyList.insert(index - 1, theNum)
-        else:
-           keyList.insert(index + 1, theNum)
-    """
 
     def convertEntryToNum(self, num):
         if num.startswith("%"):
@@ -1562,6 +1504,7 @@ class RawDataCooker:
         button = event.widget
         name  = str(button).split(".")[-1].split("_")[-1]
         group = int(str(button).split(".")[-1].split("_")[0][-1])
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -1675,6 +1618,7 @@ class RawDataCooker:
     def addSub(self, event):
         button = event.widget
         name = str(button).split(".")[-1].split("_")[-1]
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -1686,6 +1630,7 @@ class RawDataCooker:
     def __checkEntry(self, event):
         entry = event.widget
         name = str(entry).split(".")[-1].split("_")[-1]
+        if self.__running > 0: return
 
         if entry.cget("state") == DISABLED: return
 
@@ -1922,6 +1867,7 @@ class RawDataCooker:
 
         button = event.widget
         name  = str(button).split(".")[-1]
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -2049,6 +1995,7 @@ class RawDataCooker:
     def checkNumber(self, event):
         entry = event.widget
         name  = str(entry).split(".")[-1]
+        if self.__running > 0: return
 
         if entry.cget("state") == DISABLED: return
 
@@ -2444,6 +2391,7 @@ class RawDataCooker:
     def clickedButton(self, event):
         button = event.widget
         name  = str(button).split(".")[-1]
+        if self.__running > 0: return
 
         if button.cget("state") == DISABLED: return
 
@@ -2534,6 +2482,7 @@ class RawDataCooker:
     def checkLabel(self, event):
         entry = event.widget
         name  = str(entry).split(".")[-1]
+        if self.__running > 0: return
 
         if entry.cget("state") == DISABLED: return
 
