@@ -844,7 +844,6 @@ class RawDataCooker:
         self.__afterBeforeVar.set(1)
 
         self.__wordKeyList = ["autoWhole", "autoLayer", "manualWhole"]
-        self.__radioButtonVar.set(1)
 
         self.__beforeButton = Radiobutton(self.__insertBlankFrame1_1,
                                           text=self.__dictionaries.getWordFromCurrentLanguage("before"),
@@ -852,7 +851,7 @@ class RawDataCooker:
                                           bg=self.__colors.getColor("window"),
                                           fg=self.__colors.getColor("font"),
                                           justify=LEFT, font=self.__miniFont,
-                                          variable=self.__radioButtonVar,
+                                          variable=self.__afterBeforeVar,
                                           activebackground=self.__colors.getColor("highLight"),
                                           activeforeground=self.__loader.colorPalettes.getColor(
                                           "font"), state = DISABLED,
@@ -866,7 +865,7 @@ class RawDataCooker:
                                           bg=self.__colors.getColor("window"),
                                           fg=self.__colors.getColor("font"),
                                           justify=LEFT, font=self.__miniFont,
-                                          variable=self.__radioButtonVar,
+                                          variable=self.__afterBeforeVar,
                                           activebackground=self.__colors.getColor("highLight"),
                                           activeforeground=self.__loader.colorPalettes.getColor(
                                           "font"), state = DISABLED,
@@ -907,7 +906,7 @@ class RawDataCooker:
                                                      bg=self.__colors.getColor("window"),
                                                      fg=self.__colors.getColor("font"),
                                                      justify=LEFT, font=self.__miniFont,
-                                                     variable=self.__radioButtonVar2, state=DISABLED,
+                                                     variable=self.__convertVar, state=DISABLED,
                                                      activebackground=self.__colors.getColor("highLight"),
                                                      activeforeground=self.__loader.colorPalettes.getColor(
                                                      "font"),
@@ -953,7 +952,7 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__insertButton    , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__removeButton    , "<Button-1>", self.simpleButtonsStuff, 1)
-        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__removeButton    , "<Button-1>", self.__insertButton,     1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
 
         self.__running -= 1
 
@@ -1115,6 +1114,18 @@ class RawDataCooker:
 
                     self.__numberOfLines = len(self.__allData)
                     self.__numOfLinesEntryVal.set(str(self.__numberOfLines))
+
+               elif name == "convertFormat":
+                    mode = self.__convertTypes[self.__convertVar.get() - 1].lower()
+
+                    for lNum in range(lineNum, nextLineNum):
+                        if self.__allData[lNum]["entry"].startswith("#"):
+                           self.__allData[lNum]["entry"] = self.__allData[lNum]["entry"][1:]
+
+                        if self.__allData[lNum]["entry"] != "":
+                           val, dummy = self.convertEntryToNum(self.__allData[lNum]["entry"])
+                           self.__allData[lNum]["entry"] = self.formatNum(val, mode)
+                           self.doTheBitsFromVal(lNum, True)
 
         if name == "removeGaps":
            newData    = []
@@ -1625,7 +1636,7 @@ class RawDataCooker:
         self.__checkEntry(event)
 
     def entryCounter(self, event):
-        self.__counterEntries = [5, event]
+        self.__counterEntries = [10, event]
 
     def __checkEntry(self, event):
         entry = event.widget
@@ -1680,6 +1691,8 @@ class RawDataCooker:
              self.__numberOfLines = num
 
              maxIndex    = self.__numberOfLines - len(self.__lineData)
+             if maxIndex < 0: maxIndex = 0
+
              if self.__Y > maxIndex:
                 self.__Y = maxIndex
                 self.__yIndexEntryVal.set(str(maxIndex))
@@ -2515,18 +2528,7 @@ class RawDataCooker:
 
               collectLabelNums = {}
 
-              for lNum in range(0, self.__numberOfLines):
-                  #if lNum == lineNum: continue
-
-                  """  
-                  if self.__lineData[lNum]["labelVal"].get() == value:
-                     self.addError("duplicateOnData", {"#LABEL#": value} , lineNum)
-                     if "duplicateOnData" not in self.__labelErrors[lNum].keys():
-                         self.addError("duplicateOnData", {"#LABEL#": value} , lNum)
-                     wasError = True
-                  else:
-                     self.removeError(lineNum, "duplicateOnData")
-                  """
+              for lNum in range(0, 20):
                   if self.__lineData[lNum]["labelVal"].get() == "":
                      self.removeError(lNum, "duplicateOnData")
                   else:
