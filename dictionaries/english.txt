@@ -681,3 +681,6 @@ insertBlankLines=Insert Blank Lines
 convertToFormat=Convert To Format
 before=Before
 after=After
+oven=Into The Oven! (Testing)
+moreThen256=More than 256 bytes
+moreThen256Text=There are labels with more than 256 bytes! Assembly code was not saved!

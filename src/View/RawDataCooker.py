@@ -28,7 +28,6 @@ class RawDataCooker:
 
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
-        self.__finished2 = False
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -921,6 +920,26 @@ class RawDataCooker:
 
             self.__changeIfSelected.append(self.__convertButtons[num])
 
+        self.__testFrame = Frame(self.__othersFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__loaderFrame.winfo_width(), height = self.__othersFrame.winfo_height() // per)
+
+        self.__testFrame.pack_propagate(False)
+        self.__testFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__testButton = Button(self.__testFrame, height=self.__loaderFrame.winfo_height() // per,
+                                       width=self.__othersFrame.winfo_width() ,
+                                       name="oven",
+                                       bg=self.__loader.colorPalettes.getColor("font"),
+                                       fg=self.__loader.colorPalettes.getColor("window"),
+                                       text = self.__dictionaries.getWordFromCurrentLanguage("oven"),
+                                       font = self.__smallFont,
+                                       activebackground=self.__loader.colorPalettes.getColor("highLight"),
+                                       command=None
+                                       )
+        self.__testButton.pack_propagate(False)
+        self.__testButton.pack(side=TOP, anchor=N, fill=BOTH)
+
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<KeyRelease>", self.setCounterNumber, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeSmallerEntry, "<FocusOut>"  , self.checkNumber,      1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__rangeLargerEntry , "<KeyRelease>", self.setCounterNumber, 1)
@@ -953,8 +972,19 @@ class RawDataCooker:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__removeButton    , "<Button-1>", self.simpleButtonsStuff, 1)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__convertButton   , "<Button-1>", self.simpleButtonsStuff, 1)
+        self.__loader.threadLooper.bindingMaster.addBinding(self, self.__testButton      , "<Button-1>", self.__test            , 1)
 
         self.__running -= 1
+
+    def __test(self, event):
+        dummy, asm, blocks, moreThan256 = self.generateToSave()
+
+        if moreThan256 == False:
+           from Oven import Oven
+
+           Oven(self.__loader, blocks, asm)
+        else:
+           self.__fileDialogs.displayError("moreThen256", "moreThen256Text", None, None)
 
     def simpleButtonsStuff(self, event):
         button = event.widget
@@ -1508,7 +1538,7 @@ class RawDataCooker:
                                                                     self.setCounterNumber, 1)
                self.__loader.threadLooper.bindingMaster.addBinding(self, self.__radioButtonThings[num]["endVarEntry"], "<FocusOut>",
                                                                     self.checkNumber, 1)
-        self.__getTheEndByte(None)
+        self.__endByte = self.__getTheEndByte(None)
         self.__running -= 1
 
     def radioClicked(self, event):
@@ -1529,7 +1559,7 @@ class RawDataCooker:
                 self.__radioButtonThings[2]["endVarEntry"].config(state = DISABLED)
                 self.__radioButtonThings[2]["endVarVar"]  .set("")
 
-             self.__getTheEndByte(None)
+             self.__endByte = self.__getTheEndByte(None)
         elif group == 2:
              num = self.__wordKeyList2.index(name)
              self.__radioButtonVar2.set(num+1)
@@ -1544,7 +1574,7 @@ class RawDataCooker:
        elif num == 2:
             return self.formatNum(self.__getPossibeValidEndBytes(label)[-1], "hex")
        else:
-            possibleOnes = self.__getPossibeValidEndBytes(None)[0]
+            possibleOnes = self.__getPossibeValidEndBytes(None)
 
             try:
                theNumber = self.__radioButtonThings[2]["endVarVar"].get()
@@ -1553,16 +1583,6 @@ class RawDataCooker:
 
                valOfEntry, mode = self.convertEntryToNum(theNumber)
 
-               """
-               valOfEntry = self.getInt(theNumber)
-
-               if theNumber.startswith("%"):
-                   mode = "bin"
-               elif theNumber.startswith("$"):
-                   mode = "hex"
-               else:
-                   mode = "dec"
-               """
                found = False
                for num in possibleOnes:
                    if num == valOfEntry:
@@ -1573,7 +1593,8 @@ class RawDataCooker:
                   returnMe = self.formatNum(self.getClosest(valOfEntry, possibleOnes), mode)
                else:
                   returnMe = theNumber
-            except:
+            except Exception as e:
+               #print(str(e), possibleOnes)
                returnMe = "$FF"
 
             self.__radioButtonThings[2]["endVarVar"].set(returnMe)
@@ -1735,14 +1756,220 @@ class RawDataCooker:
                                       )
 
     def __open(self):
-        pass
+        if self.__changed == True:
+            answer = self.__fileDialogs.askYesNoCancel("notSavedFile", "notSavedFileMessage")
+            if answer == "Yes":
+                self.__save()
+            elif answer == "Cancel":
+                self.__topLevelWindow.deiconify()
+                self.__topLevelWindow.focus()
+                return
+
+        fpath = self.__fileDialogs.askForFileName("openFile", False, ["a26", "*"],
+                                                  self.__loader.mainWindow.projectPath + "raw/")
+
+        if fpath == "":
+            return
+
+        fosok = []
+
+        index = -1
+        try:
+            f = open(fpath, "r")
+            lines = f.read().replace("\r", "").split("\n")
+            f.close()
+
+            firstLine = True
+            for line in lines:
+                if line == "": continue
+
+                line = line.split("|")
+
+                if firstLine:
+                   firstLine = False
+
+                   self.__numberOfLines = int(line[0])
+                   self.__numOfLinesEntryVal.set(str(self.__numberOfLines))
+
+                   if line[1] in self.__wordKeyList:
+                      self.__radioButtonVar.set(self.__wordKeyList.index(line[1]) + 1)
+                   else:
+                      self.__radioButtonVar.set(3)
+                      self.__radioButtonThings [2]["endVarVar"].get(line[1])
+
+                   self.fillLineDataEnd()
+                   self.__Y = 0
+                   self.__yIndexEntryVal.set("0")
+                else:
+                    # line["label"], line["entry"], transform[line["addEndByte"]], transform[line["color"]
+                    index += 1
+
+                    transform = {"T": True, "F": False}
+
+                    self.__allData[index]["entry"]       = line[1]
+                    self.doTheBitsFromVal(index, True)
+
+                    self.__allData[index]["label"]       = line[0]
+                    self.__allData[index]["addEndByte"]  = transform[line[2]]
+                    self.__allData[index]["color"]       = transform[line[3]]
+                    self.__allData[index]['wasSelected'] = False
+                    #print(self.__allData[index])
+
+                    fosok.append(deepcopy(self.__allData[index]))
+
+            for lineNum in range(0, len(self.__allData)):
+                self.__allData[lineNum] = deepcopy(fosok[lineNum])
+                #print(self.__allData[lineNum])
+
+            self.fillTheEditor()
+            self.__soundPlayer.playSound("Success")
+
+        except Exception as e:
+            print(str(e))
+            self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
+
+        self.__changed = False
+        self.__topLevelWindow.deiconify()
+        self.__topLevelWindow.focus()
+
+        #for line in self.__lineData:
+        #    print(line["colorDataVar"].get())
+
+    def generateToSave(self):
+        txtToSave1 = str(self.__numberOfLines)
+        txtToSave2 = ""
+        blocks     = []
+
+        blockSchema = {
+            "labels": [], "bytes": [], "color": False
+        }
+
+        firstNum = 0
+        lastNum = len(self.__allData) - 1
+
+        for lineNum in range(0, len(self.__allData)):
+            firstNum = lineNum
+            if self.__allData[lineNum]["label"] != "": break
+
+        for lineNum in range(len(self.__allData) - 1, -1, -1):
+            if self.__allData[lineNum]["entry"] != "" or self.__allData[lineNum]["label"] != "": break
+            lastNum = lineNum
+
+        if self.__radioButtonVar.get() < 3:
+            txtToSave1 += "|" + self.__wordKeyList[self.__radioButtonVar.get() - 1] + "\n"
+        else:
+            txtToSave1 += "|" + self.__radioButtonThings[2]["endVarVar"].get() + "\n"
+
+        #  "entry" "label" "addEndByte" "color"
+
+        transform = {True: "T", False: "F"}
+
+        hasEndByte = False
+        firstLabel = True
+        numOfBytes = 0
+        moreThan256 = False
+        firstAlign = True
+        lastLabel  = ""
+
+        index = -1
+        for line in self.__allData:
+            index += 1
+            txtToSave1 += "|".join([
+                line["label"], line["entry"], transform[line["addEndByte"]], transform[line["color"]]
+            ])
+
+            if index < len(self.__allData) - 1:
+                txtToSave1 += "\n"
+
+            if index >= firstNum and index <= lastNum:
+                if line["label"] != "":
+                    if hasEndByte:
+                        numOfBytes += 1
+
+                        if   self.__radioButtonVar.get() == 1:
+                             endByte = self.formatNum(self.__getPossibeValidEndBytes(None)[-1], "hex")
+                        elif self.__radioButtonVar.get() == 2:
+                             endByte = self.formatNum(self.__getPossibeValidEndBytes(lastLabel)[-1], "hex")
+                        else:
+                             endByte = self.__endByte
+
+                        txtToSave2 += "\tBYTE\t#" + endByte + "\t; ENDBYTE\n"
+
+                    if firstLabel:
+                        txtToSave2 = txtToSave2.replace("#ALIGN#", str(numOfBytes))
+
+                        if firstAlign:
+                            firstAlign = False
+                        else:
+                            txtToSave2 += "\n"
+
+                        txtToSave2 += "\t_align\t#ALIGN#\n"
+                        firstLabel = False
+                        numOfBytes = 0
+
+                        blocks.append(deepcopy(blockSchema))
+
+                    txtToSave2 += line["label"] + "\n"
+                    if line["color"] == True:
+                        txtToSave2 += "### &COLOR\n"
+
+                    hasEndByte = line["addEndByte"]
+                    lastLabel  = line["label"]
+
+                    blocks[-1]["labels"].append(line["label"])
+                    if line["color"]: blocks[-1]["color"] = True
+
+            if line["entry"]:
+                firstLabel = True
+                numOfBytes += 1
+                if numOfBytes > 256: moreThan256 = True
+
+                txtToSave2 += "\tBYTE\t#" + line["entry"] + "\n"
+
+                val, dummy = self.convertEntryToNum(str(line["entry"]))
+
+                if blocks[-1]["color"]:
+                   blocks[-1]["bytes"].append(self.formatNum(val, "hex"))
+                else:
+                   blocks[-1]["bytes"].append(self.formatNum(val, "bin"))
+
+            if index < lastNum:
+               txtToSave2 += "\n"
+
+        txtToSave2 = txtToSave2.replace("#ALIGN#", str(numOfBytes)).replace("\n\n", "\n")
+
+        #print(blocks)
+
+        return txtToSave1, txtToSave2, blocks, moreThan256
 
     def __save(self):
-        pass
+        name1 = self.__loader.mainWindow.projectPath+"raw/"+self.__rawLoader.getValue()+".a26"
+        name2 = self.__loader.mainWindow.projectPath+"raw/"+self.__rawLoader.getValue()+".asm"
+
+        txtToSave1, txtToSave2, dummy, moreThan256 = self.generateToSave()
+
+        f = open(name1, "w")
+        f.write(txtToSave1)
+        f.close()
+
+        if moreThan256 == False:
+           f = open(name2, "w")
+           f.write(txtToSave2)
+           f.close()
+        else:
+           self.__fileDialogs.displayError("moreThen256", "moreThen256Text", None, None)
+
+        self.__soundPlayer.playSound("Success")
+        self.__changed = False
 
     def __loop(self):
         if self.__running == 0:
             try:
+                if self.__changed:
+                   self.__rawLoader.enableSave()
+                else:
+                   self.__rawLoader.disableSave()
+
                 if self.__enabled    == False:
                    self.__enabled     = True
                    for item in self.__enableThem:
@@ -1843,37 +2070,25 @@ class RawDataCooker:
                self.__lineData[lineNumOnEditor]["entry"]     .config(state = NORMAL)
                self.__lineData[lineNumOnEditor]["labelEntry"].config(state = NORMAL)
 
-               """ 
-               disable = False
-               #print("---------------------------")
-               if self.__allData[lineNum]["label"] == "":
-                  disable = True
-               else:
-                  #print("fos")
-                  if lineNum < len(self.__allData) - 1:
-                     #print(self.__allData[lineNum + 1]["label"], self.__allData[lineNum]["entry"])
-                     if self.__allData[lineNum + 1]["label"] != "" and self.__allData[lineNum]["entry"] == "":
-                        disable = True
-               """
-
                if self.checkIfDisable(lineNumOnEditor, True):
-                  self.__lineData[lineNumOnEditor]["select"].config(state=DISABLED)
-                  self.__lineData[lineNumOnEditor]["endVar"].config(state=DISABLED)
-                  self.__lineData[lineNumOnEditor]["colorData"].config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["select"]      .config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["endVar"]      .config(state=DISABLED)
+                  self.__lineData[lineNumOnEditor]["colorData"]   .config(state=DISABLED)
 
-                  self.__lineData[lineNumOnEditor]["endVarVar"].set(0)
-                  self.__lineData[lineNumOnEditor]["selectVal"].set(0)
+                  self.__lineData[lineNumOnEditor]["endVarVar"]   .set(0)
+                  self.__lineData[lineNumOnEditor]["selectVal"]   .set(0)
                   self.__lineData[lineNumOnEditor]["colorDataVar"].set(0)
 
                else:
-                  self.__lineData[lineNumOnEditor]["select"].config(state=NORMAL)
-                  self.__lineData[lineNumOnEditor]["endVar"].config(state=NORMAL)
-                  self.__lineData[lineNumOnEditor]["colorData"].config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["select"]      .config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["endVar"]      .config(state=NORMAL)
+                  self.__lineData[lineNumOnEditor]["colorData"]   .config(state=NORMAL)
 
-                  self.__lineData[lineNumOnEditor]["endVarVar"].set(self.__allData[lineNum]["addEndByte"])
-                  self.__lineData[lineNumOnEditor]["selectVal"].set(self.__allData[lineNum]["wasSelected"])
-                  self.__lineData[lineNumOnEditor]["colorDataVar"].set(self.__allData[lineNum]["wasSelected"])
+                  self.__lineData[lineNumOnEditor]["endVarVar"]   .set(self.__allData[lineNum]["addEndByte"])
+                  self.__lineData[lineNumOnEditor]["selectVal"]   .set(self.__allData[lineNum]["wasSelected"])
+                  self.__lineData[lineNumOnEditor]["colorDataVar"].set(self.__allData[lineNum]["color"])
 
+                  #print(lineNumOnEditor,  self.__lineData[lineNumOnEditor]["colorDataVar"].get())
 
     def clicked(self, event):
         if self.__running > 0: return
@@ -2040,7 +2255,7 @@ class RawDataCooker:
            entry.config(bg=self.__colors.getColor("boxBackNormal"),
                          fg=self.__colors.getColor("boxFontNormal"))
 
-           if subName == "ManualEndByte": self.__getTheEndByte(None)
+           if subName == "ManualEndByte": self.__endByte = self.__getTheEndByte(None)
            if subName not in hardcoded:
                for bitNum in range(0, 8):
                    self.__lineData[lineNum]["bitButtons"][bitNum].config(bg=self.__colors.getColor("boxBackNormal"))
@@ -2063,7 +2278,7 @@ class RawDataCooker:
             entry.config(bg = self.__colors.getColor("boxBackUnSaved"),
                          fg = self.__colors.getColor("boxFontUnSaved"))
 
-            if subName == "ManualEndByte": self.__getTheEndByte(None)
+            if subName == "ManualEndByte": self.__endByte = self.__getTheEndByte(None)
 
             return
 
@@ -2108,7 +2323,7 @@ class RawDataCooker:
             self.colorLabels(None)
 
         elif subName == "ManualEndByte":
-            self.__getTheEndByte(None)
+            self.__endByte = self.__getTheEndByte(None)
 
         elif subName == "MaskByte":
              self.__maskByte = str(value)
@@ -2361,7 +2576,7 @@ class RawDataCooker:
                                                 bg=self.__colors.getColor("window"),
                                                 name = "colorData_" + str(lineNum),
                                                 justify=CENTER, state = DISABLED,
-                                                variable=self.__lineData[-1]["colorData"],
+                                                variable=self.__lineData[-1]["colorDataVar"],
                                                 activebackground=self.__colors.getColor("highLight"),
                                                 command=None
                                                 )
@@ -2411,7 +2626,7 @@ class RawDataCooker:
         typ     = name.split("_")[0]
         lineNum = int(name.split("_")[1])
 
-        keys = {"select": "wasSelected", "endVar": "addEndByte", "colorData": "colorDataVar"}
+        keys = {"select": "wasSelected", "endVar": "addEndByte", "colorData": "color"}
 
         self.__allData[lineNum + self.__Y][keys[typ]] = 1 - self.__allData[lineNum + self.__Y][keys[typ]]
 
@@ -2424,6 +2639,7 @@ class RawDataCooker:
            self.enableDisableOthers()
            self.colorLabels(None)
 
+        self.__changed = True
         #print(self.__lineData[lineNum]["endVarVar"].get(), lineNum )
 
     def enableDisableOthers(self):

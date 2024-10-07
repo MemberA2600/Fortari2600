@@ -1,0 +1,25 @@
+	_align	10
+#NAME#_test1
+### &COLOR
+	BYTE	#$04
+	BYTE	#$05
+	BYTE	#$06
+	BYTE	#$08
+	BYTE	#$0A
+	BYTE	#6
+	BYTE	#7
+	BYTE	#8
+	BYTE	#10
+	BYTE	#$FF
+	_align	10
+#NAME#_test2
+	BYTE	#0
+	BYTE	#1
+	BYTE	#2
+	BYTE	#3
+	BYTE	#4
+	BYTE	#5
+	BYTE	#6
+	BYTE	#7
+	BYTE	#8
+	BYTE	#10

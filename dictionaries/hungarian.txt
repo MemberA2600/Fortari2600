@@ -679,3 +679,6 @@ insertBlankLines=Üres Sorok Beillesztése
 convertToFormat=Formátumba Konvertálás
 before=Elé
 after=Mögé
+oven=Sütõbe Vele! (Tesztelés)
+moreThen256=Több, mint 256 byte
+moreThen256Text=Található olyan címke, amit több, mint 256 byte követ! Az assembly kód nem került mentésre!

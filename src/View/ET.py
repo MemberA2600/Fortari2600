@@ -25,11 +25,6 @@ class ET:
         self.__forestCanvas.grid_propagate(False)
         self.__forestCanvas.pack(side=BOTTOM, fill=BOTH, anchor=CENTER)
 
-        self.__forest = IMAGE.open("others/img/etForest.png").resize(
-            (self.__forestFrame.winfo_width(),
-             self.__forestFrame.winfo_height()
-             ), IMAGE.ANTIALIAS)
-
         self.__spriteCounter = 0
         self.__differenceX = 0
         self.__differenceY = 0
@@ -42,7 +37,6 @@ class ET:
         self.__etY = 0
 
         self.__mirroring = False
-        self.__forestImg = ImageTk.PhotoImage(self.__forest)
 
         self.__setBuffer()
 
@@ -61,6 +55,8 @@ class ET:
         while self.__forestFrame.winfo_width()<2 or self.__forestCanvas.winfo_width() < 2:
            sleep(0.0001)
 
+        """
+
         while self.__forestImg.height() < 2:
             self.__forest = IMAGE.open("others/img/etForest.png").resize(
                 (self.__forestFrame.winfo_width(),
@@ -69,6 +65,13 @@ class ET:
 
             self.__forestImg = ImageTk.PhotoImage(self.__forest)
             sleep(0.0001)
+        """
+
+        self.__forest = IMAGE.open("others/img/etForest.png").resize(
+            (self.__forestFrame.winfo_width(),
+             self.__forestFrame.winfo_height()
+             ), IMAGE.ANTIALIAS)
+        self.__forestImg = ImageTk.PhotoImage(self.__forest)
 
         self.__forestOfSteel = self.__forestCanvas.create_image(
             0, 0, image=self.__forestImg, anchor=NW
