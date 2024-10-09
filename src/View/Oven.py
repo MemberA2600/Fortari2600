@@ -72,6 +72,10 @@ class Oven:
         t1.daemon = True
         t1.start()
 
+        t2 = Thread(target = self.__allTheOthers)
+        t2.daemon = True
+        t2.start()
+
         self.__loader.threadLooper.addToThreading(self, self.loop, [], 1)
 
     def loop(self):
@@ -82,6 +86,96 @@ class Oven:
            self.__thatPic = self.__canvas.create_image(
                0, 0, image=self.__buffer[self.__picIndex // 4], anchor=NW
            )
+
+
+    def __allTheOthers(self):
+        self.__running += 1
+
+        while self.__mostFrame.winfo_width() < 2: sleep(0.00000001)
+
+        self.__theBigCancasFrame = Frame(self.__mostFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__mostFrame.winfo_width(), height = self.__sizes[1] // 12 * 7 )
+
+        self.__theBigCancasFrame.pack_propagate(False)
+        self.__theBigCancasFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__bigCanvas = Canvas(self.__theBigCancasFrame, bg = "black",
+                               height=self.__sizes[1] // 12 * 7, width=self.__mostFrame.winfo_width())
+        self.__bigCanvas.pack_propagate(False)
+        self.__bigCanvas.pack(side=TOP, fill=BOTH, anchor=CENTER)
+
+        self.__globalSwitchesFrame = Frame(self.__mostFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__mostFrame.winfo_width(), height = self.__sizes[1] // 12)
+
+        self.__globalSwitchesFrame.pack_propagate(False)
+        self.__globalSwitchesFrame.pack(side=TOP, anchor=N, fill=X)
+
+        h = self.__sizes[1] // 12 * 5
+
+        self.__columnsFrame = Frame(self.__mostFrame,
+                                   bg = self.__loader.colorPalettes.getColor("window"),
+                                   width = self.__mostFrame.winfo_width(), height = h)
+
+        self.__columnsFrame.pack_propagate(False)
+        self.__columnsFrame.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__columnThings = []
+
+        m = 13
+
+        for num in range(0, m):
+            self.__columnThings.append({
+                "frames"     : [],
+                "items"      : [],
+                "listbox"    : None,
+                "scrollbar"  : None,
+                "mirrorVal"  : IntVar(),
+                "cutBits"    : IntVar(),
+                "mirrorRadio": None,
+                "cutRadio"   : None,
+                "label"      : None
+            })
+
+            f = Frame(self.__columnsFrame,
+                      bg    = self.__loader.colorPalettes.getColor("window"),
+                      width = self.__mostFrame.winfo_width() // m, height = h)
+
+            f.pack_propagate(False)
+            f.pack(side=LEFT, anchor=W, fill=Y)
+
+            f1 = Frame(f,
+                      bg    = self.__loader.colorPalettes.getColor("window"),
+                      width = self.__mostFrame.winfo_width() // m, height = h // 6)
+
+            f1.pack_propagate(False)
+            f1.pack(side=TOP, anchor=N, fill=X)
+
+            f2 = Frame(f,
+                      bg    = self.__loader.colorPalettes.getColor("window"),
+                      width = self.__mostFrame.winfo_width() // m, height = h // 6)
+
+            f2.pack_propagate(False)
+            f2.pack(side=TOP, anchor=N, fill=X)
+
+            f3 = Frame(f,
+                      bg    = self.__loader.colorPalettes.getColor("window"),
+                      width = self.__mostFrame.winfo_width() // m, height = h // 6)
+
+            f3.pack_propagate(False)
+            f3.pack(side=TOP, anchor=N, fill=X)
+
+            f4 = Frame(f,
+                      bg    = self.__loader.colorPalettes.getColor("window"),
+                      width = self.__mostFrame.winfo_width() // m, height = h // 3)
+
+            f4.pack_propagate(False)
+            f4.pack(side=TOP, anchor=N, fill=X)
+
+            self.__columnThings[-1]["frames"] = [f, f1, f2, f3, f4]
+
+        self.__running -= 1
 
 
     def __loadNarrow(self):
