@@ -977,12 +977,16 @@ class RawDataCooker:
         self.__running -= 1
 
     def __test(self, event):
-        dummy, asm, blocks, moreThan256 = self.generateToSave()
+        dummy, asm, blocks, moreThan256, wasOK = self.generateToSave()
 
         if moreThan256 == False:
-           from Oven import Oven
+           if (wasOK and len(blocks) > 0):
+              from Oven import Oven
 
-           Oven(self.__loader, blocks, asm)
+              Oven(self.__loader, blocks, asm)
+           else:
+              self.__fileDialogs.displayError("noDataLoaded", "noDataLoadedText", None, None)
+
         else:
            self.__fileDialogs.displayError("moreThen256", "moreThen256Text", None, None)
 
@@ -1836,12 +1840,14 @@ class RawDataCooker:
         #    print(line["colorDataVar"].get())
 
     def generateToSave(self):
-        txtToSave1 = str(self.__numberOfLines)
-        txtToSave2 = ""
-        blocks     = []
+        txtToSave1   = str(self.__numberOfLines)
+        txtToSave2   = ""
+        blocks       = []
+        wasColor     = False
+        wasNoneColor = False
 
         blockSchema = {
-            "labels": [], "bytes": [], "color": False
+            "labels": [], "bytes": [], "color": False, "endByte": False
         }
 
         firstNum = 0
@@ -1917,7 +1923,13 @@ class RawDataCooker:
                     lastLabel  = line["label"]
 
                     blocks[-1]["labels"].append(line["label"])
-                    if line["color"]: blocks[-1]["color"] = True
+                    if line["color"]     :
+                       blocks[-1]["color"]   = True
+                       wasColor              = True
+                    else:
+                       wasNoneColor          = True
+
+                    if line["addEndByte"]: blocks[-1]["endByte"] = True
 
             if line["entry"]:
                 firstLabel = True
@@ -1940,13 +1952,13 @@ class RawDataCooker:
 
         #print(blocks)
 
-        return txtToSave1, txtToSave2, blocks, moreThan256
+        return txtToSave1, txtToSave2, blocks, moreThan256, wasColor and wasNoneColor
 
     def __save(self):
         name1 = self.__loader.mainWindow.projectPath+"raw/"+self.__rawLoader.getValue()+".a26"
         name2 = self.__loader.mainWindow.projectPath+"raw/"+self.__rawLoader.getValue()+".asm"
 
-        txtToSave1, txtToSave2, dummy, moreThan256 = self.generateToSave()
+        txtToSave1, txtToSave2, dummy, moreThan256, wasOK = self.generateToSave()
 
         f = open(name1, "w")
         f.write(txtToSave1)
