@@ -689,3 +689,4 @@ noDataLoaded=Nincs Adat Betölve
 noDataLoadedText=Valami elfelejtõdött... Hiányzó adat vagy színadat!
 autoDetect=Automatikus Beállítás
 pixelSize=Pixelméret
+theOven=Sütõ

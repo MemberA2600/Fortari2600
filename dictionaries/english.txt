@@ -692,3 +692,4 @@ noDataLoadedText=Seems like you forgot something... No data or no color data giv
 autoDetect=Auto Detect Settings
 pixelSize=Pixel Size
 doubled=Doubled
+theOven=Oven

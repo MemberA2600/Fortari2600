@@ -5,6 +5,7 @@ from time import sleep
 from copy import deepcopy
 from tkinter import scrolledtext
 from PIL import ImageTk, Image as IMAGE
+from HexEntry import HexEntry
 
 class Oven:
 
@@ -43,7 +44,7 @@ class Oven:
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
 
         self.__sizes = [self.__screenSize[0] / 1.05, self.__screenSize[1] / 1.05 - 40]
-        self.__window = SubMenu(self.__loader, "rawData", self.__sizes[0], self.__sizes[1], None, self.__addElements, 2)
+        self.__window = SubMenu(self.__loader, "theOven", self.__sizes[0], self.__sizes[1], None, self.__addElements, 2)
 
         self.dead = True
 
@@ -140,19 +141,20 @@ class Oven:
         m      = 15
         border = 7
 
-        self.__max = m
+        self.__max = m - 3
 
         self.__blank        = self.__dictionaries.getWordFromCurrentLanguage("blank")
 
         self.__dataItems    = [self.__blank]
         self.__dataItems_1  = []
         self.__colorItems   = []
+        self.__colorItems_1 = [self.__blank]
 
         #self.__lastSelecteds = []
 
         for b in self.__blocks:
             blockPlace = {
-                True: [self.__colorItems], False: [self.__dataItems, self.__dataItems_1]
+                True: [self.__colorItems, self.__colorItems_1], False: [self.__dataItems, self.__dataItems_1]
             }
 
             listOfThem = blockPlace[b["color"]]
@@ -200,32 +202,46 @@ class Oven:
             f1.pack_propagate(False)
             f1.pack(side=TOP, anchor=N, fill=X)
 
-            f2 = Frame(f,
-                      bg    = self.__loader.colorPalettes.getColor("window"),
-                      width = w, height = smallSize)
+            if num != m - 1:
+               f2 = Frame(f,
+                          bg=self.__loader.colorPalettes.getColor("window"),
+                          width=w, height=smallSize)
 
-            f2.pack_propagate(False)
-            f2.pack(side=TOP, anchor=N, fill=X)
+               f2.pack_propagate(False)
+               f2.pack(side=TOP, anchor=N, fill=X)
 
-            f3 = Frame(f,
-                      bg    = self.__loader.colorPalettes.getColor("window"),
-                      width = w, height = smallSize)
+               f3 = Frame(f,
+                          bg    = self.__loader.colorPalettes.getColor("window"),
+                          width = w, height = smallSize)
 
-            f3.pack_propagate(False)
-            f3.pack(side=TOP, anchor=N, fill=X)
+               f3.pack_propagate(False)
+               f3.pack(side=TOP, anchor=N, fill=X)
 
-            f4 = Frame(f,
-                      bg    = self.__loader.colorPalettes.getColor("window"),
-                      width = w, height = h - (smallSize * 3))
+               f4 = Frame(f,
+                          bg    = self.__loader.colorPalettes.getColor("window"),
+                          width = w, height = h - (smallSize * 3))
 
-            f4.pack_propagate(False)
-            f4.pack(side=TOP, anchor=N, fill=X)
+               f4.pack_propagate(False)
+               f4.pack(side=TOP, anchor=N, fill=X)
 
-            if num == m - 1: self.__globalSwitchesFrame = f4
+               self.__columnThings[-1]["frames"] = [f, f1, f2, f3, f4]
 
-            self.__columnThings[-1]["frames"] = [f, f1, f2, f3, f4]
+               while f1.winfo_width() < 2 or f2.winfo_width() < 2 or f3.winfo_width() < 2 or f4.winfo_width() < 2: sleep(
+                   0.000001)
+            else:
+               f2 = Frame(f,
+                           bg=self.__loader.colorPalettes.getColor("window"),
+                           width=w, height=smallSize * 20)
 
-            while f1.winfo_width() < 2 or f2.winfo_width() < 2 or f3.winfo_width() < 2 or f4.winfo_width() < 2: sleep(0.000001)
+               f2.pack_propagate(False)
+               f2.pack(side=TOP, anchor=N, fill=BOTH)
+
+               self.__columnThings[-1]["frames"] = [f, f1, f2]
+
+               while f1.winfo_width() < 2 or f2.winfo_width() < 2: sleep(
+                   0.000001)
+
+               self.__globalSwitchesFrame = f2
 
             n = str(num + 1)
             if len(n) == 1: n = "0" + n
@@ -321,7 +337,10 @@ class Oven:
             if   num == 0:
                  listOfThem = self.__dataItems_1
             elif c:
-                 listOfThem = self.__colorItems
+                 if num == 13:
+                    listOfThem = self.__colorItems_1
+                 else:
+                    listOfThem = self.__colorItems
             else:
                  listOfThem = self.__dataItems
 
@@ -329,7 +348,7 @@ class Oven:
                 lBox.insert(END, item)
 
             lBox.select_set(0)
-            if num > 1: lBox.config(state = DISABLED)
+            if num > 1 and num < self.__max: lBox.config(state = DISABLED)
 
             self.__columnThings[-1]["last"]  = listOfThem[0]
             self.__columnThings[-1]["items"] = listOfThem
@@ -492,7 +511,39 @@ class Oven:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroredButton, "<Button-1>", self.__changeThings, 2)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__doubledButton , "<Button-1>", self.__changeThings, 2)
 
+        self.__thatLabelFrame3 = Frame(self.__globalSwitchesFrame,
+                                 bg = self.__loader.colorPalettes.getColor("window"),
+                                 width = self.__globalSwitchesFrame.winfo_width(), height = self.__globalSwitchesFrame.winfo_height() // pieces)
+
+        self.__thatLabelFrame3.pack_propagate(False)
+        self.__thatLabelFrame3.pack(side=TOP, anchor=N, fill=X)
+
+        self.__thatLabel3 = Label(self.__thatLabelFrame3,
+                                 text=self.__loader.dictionaries.getWordFromCurrentLanguage("testColor"),
+                                 font=self.__miniFont, fg=self.__colors.getColor("font"),
+                                 bg=self.__colors.getColor("window")
+                                 )
+
+        self.__thatLabel3.pack_propagate(False)
+        self.__thatLabel3.pack(side=TOP, anchor=N, fill=BOTH)
+
+        self.__testColorFrame = Frame(self.__globalSwitchesFrame,
+                                 bg = self.__loader.colorPalettes.getColor("window"),
+                                 width = self.__globalSwitchesFrame.winfo_width(), height = self.__globalSwitchesFrame.winfo_height() // pieces)
+
+        self.__testColorFrame.pack_propagate(False)
+        self.__testColorFrame.pack(side=TOP, anchor=N, fill=X)
+
+        self.__testColor = ["$00"]
+
+        self.__testColorEntry = HexEntry(self.__loader, self.__testColorFrame, self.__colors,
+                                         self.__colorDict, self.__smallFont,
+                                         self.__testColor, 0, None, self.__changedBG)
+
         self.__running -= 1
+
+    def __changedBG(self, event):
+        self.__bigCanvas.config(bg = self.__loader.colorDict.getHEXValueFromTIA(self.__testColorEntry.getValue()))
 
     def __changeThings(self, event):
         thing = event.widget
@@ -608,8 +659,8 @@ class Oven:
                self.__columnThings[n]["mirrorVal"].set(0)
                self.__columnThings[n]["cutBits"]  .set(0)
 
-           self.__autoDetect.set(0)
-           self.__auto = 0
+           #self.__autoDetect.set(0)
+           #self.__auto = 0
 
            if typ == "playfield":
                if   pfDoubling:
@@ -623,7 +674,7 @@ class Oven:
                block1      = self.getBlockByLabel(PF3)
                block1IsPF0 = True
 
-               for b in block1:
+               for b in block1["bytes"]:
                    if b != self.cutLowerNibble(b):
                       block1IsPF0 = False
                       break
