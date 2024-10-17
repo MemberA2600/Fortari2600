@@ -34,6 +34,9 @@ class Oven:
         self.__focused = None
         self.__screenSize = self.__loader.screenSize
         self.__picIndex = 0
+        self.__first    = True
+        self.__XXXX     = False
+        self.__lines    = 1
 
         self.__normalFont = self.__fontManager.getFont(self.__fontSize, False, False, False)
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
@@ -90,6 +93,10 @@ class Oven:
            self.__thatPic = self.__canvas.create_image(
                0, 0, image=self.__buffer[self.__picIndex // 4], anchor=NW
            )
+
+           if self.__first and self.__XXXX:
+              self.__first = False
+              self.__redraw()
 
 
     def __allTheOthers(self):
@@ -287,7 +294,7 @@ class Oven:
 
                rb2 = Checkbutton(f3, width=f3.winfo_width(),
                                  bg=self.__colors.getColor("window"),
-                                 name="mirror_" + str(num + 1),
+                                 name="mirrorVal_" + str(num + 1),
                                  justify=LEFT, state = DISABLED,
                                  variable=self.__columnThings[-1]["mirrorVal"],
                                  activebackground=self.__colors.getColor("highLight"),
@@ -511,6 +518,8 @@ class Oven:
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__mirroredButton, "<Button-1>", self.__changeThings, 2)
         self.__loader.threadLooper.bindingMaster.addBinding(self, self.__doubledButton , "<Button-1>", self.__changeThings, 2)
 
+        self.__noBullshit2 = [self.__mirroredButton, self.__doubledButton]
+
         self.__thatLabelFrame3 = Frame(self.__globalSwitchesFrame,
                                  bg = self.__loader.colorPalettes.getColor("window"),
                                  width = self.__globalSwitchesFrame.winfo_width(), height = self.__globalSwitchesFrame.winfo_height() // pieces)
@@ -541,6 +550,7 @@ class Oven:
                                          self.__testColor, 0, None, self.__changedBG)
 
         self.__running -= 1
+        self.__XXXX     = True
 
     def __changedBG(self, event):
         self.__bigCanvas.config(bg = self.__loader.colorDict.getHEXValueFromTIA(self.__testColorEntry.getValue()))
@@ -577,7 +587,7 @@ class Oven:
 
                  nonBlank = False
 
-                 if num == 0 or item in self.__noBullshit:
+                 if num == 0 or item in self.__noBullshit or item in self.__noBullshit2:
                     nonBlank = True
                  else:
                     #print(num)
@@ -643,7 +653,7 @@ class Oven:
            others     = [self.__columnThings[6]["last"], self.__columnThings[7] ["last"], self.__columnThings[8] ["last"],
                          self.__columnThings[9]["last"], self.__columnThings[10]["last"], self.__columnThings[11]["last"]]
 
-           pfMirroring = True
+           #pfMirroring = True
            pfDoubling  = True
 
            if firstThree.count(self.__blank) == 0:
@@ -663,6 +673,9 @@ class Oven:
            #self.__auto = 0
 
            if typ == "playfield":
+               self.__size .set(3)
+               self.__sizeVal = 3
+
                if   pfDoubling:
                     PF3 = self.__columnThings[0]["last"]
                else:
@@ -681,10 +694,10 @@ class Oven:
 
                pfMirroring = 1 - block1IsPF0
 
-               self.__m = pfMirroring
+               #self.__m = pfMirroring
                self.__d = pfDoubling
 
-               self.__mirrored.set(self.__m)
+               #self.__mirrored.set(self.__m)
                self.__doubled .set(self.__d)
 
                mirroring = {
@@ -705,6 +718,178 @@ class Oven:
                    self.__columnThings[NN]["radios"]   = [c, m]
                    self.__columnThings[NN]["cutBits"]  .set(c)
                    self.__columnThings[NN]["mirrorVal"].set(m)
+           else:
+               self.__size .set(1)
+               self.__sizeVal = 1
+
+               self.__doubled .set(0)
+               self.__mirrored.set(0)
+               self.__d          = 0
+               self.__m          = 0
+
+
+        valid = 0
+        for n in range(0, 12):
+            if self.__columnThings[n]["last"] == self.__blank: break
+            valid += 1
+
+        if self.__d == False or valid > 6:
+           self.__m          = 0
+           self.__mirrored.set(0)
+
+           self.__mirroredButton.config(state = DISABLED)
+        else:
+           self.__mirroredButton.config(state = NORMAL)
+
+        if redrawn: self.__redraw()
+
+    def __redraw(self):
+        from sys import maxsize
+
+        #for n in range(0, len(self.__columnThings)):
+        #    print(n, self.__columnThings[n]["last"])
+
+        self.__bigCanvas.delete("all")
+        self.__bigCanvas.clipboard_clear()
+
+      #
+      # Get the smallest one. Even for color stuff
+      #
+        h = maxsize * 2 + 1
+        numOfLines = 90
+
+        for num in range(0, self.__max + 2):
+            label = self.__columnThings[num]["last"]
+            if label == self.__blank: continue
+
+            block = self.getBlockByLabel(label)
+            l     = len(block["bytes"])
+
+            if block["endByte"]: l -= 1
+
+            if l < h: h = l
+
+        #hSize = self.__bigCanvas.winfo_height() // h
+
+        #w    = 0
+        numW  = 0
+        numW2 = 0
+
+        for __w in range(0, self.__max):
+            if self.__columnThings[__w]["last"] == self.__blank: break
+
+            #tempW = self.__sizeVal * 8
+            #if self.__columnThings[__w]["radios"][0]:
+            #   tempW //= 2
+
+            if self.__columnThings[__w]["radios"][0]:
+               numW2 += 4
+            else:
+               numW2 += 8
+
+            #w    += tempW
+            numW += 1
+
+        #wSize = self.__bigCanvas.winfo_width() // w
+        if h > numOfLines: h = numOfLines
+
+        datas  = []
+        colors = [[], []]
+
+        colorsNotDone = True
+
+        for __w in range(0, numW):
+            datas.append({"bits": [], "cutBits": False})
+
+            for __h in range(h - 1, -1, -1):
+                label = self.__columnThings[__w]["last"]
+                block = self.getBlockByLabel(label)
+
+                #print(__w, w, label)
+
+                d = self.convertToBinaryWithoutSign(block["bytes"][__h])
+
+                if self.__columnThings[__w]["radios"][0]:
+                   d = d[:4]
+                   datas[-1]["cutBits"] = True
+
+                if self.__columnThings[__w]["radios"][1]:
+                   d = d[::-1]
+
+                datas[-1]["bits"].append(d)
+
+                if colorsNotDone:
+                   for n in range(0, 2):
+                       label = self.__columnThings[self.__max + n]["last"]
+                       if label != self.__blank:
+                          block = self.getBlockByLabel(label)
+
+                          theHex = block["bytes"][__h]
+                          colors[n].append(self.__loader.colorDict.getHEXValueFromTIA(
+                                theHex
+                          ))
+                       else:
+                          colors[n].append(self.__bigCanvas.cget("bg"))
+
+            if colorsNotDone: colorsNotDone = False
+
+
+        if self.__d:
+           #wSize //= 2
+
+           numW  *= 2
+           numW2 *= 2
+           onceAgain = deepcopy(datas)
+
+           if self.__m:
+              r = range(   len(onceAgain) - 1, -1, -1)
+           else:
+              r = range(0, len(onceAgain))
+
+           for n in r:
+               datas.append(onceAgain[n])
+
+        pixelX = self.__bigCanvas.winfo_width()  // 96
+        pixelY = self.__bigCanvas.winfo_height() // (numOfLines * self.__lines)
+
+        wSize  = pixelX * self.__sizeVal
+        hSize  = pixelY * self.__lines
+
+        startX = self.__bigCanvas.winfo_width()  // 2 - (numW2 * wSize // 2)
+        startY = self.__bigCanvas.winfo_height() // 2 - (h     * hSize // 2)
+
+        #print(startY, numOfLines, hSize)
+
+        for __h in range(0, h):
+            colorBG = colors[1][__h]
+            colorFG = colors[0][__h]
+
+            y1 = startY +  __h      * hSize
+            y2 = startY + (__h + 1) * hSize
+
+            self.__bigCanvas.create_rectangle((0, y1, self.__bigCanvas.winfo_width(), y2), outline="", fill=colorBG)
+
+            starter = startX
+            for baseNum in range(0, numW):
+                if datas[baseNum]["cutBits"]:
+                   numOfBits = 4
+                else:
+                   numOfBits = 8
+
+                for bitNum in range(0, numOfBits):
+                    if datas[baseNum]["bits"][__h][bitNum] == "1":
+                       self.__bigCanvas.create_rectangle((starter, y1, starter + wSize, y2), outline="",
+                                                          fill=colorFG)
+                    starter += wSize
+
+
+
+    def convertToBinaryWithoutSign(self, n):
+        if type(n) == str:
+           if n.startswith("%"): return n[1:]
+           n, dummy = self.convertEntryToNum(n)
+
+        return self.formatNum(n, "bin")[1:]
 
     def cutLowerNibble(self, b):
         value , mode  = self.convertEntryToNum(b)
@@ -792,6 +977,7 @@ class Oven:
 
         self.__asmBox.bind("<Key>", lambda e: "break")
         self.__running -= 1
+        self.__XXXX     = True
 
     def __formatting(self):
         y = 0

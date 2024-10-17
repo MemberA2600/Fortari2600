@@ -33,6 +33,7 @@ class RawDataCooker:
         self.__smallFont = self.__fontManager.getFont(int(self.__fontSize*0.80), False, False, False)
         self.__miniFont = self.__fontManager.getFont(int(self.__fontSize*0.65), False, False, False)
         self.__bigFont = self.__fontManager.getFont(int(self.__fontSize*1.15), False, False, False)
+        self.__miniFont2 = self.__fontManager.getFont(int(self.__fontSize*0.5), False, False, False)
 
         #self.__delay   = 0
         #self.__counter = 0
@@ -45,6 +46,7 @@ class RawDataCooker:
 
         self.__numberOfLines = 20
         self.__Y             = 0
+        self.__log           = False
 
         self.__counterNumber  = [0, None]
         self.__counterLabel   = [0, None]
@@ -991,6 +993,7 @@ class RawDataCooker:
            self.__fileDialogs.displayError("moreThen256", "moreThen256Text", None, None)
 
     def simpleButtonsStuff(self, event):
+
         button = event.widget
         name  = str(button).split(".")[-1].split("_")[-1]
         if self.__running > 0: return
@@ -1004,6 +1007,8 @@ class RawDataCooker:
 
         index = -1
         first = True
+
+        #print(keyList)
 
         for lineNum in keyList:
             index += 1
@@ -1029,7 +1034,7 @@ class RawDataCooker:
 
                elif name == "mirrorVertically":
                     items = item[2][::-1]
-                    index = -1
+                    index2 = -1
 
                     removed = 0
 
@@ -1041,9 +1046,9 @@ class RawDataCooker:
                         items.append("")
 
                     for lNum in range(lineNum, nextLineNum):
-                        if index < len(items):
-                            index += 1
-                            val    = items[index]
+                        if  index2  < len(items) - 1:
+                            index2 += 1
+                            val    = items[index2]
                         else:
                             val   = ""
 
@@ -1730,9 +1735,16 @@ class RawDataCooker:
            self.fillLineDataEnd()
            self.__changed = True
 
+        #self.__log = False
+        #if (self.__lineData[17]["labelVal"].get() == "" and self.__allData[17]["label"] != ""): self.__log = True
+        #if self.__log: print("###", self.__allData[17]["label"])
+
         self.deleteErrors()
         self.fillTheEditor()
         self.colorLabels(None)
+
+        #if self.__log: print("###", self.__allData[17]["label"])
+
 
     def deleteErrors(self):
         for num in range(0, len(self.__lineData)):
@@ -1778,10 +1790,14 @@ class RawDataCooker:
         fosok = []
 
         index = -1
+        #if True:
         try:
             f = open(fpath, "r")
             lines = f.read().replace("\r", "").split("\n")
             f.close()
+
+            name = ".".join(fpath.split("/")[-1].split(".")[:-1])
+            self.__rawLoader.setValue(name)
 
             firstLine = True
             for line in lines:
@@ -1827,7 +1843,7 @@ class RawDataCooker:
 
             self.fillTheEditor()
             self.__soundPlayer.playSound("Success")
-
+        #else:
         except Exception as e:
             print(str(e))
             self.__fileDialogs.displayError("unableToOpenFile", "unableToOpenFileMessage", None, str(e))
@@ -1880,9 +1896,16 @@ class RawDataCooker:
         index = -1
         for line in self.__allData:
             index += 1
-            txtToSave1 += "|".join([
-                line["label"], line["entry"], transform[line["addEndByte"]], transform[line["color"]]
-            ])
+            try:
+                txtToSave1 += "|".join([
+                    line["label"], line["entry"], transform[line["addEndByte"]], transform[line["color"]]
+                ])
+            except:
+                these = (line["label"], line["entry"], transform[line["addEndByte"]], transform[line["color"]])
+                for item in these:
+                    print(item, type(item))
+
+                raise ValueError
 
             if index < len(self.__allData) - 1:
                 txtToSave1 += "\n"
@@ -1931,7 +1954,7 @@ class RawDataCooker:
 
                     if line["addEndByte"]: blocks[-1]["endByte"] = True
 
-            if line["entry"]:
+            if line["entry"] and len(blocks) > 0:
                 firstLabel = True
                 numOfBytes += 1
                 if numOfBytes > 256: moreThan256 = True
@@ -1951,6 +1974,9 @@ class RawDataCooker:
         txtToSave2 = txtToSave2.replace("#ALIGN#", str(numOfBytes)).replace("\n\n", "\n")
 
         #print(blocks)
+        if len(blocks) == 0:
+           wasColor     = False
+           wasNoneColor = False
 
         return txtToSave1, txtToSave2, blocks, moreThan256, wasColor and wasNoneColor
 
@@ -2038,12 +2064,34 @@ class RawDataCooker:
         self.__allDataReady = True
         self.fillTheEditor()
 
+    def colorTheBlock(self, lineNum, lineNumOnEditor):
+        if lineNumOnEditor == None:
+           lineNumOnEditor = lineNum - self.__Y
+
+        if lineNum         == None:
+           lineNum = lineNumOnEditor + self.__Y
+
+        if self.__allData[lineNum]["entry"] == "":
+           c = self.__colors.getColor("window")
+        else:
+           value, mode = self.convertEntryToNum(self.__allData[lineNum]["entry"])
+           c = self.__loader.colorDict.getHEXValueFromTIA(self.formatNum(value, "hex"))
+
+        #print(lineNumOnEditor, c)
+        self.__lineData[lineNumOnEditor]["colorFrame"].config(bg = c)
+
     def fillTheEditor(self):
+        #log = False
+        #if (self.__lineData[17]["labelVal"].get() != "" and self.__lineData[17]["labelVal"].get() == self.__allData[17]["label"]): log = True
+
+        #if log: print("###", self.__lineData[17]["labelVal"].get(), self.__allData[17]["label"])
+
         for lineNum in range(self.__Y, self.__Y + len(self.__lineData)):
             lineNumOnEditor = lineNum - self.__Y
-            #print(lineNumOnEditor, lineNum, len(self.__lineData), len(self.__allData))
 
             if lineNumOnEditor >= self.__numberOfLines:
+               #if log: print(lineNum, lineNumOnEditor, "A")
+
                for bitNum in range(0, 8):
                    self.__lineData[lineNumOnEditor]["bitVals"]   [bitNum] = 0
                    self.__lineData[lineNumOnEditor]["bitButtons"][bitNum].config(
@@ -2060,7 +2108,6 @@ class RawDataCooker:
                self.__lineData[lineNumOnEditor]["select"]    .config(state = DISABLED)
                self.__lineData[lineNumOnEditor]["endVar"]    .config(state = DISABLED)
                self.__lineData[lineNumOnEditor]["colorData"] .config(state = DISABLED)
-
             else:
                for bitNum in range(0, 8):
                    self.__lineData[lineNumOnEditor]["bitVals"][bitNum] = self.__allData[lineNum]["bits"][bitNum]
@@ -2101,6 +2148,8 @@ class RawDataCooker:
                   self.__lineData[lineNumOnEditor]["colorDataVar"].set(self.__allData[lineNum]["color"])
 
                   #print(lineNumOnEditor,  self.__lineData[lineNumOnEditor]["colorDataVar"].get())
+            self.colorTheBlock(lineNum, lineNumOnEditor)
+        #if log: print("###", self.__lineData[17]["labelVal"].get(), self.__allData[17]["label"])
 
     def clicked(self, event):
         if self.__running > 0: return
@@ -2145,7 +2194,10 @@ class RawDataCooker:
         theNumber = self.__lineData[lineNum]["entryVal"].get()
         if theNumber.startswith("#"): vtheNumber = theNumber[1:]
 
-        dummy, mode = self.convertEntryToNum(theNumber)
+        try:
+            dummy, mode = self.convertEntryToNum(theNumber)
+        except:
+            mode = "bin"
 
         binString = "0b"
         for bitNum2 in range(7, -1, -1): binString += str(self.__lineData[lineNum]["bitVals"][bitNum2])
@@ -2158,7 +2210,7 @@ class RawDataCooker:
         self.__lineData[lineNum]["entry"].config(bg=self.__colors.getColor("boxBackNormal"),
                                                  fg=self.__colors.getColor("boxFontNormal"))
 
-        self.__allData[lineNum + self.__Y]["entry"] = value
+        self.__allData[lineNum + self.__Y]["entry"] = theNumber
         self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
         self.__changed = True
 
@@ -2185,6 +2237,8 @@ class RawDataCooker:
            self.__draw = 1
 
     def doTheBitsFromVal(self, lineNum, allData):
+        #print(lineNum, allData, self.__Y, lineNum - self.__Y)
+
         try:
             teszt   = int(lineNum)
         except:
@@ -2200,11 +2254,16 @@ class RawDataCooker:
                        break
                 if f == False: return
 
+        #print("-1", lineNum)
         if allData:
            stringVal = self.__allData[lineNum]["entry"]
            lineNum   = lineNum - self.__Y
         else:
            stringVal = self.__lineData[lineNum]["entryVal"].get()
+
+        #print("-2", lineNum)
+
+        #print(lineNum, allData, self.__Y)
 
         if stringVal != "":
            value, mode = self.convertEntryToNum(stringVal)
@@ -2215,21 +2274,40 @@ class RawDataCooker:
         else:
            binVal = "0" * 8
 
+        #print(binVal)
+        #print(self.__lineData[lineNum]["bitVals"])
+
+        temp = [0, 0, 0, 0, 0, 0, 0, 0]
+
+        if lineNum < 0 or lineNum >= 20:
+           noLine = True
+        else:
+           noLine = False
+
         for bitNum in range(0, 8):
             val = binVal[7 - bitNum]
 
-            self.__lineData[lineNum]["bitVals"][bitNum] = int(val)
+            if noLine:
+               temp[bitNum] = int(val)
+            else:
+               self.__lineData[lineNum]["bitVals"][bitNum] = int(val)
 
-            colors = {
-                "0": [self.__colors.getColor("boxBackNormal")],
-                "1": [self.__colors.getColor("boxFontNormal")],
-            }
+               colors = {
+                    "0": [self.__colors.getColor("boxBackNormal")],
+                    "1": [self.__colors.getColor("boxFontNormal")],
+               }
 
-            self.__lineData[lineNum]["bitButtons"][bitNum].config(
-                bg=colors[val])
+               self.__lineData[lineNum]["bitButtons"][bitNum].config(
+                    bg=colors[val])
 
         self.__changed = True
-        self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
+
+        if noLine:
+           #print(lineNum, temp, "O")
+           self.__allData[lineNum + self.__Y]["bits"] = deepcopy(temp)
+        else:
+           #print(lineNum, self.__lineData[lineNum]["bitVals"], "X")
+           self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
         self.colorLabels(None)
 
     def checkNumber(self, event):
@@ -2333,6 +2411,7 @@ class RawDataCooker:
             self.__changed = True
             self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
             self.colorLabels(None)
+            self.colorTheBlock(None, lineNum)
 
         elif subName == "ManualEndByte":
             self.__endByte = self.__getTheEndByte(None)
@@ -2391,7 +2470,8 @@ class RawDataCooker:
             "endVarVal"    : None,
             "endVar"       : None,
             "colorData"    : None,
-            "colorDataVar" : None
+            "colorDataVar" : None,
+            "colorFrame"   : None
         }
 
         while self.__editorFrame.winfo_width() < 2: sleep(0.000000001)
@@ -2418,30 +2498,37 @@ class RawDataCooker:
             fValEntry.pack_propagate(False)
             fValEntry.pack(side=LEFT, anchor=E, fill=Y)
 
+            fAsColor = Frame(f,
+                  bg=self.__loader.colorPalettes.getColor("window"),
+                  width=self.__sizes[0] // 20 , height=self.__editorFrame.winfo_height() // 21
+                  )
+            fAsColor.pack_propagate(False)
+            fAsColor.pack(side=LEFT, anchor=E, fill=Y)
+
             fLabelEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10 * 4, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 10 * 5, height=self.__editorFrame.winfo_height() // 21
                   )
             fLabelEntry.pack_propagate(False)
             fLabelEntry.pack(side=LEFT, anchor=E, fill=Y)
 
             fAddEndByte = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 20, height=self.__editorFrame.winfo_height() // 21
                   )
             fAddEndByte.pack_propagate(False)
             fAddEndByte.pack(side=LEFT, anchor=E, fill=Y)
 
             fColorData = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 20, height=self.__editorFrame.winfo_height() // 21
                   )
             fColorData.pack_propagate(False)
             fColorData.pack(side=LEFT, anchor=E, fill=Y)
 
             fSelectEntry = Frame(f,
                   bg=self.__loader.colorPalettes.getColor("window"),
-                  width=self.__sizes[0] // 10, height=self.__editorFrame.winfo_height() // 21
+                  width=self.__sizes[0] // 20, height=self.__editorFrame.winfo_height() // 21
                   )
             fSelectEntry.pack_propagate(False)
             fSelectEntry.pack(side=LEFT, anchor=E, fill=BOTH)
@@ -2451,6 +2538,9 @@ class RawDataCooker:
             self.__frames.append(fValEntry)
             self.__frames.append(fLabelEntry)
             self.__frames.append(fSelectEntry)
+            self.__frames.append(fAsColor)
+            self.__frames.append(fColorData)
+            self.__frames.append(fAddEndByte)
 
             if lineNum == -1:
                 l1 = Label(f8bits,
@@ -2481,8 +2571,8 @@ class RawDataCooker:
                 l3.pack(side=TOP, anchor=N, fill=BOTH)
 
                 l4 = Label(fAddEndByte,
-                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("addEndByte"),
-                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("addEndByte").replace("\\n", "\n"),
+                           font=self.__miniFont2, fg=self.__colors.getColor("font"),
                            bg=self.__colors.getColor("window")
                            )
 
@@ -2490,18 +2580,26 @@ class RawDataCooker:
                 l4.pack(side=TOP, anchor=N, fill=BOTH)
 
                 l5 = Label(fColorData,
-                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("colorData"),
-                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("colorData").replace("\\n", "\n"),
+                           font=self.__miniFont2, fg=self.__colors.getColor("font"),
                            bg=self.__colors.getColor("window")
                            )
 
                 l5.pack_propagate(False)
                 l5.pack(side=TOP, anchor=N, fill=BOTH)
 
+                l6 = Label(fAsColor,
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("displayedAsColor").replace("\\n", "\n"),
+                           font=self.__miniFont2, fg=self.__colors.getColor("font"),
+                           bg=self.__colors.getColor("window")
+                           )
+
+                l6.pack_propagate(False)
+                l6.pack(side=TOP, anchor=N, fill=BOTH)
 
                 lLast = Label(fSelectEntry,
-                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel"),
-                           font=self.__smallFont, fg=self.__colors.getColor("font"),
+                           text = self.__loader.dictionaries.getWordFromCurrentLanguage("selectLabel").replace("\\n", "\n"),
+                           font=self.__miniFont2, fg=self.__colors.getColor("font"),
                            bg=self.__colors.getColor("window")
                            )
 
@@ -2608,6 +2706,8 @@ class RawDataCooker:
 
                 self.__lineData[-1]["select"].pack_propagate(False)
                 self.__lineData[-1]["select"].pack(fill=Y, side=LEFT, anchor=E)
+
+                self.__lineData[-1]["colorFrame"] = fAsColor
 
                 self.__loader.threadLooper.bindingMaster.addBinding(self, self.__lineData[-1]["entry"]     , "<KeyRelease>",
                                                                     self.setCounterNumber, 1)
@@ -2735,8 +2835,11 @@ class RawDataCooker:
         wasError = False
 
         if value == "":
+           #print("1", value)
+
            self.__changed = True
            self.removeError(lineNum, "all")
+           #print(self.__allData[lineNum + self.__Y]["label"])
            self.__allData[lineNum + self.__Y]["label"] = ""
         else:
            if len(value) > 0:
@@ -2810,6 +2913,9 @@ class RawDataCooker:
 
         if wasError      == False:
            self.__changed = True
+           #print("2", value)
+
+           #print(self.__allData[lineNum + self.__Y]["label"])
            self.__allData[lineNum + self.__Y]["label"] = value
 
         self.colorLabels(lineNum)
@@ -2916,22 +3022,23 @@ class RawDataCooker:
                self.__lineData[num]["labelEntry"].config(bg = self.__colors.getColor("boxBackNormal"),
                                                          fg = self.__colors.getColor("boxFontNormal"))
 
-               self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
+               if self.__lineData[num]["entry"].cget("state") != DISABLED:
+                  self.__allData[self.__Y + num]["label"] = self.__lineData[num]["labelVal"].get()
 
-               if self.checkIfDisable(num, True):
-                  self.__lineData[num]["selectVal"].set(0)
-                  self.__lineData[num]["select"].config(state    = DISABLED)
-                  self.__lineData[num]["endVarVar"].set(0)
-                  self.__lineData[num]["endVar"].config(state    = DISABLED)
-                  self.__lineData[num]["colorData"].config(state = DISABLED)
-                  self.__allData[num + self.__Y]["addEndByte"]  = 0
-                  self.__allData[num + self.__Y]["wasSelected"] = 0
-                  self.__allData[num + self.__Y]["color"]       = 0
+                  if self.checkIfDisable(num, True):
+                     self.__lineData[num]["selectVal"].set(0)
+                     self.__lineData[num]["select"].config(state    = DISABLED)
+                     self.__lineData[num]["endVarVar"].set(0)
+                     self.__lineData[num]["endVar"].config(state    = DISABLED)
+                     self.__lineData[num]["colorData"].config(state = DISABLED)
+                     self.__allData[num + self.__Y]["addEndByte"]  = 0
+                     self.__allData[num + self.__Y]["wasSelected"] = 0
+                     self.__allData[num + self.__Y]["color"]       = 0
 
-               else:
-                  self.__lineData[num]["select"].config(state = NORMAL)
-                  self.__lineData[num]["endVar"].config(state = NORMAL)
-                  self.__lineData[num]["colorData"].config(state = NORMAL)
+                  else:
+                     self.__lineData[num]["select"].config(state = NORMAL)
+                     self.__lineData[num]["endVar"].config(state = NORMAL)
+                     self.__lineData[num]["colorData"].config(state = NORMAL)
 
             else:
                self.__lineData[num]["labelEntry"].config(bg=self.__colors.getColor("boxBackUnSaved"),
