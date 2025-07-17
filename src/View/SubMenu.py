@@ -5,14 +5,16 @@ class SubMenu:
 
     def __init__(self, loader, name, w, h, checker, addElements, maxNum):
         self.__loader = loader
-        self.__loader.subMenus.append(self)
-        self.__loader.subMenuDict[name] = self
+        #self.__loader.subMenus.append(self)
+        #self.__loader.subMenuDict[name] = self
         self.__name = name
 
+        """
         if len(self.__loader.subMenus)>maxNum:
             t = Thread(target=self.killOther)
             t.daemon = True
             t.start()
+        """
 
         self.stopThread = False
         self.__loader.stopThreads.append(self)
@@ -59,17 +61,19 @@ class SubMenu:
         #except:
         #    pass
 
+        """
         try:
             self.__loader.subMenus.pop(-1)
             self.__loader.subMenus.remove(self)
         except Exception as e:
             self.__loader.logger.errorLog(e)
+        """
 
-        t = Thread(target=self.__killIfKilled)
-        t.daemon = True
-        t.start()
+        #t = Thread(target=self.__killIfKilled)
+        #t.daemon = True
+        #t.start()
 
-
+    """
     def __killIfKilled(self):
         if self.__topLevel.winfo_exists() == False and self.__name in self.__loader.subMenuDict:
               del self.__loader.subMenuDict[self.__name]
@@ -78,7 +82,7 @@ class SubMenu:
                  self.__loader.topLevels.remove(self.__topLevel)
               if self in self.__loader.stopThreads:
                  self.__loader.stopThreads.remove(self)
-
+   
     def killOther(self):
         num = 10
 
@@ -94,7 +98,7 @@ class SubMenu:
                 num = 0
             except:
                 num -= 1
-
+    """
 
     def getTopLevel(self):
         return(self.__topLevel)

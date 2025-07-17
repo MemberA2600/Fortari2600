@@ -833,7 +833,6 @@ class Oven:
 
             if colorsNotDone: colorsNotDone = False
 
-
         if self.__d:
            #wSize //= 2
 

@@ -113,7 +113,7 @@ class KernelTester:
         for item in (self.__openEnter, self.__openOverscan, self.__openScreenTopData, self.__openKernelData):
            item.setValue(os.getcwd().replace("\\", "/")+"/templates/empty.asm")
 
-        self.__testButton = Button(self.__topLevelWindow, stat=DISABLED,
+        self.__testButton = Button(self.__topLevelWindow, stat=NORMAL,
                                    bg=self.__loader.colorPalettes.getColor("window"),
                                    fg=self.__loader.colorPalettes.getColor("font"),
                                    text=self.__dictionaries.getWordFromCurrentLanguage("testWithEmulator")[:-1],
@@ -122,9 +122,17 @@ class KernelTester:
         self.__testButton.pack_propagate(False)
         self.__testButton.pack(side=TOP, anchor=S, fill=BOTH)
 
-        self.__loader.threadLooper.addToThreading(self, self.checkIfAllValid, [], 0)
+        #self.__loader.threadLooper.addToThreading(self, self.checkIfAllValid, [], 0)
+
+        from threading import Thread
+
+        #t = Thread(target=self.checkIfAllValid)
+        #t.daemon = True
+        #t.start()
 
     def checkIfAllValid(self):
+        from time import sleep
+        while self.dead == False:
             try:
                 if (self.__openKernelFrame.valid == True
                         and self.__openEnter.valid == True
@@ -138,7 +146,7 @@ class KernelTester:
                     self.__testButton.config(state=DISABLED)
 
                 sleep(0.1)
-            except:
+            except Exception as e:
                 pass
 
     def __startTesting(self):

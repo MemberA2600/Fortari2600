@@ -156,6 +156,7 @@ class Assembler():
         return code
 
     def createSquence(self, code, opcodes, variables, registers):
+
         code = code.split("\n")
 
         branchers = ["BCC", "BCS", "BEQ", "BNE", "BMI", "BPL", "BVC", "BVS"]
@@ -179,6 +180,8 @@ class Assembler():
             if len(variables[v])>3:
                 threeByters.append(v)
 
+        #print(threeByters)
+        #print(variables)
         code = self.checkForTooDistant(code, branchers)
 
         for line in code:
@@ -303,13 +306,20 @@ class Assembler():
                         except:
                             pass
 
-
                         if ("#" not in line[1]) and (line[1].split(",")[0].split("+")[0] in list(sections.keys()) or
-                            len(re.findall(r'[a-fA-F0-9]{4}', line[1])) > 0 or
+                           (len(re.findall(r'[a-fA-F0-9]{4}', line[1])) > 0 and line[1] not in variables) or
                             line[1] in threeByters
                         ) and (thisIsAForcedConstant == False):
                             currentAddress += 1
                             current.byteNum = 3
+
+                        if line[1].split(",")[0] in variables and thisIsAForcedConstant == False and current.byteNum == 2:
+                           vName = line[1].split(",")[0]
+                           if vName in variables:
+                              if variables[vName].startswith("$"):
+                                 if len(variables[vName][1:]) == 4:
+                                    currentAddress += 1
+                                    current.byteNum = 3
 
                         if "JMP" in line[0].upper() and "(" in line[1]:
                             currentAddress += 1
@@ -325,8 +335,6 @@ class Assembler():
                     currentSEQNumber += 1
 
         for line in codeLines:
-            #print(line.raw)
-
             counter = 0
             second = ""
 
@@ -373,7 +381,10 @@ class Assembler():
                    self.createBytes(line, c, line.raw[1])
                    break
 
+
                 if (line.byteNum == opcodes[c]["bytes"] and (opcodes[c]["opcode"] == line.raw[0].upper())):
+                    #if len(line.raw) > 1:
+                    #    if line.raw[1] == "PressedDelay": print(line.byteNum, opcodes[c]["opcode"])
 
                     if (line.byteNum == 1):
                         c = bytes([int(c.replace("$", "0x"), 16)])

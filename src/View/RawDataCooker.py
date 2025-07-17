@@ -2213,6 +2213,7 @@ class RawDataCooker:
         self.__allData[lineNum + self.__Y]["entry"] = theNumber
         self.__allData[lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
         self.__changed = True
+        self.colorTheBlock(None, lineNum)
 
     def formatNum(self, theNumber, mode):
         if   mode == "bin":
@@ -2356,7 +2357,7 @@ class RawDataCooker:
                self.__lineData[lineNum]           ["bitVals" ] = [0,0,0,0,0,0,0,0]
                self.__allData [lineNum + self.__Y]["bits"    ] = [0,0,0,0,0,0,0,0]
                self.colorLabels(None)
-
+               self.colorTheBlock(lineNum + self.__Y, lineNum)
            return
 
         if value.startswith("#"): value = value[1:]
@@ -2411,7 +2412,7 @@ class RawDataCooker:
             self.__changed = True
             self.__allData [lineNum + self.__Y]["bits"] = deepcopy(self.__lineData[lineNum]["bitVals"])
             self.colorLabels(None)
-            self.colorTheBlock(None, lineNum)
+            self.colorTheBlock(lineNum + self.__Y, lineNum)
 
         elif subName == "ManualEndByte":
             self.__endByte = self.__getTheEndByte(None)

@@ -112,7 +112,7 @@ class MainWindow:
 
     def __killRemaining(self):
         import gc
-        self.__loader.subMenus = []
+        #self.__loader.subMenus = []
 
         for item in gc.get_objects():
             if "filedialog" in str(type(item)):

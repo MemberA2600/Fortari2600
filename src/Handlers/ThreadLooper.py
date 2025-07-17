@@ -40,6 +40,7 @@ class ThreadLooper:
 
         self.__listOfThreads.append([object, function, args, level])
 
+
     def enableDisable(self):
         forceIt = False
 
@@ -124,8 +125,6 @@ class ThreadLooper:
                 while self.__loader.mainWindow.dead == False:
                     self.__mainInited = True
                     self.enableDisable()
-
-
 
                     if self.__running == False:
                        number += 1

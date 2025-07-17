@@ -18,7 +18,6 @@ class Loader:
         self.virtualMemory = None
         self.colorPalettes = None
         self.codeBox = None
-        self.BFG9000 = None
         self.logger = None
         self.syntaxList = {}
         self.atariFrames = []
@@ -45,8 +44,8 @@ class Loader:
 
         self.topLevels = []
         # self.destroyable = []
-        self.subMenus = []
-        self.subMenuDict = {}
+        # self.subMenus = []
+        #self.subMenuDict = {}
         self.stopThreads = []
 
         self.sections      = []
