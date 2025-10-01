@@ -57,13 +57,19 @@ class Compiler:
             elif self.__mode == "kernelTest":
                 self.kernelTest()
             elif self.__mode == 'music':
+                self.fakeItToBeNormal()
                 self.generateMusicROM("full")
+                self.setBackToOriginal()
+
             elif self.__mode == 'getMusicBytes':
                 self.generateMusicROM("save")
             elif self.__mode == 'test64px':
                 self.test64PX()
             elif self.__mode == 'testWav':
+                self.fakeItToBeNormal()
                 self.testWav()
+                self.setBackToOriginal()
+
             elif self.__mode == "getPFASM":
                 #self.fakeItToBeNormal()
                 self.getPFASM()
@@ -97,7 +103,9 @@ class Compiler:
             elif self.__mode == "soundFxData":
                 self.__soundFxData(None)
             elif self.__mode == "soundFxTest":
+                self.fakeItToBeNormal()
                 self.__soundFxTest()
+                self.setBackToOriginal()
 
     def fakeItToBeNormal(self):
         self.__hadMainKernel = self.__loader.virtualMemory.includeKernelData
@@ -171,7 +179,7 @@ class Compiler:
     def __soundFxTest(self):
         data = self.__soundFxData(None)
 
-        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__kernelText =  self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__pictureData = self.__loader.io.loadWholeText("templates/testCodes/pressFire.asm")
         self.__h = 83
 
@@ -3518,7 +3526,7 @@ class Compiler:
 
 
     def testWav(self):
-        self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
+        self.__kernelText = self.__io.loadKernelElement(self.__kernel, "main_kernel")
         self.__pictureData = self.__loader.io.loadWholeText("templates/testCodes/pressFire.asm")
         self.__h = 83
 
@@ -3666,24 +3674,7 @@ class Compiler:
             self.__music1 = self.__music1.replace("!!!JumpOrReturn!!!",
                                   self.__loader.io.loadWholeText("templates/skeletons/musicJumpBack.asm"))
 
-        if mode == "full":
-            if self.__musicMode == "mono":
-                self.__init += "\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4"
-                self.__init += "\n" + "CoolSong_PointerBackUp0 = $e5"
-                self.__init += "\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitMono.asm")
 
-            else:
-                self.__init += "\n\n" + "CoolSong_Pointer0 = $e2\nCoolSong_Duration0 = $e4\nCoolSong_Pointer1 = $e5\nCoolSong_Duration1 = $e7"
-                self.__init += "\n" + "CoolSong_PointerBackUp0 = $e8" + "\n" + "CoolSong_PointerBackUp1 = $ea" + "\n"
-
-                self.__init += "\n\n" + self.__loader.io.loadWholeText("templates/skeletons/musicInitStereo.asm")
-
-            self.__init = self.__init.replace("CoolSong", CoolSong)
-
-
-
-
-            self.__kernelText = self.__loader.io.loadWholeText("templates/skeletons/common_main_kernel.asm")
             self.__kernelText = self.__kernelText.replace("!!!ENTER_BANK2!!!", self.__init)
 
             self.__kernelText = self.__kernelText.replace("!!!OVERSCAN_BANK2!!!",
@@ -3811,7 +3802,7 @@ class Compiler:
 
         for item in items:
             item = item.replace("@@", str(bankNum))
-            self.__mainCode = self.__mainCode.replace(item, "Zero")
+            self.__mainCode = self.__mainCode.replace(item, "bank1_Zero")
 
 
     def findAndDotALLReplace(self, string, pattern, repl):
@@ -4146,7 +4137,6 @@ class Compiler:
         self.__screenTopCode = self.__data[3]
         self.__kernelData = self.__data[4]
 
-
         self.__mainCode = self.__mainCode.replace("!!!TV!!!", "NTSC")
         self.__mainCode = self.__mainCode.replace("!!!ENTER_BANK2!!!", self.__enterCode)
         self.__mainCode = self.__mainCode.replace("!!!OVERSCAN_BANK2!!!", self.__overScanCode)
@@ -4155,7 +4145,12 @@ class Compiler:
         self.__mainCode = re.sub(r"!!![a-zA-Z0-9_]+!!!", "", self.__mainCode)
 
         self.doSave("temp/")
-        assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
+        if "#PAL" in self.__mainCode:
+            assembler = Assembler(self.__loader, "temp/", True, "PAL", False)
+        else:
+            assembler = Assembler(self.__loader, "temp/", True, "NTSC", False)
+
 
     def getPFASM(self):
         self.__pixelData = self.__data[0]
@@ -4645,6 +4640,13 @@ class Compiler:
         except:
             os.mkdir(projectPath + "temp")
             file = open(projectPath + "/source.asm", "w")
+
+        for line in self.__mainCode.split("\n"):
+            try:
+                line.encode("ascii")
+            except:
+                print(line)
+                raise UnicodeEncodeError
 
         file.write(self.__mainCode)
         file.close()

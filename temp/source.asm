@@ -1,33 +1,3 @@
-*
-* How to branch!
-* I always forget these!!
-*
-* X < Y
-* LDA	X	
-* CMP	Y
-* BCS   else 	 
-*
-* X <= Y
-*
-* LDA	Y
-* CMP	X
-* BCC	else
-*
-* X > Y 
-*
-* LDA	Y
-* CMP	X
-* BCS	else
-*
-* X >= Y
-*
-* LDA	X
-* CMP	Y
-* BCC 	else
-*
-
-
-
 *Init Section
 *---------------------------
 * This is were variables and
@@ -39,26 +9,167 @@
 
 random = $80
 counter = $81
-stack = $82
-temp01 = $83
-temp02 = $84
-temp03 = $85
-temp04 = $86
-temp05 = $87
-temp06 = $88
-temp07 = $89
-temp08 = $8a
-temp09 = $8b
-temp10 = $8c
-temp11 = $8d
-temp12 = $8e
-temp13 = $8f
-temp14 = $90
-temp15 = $91
-temp16 = $92
-temp17 = $93
-temp18 = $94
-temp19 = $95
+temp01 = $82
+temp02 = $83
+temp03 = $84
+temp04 = $85
+temp05 = $86
+temp06 = $87
+temp07 = $88
+temp08 = $89
+temp09 = $8a
+temp10 = $8b
+temp11 = $8c
+temp12 = $8d
+temp13 = $8e
+temp14 = $8f
+temp15 = $90
+temp16 = $91
+temp17 = $92
+temp18 = $93
+temp19 = $94
+stack = $95
+
+frameColor = $96
+			
+*** Playfield Elements
+pf0Pointer = $97		; 16 bits
+pf1Pointer = $99		; 16 bits
+pf2Pointer = $9b		; 16 bits	
+pfColorPointer = $9d		; 16 bits 
+bkColorPointer = $9f		; 16 bits
+bkBaseColor = $a1
+pfBaseColor = $a2
+pfIndex = $a3
+
+************************
+SubMenu = $a4		; 0-1 : SubMenuLines
+NoGameMode = $a4	; 2-4 : BankToJump
+bankToJump = $a4	; 5 : ScrollDirection
+SubMenuLines = $a4	; 6 : Go to SubMenu
+ScrollDirection = $a4	; 7 : No Game Mode
+************************  
+
+*** Player Settings
+P0SpritePointer = $a5		; 16bit
+P0ColorPointer = $a7		; 16bit
+P1SpritePointer = $a9		; 16bit
+P1ColorPointer = $ab		; 16bit
+
+************
+* Settings *
+****************************************	
+P0Settings = $ad			; Bits 0-2 are sprite settings, 
+P0Mirrored = $ad			; 3 is reflection, bits 4-5 are missile settings. 
+P0TurnOff  = $ad			; 6: Turn Off Sprite
+P1Settings = $ae			; 7: Turn off Missile
+P1Mirrored = $ae			; Must be in order!
+P1TurnOff  = $ae
+****************************************
+pfSettings = $af	; Since CTRLPF 0-1 bits are fixed in the screen loop
+pfEdges	= $af		; 0-1: free
+BallTurnOff = $af	; 2: Players move behind the pf
+#Has to be here because	; 3: Turn off Ball
+#of the edge check	; 4-5: Ball Settings
+#routine.		; 6-7: 00 - Nothing 01 - Mixed 10 - All stop 11 - All go through 		;
+************************
+
+P0Height = $b0
+P1Height = $b1
+
+****************************************
+P0SpriteIndex = $b2			; low nibble is P0 sprite index
+P1SpriteIndex = $b2			; high nibble is P1 sprite index
+****************************************
+
+*** Positions (Must be aligned!!)
+P0Y = $b3	
+P1Y = $b4	
+M0Y = $b5
+M1Y = $b6
+BLY = $b7
+
+P0X = $b8
+P1X = $b9
+M0X = $ba
+M1X = $bb
+BLX = $bc
+
+*** Fake Missile Colors
+M0Color = $bd
+M1Color = $be
+
+*** TileScreen
+TileSetPointer = $bf	; 16 bit
+TileScreenMainColor = $c1
+
+*** Matrix 6x4
+Tile1_1 = $c2
+Tile1_2 = $c2
+Tile1_3 = $c3
+Tile1_4 = $c3
+Tile1_5 = $c4
+Tile1_6 = $c4
+
+Tile2_1 = $c5
+Tile2_2 = $c5
+Tile2_3 = $c6
+Tile2_4 = $c6
+Tile2_5 = $c7
+Tile2_6 = $c7
+
+Tile3_1 = $c8
+Tile3_2 = $c8
+Tile3_3 = $c9
+Tile3_4 = $c9
+Tile3_5 = $ca
+Tile3_6 = $ca
+
+Tile4_1 = $cb
+Tile4_2 = $cb
+Tile4_3 = $cc
+Tile4_4 = $cc
+Tile4_5 = $cd
+Tile4_6 = $cd
+
+TileColorPointer = $ce 	; 16 bits
+
+*******************
+TileSelected = $d0  ; 0-4th bit: Selected Tile (5 bits)
+OverlapScreen = $d0 ; 5th bit: Have some part of the other screen
+GrayScale     = $d0 ; 6th bit: GrayScale overlap
+OverLapIndicator = $d0
+*******************
+
+*** Music Stuff (same for all jukeboxes)
+Music_Pointer0 = $d1	; 16 bits
+Music_Pointer1 = $d3	; 16 bits
+Music_Duration0 = $d5
+Music_Duration1 = $d6 
+***
+JukeBox_Controller = $d7
+JukeBox_Music_Index = $d7 ; 0-2
+JukeBox_Wave_Index = $d7  ; 3-5
+JukeBox_Music_Duration0bit = $d7  ; 6
+JukeBox_Music_Duration1bit = $d7  ; 7
+***
+Music_PointerBackUp0 = $d8	; 16 bits
+Music_PointerBackUp1 = $da	; 16 bits
+
+collisionVar1 = $dc
+* 7-6: CXM0P  (7: M0-P1, 6: M0-P0)
+* 5-4: CXP0FB (5: P0-PF, 4: P0-BL) 
+* 3-2: CXM0FB (3: M0-PF, 2: M0-BL)
+* 1:   CXBLPF (1: BL-PF)
+* 0:   Turn check on / off
+*
+collisionVar2 = $dd
+* 7-6: CXM1P  (7: M1-P0, 6: M1-P1)
+* 5-4: CXP1FB (5: P1-PF, 4: P1-BL) 
+* 3-2: CXM1FB (3: M1-PF, 2: M1-BL)
+* 1-0: CXPPMM (1: P0-P1, 0: M0-M1)
+*
+
 
 ************************
 *
@@ -73,187 +184,1329 @@ PAL_Vblank   =	169
 PAL_Overscan =	206
 PAL_Display  =  244
 
+*
+* User defined variables
+*------------------------
+
+*Global
+*---------
+
+
+*Bank2
+*---------
+
+
+*Bank3
+*---------
+
+
+*Bank4
+*---------
+
+
+*Bank5
+*---------
+
+
+*Bank6
+*---------
+
+
+*Bank7
+*---------
+
+
+*Bank8
+*---------
+
 
 ***************************
 ********* Start of 1st bank
 ***************************
 
+*Enter Bank
+*--------------------------
+* Bank1 contains the main
+* kernel and most game
+* data
+*
+
 	fill 256	; We have to prevent writing on addresses taken by the SuperChip RAM.
 
-###Start-Bank1
+bank1_EnterKernel
+	LDA	#0		
+	STA	PF0		 
+	STA	PF1		
+	STA	PF2		 
+	STA	GRP0		 
+	STA	GRP1		  
+	STA	VDELP0		 
+	STA	VDELP1		
+	STA	ENAM0		
+	STA	ENAM1		 
+	STA	ENABL
+	STA	CXCLR
+	
+	TSX
+	STX	stack
+###Start-Main-Kernel
+	BIT	SubMenu
+	BVC	bank1_StayHere	; Go to the SubMenu Kernel
+	JMP 	bank1_DoSubMenuKernel	; instead.
 
-*Enter Bank
-*-----------------------------
+bank1_StayHere
+
+	LDA	frameColor	
+	sta	WSYNC
+	STA	COLUBK
+  	ldx	#4 		; From bl -> p0
+
+bank1_HorPosLoop		
+   	lda	P0X,X	
+bank1_DivideLoop
+	sbc	#15
+   	bcs	bank1_DivideLoop
+   	sta	temp01,X
+   	sta	RESP0,X	
+   	sta	WSYNC
+   	dex
+   	bpl	bank1_HorPosLoop	
+
+	ldx	#4		; bl
+   	ldy	temp05
+   	lda	bank1_FineAdjustTable256,Y
+   	sta	HMP0,X		
+
+	dex			; m1
+   	ldy	temp04
+   	lda	bank1_FineAdjustTable256,Y
+   	sta	HMP0,X	
+   
+	dex			; m0
+   	ldy	temp03
+   	lda	bank1_FineAdjustTable256,Y
+   	sta	HMP0,X	
+   
+	dex			; p1
+   	ldy	temp02
+   	lda	bank1_FineAdjustTable256,Y
+   	sta	HMP0,X	
+
+	dex			; p0
+   	ldy	temp01
+   	lda	bank1_FineAdjustTable256,Y
+   	sta	HMP0,X	
+
+   	sta	WSYNC
+   	sta	HMOVE		; 3
+
+	LDA	frameColor	; 3 (6)
+	STA 	COLUPF		; 3 (9)
+
+	LDA	#0	;2 (11)
+	STA	temp03 	;3 (46) Erase P1 sprite data
+	STA	temp14	;3
+
+	LDA	pfSettings	; 3 (49)
+	ORA	#%00000001	; 2 (51) Reflected playfield
+	AND	#%11111101	; 2 (53) Always get the original colors.
+	STA	CTRLPF		; 3 (56)
+
+bank1_SettingUpP0SpriteAndMissile0
+
+	LDA	P0Settings	;3 (59)
+	STA	REFP0		;3 (62)
+	AND	#%00110111	;2 (64)
+	STA	NUSIZ0	; Sets P0 and M0 registers 3 (67)
+
+	LDA	P0SpritePointer+1	; temp08 will store the sprite pointers high byte ; 3 (70)
+	STA	temp07+1		; 2 (72)
+
+	LDA	P0Y ; 3 (75)
+	STA	temp09 	; temp09 stores P0 Y position. 3 (2) One line wasted.
+	
+bank1_SettingUpP1SpriteAndMissile1
+
+	LDA	P1Settings 	; 3 (5)
+	STA	REFP1		; 3 (8)
+	AND	#%00110111	; 2 (10)
+	STA	NUSIZ1		; 3 (13) Sets P1 and M1 registers
+
+	LDA	P1SpritePointer+1	; 3 (16) temp11 will store the sprite pointers high byte
+	STA	temp10+1		; 3 (19)
+
+	LDA	P1Y	; 3 (22)
+	SEC		; 2 (24) Substract 1 because of the latency
+	SBC	#1      ; 2 (26)
+	STA	temp12 	; 3 (29) temp12 stores P1 Y position.
+
+
+bank1_FinishPreparation
+**	TSX			; 2 (31)
+**	STX	stack		; Save the stack pointer 3 (34)
+
+	LDX	#42
+	LDA	#15		; 2 (36)
+	CLC			; 2 (38)
+	ADC	pfIndex		; 3 (41)
+	STA	temp01		; Save pfIndex 3 (44)	
+	TAY			; 2 (46)
+
+	LDA	(pfColorPointer),y	; 5 (51)
+	CLC				; 2 (53)
+	ADC	pfBaseColor 		; 3 (56)
+	STA	temp02		; savePFColor 3 (59)
+
+	LDA	(bkColorPointer),y 	; 5 (64)
+	CLC				; 2 (66)
+	ADC	bkBaseColor 		; 3 (69)
+	STA	temp04		; saveBKColor 3 (72)
+
+	LDY 	P1Height		; 3 (75) - Wow, another line done!  		
+	LDA	(P1ColorPointer),y	; 5 (4)
+	STA	COLUP1		; Load first color 3 (7)
+
+	LDY	#225		; 2 (9)
+	LDA	P0TurnOff	; 3 (12)
+	BVC	bank1_NoP0TurnOff	; 2 (14)
+
+	LDA	#<bank1_Zero	  ; 2
+	STA	P0SpritePointer   ; 3
+	LDA	#>bank1_Zero	  ; 2
+	STA	P0SpritePointer+1 ; 3
+	LDA	#1		; 2
+	STA	P0Height	; 3
+
+	STY	P0Y		; 3 (17)
+bank1_NoP0TurnOff
+	BPL	bank1_NoM0TurnOff ; 2 (19)
+	STY	M0Y		; 3 (22)
+bank1_NoM0TurnOff
+	
+	LDA	P1TurnOff	; 3 (25)
+	BVC	bank1_NoP1TurnOff ; 2 (27)
+
+	LDA	#<bank1_Zero	  ; 2
+	STA	P1SpritePointer   ; 3
+	LDA	#>bank1_Zero	  ; 2
+	STA	P1SpritePointer+1 ; 3
+	LDA	#1		; 2
+	STA	P1Height	; 3	
+
+	STY	P1Y		; 3 (30)
+bank1_NoP1TurnOff
+	BPL	bank1_NoM1TurnOff ; 2 (32)
+	STY	M1Y		; 3 (35)
+bank1_NoM1TurnOff
+
+	LDA	BallTurnOff	; 3 (38)
+	AND	#%00001000	; 2 (40)
+	CMP	#%00001000	; 2 (42)
+	BNE	bank1_NoBallTurnOff ; 2 (44)
+	STY	BLY		; 3 (47)
+
+bank1_NoBallTurnOff
+* _sleep numbers:	14, 18, 22, 26,
+*  		 	30, 34, 38, 42, etc. 
+*			(n-2) % 4 = 0
+
+	STA	WSYNC
+	
+	LDA	temp01		; pfIndex 3 (12)	
+	TAY			; 2(14)
+
+	LDA	(pf0Pointer),y	; 5(19)
+	STA	PF0		; 3(22)	
+	STA	temp05		; 3(25)
+	asl			; 2(27)
+	asl			; 2(29)
+	asl			; 2(31)
+	asl			; 2(33)
+	STA	temp06		; 3(36)
+
+
+	LDA	(pf2Pointer),y	; 5(45)
+	STA	PF2		; 3(50)
+
+	LDA	(pf1Pointer),y	; 5(55)
+	STA	PF1		; 3(58)
+	
+	LDA	temp02			; 3(73)	
+	LDY	#0
+	JMP	bank1_FirstLine	; 3(76)
+
+bank1_NoP0DrawNow
+	CPX	M0Y		; 3
+	BNE	bank1_NoColorOverWriteM0 ; 2
+
+	LDA	M0Color		; 3
+	STA	COLUP0		; 3
+	LDA	#0	  	; 2
+
+	JMP	bank1_saveP0Sprite ; 3 
+
+bank1_NoColorOverWriteM0
+	sleep 	5
+	LDA	#0
+	JMP	bank1_saveP0Sprite ; 3 
+
+bank1_NoP1DrawNow
+	CPX	M1Y		; 3
+	BNE	bank1_NoColorOverWriteM1
+
+	LDA	M1Color		; 3
+	STA	COLUP1		; 3
+	LDA	#0	  	; 2
+
+	JMP	bank1_saveP1Sprite	; 3 
+
+bank1_NoColorOverWriteM1
+	sleep 	5
+	LDA	#0
+	JMP	bank1_saveP1Sprite	; 3 
+
+DrawingTheScreen
+	; temp01 = pfIndex
+	; temp02 = pfColor
+	; temp03 = P1 Sprite data
+	; temp04 = bkColor
+	; temp05 = P0 / 1
+	; temp06 = P0 / 2
+	; temp07, temp08 = P0 sprite pointers
+	; temp09 = p0 Y
+	; temp10, temp11 = P1 sprite pointers
+	; temp12 = p1height
+	; temp13 = lineNum
+	; temp14 = P0 Sprite Data
+
+bank1_FirstLine
+	STA	WSYNC		; 3 (76)
+bank1_StartWithoutWSYNC
+	STA	COLUPF		; 3 (3)
+	LDA	temp04		; 3 (6)
+	STA	COLUBK		; 3 (9)
+
+	LDA	temp05		; 3 (12)
+	STA	PF0		; 3 (15)
+
+	LDA	temp03		; 3 (18)
+	STY	GRP0		; 3 (21)
+	STA	GRP1		; 3 (24)
+
+
+	STX	temp13		; 3 (27) Saves the lineNum
+	ldx 	#$1f		; Address of ENABL 2 (29) 
+	txs			; 2 (31) 
+	LDX	temp13		; 3 (34) Retrive the lineNum
+
+	LDA	temp06		; 3 (36)	
+	STA	PF0		; 3 (39)
+
+	LDY	temp01		; 3 (42)
+
+	LDA	(pfColorPointer),y	; 5 (47)
+	ADC	pfBaseColor		; 3 (50)
+	STA	temp02		; 3 (53)
+
+	LDA	(bkColorPointer),y ;5 (58)
+	ADC	bkBaseColor	; 3 (61)	
+	STA	temp04		; 3 (64)
+
+	cpx	BLY		; 3
+	php			; 3
+	cpx	M1Y		; 3
+	php			; 3
+	cpx	M0Y		; 3
+	php			; 18 (6)
+
+bank1_MiddleLine
+
+	LDA	(pf0Pointer),y	; 5 (11)
+	STA	PF0		; 3 (14)
+	STA	temp05		; 3 (17)
+
+	LDA	(pf1Pointer),y	; 5 (22)
+	STA 	PF1		; 3 (25)
+
+	LDA	(pf2Pointer),y	; 5 (30)
+	STA 	PF2		; 3 (33)
+	LDA	temp05		; 3 (36)
+	asl			; 2 
+	asl			; 2 
+	asl			; 2 
+	asl			; 8 (44)
+	STA	PF0		; 3 (47)
+	STA	temp06		; 3 (50)
+
+
+	LDA 	P0Height 	; 3 
+	DCP	temp09 		;  temp09 contains P0Y!  ; 5 
+	BCC	bank1_NoP0DrawNow	; 2 
+	LDY	temp09		; 3 
+	LDA	(P0ColorPointer),y 	; 5 
+	STA	COLUP0		; 3 
+	LDA	(temp07),y 	; 5 
+bank1_saveP0Sprite
+	STA	temp14		; 3 
+	; 29 (3)
+
+bank1_LastLine
+	LDA	temp05		; 3 (9)
+	STA	PF0		; 3 (12)
+
+	LDA 	P1Height 	; 3 
+	DCP	temp12 		;  temp12 contains P0Y!  ; 5 
+	BCC	bank1_NoP1DrawNow	; 2 
+	LDY	temp12		; 3 
+	LDA	(P1ColorPointer),y 	; 5
+	STA	COLUP1	; 3 
+	LDA	(temp10),y 	; 5
+bank1_saveP1Sprite
+	STA	temp03		; 3 
+	; 29 (41)
+
+	LDA	temp06		; 3 (44)
+	STA	PF0		; 3 (47)
+
+	LDY	temp14		; 3 (50)
+
+	CPX	#1		; 2 (58)
+	BEQ	bank1_ResetAll 	; 2 (60)
+
+	DEX			; 2 (62)
+	LDA	temp02		; 3 (65)
+
+	DEC	temp01		; 5 (70)
+	JMP	bank1_FirstLine	; 3 (73)
+
+###End-Main-Kernel
+
+bank1_ResetAll
+	LDX	#0		; 2 (62)
+	STX	HMCLR		; 3 (65)
+	LDA	frameColor	; 3 (68)
+	STX	PF2		; 3 (71)
+
+	STX	WSYNC		
+bank1_ResetAll_NoSync
+	STA 	COLUBK		 
+	STA 	COLUPF		
+
+	STX	PF0
+	STX	PF1
+
+	STX	ENAM0
+	STX	ENAM1
+	STX	ENABL
+	STX	GRP0
+	STX	GRP1
+
+	STX	VDELP0
+	STX	VDELP1
+	STX	VDELBL
+	STX	REFP0
+	STX	REFP1
 *
-* This is the section that happens
-* everytime you go to a new screen.
-* Should set the screen initialization
-* here.
+*	Testing Only
+*
+*	STA	WSYNC
+*	LDA	counter
+*	STA	COLUBK
+*	STA	WSYNC
+*	STA	WSYNC
+*	LDA	frameColor
+*	STA	COLUBK
+
+	LDX	stack		; Retrieve the stack pointer
+	TXS
+
+bank1_Save_Collisions
+*
+*	Check if the ON/OFF bit is set. Also, if it is submenu mode.
 *
 
-EnterScreenBank1
+	LDA	collisionVar1
+	AND	#%00000001
+	CMP	#%00000001
+	BEQ	bank1_Save_Collisions_NoEnd
 
+	LDA	#0
+	STA	collisionVar1
+	STA	collisionVar2	
+
+	JMP	bank1_Save_Collisions_End_SomeWSYNC
+
+bank1_Save_Collisions_NoEnd
+	BIT 	SubMenu
+	BVS	bank1_Save_Collisions_IsThe5thBitSet
+	JMP	bank1_Save_Collisions_Start
+
+bank1_Save_Collisions_IsThe5thBitSet
 *
-* Bank1 contains the main kernel and basically the game itself.
-* This section is read as you start a new game.
+*	If submenu has overlap, must do some wsync waste.
 *
+	LDA	OverlapScreen
+	AND	#%00100000
+	CMP	#%00100000	
+	BEQ	bank1_Save_Collisions_End_SomeWSYNC
+	JMP	bank1_Save_Collisions_End_NoSave
+
+bank1_Save_Collisions_Start
 *
+*	Init the variables.
+*
+	LDA	#%01000000
+	STA	collisionVar1
+	LDA	#0
+	STA	collisionVar2
+*
+*	Do the loop :)
+*	
+	LDX	#7
+bank1_Save_Collisions_TheLoop	
+	LDA	CXM0P,x
+	AND	#%11000000
+	ORA	collisionVar2
+	STA	collisionVar2
+
+	DEX
+	LDA	CXM0P,x
+	AND	#%11000000
+	ORA	collisionVar1
+
+	DEX
+	BMI	bank1_Save_Collisions_End
+
+	LSR
+	LSR
+	STA	collisionVar1	
+
+	LDA	collisionVar2
+	LSR
+	LSR
+	STA	collisionVar2
+	JMP	bank1_Save_Collisions_TheLoop
+
+bank1_Save_Collisions_End_SomeWSYNC
+	LDA	#0
+	STA	collisionVar1
+	STA	collisionVar2	
+
+	JMP	bank1_Save_Collisions_End_NoSave
+
+	LDX	#2
+bank1_Save_Collisions_WSYNC_Wasting
+	STA	WSYNC
+	DEX
+	BPL	bank1_Save_Collisions_WSYNC_Wasting
+
+	JMP	bank1_Save_Collisions_End_NoSave
+
+bank1_Save_Collisions_End
+	STA	collisionVar1	
+
+bank1_Save_Collisions_End_NoSave
+*
+*	Testing Only
+*
+**	STA	WSYNC
+**	LDA	counter
+**	STA	COLUBK
+**	STA	WSYNC
+**	STA	WSYNC
+**	LDA	frameColor
+**	STA	COLUBK
+
+bank1_JumpBackToBankScreenBottom
+
+	lda	bankToJump
+	lsr
+	lsr
+	AND	#%00000111	; Get the bank number to return
+	tax
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table
 		
-	JMP	WaitUntilOverScanTimerEndsBank1
+		
+	lda	bank1_ScreenJumpTable,y
+   	pha
+   	lda	bank1_ScreenJumpTable+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
 
-*Leave Bank
-*-------------------------------
-*
-* This section goes as you leave
-* the screen. Should set where to
-* go and close or save things.
-*
+###Start-Main-Kernel-Sub
 
-LeaveScreenBank1
+bank1_LoadNextData
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp03		; 3
 
 
-*Overscan
-*-----------------------------
-*
-* This is the place of the main
-* code of this screen.
-*
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp05		; 3
 
-OverScanBank1
+	INX			; 2
 
-	CLC
-        LDA	INTIM 
-        BNE 	OverScanBank1
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp07		; 3
+
+
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp09		; 3
+
+	INX			; 2
+
+	LDA	Tile1_1,x	; 4	
+	AND	#%00001111	; 2 Get low nibble
+	ASL			; 2 and multiply
+	ASL			; 2 by 8
+	ASL			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp11		; 3
+
+
+	LDA	Tile1_1,x	; 4 Get high nibble
+	AND	#%11110000	; 2 and divide by 2
+	LSR			; 2 
+	CLC			; 2
+	ADC	TileSetPointer	; 3
+	STA	temp13		; 3
+
+	INX			; 2
+
+	STX	temp02		; 3
+	JMP	bank1_LoadedShit	; 3
+
+bank1_DoSubMenuKernel
+**	TSX			; 2 
+**	STX	stack		; 3
+
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK	
+	STA	COLUPF
+
+	LDA	pfSettings	; 
+	ORA	#%00000101	; Reflected playfield and
+				; players go behind.
+	AND	#%11111101	; Always get the original colors.
+	STA	CTRLPF		; 
+
+	LDA	#$03		;
+	STA	NUSIZ1		; Fixed 3 with large gaps.	 
+
+	LDA	OverLapIndicator
+	AND	#%01111111
+	STA	OverLapIndicator
+
+	LDA	OverlapScreen
+	AND	#%00100000
+	CMP	#%00100000
+	BEQ	bank1_DoThisCrap
+	JMP	bank1_NoOverLap
+
+bank1_DoThisCrap
+	LDX	#3
+bank1_AddLines
+	STA	WSYNC
+	DEX	
+	CPX	#255
+	BNE	bank1_AddLines
+	
+bank1_DoItAgainPlease
+	STA	WSYNC
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAX
+
+	LDA	OverLapIndicator
+	BMI	bank1_ItsTheBottom
+	LDA	bank1_ScreenOverlapTop,x
+	JMP	bank1_SaveToppp
+bank1_ItsTheBottom
+	LDA	bank1_ScreenOverlapBottom,x
+bank1_SaveToppp
+	STA	temp11
+	
+	LDA	#15		
+	CLC			
+	ADC	pfIndex		 
+	STA	temp01		; Save pfIndex 
+	STA	WSYNC
+	LDA	OverLapIndicator
+	BPL	bank1_NoTemp01Dec
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAX
+
+	LDA	temp01
+	SEC
+	SBC	bank1_DecrementTemp1,x
+	STA	temp01
+bank1_NoTemp01Dec
+	LDX	temp11
+
+	LDY	temp01			
 
 	STA	WSYNC
-	LDA	#%11000010
-	STA	VBLANK
+	
+	LDA	(pfColorPointer),y	
+	CLC				
+	ADC	pfBaseColor 	
+	STA	temp02		; savePFColor 
+
+	LDA	(bkColorPointer),y 	
+	CLC				
+	ADC	bkBaseColor 	
+	STA	temp04		; saveBKColor 	
+
+	STA	WSYNC
+	LDA	GrayScale
+	AND	#%01000000
+	CMP	#%01000000
+	BNE	bank1_NotGray
+	LDA	temp02
+	AND	#%00001111
+	STA	temp02
+	LDA	temp04
+	AND	#%00001111
+	STA	temp04
+bank1_NotGray
 	STA	WSYNC
 
-    	LDA	#NTSC_Overscan
-    	STA	TIM64T
-	INC	counter
+	LDA	OverLapIndicator
+	BPL	bank1_NoINY
+	INY
+bank1_NoINY
+	LDA	(pf2Pointer),y		
+	STA	PF2	
+	
+	LDA	(pf1Pointer),y	
+	STA	PF1
 
-*Overscan Code
-*-----------------------------
-*
-* This is where the game code
-* begins.
-*
+	LDA	(pf0Pointer),y		
+	STA	PF0	
+	STA	temp03
+	LDA	OverLapIndicator
+	BPL	bank1_NoDEY
+	DEY
+bank1_NoDEY
 
+bank1_NewLineWithTemp04
+	LDA	temp04
+bank1_NewLine
+	STA	WSYNC
+	STA	COLUBK		; 3
+	LDA	temp02		; 3 (6)
+	STA	COLUPF		; 3 (9)
 
+	LDA	temp03		
+	STA	PF0
 
+	
+	LDA	(bkColorPointer),y ; 3	
+	CLC			; 2 	
+	ADC	bkBaseColor 	; 3 
+	STA	temp04		; 3 
+	
+	sleep	8
 
+	LDA	temp03
+	ASL			; 2 (34)
+	ASL			; 2 (36)
+	ASL			; 2 (38)
+	ASL			; 2 (40)
+	STA	PF0		; 3 (43)
 
+	STA	WSYNC	
+	LDA	(pf0Pointer),y	; 5
+	STA	PF0		; 3 (8)	
+	STA	temp03		; 3 (12)
+	LDA	(pf1Pointer),y	; 5 (15)	
+	STA	PF1		; 3 (18)
+	LDA	(pf2Pointer),y	; 5 (23)	
+	STA	PF2		; 3 (28)
+	
+	JSR	bank1_GetSecondPF0	
 
+	LDA	(pfColorPointer),y	; 5 (55)
+	CLC			; 2 (57)	
+	ADC	pfBaseColor 	; 3 (60)
+	STA	temp02		; 3 (63)
+	DEY			
+	STA	WSYNC	
+	LDA	temp03		; 3
+	STA	PF0		; 3 (6)
+	sleep	2
+	JSR	bank1_GetSecondPF0 ; 6 (12) + 20
 
+	LDA	GrayScale	; 3 
+	AND	#%01000000	; 2 
+	CMP	#%01000000	; 2 
+	BNE	bank1_NotGray2	; 2 
+	LDA	temp02		; 3 
+	AND	#%00001111	; 2 
+	STA	temp02		; 3 
+	LDA	temp04		; 3 
+	AND	#%00001111	; 2 
+	STA	temp04		; 3 
+bank1_NotGray2
 
-*VSYNC
-*----------------------------7
-* This is a fixed section in
-* every bank. Don't need to be
-* at the same space, of course.
-
-WaitUntilOverScanTimerEndsBank1
-	CLC
-	LDA 	INTIM
-	BMI 	WaitUntilOverScanTimerEndsBank1
-
-* Sync the Screen
-*
-
-	LDA 	#2
-	STA 	WSYNC  ; one line with VSYNC
-	STA 	VSYNC	; enable VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	WSYNC 	; one line with VSYNC
-	LDA 	#0
-	STA 	WSYNC 	; one line with VSYNC
-	STA 	VSYNC 	; turn off VSYNC
-
-* Set the timer for VBlank
-*
-	STA	VBLANK
-	STA 	WSYNC
-
-	CLC
- 	LDA	#NTSC_Vblank
-	STA	TIM64T
-
-
-*VBLANK
-*-----------------------------
-* This is were you can set a piece
-* of code as well, but some part may
-* be used by the kernel.
-*
-VBLANKBank1
-
-
-
-*SkipIfNoGameSet - VBLANK
-*---------------------------------
-*
-
-
-VBlankEndBank1
-	CLC
-	LDA 	INTIM
-	BMI 	VBlankEndBank1
-
-    	LDA	#NTSC_Display
-    	STA	TIM64T
-
-
-*Screen
-*--------------------------------  
-* This is the section for the
-* top part of the screen.
-*
-
-	tsx
-	stx	stack
+	DEX
+	CPX	#1	
+	BEQ	bank1_ResetToOther
 
 
+	LDA	temp04
+	JMP	bank1_NewLine
+bank1_ResetToOther
+
+bank1_NoOverLap
+*	temp01: Rows left
+*	temp02: LineNum
+*	temp03 - temp14: GRP0 pointers
+*	temp15 - temp16: Selector Sprite Pointer
+*	temp17: ColorData
+*	temp18: TileY
+
+bank1_NoResetNow
+	LDA	frameColor
+	STA	WSYNC
+	STA	COLUBK		; 3
+
+	LDA	#0		
+	STA	PF0		
+	STA	PF1	
+	STA	PF2
+
+	LDA	OverLapIndicator
+	BPL	bank1_FFFF	
+
+	LDA	frameColor
+	LDX	#0
+
+	JMP	bank1_ResetAll_NoSync
+bank1_FFFF
+
+
+	LDA	#%11111110	; 2 (15)			
+	STA	PF2		; 3 (18)	
+
+	LDY	#7
+	LDA	(TileColorPointer),y	; 5 (57)
+	CLC			; 3 (60)
+	ADC	TileScreenMainColor	; 3 (63)
+	STA	COLUPF		; 3 (66)
+	STA	COLUP1		; 3 (69)
+
+	LDA	SubMenuLines	; 3 (72)
+	AND	#%00000011	; 2 (74)
+	CLC			; 2 (76)
+	ADC	#1		; 2 
+	STA	temp01		; 3 (5) Saving the lineNum	
+
+	LDA	counter		; 3 (8)
+	STA	COLUP0		; 3 (11)
+	AND	#%00001100	; 2 (13) 
+	ASL
+
+	CLC			; 2 
+	ADC	#<bank1_Selector ; 3 
+	STA	temp15		; 3 
+	LDA	#>bank1_Selector ; 3 
+	STA	temp16		; 3 
+
+	LDY	#0
+	STY	NUSIZ0
+	LDA	TileSelected
+	AND	#%00011111
+
+bank1_SmallerThan6
+	CMP	#6
+	BCC	bank1_GetP0Poz
+	SEC
+	SBC	#6
+	INY
+	JMP	bank1_SmallerThan6
+bank1_GetP0Poz
+	STY	temp18	; Get the Tile row number reversed
+	LDY	#0
+	STY	temp03
+
+	STA	WSYNC
+	TAX
+	LDA	bank1_CursorXPosition,x
+	LDX	temp03
+bank1_CursorPozLoop
+	sbc	#15
+   	bcs	bank1_CursorPozLoop
+   	sleep	2
+	tay
+   	sta	RESP0	
+   	LDA	bank1_FineAdjustTable256,Y
+	STA	HMP0
+	INC	temp18
+
+bank1_SetP0TilePositions
+	STA	WSYNC
+	STA	HMOVE
+	LDA	TileSetPointer+1  ; 5
+	STA	temp04		; 3	High nibble of pointer
+	STA	temp06		; 3	High nibble of pointer
+	STA	temp08		; 3	High nibble of pointer
+	STA	temp10		; 3	High nibble of pointer
+	STA	temp12		; 3	High nibble of pointer
+	STA	temp14		; 3	High nibble of pointer
+
+
+	_sleep	14
+	sleep	3		
+	STA	RESP1		; (41) X pos
+	
+
+	LDA	counter		; 3 
+	AND	#%00000001	; 2 
+	CMP	#%00000001	; 2 	
+	BEQ	bank1_OddStart
+	LDA	#$C0
+	JMP	bank1_EvenStart
+
+bank1_OddStart
+	LDA	#$C0
+bank1_EvenStart	
+	STA	HMP1
+	
+	LDA	#0		
+	STA	temp02
+
+	STA	WSYNC		; 73
+	STA	HMOVE		
+	
+	LDA	#%00000010	; 2
+	STA	PF2		; 3
+		
+bank1_CalculatorLine
+	LDX	temp02		; 3
+	LDA	#0		; 2
+	STA	GRP0		; 3
+	STA	GRP1		; 3
+
+	DEC 	temp18
+
+	JMP	bank1_LoadNextData	; 3
+bank1_LoadedShit
+	LDY	#7
+	LDA	(TileColorPointer),y	; 5 
+	CLC			; 3 
+	ADC	TileScreenMainColor	; 3 
+	STA	COLUPF		; 3 
+	STA	COLUP1		; 3 
+
+	LDA	(temp15),y	; 5
+	STA	temp19
+
+	STA	WSYNC
+	; 2
+	LDA	counter		; 3 (5)
+	AND	#%00000001	; 2 (7)
+	CMP	#%00000001	; 2 (9)
+	BEQ	bank1_JumpOddFrame	; 2 (11)
+
+	JMP	bank1_EvenFrame ; 3 (14)
+bank1_JumpOddFrame
+	JMP	bank1_OddFrame  ; 3 
+
+	_align	100
+
+bank1_OddFrame
+	LDA	#$00
+	STA	HMP0
+
+bank1_Loop_Odd_Line1
+	STA	WSYNC		; 3 (76)
+	STA	HMOVE		; 3
+
+	LDA	#0		; 2 (5)
+	STA	HMP1		; 3 (8)
+
+***	sleep	67
+
+	CMP	temp18		; 3 (11)
+	BEQ	bank1_Loop_Odd_IsSelector	; 2 (13)
+	NOP			; 2 (15)		
+	JMP	bank1_Loop_Odd_NoSelector 	; 3 (18)		
+
+bank1_Loop_Odd_IsSelector
+	LDA	(temp15),y	; 5 (18)
+bank1_Loop_Odd_NoSelector
+	STA	GRP0		; 3 (21)
+
+	LDA	(temp03),y 	; 5 (26)
+	STA	GRP1		; 3 (29)
+	
+***	sleep	45
+	sleep	6
+
+	LAX	(temp11),y 	; 5 (40)
+
+	LDA	(temp07),y 	; 5 (45)
+	STA	GRP1		; 3 (48)
+
+	sleep	2
+	STX	GRP1		; 3 (53)
+
+	LAX	(temp13),y 	; 5 (58)
+	TXS			; 2 (60)
+	LAX	(temp09),y 	; 5 (65)
+	
+	LDA	(temp05),y 	; 5 (70)
+***	STA	GRP1	
+	BYTE	#$8D
+	BYTE	#GRP1
+	BYTE	$00		; 4 (74)
+
+bank1_Loop_Odd_Line2
+	STA	HMOVE		; 2
+
+	LDA	#$80		; 2 (4)
+	STA	HMP1		; 3 (7)
+
+	DEY			; 2 (9)
+
+	LDA	(TileColorPointer),y ; 5 (14)
+	CLC			     ; 2 (16)
+	ADC	TileScreenMainColor  ; 3 (19)
+	STA	temp17		     ; 3 (22)
+
+	sleep	20
+
+	STX	GRP1
+	TSX
+	STX	GRP1
+	
+	sleep	5
+	LDA	temp17
+	STA	COLUP1
+	STA	COLUPF
+
+	CPY	#255
+	BEQ	bank1_Loop_Odd_LineEnd	; 2 (72)
+	JMP	bank1_Loop_Odd_Line1
+bank1_Loop_Odd_LineEnd
+	JMP	bank1_Loop_LineEnd
+
+	_align	120
+
+bank1_EvenFrame
+	_sleep	46		; (74)
+	sleep	4
+	
+	LDA	#$00
+	STA	HMP0
+
+bank1_Loop_Even_Line1
+	STA	HMOVE		; 74
+
+	LDA	#$80		; 2
+	STA	HMP1		; 3
+
+	LDA	#0		; 2 (5)
+	CMP	temp18		; 3 (8)
+	BEQ	bank1_Loop_Even_IsSelector	; 2 (10)
+	NOP			; 2 (12)		
+	JMP	bank1_Loop_Even_NoSelector 	; 3 (15)		
+
+bank1_Loop_Even_IsSelector
+	LDA	(temp15),y	; 5 (15)
+bank1_Loop_Even_NoSelector
+	STA	GRP0		; 3 (18)
+
+	LDA	(temp05),y 	; 5 (23)
+	STA	GRP1		; 3 (26)
+
+	sleep	4
+
+	LAX	(temp13),y 	; 5 (35)
+
+	LDA	(temp09),y 	; 5 (40)
+	STA	GRP1		; 3 (43)
+	sleep	2	
+	STX	GRP1		; 3 (48)
+
+	LAX	(temp11),y 	; 5 (54)
+	TXS			; 2 (56)
+
+	LAX	(temp07),y 	; 5 (61)
+	LDA	(temp03),y 	; 5 (66)
+	STA	GRP1		; 3 (69)
+	DEY			; 2 (71)
+
+bank1_Loop_Even_Line2
+	STA	WSYNC		; 76
+	STA	HMOVE		; 3
+
+	LDA	#0		; 2 (5)
+	STA	HMP1		; 3 (8)
+
+***	sleep	58
+
+	LDA	(TileColorPointer),y ; 5 (13)
+	CLC			     ; 2 (15)
+	ADC	TileScreenMainColor  ; 3 (18)
+	STA	temp17		     ; 3 (21)
+	
+***	sleep	45
+
+	sleep	24		    ; 45
+
+	STX	GRP1		    ; 3 (48)
+	TSX			    ; 2 (50)
+	STX	GRP1		    ; 3 (53)
+	
+	LDA	temp17		    ; 3 (56)
+	STA	COLUP1		    ; 3 (59)
+	STA	COLUPF		    ; 3 (62)
+
+	sleep	4
+
+	CPY	#255			; 2 (66)
+	BEQ	bank1_Loop_LineEnd	; 2 (68)
+	JMP	bank1_Loop_Even_Line1   ; 3 (71)
+bank1_Loop_LineEnd
 	LDA	#0
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
-*
-*
-*
-*
+	STA	GRP0
+	STA	GRP1
 
+	DEC	temp01		; 5	
+	LDA	temp01		; 3
+	CMP	#0		; 2
+	BEQ	bank1_EndOfAll	; 2
+	JMP	bank1_CalculatorLine	; 3 
 
+bank1_EndOfAll
+	
+	STA	WSYNC
+***	LDA	#0
+***	STA	GRP0
+***	STA	GRP1
+	LDX	stack
+	TXS
+
+	STA	WSYNC
+	LDA	#%11111110
+	STA	PF2
+
+	STA	WSYNC
+	STA	WSYNC
+	STA	WSYNC
+
+bank1_IsThereOverLap
+	LDA	OverlapScreen
+	AND	#%00100000
+	CMP	#%00100000
+	BEQ	bank1_ThereItIs
+	STA	WSYNC
+	JMP	bank1_ResetAll
+
+bank1_ThereItIs
+	LDA	OverLapIndicator
+	ORA	#%10000000
+	STA	OverLapIndicator
 	LDA	#0
-	STA	WSYNC		; (76)
-	STA	COLUBK	
-	STA	COLUP0
-	STA	COLUP1	
-	STA	COLUPF	
+	STA	WSYNC
+	STA	PF2
+	LDA	frameColor
+	STA	COLUPF
+	STA	COLUBK
 
-	ldx	stack
-	txs
+	LDA	SubMenuLines
+	AND	#%00000011
+	TAY
+	LAX	bank1_ExtraWSYNC,y
+bank1_DoExtraWSYNC
+	CPX	#0
+	BEQ	bank1_NoMoreLiiiiines
+	STA	WSYNC
+	DEX
+	JMP	bank1_DoExtraWSYNC
 
-	JMP	OverScanBank1
+bank1_NoMoreLiiiiines
+	JMP	bank1_DoItAgainPlease
 
-*Data Section 
-*----------------------------------
-* Here goes the data used by
-* custom ScreenTop and ScreenBottom
-* elments.
-*
-
-*Routines Section 
-*----------------------------------
-* Reusable code
-*
-
-###End-Bank1
+###End-Main-Kernel-Sub
 
 	align	256
+bank1_FineAdjustTable256
+	fill 	156
+
+bank1_Zero
+bank1_Null
+bank1_None
+	.BYTE	#0	; This is an empty byte for constant code usage.
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+	.BYTE	#0
+
+bank1_Selector
+	byte	#%01100110	; (0)
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10011001
+	byte	#%11001100	; (1)
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%11001100
+	byte	#%10011001	; (2)
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%01100110
+	byte	#%00110011	; (3)
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00000001
+	byte	#%00000001
+	byte	#%10000000
+	byte	#%10000000
+	byte	#%00110011
+
+bank1_GetSecondPF0
+	LDA	temp03		
+	ASL			
+	ASL			
+	ASL			
+	ASL			
+	STA	PF0	
+	RTS
+
+bank1_ScreenOverlapTop
+	byte	#16
+	byte	#12
+	byte	#7
+	byte	#4
+
+bank1_ScreenOverlapBottom
+	byte	#16
+	byte	#13
+	byte	#11
+	byte	#8
+
+bank1_DecrementTemp1
+	byte	#27
+	byte	#30
+	byte	#32
+	byte	#35
+
+bank1_ExtraWSYNC
+	byte	#0
+	byte	#1
+	byte	#2
+	byte	#0
+
+bank1_ScreenJumpTable
+	.byte	#>ScreenBottomBank2-1
+	.byte	#<ScreenBottomBank2-1
+	.byte	#>ScreenBottomBank3-1
+	.byte	#<ScreenBottomBank3-1
+	.byte	#>ScreenBottomBank4-1
+	.byte	#<ScreenBottomBank4-1
+	.byte	#>ScreenBottomBank5-1
+	.byte	#<ScreenBottomBank5-1
+	.byte	#>ScreenBottomBank6-1
+	.byte	#<ScreenBottomBank6-1
+	.byte	#>ScreenBottomBank7-1
+	.byte	#<ScreenBottomBank7-1
+	.byte	#>ScreenBottomBank8-1
+	.byte	#<ScreenBottomBank8-1
+
+bank1_CursorXPosition
+	byte	#60	
+	byte	#79	
+	byte	#83	
+	byte	#87
+	byte	#106	
+	byte	#110	
+
+bank1_FineAdjustTable
+	byte	#$80
+	byte	#$70
+	byte	#$60
+	byte	#$50
+	byte	#$40
+	byte	#$30
+	byte	#$20
+	byte	#$10
+	byte	#$00
+	byte	#$f0
+	byte	#$e0
+	byte	#$d0
+	byte	#$c0
+	byte	#$b0
+	byte	#$a0
+	byte	#$90
+
+bank1_UnderTheTable
+
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+
+
+*Data Section
+*-------------------------------
+* Contains graphics data for the
+* main kernel.
+
+
+
+	align 256
+
+Data_Section
+
 
 	saveFreeBytes
 	rewind 1fd4
@@ -292,7 +1545,6 @@ start_bank1
 ********* Start of 2nd bank
 ***************************
 	Bank 2
-
 	fill	256
 ###Start-Bank2
 	
@@ -305,72 +1557,61 @@ start_bank1
 * here.
 *
 
-
 EnterScreenBank2
 
+
+* Asign Variables or Constants
+*******************************
+
+Test_BigSprite_Xpoz = Tile1_1
+Test_BigSprite_bgColorMod = Tile1_3
+Test_BigSprite_spriteSettings = Tile1_5
+
+* Sprite Settings:	
+* 0-2: NUSIZ
+* 3:   Mirrored
+* 4-7: SpriteNum
 *
-* This is the very first screen you witness as
-* you startup the game. Contains the menu.
-*
-*
+
+* Set Constants
+*******************************
+
+Test_BigSprite_heigth = 24
+Test_BigSprite_lineHeigth = 2
+Test_BigSprite_X2Offset = 8
+Test_BigSprite_mono = 0
+Test_BigSprite_frameNum = 1
+
+
+* BigSprite_0: 		temp03 - temp04
+* BigSprite_1: 		temp05 - temp06
+* BigSpriteColor_0:     temp07 - temp08
+* BigSpriteColor_1:   	temp09 - temp10
+* BigSpriteBG: 		temp11 - temp12
+* Height:		temp13
+* LineHeight:		temp14
+* xPoz:			temp15
+* bgColorMod: 		temp16
+* spriteSettings:	temp17
+* X2Offset:		temp18
+* mono:			temp19
+
+	LDA	#%10000000	; Disables game kernel, so won't run
+	STA	NoGameMode 	; main kernel and vblank code.
 
 	LDA	#0
-	STA	AUDV0
-	STA	AUDV1
-*
-*	Mute any sound.
-*
-	STA	ENAM0
-	STA	ENAM1
-	STA	ENABL
+	STA	frameColor
 
-*
-*	Disable missiles and ball.
-*
-*
-* 	The columns are 8 lines tall.
-*
-ScrollingColumn1 = $96
-ScrollingColumn2 = $9E
-ScrollingColumn3 = $A6
-ScrollingColumn4 = $AE
-*
-*	Next free one: $B7
-*
-WaitCounter = $B7
+	LDA	#72		; Set the starting position.
+	STA	temp15
 
-PressedDelay = $B8
-*	7th bit   : ON / OFF
-*	6th bit   : Checks if fire was hold at the beginning.
-*	All others: 6bit counter
+	LDA	#0		; Initialize sprite settings
+	STA	temp16
 
+	LDA	#$00		; Disable color modification
+	STA	temp17
 
-	LDX	#8
-Bank2InitScrollingColumns	
-	STA	ScrollingColumn1,x
-	STA	ScrollingColumn2,x
-	STA	ScrollingColumn3,x
-	STA	ScrollingColumn4,x
-	DEX
-	BPL	Bank2InitScrollingColumns
-
-	STA	PressedDelay
-
-	LDA	#255
-	STA	WaitCounter
-
-*
-*	Superchip RAM $F0000 - F0015 is reserved for long time storage!
-* 	Never use those!
-*
-
-	LDA	#0
-	BIT 	INPT4
-	BMI	Bank2_No_Joy0_Fire_Was_Pressed_At_Enter
-	LDA	#%01000000
-Bank2_No_Joy0_Fire_Was_Pressed_At_Enter
-	STA	PressedDelay
-
+		
 	JMP	WaitUntilOverScanTimerEndsBank2
 
 *Leave Bank
@@ -382,6 +1623,42 @@ Bank2_No_Joy0_Fire_Was_Pressed_At_Enter
 *
 
 LeaveScreenBank2
+
+
+
+JumpToNewScreenBank2
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX2
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank2,y
+   	pha
+   	lda	LeaveJumpTableBank2+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank2
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
 
 
 *Overscan
@@ -414,148 +1691,115 @@ OverScanBank2
 *
 
 
-*
-*	Fill the SARA with JinJang PF data!
-*
 
-JinJang_Col_01W = $F016
-JinJang_Col_01R = $F096
+* BigSprite_0: 		temp03 - temp04
+* BigSprite_1: 		temp05 - temp06
+* BigSpriteColor_0:     temp07 - temp08
+* BigSpriteColor_1:   	temp09 - temp10
+* BigSpriteBG: 		temp11 - temp12
+* Height:		temp13
+* LineHeight:		temp14
+* xPoz:			temp15
+* bgColorMod: 		temp16
+* spriteSettings:	temp17
+* X2Offset:		temp18
+* mono:			temp19
 
-JinJang_Col_02W = $F036
-JinJang_Col_02R = $F0B6
+	LDA	#$08
+	BIT	SWCHB
+	BNE	Test_NoBW
+	LDA	#255
+	STA	temp15
 
-JinJang_ColorW = $F056
-JinJang_ColorR = $F0D6
+Test_NoBW	
 
+	BIT	SWCHA
+	BVS	Test_NO_LEFT
+	DEC	temp15	
+
+	LDA	#%11110111
+	AND	temp17
+	STA	temp17
+	
+	JMP	Test_MOVE_END
+Test_NO_LEFT	
+	BIT	SWCHA
+	BMI	Test_MOVE_END
+	INC	temp15
+
+	LDA	#%00001000
+	ORA	temp17
+	STA	temp17
+
+Test_MOVE_END
 	LDA	counter
-	LSR
-	LSR
 	AND	#%00000111
-	TAY
-	LSR
-***	LSR
-	AND	#%00000011
+	CMP	#%00000111
+	BNE	Test_NOSHOOT
+
+	BIT	INPT4
+	BMI 	Test_NOSHOOT
+	LDA	temp17
+	AND	#%00000111
 	TAX
-	LDA	JingJang_Color_Adder,y
-	STA	temp05
-*
-*	temp01: The low  nibble for JJ Left
-*	temp02: The high nibble for JJ Left
-*	temp03: The low  nibble for JJ Right
-*	temp04: The high nibble for JJ Right
-*       temp05: Amplitude
-*
+	INX
+	TXA
+	AND	#%00000111
+	STA	temp19
+	
+	LDA	temp17
+	AND	#%11111000
+	ORA	temp19
+	STA	temp17
 
-	LDA	JingJang_00_LookUp,x	
-	STA	temp01			
 
-	LDA	#>JinJang_1_00		
-	STA	temp02			
+Test_NOSHOOT
 
-	LDA	JingJang_01_LookUp,x	
-	STA	temp03			
+	LDA	#$02
+	BIT	SWCHB
+	BNE	Test_NoReset
+	
+	INC	temp16
 
-	LDA	#>JinJang_1_01		
-	STA	temp04			
-
-	LDY	#15
-	LDX	#31
-
-JinJang_Fill_SARA
-	LDA	(temp01),y		
-	STA	JinJang_Col_01W,x
-
-	LDA	(temp03),y		
-	STA	JinJang_Col_02W,x
-
-	LDA	temp05
-	BPL	JinJang_Fill_SARA_HasColor_1
-	LDA	#0
-	JMP	JinJang_Fill_SARA_Nope_1
-JinJang_Fill_SARA_HasColor_1
-	LDA	JinJang_Colors_32,x
-	CLC
-	ADC	temp05
-JinJang_Fill_SARA_Nope_1
-	STA	JinJang_ColorW,x
-
-	DEX
-	LDA	(temp01),y		
-	STA	JinJang_Col_01W,x
-
-	LDA	(temp03),y		
-	STA	JinJang_Col_02W,x
-
-	LDA	temp05
-	BPL	JinJang_Fill_SARA_HasColor_2
-	LDA	#0
-	JMP	JinJang_Fill_SARA_Nope_2
-JinJang_Fill_SARA_HasColor_2
-	LDA	JinJang_Colors_32,x
-	CLC
-	ADC	temp05
-JinJang_Fill_SARA_Nope_2
-	STA	JinJang_ColorW,x
-
-	DEY
-	DEX
-	BPL	JinJang_Fill_SARA
-
-*
-*	Text is based on mirrored playfield.
-*	So shifting bits to the left goes like this.
-*	Non-mirrored PF1 << Mirrored PF2 << Non-Mirrored PF2 << Mirrored PF1 << Buffer
-*	temp 19 is tud buffer.	
-*
-*	
-
-Bank2FirstNum = 180
-Bank2SecondNum = 150
+Test_NoReset
 
 	LDA	counter
-	AND	#%0000011
-	CMP	#%0000011
-	BNE	Bank2WaitCounterNoChange
+Test_NoINCRofNUSIZ
+	AND	#%0000111
+	CMP	#%0000111
+	BNE	Test_Ends
 
-	INC	WaitCounter
-	LDA	WaitCounter
-	CMP	#Bank2FirstNum
-	BCC	Bank2WaitCounterNotLargerThan1
-
-	LDA	#0
-	STA	WaitCounter
-	JMP	Bank2WaitCounterNoMoreThings
-Bank2WaitCounterNotLargerThan1
-	CMP	#Bank2SecondNum
-	BCC	Bank2WaitCounterNotLargerThan2
-
-	LDA	#0
-	JMP	Bank2WaitCounterNoMoreThings
-Bank2WaitCounterNotLargerThan2
-	TAX
-
-	LDA	Impure_Soul_Eclipse,x
-Bank2WaitCounterNoMoreThings
+	LDA	temp17
+	AND	#%00001111
 	STA	temp19
 
-	LDX	#7
-Bank2ShiftingLoop
-	LSR	temp19
-	ROR	ScrollingColumn4,x
-	ROL	ScrollingColumn3,x
-	ROR	ScrollingColumn2,x
-	ROL	ScrollingColumn1,x
-	DEX
-	BPL	Bank2ShiftingLoop
+	LDA	temp17	; spriteSettings
+	lsr
+	lsr
+	lsr
+	lsr	
+	TAX
+	INX
+	TXA
+	CMP	#Test_BigSprite_frameNum
+	BCS	Test_NotSmaller
 
-Bank2WaitCounterNoChange
+	ASL
+	ASL
+	ASL
+	ASL
+	ORA	temp19
 
-	BIT 	INPT4
-	BPL	Bank2_No_Joy0_Fire_Was_Released_At_Overscan
-	LDA	PressedDelay
-	AND	#%10111111
-	STA	PressedDelay
-Bank2_No_Joy0_Fire_Was_Released_At_Overscan
+	JMP	Test_SpriteNumDone
+
+Test_NotSmaller
+	LDA	temp19
+
+Test_SpriteNumDone
+	STA	temp17
+
+Test_Ends
+
 
 
 *VSYNC
@@ -601,10 +1845,39 @@ VBLANKBank2
 
 
 
+
 *SkipIfNoGameSet - VBLANK
 *---------------------------------
 *
 
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank2		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#2
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
 
 VBlankEndBank2
 	CLC
@@ -615,325 +1888,152 @@ VBlankEndBank2
     	STA	TIM64T
 
 
-*Screen
+*ScreenTop
 *--------------------------------  
 * This is the section for the
 * top part of the screen.
 *
 
+
 	tsx
 	stx	stack
 
-	LDA	#0
-	STA	WSYNC		; (76)
-	STA	COLUPF		; 3 
-	STA	COLUP0		; 3 (6)
-	STA	COLUP1		; 3 (9)
-	STA	COLUBK		; 3 (12)	
 
-*
-* The Touhou logo has two seperated parts.
-* First, a spinning jinjang ball in the background.	
-* The other part is the Touhou 2600 text.
-*
+* BigSprite_0: 		temp03 - temp04
+* BigSprite_1: 		temp05 - temp06
+* BigSpriteColor_0:     temp07 - temp08
+* BigSpriteColor_1:   	temp09 - temp10
+* BigSpriteBG: 		temp11 - temp12
+* Height:		temp13
+* LineHeight:		temp14
+* xPoz:			temp15
+* bgColorMod: 		temp16
+* spriteSettings:	temp17
+* X2Offset:		temp18
+* mono:			temp19
 
-Bank2_DrawLogo
-	STA	PF0		; 3 (15)
-	STA	PF1		; 3 (18)
-	STA	NUSIZ1		; 3 (21)
-*
-*	CTRLPF bits:
-*	0  : Mirrored
-*	1  : Two Colors
-*	2  : Players move behind playfield
-*	4-5: Ball Size
-* 
-	LDA	#%0000001	; 2 (20)
-	STA	CTRLPF		; 3 (23)
-*
-*	Mirrored playfield.
-*
-	
-	LDA	counter		; 3 (26)
-	LSR
-	LSR		
-	LSR			; 6 (32)
-
-	AND	#%00000011	; 2 (34)
-	STA	RESP0
-	TAX			; 2 (36)
-	STA	RESP1
-
-	LDA	#$02			; 2 
-	STA	NUSIZ0			; 3
-*
-*	P0 spites set to 2 instances with medium gaps.
-*
-
-	LDA	counter
-	AND	#$0F
-	TAX
-	LDA	Touhou_Title_Color,x
-	STA	COLUP0
-	STA	COLUP1
-
-	LDA	#$10
-	STA	HMP0
-	LDA	#$00
-	STA	HMP1
-	
-	STA	WSYNC
-	STA	HMOVE
-
-	LDX	#4
-Bank2_Blank_Lines1
-	STA	WSYNC
-	DEX
-	BPL	Bank2_Blank_Lines1
-
-	LDA	counter
-	AND	#1
-	TAX	
-	LDA	JingJang_First_HMOVE,x
-	STA	HMP0
-	STA	HMP1
-	STA	WSYNC
-	STA	HMOVE
-
-Bank2_DrawLogo_Loop_Text
-
-	LDA	#0
-	STA	PF2
-	STA	GRP0
-	STA	GRP1
-*
-*	temp01: Pointer to touhou text column 1
-*	temp03: Pointer to touhou text column 2	
-*	temp05: Pointer to touhou text column 3
-*	temp07: Pointer to touhou text column 4
-*	temp09: Pointer to touhou text column 5
-*	temp11: Pointer to touhou text column 6
-*
-*	temp13: Adder to Col6
-*	temp14: Adder to Col5
-*	temp15: Adder to Col4
-*	temp16: Adder to Col3
-*	temp17: Adder to Col2
-*	temp18: Adder to Col1
-*
-	LDX	#6
-Bank2_Set_Adders
-	TXA
-	ASL
-	ASL
-	ASL
-	ASL
-	CLC
-	ADC	counter
-	BMI	Bank2_NotThatEasy
-
-	sleep	9
-	LDA	#8
-	JMP	Bank2_NextAdder
-Bank2_NotThatEasy
-	AND	#%01111111
-	LSR
-	LSR
-	LSR
-	TAY
-	LDA	Touhou_Letter_Adder,y	
-Bank2_NextAdder
-	STA	temp13,x
-	DEX
-	BPL	Bank2_Set_Adders
-	
-
-	LDA	#<Touhou_Title__E00
-	CLC	
-	ADC	temp18	
-	STA	temp01
-
-	LDA	#<Touhou_Title__E01
-	CLC	
-	ADC	temp17	
+	LDA	#<Test_BigSprite_BigSprite_0
 	STA	temp03
-
-	LDA	#<Touhou_Title__E02
-	CLC	
-	ADC	temp16	
-	STA	temp05
-
-	LDA	#<Touhou_Title__E03
-	CLC	
-	ADC	temp15	
-	STA	temp07
-
-	LDA	#<Touhou_Title__E04
-	CLC	
-	ADC	temp14	
-	STA	temp09
-
-	LDA	#<Touhou_Title__E05
-	CLC	
-	ADC	temp13	
-	STA	temp11
-
-	LDA	#>Touhou_Title__E00
-	STA	temp02
+	LDA	#>Test_BigSprite_BigSprite_0
 	STA	temp04
+
+	LDA	#<Test_BigSprite_BigSprite_1
+	STA	temp05
+	LDA	#>Test_BigSprite_BigSprite_1
 	STA	temp06
+
+	LDA	#<Test_BigSprite_BigSpriteColor_0
+	STA	temp07
+	LDA	#>Test_BigSprite_BigSpriteColor_0
 	STA	temp08
+
+	LDA	#<Test_BigSprite_BigSpriteColor_1
+	STA	temp09
+	LDA	#>Test_BigSprite_BigSpriteColor_1
 	STA	temp10
+
+	LDA	#<Test_BigSprite_BigSpriteBG
+	STA	temp11
+	LDA	#>Test_BigSprite_BigSpriteBG
 	STA	temp12
 
-	LDY	#31
+	LDA	#Test_BigSprite_heigth
+	STA	temp13
 
-	LDA	counter
-	AND	#1
-	TAX
-	CPX	#1
-	BNE	Bank2_DrawLogo_Loop_Text_Odd_Start		
-	JMP	Bank2_DrawLogo_Loop_Text_Even_Start
+	LDA	#Test_BigSprite_lineHeigth
+	STA	temp14
 
-	_align	100
-Bank2_DrawLogo_Loop_Text_Even_Start
-	LDA	#$80			; 2 
-	STA	HMP0			; 3 
-	STA	HMP1			; 3 
+	LDA	#Test_BigSprite_X2Offset
+	STA	temp18
 
-Bank2_DrawLogo_Loop_Text_Even_Loop		
-	STA	WSYNC			; 3
-	STA	HMOVE			; 3 (6)
+	LDA	#Test_BigSprite_mono
+	STA	temp19
 
-***	sleep 	64
-	LDA	JinJang_Col_01R,y	; 4 
-	STA	PF2			; 3 (13)
+	LDA	temp15
+	CMP	#255
+	BNE	Test_BigSprite_NoTurnOff
 
-	LDA	JinJang_ColorR,y	; 4
-	STA	COLUPF			; 3 (20)
-
-	LDA	(temp03),y		
-	STA	GRP0			; 8 (28)
+	LDA	temp17
+	AND	#%00001111
+	STA	temp17
 	
-	LDA	(temp07),y		
-	STA	GRP1			; 8 (36)
+	LDA	#<Test_BigSprite_Empty
+	STA	temp03
+	STA	temp05
+	LDA	#>Test_BigSprite_Empty
+	STA	temp04
+	STA	temp06
 
-	sleep	2
-	LDA	JinJang_Col_02R,y	; 4 (42)
-
-******	sleep	23
-	sleep	3
-	STA	PF2			; 3 (48)
-	LDA	(temp11),y		; 5 (53)
-
-	STA	GRP0			; 3 (56)
-
-	sleep	10
-
-	LDA	#$00			; 2 (68)
-	STA	HMP0			; 3 
-	STA	HMP1			; 3 (76)
-
-Bank2_DrawLogo_Loop_Text_Even_SecondLine
-	STA	HMOVE			; 3 (2)
-
-	LDA	JinJang_Col_01R,y	; 4 
-	STA	PF2			; 3 (9)
-
-	LDA	(temp01),y		
-	STA	GRP0			; 8 (15)
-
-	LDA	(temp05),y		
-	STA	GRP1			; 8 (23)
-
-	LAX	JinJang_Col_02R,y	; 4 (27)
-
-	sleep	13
-
-	LDA	(temp09),y		; 5 (45)
-	STX	PF2			; 3 (48)
-	STA	GRP0			; 3 (51)
-
-	LDA	#$80			; 2 (53)
-	STA	HMP0			; 3 
-	STA	HMP1			; 3 (59)
+Test_BigSprite_NoTurnOff
+Test_BigSprite_JumpToKernel
 	
-	DEY				; 2 (61)
-	BPL	Bank2_DrawLogo_Loop_Text_Even_Loop	; 2
-	JMP	Bank2_DrawLogo_Loop_Text_Ended
+	LDA	#<Test_BigSprite_JumpBack
+	STA	temp01
+	LDA	#>Test_BigSprite_JumpBack
+	STA	temp02
 
-	_align	120
-Bank2_DrawLogo_Loop_Text_Odd_Start
+	JMP	BANK2_BigSprite_Kernel_Begin
+
+Test_BigSprite_JumpBack
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+*SkipIfNoGameSet
+*---------------------------------
 *
-*	Currently at cycle 18
-*	
-	LDA	#$00
-	STA	HMP0 
-	STA	HMP1	; 7
 
-	_sleep 	46
-	sleep	2
-
-Bank2_DrawLogo_Loop_Text_Odd_Loop
-	STA	HMOVE			; 3 (2)
-
-	LDA	JinJang_Col_01R,y	; 4 
-	STA	PF2			; 3 (9)
-
-	LDA	JinJang_ColorR,y	; 4
-	STA	COLUPF			; 3 (16)
-
-	LDA	(temp01),y		
-	STA	GRP0			; 8 (24)
-
-	LDA	(temp05),y		
-	STA	GRP1			; 8 (32)
-
-	sleep	6
-
-	LAX	JinJang_Col_02R,y	; 4 (42)
-	LDA	(temp09),y		; 4 (46)
-
-	STX	PF2			; 3 (49)
-	STA	GRP0			; 8 (55)
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank2	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank2
 
 
-	LDA	#$80			; 2
-	STA	HMP0			; 3
-	STA	HMP1			; 3 (63)
-Bank2_DrawLogo_Loop_Text_Odd_SecondLine
-	STA	WSYNC			; 3 (76)
-	STA	HMOVE			; 6 
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
 
-	LDA	JinJang_Col_01R,y	; 4 
-	STA	PF2			; 3 (13)
+JumpToMainKernelBank2
 
-***	sleep	57
+	LDA	#2
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
 
-	LDA	(temp03),y		
-	STA	GRP0			; 8 (21)
-	
-	LDA	(temp07),y		
-	STA	GRP1			; 8 (29)
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
 
-	LDA	JinJang_Col_02R,y	; 4 (33)
-	sleep	12
-	STA	PF2			; 3 (48)
-	LDA	(temp11),y		; 5 (53)
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
 
-	STA	GRP0			; 8 (61)
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
 
-	sleep	2
+ScreenBottomBank2
+
+	tsx
+	stx	stack
 
 
-	LDA	#$00			
-	STA	HMP0			
-	STA	HMP1			; 7 (70)
-
-	DEY						; 2 (72)
-	BPL	Bank2_DrawLogo_Loop_Text_Odd_Loop	; 2 (74)
-
-Bank2_DrawLogo_Loop_Text_Ended
 
 	LDA	#0
 	STA	WSYNC		; (76)
@@ -941,73 +2041,9 @@ Bank2_DrawLogo_Loop_Text_Ended
 	STA	COLUP0
 	STA	COLUP1	
 	STA	COLUPF	
-	STA	HMCLR
-	STA	PF2
-	STA	GRP0
-	STA	GRP1
 
 	ldx	stack
 	txs
-
-	LDX	#4
-Bank2_Blank_Lines2
-	STA	WSYNC
-	DEX
-	BPL	Bank2_Blank_Lines2
-
-	JSR	Bank2_Decrementing_RainbowLine
-
-Bank2_Press_Start_Text
-*
-*	temp01: P0-1 pointer	
-*	temp03: P1   pointer
-*	temp05: P0-2 pointer
-*	temp07: FG   pointer
-*	temp09: BG   pointer
-*
-*
-
-
-
-
-Bank2_Draw_ScrollingText
-*
-*	For testing, flat colors.
-*
-
-	LDX	#7
-Bank2_Draw_ScrollingText_Loop2
-	LDY	#1
-Bank2_Draw_ScrollingText_Loop
-	STA	WSYNC			; 76
-	LDA	ScrollingColumn1,x	; 4
-	STA	PF1			; 3 (7)
-	LDA	ScrollingColumn2,x	; 4 (11)
-	STA	PF2			; 3 (14)
-
-	LDA	JingJang_Color_Adder,x  ; 4 (18)
-	CLC				; 2 (20)
-	ADC	counter			; 3 (23)
-	STA	COLUPF			; 3 (26)
-
-	sleep	15
-	LDA	ScrollingColumn3,x	; 4 (46)
-	STA	PF2			; 3 (49)
-	LDA	ScrollingColumn4,x	; 4 (55)
-	STA	PF1			; 3 (58)
-	DEY
-	BPL	Bank2_Draw_ScrollingText_Loop
-	DEX
-	BPL	Bank2_Draw_ScrollingText_Loop2
-
-Bank2_Draw_ScrollingText_Ended
-	LDA	#0
-	STA	WSYNC		; (76)
-	STA	COLUPF	
-	STA	PF1
-	STA	PF2
-
-	JSR	Bank2_Incrementing_RainbowLine
 
 	JMP	OverScanBank2
 
@@ -1018,839 +2054,563 @@ Bank2_Draw_ScrollingText_Ended
 * elments.
 *
 
-	_align 16
-Touhou_Letter_Adder
-	BYTE	#8
-	BYTE	#7
-	BYTE	#6
-	BYTE	#5
-	BYTE	#4
-	BYTE	#5
-	BYTE	#6
-	BYTE	#7
-	BYTE	#8
-	BYTE	#9
-	BYTE	#10
-	BYTE	#11
-	BYTE	#12
-	BYTE	#11
-	BYTE	#10
-	BYTE	#9
+	align	256
 
-	_align 8
-JingJang_Color_Adder
-	BYTE	#$00
-	BYTE	#$02
-	BYTE	#$04
-	BYTE	#$06
-	BYTE	#$06
-	BYTE	#$04
-	BYTE	#$02
-	BYTE	#$00
+	align	256
 
-	_align	2
-JingJang_First_HMOVE
-	BYTE	#$00
-	BYTE	#$00
+Test_BigSprite_BigSprite_0
+	byte	#%00100001
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00100011
+	byte	#%00111111
+	byte	#%00101111
+	byte	#%00101111
+	byte	#%00100111
+	byte	#%00110011
+	byte	#%00110001
+	byte	#%00111011
+	byte	#%10101111
+	byte	#%10100111
+	byte	#%11100001
+	byte	#%11100011
+	byte	#%01100010
+	byte	#%00010011
+	byte	#%00011111
+	byte	#%00001110
+	byte	#%00000100	; (0)
 
-	_align	4
-JingJang_00_LookUp
-	BYTE #<JinJang_1_00
-	BYTE #<JinJang_2_00
-	BYTE #<JinJang_3_00
-	BYTE #<JinJang_4_00
 
-	_align	4
-JingJang_01_LookUp
-	BYTE #<JinJang_1_01
-	BYTE #<JinJang_2_01
-	BYTE #<JinJang_3_01
-	BYTE #<JinJang_4_01
+Test_BigSprite_BigSpriteColor_1
+Test_BigSprite_BigSpriteColor_0
+### &COLOR
+	byte	#$02
+	byte	#$04
+	byte	#$0e
+	byte	#$0e
+	byte	#$0e
+	byte	#$3e
+	byte	#$3e
+	byte	#$3c
+	byte	#$06
+	byte	#$0a
+	byte	#$0c
+	byte	#$0a
+	byte	#$08
+	byte	#$14
+	byte	#$8e
+	byte	#$8c
+	byte	#$8a
+	byte	#$3c
+	byte	#$3E
+	byte	#$3E
+	byte	#$48
+	byte	#$46
+	byte	#$44
+	byte	#$44
 
-	_align	32
 
-JinJang_Colors_32
-	BYTE $02
-	BYTE $04
-	BYTE $06
-	BYTE $06
-	BYTE $04
-	BYTE $02
-	BYTE $02
-	BYTE $04
-	BYTE $06
-	BYTE $06
-	BYTE $04
-	BYTE $04
-	BYTE $02
-	BYTE $02
-	BYTE $04
-	BYTE $06
-	BYTE $06
-	BYTE $04
-	BYTE $02
-	BYTE $02
-	BYTE $04
-	BYTE $06
-	BYTE $06
-	BYTE $04
-	BYTE $04
-	BYTE $02
-	BYTE $02
-	BYTE $04
-	BYTE $06
-	BYTE $06
-	BYTE $04
-	BYTE $02
+Test_BigSprite_BigSprite_1
+	byte	#%01000000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%01100000
+	byte	#%11111100
+	byte	#%11111000
+	byte	#%11111000
+	byte	#%11110000
+	byte	#%11100110
+	byte	#%11000100
+	byte	#%11101100
+	byte	#%11111000
+	byte	#%11110000
+	byte	#%11000000
+	byte	#%11100000
+	byte	#%10100000
+	byte	#%11100100
+	byte	#%11111100
+	byte	#%00111000
+	byte	#%00010000	; (0)
 
-	_align	64
 
-JinJang_1_00
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %11110100
-	BYTE %01111010
-	BYTE %01111010
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %00111101
-	BYTE %00011101
-	BYTE %00001101
-	BYTE %10001010
-	BYTE %10001010
-	BYTE %00000100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_2_00
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %11100100
-	BYTE %11111010
-	BYTE %11000010
-	BYTE %10000001
-	BYTE %00000001
-	BYTE %00011001
-	BYTE %00011001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000010
-	BYTE %00000010
-	BYTE %00000100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_3_00
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %00000100
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %11000001
-	BYTE %11100001
-	BYTE %11110001
-	BYTE %01110010
-	BYTE %01110010
-	BYTE %11100100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_4_00
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %00000100
-	BYTE %00000010
-	BYTE %00111010
-	BYTE %01111101
-	BYTE %11111101
-	BYTE %11100101
-	BYTE %11100101
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %11111110
-	BYTE %11111010
-	BYTE %11100100
-	BYTE %00011000
-	BYTE %11100000
+Test_BigSprite_BigSpriteBG
+### &COLOR
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
 
-	_align	64
+Test_BigSprite_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
 
-JinJang_1_01
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %11100100
-	BYTE %01110010
-	BYTE %01110010
-	BYTE %11110001
-	BYTE %11100001
-	BYTE %11000001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %00000100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_2_01
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %11100100
-	BYTE %11111010
-	BYTE %11111110
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %11100101
-	BYTE %11100101
-	BYTE %11111101
-	BYTE %01111101
-	BYTE %00111010
-	BYTE %00000010
-	BYTE %00000100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_3_01
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %00000100
-	BYTE %10001010
-	BYTE %10001010
-	BYTE %00001101
-	BYTE %00011101
-	BYTE %00111101
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %11111101
-	BYTE %01111010
-	BYTE %01111010
-	BYTE %11110100
-	BYTE %00011000
-	BYTE %11100000
-JinJang_4_01
-	BYTE %11100000
-	BYTE %00011000
-	BYTE %00000100
-	BYTE %00000010
-	BYTE %00000010
-	BYTE %00000001
-	BYTE %00000001
-	BYTE %00011001
-	BYTE %00011001
-	BYTE %00000001
-	BYTE %10000001
-	BYTE %11000010
-	BYTE %11111010
-	BYTE %11100100
-	BYTE %00011000
-	BYTE %11100000
 
-*
-*	Extra blanks added so the title can move up and down by 16.
-*
 
-	_align 16
-Touhou_Title_Color
-	BYTE	#$12
-	BYTE	#$14
-	BYTE	#$16
-	BYTE	#$18
-	BYTE	#$1A
-	BYTE	#$1C
-	BYTE	#$1E
-	BYTE	#$0E
-	BYTE	#$1E
-	BYTE	#$1C
-	BYTE	#$1A
-	BYTE	#$18
-	BYTE	#$16
-	BYTE	#$14
-	BYTE	#$12
 
-	_align	208
-
-Touhou_Title__E00
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__00
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00111000
-	BYTE %00010000
-	BYTE %00111000
-	BYTE %00010000
-	BYTE %00010000
-	BYTE %10010010
-	BYTE %11111110
-
-Touhou_Title__E01
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__01
-	BYTE %11111110
-	BYTE %01000010
-	BYTE %00110000
-	BYTE %00011000
-	BYTE %00000100
-	BYTE %10000010
-	BYTE %01000100
-	BYTE %00111000
-	BYTE %00000000
-	BYTE %00111000
-	BYTE %01000100
-	BYTE %10000110
-	BYTE %10111010
-	BYTE %11000010
-	BYTE %01000100
-	BYTE %00111000
-
-Touhou_Title__E02
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__02
-	BYTE %00111000
-	BYTE %01000100
-	BYTE %11000010
-	BYTE %11100010
-	BYTE %10111100
-	BYTE %10000000
-	BYTE %01000010
-	BYTE %00111100
-	BYTE %00000000
-	BYTE %01111100
-	BYTE %11000110
-	BYTE %10000010
-	BYTE %11000010
-	BYTE %10000010
-	BYTE %10000110
-	BYTE %10000010
-
-Touhou_Title__E03
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__03
-	BYTE %00111100
-	BYTE %11000110
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %11000110
-	BYTE %01111000
-	BYTE %00000000
-	BYTE %11000110
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %11111110
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %11000110
-
-Touhou_Title__E04
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__04
-	BYTE %00111100
-	BYTE %11000110
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %10000010
-	BYTE %11000110
-	BYTE %01111000
-	BYTE %00000000
-	BYTE %00111000
-	BYTE %01000100
-	BYTE %10000110
-	BYTE %10111010
-	BYTE %11000010
-	BYTE %01000100
-	BYTE %00111000
-
-Touhou_Title__E05
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-Touhou_Title__05
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %01111100
-	BYTE %11000110
-	BYTE %10000010
-	BYTE %11000010
-	BYTE %10000010
-	BYTE %10000110
-	BYTE %10000010
-
-Touhou_Title__E06
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-
-	_align	150
-Impure_Soul_Eclipse
-	BYTE %10000001
-	BYTE %10100001
-	BYTE %11111111
-	BYTE %10010001
-	BYTE %10000001
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %00100001	
-	BYTE %00000010	; 10
-	BYTE %00001100
-	BYTE %00000010
-	BYTE %00010001
-	BYTE %11111111
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %00010001
-	BYTE %00011001
-	BYTE %00010011
-	BYTE %00010001	; 20
-	BYTE %00001010
-	BYTE %00000100
-	BYTE %00000000
-	BYTE %01111111
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10000000
-	BYTE %10001000
-	BYTE %10001000
-	BYTE %01111111	; 30
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %00010001
-	BYTE %00011001
-	BYTE %01110011
-	BYTE %11010001
-	BYTE %10001010
-	BYTE %00000100
-	BYTE %00000000
-	BYTE %11111111	; 40
-	BYTE %10001001
-	BYTE %10011001
-	BYTE %10001101
-	BYTE %10000001
-	BYTE %11000011
-	BYTE %10000001
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000	; 50
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %01100110
-	BYTE %10001001
-	BYTE %10001001
-	BYTE %10011101
-	BYTE %10110001	; 60
-	BYTE %10010001
-	BYTE %01100110
-	BYTE %00000000
-	BYTE %00111100
-	BYTE %01010010
-	BYTE %10010001
-	BYTE %10011001
-	BYTE %10001001
-	BYTE %01001010
-	BYTE %00111100	; 70
-	BYTE %00000000
-	BYTE %01111111
-	BYTE %10100000
-	BYTE %10100000
-	BYTE %10000000
-	BYTE %10001000
-	BYTE %10001000
-	BYTE %01111111
-	BYTE %00000000
-	BYTE %11111111	; 80
-	BYTE %10000100
-	BYTE %10000000
-	BYTE %10000000
-	BYTE %11000000
-	BYTE %10000000
-	BYTE %10000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000	; 90
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %10001001
-	BYTE %10011001
-	BYTE %10001101
-	BYTE %10000001	; 100
-	BYTE %11000011
-	BYTE %10000001
-	BYTE %00000000
-	BYTE %00111100
-	BYTE %01010010
-	BYTE %10010001
-	BYTE %10000001
-	BYTE %10000001
-	BYTE %10000001
-	BYTE %01000010	; 110
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %10000100
-	BYTE %10000000
-	BYTE %10000000
-	BYTE %11000000
-	BYTE %10000000
-	BYTE %10000000
-	BYTE %00000000
-	BYTE %00000000	; 120
-	BYTE %10000001
-	BYTE %10100001
-	BYTE %11111111
-	BYTE %10010001
-	BYTE %10000001
-	BYTE %00000000
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %00010001
-	BYTE %00011001	; 130
-	BYTE %00010011
-	BYTE %00010001
-	BYTE %00001010
-	BYTE %00000100
-	BYTE %00000000
-	BYTE %01100110
-	BYTE %10001001
-	BYTE %10001001
-	BYTE %10011101
-	BYTE %10110001	; 140
-	BYTE %10010001
-	BYTE %01100110
-	BYTE %00000000
-	BYTE %11111111
-	BYTE %10001001
-	BYTE %10011001
-	BYTE %10001101
-	BYTE %10000001
-	BYTE %11000011
-	BYTE %10000001	; 150
-
-	_align 5
-
-Bank2_Press_Fire_01
-	BYTE	%10101000
-	BYTE	%00001000
-	BYTE	%10101100
-	BYTE	%10101010
-	BYTE	%10101100
-
-	_align 5
-
-Bank2_Press_Fire_02
-	BYTE	%10101110
-	BYTE	%10101000
-	BYTE	%11001100
-	BYTE	%10101000
-	BYTE	%11001110
-
-	_align 5
-
-Bank2_Press_Fire_03
-	BYTE	%11001100
-	BYTE	%00100010
-	BYTE	%01000100
-	BYTE	%10001000
-	BYTE	%01100110
-
-	_align 5
-
-Bank2_Press_Fire_04
-	BYTE	%00000100
-	BYTE	%00000100
-	BYTE	%11110110
-	BYTE	%00000100
-	BYTE	%00000111
-
-	_align 5
-
-Bank2_Press_Fire_04
-	BYTE	%01110101
-	BYTE	%00100101
-	BYTE	%00100110
-	BYTE	%00100101
-	BYTE	%01110110
-
-	_align 5
-
-Bank2_Press_Fire_05
-	BYTE	%01110101
-	BYTE	%01000000
-	BYTE	%01100101
-	BYTE	%01000101
-	BYTE	%01110101
-
-	_align 5
-
-Bank2_Press_Fire_Colors_BG_Normal
-	BYTE	$00
-	BYTE	$00
-	BYTE	$00
-	BYTE	$00
-	BYTE	$00
-
-	_align 5
-
-Bank2_Press_Fire_Colors_BG_Selected
-	BYTE	$44
-	BYTE	$48
-	BYTE	$4C
-	BYTE	$48
-	BYTE	$44
-
-	_align 5
-
-Bank2_Press_Fire_Colors_FG_Normal
-	BYTE	$0A
-	BYTE	$0C
-	BYTE	$0E
-	BYTE	$0C
-	BYTE	$0A
-
-	_align 5
-
-Bank2_Press_Fire_Colors_FG_Selected
-	BYTE	$1A
-	BYTE	$1C
-	BYTE	$1E
-	BYTE	$1C
-	BYTE	$1A
-
+###End-Bank2
 *Routine Section
 *---------------------------------
 * This is were the routines are
 * used by the developer.
 *
 
-Bank2_Decrementing_RainbowLine
-	LDX	#1
-Bank2_Decrementing_RainbowLine_Loop
-	LDY	counter
-	STA	WSYNC
-	STY	COLUBK
-	LDA	#255
-	STA	PF0	
 
-	sleep	6
+BANK2_BigSprite_Kernel_Begin
 
-	DEY
-	DEY 	
-	STY	COLUBK
+* BigSprite_0: 		temp03 - temp04
+* BigSprite_1: 		temp05 - temp06
+* BigSpriteColor_0:     temp07 - temp08
+* BigSpriteColor_1:   	temp09 - temp10
+* BigSpriteBG: 		temp11 - temp12
+* Height:		temp13
+* LineHeight:		temp14
+* xPoz:			temp15
+* bgColorMod: 		temp16
+* spriteSettings:	temp17
+* X2Offset:		temp18
+* mono:			temp19
 
-	DEY
-	DEY 	
-	STY	COLUBK
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	HMCLR		; 3
+	STA	COLUBK		; 3 (6)
 
-	DEY
-	DEY 	
-	STY	COLUBK
+*
+*	(8 bytes)
+*	Initialize sprite settings.
+*
+	LDA	#0		; 2 (8)
+	STA	PF0		; 3 (11)
+	STA	PF1		; 3 (14)
+	STA	PF2		; 3 (17)
+	STA	GRP0		; 3 (20)
+	STA	GRP1		; 3 (23)
+*
+*	Get spritenum and calc offset
+*
+	
+	LDA	temp17		; 3 (26)
+	AND	#%00000111	; 2 (28) 
+	TAX			; 2 (30)
+	LDA	BANK2_BigSprite_Multiply_Offset,x ; 5 (35)
+	TAX			; 2 (37)
 
-	DEY
-	DEY 	
-	STY	COLUBK
+*
+*	Can have the values 0, 1 or 2.
+*	It takes (n * 14) + 4 cycles (4, 18, 32)
+*
+BANK2_BigSprite_OffSet_Loop
+	CPX	#0		; 2
+	BEQ	BANK2_BigSprite_OffSet_Loop_End ; 2
+	ASL	temp18		; 5
+	DEX			; 2
+	JMP	BANK2_BigSprite_OffSet_Loop ; 3
 
-	DEY
-	DEY 	
-	STY	COLUBK
+BANK2_BigSprite_OffSet_Loop_End
+*
+*	(16 (24) bytes)	
+*	Set offset if mode is "double"
+*
+*	WSYNC needed so it won't fail in sync
+*
+	STA	WSYNC		; 3 (76)	
 
-	DEY
-	DEY 	
-	STY	COLUBK
+	LDA	temp18		; 3 (3)
+	CMP	#0		; 2 (5)
+	BEQ	BANK2_BigSprite_Kernel_Offset_Done	; 2 (7)
+	JMP	BANK2_BigSprite_Kernel_Color_0_To_1  ; 3 (10)
 
-	DEY
-	DEY 	
-	STY	COLUBK
+BANK2_BigSprite_Kernel_Offset_Done
 
-	LDA	#0
-	sleep	3
-	STA	COLUBK
-	DEX
-	BPL 	Bank2_Decrementing_RainbowLine_Loop
-	STA	PF0
+*
+*	(9 (33) bytes)
+*	If "mono", the two sprites must have the same values
+*
+BANK2_BigSprite_FineTable256
+	LDA	temp19		; 3 (13)
+	CMP	#0		; 2 (15)
+	BEQ	BANK2_BigSprite_Kernel_Not_Mono	; 2 (17)
+
+
+	LDA	temp03		; 3 (20)
+	STA	temp05		; 3 (23)
+	LDA	temp04		; 3 (26)
+	STA	temp06		; 3 (29)
+BANK2_BigSprite_Kernel_Color_0_To_1	
+	LDA	temp07		; 3 (32)
+	STA	temp09		; 3 (35)
+	LDA	temp08		; 3 (38)
+	STA	temp10		; 3 (41)
+BANK2_BigSprite_Kernel_Not_Mono
+
+*	
+*	(22 bytes (55) bytes)
+*
+
+*
+*	Set the sprite NUSIZ and reflection.
+*
+
+	LDA	temp17		; 3 	(37)
+	AND	#%00001111	; 2 	(39)
+	STA	NUSIZ0		; 3 	(42)
+	STA	REFP0		; 3 	(45)
+	STA	NUSIZ1		; 3 	(48)
+	STA	REFP1		; 3 	(51)
+
+
+*	
+*	(14 bytes (69))
+*	Flip sprite data if double and mirrored
+*	Use mono as temp, it is not used anymore.
+*
+
+	STA	WSYNC			; 3 (76)
+
+	LDA	temp18		; 3 
+	CMP	#0			; 2 (5)
+	BEQ	BANK2_BigSprite_Kernel_NO_FLIP	; 2 (7)
+	LDA	temp17	; 3 (10)
+	AND	#%00001000		; 2 (12)
+	CMP	#%00001000		; 2 (14)
+	BNE	BANK2_BigSprite_Kernel_NO_FLIP	; 2 (16)
+
+	LDA	temp03		; 3 (19)
+	TAY			; 2 (21)
+	LDA	temp04		; 3 (24)
+	TAX			; 2 (26)
+	LDA	temp05		; 3 (29)
+	STA	temp03		; 3 (32)
+	LDA	temp06		; 3 (35)
+	STA	temp04		; 3 (38)
+	TYA			; 2 (40)
+	STA	temp05		; 3 (43)
+	TXA			; 2 (45)
+	STA	temp06		; 3 (48)
+
+BANK2_BigSprite_Kernel_NO_FLIP
+*	
+*	(36 bytes (105))
+*	Get sprite frame num.	
+*
+
+	LDA	temp17		; 3 (51)
+	LSR			; 2 	
+	LSR			; 2 
+	LSR			; 2 
+	LSR			; 2 
+	AND	#%00001111	; 2
+	TAY		 	; 2 (63)
+
+*
+*	(9 bytes (114))
+*	Check if X position is wrong. Use "mono" since
+*	won't use it anymore.
+*
+
+	STA	WSYNC				; 3 (76)	
+	
+	LDA	temp15			; 3 
+	CMP	#28				; 2 (5)
+	BCS	BANK2_BigSprite_XNotSmaller	; 2 (7)
+	LDA	#28				; 2 (9)
+	STA	temp15			; 3 (12)
+	JMP	BANK2_BigSprite_X16Done	; 3 (15)
+BANK2_BigSprite_XNotSmaller
+
+	LDA	temp17				; 3 (18)
+	AND	#%00000111			; 2 (20)
+	TAX					; 2 (22)
+	TXS					; 2 (24)
+	LDA	BANK2_BigSprite_AddToX,x 	; 4 (28)
+	
+	LDX	temp18				; 3 (31)
+	CPX	#0				; 2 (33)
+	BEQ	BANK2_BigSprite_NoDouble	; 2 (35) 
+	TSX					; 2 (37)
+	LDA	BANK2_BigSprite_AddToX_Double,x ; 5 (42)
+BANK2_BigSprite_NoDouble
+	STA 	temp19				; 3 (45)
+	LDA	#143				; 2 (47)
+	SEC					; 2 (49)
+	SBC	temp19				; 3 (52)	
+	CMP	temp15				; 3 (55)
+	BCS	BANK2_BigSprite_X16Done 	; 2 (57)
+	STA	temp15				; 3 (60)
+
+BANK2_BigSprite_X16Done
+
+*	
+*	(38 bytes (152))
+*	Get the actual sprite's last line.
+*
+	sta	WSYNC			; 3 (76)
+	LDA	#0			; 2 
+BANK2_BigSprite_Kernel_SpriteSetLoop	
+	CPY	#0			; 5 (4)
+	BEQ	BANK2_BigSprite_Kernel_SpriteSetLoop_Ended	; 2 (6)
+	CLC				; 2 (8)
+	ADC	temp13			; 3 (11)
+	DEY				; 2 (13)
+	JMP	BANK2_BigSprite_Kernel_SpriteSetLoop	; 3 (16)	
+
+BANK2_BigSprite_Kernel_SpriteSetLoop_Ended
+*
+*	(15 bytes (167))
+*	Save real sprite indicator to X. 
+*	Y is used for the kernel and the color.
+*
+	TAX				; 2 (18)
+	CLC				; 2
+	ADC	temp03			; 3 (21)	
+	STA	temp03			; 3 (24)
+	TXA				; 2 (26)
+	CLC				; 2
+	ADC	temp05			; 3 (28)
+	STA	temp05			; 3 (31)
+*
+*	(168)
+*	
+*	Set X position on hw.
+*
+
 	
 
-	RTS
+BANK2_BigSprite_SetXoFSprites
 
-Bank2_Incrementing_RainbowLine
-	LDX	#1
-Bank2_Incrementing_RainbowLine_Loop
-	LDY	counter
-	STA	WSYNC
-	STY	COLUBK
-	LDA	#255
-	STA	PF0	
+	sta	WSYNC			; 3 (76)
 
-	sleep	6
+	sleep	7		; Must wait 7 cycles since there is only one X here and it's a simple load-	
+	LDA	temp15
+BANK2_BigSprite_DivideLoop_0
+	sbc	#15
+   	bcs	BANK2_BigSprite_DivideLoop_0
+   	TAY
+	sleep	2
+   	sta	RESP0
 
-	INY
-	INY 	
-	STY	COLUBK
+   	lda	BANK2_BigSprite_FineTable256,y
+   	sta	HMP0	
+	sta	WSYNC			; 3 (76)
+	
+	LDA	temp15
+	NOP	
+	CLC
+	ADC	temp18
 
-	INY
-	INY 	
-	STY	COLUBK
+BANK2_BigSprite_DivideLoop_1
+	sbc	#15
+   	bcs	BANK2_BigSprite_DivideLoop_1
+   	TAY
+	sleep	2
+   	sta	RESP1
 
-	INY
-	INY 	
-	STY	COLUBK
+   	lda	BANK2_BigSprite_FineTable256,Y
+   	sta	HMP1	
 
-	INY
-	INY 	
-	STY	COLUBK
+	LDY	temp13		
+*	
+*	(42 (210) bytes)
+*	Height is saved to Y, so we don't need it anymore.
+*	Keep the lineHeight instead.
+*
 
-	INY
-	INY 	
-	STY	COLUBK
+	LDA #1			; 3
+	STA temp13		; 3
 
-	INY
-	INY 	
-	STY	COLUBK
-
-	INY
-	INY 	
-	STY	COLUBK
+*	(4 (214) bytes)
+*
+*	Preload the colors!
+*
 
 	LDA	#0
-	sleep	3
-	STA	COLUBK
-	DEX
-	BPL 	Bank2_Incrementing_RainbowLine_Loop
-	STA	PF0
+	STA	VDELP0		; 3 
+	STA	VDELP1		; 3 
+
+	LDA	(temp07),y	; 5
+	STA	COLUP0		; 3
+
+	LDA	(temp09),y	; 5
+	STA	COLUP1		; 3
+
+*	LDA	(temp11),y		
+*	CLC							
+*	ADC	temp16
+
+	sleep	10
+
+	STA	WSYNC				; 3 (76)
+	STA	HMOVE				; 3
+*	STA	COLUBK			
+
+	JMP	BANK2_BigSprite_MainLoopFirst	; 3 (10)
+
+*	9 (234)
+*
+*	The Tables
+*
+	
+BANK2_BigSprite_Dummy
+*	fill 3
+	fill 5	
+
+BANK2_BigSprite_AddToX
+	byte	#8	
+	byte	#24
+	byte	#40
+	byte	#40
+	byte	#72
+	byte	#16
+	byte	#72
+	byte	#32
+
+BANK2_BigSprite_FineTable
+	byte	#$80
+	byte	#$70
+	byte	#$60
+	byte	#$50
+	byte	#$40
+	byte	#$30
+	byte	#$20
+	byte	#$10
+	byte	#$00
+	byte	#$f0
+	byte	#$e0
+	byte	#$d0
+	byte	#$c0
+	byte	#$b0
+	byte	#$a0
+	byte	#$90
+
+BANK2_BigSprite_Multiply_Offset
+	byte	#0
+	byte	#0
+	byte	#0
+	byte	#0
+	byte	#0
+	byte	#1
+	byte	#0
+	byte	#2
+
+BANK2_BigSprite_AddToX_Double
+	byte	#16	
+	byte	#32
+	byte	#48
+	byte	#48
+	byte	#80
+	byte	#32
+	byte	#80
+	byte	#64
+
+*
+*	Drawing!
+*	(should be at paging!)
+*
+* BigSprite_0: 		temp03 - temp04
+* BigSprite_1: 		temp05 - temp06
+* BigSpriteColor_0:     temp07 - temp08
+* BigSpriteColor_1:   	temp09 - temp10
+* BigSpriteBG: 		temp11 - temp12
+* Height:		temp13
+* LineHeight:		temp14
+* xPoz:			temp15
+* bgColorMod: 		temp16
+* spriteSettings:	temp17
+* X2Offset:		temp18
+* mono:			temp19
+
+	_align	45
+
+BANK2_BigSprite_MainLoop	
+	STA	WSYNC			; 3 (76)
+BANK2_BigSprite_MainLoop_NoSync
+	LDA	(temp11),y		; 5
+	CLC				; 2 (7)	
+	ADC	temp16			; 3 (10)
+	STA	COLUBK			; 3 (13)
+
+	LDA	(temp03),y 		; 5 (18)
+	STA	GRP0			; 3 (21)
+	LDA	(temp05),y		; 5 (26)
+	STA	GRP1			; 3 (29)
+BANK2_BigSprite_MainLoopFirst	
+
+	LDA	#0			; 2 (31)
+	DCP	temp13			; 5 (36)
+	BNE	BANK2_BigSprite_NoEnd 	; 2 (38)
+	DEY				; 2 (40)
+	CPY	#255			; 2 (42) 
+	BEQ	BANK2_BigSprite_DrawEnd	; 2 (44)
+	LDA	temp14			; 3 (47)
+	STA	temp13			; 3 (50)
+	
+BANK2_BigSprite_NoEnd
+	LAX	(temp07),y		; 5 (55)
+	LDA	(temp09),y		; 5 (60)
+	
+	sleep	4
+
+	STX	COLUP0			; 3 (67) 
+	STA	COLUP1			; 3 (70)
+
+	JMP	BANK2_BigSprite_MainLoop ; 3 (73)
+
+BANK2_BigSprite_DrawEnd	
+
+	JMP	(temp01)
+
 	
 
-	RTS
-
-###End-Bank2
 	saveFreeBytes
 	rewind 	2fd4
 	
@@ -1891,9 +2651,290 @@ start_bank2
 	fill	256
 ###Start-Bank3
 	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank3
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank3
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank3
+
+
+
+JumpToNewScreenBank3
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX3	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank3,y
+   	pha
+   	lda	LeaveJumpTableBank3+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank3
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank3
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank3
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank3
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank3
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank3
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank3		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#3
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank3
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank3
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank3	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank3
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank3
+
+	LDA	#3
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank3
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank3
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
 
 
 ###End-Bank3
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+
+
 
 	saveFreeBytes
 	rewind 	3fd4
@@ -1934,8 +2975,290 @@ start_bank3
 	Bank 4
 	fill	256
 ###Start-Bank4
+	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank4
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank4
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank4
+
+
+
+JumpToNewScreenBank4
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX4
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank4,y
+   	pha
+   	lda	LeaveJumpTableBank4+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank4
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank4
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank4
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank4
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank4
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank4
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank4		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#4
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank4
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank4
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank4	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank4
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank4
+
+	LDA	#4
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank4
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank4
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
+
 
 ###End-Bank4
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+
+	
 
 	saveFreeBytes
 	rewind 	4fd4
@@ -1978,8 +3301,289 @@ start_bank4
 	fill	256
 ###Start-Bank5
 	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank5
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank5
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank5
+
+
+
+JumpToNewScreenBank5
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX5
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank5,y
+   	pha
+   	lda	LeaveJumpTableBank5+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank5
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank5
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank5
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank5
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank5
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank5
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank5		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#5
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank5
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank5
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank5	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank5
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank5
+
+	LDA	#5
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank5
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank5
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
+
 
 ###End-Bank5
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+
+	
 
 	saveFreeBytes
 	rewind 	5fd4
@@ -2021,9 +3625,290 @@ start_bank5
 	fill	256
 ###Start-Bank6
 	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank6
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank6
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank6
+
+
+
+JumpToNewScreenBank6
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX6
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank6,y
+   	pha
+   	lda	LeaveJumpTableBank6+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank6
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank6
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank6
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank6
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank6
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank6
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank6		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#6
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank6
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank6
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank6	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank6
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank6
+
+	LDA	#6
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank6
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank6
+
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
+
 
 ###End-Bank6
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
 
+
+	
 
 	saveFreeBytes
 	rewind 	6fd4
@@ -2065,9 +3950,289 @@ start_bank6
 	fill	256
 ###Start-Bank7
 	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank7
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank7
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank7
+
+
+
+JumpToNewScreenBank7
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX7
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank7,y
+   	pha
+   	lda	LeaveJumpTableBank7+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank7
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank7
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank7
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank7
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank7
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank7
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank7		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA	#7
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	lda	#<(bank8_CalculateDuringVBLANK-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#8
+   	jmp	bankSwitchJump
+
+VBlankEndBank7
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank7
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank7	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank7
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank7
+
+	LDA	#7
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank7
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank7
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
+
+
 
 ###End-Bank7
 *Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
+
+
 	
 
 	saveFreeBytes
@@ -2110,21 +4275,658 @@ start_bank7
 	fill	256
 ###Start-Bank8
 	
+*Enter Bank
+*-----------------------------
+*
+* This is the section that happens
+* everytime you go to a new screen.
+* Should set the screen initialization
+* here.
+*
+
+EnterScreenBank8
+
+
+		
+	JMP	WaitUntilOverScanTimerEndsBank8
+
+*Leave Bank
+*-------------------------------
+*
+* This section goes as you leave
+* the screen. Should set where to
+* go and close or save things.
+*
+
+LeaveScreenBank8
+
+
+
+JumpToNewScreenBank8
+	LAX	temp02		; Contains the bank to jump
+JumpToNewScreenBank_NoLAX8
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table	
+		
+	lda	LeaveJumpTableBank8,y
+   	pha
+   	lda	LeaveJumpTableBank8+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+LeaveJumpTableBank8
+	byte	#>EnterScreenBank2-1
+	byte	#<EnterScreenBank2-1
+	byte	#>EnterScreenBank3-1
+	byte	#<EnterScreenBank3-1
+	byte	#>EnterScreenBank4-1
+	byte	#<EnterScreenBank4-1
+	byte	#>EnterScreenBank5-1
+	byte	#<EnterScreenBank5-1
+	byte	#>EnterScreenBank6-1
+	byte	#<EnterScreenBank6-1
+	byte	#>EnterScreenBank7-1
+	byte	#<EnterScreenBank7-1
+	byte	#>EnterScreenBank8-1
+	byte	#<EnterScreenBank8-1
+
+*Overscan
+*-----------------------------
+*
+* This is the place of the main
+* code of this screen.
+*
+
+OverScanBank8
+	CLC
+        LDA	INTIM 
+        BNE 	OverScanBank8
+
+	STA	WSYNC
+	LDA	#%11000010
+	STA	VBLANK
+	STA	WSYNC
+
+    	LDA	#NTSC_Overscan
+    	STA	TIM64T
+	INC	counter
+
+*Overscan Code
+*-----------------------------
+*
+* This is where the game code
+* begins.
+*
+
+
+
+
+
+*VSYNC
+*----------------------------
+* This is a fixed section in
+* every bank. Don't need to be
+* at the same space, of course.
+
+WaitUntilOverScanTimerEndsBank8
+	CLC
+	LDA 	INTIM
+	BMI 	WaitUntilOverScanTimerEndsBank8
+
+* Sync the Screen
+*
+
+	LDA 	#2
+	STA 	WSYNC  ; one line with VSYNC
+	STA 	VSYNC	; enable VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	WSYNC 	; one line with VSYNC
+	LDA 	#0
+	STA 	WSYNC 	; one line with VSYNC
+	STA 	VSYNC 	; turn off VSYNC
+
+* Set the timer for VBlank
+*
+
+	STA	VBLANK
+	STA 	WSYNC
+
+	CLC
+ 	LDA	#NTSC_Vblank
+	STA	TIM64T
+
+*VBLANK
+*-----------------------------
+* This is were you can set a piece
+* of code as well, but some part may
+* be used by the kernel.
+*
+VBLANKBank8
+
+
+
+
+*SkipIfNoGameSet - VBLANK
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BMI	VBlankEndBank8		; if 7th bit set (for a title or game over screen), the calculation part is skipped.		
+
+*Costful Calculations in VBLANK
+*--------------------------------------------------------
+* There are some really costful calculations those would
+* require a lot of WSYNCS during the draw section, to avoid
+* that, we do them in VBLANK.
+*
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	#%00011100	; Save the bankNumber
+	STA	bankToJump
+
+   	jmp	bank8_CalculateDuringVBLANK
+
+VBlankEndBank8
+	CLC
+	LDA 	INTIM
+	BMI 	VBlankEndBank8
+
+    	LDA	#NTSC_Display
+    	STA	TIM64T
+
+
+*ScreenTop
+*--------------------------------  
+* This is the section for the
+* top part of the screen.
+*
+
+	tsx
+	stx	stack
+
+
+
+	LDA	frameColor
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+
+*SkipIfNoGameSet
+*---------------------------------
+*
+
+	BIT	NoGameMode 		; NoGameMode
+	BPL	JumpToMainKernelBank8	; if 7th bit set (for a title or game over screen), the main game section is skipped.	
+	LDX	#0	
+	JMP	ScreenBottomBank8
+
+
+*JumpToMainKernel
+*---------------------------------
+* For this, the program go to main
+* kernel in bank1.
+
+JumpToMainKernelBank8
+
+	LDA	#8
+	asl
+	asl			; Rol left two bits to save bankNumber
+	STA	temp01
+
+	LDA 	bankToJump
+	AND	#%11100011	; Clear previous bankNumber
+	ORA	temp01		; Save the bankNumber
+	STA	bankToJump
+
+	lda	#>(bank1_EnterKernel-1)
+   	pha
+   	lda	#<(bank1_EnterKernel-1)
+   	pha
+   	pha
+   	pha
+   	ldx	#1
+   	jmp	bankSwitchJump
+
+*ScreenBottom
+*--------------------------------  
+* This is the section for the
+* bottom part of the screen.
+*
+
+ScreenBottomBank8
+
+	tsx
+	stx	stack
+
+
+
+	LDA	#0
+	STA	WSYNC		; (76)
+	STA	COLUBK	
+	STA	COLUP0
+	STA	COLUP1	
+	STA	COLUPF	
+
+	ldx	stack
+	txs
+
+	JMP	OverScanBank8
+
+*Data Section 
+*----------------------------------
+* Here goes the data used by
+* custom ScreenTop and ScreenBottom
+* elments.
+*
+
+	align	256
+
+
+
 
 ###End-Bank8
+*Routine Section
+*---------------------------------
+* This is were the routines are
+* used by the developer.
+*
 
-*****	align 256
+
+
+
+	align 256
+
+*Calculations during VBLANK
+*----------------------------
+*
+
+###START-MAIN-VBLANK
+
+bank8_CalculateDuringVBLANK
+
+* I always forget these!!
+*
+* X < Y
+* LDA	X	
+* CMP	Y
+* BCS   else 	 
+*
+* X <= Y
+*
+* LDA	Y
+* CMP	X
+* BCC	else
+*
+* X > Y 
+*
+* LDA	Y
+* CMP	X
+* BCS	else
+*
+* X >= Y
+*
+* LDA	X
+* CMP	Y
+* BCC 	else
+*
+	BIT	SubMenu
+	BVC	bank8_CheckIfOutOfBorders	; Go to the SubMenu Kernel
+	JMP	bank8_SubMenuVBLANK	
+
+
+*CheckIfOutOfBorders
+*--------------------------------------------
+* This section will decide what should happen
+* to the objects as they are touching the borders
+* of the screen.
+
+bank8_CheckIfOutOfBorders
+	
+	LDA	pfEdges
+	AND	#%11000000
+	STA	temp07
+	CMP	#%00000000
+	BEQ	bank8_CalculateIndexes	
+
+	TSX
+	STX	temp03	
+	LDX	#4	; p0, p1, m0, m1, bl
+
+
+bank8_NextItemThings
+*	
+* temp01 - Largest X allowed
+* temp02 - Largest Y allowed	
+* temp03 - Stack pointer saved
+* temp04 - Even Or Odd or Ball
+* temp05, temp08 - Temporal Storage
+* temp06 - Smallest Y allowed
+* temp07 - Mode
+*
+	TXA	
+	TXS	
+ 	LDA	bank8_XTable,x
+
+	TAX
+	STA	temp04
+	LDA	P0Settings,x
+	AND	#%00000111
+	TAX	
+	LDA	bank8_XHorBorderAddSprite,x
+	TSX
+	CPX	#2
+	BCC	bank8_NotAMissile
+bank8_ItsAMissile	
+	SEC
+	SBC	#7
+	sta	temp05
+	LDX	temp04
+	TAX
+	LDA	P0Settings,x
+	AND	#%00110000		
+	lsr
+	lsr
+	lsr
+	lsr
+	TAX
+	LDA	bank8_XHorBorderAddMissile,x
+	CLC
+	ADC	temp05
+
+bank8_NotAMissile
+	STA	temp05
+	LDA	#160	
+	SEC	
+	SBC	temp05
+	STA	temp01
+
+bank8_VerticalFun
+	LDX	temp04
+	LDA	P0Height,x
+	TSX
+	CPX	#2
+	BCS	bank8_ItsAMissile2
+	LDA	temp04
+	JMP 	bank8_NotAMissile2
+bank8_ItsAMissile2
+	LDA	#0
+bank8_NotAMissile2
+	STA	temp05
+	LDA	#40
+	SEC
+	SBC	temp05
+	STA	temp02
+
+bank8_VerticalFun2
+	LDX	temp04
+	LDA	P0Height,x
+	TSX
+	CPX	#2
+	BCS	bank8_ItsAMissile3
+	CLC	
+	ADC	#2
+	ADC	temp04
+
+	JMP	bank8_NotAMissile3
+bank8_ItsAMissile3
+	LDA	#2
+bank8_NotAMissile3
+	STA	temp06
+
+	TSX
+	LDA	temp07
+	CMP	#%11000000
+	BEQ	bank8_AppearOpposite
+
+	LDA	temp07
+	BMI	bank8_NoBLAHBLAH
+	CPX	#2
+	BCS	bank8_AppearOpposite
+
+bank8_NoBLAHBLAH
+	LDA	P0X,x
+	CMP	#16
+	BCS	bank8_NotSmallerThan
+	LDA	#16
+	STA	P0X,x	
+	JMP	bank8_doYForNow
+bank8_NotSmallerThan
+	LDA	temp01
+	CMP 	P0X,x
+	BCS	bank8_doYForNow
+	STA	P0X,x
+bank8_doYForNow
+	LDA	P0Y,x
+	CMP	temp06
+	BCS	bank8_NotLowerThan
+	LDA	temp06
+	STA	P0Y,x
+bank8_NotLowerThan
+	LDA	temp02
+	CMP	P0Y,x
+	BCS	bank8_PrepareForNext
+	LDA	temp02
+	STA	P0Y,x
+bank8_PrepareForNext
+	DEX	
+	CPX	#255
+	BNE	bank8_NextItemThings
+	JMP	bank8_StackBackUp
+
+bank8_AppearOpposite
+	LDA	P0X,x
+	CMP	#16
+	BCS	bank8_NotSmallerThan2
+	LDA	temp01
+	SEC
+	SBC	#1
+	STA	P0X,x	
+	JMP	bank8_doYForNow2
+bank8_NotSmallerThan2
+	LDA	temp01
+	CMP 	P0X,x
+	BCS	bank8_doYForNow2
+	LDA	#17
+	STA	P0X,x
+bank8_doYForNow2
+	LDA	P0Y,x
+	CMP	temp06
+	BCS	bank8_NotLowerThan2
+	LDA	temp02
+	SEC
+	SBC	#1
+	STA	P0Y,x
+bank8_NotLowerThan2
+	LDA	temp02
+	CMP	P0Y,x
+	BCS	bank8_PrepareForNext2
+	LDA	temp06
+	CLC
+	ADC	#1
+	STA	P0Y,x
+bank8_PrepareForNext2
+	DEX	
+	CPX	#255
+	BNE	bank8_NextItemThings
+
+bank8_StackBackUp
+	LDX	temp03
+	TXS
+
+bank8_CalculateIndexes
+	LDA 	P0Height
+	CLC
+	ADC	#1
+	STA	temp01	
+
+	LDA	P0SpriteIndex	
+	AND	#%00001111	; Get low nibble for P0 index
+	TAY			; Move it to Y for calculations
+	LDA	P0SpritePointer
+	
+bank8_CalculateP0PointerIndex
+	; You can only have the maximum number of sprites 256/height that is always smaller than 16
+	; (over 16 px height, you cannot use all 16 indexes because of the paging overflow that would break timing.
+
+	CPY	#0
+	BEQ	bank8_CalculateP0PointerIndexDone
+	CLC	
+	ADC	temp01
+	DEY
+	JMP	bank8_CalculateP0PointerIndex
+
+
+bank8_CalculateP0PointerIndexDone
+	STA	temp07		; temp10 will store the sprite pointers low byte
+ 
+	LDA 	P1Height
+	CLC
+	ADC	#1
+	STA	temp01	
+
+	LDA	P1SpriteIndex	
+	AND	#%11110000	; Get high nibble for P1 index
+	lsr
+	lsr
+	lsr
+	lsr
+	TAY			; Move it to Y for calculations
+	LDA	P1SpritePointer
+	
+bank8_CalculateP1PointerIndex
+	; You can only have the maximum number of sprites 256/height that is always smaller than 16
+	; (over 16 px height, you cannot use all 16 indexes because of the paging overflow that would break timing.
+
+	CPY	#0
+	BEQ	bank8_CalculateP1PointerIndexDone
+	CLC	
+	ADC	temp01
+	DEY
+	JMP	bank8_CalculateP1PointerIndex
+
+
+bank8_CalculateP1PointerIndexDone
+	STA	temp10		; temp10 will store the sprite pointers low byte
+
+###END-MAIN-VBLANK
+
+bank8_JumpBackToBankScreenTop
+
+	lda	bankToJump
+	lsr
+	lsr
+	AND	#%00000111	; Get the bank number to return
+	tax
+	
+	SEC
+	SBC	#2
+	STA	temp01		
+	CLC
+	ADC	temp01		; ([bankNum - 2] * 2 )
+	TAY			; Get the location of address from the table
+		
+		
+	lda	bank8_VBlankJumpTable,y
+   	pha
+   	lda	bank8_VBlankJumpTable+1,y
+   	pha
+   	pha
+   	pha
+   	jmp	bankSwitchJump
+
+bank8_VBlankJumpTable
+	byte	#>VBlankEndBank2-1
+	byte	#<VBlankEndBank2-1
+	byte	#>VBlankEndBank3-1
+	byte	#<VBlankEndBank3-1
+	byte	#>VBlankEndBank4-1
+	byte	#<VBlankEndBank4-1
+	byte	#>VBlankEndBank5-1
+	byte	#<VBlankEndBank5-1
+	byte	#>VBlankEndBank6-1
+	byte	#<VBlankEndBank6-1
+	byte	#>VBlankEndBank7-1
+	byte	#<VBlankEndBank7-1
+	byte	#>VBlankEndBank8-1
+	byte	#<VBlankEndBank8-1
+
+bank8_XTable
+	byte	#0
+	byte	#1
+	byte	#0
+	byte	#1
+	byte	#2
+
+bank8_XHorBorderAddSprite
+	byte	#8
+	byte	#24
+	byte	#40
+	byte	#40
+	byte	#72
+	byte	#16
+	byte	#72
+	byte	#32
+	
+
+bank8_XHorBorderAddMissile
+	byte	#1
+	byte	#2
+	byte	#4
+	byte	#8
+
+bank8_SubMenuVBLANK	
+	LDA	SubMenuLines
+	AND	#%00000011
+	CLC
+	ADc	#1
+	TAY
+	LDA	#0
+	STA	temp02
+bank8_Add6ToThat
+	CPY	#0
+	BEQ	bank8_NoMore6
+	CLC
+	ADC	#6
+	DEY
+	JMP 	bank8_Add6ToThat
+bank8_NoMore6
+	STA	temp02
+	
+	LDA	TileSelected
+	AND	#%00011111
+	CMP	temp02
+	BCC	bank8_NoLargerThan24
+	LDA	TileSelected
+	AND	#%11100000
+	STA	TileSelected
+bank8_NoLargerThan24
+
+bank8_SubMenuVBLANKEnd
+	JMP	bank8_JumpBackToBankScreenTop
+
+	align 256
 	
 bank8_Start
    	sei
    	cld
    	ldy	#0
    	lda	$D0
-   	cmp	#$2C		;check RAM location #1   	
-	bne	bank8_MachineIs2600
+   	cmp	#$2C		;check RAM location #1   	bne	MachineIs2600
    	lda	$D1
-   	cmp	#$A9		;check RAM location #2   	
-	bne	bank8_MachineIs2600
+   	cmp	#$A9		;check RAM location #2   	bne	MachineIs2600
    	dey
 bank8_MachineIs2600
 	ldx	#0
@@ -2136,18 +4938,22 @@ bank8_clearmem
 	cpx	#$00
    	bne	bank8_clearmem	; Clear the RAM.
 
-	LDA	$F080		; Sets two values of the SC RAM 
+	LDA	$F080		; Sets two values for the SC RAM 
 	STA	$80		; to Random and Counter variables
 	LDA	$F081
 	STA	$81
 
 	LDY	#0		
 	TYA
-****	STA	$F029
+	STA	$F029
 bank8_ClearSCRAM
 	STA 	$F000,Y
 	INY
 	BPL 	bank8_ClearSCRAM
+
+bank8_DisableMusicWaveOnStartUp
+	LDA	#%00111111
+	STA	JukeBox_Controller
 
 	lda	#>(EnterScreenBank2-1)
    	pha

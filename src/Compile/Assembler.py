@@ -353,7 +353,7 @@ class Assembler():
                         num = int(num, 10)
                     line.bytes.append(bytes([num]))
                 except Exception as e:
-                    # print(line.raw[1])
+                    #print(line.raw[1])
                     second = self.checkIfSectionName(line.raw[1], sections)
                     second = self.starToAddress(currentAddress, second)
                     second = self.secondByteToNumeric(second, variables, registers, sections)
@@ -365,6 +365,7 @@ class Assembler():
                     elif "#%" in second:
                         line.bytes.append(bytes([int(second.replace("#%", "0b"), 2)]))
                     else:
+                        #print(line.raw)
                         line.bytes.append(bytes([int(second.replace("#", ""), 10)]))
 
                 continue
@@ -407,6 +408,7 @@ class Assembler():
                         if (number<0):
                             number = 256 + number
 
+                        #print(line.raw, number)
                         line.bytes.append(bytes([number]))
                         break
 
@@ -421,6 +423,7 @@ class Assembler():
                         second = self.lowHighNibble(second)
 
                         if len(re.findall(r"\$[a-fA-F0-9]{4}", second))>0:
+                            #print(second)
                             num = int("0x"+second[1], 16)
                             if num > 0 and num<9:
                                 second = ("$"+hex(((num-1)*2)+1)+second[2:]).replace("0x", "")
@@ -450,6 +453,8 @@ class Assembler():
         return(freebytes, codeLines, sections)
 
     def checkSARA(self, code):
+
+
         if ("LDA" not in code.upper()) and ("STA" not in code.upper()):
             return(code)
         elif "LDA" in code.upper():
@@ -457,6 +462,7 @@ class Assembler():
         else:
             opcode = "STA"
 
+        #print(code)
         number = re.findall(r"\$[a-fA-F0-9]{4}", code)[0].upper()
         number = int(number.replace("$", "0x"), 16)
         if number < 61440 or number > 61695:
@@ -566,12 +572,14 @@ class Assembler():
             self.appendBytes(line, second)
 
     def appendBytes(self, line, second):
+        #print(second)
+
         if second.startswith("0b"):
             line.bytes.append(bytes([int(second, 2)]))
         elif second.startswith("0x"):
             line.bytes.append(bytes([int(second, 16)]))
         else:
-            #print(line, second)
+            #print(line.raw, second)
             line.bytes.append(bytes([int(second, 10)]))
 
     def doTheMath(self, raw):
@@ -619,7 +627,7 @@ class Assembler():
         try:
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]
         except:
-            #print(raw)
+            print(raw)
             changeTo = re.findall(r'[a-fA-F0-9]{3}', raw.replace("(",""))[0]
             raw = raw.replace(changeTo, "0"+changeTo)
             numbers = re.findall(r'[<|>]\$[a-fA-F0-9]{4}', raw.replace("(",""))[0]

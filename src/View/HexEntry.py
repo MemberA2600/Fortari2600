@@ -6,6 +6,8 @@ class HexEntry:
 
         self.__textVar = StringVar()
 
+        #print(colorConstans)
+
         if colorConstans != None:
             self.__textVar.set(colorConstans[num])
         else:
@@ -71,8 +73,10 @@ class HexEntry:
 
             color2 = self.__colorDict.getHEXValueFromTIA(num)
             self.__entry.config(bg=color1, fg=color2)
-        except:
-            pass
+        except Exception as e:
+            import traceback
+
+            #print(traceback.print_exc())
 
     def __checkColorEntry(self, event):
 

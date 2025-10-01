@@ -148,14 +148,26 @@ class LoadingScreen():
 
     def bindThings(self):
         self.__clicked = 0
+        self.__clicked2 = 0
+
         import keyboard
 
         keyboard.on_press_key("6", self.pressed)
+        keyboard.on_press_key("4", self.pressed2)
 
     def pressed(self, event):
         if self.__shouldClick == False: return
 
         self.__clicked +=1
+        try:
+            self.__loader.soundPlayer.playSound("Click")
+        except:
+            pass
+
+    def pressed2(self, event):
+        if self.__shouldClick == False: return
+
+        self.__clicked2 +=1
         try:
             self.__loader.soundPlayer.playSound("Click")
         except:
@@ -167,3 +179,8 @@ class LoadingScreen():
         else:
             return(False, self.__clicked)
 
+    def getPresses2(self):
+        if (self.__clicked2 > 2):
+            return True
+        else:
+            return False

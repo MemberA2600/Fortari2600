@@ -1,0 +1,314 @@
+* Height=24
+* Frames=4
+* LineHeight=2
+* Mode=overlay
+	align	256
+
+##NAME##_BigSprite_1
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%00100100
+	byte	#%00100100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000	; (0)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%01000010
+	byte	#%00000000
+	byte	#%10011001
+	byte	#%10011001
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000	; (1)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00100100
+	byte	#%01000010
+	byte	#%00000000
+	byte	#%10000001
+	byte	#%10100101
+	byte	#%00100100
+	byte	#%01011010
+	byte	#%00000100
+	byte	#%00100000
+	byte	#%01011010
+	byte	#%00100100
+	byte	#%10100101
+	byte	#%10000001
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%00100100
+	byte	#%00000000
+	byte	#%00000000	; (2)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%01000010
+	byte	#%00000000
+	byte	#%10011001
+	byte	#%10000001
+	byte	#%00100100
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%00100100
+	byte	#%10000001
+	byte	#%10011001
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%00011000	; (3)
+
+
+##NAME##_BigSpriteColor_1
+### &COLOR
+	byte	#$0a
+	byte	#$08
+	byte	#$0a
+	byte	#$0c
+	byte	#$0e
+	byte	#$0c
+	byte	#$0a
+	byte	#$08
+	byte	#$0a
+	byte	#$0c
+	byte	#$0e
+	byte	#$0e
+	byte	#$0c
+	byte	#$0a
+	byte	#$08
+	byte	#$0a
+	byte	#$0c
+	byte	#$0e
+	byte	#$0c
+	byte	#$0a
+	byte	#$08
+	byte	#$0a
+	byte	#$0c
+	byte	#$0e
+
+
+##NAME##_BigSprite_0
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%00100100
+	byte	#%01011010
+	byte	#%01011010
+	byte	#%00100100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000	; (0)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%00100100
+	byte	#%01000010
+	byte	#%01000010
+	byte	#%00100100
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000	; (1)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00100100
+	byte	#%01011010
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10111001
+	byte	#%10011101
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%01011010
+	byte	#%00100100
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000	; (2)
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%10100101
+	byte	#%01000010
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%10011001
+	byte	#%00100100
+	byte	#%10000001
+	byte	#%10000001
+	byte	#%00100100
+	byte	#%10011001
+	byte	#%00000000
+	byte	#%00000000
+	byte	#%00011000
+	byte	#%00000000
+	byte	#%01000010
+	byte	#%10100101
+	byte	#%01000010	; (3)
+
+
+##NAME##_BigSpriteColor_0
+### &COLOR
+	byte	#$8a
+	byte	#$88
+	byte	#$86
+	byte	#$84
+	byte	#$86
+	byte	#$88
+	byte	#$8a
+	byte	#$8c
+	byte	#$8e
+	byte	#$8c
+	byte	#$8a
+	byte	#$88
+	byte	#$86
+	byte	#$84
+	byte	#$86
+	byte	#$88
+	byte	#$8a
+	byte	#$8c
+	byte	#$8e
+	byte	#$8c
+	byte	#$8a
+	byte	#$88
+	byte	#$86
+	byte	#$84
+
+	align	256
+
+##NAME##_BigSpriteBG
+### &COLOR
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+	byte	#$00
+
+##NAME##_Empty
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+	BYTE	#0
+

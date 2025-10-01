@@ -44,7 +44,11 @@ if __name__ == "__main__":
     from time import sleep
     if nope == False:
 
-        if __loading.getPresses()[0] == False:
+        if  __loading.getPresses2():
+            from TouhouCharacterMaker import TouhouCharacterMaker
+            touhou = TouhouCharacterMaker(__loader)
+
+        elif __loading.getPresses()[0] == False:
             from MainWindowHandler import MainWindowHandler
             MainWindowHandler(__loader)
 
